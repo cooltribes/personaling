@@ -25,7 +25,7 @@
 @verde:   #18af91;
 @rojo:       #BF5077;
 @lila:       #C4BCCD;
-@negro: #FFF;
+@negro: #000;
 
 /*--- "." ---*/
 .color1{ color:@color1;}
@@ -147,6 +147,10 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 }
 .text_center_align {
   text-align: center;
+}
+
+.underline{
+  text-decoration:underline;
 }
 
 /* titles */
@@ -315,9 +319,10 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 .list_horz_margin_right li{ margin-right:10px !important;}
 .list_horz_margin_top li{ margin-top:10px !important;}
 
+.width320{width: 320px;}
+.width_auto{width: auto;}
 
-
-
+.landingdrop{text-align: right; font-size: 18px; display: table-cell;}
 
 
 
@@ -911,6 +916,17 @@ src: url('../fonts/entypo.woff'),
     background-image: url("../images/glyphicons-halflings-white.png");
   }  
 }
+
+
+.header_notification{
+    margin-top: 12px; 
+    padding: .8em; 
+    text-align: center; 
+    background: #D6D6D6; 
+    display: none;
+    
+}
+
 /*------------ HEADER OFF --------------*/
 
 /*------------ Footer OFF --------------*/
@@ -1333,6 +1349,16 @@ src: url('../fonts/entypo.woff'),
     }    
   } 
 }
+
+.message-cookies{
+  margin-top: 12px;
+  padding: .8em;
+  text-align: center;
+  background: beige;
+  a{
+    text-decoration: underline;
+  }
+}
 /*------------- Home OFF -------------*/
 
 /*------------- login ON -------------*/
@@ -1571,6 +1597,37 @@ src: url('../fonts/entypo.woff'),
    
 /*------------- Detalle de Producto OFF -------------*/
 
+//-------------- HTTPERROR ON -------------------------
+
+  .httpError-code{
+      text-align:center; 
+      font-size: 38px; 
+      font-weight: lighter;  
+      vertical-align: middle; 
+      display:table-cell; 
+      height:100px; 
+      width:100px; 
+      .border_radius(@radius:50px); 
+      background: @negro; 
+      color: @color3;
+  }
+  
+  .httpError-title{
+    margin-top:40px; 
+    text-align: center;
+    color: @negro;
+  }
+  
+  .httpError-text{
+    line-height: 1.3em; 
+    width:400px; 
+    margin:40px auto 40px auto; 
+    text-align: center;
+    color: @negro;
+  }
+
+
+//-------------- HTTPERROR OFF -----------------------
 
 /*------------- Proceso de Compra ON -------------*/
 
@@ -2028,6 +2085,9 @@ src: url('../fonts/entypo.woff'),
       }
     }
   }
+  
+
+  
   .caretthumbs{
     position: relative;
     top: 16px;
@@ -2561,6 +2621,25 @@ ul.yiiPager .last
 }
 #tienda #boton_search{
     height: 30px;
+}
+
+ .go-top {
+  position: fixed;
+  bottom: 36em;
+  right: 1em;
+  font-size: 12px;
+  padding: 1em;
+  opacity:0.2;
+  display: none;
+  height: 35px;
+  width: 35px;
+  background-color:#FFF; 
+  .border_radius(@radius:17.5px); 
+}
+
+.go-top:hover {
+
+  opacity:1;
 }
 /*----------- Tienda OFF -------------*/
 
@@ -3623,22 +3702,20 @@ img[alt="Loading"]{
 
 /*----------------  Landingpage ON ---------------- */
 .wrapper-landingpage{
-  border: 15px solid white;
-  display: table;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 98.4%;
   .wrapper-inside-landingpage{
     border: 1px solid #333;
-    height: 100%;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    right: 15px;
+    bottom: 15px;  
+    min-height: 600px;  
     figure{
       margin: 0;
     }
     .content-landingpage{
       width: 320px;
-      margin: 14em auto 0 auto;
+      margin: 10em auto 0 auto;
       .slongan{
         font-size: 24.5px;
       }
@@ -3967,7 +4044,8 @@ img[alt="Loading"]{
     #tienda_looks article .vcard .precio, #perfil_looks article .vcard .precio{font-size: 1.5em;}
 
     //Responsive del header
-    .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container{width: 988px;}
+    .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container{width: 988px;}   
+
 }
 
 /* Portrait tablet to landscape and desktop */
@@ -4121,6 +4199,20 @@ img[alt="Loading"]{
       #tienda_looks{ 
         #looks .look{text-align: center;}
       }
+
+    //** GUIA DE TALLAS - MODAL ON **//
+    #size-guide{
+        .modelo{
+            text-align: center;
+            img{
+                margin-left: 0px;
+            }
+
+        }
+    }
+    //** GUIA DE TALLAS - MODAL ON **//
+
+
 }
 /* Landscape phones and down */
 @media (max-width: 480px) {
@@ -4169,4 +4261,37 @@ img[alt="Loading"]{
   .detalle_producto .imagenes_secundarias{ height: auto; overflow: inherit; .margin_top_medium;}
   .slide-3 .slide-content .copy-right .border-bottom h2{font-size: 27px;}
 
+  // Landing Page ON
+  .wrapper-landingpage .wrapper-inside-landingpage{
+    .logo-personaling {
+      img{
+        width: 70%;
+        margin: 0 auto;
+        display: inherit;
+      }
+      .slongan{
+        font-size: 18.5px
+      }
+      .box-select{
+        margin: 0 auto;
+        width: 240px;
+        .select-pais{
+          padding: 5px 0px;
+        }
+      }
+    }
+
+  }
+  // Landing Page OFF
+
  }
+
+//** GUIA DE TALLAS - MODAL ON **//
+    #size-guide{
+        .modelo img{
+            margin-left: -22px;
+        }
+    }
+//** GUIA DE TALLAS - MODAL ON **//
+
+

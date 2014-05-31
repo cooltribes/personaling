@@ -76,7 +76,8 @@ return array(
 
             # page after logout
             'returnLogoutUrl' => array('/user/login'),
-        ),		
+        ),	
+        'reportico'=>array(),	
 		
 	),
 
@@ -157,6 +158,10 @@ return array(
 			'rules'=>array(
 				'productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
 				'looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',
+				'looks-personalizados'=>'tienda/look',
+				'tienda-ropa-personalizada'=>'tienda/index',
+				'formas-de-pago'=>'site/formas_de_pago',
+				'reportico'=>'reportico',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
@@ -265,8 +270,18 @@ return array(
                     'mercadopago' => false,
 				                        
                     ),
+                    'clientName'=>'Personaling Enterprise S.L ',
+			'clientIdentification'=>'B66202383',
+			'clientAddress'=>'Sant Pere Mes Baix, Nº 63 Principal B ',
+			'clientCity'=>'Barcelona',
+			'clientZIP'=>'08003',
+			'clientPhone'=>'934 344 634',
+			'clientEmail'=>'info@personaling.com',
+					
+					
                   'PRONUNCIACION' => 'Venezolana', 
 				    'currSym'=>'Bs',
+				     'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
 				    'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
 				    'IVA' => '0.12',
 				    'IVAtext' => '12%',	

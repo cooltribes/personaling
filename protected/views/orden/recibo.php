@@ -1,4 +1,6 @@
 <?php
+
+
 $profile = Profile::model()->findByAttributes(array('user_id'=>$factura->orden->user_id));
 $direccion_fiscal = DireccionFacturacion::model()->findByPk($factura->direccion_fiscal_id);
 $ciudad_fiscal = Ciudad::model()->findByPk($direccion_fiscal->ciudad_id);
@@ -15,29 +17,34 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
         <h1>Recibo</h1>
         <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered">
           <tr>
-            <td width="50%"><strong> Personaling Enterprise S.L </strong><br/>
-              Gran Vía 600, 1ro, 2da, izq.<br/>
-              Barcelona 08007<br/>
-              España <br/>
+            <td width="50%">
+            				<strong>Nombre de Empresa:</strong> <?php echo Yii::app()->params['clientName'];?><br/>
+							<strong>NIF:</strong> <?php echo Yii::app()->params['clientIdentification'];?> <br/>
+							<strong>Dirección Fiscal:</strong> <?php echo Yii::app()->params['clientAddress'];?> <br/>
+								<?php echo Yii::app()->params['clientCity']." - ".Yii::app()->params['clientZIP']; ?><br/>
+							<strong>Teléfono:</strong> <?php echo Yii::app()->params['clientPhone'];?><br/>
+							<strong>Email:</strong> <?php echo Yii::app()->params['clientEmail'];?>
+            
               </td>
-            <td width="50%"><div class="text_align_right"> <img src="<?php echo Yii::app()->baseUrl; ?>/images/logo_personaling.png" width="284" height="36" alt="Personaling"><br/><strong> Número de recibo: <span style="color:#F00"><?php echo str_pad($factura->id, 4, '0', STR_PAD_LEFT); ?></span> </strong> <br/>
+            <td width="50%"><div class="text_align_right"> <img src="<?php echo Yii::app()->baseUrl; ?>/themes/bootstrap/images/logo_personaling.png" width="284" height="36" alt="Personaling"><br/><strong> Número de recibo: <span style="color:#F00"><?php echo str_pad($factura->id, 4, '0', STR_PAD_LEFT); ?></span> </strong> <br/>
                 <strong> Fecha de emisión:</strong> <?php echo date('d/m/Y', strtotime($factura->fecha)); ?> </div></td>
           </tr>
           <tr>
           <tr>
-            <td><strong>Cliente / Razón Social:</strong> 
-              <?php
-			  //echo $profile->first_name.' '.$profile->last_name;
-			  echo $direccion_fiscal->nombre.' '.$direccion_fiscal->apellido;
-              ?><br/>
-              <strong>Domicilio fiscal:</strong> <?php echo $direccion_fiscal->dirUno.' '.$direccion_fiscal->dirDos; ?><br/>
-              <?php echo $ciudad_fiscal->nombre.' - '.$provincia_fiscal->nombre.'. '.$direccion_fiscal->pais; ?><br/>
-              <strong>RIF:</strong> <?php echo $direccion_fiscal->cedula; ?> </td>
+            <td><strong><?php echo Yii::t('backEnd', 'Client / Company Name:'); ?></strong> 
+                            <?php
+                            echo $direccion_fiscal->nombre . ' ' . $direccion_fiscal->apellido;
+                            ?>
+                            <br/>
+                            <strong><?php echo Yii::t('backEnd', 'Official Address:'); ?></strong> <?php echo $direccion_fiscal->dirUno . ' ' . $direccion_fiscal->dirDos; ?><br/>
+                            <?php echo $ciudad_fiscal->nombre . ' - ' . $provincia_fiscal->nombre . '. ' . $direccion_fiscal->pais; ?><br/>
+                            <strong><?php echo Yii::t('contentForm', 'C.I'); ?></strong> <?php echo $direccion_fiscal->cedula; ?> </td>
             <td><p><strong>Enviar a: </strong><?php echo $direccion_envio->nombre.' '.$direccion_envio->apellido; ?><br/>
                 <strong>Dirección de envio: </strong><?php echo $direccion_envio->dirUno.' '.$direccion_envio->dirDos.'. '.$ciudad_envio->nombre.' - '.$provincia_envio->nombre.'. '.$direccion_envio->pais; ?></p></td>
           </tr>
           <tr>
-            <td colspan="2"><strong>Estado</strong>: 
+            <td colspan="2">
+            	<!--<strong>Estado</strong>: 
             	<?php
             	switch ($factura->estado) {
 					case '1':
@@ -50,7 +57,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
 						echo 'Desconocido';
 						break;
 				}
-            	?>
+            	?>-->
             </td>
           </tr>
           <tr>

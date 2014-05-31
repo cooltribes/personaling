@@ -102,8 +102,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
           <?php
 
-            $productoBolsa = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
-            // $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
+            $detalleDePago = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
 
             if($orden->estado != 1 && $orden->estado != 5){
 
@@ -119,7 +118,7 @@ $usuario = User::model()->findByPk($orden->user_id);
                       </tr>
                   ");
 
-            foreach($productoBolsa as $detalle){
+            foreach($detalleDePago as $detalle){
 
                 echo("<tr>");
 
@@ -139,19 +138,26 @@ $usuario = User::model()->findByPk($orden->user_id);
                         if($detalle->estado == 1) // si fue aceptado
                         {
 
-                            echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
+//                            echo("<td>".date("d/m/Y - h:i a",strtotime($detalle->fecha))."</td>");
+//
+//                            if($detalle->tipo_pago == 1)
+//                                echo("<td>".Yii::t('contentForm','Deposit or Transference')."</td>");
+//                            if($detalle->tipo_pago == 2)
+//                                echo("<td>".Yii::t('contentForm','Credit Card')."</td>");
+// 						if($detalle->tipo_pago == 3)
+//							echo("<td>".Yii::t('contentForm','Balance')."</td>");						
+//						if($detalle->tipo_pago == 4)
+//							echo("<td>".Yii::t('contentForm','MercadoPago')."</td>");	                               //hacer los demas tipos
+//
+//                            echo("<td>".$detalle->nTransferencia."</td>");
+//                            echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." ".Yii::t('contentForm','currSym')."</td>");
+                            
+                             echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
+                            echo("<td>".$detalle->getTipoPago()."</td>");
 
-                            if($detalle->tipo_pago == 1)
-                                echo("<td>".Yii::t('contentForm','Deposit or Transference')."</td>");
-                            if($detalle->tipo_pago == 2)
-                                echo("<td>".Yii::t('contentForm','Credit Card')."</td>");
- 						if($detalle->tipo_pago == 3)
-							echo("<td>".Yii::t('contentForm','Balance')."</td>");						
-						if($detalle->tipo_pago == 4)
-							echo("<td>".Yii::t('contentForm','MercadoPago')."</td>");	                               //hacer los demas tipos
-
-                            echo("<td>".$detalle->nTransferencia."</td>");
-                            echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." ".Yii::t('contentForm','currSym')."</td>");
+                            echo("<td>".$detalle->nTransferencia."</td>");	
+                            echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)."</td>");
+                            
 
                         }
                     else if($detalle->estado == 2) // rechazado
@@ -232,10 +238,10 @@ $usuario = User::model()->findByPk($orden->user_id);
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
            <div class="row-fluid tel pull_left">
-            <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            <div class="span3"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?></strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
             <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
             <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
-          </div>
+          </div> 
           </div>
    <?php
             	if(isset($orden->direccionFacturacion)){

@@ -12,15 +12,10 @@ if($orden->getFlete())
 //echo $orden->direccionEnvio->myciudad->cod_zoom." - ".$orden->nproductos." - ".$orden->peso." - ".$orden->total."<br/>"."17 - 1 - 0.4 - 3290";
 $usuario = User::model()->findByPk($orden->user_id); 
 
-$tracking=$orden->getTracking();
-
+$tracking=$orden->getTrackingInfo();
 
 
 ?>
-
-
-
-
 
 <div class="container margin_top">
 			<?php if(Yii::app()->user->hasFlash('success')){?>
@@ -120,22 +115,22 @@ $tracking=$orden->getTracking();
         <?php
 //----------------------Estado
 	if($orden->estado == 1)
-		echo "Bs. Pendientes por pagar"; 
+		echo Yii::t('contentForm','currSym')." Pendientes por pagar"; 
 	
 	if($orden->estado == 2)
-		echo "Bs. Pendientes por confirmar";
+		echo Yii::t('contentForm','currSym')." Pendientes por confirmar";
 	
 	if($orden->estado == 3 || $orden->estado == 8)
-		echo "Bs. ya pagados";
+		echo Yii::t('contentForm','currSym')." ya pagados";
 
 	if($orden->estado == 4)
-		echo "Bs. ya pagados";
+		echo Yii::t('contentForm','currSym')." ya pagados";
 	
 	if($orden->estado == 5)
 		echo "Orden Cancelada";	
 	
 	if($orden->estado == 7)
-		echo "Bs. que faltan.";
+		echo Yii::t('contentForm','currSym')." que faltan.";
 	
 		
 	// agregar demas estados
@@ -185,7 +180,7 @@ $tracking=$orden->getTracking();
         	?>
         </div>
         <div class="span6">
-          <h2><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?><small> C.I. <?php echo $usuario->profile->cedula; ?></small></h2>
+          <h2><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?><small> <?php echo Yii::t('contentForm','C.I.')." ".$usuario->profile->cedula; ?></small></h2>
           <div class="row">
             <div class="span3">
               <ul class="no_bullets no_margin_left">
@@ -198,7 +193,7 @@ $tracking=$orden->getTracking();
               <ul class="no_bullets no_margin_left">
                 <li><strong>Cuenta registrada</strong>:<?php echo date('d/m/Y h:i A', strtotime($usuario->create_at)); ?></li>
                 <li><strong>Pedidos validos realizados</strong>: <?php echo Orden::model()->countByAttributes(array('user_id'=>$orden->user_id,'estado'=>8)); ?></li>
-                <li><strong>Total comprado desde su registro</strong>: <?php echo number_format($orden->getTotalByUser($orden->user_id), 2, ',', '.')." Bs."; ?> </li>
+                <li><strong>Total comprado desde su registro</strong>: <?php echo number_format($orden->getTotalByUser($orden->user_id), 2, ',', '.')." ".Yii::t('contentForm','currSym'); ?> </li>
               </ul>
             </div>
           </div>
@@ -247,7 +242,7 @@ $tracking=$orden->getTracking();
                                                 //hacer los demas tipos
 
                                         echo("<td> PAGO RECHAZADO </td>");	
-                                        echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</td>");
+                                        echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." ".Yii::t('contentForm','currSym')."</td>");
                                         echo("<td><a href='#' title='Ver'><i class='icon-eye-open'></i></a></td>");
 
                                         }
@@ -291,7 +286,7 @@ $tracking=$orden->getTracking();
            echo $orden->shipCarrier;
             ?></td>
             <td><?php echo $orden->peso ?> Kg.</td>
-            <td><?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.'); ?> Bs.</td>
+            <td><?php echo number_format($orden->envio+$orden->seguro, 2, ',', '.')." ".Yii::t('contentForm','currSym'); ?></td>
             <td><?php echo $orden->tracking; ?></td>
             <td><a href="#" title="Editar"><i class="icon-edit"></i></a></td>
           </tr>
@@ -336,7 +331,7 @@ $tracking=$orden->getTracking();
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
            <div class="row-fluid tel pull_left">
-            <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            <div class="span3"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?> </strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
             <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
             <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
@@ -356,7 +351,7 @@ $tracking=$orden->getTracking();
               <div class="country-name"><?php echo $orden->direccionFacturacion->pais; ?></div>
             </div>
            <div class="row-fluid tel pull_left">
-            <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $orden->direccionFacturacion->cedula; ?></div>
+            <div class="span3"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?> </strong>:</span><?php echo $orden->direccionFacturacion->cedula; ?></div>
             <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $orden->direccionFacturacion->telefono; ?></span> </div>
             <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
@@ -398,7 +393,7 @@ $tracking=$orden->getTracking();
 					echo("<ul class='padding_bottom_small padding_top_small'>");
 					echo("<li>Banco: ".$detalle->banco."</li>");
 					echo("<li>Numero: ".$detalle->nTransferencia."</li>");
-					echo("<li>Monto: ".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." Bs.</li>");
+					echo("<li>Monto: ".Yii::app()->numberFormatter->formatDecimal($detalle->monto)." ".Yii::t('contentForm','currSym')."</li>");
 					echo("<li>Fecha: ".date("d/m/Y",strtotime($detalle->fecha))."</li>");
 				
 					echo("
@@ -577,7 +572,7 @@ $tracking=$orden->getTracking();
           <th scope="col">Peso</th>
           <th scope="col">Existencia</th>
           <th scope="col">Pedido</th>
-          
+           
           <th scope="col">Almacen</th>
           <th scope="col">Precio</th>
         <!--  <th scope="col">Acción</th>-->
@@ -615,27 +610,33 @@ $tracking=$orden->getTracking();
                                         $talla=Talla::model()->findByPk($ptclk->talla_id);
                                         $color=Color::model()->findByPk($ptclk->color_id);
                                         
-                                        $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$prdlk->id,'color_id'=>$color->id));
+                                        $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$prdlk->id,'color_id'=>$color->id), array('order'=>'orden'));
                                         $contador=0;
                                         $foto = "";
                                         $label = $color->valor;
                                         //$label = "No hay foto</br>para el color</br> ".$color->valor;
-                                        if(isset($imagen)){
+                                        /*if(count($imagen)>0){
+                                                echo count($imagen);	
                                                 foreach($imagen as $img) {
                                                         if($contador==0){		 
-                                                                $foto = CHtml::image(Yii::app()->baseUrl . 
-                                                                        str_replace(".","_thumb.",$img->url), "Imagen ", 
-                                                                        array("width" => "70", "height" => "70"));							
+                                                              							
                                                                 $contador++;
                                                         }
-                                                }					  	
+                                                }					   	
 
 
                                         }else{
-                                            $foto = "<img src='http://placehold.it/70x70' >";
+                                            $foto = "";//"<img src='http://placehold.it/70x70' >";
                                             $label = "No hay foto</br>para el color</br> ".$color->valor;
-                                        }
-
+                                        }*/
+                                        if(!is_null($ptclk->imagen))
+											  $foto = CHtml::image(Yii::app()->baseUrl . 
+                                                                        str_replace(".","_thumb.",$ptclk->imagen['url']), "Imagen ", 
+                                                                        array("width" => "70", "height" => "70"));
+										else {
+											$foto="No hay foto</br>para el color";
+										}
+										
 
                                         echo("<tr>");
                                         //echo("<td>".$prdlk->codigo."</td>"); // nombre
@@ -679,29 +680,20 @@ $tracking=$orden->getTracking();
                                 $foto = "";
                                 $label = $color->valor;
                                 //$label = "No hay foto</br>para el color</br> ".$color->valor;
-                                if(isset($imagen)){
-					foreach($imagen as $img) {
-						if($contador==0){		 
-							$foto = CHtml::image(Yii::app()->baseUrl . 
-                                                                str_replace(".","_thumb.",$img->url), "Imagen ", 
-                                                                array("width" => "70", "height" => "70","class"=>"bg_color3"));							
-							$contador++;
-						}
-					}					  	
-					
-				
-				}else{
-                                    $foto = "<img src='http://placehold.it/70x70' >";
-                                    $label = "No hay foto</br>para el color</br> ".$color->valor;
-                                    
-                                    
-                                }
+                                 if(!is_null($ptc->imagen))
+											  {$foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "70", "height" => "70"));
+												 
+											  }
+								else {
+											$foto="No hay foto</br>para el color";
+								} 
+                            
                                 
 				echo("<tr>");
 //				echo("<td>".$indiv->codigo."</td>");// Referencia
 //				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
 				/*Datos resumidos + foto*/
-				echo("<td style='text-align:center'>".$foto."<br><div>".$label."</div></td>");
+				echo("<td style='text-align:center'><div>".$foto."<br/>".$label."</div></td>");
                                 echo('<td style="vertical-align: middle">
                                         <b>Referencia:</b> '.$indiv->codigo.
                                         "</pre><br><b>Nombre de la Prenda:</b> ".
@@ -895,15 +887,15 @@ $tracking=$orden->getTracking();
         </tr>        
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
-        	<td  class="text_align_right"><?php echo $totaldevuelto; ?> Bs</td>
+        	<td  class="text_align_right"><?php echo $totaldevuelto; ?> <?php echo Yii::t('contentForm','currSym'); ?></td>
         </tr>
         <tr>
         	<td colspan="6"><div class="text_align_right"><strong>Monto por envio devuelto:</strong></div></td>
-        	<td  class="text_align_right"><?php echo $totalenvio; ?> Bs</td>
+        	<td  class="text_align_right"><?php echo $totalenvio; ?> <?php echo Yii::t('contentForm','currSym'); ?></td>
         </tr>
         <tr>
         	<th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
-        	<th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> Bs</th>
+        	<th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio); ?> <?php echo Yii::t('contentForm','currSym'); ?></th>
         </tr>        
     	</table>
 	</div>
@@ -1010,7 +1002,7 @@ $tracking=$orden->getTracking();
     <ul>
       <li><strong>Usuaria</strong>: Maria Perez</li>
       <li><strong>Fecha de compra</strong>: 18/10/1985</li>
-      <li><strong>Monto</strong>: Bs. 6.500</li>
+      <li><strong>Monto</strong>: <?php echo Yii::t('contentForm','currSym'); ?> 6.500</li>
     </ul>
   </div>
   <div class="modal-footer"><a href="" title="ver" class="btn-link" target="_blank">Cancelar </a> <a href="#" title="Confirmar" class="btn btn-success">Aceptar el pago</a> </div>

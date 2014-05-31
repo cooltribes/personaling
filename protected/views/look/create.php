@@ -15,6 +15,9 @@
 .content-loading  { 
   background: white url('<?php echo Yii::app()->baseUrl.'/images/loading.gif'; ?>') center center no-repeat; 
 }
+.ocultar {
+	display:none;
+}
 </style>
 <script language="JavaScript">
 
@@ -97,38 +100,139 @@ function handleDrop(e) {
   // Don't do anything if dropping the same column we're dragging.
  
   if (dragSrcEl != this) {
-  	console.log('handleDrop='+dragSrcEl);
+  	//console.log('handleDrop='+dragSrcEl);
+  	var p_id = e.dataTransfer.getData('producto_id');
     // Set the source column's HTML to the HTML of the column we dropped on.
     //dragSrcEl.innerHTML = this.innerHTML; 
     var contenedor = this;
     if (e.dataTransfer.getData('color_id')){
-    	var urlVar = "<?php echo Yii::app()->createUrl('producto/getImage'); ?>";
-    	var dataVar = {'id':e.dataTransfer.getData('producto_id'),'color_id':e.dataTransfer.getData('color_id')};
+    	var color_id = e.dataTransfer.getData('color_id');
+    	var producto_id = e.dataTransfer.getData('producto_id');
+    	
+    	var urlVar = "<?php echo Yii::app()->createUrl('site/productoImagen'); ?>";
+    	urlVar += '/producto/'+producto_id+'/color/'+color_id+'/w/270/h/270';
+    	//urlVar = "http://personaling.es:1337/api/imagen/"+e.dataTransfer.getData('producto_id')+"/color/"+e.dataTransfer.getData('color_id');
+    	//var dataVar = {'id':e.dataTransfer.getData('producto_id'),'color_id':e.dataTransfer.getData('color_id')};
     }else{
+    	var adorno_id = e.dataTransfer.getData('adorno_id');
     	var urlVar = "<?php echo Yii::app()->createUrl('adorno/getImage'); ?>";
     	var dataVar = {'id':e.dataTransfer.getData('adorno_id')}
     }
-    
+    /*
     $.ajax({ 
+	   dataType: "json",
 	  url: urlVar,
-	  data: dataVar
-	}).done(function( html ) {
+	 // data: dataVar
+	}).done(function( json ) {
+	*/	
+		//alert(json);
+		//html = '<div class="new" id="div142_22"><img width="270" height="270" src="/develop/images/producto/142/137_thumb.png" alt><input type="hidden" name="producto_id" value="142"><input type="hidden" name="color_id" value="22"></div>';
+		//html = '<div class="new" id="div'+json[0].tbl_producto_id+'_'+json[0].color_id+'"><img src="/develop/'+json[0].url+'" alt><input type="hidden" name="producto_id" value="'+json[0].tbl_producto_id+'"><input type="hidden" name="color_id" value="'+json[0].color_id+'"></div>';
+		html = '<div class="new" id="div'+producto_id+'_'+color_id+'"><input type="hidden" name="producto_id" value="'+producto_id+'"><input type="hidden" name="color_id" value="'+color_id+'"></div>';
 		
-		// alert(html);
-
+		//alert(html);
 		nuevo_objeto = $(html);
 		nuevo_objeto.css('position','absolute');
 		nuevo_objeto.css('top',y);
 		nuevo_objeto.css('left',x);
 		nuevo_objeto.css('z-index',0);
 		//nuevo_objeto.find('img').unwrap();
-		nuevo_objeto.find('img').attr('id','img'+nuevo_objeto.attr('id'));
-		nuevo_objeto.append('<span class="eliminar"><i class=" icon-remove"></i></span>');
-		nuevo_objeto.append('<div class="rotar"> <i class=" icon-repeat"></i></div>');
-		
-		//alert(nuevo_objeto.html());
-		var ident = nuevo_objeto.find('img').attr('src');
+		var img = new Image();
+		//img.attr('id','img'+nuevo_objeto.attr('id'));
+		img.onload = function(){
+
+			//alert(this.width + 'x' + this.height);
+			$(this).attr('width',this.width);
+			$(this).attr('height',this.height);
+			$(this).attr('id','img'+nuevo_objeto.attr('id'));
+
+		   // $(".new",contenedor).click( function(){
+		   // 	alert('clic');
+		    //});	
 			
+////////////////////////// Hace draggable al objeto	/////////////////////////////////
+			$(".new",contenedor).draggable( {
+				//axis: 'y', 
+				containment: 'parent',
+		    cursor: 'move',
+		   // containment: 'document',
+		    start: function( event, ui ) { 
+		    	// calcular el mayor z-index y sumarle uno
+		    	var mayor = 0;
+		    	ui.helper.siblings().each(function(index){
+		    		
+		    		if (isNaN($(this).css('z-index')))
+		    			compara = 0;
+		    		else
+		    			compara = $(this).css('z-index');
+		    			
+		    		if (parseInt(compara) > parseInt(mayor))
+		    			mayor = compara;
+		    		
+		    	});
+		    	//alert(mayor);
+		    	//ui.helper.css('z-index',parseInt(mayor)+1); 
+		    	mayor++;
+		    	ui.helper.css('z-index',mayor);
+		    	
+		    }
+		   // stop: handleDragStop
+			});
+			
+/////////////////// EVENTO PARA ROTACION ///////////////////////////////
+			$('.rotar',contenedor).draggable({
+				
+			    handle: '.rotar',
+			    opacity: 0.01, 
+			    helper: 'clone',
+			    drag: function(event, ui){
+			        var grados = ui.position.left*-1;
+			        if (grados > 360)
+			        	grados = grados - 360;
+			        var rotateCSS = 'rotate(' + grados + 'deg)';
+			
+			        $(this).parent().css({
+			            '-moz-transform': rotateCSS,
+			            '-webkit-transform': rotateCSS
+			        });
+			    } 
+			});
+		
+			$("span",contenedor).last().click(function(){
+		  		$(this).parent().remove();
+		  	});
+////////////////// Hace resizable al objeto /////////////////////////////
+		  	
+		  	var height = nuevo_objeto.find('img').attr('height');
+		  	var width = nuevo_objeto.find('img').attr('width');
+		  	
+		  	$("img",contenedor).last().resizable({
+		    	aspectRatio: width/height
+		  	}).parent('.ui-wrapper').css('margin','0px').click(function(){
+		  		$('.seleccionado').removeClass('seleccionado');
+		  		$(this).addClass('seleccionado');
+		  		
+		  	});
+		  	
+		  	$('.canvas').css('background',"white");
+		  	$('.canvas').css('z-index',"0");
+		  	$('.eliminar',contenedor).removeClass('ocultar');
+		  	$('.rotar',contenedor).removeClass('ocultar');
+		  	
+		};
+		//img.src = '/develop/'+json[0].url;
+		img.src = urlVar;
+		//
+		nuevo_objeto.append(img);
+			nuevo_objeto.append('<span class="eliminar ocultar"><i class=" icon-remove"></i></span>');
+			nuevo_objeto.append('<div class="rotar ocultar"> <i class=" icon-repeat"></i></div>');
+		  if (contenedor.innerHTML.indexOf("<h1>") >=0)
+			$(contenedor).html(	nuevo_objeto );
+	    else
+	    	$(contenedor).append(nuevo_objeto);		
+		//alert(nuevo_objeto.html());
+		//var ident = nuevo_objeto.find('img').attr('src');
+/*			
 	$('<img/>').attr('src', ident).load(function() {
 		    
 		    if (contenedor.innerHTML.indexOf("<h1>") >=0)
@@ -202,9 +306,10 @@ function handleDrop(e) {
 		  	
 		  	$('.canvas').css('background',"white");
 		  	$('.canvas').css('z-index',"0");
-	 });
+	 //});
 	    
 });
+*/
     //alert(e.dataTransfer.getData('producto_id'));
     //alert(e.dataTransfer.getData('text/html'));
    	//nuevo_objeto = $(e.dataTransfer.getData('text/html'));
@@ -908,7 +1013,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 <!-- /container --> 
 
-<!------------------- MODAL WINDOW ON -----------------> 
+
 
 <!-- Modal 1 --> 
 <!--
@@ -919,7 +1024,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <div class="divForForm"></div>
 <?php $this->endWidget(); ?>
 
-<!------------------- DETECT BROWSER -----------------> 
+
 <style>
     body .buorg{
         position: absolute;
@@ -979,7 +1084,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     } 
     
 </script>
-<!------------------- MODAL WINDOW OFF -----------------> 
+
 <script type="text/javascript">
     
 
@@ -996,6 +1101,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 function addPublicar(tipo)
 {
 	var productos_id = '';
+	var products_array;
 	var color_id = '';
 	var left = '';
 	var top = '';
@@ -1016,7 +1122,9 @@ function addPublicar(tipo)
 	
 	if($('#Look_campana_id').val() != ''){
 		$('#campana_id_error').hide('slow');
+		$("#productos_id").val('');
 		$('.canvas input[name="producto_id"]').each(function(item){
+			//console.log($(this).val());
 			productos_id += $(this).val()+',';
 			color_id += $(this).next().val()+',';
 			position = $(this).parent().position();
@@ -1048,6 +1156,7 @@ function addPublicar(tipo)
 			height += image.height() + ',';
 			left += position.left + ',';
 			top += position.top + ',';
+			//console.log('count');
 			count++;
 		});
 		
@@ -1088,6 +1197,27 @@ function addPublicar(tipo)
 		productos_id = productos_id.substring(0, productos_id.length-1);
 		adornos_id = adornos_id.substring(0, adornos_id.length-1);
 		//alert(productos_id);
+
+		// check forr repeated products
+		//console.log(productos_id);
+		products_array = productos_id.split(',');
+		products_array.sort();
+		var last = products_array[0];
+		var repeated = false;
+		for (var i=1; i<products_array.length; i++) {
+			if (products_array[i] == last){
+				repeated = true;
+			}
+			last = products_array[i];
+		}
+
+		if(repeated){
+			bootbox.alert("No puedes incluir prendas repetidas");
+			return false;
+		}
+
+
+
 		//alert(left);
 		//productos_id = "1,2,3,4";
 		
@@ -1113,6 +1243,7 @@ function addPublicar(tipo)
 		//count = 6;
 		//alert(productos_id);
 		//count = count + count_a;
+		console.log(count);
 		if (count >= 6){
 			$("#form_productos").submit();
 		} else {

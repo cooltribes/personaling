@@ -44,6 +44,7 @@ class Look extends CActiveRecord
 	 const STATUS_APROBADO = 2; 
 	 
 	 private $_precio = null; 
+	 private $_precionf = null;
 	 private $_items;
 	 private $_ocasiones = array(36=>'fiesta',37=>'trabajo',38=>'playa',39=>'sport',40=>'coctel');
 	 public $has_ocasiones;
@@ -93,19 +94,19 @@ class Look extends CActiveRecord
 			array('title, altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo, campana_id,created_on', 'required'),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel, tipo,destacado,status, campana_id,view_counter,deleted', 'numerical', 'integerOnly'=>true),
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
-			array('has_ocasiones','required','on'=>'update','message'=> 'Al menos debes elegir una ocación'),
+			array('has_ocasiones','required','on'=>'update','message'=> 'Al menos debes elegir una ocasión'),
 			array('view_counter','numerical', 'integerOnly'=>true,'on'=>'increaseview'),
 			array('view_counter','required','on'=>'increaseview'),
 			array('title', 'length', 'max'=>45),
 			array('deleted,deleted_on', 'required', 'on'=>'softdelete'),
-			array('description, created_on, sent_on, approved_on', 'safe'),
+			array('description, created_on, sent_on, approved_on, modified_on', 'safe'),
 			array('url_amigable', 'unique', 'message'=>'Url Amigable ya registrada para otro look.'),
 			//array('url_amigable', 'match', 'pattern'=>'/^\w{1}([a-zA-Z_|\-]*[a-zA-Z]+[a-zA-Z_|\-]*)$/', 'message'=>'Url Amigable presenta caracteres no válidos'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched. 
 			array('id, title, description, altura, contextura, pelo, ojos, 
                             tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, 
-                            campana_id, view_counter, url_amigable, sent_on, approved_on', 'safe', 'on'=>'search'),
+                            campana_id, view_counter, url_amigable, sent_on, approved_on, modified_on', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -128,6 +129,7 @@ class Look extends CActiveRecord
 			'lookhasproducto' => array(self::HAS_MANY, 'LookHasProducto','look_id'),
 			'lookHasAdorno' => array(self::HAS_MANY, 'LookHasAdorno','look_id'), 
 			'productos_todos' => array(self::HAS_MANY,'Producto',array('producto_id'=>'id'),'through'=>'lookhasproducto'),
+			'precioNf'=>array(self::STAT,'LookHasProducto','look_id','select'=>'SUM(LookHasProducto.precioNf)'),
 			
 		);
 	}  
@@ -305,6 +307,7 @@ class Look extends CActiveRecord
 		$criteria->compare('url_amigable',$this->url_amigable,true);
                 $criteria->compare('sent_on',$this->sent_on);
                 $criteria->compare('approved_on',$this->approved_on);
+                $criteria->compare('modified_on',$this->modified_on);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -436,6 +439,18 @@ class Look extends CActiveRecord
 		return $array;
 			
 	}
+	/*
+	public function getPrecioNf()
+	{
+		if (is_null($this->_precionf)) {
+				$this->_precionf = 0;
+			foreach($this->lookhasproducto as $lookhasproducto){
+				//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+				$this->_precionf += $lookhasproducto->producto->getPrecio(false);
+			}
+		}
+		return $this->_precionf;
+	}*/
 	public function getPrecio($format=true)
 	{
 		if (is_null($this->_precio)) {
@@ -959,33 +974,41 @@ class Look extends CActiveRecord
 		return false;
 	}
 	public function getRangosPrecios(){
+$start = microtime(true);
 		/*      Rangos de precios       */
         $allLooks = Look::model()->findAll("status = 2");
         $count = array(0, 0, 0, 0);
         $rangosArray = array();              
         
         if($allLooks){
-            
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."x<br>";            
             foreach ($allLooks as $look) {
                 $allPrices[] = $look->getPrecio(false);
+                //$allPrices[] = $look->precioNf;
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."x<br>";				
             }
 
             $rangos = 4;
             $mayorP = max($allPrices);
             $menorP = min($allPrices);
             $len = ($mayorP - $menorP) / $rangos;
-
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."x<br>";
             foreach ($allPrices as $price) {
                 for($i = 0; $i < $rangos; $i++)
                     $count[$i] += $price >= $menorP + $i * $len && $price <= $menorP + (($i+1) * $len) ? 1 : 0;
             }                
-
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."x<br>";
             for ($i = 0; $i < $rangos; $i++) {
                 $mayorP = $menorP + $len;
                 $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $count[$i]);
                 $menorP += $len;
             }                                
-        
+//$time_taken = microtime(true) - $start;
+//echo $time_taken."x<br>";        
         }
 		return $rangosArray;
 	}

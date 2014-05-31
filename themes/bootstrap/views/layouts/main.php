@@ -2,8 +2,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
 <head>
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+         <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <meta name="language" content="es" />
+   
     <meta charset="utf-8">
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <?php 
@@ -14,7 +17,7 @@
     Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
     ?>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
-    <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
+    <?php  Yii::app()->clientScript->registerCoreScript( Yii::app()->theme->baseUrl."/js/jquery.hoverIntent.minified.js" ); ?>
     
 </head>
 
@@ -46,7 +49,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
 					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
                                         array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
-                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
+//                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
 					)),                
                 array('label'=>'Usuarios', 'url'=>'#', 'items'=>array(
 					array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
@@ -685,7 +688,6 @@ if(!Yii::app()->user->isGuest){
   })();
 
 </script>
-
 
 </body>
 </html>

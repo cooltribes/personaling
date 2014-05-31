@@ -1,4 +1,28 @@
 <?php
+if($seo){
+    $this->pageTitle = $seo->title;
+    Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
+    Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
+    Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
+}
+?>
+<?php 
+if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
+    Yii::app()->clientScript->registerScript('script1', "<!-- Facebook Conversion Code for Leads España -->
+    var fb_param = {};
+    fb_param.pixel_id = '6016397659254';
+    fb_param.value = '0.01';
+    fb_param.currency = 'EUR';
+    (function(){
+    var fpw = document.createElement('script');
+    fpw.async = true;
+    fpw.src = '//connect.facebook.net/en_US/fp.js';
+    var ref = document.getElementsByTagName('script')[0];
+    ref.parentNode.insertBefore(fpw, ref);
+    })();
+    ", CClientScript::POS_HEAD, 1);
+} 
+
 $this->breadcrumbs = array(
     'Tu Personal Shopper',
 );
@@ -22,6 +46,7 @@ if (isset($user)){
         <div class="row-fluid margin_bottom_medium">
             <div class="span6 text_align_right">
                 <?php
+                //var_dump(Yii::app()->getRequest()->getUrlReferrer());
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => 'Todos los looks',
                     'buttonType' => 'button',
@@ -72,7 +97,7 @@ if (isset($user)){
         <div class="navbar-inner"  >
             <nav class="  ">
                 <ul class="nav">
-                    <li class="filtros-header">Filtrar por:</li>
+                    <li class="filtros-header">Filtrar por: <?php echo Yii::app()->session['registerStep']; ?></li>
                     <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ocasiones <b class="caret"></b></a>
                         <ul class="dropdown-menu ">
                             <?php $categorias = Categoria::model()->findAllByAttributes(array('padreId' => '2')); ?>
@@ -149,37 +174,23 @@ if (isset($user)){
                             background: #6d2d56;
                         }
                     </style>
-                    <li class="dropdown">
+                    <li id="li_rangos" class="dropdown">
 
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
-                        <ul class="dropdown-menu" id="price-ranges" role="menu" aria-labelledby="dLabel">
-                                    <?php foreach ($rangos as $key => $rango) { ?>
-                                <li><a class="btn-link price-filter" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
-                                        <?php
-                                        if (!$key) {
-                                            echo "Hasta ".Yii::app()->numberFormatter->format("#,##0.00",$rango['end'])." "
-                                            .Yii::t('contentForm', 'currSym');
-                                        } else {
-                                            if ($key < 3) {
-                                                echo "De ".Yii::app()->numberFormatter->format("#,##0.00",$rango['start'])." 
-                                                    a ".Yii::app()->numberFormatter->format("#,##0.00",$rango['end'])." "
-                                                        .Yii::t('contentForm', 'currSym');
-                                            } else {
-                                                echo "Más de ".Yii::app()->numberFormatter->format("#,##0.00",$rango['start']).
-                                                        " ".Yii::t('contentForm', 'currSym');
-                                            }
-                                        }
-                                        ?>
-                                        <span class="color12">
-                                <?php echo "({$rango['count']})" ?>
-                                        </span>
-                                    </a></li>
-<?php } ?>
-                        <?php if(!empty($rangos)){ ?>
-                            <li><a class="btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a></li>
-                        <?php } ?>  
-                            
-                        </ul> 
+						<?php Yii::app()->clientScript->registerScript('rangoprecios', "
+						$.get('/develop/tienda/rangoslook',function(data){
+							$('#li_rangos').append(data);
+							    $('#price-ranges a.price-filter').click(function(e){
+							        var id = $(this).attr('id');
+							        if($('#rango_actual').val() !== id){
+							            $(this).parent().siblings().removeClass('active-range');
+							            $(this).parent().addClass('active-range');
+							            $('#rango_actual').val(id); 
+							            refresh();
+							        }
+							    });
+						})
+						"); ?>
 
                     </li>
                     <!-- Filtro por Precios OFF -->
@@ -576,6 +587,22 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     <p class="text_align_center">Si ya tienes cuenta accede <a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/login/">de manera habitual.</a></p>
     <?php $this->endWidget(); ?>  
 </div>
+<a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
+  
+<?php if($gift){?>
+<div id="myModalRegalo" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+ <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+   <!--  <h3 id="myModalLabel">¡Enhorabuena!</h3>-->
+   
+  </div>
+  <div class="modal-body">
+ 		 <h4><?php echo Yii::t('contentForm','Who said '.Yii::app()->params['registerGift'].'{currSym} is nothing ?');?></h4>
+  </div>
+  <div class="modal-footer">  <button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
+  </div>
+</div><?php }?>
+
 <!-- Modal Registro OFF -->
 
  
@@ -747,15 +774,47 @@ if (isset(Yii::app()->session["modalOn"])) {
             e.preventDefault();
             $('.sub_menu').removeClass('hide');
         });
+        
+        
+        $(window).scroll(function() {
+				if ($(this).scrollTop() > 200&&$(this).scrollTop()+200<$('#wrapper_footer').offset().top) {
+					
+					$('.go-top').fadeIn(600);
+				} else if ($(this).scrollTop() > 200) 
+					
+					$('.go-top').fadeIn(600);
+				
+				 else {
+					$('.go-top').fadeOut(600);
+				}
 
+			});
+			
+			// Animate the scroll to top
+			$('.go-top').click(function(event) {
+				event.preventDefault();
+				
+				$('html, body').animate({scrollTop: 0}, 300);
+			});
+			
+			$('.closeModal').click(function(event) {
+				$('#myModalRegalo').remove();
+			});
 
+ 
     });
 
 
 </script>
 
 <script type="text/javascript">
+
     $(function() {
         moveScroller();
     });
 </script>
+
+
+
+
+

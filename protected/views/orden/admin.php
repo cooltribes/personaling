@@ -2,10 +2,7 @@
 /* @var $this OrdenController */
 //$this->breadcrumbs=array(
 //	'Pedidos',
-//);
-
-
-        
+//);        
 ?>
 
 <div class="container margin_top">
@@ -20,10 +17,10 @@
       <td><p class="T_xlarge margin_top_xsmall">
       	
       	<?php
-$sql = "select count( * ) as total from tbl_orden";
-$num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
-?>
+        $sql = "select count( * ) as total from tbl_orden";
+        $num = Yii::app()->db->createCommand($sql)->queryScalar();
+        echo $num;
+        ?>
       </p>
         Totales</td>
       <td>
@@ -44,10 +41,10 @@ echo $num;
       </td>
       <td><p class="T_xlarge margin_top_xsmall">
       	      	<?php
-$sql = "SELECT count( * ) as total FROM tbl_orden where estado=2";
-$num = Yii::app()->db->createCommand($sql)->queryScalar();
-echo $num;
-?> 
+                $sql = "SELECT count( * ) as total FROM tbl_orden where estado=2";
+                $num = Yii::app()->db->createCommand($sql)->queryScalar();
+                echo $num;
+                ?> 
       </p>
         Esperando<br/>
         Confirmación</td>
@@ -175,7 +172,7 @@ $template = '{summary}
       <th scope="col">Looks</th>
       <th scope="col" title="Prendas Individuales">P. I.</th>
       <th scope="col" title="Prendas Totales">P. T.</th>
-      <th scope="col">Monto (Bs)</th>
+      <th scope="col">Monto ('.Yii::t('contentForm','currSym').')</th>
       <th scope="col">Método de pago</th>
       <th scope="col">Estado</th>
       <th scope="col">Acciones</th>
@@ -184,6 +181,16 @@ $template = '{summary}
     </table>
     {pager}
 	';
+	
+	$pagerParams=array(
+            'header'=>'',
+            'prevPageLabel' => Yii::t('contentForm','Previous'),
+            'nextPageLabel' => Yii::t('contentForm','Next'),
+            'firstPageLabel'=> Yii::t('contentForm','First'),
+            'lastPageLabel'=> Yii::t('contentForm','Last'),
+            'htmlOptions'=>array(
+                'class'=>'pagination pagination-right'));
+	
     
   $this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-items',
@@ -192,7 +199,7 @@ $template = '{summary}
 	    'template'=>$template,
 	    'enableSorting'=>'true',
 	    'afterAjaxUpdate'=>" function(id, data) {
-						    	
+						    	 
 							$('#todos').click(function() { 
 				            	inputs = $('table').find('input').filter('[type=checkbox]');
 				 
@@ -204,12 +211,7 @@ $template = '{summary}
 							});
 						   cancelarOrden();
 							} ",
-		'pager'=>array(
-			'header'=>'',
-			'htmlOptions'=>array(
-			'class'=>'pagination pagination-right',
-		)
-		),					
+		'pager'=>$pagerParams,					
 	));
 	
 	?>

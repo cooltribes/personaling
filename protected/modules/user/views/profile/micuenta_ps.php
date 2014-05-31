@@ -42,13 +42,13 @@ $looks_recomendados = $look->match($model);
       
       	if($sum >= 0){
       	?>
-      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, ''); ?> Bs. de Balance en tu Cuenta</li>
+      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, '')." ".Yii::t('contentForm','currSym'); ?> de Balance en tu Cuenta</li>
       	<?php
       	}
       	else
       	{
       	?>
-      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, ''); ?> Bs. que adeudas.</li>
+      		<li><?php echo Yii::app()->numberFormatter->formatCurrency($sum, '')." ".Yii::t('contentForm','currSym'); ?> que adeudas.</li>
       	<?php
       	}
       	?>
@@ -118,7 +118,7 @@ $looks_recomendados = $look->match($model);
               <li> <?php echo CHtml::link('Tu foto',array('profile/avatar'),array("title"=>"Edita tu foto")); ?></li>
               <li> <?php echo CHtml::link('Tu Banner',array('profile/banner'),array("title"=>"Edita tu Banner"));?> </li>                         
               <li> <?php echo CHtml::link('Tu perfil corporal',array('profile/edittutipo'),array("title"=>"Edita tu perfil corporal")); ?></li>
-              <li> <a href="#" title="Tu perfil publico">Tu perfil publico</a></li>
+              <li> <a href="<?php echo Yii::app()->baseUrl."/user/profile/perfil/id/".$profile->user_id; ?>" title="Tu perfil publico">Tu perfil publico</a></li>
               <li> <a href="#" title="Tu Tipo">Tu Tipo</a></li>
 
             </ul>

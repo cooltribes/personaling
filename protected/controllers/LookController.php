@@ -395,12 +395,15 @@ class LookController extends Controller
 			//header('Cache-Control: max-age=86400');
 			//header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
 			//header('Content-Type: image/jpeg'); 
-header("Content-type: image/jpeg");
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT');
-			imagejpeg($image_p, null, 100);
+		//imagefilter($image_p, IMG_FILTER_MEAN_REMOVAL);
+		imageinterlace($image_p, 1);
+		header("Content-type: image/jpeg");
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT');
+		imagejpeg($image_p, null, 100);
 			//readfile($filename);
 			//imagepng($src,null,9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
-			imagedestroy($src);			
+		imagedestroy($src);
+		imagedestroy($image_p);			
 		} else {
 		 $look = Look::model()->findByPk($id);
 		 
@@ -502,7 +505,9 @@ header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GM
 				$img = imagerotate($img,$image->angle*(-1),$pngTransparency);
 			}
 			imagecopy($canvas, $img, $image->left/$diff_w, $image->top/$diff_h, 0, 0, imagesx($img), imagesy($img));
-		}
+		} 
+		imagefilter($canvas, IMG_FILTER_MEAN_REMOVAL);
+		imageinterlace($canvas, 1);
 		header('Content-Type: image/png'); 
 		header('Cache-Control: max-age=86400, public');
 		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9);
@@ -607,47 +612,48 @@ public function actionColores(){
 	
 }
 public function actionCategorias(){
-	  	$categorias = false;
-		$categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
-	  Yii::app()->clientScript->scriptMap['jquery.js'] = false;
-		Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
-		Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
-		Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
-		Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
-		Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
-		Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
-		Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
-		Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
+	$categorias = false;
+	$categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
+	$color = null;
+	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+	Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+	Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+	Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+	Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
+	Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+	Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+	Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+	Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 	if ($_POST['padreId']!=0){ 
-	  $categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
-	  
-
+		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
 	}
-	  if ($categorias){
-	  echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
-	  }else {
-	  	$with = array();
-	  	if(isset($_POST['padreId']))
-		  	if ($_POST['padreId']!=0)
+	if ($categorias){
+		echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
+	}else{
+		$with = array();
+		if(isset($_POST['padreId']))
+			if ($_POST['padreId']!=0)
 				$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
 		if(isset($_POST['colores']))
-			if ($_POST['colores']!='')
+			if ($_POST['colores']!=''){
 				$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
-			
-	  	if(isset($_POST['marcas'])){
-		  	if ($_POST['marcas']!='Todas las Marcas')	
-		  		$productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
+				$color = $_POST['colores'];
+			}
+
+		if(isset($_POST['marcas'])){
+			if ($_POST['marcas']!='Todas las Marcas')	
+				$productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
 			else	
-		  		$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
+				$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
 		} else {
 			$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
 		}
-	  	if (isset($categoria_padre))
-	  		echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId),true,true);
+		
+		if (isset($categoria_padre))
+			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId, 'color'=>$color),true,true);
 		else
-			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null),true,true);
-	  	// echo 'rafa';
-	  }
+			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null, 'color'=>$color),true,true);
+	}
 }
 
 
@@ -776,6 +782,11 @@ public function actionCategorias(){
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1));	
 		//echo $_POST['productos_id'];
 		if (isset($_POST['productos_id'])){
+			$model->modified_on = date('Y-m-d H:i:s', time());
+			$model->scenario = 'draft';
+			if(!$model->save()){
+				print_r($model->getErrors());
+			}
 			if (isset($_POST['Look']['campana_id'])){
 				$model->campana_id =$_POST['Look']['campana_id'];
 				$model->save();
@@ -859,6 +870,8 @@ public function actionCategorias(){
 					 
 				}
 				$model->createImage();
+				/*$model->modified_on = date('Y-m-d H:i:s');
+				$model->save();*/
 				if ($_POST['tipo']==1){ 
 			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
 					Yii::app()->end();
@@ -943,6 +956,39 @@ public function actionCategorias(){
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));	
 		//echo $_POST['productos_id'];
 		if (isset($_POST['productos_id'])){
+			/*$products_count = array_count_values(explode(',',$_POST['productos_id']));
+			$repeated = false;
+			foreach ($products_count as $key => $value) {
+				if($value > 1){
+					$repeated = true;
+				}
+			}
+
+			if($repeated){
+				Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('error',UserModule::t("No puedes incluir prendas repetidas"));	
+				
+				$user = User::model()->findByPk(Yii::app()->user->id);
+				$criteria=new CDbCriteria;
+				$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" >= recepcion_inicio AND "'.date('Y-m-d H:i:s').'" <= recepcion_fin';
+				if($user->superuser != '1'){
+					$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
+				}
+				
+				$models = Campana::model()->findAll($criteria);
+				
+				if(sizeof($models) > 0){
+			        $this->render('create',array(
+							'model'=>$model,
+							'categorias'=>$categorias,
+							'models'=>$models,
+						)
+					);
+				}else{
+					$this->render('no_campanas');
+				}
+			}*/
+
 			$model->title = "Look Nuevo";
 			$model->altura = 0;
 			$model->contextura = 0;

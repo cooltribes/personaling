@@ -45,7 +45,7 @@ $prod = Producto::model()->findByPk($data['id']);
 				</a>
 				<header><h3><a href='".$producto->getUrl()."' title='".$data['nombre']."'>".$data['nombre']."</a></h3>
 				<a href='".$producto->getUrl()."' class='ver_detalle entypo icon_personaling_big' title='Ver detalle'>&#128269;</a></header>
-				<span class='precio'>Bs. ".$prePub."</span>");
+				<span class='precio'>".Yii::t('contentForm','currSym')." ".$prePub."</span>");
 				
 			if(isset($like)) // le ha dado like	
 				echo "<a id='like".$data['id']."' onclick='encantar(".$data['id'].")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>";

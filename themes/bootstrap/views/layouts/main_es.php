@@ -1,8 +1,9 @@
-
+  
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+         <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <meta name="language" content="es" />
     <meta charset="utf-8">
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
@@ -14,8 +15,8 @@
     Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
     ?>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
-    <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.hoverIntent.minified.js"></script>
-    
+    <?php  Yii::app()->clientScript->registerScriptFile( Yii::app()->theme->baseUrl."/js/jquery.hoverIntent.minified.js" ); ?>
+    <noscript><img height='1' width='1' alt='' style='display:none' src='https://www.facebook.com/offsite_event.php?id=6016397659254&amp;value=0.01&amp;currency=EUR' /></noscript>
 </head>
 
 <body class="<?php echo $this->getBodyClasses(); ?>">
@@ -40,29 +41,43 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
  
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 array('label'=>'Panel de Control', 'url'=>'#', 'items'=>array(
-					array('label'=>'General', 'url'=>array('/controlpanel/index')),
-					array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')), 
-					array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
-					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
-					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
-                                        array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
-                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
-					)),                
+                                            array('label'=>'General', 'url'=>array('/controlpanel/index')),
+                                            array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')), 
+                                            array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
+                                            array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
+                                            array('label'=>'Acciones', 'url'=>array('/adorno/index')),
+                                            array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                            array('label'=>'SEO', 'url'=>array('/controlpanel/seo')),
+//                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
+					)),  
+                
                 array('label'=>'Usuarios', 'url'=>'#', 'items'=>array(
-					array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
-					array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
+                                            array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
+                                            array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
 					)),
-                array('label'=>'Looks', 'url'=>'#', 'items'=>array(
-                  
-        					array('label'=>'Looks', 'url'=>array('/look/admin')),
-        					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
-                  array('label'=>'Campañas', 'url'=>array('/campana/index')),
-					)),
+                
+                array('label'=>'Looks', 'url'=>'#', 'items'=>array(                  
+                                            array('label'=>'Looks', 'url'=>array('/look/admin')),
+                                            array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
+                                            array('label'=>'Campañas', 'url'=>array('/campana/index')),
+                                        )),
+                
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
-                	array('label'=>'Productos', 'url'=>array('/producto/admin')),
-					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
-					array('label'=>'Reporte de Inventario', 'url'=>Yii::app()->baseUrl.'/producto/reporte'),
-          array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
+                                            array('label'=>'Productos', 'url'=>array('/producto/admin')),
+                                            array('label'=>'Marcas', 'url'=>array('/marca/admin')),
+                                            array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
+                                            '---',
+                                            array('label'=>'Inventario','url'=>'#',                                                
+                                                'items' => array(
+                                                    array('label' => 'Reporte de Inventario',
+                                                        'url'=>array('/producto/reporte'),),
+                                                    array('label' => 'Importación',
+                                                        'url'=>array('/producto/importar'),),
+                                                    array('label' => 'Ver MasterDatas',
+                                                        'url'=>array('/masterData/admin'),),
+                                                    array('label' => 'Ver Inbounds',
+                                                        'url'=>array('/inbound/admin'),),                                                    
+                                                )),
 					)
 				),
                 array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),
@@ -191,7 +206,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
   
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 
-                array('label'=>'¿Cómo funciona?', 'url'=>array('/site/comofunciona')),
+                // array('label'=>'¿Cómo funciona?', 'url'=>array('/site/comofunciona')),
                 array('label'=>'Looks', 'url'=>array('/tienda/look'),'visible'=>!UserModule::isPersonalShopper()),
                 // array('label'=>'Top', 'url'=>array('//site/top'),'visible'=>!Yii::app()->user->isGuest),
                 //array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
@@ -222,6 +237,14 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
 ?>
 </div>
+
+<!-- Mensaje Cookies ON -->
+<div class="header_notification" id="cookies_notification" style="margin-top: 88px; display: none;">
+    Esta web utiliza <strong>cookies</strong> para mejorar tu experiencia de usuario y para recopilar información estadística sobre tu navegación. Si continúas navegando, consideramos que aceptas su uso. <a href="<?php echo Yii::app()->baseUrl; ?>/site/politicas_de_cookies" style="color: #0000FF">Más información</a> | <a id="accept_cookies" href="#" style="color: #0000FF">No mostrar de nuevo</a>
+    <button id="buttomCookies" type="button" class="close" aria-hidden="true">&times;</button>
+</div>
+<!-- Mensaje Cookies OFF -->
+
 <?php
 if(!Yii::app()->user->isGuest){
 	$user = User::model()->findByPk(Yii::app()->user->id);
@@ -248,7 +271,6 @@ if(!Yii::app()->user->isGuest){
 	}
 }
 ?>
-
 <!-- Popovers ON -->
 
  <?php   
@@ -296,6 +318,7 @@ if(!Yii::app()->user->isGuest){
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/condiciones_de_envios_y_encomiendas" title="Envíos y Encomiendas">Envíos y Encomiendas</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad">Políticas de Privacidad</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/acerca_de" title="Acerca de">Acerca de Personaling</a></li>
@@ -690,6 +713,54 @@ if(!Yii::app()->user->isGuest){
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
+</script>
+
+<script>
+$(document).ready(function(){
+        var accepted = readCookie('accept_cookies');
+        if(!accepted){
+            $('#cookies_notification').show();
+        }
+    });
+
+    $('#buttomCookies').on('click', function(e){
+        createCookie('accept_cookies', 'true', 365);
+        $('#cookies_notification').hide();
+    });
+
+    $('#accept_cookies').on('click', function(e){
+        createCookie('accept_cookies', 'true', 365);
+        $('#cookies_notification').hide();
+    });
+
+    $('body').on('click', function(e){
+        createCookie('accept_cookies', 'true', 365);
+    });
+
+    function createCookie(name,value,days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name+"="+value+expires+"; path=/";
+    }
+
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name,"",-1);
+    }
 </script>
 
 

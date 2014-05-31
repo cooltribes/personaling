@@ -143,9 +143,9 @@ public function actionReportexls(){
 						->setCellValue('E1', 'Color')
 						->setCellValue('F1', 'Talla')
 						->setCellValue('G1', 'Cantidad')
-						->setCellValue('H1', 'Costo (Bs)')
-						->setCellValue('I1', 'Precio de Venta sin IVA (Bs)')
-						->setCellValue('J1', 'Precio de Venta con IVA (Bs)')
+						->setCellValue('H1', 'Costo ('.Yii::t('contentForm','currSym').')')
+						->setCellValue('I1', 'Precio de Venta sin IVA ('.Yii::t('contentForm','currSym').')')
+						->setCellValue('J1', 'Precio de Venta con IVA ('.Yii::t('contentForm','currSym').')')
 						->setCellValue('K1', 'Orden N°')
 						->setCellValue('L1', 'Vendido en');
 			// encabezado end			
@@ -938,6 +938,14 @@ public function actionReportexls(){
 	public function actionRecibo($id)
 	{
 		$factura = Factura::model()->findByPk($id);
+		
+		if(!UserModule::isAdmin()){
+			
+			if($factura->orden->user_id!=Yii::app()->user->id||!isset($factura)){
+				
+				$this->redirect(Yii::app()->request->baseUrl.'/orden/listado');
+			}
+		}
 		
 		$this->render('recibo', array('factura'=>$factura));
 	}
@@ -2027,21 +2035,22 @@ public function actionValidar()
             "EAN",
             "Cantidad",
         );
+        $fecha = date("Y-m-d", strtotime($orden->fecha));
+        $fechaNombre = date("YmdHi");
         
-        header("Content-Disposition: attachment; filename=\"Outbound.xls\"");
+        header("Content-Disposition: attachment; filename=\"Outbound$fechaNombre.csv\"");
         header("Content-Type: application/vnd.ms-excel;");
         header("Pragma: no-cache");
         header("Expires: 0");
         $out = fopen("php://output", 'w');
         
         //Crear la primera fila con encabezado.
-        fputcsv($out, $encabezado, "\t");
+        fputcsv($out, $encabezado);
         
         foreach ($productos as $producto) {
             $row = array();
             
-            //albaran y fecha
-            $fecha = date("Y-m-d", strtotime($orden->fecha));
+            //albaran y fecha            
             $row[] = $orden->id;
             $row[] = $fecha;
 
@@ -2080,7 +2089,7 @@ public function actionValidar()
             $row[7] = mb_convert_encoding($row[7], 'UTF-16LE', 'UTF-8');            
             
             //Escribir en el excel
-            fputcsv($out, $row,"\t");
+            fputcsv($out, $row);
             
         }
         

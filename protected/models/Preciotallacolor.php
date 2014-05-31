@@ -205,4 +205,17 @@ class PrecioTallaColor extends CActiveRecord
 
 		return parent::afterFind();
 	}	
+	
+	public function getImagen($id = null){
+		if(!is_null($id))
+			$ptc=$this->findByPk($id);
+		else
+			$ptc=$this;
+		$sql = "SELECT * FROM tbl_imagen WHERE tbl_producto_id =".$ptc->producto_id." AND color_id=".$ptc->color_id." order by orden limit 0,1";
+		$result = Yii::app()->db->createCommand($sql)->queryRow();
+		if($result)
+			return $result;
+		else
+			return;
+	}
 }

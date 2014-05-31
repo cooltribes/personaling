@@ -97,7 +97,7 @@ class Image_GD_Driver extends Image_Driver {
 			// Prevent the alpha from being lost
 			imagealphablending($this->tmp_image, TRUE);
 			imagesavealpha($this->tmp_image, TRUE);
-
+			
 			switch ($save)
 			{
 				case 'imagejpeg':
@@ -127,6 +127,7 @@ class Image_GD_Driver extends Image_Driver {
 			}
 			else
 			{
+				imageinterlace($this->tmp_image, 1);	
 				// Output the image directly to the browser
 				switch ($save)
 				{
@@ -140,7 +141,17 @@ class Image_GD_Driver extends Image_Driver {
 						header('Content-Type: image/png');
 					break;
 				}
-
+			header("Cache-Control: private, max-age=10800, pre-check=10800");
+			header("Pragma: private");
+			header("Expires: " . date(DATE_RFC822,strtotime(" 2 day")));	
+					if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) 
+					       && 
+					  (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == filemtime($this->tmp_image))) {
+					  // send the last mod time of the file back
+					  header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($this->tmp_image)).' GMT', 
+					  true, 304);
+					  exit;
+					}
 				$status = isset($quality) ? $save($this->tmp_image, NULL, $quality) : $save($this->tmp_image);
 			}
 

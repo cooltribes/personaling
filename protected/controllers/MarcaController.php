@@ -65,7 +65,7 @@ class MarcaController extends Controller
 
 	public function actionCrear($id = null)
 	{
-		if(!$id){
+		if(is_null($id)){
 			$marca = new Marca;
 		}else{
 			$marca = Marca::model()->findByPk($id);
@@ -74,8 +74,8 @@ class MarcaController extends Controller
 		if(isset($_POST['Marca'])){
 			
 			$marca->attributes = $_POST['Marca'];
-			$marca->contacto= $_POST['Marca']['contacto'];
-	
+			if(isset($_POST['Marca']['ciudad_id'])){				
+				$marca->contacto= $_POST['Marca']['contacto'];	
 				$marca->cif= $_POST['Marca']['cif'];
 				$marca->dirUno = $_POST['Marca']['dirUno'];
 				$marca->dirDos = $_POST['Marca']['dirDos'];
@@ -83,6 +83,26 @@ class MarcaController extends Controller
 				$marca->ciudad_id = $_POST['Marca']['ciudad_id'];
 				$marca->provincia_id = $_POST['Marca']['provincia_id'];
 				$marca->pais = $_POST['Marca']['pais'];
+				if(isset($_POST['Marca']['codigo_postal_id']))
+					$marca->codigo_postal_id = $_POST['Marca']['codigo_postal_id'];
+				$marca->setScenario('adicional');
+				if($marca->validate()){
+					$marca->save();
+					$adicional="<br/>".Yii::t('contentForm','Contact information succesfully saved');	
+				}else{
+					unset($marca);
+					$adicional="<br/>".Yii::t('contentForm','Contact information could not been saved');	
+					if(is_null($id)){
+						$marca = new Marca;
+					}else{
+						$marca = Marca::model()->findByPk($id);
+					}
+					$marca->attributes = $_POST['Marca'];
+				}
+				
+			}
+			else
+				$adicional="";
 			//$marca->urlImagen = $_POST['Marca']['Urlimagen'];
 		
 			echo($_POST['url']);
@@ -124,7 +144,7 @@ class MarcaController extends Controller
 		            $marca->save();
 									
 							
-					Yii::app()->user->setFlash('success',UserModule::t("Marca guardada exitosamente."));
+					Yii::app()->user->setFlash('success',UserModule::t("Marca guardada exitosamente.").$adicional);
 
 					$image = Yii::app()->image->load($nombre.$extension);
 					$image->resize(150, 150);
@@ -157,11 +177,11 @@ class MarcaController extends Controller
 							$cmarca->delete();			
 						}
 				}
-		        	Yii::app()->user->setFlash('success',UserModule::t("Marca guardada exitosamente."));
+		        	Yii::app()->user->setFlash('success',UserModule::t("Marca guardada exitosamente.").$adicional);
 					
 					
 		        }else{
-		        	Yii::app()->user->setFlash('error',UserModule::t("Marca no pudo ser guardada."));
+		        	Yii::app()->user->setFlash('error',UserModule::t("Marca no pudo ser guardada.").$adicional);
 		        }
 			}// isset
 			

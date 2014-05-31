@@ -23,12 +23,21 @@ return CMap::mergeArray(
 		    'currSym'=>'E',
 		    'noShipping'=> '30', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
 		    'IVA' => '0.21',
+		    'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
 		    'IVAtext' => '21%',	
 		    'registro' => false,	
 		    'mostrarMarcas'=>false,
 		    'mostrarChic'=>false,
 		    'country'=>'España',
 			'pais'=>'espana',
+			'clientName'=>'Personaling Enterprise S.L ',
+			'clientIdentification'=>'B66202383',
+			'clientAddress'=>'Sant Pere Mes Baix, Nº 63 Principal B ',
+			'clientCity'=>'Barcelona',
+			'clientZIP'=>'08003',
+			'clientPhone'=>'934 344 634',
+			'clientEmail'=>'info@personaling.com',
+			'	 ',
                         'metodosPago'=> array(
                                 'bkCard' => true,
                                 'paypal' => true,

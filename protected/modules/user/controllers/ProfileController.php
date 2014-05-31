@@ -1,10 +1,12 @@
 <?php
+// Lib para conectar con el API de MailChimp
+include("MailChimp.php");
 
 class ProfileController extends Controller
 {
 	public $defaultAction = 'profile';
 	//public $layout='//layouts/column2';
-
+ 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
@@ -589,8 +591,17 @@ class ProfileController extends Controller
 				if ($profile->save())
 				{
 					$model->status_register = User::STATUS_REGISTER_ESTILO;
-					if ($model->save())	
-						$this->redirect(array('/site/index'));
+					if ($model->save())	{
+						if(isset(Yii::app()->session['registerStep'])){
+                                    	if(Yii::app()->session['registerStep']==2)
+											Yii::app()->session['registerStep']=3;
+										else
+											unset(Yii::app()->session['registerStep']);
+                                    		
+                                    }
+						$this->redirect(array('/tienda/look'));
+					}
+						
 					else 
 						Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
 					
@@ -623,6 +634,9 @@ class ProfileController extends Controller
 			$profile->attributes=$_POST['Profile'];
 			if($profile->validate())
 			{
+					
+					
+					
 				if ($profile->save())
 				{
 					$model->status_register = User::STATUS_REGISTER_TIPO;
@@ -652,10 +666,20 @@ class ProfileController extends Controller
                                                 $filterProfile->save();                                                                  
                                             }
                                         }
+                                         
                                         
-                                        
-					if ($model->save())	
+					if ($model->save())	{
+						if(isset(Yii::app()->session['registerStep'])){
+                                    	if(Yii::app()->session['registerStep']==1)
+											Yii::app()->session['registerStep']=2;
+										else
+											unset(Yii::app()->session['registerStep']);
+                                    		
+                        }
 						$this->redirect(array('/user/profile/tuestilo'));
+					}
+					
+						
 					else 
 						Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
 					
@@ -788,6 +812,16 @@ class ProfileController extends Controller
 				if ($profile->save()){
                 Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+
+				/*if(isset($_POST['Profile']['ciudad'])){
+					//API key para lista de Personaling en Mailchimp
+                    $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
+                    $result = $MailChimp->call('lists/update-member', array(
+                        'id' => 'e5d30a0894',
+                        'email' => array('email' => $model->email),
+                        'merge_vars' => array('CITY' => $_POST['Profile']['ciudad']),
+                    ));
+				}*/
 				//$this->redirect(array('/user/profile'));
 				} else {
 					Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos, no se guardaron los cambios, intente mas tarde."));
@@ -802,7 +836,7 @@ class ProfileController extends Controller
 		));
 	}
 
-	/**
+	/*
 	Edita los campos del personal Shopper
 	 */
 	public function actionEditShopper()

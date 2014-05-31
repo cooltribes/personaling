@@ -92,7 +92,42 @@ class RegistrationController extends Controller
                         }
 
 
+
+
                         if ($model->save()) {
+                            // Get profile picture from facebook url
+                            if ( isset($_POST['facebook_picture']) && $_POST['facebook_picture']!="" ) {
+                                if(!is_dir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $model->id)){
+                                    mkdir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $model->id,0777,true);
+                                }
+                                $content = file_get_contents($_POST['facebook_picture']);
+                                $extension = '.jpg';
+                                $nombre = Yii::getPathOfAlias('webroot').'/images/avatar/'.$model->id.'/0';
+                                $nombre_orig = Yii::getPathOfAlias('webroot').'/images/avatar/'.$model->id.'/0_orig';
+                                file_put_contents($nombre . $extension, $content);
+                                file_put_contents($nombre_orig . $extension, $content);
+                                $model->avatar_url = '/images/avatar/'. $model->id .'/0' . $extension;
+                                $model->save();
+
+                                $image = Yii::app()->image->load($nombre_orig.$extension);
+                                $avatar_x = isset($_POST['avatar_x'])?$_POST['avatar_x']:0;
+                                $avatar_x = $avatar_x*(-1);
+                                $avatar_y = isset($_POST['avatar_y'])?$_POST['avatar_y']:0;
+                                $avatar_y = $avatar_y*(-1);
+                                
+                                $proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+                                $image->resize(270,270,$proporcion)->crop(270, 270,$avatar_y,$avatar_x);
+                                $image->save($nombre . $extension);
+                                
+                                $proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+                                $image->resize(30,30,$proporcion)->crop(30, 30,$avatar_y,$avatar_x);
+                                $image->save($nombre . "_x30". $extension);
+                                
+                                $proporcion = $image->__get('width')<$image->__get('height')?Image::WIDTH:Image::HEIGHT;
+                                $image->resize(60,60,$proporcion)->crop(60, 60,$avatar_y,$avatar_x);
+                                $image->save($nombre . "_x60". $extension);
+                            }
+
                             if (isset($_POST['facebook_request'])) {
                                 $invite = FacebookInvite::model()->findByAttributes(array('request_id' => $_POST['facebook_request']));
                                 if ($invite) {
@@ -186,13 +221,38 @@ class RegistrationController extends Controller
                                 Yii::app()->user->login($identity, 0);
                                 //$this->redirect(Yii::app()->controller->module->returnUrl);
  								if (Yii::app()->params['registro'] || $referencia_tmp =='look'){
-	                                if ($profile->sex == 1) // mujer
-	                                        $this->redirect(array('/user/profile/tutipo'));
-	                                    else if ($profile->sex == 2) // hombre
+	                                if ($profile->sex == 1){ // mujer
+	                                	Yii::app()->session['registerStep']=1;
+                                        if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // se registro con fb, guardo info necesaria para agregar pixel de conversión al header
+                                            $this->redirect(array('/user/profile/tutipo', 'fb'=>'true'));
+                                        }else{
+                                            $this->redirect(array('/user/profile/tutipo'));
+                                        }
+                                    }else if ($profile->sex == 2){ // hombre
+                                        if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // se registro con fb, guardo info necesaria para agregar pixel de conversión al header
+                                            $this->redirect(array('/tienda/look', 'fb'=>'true'));
+                                        }else{
+                                            $this->redirect(array('/tienda/look'));
+                                        }
+                                    }
+								} else {
+									if ($profile->sex == 1){ // mujer
+                                        Yii::app()->session['registerStep']=1;
+                                        if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // se registro con fb, guardo info necesaria para agregar pixel de conversión al header
+                                            $this->redirect(array('/user/profile/tutipo', 'fb'=>'true'));
+                                        }else{                                        		
+                                            	$this->redirect(array('/user/profile/tutipo'));
+                                        }
+                                    }
+										
+									else{
+										if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // se registro con fb, guardo info necesaria para agregar pixel de conversión al header
+	                                        $this->redirect(array('/tienda/look', 'fb'=>'true'));
+	                                    }else{
 	                                        $this->redirect(array('/tienda/look'));
-									} else {
-										 $this->redirect(array('/tienda/look'));
+	                                    }
 									}
+								}
                             } else {
                                 if (!Yii::app()->controller->module->activeAfterRegister && !Yii::app()->controller->module->sendActivationMail) {
                                     Yii::app()->user->setFlash('registration', UserModule::t("Thank you for your registration. Contact Admin to activate your account."));
@@ -206,11 +266,11 @@ class RegistrationController extends Controller
 									
                                     if (Yii::app()->params['registro'] || $referencia_tmp =='look'){
 	                                    if ($profile->sex == 1) // mujer
-	                                        $this->redirect(array('/user/profile/tutipo'));
+	                                        $this->redirect(array('/user/profile/tutipo', $fb));
 	                                    else if ($profile->sex == 2) // hombre
-	                                        $this->redirect(array('/tienda/look'));
+                                            $this->redirect(array('/tienda/look'));
 									} else {
-										$this->redirect(array('/tienda/look'));
+										$this->redirect(array('/tienda/look', $fb));
 									}
 
                                     // $this->redirect(array('/user/profile/tutipo'));									

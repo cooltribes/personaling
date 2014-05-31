@@ -17,14 +17,20 @@
 		<?php  //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
 <div class="span4 look">
       <article > 
+      	<?php
+        $mod_time = '';
+        if($look->modified_on){
+            $mod_time = '?lastmod='.strtotime($look->modified_on);
+        }
+        ?>
       	<?php if($look->has_100chic){ ?>
 		<!--	<div class="has_100chic"></div> -->
       	<?php }?>
       	<?php if ($pages->currentPage > 0){ ?>
-      	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
+      	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')).$mod_time, "Look", array("id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
       	<?php }else{ ?>
       	<?php echo CHtml::image(Yii::app()->baseUrl .'/images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$look->id)); ?>                            	
-        <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
+        <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')).$mod_time, "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
         <?php } ?>
         	         
                   	<?php echo CHtml::link($image,$look->getUrl()); ?>
@@ -80,11 +86,11 @@
           <div class="span5"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym')?> </small><?php echo $look->getPrecio(); ?></span></div>
         </div>
         <div class="share_like">
-         
+         <?php if(!Yii::app()->user->isGuest){?>
           <button id="meEncanta<?php echo $look->id; ?>" onclick='encantar(<?php echo $look->id; ?>)' title="Me encanta" class="btn-link <?php echo $look->meEncanta()?"btn-link-active":""; ?>">
           	<span id="like<?php echo $look->id; ?>" class="entypo icon_personaling_big"><?php echo $look->meEncanta()?"♥":"♡"; ?></span>
           </button>
-          
+          <?php }?>
           <div class="btn-group">
             <button data-toggle="dropdown" class="dropdown-toggle btn-link"><span class="entypo icon_personaling_big"></span></button>
             <ul class="dropdown-menu addthis_toolbox addthis_default_style ">

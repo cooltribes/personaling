@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
  <?php
   /* @var $this TiendaController */
   $this->breadcrumbs=array(
@@ -193,13 +194,8 @@
       ?></h4>
             </div>
             <?php
-         
-         
             
-            
-            
-            
-          $valores = Array();
+                $valores = Array();
                 $cantcolor = Array();
                 $cont1 = 0;
                 
@@ -249,7 +245,7 @@
               <?php
                 }else if($cont1 > 0 && $cont2 > 0){
               ?>
-                <a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> <?php echo Yii::t('contentForm','Buy'); ?> </a>
+                <a onclick="comprar()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> <?php echo Yii::t('contentForm','Buy'); ?> </a>
               
            
             <?php
@@ -277,43 +273,40 @@
           <p class="muted t_small CAPS"> <?php echo Yii::t('contentForm','Select color and size'); ?></p>
           
           <div class="row-fluid">
-            <div class="span6">
+              <div class="span6" id="tooltipColor">
               <h5><?php echo Yii::t('contentForm','Colors'); ?></h5>
               <div id="vCo" class="clearfix colores">
                 <?php
 
-                
-        
-        if( $cont1 == 1) // Si solo hay un color seleccionelo
-        {
-          $color = Color::model()->findByPk($cantcolor[0]);             
-          echo "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
-          
-        }
-        else{
-          // echo $totales;
+                if( $cont1 == 1) // Si solo hay un color seleccionelo
+                {
+                  $color = Color::model()->findByPk($cantcolor[0]);             
+                  echo "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
 
-          foreach ($producto->preciotallacolor as $talCol) {
-                    
+                }
+                else{
+                  
+                  foreach ($producto->preciotallacolor as $talCol) {
+
                     if($talCol->cantidad > 0) // que haya disp
-            {
-              $color = Color::model()->findByPk($talCol->color_id);   
-              
-              if(in_array($color->id, $valores)){ // no hace nada para que no se repita el valor      
-              }
-              else{
-                echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
-                array_push($valores, $color->id);
-              }
-            }
-            }
-        
-        } // else             
+                    {
+                      $color = Color::model()->findByPk($talCol->color_id);   
+
+                      if(in_array($color->id, $valores)){ // no hace nada para que no se repita el valor      
+                      }
+                      else{
+                        echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+                        array_push($valores, $color->id);
+                      }
+                    }
+                  }
+
+                } // else    
         
                 ?>
               </div>
             </div>
-            <div class="span6">
+            <div class="span6" id="tooltipTalla">
               <h5><?php echo Yii::t('contentForm','Sizes'); ?></h5>
               <div id="vTa" class="clearfix tallas">
                 <?php
@@ -332,9 +325,9 @@
           // else
                 ?>                
               </div>
-<!--               <div class="braker_top margin_top_small">
+               <div class="braker_top margin_top_small">
                 <a href="#myModal" role="button" class="btn btn-mini btn-link color9" data-toggle="modal">Ver guia de tallas</a>
-              </div>
+              </div><!--
  -->            </div>
            </div>
              
@@ -343,7 +336,7 @@
              ?>
              
              <div class="call2action visible-phone"><hr/>
-                <a onclick="c()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> <?php echo Yii::t('contentForm','Buy'); ?> </a>
+                <a onclick="comprar()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> <?php echo Yii::t('contentForm','Buy'); ?> </a>
             </div>
          
             <?php  $marca = Marca::model()->findByPk($producto->marca_id);
@@ -537,8 +530,9 @@ $cont=0;
       </ul>
       <p><em>Ahora, debes tomarte las medidas de la siguiente forma: </em></p>
         <div class="row-fluid margin_top_medium margin_bottom_medium">
-          <div class="span4 offset1">
-            <img src="<?php echo  $baseUrl ?>/images/model_guiadetallas.jpg"  alt="Modelo de Guia de Tallas" />      
+          <div class="span4 offset1 modelo">
+            <!--<img src="<?php echo  $baseUrl ?>/images/model_guiadetallas.jpg"  alt="Modelo de Guia de Tallas" />-->      
+            <img src="<?php echo  $baseUrl ?>/images/cuerpo_2.jpg"  alt="Modelo de Guia de Tallas" />      
           </div>
             
         <div class="span7">
@@ -628,7 +622,7 @@ $cont=0;
           <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
             <tbody>
               <tr>
-                <th><strong>Europa</strong></th>
+                <th>Europa</th>
                 <td>PT</td>
                 <td>XS</td>
                 <td>S</td>
@@ -638,7 +632,7 @@ $cont=0;
                 <td>XXL</td>
               </tr>
               <tr>
-                <th><strong>Alemania</strong></th>
+                <th>Alemania</th>
                 <td>PT</td>
                 <td>XS</td>
                 <td>S</td>
@@ -648,7 +642,7 @@ $cont=0;
                 <td>XXL</td>
               </tr>
               <tr>
-                <th><strong>Canada</strong></th>
+                <th>Canada</th>
                 <td>PT</td>
                 <td>SS/2</td>
                 <td>XS/4</td>
@@ -658,7 +652,7 @@ $cont=0;
                 <td>XL/12</td>
               </tr>
               <tr>
-                <th><strong>México</strong></th>
+                <th>México</th>
                 <td>PT</td>
                 <td>ECH</td>
                 <td>CH</td>
@@ -668,7 +662,7 @@ $cont=0;
                 <td>EEG</td>
               </tr>
               <tr>
-                <th><strong>Reino Unido</strong></th>
+                <th>Reino Unido</th>
                 <td>PT</td>
                 <td>XS/6</td>
                 <td>S/8</td>
@@ -678,7 +672,7 @@ $cont=0;
                 <td>XXL/16</td>
               </tr>    
               <tr>
-                <th><strong>U.S.A</strong></th>
+                <th>U.S.A.</th>
                 <td>PT</td>
                 <td>XXS/2</td>
                 <td>XS/4</td>
@@ -695,7 +689,7 @@ $cont=0;
           <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
             <tbody>
               <tr>
-                <th><strong>Europa</strong></th>
+                <th>Europa</th>
                 <td>32</td>
                 <td>34</td>
                 <td>36</td>
@@ -708,7 +702,7 @@ $cont=0;
                 <td>46</td>
               </tr>
               <tr>
-                <th><strong>Alemania</strong></th>
+                <th>Alemania</th>
                 <td>32</td>
                 <td>34</td>
                 <td>36</td>
@@ -721,7 +715,7 @@ $cont=0;
                 <td>46</td>
               </tr>
               <tr>
-                <th><strong>México</strong></th>
+                <th>México</th>
                 <td>0</td>
                 <td>1</td>
                 <td>3</td>
@@ -734,7 +728,7 @@ $cont=0;
                 <td>13</td>
               </tr>
               <tr>
-                <th><strong>Reino Unido</strong></th>
+                <th>Reino Unido</th>
                 <td>4</td>
                 <td>6</td>
                 <td>8</td>
@@ -747,7 +741,7 @@ $cont=0;
                 <td>18</td>
               </tr>  
               <tr>
-                <th><strong>U.S.A</strong></th>
+                <th>U.S.A.</th>
                 <td>1</td>
                 <td>2</td>
                 <td>4</td>
@@ -767,7 +761,7 @@ $cont=0;
           <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-condensed table-bordered table-hover table-striped">
             <tbody>
               <tr>
-                <th><strong>Europa</strong></th>
+                <th>Europa</th>
                 <td>35</td>
                 <td>36</td>
                 <td>37</td>
@@ -780,7 +774,7 @@ $cont=0;
                 <td>44</td>
               </tr>
               <tr>
-                <th><strong>México</strong></th>
+                <th>México</th>
                 <td>2</td>
                 <td>3/</td>
                 <td>4</td>
@@ -793,7 +787,7 @@ $cont=0;
                 <td></td>
               </tr>
               <tr>
-                <th><strong>Reino Unido</strong></th>
+                <th>Reino Unido</th>
                 <td>2</td>
                 <td>3</td>
                 <td>4</td>
@@ -806,7 +800,7 @@ $cont=0;
                 <td></td>
               </tr>  
               <tr>
-                <th><strong>U.S.A</strong></th>
+                <th>U.S.A.</th>
                 <td>5</td>
                 <td>6</td>
                 <td>6/</td>
@@ -839,6 +833,21 @@ var comprando = true;
 
 $(document).ready(function(){
 
+$('#tooltipColor').tooltip({
+    title:"Selecciona el color para poder añadir a la bolsa",
+    trigger:"manual",
+    placement:"left"
+    
+});
+$('#tooltipTalla').tooltip({
+    title:"Selecciona la talla para poder añadir a la bolsa",
+    trigger:"manual",
+//    placement:"left"
+    
+});
+
+
+
 var source = $('#principal').attr("src");
 var imgZ = source.replace(".","_orig.");
 imgZ = imgZ.replace("png", "jpg");
@@ -865,8 +874,9 @@ $('.imagen_principal').zoom({url: imgZ});
       // primero cargo la imagen del zoom y aseguro que al momento de hacer el cambio de imagen principal esté listo el zoom
       var source = cambio;
     var imgZ = source.replace(".","_orig.");
-    
+      imgZ = imgZ.replace("png", "jpg");
       $('.imagen_principal').zoom({url: imgZ});
+      
           
         // cambio de la principal   
       $("#principal").fadeOut("slow",function(){
@@ -880,7 +890,7 @@ $('.imagen_principal').zoom({url: imgZ});
     $(".coloress").click(function(ev){ // Click en alguno de los colores -> cambia las tallas disponibles para el color
       ev.preventDefault();
       //alert($(this).attr("id"));
-      
+      $('#tooltipColor').tooltip('hide');  
       var prueba = $("#vCo div.tallass.active").attr('value');
 
     /* 
@@ -962,7 +972,8 @@ $('.imagen_principal').zoom({url: imgZ});
                 objImage = new Image();
                 var source = ''+base +valor[0];
                 var imgZ = source.replace(".","_orig.");
-              //  alert(imgZ);      
+              //  alert(imgZ);    
+                imgZ = imgZ.replace("png", "jpg");  
               objImage.src = imgZ;
               
                         
@@ -980,6 +991,8 @@ $('.imagen_principal').zoom({url: imgZ});
               
                 var source = $('#principal').attr("src");
                 var imgZ = source.replace(".","_orig.");
+                  imgZ = imgZ.replace("png", "jpg");
+                    imgZ = imgZ.replace("png", "jpg");
                 $('.imagen_principal').zoom();
               
             });
@@ -1008,7 +1021,7 @@ $('.imagen_principal').zoom({url: imgZ});
 
     $(".tallass").click(function(ev){ // click en tallas -> recarga los colores para esa talla
       ev.preventDefault();
-
+      $('#tooltipTalla').tooltip('hide');  
       
       var prueba = $("#vTa div.coloress.active").attr('value');
       
@@ -1069,6 +1082,7 @@ $('.imagen_principal').zoom({url: imgZ});
   $(".imagen_principal").hover(function(){
     var source = $('#principal').attr("src");
     var imgZ = source.replace(".","_orig.");
+      imgZ = imgZ.replace("png", "jpg");
     $('.imagen_principal').zoom({url: imgZ});     
   });
   
@@ -1116,65 +1130,77 @@ $('.imagen_principal').zoom({url: imgZ});
       
       $("#vTa").find("div#"+id+".tallass").removeClass("tallass");
       $("#vTa").find("div#"+id).addClass("tallass active");
+      $('#tooltipTalla').tooltip('hide');  
+
    }
    
    function b(id){ // seleccion de color
     
-        $("#vCo").find("div").siblings().removeClass('active'); 
+       $("#vCo").find("div").siblings().removeClass('active'); 
       
-        $("#vCo").find("div#"+id+".coloress").removeClass("coloress");
-      $("#vCo").find("div#"+id).addClass("coloress active");      
+       $("#vCo").find("div#"+id+".coloress").removeClass("coloress");
+       $("#vCo").find("div#"+id).addClass("coloress active");      
+      
+       $('#tooltipColor').tooltip('hide');  
+
    }
    
-   function c(){ // comprobar quienes están seleccionados
+   function comprar(){ // comprobar quienes están seleccionados
       
       if (comprando == true){
         var talla = $("#vTa").find(".tallass.active").attr("id");
         var color = $("#vCo").find(".coloress.active").attr("id");
         var producto = $("#producto").attr("value");
         
-        // llamada ajax para el controlador de bolsa
         
-      if(talla==undefined && color==undefined) // ninguno
+      if(color==undefined) // falta color
       {
-        alert("Seleccione talla y color para poder añadir.");
-      }
-      
-      if(talla==undefined && color!=undefined) // falta talla
-      {
-        alert("Seleccione la talla para poder añadir a la bolsa.");
-      }
-      
-      if(talla!=undefined && color==undefined) // falta color
-      {
-        alert("Seleccione el color para poder añadir a la bolsa.");
+          $('#tooltipColor').tooltip('show');  
       }   
-         
+      if(talla==undefined) // falta color
+      {
+          $('#tooltipTalla').tooltip('show');  
+      }   
+        
+//      if(talla==undefined && color==undefined) // ninguno
+//      {
+//        bootbox.alert("Seleccione talla y color para poder añadir.");
+//      }
+//      if(talla==undefined && color==undefined) // ninguno
+//      {
+//        bootbox.alert("Seleccione talla y color para poder añadir.");
+//      }
+//      
+//      if(talla==undefined && color!=undefined) // falta talla
+//      {
+//        bootbox.alert("Seleccione la talla para poder añadir a la bolsa.");
+//      }   
+         //LLamada ajax
       if(talla!=undefined && color!=undefined)
       {
         //$('#agregar').click(false);
-      $('#agregar').attr("disabled", true);
-      comprando = false;
-      $.ajax({
+        $('#agregar').attr("disabled", true);
+        comprando = false;
+        $.ajax({
             type: "post",
             url: "<?php echo Yii::app()->createUrl('bolsa/agregar'); ?>", // action Tallas de Producto
             data: { 'producto':producto, 'talla':talla, 'color':color}, 
             success: function (data) {
               comprando = true;
           
-          if(data=="ok")
-          {
-            //alert("redireccionar mañana");
-            window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
-          }
-          
-          if(data=="no es usuario")
-          {
-            alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
-          }
-            
+              if(data=="ok")
+              {
+                //alert("redireccionar mañana");
+                window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
+              }
+
+              if(data=="no es usuario")
+              {
+                bootbox.alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
+              }
+
             }//success
-           })
+         })
         
         
       }// cerro   
@@ -1211,7 +1237,7 @@ $('.imagen_principal').zoom({url: imgZ});
         
         if(data.mensaje=="no")
         {
-          alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar 'Me Encanta' a un producto");
+          bootbox.alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar 'Me Encanta' a un producto");
           //window.location="../../user/login";
         }
         

@@ -67,9 +67,12 @@ function str_lreplace($search, $replace, $subject)
                                     <div class="span6"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym').' ';?></small> <?php echo $look->getPrecio(); ?></span></div>
                                 </div>
                                 <div class="share_like">
-                                    <button href="#" title="Me encanta" class="btn-link"><span class="entypo icon_personaling_big">&#9825;</span></button>
-                                    
-
+                                    <button href="#" title="Me encanta" onclick="encantar(<?php echo $look->id;?>)" class="btn-link">
+                                 
+                                    	<span id="like<?php echo $look->id; ?>" class="entypo icon_personaling_big"><?php echo $look->meEncanta()?"♥":"♡"; ?></span>	
+                                    </button>
+                                    	
+										
                                 </div>
                                 <span class="label label-important">><?php echo Yii::t('contentForm','Promotion'); ?></span> </article>
                         </div>
@@ -159,11 +162,14 @@ function str_lreplace($search, $replace, $subject)
             <?php } ?>
     </div>
     <div class=" margin_bottom_large braker_horz_top_1 ">
-        <h3 class="margin_bottom_small"><?php echo Yii::t('contentForm','From Our Magazine'); ?></h3>
+       <!-- <h3 class="margin_bottom_small"><?php echo Yii::t('contentForm','From Our Magazine'); ?></h3>-->
         <div class="row posts_list">
             <div class="span12">
-                <div class="thumbnails">
-                    <?php
+                <div class="thumbnails" align="center">
+                	<a href="http://www.personaling.com/magazine"><?php  echo CHtml::image(Yii::app()->getBaseUrl()."/images/magazine_banner.gif", "Imagen", array()); ?></a>
+               <!-- 	
+                	
+                  <?php
 
 $posts_parent = WpPosts::model()->findAllByAttributes(array('post_type'=>'post','post_status'=>'publish'),array('order'=>'post_date DESC'));
 $count = 0;
@@ -182,7 +188,7 @@ foreach($posts_parent as $posts_parent){
 				echo CHtml::link($imghtml, $posts_parent->guid);
               	?>
                             <h3 > <?php echo CHtml::link($posts_parent->post_title, $posts_parent->guid,array('class'=>"show_modal_post" )); ?> </h3>
-                            <!-- /.row --> 
+                          
                         </div>
                     </li>
                     <?php 
@@ -190,7 +196,7 @@ foreach($posts_parent as $posts_parent){
 		if ($count >= 4) 
 			break;
 	}
-?>
+?> -->
                 </div>
             </div>
         </div>
@@ -208,3 +214,51 @@ foreach($posts_parent as $posts_parent){
 </div>
 
 <!-- /container --> 
+<script>
+	
+	function encantar(idLook)
+    {
+        //var idLook = $("#idLook").attr("value");
+        //alert("id:"+idLook);
+
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: "<?php echo $this->createUrl("look/encantar"); ?>", // action Tallas de look
+            data: {'idLook': idLook},
+            success: function(data) {
+
+                if (data.mensaje == "ok")
+                {
+                    var a = "♥";
+
+                    //$("#meEncanta").removeClass("btn-link");
+                    $("#meEncanta" + idLook).addClass("btn-link-active");
+                    $("span#like" + idLook).text(a);
+
+                }
+
+                if (data.mensaje == "no")
+                {
+                    alert("Debe primero ingresar como usuario");
+                    //window.location="../../user/login";
+                }
+
+                if (data.mensaje == "borrado")
+                {
+                    var a = "♡";
+
+                    //alert("borrando");
+
+                    $("#meEncanta" + idLook).removeClass("btn-link-active");
+                    $("span#like" + idLook).text(a);
+
+                }
+
+            }//success
+        })
+
+    }
+	
+	
+</script>

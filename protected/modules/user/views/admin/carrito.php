@@ -102,7 +102,7 @@ if($bolsa){
                   <td><strong><?php echo $producto->nombre; ?></strong> <br/>
                     <strong>Color</strong>: <?php echo $color; ?><br/>
                     <strong>Talla</strong>: <?php echo $talla; ?></td>
-                  <td >Bs. <?php echo $pre; ?></td>
+                  <td ><?php echo Yii::t('contentForm','currSym').' '.$pre; ?></td>
                   <?php
                   echo"<td width='8%'><input type='text' id='cant".$productotallacolor->preciotallacolor_id."' maxlength='2' placeholder='Cant.' value='".$productotallacolor->cantidad."' class='span1'/>
 	                    <a id=".$productotallacolor->preciotallacolor_id." onclick='actualizar(".$productotallacolor->preciotallacolor_id.")' class='btn btn-mini'>Actualizar</a></td>
@@ -179,7 +179,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 					 
 					 	array_push($cantidades,$productoBolsa->cantidad);
 						
-					 	echo "<td>Bs. ".$pre."</td>";
+					 	echo "<td>".Yii::t('contentForm','currSym')." ".$pre."</td>";
 					 	echo"<td width='8%'><input type='text' id='cant".$productoBolsa->preciotallacolor_id."' maxlength='2' placeholder='Cant.' value='".$productoBolsa->cantidad."' class='span1'/>
 	                    <a id=".$productoBolsa->preciotallacolor_id." onclick='actualizar(".$productoBolsa->preciotallacolor_id.")' class='btn btn-mini'>Actualizar</a></td>
 	                  	<td style='cursor: pointer' onclick='eliminar(".$productoBolsa->preciotallacolor_id.")' id='elim".$productoBolsa->preciotallacolor_id."'>&times;</td>
@@ -288,29 +288,29 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						Yii::app()->getSession()->add('total',$t);
 						Yii::app()->getSession()->add('seguro',$seguro);
 						
-						echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
+						echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
                       	?>
               </td>
             </tr>
             <tr>
               <th class="text_align_left">Descuento:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">Envío:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($envio, ''); ?></td>
+              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio, ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">I.V.A. (12%):</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
+              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left">Seguro:</th>
-              <td><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($seguro, ''); ?></td>
+              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($seguro, ''); ?></td>
             </tr>
             <tr>
               <th class="text_align_left"><h4>Total:</h4></th>
-              <td><h4><?php echo 'Bs. '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
+              <td><h4><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
             </tr>
           </tbody>
         </table><hr/>

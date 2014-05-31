@@ -6,8 +6,13 @@
     </div>
     <div class="modal-body">
       <div class="text_align_center">
-      	
-      	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), "Look", array("width" => "300", "height" => "300", 'class'=>'img-polaroid')); ?>
+      	<?php
+        $mod_time = '';
+        if($model->modified_on){
+            $mod_time = '?lastmod='.strtotime($model->modified_on);
+        }
+        ?>
+      	<?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id)).$mod_time, "Look", array("width" => "300", "height" => "300", 'class'=>'img-polaroid')); ?>
       	</div>
       <hr/>
         <div >
@@ -44,17 +49,17 @@
                     <td> Bs. 700,00 </td>
                 </tr> -->
                 <tr>
-                    <th scope="row">Precio con descuento</th>
+                    <th scope="row">Precio</th>
                     <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></td>
                 </tr>
-                <tr>
+               <!-- <tr>
                     <th scope="row">Descuento %</th>
                     <td>7.15%</td>
                 </tr>
                 <tr>
-                    <th scope="row">Descuento Bs.</th>
+                    <th scope="row">Descuento <?php echo Yii::t('contentForm', 'currSym'); ?></th>
                     <td><?php echo Yii::t('contentForm', 'currSym');?> 50,00</td>
-                </tr>
+                </tr>-->
             </table>
             <hr/>
             <h4>Estadísticas</h4>
@@ -80,7 +85,7 @@
 			//'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			//'size'=>'large', // null, 'large', 'small' or 'mini'
 		)); ?>    	
-    	<a href="#" title="Exportar" class="btn"><i class="icon-share-alt"></i> Exportar</a> 
+    	<!-- <a href="#" title="Exportar" class="btn"><i class="icon-share-alt"></i> Exportar</a> -->
     <?php 
 
         if($model->status == 0 || UserModule::isAdmin() ){

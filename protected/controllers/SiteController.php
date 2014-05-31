@@ -23,11 +23,11 @@ class SiteController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','top','error','contacto','login','logout',
+				'actions'=>array('productoimagen','index','top','error','contacto','login','logout',
                                     'acerca_de','activos_graficos','publicaciones_de_prensa',
                                     'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
-                                    'terminos_de_servicio','politicas_de_devoluciones','preguntas_frecuentes',
-                                    'equipo_personaling','captcha','comofunciona', 'afterApply','sitemap','landingpage'), 
+                                    'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies','preguntas_frecuentes',
+                                    'equipo_personaling','captcha','comofunciona', 'afterApply','sitemap','landingpage','ve'), 
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -84,6 +84,11 @@ class SiteController extends Controller
 		$this->render('politicas_de_devoluciones');
 	}
 
+	public function actionPoliticas_de_cookies()
+	{
+		$this->render('politicas_de_cookies');
+	}
+
 	public function actionPreguntas_frecuentes()
 	{
 		$this->render('preguntas_frecuentes');
@@ -91,7 +96,8 @@ class SiteController extends Controller
 
 	public function actionFormas_de_pago()
 	{
-		$this->render('formas_de_pago');
+		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Formas de pago'));
+		$this->render('formas_de_pago', array('seo'=>$seo));
 	}
 
 	public function actionCondiciones_De_Envios_y_Encomiendas()
@@ -120,7 +126,12 @@ class SiteController extends Controller
 	}
 	public function actionLandingpage()
 	{
-		$this->render('landingpage');
+		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Landing'));
+		$this->render('landingpage', array('seo'=>$seo));
+	}
+	public function actionVe()
+	{
+		$this->render('landingpage_ve');
 	}        
     public function actionAfterApply()
 	{
@@ -141,13 +152,13 @@ class SiteController extends Controller
 		if (UserModule::isAdmin())
 			$this->redirect(array('/controlpanel/index'));
 		elseif (UserModule::isPersonalShopper()) 
-			$this->redirect(array('look/create'));//$this->render('personal_shopper');
+			$this->redirect(array('site/top'));//$this->render('personal_shopper');
 		elseif (Yii::app()->user->isGuest) 
 			$this->render('index');
-		else
+		else 
 			//$this->redirect(array('site/personal'));//$this->render('personal_shopper');
                     /*Unificacion de la tienda de looks con tu personal shopper*/
-			$this->redirect(array('tienda/look'));//$this->render('personal_shopper');
+			$this->redirect(array('site/top'));//$this->render('personal_shopper');
 			
 		
 		
@@ -205,14 +216,48 @@ class SiteController extends Controller
 	 */
 	public function actionError()
 	{
+		
+		
 		if($error=Yii::app()->errorHandler->error)
-		{
+		{	
 			if(Yii::app()->request->isAjaxRequest)
 				echo $error['message'];
 			else
 				$this->render('error', $error);
 		}
 	}
+	
+	public function actionProductoImagen(){
+		
+		/*
+		ALTER TABLE `db_personaling`.`tbl_imagen` 
+ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
+		*/
+//at the beginning
+//$start_time = microtime(1);		
+//$cpu_time = microtime(1) - $start_time;
+//echo $cpu_time."<br>";
+			   
+		//$list= Yii::app()->db->createCommand('select url from tbl_imagen where tbl_producto_id=:tbl_producto_id and color_id=:color_id order by orden limit 0,1')->bindValue('tbl_producto_id',$_GET['producto'])->bindValue('color_id',$_GET['color'])->queryAll();
+		$image = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$_GET['producto'],'color_id'=>$_GET['color']),array('order'=>'orden','limit'=>1,'offset'=>0));
+//$cpu_time = microtime(1) - $start_time;
+//echo $cpu_time."<br>";
+		//$image_url = Yii::app()->baseUrl.str_replace(".","_thumb.",$list[0]["url"]);
+		
+		//$image_url = str_replace(".","_thumb.",$list[0]["url"]);
+		$image_url = str_replace(".","_thumb.",$image->url);
+		$filename = Yii::getPathOfAlias('webroot').$image_url;
+//$cpu_time = microtime(1) - $start_time;
+//echo $cpu_time."<br>";			
+		$image = Yii::app()->image->load($filename);
+//$cpu_time = microtime(1) - $start_time;
+//echo $cpu_time."<br>";		
+		$image->resize($_GET['h'],$_GET['w']);
+		$image->render();
+//$cpu_time = microtime(1) - $start_time;
+//echo $cpu_time."<br>";	
+
+	}	
 
 	/**
 	 * Displays the contact page

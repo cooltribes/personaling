@@ -113,7 +113,7 @@ class AdminController extends Controller
                         $message = new YiiMailMessage;
                         $message->view = "mail_template";
                         $subject = 'Registro Personaling';
-                        $body = Yii::t('contentForm','<h2>Welcome to Personaling.es!</h2>  We want to welcome you to live your first Shopping Experience unique and… repeatable.<br/>Your registration has been successfully validated.<br/>Your temporary password is: <strong>{code}</strong><br/>This password can change it by logging into your account and clicking on "Change Password". The next step you must take is to validate your account by clicking this link:<br/> <a href="{activation_url}">Click here</a>',array(
+                        $body = Yii::t('contentForm','Copy de crear usuario desde admin',array(
                             '{code}'=>$originalPass,
                             '{activation_url}'=>$activation_url));
                         $params = array('subject' => $subject, 'body' => $body);

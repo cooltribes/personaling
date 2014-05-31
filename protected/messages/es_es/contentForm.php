@@ -16,7 +16,7 @@ return array (
 	                       </ul>',
 	'List ID Mailchimp' => '43ddd18a56',
 
-     'About us text' => '<p>Personaling es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina.<br/>¿Quieres vivir la primera shopping experience única y repetible?<br/><br/>  <a href="/user/registration" > Regístrate ya! </a>  …y comienza a disfrutar de Personaling. </p>',   
+     'About us text' => '<p>Personaling es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlos en la comodidad de tu casa u oficina.<br/>¿Quieres vivir la primera shopping experience única y repetible?<br/><br/>  <a href="/user/registration" > Regístrate ya! </a>  …y comienza a disfrutar de Personaling. </p>',   
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',
@@ -47,6 +47,7 @@ return array (
 	'Approve' => 'Aprobar',
 	'Approved' => 'Aprobados',
 	'availables' => 'disponibles',
+	'Available Balance:'=>'Balance Disponible:',
     'Avaliable for {user}:' => 'Disponible para {user}:',
     'Active Orders' => 'Compras Activas',
     
@@ -54,6 +55,7 @@ return array (
 	'Balance' => 'Saldo',
 	'Bag' => 'Bolsa',
 	'Back to shop' => 'Regresar a la tienda',
+	'Back to top' => 'Ir arriba',
 	'Best selling items' => 'Prendas más vendidas',
 	'Biography' => 'Bio',
 	'Body shape' => 'Forma de Cuerpo',
@@ -70,6 +72,7 @@ return array (
 
 	'Card numbers' => 'Número de la tarjeta',
 	'Cancel' => 'Cancelar',
+	'cannot be blank'=>'No puede quedar vacío.',
 	'Campaign progress' => 'Progreso de la campaña',
 	'Campaigns don\'t have available at this time' => 'No tenemos campañas disponibles en este momento',
 	'Code' => 'Código',
@@ -98,7 +101,10 @@ return array (
 	'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm' => 'Contacta con un Asesor de Personaling para recibir ayuda: De Lunes a Viernes de 8:30 am a 5:00 pm',
 	'Complete purchase' => 'Completar compra',
 	'Complete the following fields:' => 'Completa los siguientes campos:',
-	'C.I' => 'DNI/NIE',
+	'C.I.' => 'DNI/NIF',
+	'Contact information succesfully saved'=>'Información adicional guardada.',
+	'Contact information could not been saved'=>'Información adicional no guardada.',
+	
 	'Customize it' => 'Personalízala',
 
 
@@ -143,6 +149,8 @@ return array (
 	'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
 	'How much should measure the woman who wears this Look?' => '¿Cuánto debe medir la mujer que use este look?',
 	'Help' => 'Ayuda',
+    'Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>' => '¡¡Hola! Alguien ha pensado que Personaling.es es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>{name}.</strong>
+     <br/><br/><i>{message}</i><br/><br/>Comienza a disfrutar de tu primera Shopping Experience única y… repetible. <br/> Puedes registrarte clicando en el enlace que aparece a continuación: <br/><br/><a href="{registration_url}">Clica aquí</a>',
 
 	'ID' => 'ID',
 	'ID of the person to whom you send' => 'DNI/NIE de la persona a la que envias',
@@ -150,6 +158,7 @@ return array (
 	'Identity card' => 'DNI/NIE',
 	'If you\'ve made ​​your deposit' => 'Si ya has realizado el depósito',
 	'Inactive' => 'Inactivo',
+	'Inbound details' => 'Detalles del Inbound',
 	'Include a new shipping address' => 'Incluir una nueva dirección de envío',
 	'Individual items' => 'Prendas individuales',
 	'Individual products' => 'Productos Individuales',
@@ -168,9 +177,11 @@ return array (
 	'Last'=>'Última',
 	
 	'<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
+	'Manage' => 'Administrar',
 	'Manage my Looks' => 'Administrar mis Looks',
 	'Manage Gift Card' => 'Administrar Gift Cards',
 	'Massive Export' => 'Exportación Masiva',
+	'MasterData details' => 'Detalles del MasterData',
 	'MercadoPago' => 'MercadoPago',
 	'Message history' => 'Historial de Mensajes',
 	'Message' => 'Mensaje',
@@ -187,12 +198,15 @@ return array (
 	'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
 	'Name printed on the credit card' => 'Nombre impreso en la tarjeta',
 	'New order' => 'Nuevo pedido',
+	'New products' => 'Productos Nuevos',
 	'Next' => 'Siguiente',
 	'Next step' => 'Siguiente paso',
 	'None of the items returned' => 'No se ha devuelto ningún producto de esta orden',
 	'No messages have been posted' => 'No se han enviado mensajes',
+	'No elements to show'=>'No existen elementos para mostrar',
 	'Nro. looks' => 'No. de looks',
 	'Nro. items' => 'No. de Prendas',
+	'No. of products' => 'Nro. de productos',
 	'Number' => 'Número',
 
 	'Last step' => 'Último paso',
@@ -234,7 +248,7 @@ return array (
 	'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
 	    <b>Atrás</b> en tu navegador',
 	'Personal Shoppers outstanding' => 'Personal shoppers destacados',
-    'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling.es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlo en la comodidad de tu casa u oficina. <br/>¿Quieres vivir la primera shopping experience única y repetible? <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',	
+    'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling.es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlos en la comodidad de tu casa u oficina. <br/>¿Quieres vivir la primera shopping experience única y repetible? <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',	
     'Personaling has a Gift Card as a gift for you.' => 'Personaling tiene una Gift Card para ti.',    
 	'Personaling C.A RIF: J-40236088-6' => 'Personaling Enterprise S.L.',
     'Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Posiblemente lo que quieres preguntar está en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no lo encuentras allí, llena el formulario a continuación y te contáctaremos lo más pronto posible. <strong>¡Gracias!</strong>',	
@@ -284,6 +298,7 @@ return array (
 	'State' => 'Estado',
 	'Start by dragging the panel items right up here. Just click on them and move them to this box.' => 'Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro.',
 	'Start enjoying your Gift Card in Personaling.com using it.' => 'Comienza a disfrutar de tu Gift Card usándola en Personaling.com.',
+	'Status' => 'Estado',
 	'Style' => 'Estilo',
 	'Size' => 'Talla',
 	'Sizes' => 'Tallas',
@@ -299,15 +314,19 @@ return array (
 	'Sent by email' => 'Enviada por correo electrónico',
 	'Sent to:' => 'Enviada a:',
 	'Send back' => 'Llevar atrás',
+	'Sent amount' => 'Cantidad enviada',
+	'Acknowledged amount' => 'Cantidad confirmada',
 	'Select' => 'Seleccione',
     'Select a country' => 'Selecciona un país',	
 	'Select a design for the Gift Card' => 'Selecciona un diseño para la Gift Card',
 	'Select a province' => 'Selecciona una provincia',
+    'Select a city' => 'Selecciona una población',	
 	'Select color and size' => 'Selecciona Color y talla',
 	'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
 	'Select the size' => 'Selecciona la talla',
 	'Select the price' => 'Selecciona el monto',
 	'Select a profile for someone else' => 'Selecciona un perfil para alguien más',
+	'Select a zip code'=>'Selecciona un código postal',
 	'Selected looks' => 'Looks seleccionados',
 	'Search' => 'Buscar',
 	'Search by Categories' => 'Buscar por Categorias',
@@ -324,19 +343,24 @@ return array (
 
 
 	'Tax' => 'Impuesto',
+	'Tax information code'=>'Codigo de Información Fiscal',
 	'The bag is empty' => 'La bolsa está vacia',
 	'The order to <b><{name}</b> has successfully completed' => 'El pedido para <b><{name}</b> se ha realizado con éxito.',
 	'This transaction will be processed securely through the platform:' => 'Esta transacción será procesada de forma segura gracias a la plataforma de:',
 	'To' => 'Hasta',
 	'To1' => 'Para',
+	'To save this information you should fill every field.'=>'Para guardar esta información debes completar todos los campos.',
 	'To what age girls should focus this clothes?' => '¿A chicas de que edad va dirigido este look?',
 	'To complete your purchase you must:' => 'Para completar tu comprar debes:',
 	'To approve' => 'Por aprobar',
 	'To send' => 'Por enviar',
+	'To all of us has broken a heel ever, refreshes the screen tu try more later.' => 'A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
 	'Total' => 'Total',
 	'Totals' => 'Totales',
 	'Total Gift Cards' => 'Total de Gift Cards',
 	'Total returned' => 'Total devuelto',
+	'Total sent amount' => 'Cant. Total Enviada',
+	'Total acknowledged amount' => 'Cant. Total Confirmada',   
 	'Type' => 'Tipo',
 	'Type a description for this look' => 'Escriba una descripción para este look',
 	'Tracking' => 'Número de seguimiento',
@@ -352,7 +376,9 @@ return array (
     'Use this as billing address' => 'Utilizar esta como dirección de facturación',	
 	'Update all' => 'Actualizar todo',
 	'Update date' => 'Fecha de carga',
-	'¡Upss! To all of us has broken a heel ever, refreshes the screen tu try more later.' => '¡Upss! A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
+	'Upload date' => 'Fecha de carga',
+	'Updated products' => 'Productos actualizados',
+	'Upss!'=>'¡Upss!',	
 	'Use Balance available:' => 'Usar balance disponible',
 
 
@@ -380,6 +406,8 @@ return array (
     'Your body is inverted triangle if you are proportionally broad shoulders and tiny hips' => 'Tu cuerpo tiene forma triangular invertida si tus hombros son anchos y tienes una cintura muy estrecha',	
     '<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com' => '<h2>Has solicitado cambiar tu contraseña.</h2> Para recibir una nueva contraseña clica en el siguiente link: <br/><br/> <a href="{url}">Clica aquí</a><br/><br/> Si no has sido tú quien ha pedido el cambio, comunícate con nosotros a través de info@personaling.com',
 
+	'Watch all the looks created by the best Personal Shoppers from *country*'=>
+		'Mira todos los looks creados por las mejores Personal Shoppers de España',
 	'Weight' => 'Peso',
 	'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',
 	'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',
@@ -402,11 +430,12 @@ return array (
 	'Whom you send him' => 'A quién se la envías',
 	'Write a friendly URL to this look.' => 'Escribe una url amigable para este look.',
 	'Write message' => 'Escribe un mensaje',
+	'Who said '.Yii::app()->params['registerGift'].'{currSym} is nothing ?'=>'¿Quién dijo qué '.Yii::app()->params['registerGift'].'€ es poco ?',
 
 	'Zip code' => 'Código postal',
 
 	// Copys de paginas estaticas
-	'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?</h3>
+	'copy FAQ' => '<h3>¿Cómo funciona Personaling.es?</h3>
       <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación. </p>
       <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>      
       <hr/>
@@ -443,8 +472,7 @@ return array (
 	Suscripción de otros servicios específicos, tales como la “Newsletter” y otros servicios de información análogos sobre nuestra actividad comercial.<br/>
 	Gestión y/o tramitación de pedidos y actividades conexas. <br/>
 	Gestión de consultas, dudas o problemas de carácter técnico, comercial, sobre el estado de los pedidos realizados y otras solicitudes.
-	<br/><br/><p>Utilización de cookies<br/>
-	Durante la navegación por el sitio Web se utilizan “cookies”, un dispositivo que se transmite al disco duro del Usuario. No contiene informaciones comprensibles y nos permite obtener información sobre la identidad del usuario y asociarla con sus datos personales, que este deja en la página web. La información obtenida es totalmente anónima, en ningún caso puede ser asociada a un Usuario concreto e identificado. Solo Personaling procesa y gestiona esta información para adaptar y mejorar sus servicios a los intereses del Usuario. Son necesarios, para navegar por la página web, acceder a sus servicios y realizar una compra; la aceptación y la conformidad con los procedimientos automáticos de recogida de datos y el uso de las cookies. Los servicios de “Tu Cuenta” están adaptados con respecto a las cookies y el navegador de Internet permite eliminarlas al finalizar cada sesión. El usuario tiene la opción de impedir la generación de datos por medio de las cookies. En tal caso Personaling no garantiza al usuario la visualización completa de algunas páginas, ni el correcto funcionamiento de algunos servicios.</p>',
+	</p>',
 
 	'Copy Envios y Encomiendas' => '        
 		<div class="page-header">
@@ -514,7 +542,11 @@ return array (
             <p>Aceptamos pagar con Paypal, el sistema de pago más seguro. Solo necesitas estar registrado en Paypal y conectar tu tarjeta de crédito o cuenta bancaria. A partir de allí el sistema solicitará la información necesaria para realizar una transacción regular. Al igual que con los demás sistemas de pago regulares, una vez confirmado el pago empezarán a correr los días hábiles para el envío de tu pedido.</p> <br />
         </ol>
         <p>Es importante que tengas presente que <a href="http://www.personaling.es" >Personaling.es</a> cuenta con un sistema de protección de datos y seguridad en red donde los datos introducidos están debidamente protegidos. Tu compra con esta forma de pago no implica cargo adicional.</p> ',
-	
+	'Copy de Cookies' => '<div class="page-header">
+          <h1>Políticas de Cookies</h1>
+        </div><p> En Personaling utilizamos cookies para facilitar el uso de nuestra página web. Las cookies son pequeños ficheros de texto que su navegador almacena en el disco duro de su ordenador y que son necesarias para utilizar nuestra página web. Las utilizamos para entender mejor la manera en la que se usa nuestra página web y de esta manera poder mejorar consecuentemente el proceso de navegación. Las cookies son el referente que nos indica, por ejemplo, si una página de nuestra web ha sido vista con anterioridad, o si su visita es nueva o recurrente. Las cookies que utilizamos no almacenan datos personal alguno, ni ningún tipo de información que pueda identificarle. En caso de no querer recibir cookies, por favor configure su navegador de Internet para que las borre del disco duro de su ordenador, las bloquee o le avise en caso de instalación de las mismas.  </p>',
+
+    'Copy de crear usuario desde admin' => '<h2>¡Bienvenido a Personaling.es!</h2>  Queremos darte la bienvenida a vivir tu primera Shopping Experience única y... repetible. <br/>Tu registro se ha validado con éxito. <br/>Tu contraseña provisional es: <strong>{code}</strong><br/>Esta contraseña puedes cambiarla accediendo a tu cuenta y clicando en “cambiar contraseña”. El siguiente paso que debes dar es validar tu cuenta clicando en este enlace:<br/> <a href="{activation_url}">Clica aquí.</a>'
 );
 
 ?>

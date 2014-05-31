@@ -734,7 +734,10 @@ class BolsaController extends Controller
                         Yii::app()->user->setFlash('error',Yii::t("contentForm", "¡La sesión ha expirado, intenta tu compra nuevamente!"));                              
                         $this->redirect(array('/user/login'));                        
                     }
-                    
+                    if(!isset(Yii::app()->session['login'])&&!UserModule::isAdmin())
+						 $this->redirect(array('/bolsa/compra'));
+					
+					
                     
                     $admin = Yii::app()->getSession()->contains("bolsaUser");                    
                 
@@ -756,6 +759,8 @@ class BolsaController extends Controller
 							
 
 //				$this->redirect(array('bolsa/pagos'));
+							if(isset(Yii::app()->session['login']))
+								unset(Yii::app()->session['login']);
                             $this->redirect($this->createUrl('bolsa/pagos'));
 			}
 			else
@@ -787,12 +792,14 @@ class BolsaController extends Controller
 
                                 Yii::app()->getSession()->add('idDireccion',$dir->id);
 //						$this->redirect(array('bolsa/pagos'));		
+								if(isset(Yii::app()->session['login']))
+									unset(Yii::app()->session['login']);
                                 $this->redirect($this->createUrl('bolsa/pagos'));
                                 //$this->render('pago',array('idDireccion'=>$dir->id,'tarjeta'=>$tarjeta));
 
                                 //$this->redirect(array('bolsa/pagos','id'=>$dir->id)); // redir to action Pagos
                             }
-
+ 
                             //} // nombre
                     //	else {
                                     //$this->render('direcciones',array('dir'=>$dir)); // regresa
@@ -1429,6 +1436,18 @@ class BolsaController extends Controller
 			
                         // Enviar correo con resumen de la compra
                         $this->enviarEmail($orden, $user);
+                        
+                        /*Enviar correo OPERACIONES (operaciones@personaling.com*/
+                        /*Solo enviar correos cuando este en producccion, not develop, not test*/
+                        if(strpos(Yii::app()->baseUrl, "develop") == false 
+                            && strpos(Yii::app()->baseUrl, "test") == false){
+
+                            $this->enviarEmailOperaciones($orden);  
+
+                        }
+
+                        /*Generar el Outbound para Logishfashion*/
+                        $this->generarOutbound($orden);
                         
                         $this->redirect($this->createAbsoluteUrl('bolsa/pedido',array(
                             'id'=>$orden->id,
@@ -2592,11 +2611,6 @@ class BolsaController extends Controller
                 exit;
             }
             
-            
-            $orden = Orden::model()->findByPk(152);
-            $this->generarOutbound($orden);
-            
-            
 	}
         /**
          * Urls para recibir las notificaciones del proceso de compra
@@ -2606,14 +2620,8 @@ class BolsaController extends Controller
                        
             $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
             $op = new AzPay();
-//            echo "NELSON";
-//            Yii::app()->end();
-            if ($op->validateResponseData($_GET)) {                                       
-                
-//                echo "<pre>";
-//                print_r(Yii::app()->getSession());
-//                echo "</pre><br>";
-//                Yii::app()->end();
+            
+            if ($op->validateResponseData($_GET)) {                                                       
 
                 $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
                 
@@ -2626,7 +2634,7 @@ class BolsaController extends Controller
                     
                 }else if($cData["src"] == 1) //si es de compra normal
                 {
-                    $this->compraAztive($_GET);                
+                    $this->compraAztive($_GET['onepay_authorization_code']);                
                 }
                   
 
@@ -2722,7 +2730,7 @@ class BolsaController extends Controller
         /* Crear la orden, los pagos y registrar el pedido
          * cuando fue hecho con algún método de Aztive
          */
-        public function compraAztive($datosCompra){            
+        public function compraAztive($codigoTransaccion){            
            
             $admin = Yii::app()->getSession()->contains("bolsaUser");                    
                 
@@ -2730,10 +2738,6 @@ class BolsaController extends Controller
             /*ID del usuario propietario de la bolsa*/
             $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                 : Yii::app()->user->id;
-//             echo "user".Yii::app()->user->id;
-//             echo "<pre>";
-//             print_r(Yii::app()->getSession());
-//             echo "</pre><br>";
 
             $userId = $usuario;
             $usuario = User::model()->findByPk($userId);
@@ -2750,7 +2754,7 @@ class BolsaController extends Controller
             $orden = $this->crearOrden($bolsa, $userId);
             
             /*Crear el detalle de pago*/
-            $this->crearDetallePago($orden, $usuario, $datosCompra['onepay_authorization_code']);
+            $this->crearDetallePago($orden, $usuario, $codigoTransaccion);
             
             /*Revisar si uso balance en la compra*/
             $this->usarBalance($orden, $usuario);
@@ -2790,12 +2794,12 @@ class BolsaController extends Controller
             if(strpos(Yii::app()->baseUrl, "develop") == false 
                 && strpos(Yii::app()->baseUrl, "test") == false){
                 
-                $this->enviarEmailOperaciones($orden, $usuario);  
+                $this->enviarEmailOperaciones($orden);  
 
             }
             
             /*Generar el Outbound para Logishfashion*/
-            //$this->generarOutbound($orden);
+            $this->generarOutbound($orden);
             
             $url = $this->createAbsoluteUrl('bolsa/pedido',array(
                         'id'=>$orden->id,
@@ -2981,7 +2985,7 @@ class BolsaController extends Controller
             $params = array('subject'=>$subject, 'body'=>$body);
             $message->subject = $subject;
             $message->setBody($params, 'text/html');
-            $message->addTo("operaciones@upsidecorp.ch");
+            $message->addTo("operaciones@personaling.com");
             $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
             Yii::app()->mail->send($message);
         }
@@ -3044,8 +3048,7 @@ class BolsaController extends Controller
          */
         function generarOutbound($orden){
             
-            $xml = new SimpleXMLElement('<xml version="1.0" encoding="UTF-8"/>');
-            $outbound = $xml->addChild('Outbound');
+            $outbound = new SimpleXMLElement('<Outbound/>');
             
             //Codigo de Albaran
             $codigo = $orden->id;
@@ -3072,75 +3075,22 @@ class BolsaController extends Controller
                 //Agregar la cantidad vendida.                
                 $item->addChild("Cantidad", "{$producto->cantidad}");                
                 
+            }            
+
+            //Enviar Outbound a LF y guardarlo en local para respaldo
+            $subido = MasterData::subirArchivoFtp($outbound, 3, $orden->id);
+
+            Yii::app()->user->updateSession();
+            //Si hubo error conectandose al ftp logisfashion
+            if(!$subido){
+                $mensajeLF = "Ha ocurrido un error enviando el
+                    archivo <b>MasterData.xml</b> a LogisFashion. <i class='icon icon-thumbs-down'></i>";
+                Yii::app()->user->setFlash("error", $mensajeLF);                                   
+                $mensajeLF = "";
             }
-
-            //Header('Content-type: text/xml');
-            //print($xml->asXML());
-            
-            $archivo = tmpfile();
-//            fwrite($archivo, "nelson");
-            fwrite($archivo, $xml->asXML());
-            fseek($archivo, 0);
-            //echo fread($archivo, 10242424);
-//            echo "<pre>";
-//            print_r(fstat($archivo));
-//            echo "</pre><br>";
-
-            $this->subirArchivoFtp($archivo);
-            
-            fclose($archivo); 
-            
-            
+            Yii::app()->user->setFlash("success", $mensajeSuccess.$mensajeLF); 
             
         }
         
-        function subirArchivoFtp($archivo){
-
-            $ftpServer = "localhost";
-            $userName = "personaling";
-            $userPwd = "P3rs0n4l1ng";
-            
-            $nombreArchivo = "Outbound.xml";
-            
-            $directorio = "html/develop/develop/protected/data";
-            
-            //realizar la conexion ftp
-            $conexion = ftp_connect($ftpServer); 
-            //loguearse
-            $loginResult = ftp_login($conexion, $userName, $userPwd); 
-            
-            if ((!$conexion) || (!$loginResult)) {  
-                echo "¡La conexión FTP ha fallado!";
-                echo "Se intentó conectar al $ftpServer por el usuario $userName"; 
-                exit; 
-            }
-            //activar modo pasivo
-            ftp_pasv($conexion, true);
-            
-            echo "Conexión a $ftpServer realizada con éxito, por el usuario $userName";
-            
-            //ubicarse en el directorio a donde se subira el archivo
-            ftp_chdir($conexion, $directorio);      
-            
-            //subir el archivo
-            $upload = ftp_fput($conexion, $nombreArchivo, $archivo, FTP_BINARY);  
-
-            // comprobar el estado de la subida
-            if (!$upload) {  
-                echo "¡La subida FTP ha fallado!";
-            } else {
-                echo "<br>Subida de $nombreArchivo a $ftpServer con éxito";
-            }
-            
-            echo "<br>Directorio: ".ftp_pwd($conexion);
-
-            
-
-            // cerrar la conexión ftp 
-            ftp_close($conexion);
-        }
-        
-        
-        
-        
+                
 }

@@ -15,9 +15,19 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                 <h1><?php echo Yii::t('backEnd', 'Receipt'); ?></h1>
                 <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered">
                     <tr>
-                        <td width="50%">  </td>
+             
+                        <td width="50%"> 
+                        			<strong>Nombre de Empresa:</strong> <?php echo Yii::app()->params['clientName'];?><br/>
+							<strong>NIF:</strong> <?php echo Yii::app()->params['clientIdentification'];?> <br/>
+							<strong>Dirección Fiscal:</strong> <?php echo Yii::app()->params['clientAddress'];?> <br/>
+								<?php echo Yii::app()->params['clientCity']." - ".Yii::app()->params['clientZIP']; ?><br/>
+							<strong>Teléfono:</strong> <?php echo Yii::app()->params['clientPhone'];?><br/>
+							<strong>Email:</strong> <?php echo Yii::app()->params['clientEmail'];?>
+                        </td>
                         <td width="50%">
-                            <div class="text_align_right"><strong><?php echo Yii::t('backEnd', 'Receipt number:'); ?><span style="color:#F00"><?php echo str_pad($factura->id, 4, '0', STR_PAD_LEFT); ?></span> </strong>
+                            <div class="text_align_right">
+                            	 <img src="<?php echo Yii::app()->baseUrl; ?>/themes/bootstrap/images/logo_personaling.png" width="284" height="36" alt="Personaling"><br/>
+                            	<strong><?php echo Yii::t('backEnd', 'Receipt number:'); ?><span style="color:#F00"><?php echo str_pad($factura->id, 4, '0', STR_PAD_LEFT); ?></span> </strong>
                                 <br/><strong><?php echo Yii::t('backEnd', 'Date of issue:'); ?></strong> <?php echo date('d/m/Y', strtotime($factura->fecha)); ?>
                             </div>
                         </td>
@@ -36,7 +46,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                                 <strong><?php echo Yii::t('backEnd', 'Shipping Address:'); ?></strong> <?php echo $direccion_envio->dirUno . ' ' . $direccion_envio->dirDos . '. ' . $ciudad_envio->nombre . ' - ' . $provincia_envio->nombre . '. ' . $direccion_envio->pais; ?></p></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><strong><?php echo Yii::t('backEnd', 'State'); ?>:</strong> 
+                        <td colspan="2"><!--<strong><?php echo Yii::t('backEnd', 'State'); ?>:</strong> 
                             <?php
                             switch ($factura->estado) {
                                 case '1':
@@ -49,7 +59,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                                     echo Yii::t('backEnd', 'Unknown');
                                     break;
                             }
-                            ?>
+                            ?>-->
                         </td>
                     </tr>
                     <tr>

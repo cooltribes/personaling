@@ -1,4 +1,20 @@
 <?php
+if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
+    Yii::app()->clientScript->registerScript('script1', "<!-- Facebook Conversion Code for Leads España -->
+    var fb_param = {};
+    fb_param.pixel_id = '6016397659254';
+    fb_param.value = '0.01';
+    fb_param.currency = 'EUR';
+    (function(){
+    var fpw = document.createElement('script');
+    fpw.async = true;
+    fpw.src = '//connect.facebook.net/en_US/fp.js';
+    var ref = document.getElementsByTagName('script')[0];
+    ref.parentNode.insertBefore(fpw, ref);
+    })();
+    ", CClientScript::POS_HEAD, 1);
+}
+
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/joyride-2.1.css',null);
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 if((isset($editar) && $editar)){
@@ -37,7 +53,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
     <?php } ?>      
 
-      <h1>Tu tipo <small> - Escoge las opciones que más se parezcan a ti:</small></h1>
+      <h1>Tu tipo<small> - Escoge las opciones que más se parezcan a ti:</small></h1>
       <article class="margin_top  margin_bottom_small ">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tutipo-form',
@@ -194,7 +210,7 @@ $script = "
   </li>
   
   <li id="numero3" data-id="yw1" data-button="Terminar" data-options="tipLocation:top;tipAnimation:fade">
-    <p class="lead"><strong>Escoge tu estilo</strong></p>
+    <p class="lead"><strong>Escoge tu estilo </strong></p>
     <p class="muted">Haz click en siguiente y elige entre las imágenes tu estilo </p>
   </li>
 </ol>

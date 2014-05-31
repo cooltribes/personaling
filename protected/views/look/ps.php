@@ -107,6 +107,7 @@ $template = '{summary}
             'nextPageLabel' => Yii::t('contentForm','Next'),
             'firstPageLabel'=> Yii::t('contentForm','First'),
             'lastPageLabel'=> Yii::t('contentForm','Last'),
+        	
             'htmlOptions'=>array(
                 'class'=>'pagination pagination-right'));
 
@@ -115,6 +116,7 @@ $template = '{summary}
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_ps',
 	    'template'=>$template,
+	    'emptyText'=> Yii::t('contentForm','No elements to show'),
         'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',   
 	    'afterAjaxUpdate'=>" function(id, data) {
 						    	

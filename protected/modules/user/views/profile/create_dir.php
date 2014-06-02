@@ -113,17 +113,18 @@ $looks_recomendados = $look->match($usuario);
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
-            
+          <?php if(Yii::app()->params['askId']){ ?>    
             <div class="control-group"> 
              <?php echo $form->labelEx($model,'cedula', array('class' => 'control-label')); ?>
               <div class="controls">
-              	<?php echo $form->textField($model,'cedula',array('class'=>'span5','maxlength'=>20,'placeholder'=>'Cedula de Identidad de la persona en esa direccións')); 
+              	<?php echo $form->textField($model,'cedula',array('class'=>'span5','maxlength'=>20,'placeholder'=>'Cedula de Identidad de la persona en esa dirección')); 
 				echo $form->error($model,'cedula');              	
 				?>
                
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
+            <?php } ?>
             
             <div class="control-group"> 
 	           <?php echo $form->labelEx($model,'dirUno', array('class' => 'control-label')); ?>

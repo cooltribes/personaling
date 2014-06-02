@@ -238,7 +238,9 @@ $usuario = User::model()->findByPk($orden->user_id);
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
            <div class="row-fluid tel pull_left">
-            <div class="span3"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?></strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+           	<?php if(Yii::app()->params['askId']){ ?>    
+            	<div class="span3"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?></strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            <?php } ?> 
             <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
             <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div> 

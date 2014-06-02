@@ -8,7 +8,14 @@
 <?php 
 	$list= CHtml::listData(Marca::model()->findAll(), 'id', 'nombre');
 	$list[0]="Todas";
-	
+	  $pagerParams=array(
+        'header'=>'',
+        'prevPageLabel' => Yii::t('contentForm','Previous'),
+        'nextPageLabel' => Yii::t('contentForm','Next'),
+        'firstPageLabel'=> Yii::t('contentForm','First'),
+        'lastPageLabel'=> Yii::t('contentForm','Last'),
+        'htmlOptions'=>array(
+            'class'=>'pagination pagination-right'));
 	 
 	echo '<div class="span2">'.CHtml::dropDownList('marcas', 'Todas', $list, array('empty' => 'Filtrar por marca', 'class'=>'')).'</div></div>';
 	$template = '<br/><hr/>
@@ -29,15 +36,15 @@
 
 			         <th>SKU</th>
 			           <th>Referencia</th>
-				  <th><a href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Marca">Marca</a></th>
-                    <th><a href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Nombre">Nombre</a></th>
+				  <th><a class="color3 underline" href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Marca">Marca</a></th>
+                    <th><a class="color3 underline" href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Nombre">Nombre</a></th>
                 
-                    <th><a href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Color">Color</a></th>
-                    <th><a href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Talla">Talla</a></th>
+                    <th><a class="color3 underline" href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Color">Color</a></th>
+                    <th><a class="color3 underline" href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Talla">Talla</a></th>
                     <th>Cantidad</th>
-                    <th><a href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Costo">Costo (Bs)</a></th>
-                    <th>Precio sin IVA (Bs)</th>
-                    <th>Precio con IVA (Bs)</th>
+                    <th><a class="color3 underline" href="'.Yii::app()->baseUrl.'/producto/reporte?data_sort=Costo">Costo ('.Yii::t('contentForm','currSym').')</a></th>
+                    <th>Precio sin IVA ('.Yii::t('contentForm','currSym').')</th>
+                    <th>Precio con IVA ('.Yii::t('contentForm','currSym').')</th>
                
                 </tr>
 			    </thead>
@@ -66,7 +73,10 @@
 	    'id'=>'list-auth-items',
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_datosProductos',
+	    'sorterHeader'=>'Ordenar por:',
+	    'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',
 	    'template'=>$template,
+	    'pager'=>$pagerParams,
 	    //'enableSorting'=>true,
 	    'afterAjaxUpdate'=>'porMarca',
 	      'sortableAttributes'=>array(

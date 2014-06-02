@@ -54,7 +54,7 @@ class Direccion extends CActiveRecord
 			array('dirUno, dirDos', 'length', 'max'=>120),
 			array('telefono', 'length', 'max'=>45),
 			array('pais', 'length', 'max'=>80),
-			array('nombre, apellido, cedula, dirUno, ciudad_id, provincia_id, pais, telefono', 'required', 'message' => '{attribute} no puede estar vacío'),
+			array('nombre, apellido, dirUno, ciudad_id, provincia_id, pais, telefono', 'required', 'message' => '{attribute} no puede estar vacío'),
 			array('pais','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Escoja un país.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

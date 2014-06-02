@@ -61,8 +61,10 @@ $looks_recomendados = $look->match($model);
 					$ciudad = Ciudad::model()->findByPk($dir->ciudad_id);
 					echo '
                         <div class="well">
-                            <p> <strong>'.$dir->nombre.' '.$dir->apellido.'</strong> <br/>
-                                <span class="muted small"> C.I. '.$dir->cedula.'</span></p>
+                            <p> <strong>'.$dir->nombre.' '.$dir->apellido.'</strong> <br/>';
+                            if(Yii::app()->params['askId'])
+                            	echo'<span class="muted small"> C.I. '.$dir->cedula.'</span>';
+                            echo '</p>
                             <p> <strong>Telefono</strong>: '.$dir->telefono.' </p>
                             <p><strong>Dirección:</strong> <br/>
                                 '.$dir->dirUno.'. '.$dir->dirDos.'. '.$ciudad->nombre.', '.$ciudad->provincia->nombre.'. '.$dir->pais.'.

@@ -283,6 +283,7 @@ return array(
 				    'currSym'=>'Bs',
 				     'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
 				    'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
+				    'askId'=>true, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
 				    'IVA' => '0.12',
 				    'IVAtext' => '12%',	
 				    'registro' => true,	  

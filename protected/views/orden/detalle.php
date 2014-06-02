@@ -180,7 +180,7 @@ $tracking=$orden->getTrackingInfo();
         	?>
         </div>
         <div class="span6">
-          <h2><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?><small> <?php echo Yii::t('contentForm','C.I.')." ".$usuario->profile->cedula; ?></small></h2>
+          <h2><?php echo $usuario->profile->first_name." ".$usuario->profile->last_name; ?><small> <?php if(Yii::app()->params['askId']) echo Yii::t('contentForm','C.I.')." ".$usuario->profile->cedula; ?></small></h2>
           <div class="row">
             <div class="span3">
               <ul class="no_bullets no_margin_left">
@@ -331,7 +331,9 @@ $tracking=$orden->getTrackingInfo();
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
             </div>
            <div class="row-fluid tel pull_left">
-            <div class="span3"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?> </strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            <?php if(Yii::app()->params['askId']){ ?> 
+            	<div class="span3"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?> </strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            <?php } ?>
             <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
             <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
@@ -351,7 +353,9 @@ $tracking=$orden->getTrackingInfo();
               <div class="country-name"><?php echo $orden->direccionFacturacion->pais; ?></div>
             </div>
            <div class="row-fluid tel pull_left">
-            <div class="span3"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?> </strong>:</span><?php echo $orden->direccionFacturacion->cedula; ?></div>
+            <?php if(Yii::app()->params['askId']){ ?> 
+            	<div class="span3"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?> </strong>:</span><?php echo $orden->direccionFacturacion->cedula; ?></div>
+             <?php } ?>
             <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $orden->direccionFacturacion->telefono; ?></span> </div>
             <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>

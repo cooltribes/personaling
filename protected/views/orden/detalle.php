@@ -681,12 +681,13 @@ $tracking=$orden->getTrackingInfo();
                                 $label = $color->valor;
                                 //$label = "No hay foto</br>para el color</br> ".$color->valor;
                                  if(!is_null($ptc->imagen))
-											  {$foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "70", "height" => "70"));
-												 
-											  }
-								else {
-											$foto="No hay foto</br>para el color";
-								} 
+                                  {
+                                     $foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "70", "height" => "70"));
+
+                                  }
+                                    else {
+                                        $foto="No hay foto</br>para el color";
+                                    } 
                             
                                 
 				echo("<tr>");

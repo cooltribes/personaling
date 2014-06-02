@@ -70,6 +70,9 @@ class Inbound extends CActiveRecord
         return array(
             'user' => array(self::BELONGS_TO, 'User', 'user_id'),
             'productos' => array(self::HAS_MANY, 'ItemInbound','inbound_id'),
+            'cant_recibida' => array(self::STAT, 'ItemInbound', 'inbound_id',
+            		'select' => 'SUM(cant_recibida)'
+            ),
         );
     }
 

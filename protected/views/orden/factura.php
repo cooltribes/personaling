@@ -41,7 +41,9 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                             <br/>
                             <strong><?php echo Yii::t('backEnd', 'Official Address:'); ?></strong> <?php echo $direccion_fiscal->dirUno . ' ' . $direccion_fiscal->dirDos; ?><br/>
                             <?php echo $ciudad_fiscal->nombre . ' - ' . $provincia_fiscal->nombre . '. ' . $direccion_fiscal->pais; ?><br/>
-                            <strong><?php echo Yii::t('contentForm', 'C.I'); ?></strong> <?php echo $direccion_fiscal->cedula; ?></td>
+                            <?php if(Yii::app()->params['askId']){ ?>  
+                            	<strong><?php echo Yii::t('contentForm', 'C.I.'); ?></strong> <?php echo $direccion_fiscal->cedula; ?></td>
+                        	<?php } ?>
                         <td><p><strong><?php echo Yii::t('backEnd', 'Send to:'); ?></strong> <?php echo $direccion_envio->nombre . ' ' . $direccion_envio->apellido; ?><br/>
                                 <strong><?php echo Yii::t('backEnd', 'Shipping Address:'); ?></strong> <?php echo $direccion_envio->dirUno . ' ' . $direccion_envio->dirDos . '. ' . $ciudad_envio->nombre . ' - ' . $provincia_envio->nombre . '. ' . $direccion_envio->pais; ?></p></td>
                     </tr>

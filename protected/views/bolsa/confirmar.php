@@ -216,7 +216,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
           </table>
         </div>
       	
-      	 	   <hr>
+      	 	   <hr>white stripes
       	
         <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Shipping address'); ?></h4>        
         <?php 
@@ -227,7 +227,9 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
 		$ciudad = Ciudad::model()->findByPk($direccion->ciudad_id);
         ?>
         <p> <strong><?php echo($direccion->nombre." ".$direccion->apellido); ?></strong> <br/>
-          <span class="muted small"> <?php echo Yii::t('contentForm','C.I.'); ?> <?php echo($direccion->cedula); ?></span></p>
+         <?php if(Yii::app()->params['askId']){ ?>    
+         	<span class="muted small"> <?php echo Yii::t('contentForm','C.I.'); ?> <?php echo($direccion->cedula); ?></span></p> 
+        <?php } ?>
         <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
           <?php echo($direccion->dirUno.". ".$direccion->dirDos.", ".$ciudad->nombre.", ".$ciudad->provincia->nombre.". ".$direccion->pais); ?> </p>
         <p> <strong><?php echo Yii::t('contentForm','Phone'); ?></strong>: <?php echo($direccion->telefono); ?> <br/>
@@ -239,7 +241,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
      
         ?>
         <p> <strong><?php echo($facturacion->nombre." ".$facturacion->apellido); ?></strong> <br/>
-          <span class="muted small"> C.I. <?php echo($facturacion->cedula); ?></span></p>
+         <?php if(Yii::app()->params['askId']){ ?>    <span class="muted small"> <?php echo Yii::t('contentForm','C.I.'); ?> <?php echo($facturacion->cedula); ?></span></p><?php }?>
         <p><strong><?php echo Yii::t('contentForm','Address'); ?>:</strong> <br/>
           <?php echo($facturacion->dirUno.". ".$facturacion->dirDos.", ".$facturacion->ciudad->nombre.", ".$facturacion->ciudad->provincia->nombre.". ".$facturacion->pais); ?> </p>
         <p> <strong><?php echo Yii::t('contentForm','Phone'); ?></strong>: <?php echo($facturacion->telefono); ?> <br/>

@@ -24,6 +24,7 @@ return CMap::mergeArray(
 		    'noShipping'=> '30', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
 		    'IVA' => '0.21',
 		    'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
+		    'askId'=>false, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
 		    'IVAtext' => '21%',	
 		    'registro' => false,	
 		    'mostrarMarcas'=>false,

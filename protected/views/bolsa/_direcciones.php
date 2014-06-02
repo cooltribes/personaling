@@ -35,8 +35,11 @@
 		            echo "
 		            <div class='row'>		            
 		              <div class='span2'>
-		                <p><strong>".$cadauna->nombre." ".$cadauna->apellido."</strong><br/>
-		                  <span class='muted small'> ".Yii::t('contentForm','C.I')." ".$cadauna->cedula."</span></p>
+		                <p><strong>".$cadauna->nombre." ".$cadauna->apellido."</strong><br/>";
+		                 
+						 if(Yii::app()->params['askId'])
+						 echo "<span class='muted small'> ".Yii::t('contentForm','C.I.')." ".$cadauna->cedula."</span>";
+						 echo "</p>
 		                <p> <strong>	".Yii::t('contentForm','Phone')."</strong>: ".$cadauna->telefono."</p>
 		              </div>
 		              <div class='span3'>

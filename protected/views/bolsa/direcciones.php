@@ -109,7 +109,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               </div>
             </div>
             <div class="control-group"> 
-             
+         <?php if(Yii::app()->params['askId']){ ?>  
               <div class="controls">
               	<?php echo $form->textFieldRow($dir,'cedula',array('class'=>'span4','maxlength'=>20,'placeholder'=>Yii::t('contentForm','ID of the person to whom you send'))); 
               	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Cedula de Identidad de la persona a la que envias" name="RegistrationForm[email]" class="span4">
@@ -117,7 +117,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
-            </div>
+         </div><?php }?>
             <div class="control-group"> 
            
               <div class="controls">

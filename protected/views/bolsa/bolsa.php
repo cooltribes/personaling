@@ -81,8 +81,14 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 					$talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
 					$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
 					//$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-					$doblimg= CHtml::image( str_replace(".","_x90.",$producto->getImageUrl($productotallacolor->preciotallacolor->color_id)) , "Imagen", array("width" => "70", "height" => "70"));
-					
+					//$doblimg= CHtml::image( str_replace(".","_x90.",$producto->getImageUrl($productotallacolor->preciotallacolor->color_id)) , "Imagen", array("width" => "70", "height" => "70"));
+					if(!is_null($productotallacolor->preciotallacolor->imagen))
+											  {$doblimg=CHtml::image(Yii::app()->baseUrl.str_replace(".","_x90.",$productotallacolor->preciotallacolor->imagen['url']), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+												 
+											  }
+								else {
+											$doblimg= "No hay foto</br>para el color";
+					} 
 					
                 	//$test = PrecioTallaColor::model()->findByPK($productotallacolor->preciotallacolor->id);
 					//if(isset($test)){
@@ -105,14 +111,10 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
                 	?>
                 <tr>
                   <?php
-                  if($doblimg){					  	
+               				  	
 						//$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
 						echo "<td>".$doblimg."</td>";
-						
-					}else{
-						echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
-						
-					}
+					
 					?>
                   <td><strong><?php echo $producto->nombre; ?></strong> <br/>
                     <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
@@ -176,7 +178,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
           </div>
           <!-- Look OFF -->
           <?php
-          }	 
+          }	  
 			}
 		  }
 
@@ -215,9 +217,9 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 							// $imagen = CHtml::image($producto->getImageUrl($todo->color_id), "Imagen", array("width" => "70", "height" => "70"));
 							$imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
 					
-							echo "<tr>";		
+							echo "<tr><td>";		
 							
-					if($imagen){
+					/*if($imagen){
 						
 						$con = 0;
 						
@@ -229,9 +231,20 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 							}
 						}
 					}else
-                                echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+                                echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";*/
+                                
+                                if(!is_null($todo->imagen))
+											  {echo CHtml::image(Yii::app()->baseUrl.str_replace(".","_x180.",$todo->imagen['url']), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+												 
+											  }
+								else {
+											echo "No hay foto</br>para el color";
+								} 
+                                
+                                
+                                
 
-                                echo "
+                                echo "</td>
                                 <td>
                                 <strong>".$producto->nombre."</strong> <br/>
                                 <strong>".Yii::t('contentForm','Color')."</strong>: ".$color->valor."<br/>";

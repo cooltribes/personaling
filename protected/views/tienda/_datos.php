@@ -82,7 +82,9 @@ $b='';
 					$encabezado="<article class='span3'><div  onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'>";
 					$gusta="<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>";
 				}
-				
+				if(Yii::app()->user->isGuest){
+					$gusta="</div></article>";
+				}
 					$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Imagen ", array("class"=>"img_hover bg_color3","width" => "270", "height" => "270",'id'=>'img-'.$data->id));
 					$b = '';
 					$style='';

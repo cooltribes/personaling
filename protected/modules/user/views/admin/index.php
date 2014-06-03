@@ -115,6 +115,7 @@ $template = '{summary}
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_view_user',
 	    'template'=>$template,
+	    'summaryText' => "Mostrando {start} - {end} de {count} Resultados",
 	    'afterAjaxUpdate'=>" function(id, data) {
 								
 		

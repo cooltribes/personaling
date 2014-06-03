@@ -47,7 +47,7 @@
                         <td><a href="<?php echo $record->getUrl(); ?>" title="Ver Producto"><?php echo $record->nombre; ?></a></td>
                         <td><?php echo $record->view_counter; ?></td>
                         <td><?php echo $record->getCantVendidos(); ?></td>
-                        <td>Bs. <?php echo $record->getTotalVentas(); ?></td>
+                        <td><?php echo Yii::t('contentForm','currSym').' '.$record->getTotalVentas(); ?></td>
                     </tr>
           <?php
                   }

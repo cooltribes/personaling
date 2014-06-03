@@ -130,9 +130,9 @@ public function actionReportexls(){
 						->setCellValue('E1', 'Color')
 						->setCellValue('F1', 'Talla')
 						->setCellValue('G1', 'Cantidad')
-						->setCellValue('H1', 'Costo (Bs)')
-						->setCellValue('I1', 'Precio de Venta sin IVA (Bs)')
-						->setCellValue('J1', 'Precio de Venta con IVA (Bs)');
+						->setCellValue('H1', 'Costo ('.Yii::t('contentForm','currSym').')')
+						->setCellValue('I1', 'Precio de Venta sin IVA ('.Yii::t('contentForm','currSym').')')
+						->setCellValue('J1', 'Precio de Venta con IVA ('.Yii::t('contentForm','currSym').')');
 			// encabezado end			
 		 	
 			foreach(range('A','I') as $columnID) {
@@ -488,6 +488,8 @@ public function actionReportexls(){
 					
 					if($_POST['accion'] == "avanzar") // guardar y avanzar
 						$this->redirect(array('categorias','id'=>$model->id));
+					
+					Yii::app()->end();
 
 				}
 				

@@ -478,7 +478,7 @@ function encantar(id)
    		$.ajax({
 	        type: "post",
                 dataType: "json",
-	        url: "../producto/encantar", // action Tallas de Producto
+	        url: "<?php echo $this->createUrl("producto/encantar"); ?>", // action Tallas de Producto
 	        data: { 'idProd':idProd}, 
 	        success: function (data) {
 				if(data.mensaje === "ok")

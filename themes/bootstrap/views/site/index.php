@@ -13,7 +13,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 //Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, personal shopper, Cortefiel, Suiteblanco, Accesorize, moda, ropa, accesorios', 'keywords', null, null, null);
 
 $seo = SeoStatic::model()->findByAttributes(array('name'=>'Home España'));
-if($seo){
+if(isset($seo)){
     $this->pageTitle = $seo->title;
     Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
     Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);

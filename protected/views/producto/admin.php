@@ -13,6 +13,18 @@ $pagerParams=array(
 ?>
 
 <div class="container margin_top">
+	<!-- FLASH ON -->
+  <?php $this->widget('bootstrap.widgets.TbAlert', array(
+        'block'=>true, // display a larger alert block?
+        'fade'=>true, // use transitions?
+        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+        'alerts'=>array( // configurations per alert type
+            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+        ),
+    )
+); ?>
+  <!-- FLASH OFF -->
   <div class="page-header">
     <h1>Administrar Productos</small></h1>
   </div>
@@ -349,5 +361,32 @@ $(document).ready(function(){
        
                 var selected = new Array();                   
 });
+
+function validar_descuento(){
+	if($('#tipo').val() == 'monto'){
+		if($.isNumeric($('#valor').val())){
+			$('#error').hide();
+		}else{
+			$('#error').html('Valor no válido');
+			$('#error').show();
+			return false;
+		}
+	}else{ // el descuento es porcentaje
+		if($.isNumeric($('#valor').val())){
+			if($('#valor').val() <= 100 && $('#valor').val() > 0){
+				$('#error').hide();
+			}else{
+				$('#error').html('Porcentaje debe estar entre 1 y 100');
+				$('#error').show();
+				return false;
+			}
+		}else{
+			$('#error').html('Valor no válido');
+			$('#error').show();
+			return false;
+		}
+	}
+	$('#descuento-form').submit();
+}
   
-</script>	
+</script>

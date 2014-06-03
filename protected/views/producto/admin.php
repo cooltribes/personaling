@@ -234,6 +234,7 @@ $template = '{summary}
         <option>Activar</option>
         <option>Inactivar</option>
         <option>Borrar</option>
+        <option>Descuentos</option>
       </select>
     </div>
 
@@ -245,6 +246,7 @@ $template = '{summary}
 			'htmlOptions'=>array('id'=>'procesar','class'=>'span0.5'),
 			'ajaxOptions'=>array(
 			'type' => 'POST',
+			'dataType' => 'json',
 			'beforeSend' => "function( request )
 			{
 				 var checkValues = $(':checkbox:checked').map(function() {
@@ -258,15 +260,15 @@ $template = '{summary}
 			
 			'data'=>array('a'=>'5'),
 			'success'=>"function(data){
-				
-				if(data==1)
+				console.log(data);
+				if(data.status==1)
 					alert('No ha seleccionado ningún producto.');
 				
-				if(data==2)
+				if(data.status==2)
 					alert('No ha seleccionado ninguna acción.');
 					
 					
-				if(data==3 || data==4){
+				if(data.status==3 || data.status==4){
 					
 						ajaxUpdateTimeout = setTimeout(function () {
 						$.fn.yiiListView.update(
@@ -281,7 +283,7 @@ $template = '{summary}
 					alert('Los productos han sido actualizados');
 					}
 				
-				if(data==5)
+				if(data.status==5)
 				{
 					ajaxUpdateTimeout = setTimeout(function () {
 						$.fn.yiiListView.update(
@@ -293,6 +295,12 @@ $template = '{summary}
 						
 						)
 						},0);
+				}
+
+				if(data.status==6)
+				{
+					$('#myModal').html(data.html);
+					$('#myModal').modal();
 				}
 				
 			}",

@@ -1154,6 +1154,7 @@ public function actionReportexls(){
 	 */
 	public function actionVarias()
 	{
+		$Result = array();
 		if($_POST['check']!=""){
 			
 			$checks = explode(',',$_POST['check']);
@@ -1161,7 +1162,8 @@ public function actionReportexls(){
 		
 			if($accion=="Acciones")
 			{
-				echo("2"); // no selecciono una accion
+				//echo("2"); // no selecciono una accion
+				$result['status'] = "2";
 			}
 			else if($accion=="Activar")
 			{
@@ -1175,7 +1177,8 @@ public function actionReportexls(){
 						print_r($model->getErrors());
 					}*/				
 				}
-				echo("3"); // activo los productos
+				//echo("3"); // activo los productos
+				$result['status'] = "3";
 			}
 			else if($accion=="Inactivar")
 			{
@@ -1189,7 +1192,8 @@ public function actionReportexls(){
 						print_r($model->getErrors());
 					}*/				
 				}
-				echo("4");				
+				//echo("4");				
+				$result['status'] = "4";
 			}
 			else if($accion=="Borrar")
 			{
@@ -1203,13 +1207,57 @@ public function actionReportexls(){
 						print_r($model->getErrors());
 					}*/				
 				}
-				echo("5");	
+				//echo("5");
+				$result['status'] = "2";
+			}
+			else if($accion=="Descuentos") {
+				$result['status'] = "6";
+				foreach($checks as $id){
+					$model = Producto::model()->findByPk($id);
+					$result['products'][$id] = array();
+					$result['products'][$id]['codigo'] = $model->codigo;
+					$result['products'][$id]['nombre'] = $model->nombre;
+				}
+				$datos="";
+				$datos=$datos."	<div class='modal-header'>"; 
+				$datos=$datos. "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>";
+				$datos=$datos."<h3 id='myModalLabel'>Aplicar descuento - ".sizeof($checks)." productos";
+				$datos=$datos."</h3></div>";
+				
+				// fin del header
+				$datos .= '<form method="post" action="'.Yii::app()->baseUrl.'/producto/descuentos" id="descuento-form" class="form-horizontal" enctype="multipart/form-data">';
+					$datos=$datos."<div class='modal-body'>";
+						$datos .= "<div class='control-group'>";
+							$datos .= CHtml::label('Tipo', 'tipo', array('class' => 'control-label'));
+							$datos .= "<div class='controls'>";
+								$datos .= CHtml::dropDownList('tipo', '', array('monto' => 'Monto', 'procentaje' => 'Porcentaje'), array('class'=>'span3'));
+							$datos .= "</div>";
+						$datos .= "</div>";
+
+						$datos .= "<div class='control-group'>";
+							$datos .= CHtml::label('Monto', 'monto', array('class' => 'control-label'));
+							$datos .= "<div class='controls'>";
+								$datos .= CHtml::textField('monto', '', array('class'=>'span3', 'maxlength'=>50, 'placeholder' => 'Monto'));
+							$datos .= "</div>";
+						$datos .= "</div>";
+	                          
+					$datos=$datos."</div>";
+					// fin del body
+					
+					$datos=$datos."<div class='modal-footer'>";
+						$datos .= CHtml::submitButton('Procesar', array('class'=>'btn btn-success'));
+						//$datos=$datos."<in href='detalle/' title='Procesar' class='btn btn-success'><i class='icon-pencil'></i> Procesar</a> ";
+					$datos=$datos."</div>";	
+				$datos .= '</form>';
+				$result['html'] = $datos;
 			}
 
 		}
 		else {
-			echo("1"); // no selecciono checks
+			//echo("1"); // no selecciono checks
+			$result['status'] = "1";
 		}
+		echo CJSON::encode($result);
 	}
 /**
  * Genera la fila para talla color

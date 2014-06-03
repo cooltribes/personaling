@@ -14,7 +14,7 @@
       <ul class="dropdown-menu">
         <li > <?php echo CHtml::link('Datos Personales',array('profile/edit'));?> </li>
         <li> <?php echo CHtml::link('Foto',array('profile/avatar'));?> </li>
-        <li> <?php echo CHtml::link('Tu Tipo',array('profile/edittutipo'));?> </li>
+        <li> <?php echo CHtml::link('Tu Perfil Corporal',array('profile/edittutipo'));?> </li>
         <?php if($model->personal_shopper==1) { ?><li> <?php echo CHtml::link('Tu Bio',array('profile/editShopper'));?> </li><?php }?>
         <?php if($model->personal_shopper==1) { ?><li> <?php echo CHtml::link('Tu Banner',array('profile/banner'));?> </li><?php }?>
       </ul>

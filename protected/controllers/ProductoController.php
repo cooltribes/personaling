@@ -38,7 +38,7 @@ class ProductoController extends Controller
                                     'delete','precios','producto','imagenes','multi',
                                     'orden','eliminar','inventario','detalles',
                                     'tallacolor','addtallacolor','varias','categorias',
-                                    'recatprod','seo','importar'
+                                    'recatprod','seo','importar','descuentos'
 				,'reporte','reportexls', "createExcel"),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -130,9 +130,9 @@ public function actionReportexls(){
 						->setCellValue('E1', 'Color')
 						->setCellValue('F1', 'Talla')
 						->setCellValue('G1', 'Cantidad')
-						->setCellValue('H1', 'Costo (Bs)')
-						->setCellValue('I1', 'Precio de Venta sin IVA (Bs)')
-						->setCellValue('J1', 'Precio de Venta con IVA (Bs)');
+						->setCellValue('H1', 'Costo ('.Yii::t('contentForm','currSym').')')
+						->setCellValue('I1', 'Precio de Venta sin IVA ('.Yii::t('contentForm','currSym').')')
+						->setCellValue('J1', 'Precio de Venta con IVA ('.Yii::t('contentForm','currSym').')');
 			// encabezado end			
 		 	
 			foreach(range('A','I') as $columnID) {
@@ -468,6 +468,7 @@ public function actionReportexls(){
 			$precio->attributes=$_POST['Precio'];
 			$precio->ganancia=$_POST['Precio']['ganancia'];
 			$precio->gananciaImpuesto=$_POST['Precio']['gananciaImpuesto'];
+			$precio->impuesto = 1;
 			
 			if($id==""){
 				Yii::app()->user->updateSession();
@@ -488,6 +489,8 @@ public function actionReportexls(){
 					
 					if($_POST['accion'] == "avanzar") // guardar y avanzar
 						$this->redirect(array('categorias','id'=>$model->id));
+					
+					Yii::app()->end();
 
 				}
 				
@@ -1154,6 +1157,7 @@ public function actionReportexls(){
 	 */
 	public function actionVarias()
 	{
+		$result = array();
 		if($_POST['check']!=""){
 			
 			$checks = explode(',',$_POST['check']);
@@ -1161,7 +1165,8 @@ public function actionReportexls(){
 		
 			if($accion=="Acciones")
 			{
-				echo("2"); // no selecciono una accion
+				//echo("2"); // no selecciono una accion
+				$result['status'] = "2";
 			}
 			else if($accion=="Activar")
 			{
@@ -1175,7 +1180,8 @@ public function actionReportexls(){
 						print_r($model->getErrors());
 					}*/				
 				}
-				echo("3"); // activo los productos
+				//echo("3"); // activo los productos
+				$result['status'] = "3";
 			}
 			else if($accion=="Inactivar")
 			{
@@ -1189,7 +1195,8 @@ public function actionReportexls(){
 						print_r($model->getErrors());
 					}*/				
 				}
-				echo("4");				
+				//echo("4");				
+				$result['status'] = "4";
 			}
 			else if($accion=="Borrar")
 			{
@@ -1203,14 +1210,113 @@ public function actionReportexls(){
 						print_r($model->getErrors());
 					}*/				
 				}
-				echo("5");	
+				//echo("5");
+				$result['status'] = "2";
+			}
+			else if($accion=="Descuentos") {
+				$result['status'] = "6";
+				foreach($checks as $id){
+					if($id!='todos'){
+						$model = Producto::model()->findByPk($id);
+						$result['products'][$id] = array();
+						$result['products'][$id]['codigo'] = $model->codigo;
+						$result['products'][$id]['nombre'] = $model->nombre;
+					}
+				}
+				$datos="";
+				$datos=$datos."	<div class='modal-header'>"; 
+				$datos=$datos. "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>";
+				$datos=$datos."<h3 id='myModalLabel'>Aplicar descuento - ".sizeof($checks)." productos";
+				$datos=$datos."</h3></div>";
+				
+				// fin del header
+				$datos .= '<form method="post" action="'.Yii::app()->baseUrl.'/producto/descuentos" id="descuento-form" class="form-horizontal" enctype="multipart/form-data">';
+					$datos=$datos."<div class='modal-body'>";
+						$datos .= "<div class='control-group'>";
+							$datos .= CHtml::label('Tipo', 'tipo', array('class' => 'control-label'));
+							$datos .= "<div class='controls'>";
+								$datos .= CHtml::dropDownList('tipo', '', array('monto' => 'Monto', 'porcentaje' => 'Porcentaje'), array('class'=>'span3', 'id'=>'tipo'));
+							$datos .= "</div>";
+						$datos .= "</div>";
+
+						$datos .= "<div class='control-group'>";
+							$datos .= CHtml::label('Valor', 'valor', array('class' => 'control-label'));
+							$datos .= "<div class='controls'>";
+								$datos .= CHtml::textField('valor', '', array('class'=>'span3', 'maxlength'=>50, 'placeholder' => 'Valor', 'id'=>'valor'));
+								$datos .= CHtml::hiddenField('product_list', $_POST['check'], array());
+								$datos .= '<span class="help-inline error" id="error" style="display:none;"</span>';
+							$datos .= "</div>";
+						$datos .= "</div>";
+	                          
+					$datos=$datos."</div>";
+					// fin del body
+					
+					$datos=$datos."<div class='modal-footer'>";
+						$datos .= CHtml::link('Procesar', '#', array('class'=>'btn btn-success', 'id'=>'procesar_descuento', 'onclick'=>'validar_descuento()'));
+						//$datos=$datos."<in href='detalle/' title='Procesar' class='btn btn-success'><i class='icon-pencil'></i> Procesar</a> ";
+					$datos=$datos."</div>";	
+				$datos .= '</form>';
+				$result['html'] = $datos;
 			}
 
 		}
 		else {
-			echo("1"); // no selecciono checks
+			//echo("1"); // no selecciono checks
+			$result['status'] = "1";
 		}
+		echo CJSON::encode($result);
 	}
+
+	public function actionDescuentos(){
+		if(isset($_POST['product_list'])){
+			$products = explode(',',$_POST['product_list']);
+			$cont_updated = 0;
+			$cont_error = 0;
+			$error_msg = '';
+			foreach ($products as $id) {
+				if($id!='todos'){
+					$product = Producto::model()->findByPk($id);
+					$price = Precio::model()->findByAttributes(array('tbl_producto_id'=>$id));
+					if ($_POST['tipo']=='monto') { // es descuento es un monto fijo
+						$price->tipoDescuento = 1;
+						$price->precioDescuento = $price->precioVenta - $_POST['valor'];
+						$price->valorTipo = $_POST['valor'];
+						$price->ahorro = $_POST['valor'];
+					}elseif ($_POST['tipo']=='porcentaje') { // el descuento es un porcentaje del precio de venta
+						$price->tipoDescuento = 0;
+						$price->precioDescuento = $price->precioVenta - ($price->precioVenta * ($_POST['valor'] / 100));
+						$price->valorTipo = $_POST['valor'];
+						$price->ahorro = $price->precioVenta * ($_POST['valor'] / 100);
+					}
+
+					if($price->impuesto == 0){ // no tiene impuesto
+						$price->precioImpuesto = $price->precioDescuento;
+					}else{
+						$price->precioImpuesto = $price->precioDescuento + ($price->precioDescuento*Yii::app()->params['IVA']);
+					}
+
+					if($price->save()){
+						$cont_updated++;
+					}else{
+						$cont_error++;
+						$ar = $product->getErrors();
+						$error_msg .= 'Producto '.$id.' no actualizado<br/>';
+						//print_r($product->getErrors());
+					}
+				}
+			}
+			if($cont_updated > 0){
+				Yii::app()->user->setFlash('success', $cont_updated.' productos actualizados');
+			}
+			if($cont_error > 0){
+				Yii::app()->user->setFlash('error', $error_msg.'Revise que el descuento no sea mayor al precio de venta');
+			}
+		}else{
+			Yii::app()->user->setFlash('error', 'Solicitud inválida');
+		}
+		$this->redirect(array('admin'));
+	}
+
 /**
  * Genera la fila para talla color
  */

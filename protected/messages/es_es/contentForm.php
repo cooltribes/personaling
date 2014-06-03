@@ -153,9 +153,9 @@ return array (
      <br/><br/><i>{message}</i><br/><br/>Comienza a disfrutar de tu primera Shopping Experience única y… repetible. <br/> Puedes registrarte clicando en el enlace que aparece a continuación: <br/><br/><a href="{registration_url}">Clica aquí</a>',
 
 	'ID' => 'ID',
-	'ID of the person to whom you send' => 'DNI/NIE de la persona a la que envias',
+	'ID of the person to whom you send' => 'DNI/NIF de la persona a la que envias',
 	'ID Transaction' => 'ID de Transaccion',
-	'Identity card' => 'DNI/NIE',
+	'Identity card' => 'DNI/NIF',
 	'If you\'ve made ​​your deposit' => 'Si ya has realizado el depósito',
 	'Inactive' => 'Inactivo',
 	'Inbound details' => 'Detalles del Inbound',
@@ -387,7 +387,7 @@ return array (
 	'Value for returned shipping' => 'Monto por envío devuelto',
 
 	'Year' => 'Año',
-    'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => '¡Hola! Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.es<br/> Valida tu cuenta clicando en el enlace que aparece a continuación:',	
+    'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/><br/>{{link}}<br/>' => '¡Hola! Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.es<br/> Valida tu cuenta clicando en el enlace que aparece a continuación: <br/><br/><a href="{{link}}">Clica aquí</a>.',	
 	'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
 	'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
     'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Seur: https://www.seur.com/seguimiento-online.do?accion=nuevaBusqueda con el siguiente número de seguimiento: {number}',
@@ -506,7 +506,7 @@ return array (
     <div class="page-header">
         <h1>Políticas de devoluciones</h1>
       </div>
-      <p class="lead">¿No te quedó una prenda y deseas devolverla? ¿Te diste cuenta que no eres la talla que dices ser? Tu nuevo look te queda grande o pequeño, no hay problema, en el caso que al recibir tu pedido cambies de opinión, dispones de un plazo de 14 días laborales, a contar desde el día siguiente a la compra del pedido, para cambiarlo por otra talla o color, o devolverlo. Por el momento no podemos procesar cambios de un producto por otro. Solo se pueden por otra talla o color. En caso de no tener stock de la misma talla o color, te daremos un vale para que puedas usarlo en cualquier otra prenda. </p>
+      <p>¿No te quedó una prenda y deseas devolverla? ¿Te diste cuenta que no eres la talla que dices ser? Tu nuevo look te queda grande o pequeño, no hay problema, en el caso que al recibir tu pedido cambies de opinión, dispones de un plazo de 14 días laborales, a contar desde el día siguiente a la compra del pedido, para cambiarlo por otra talla o color, o devolverlo. Por el momento no podemos procesar cambios de un producto por otro. Solo se pueden por otra talla o color. En caso de no tener stock de la misma talla o color, te daremos un vale para que puedas usarlo en cualquier otra prenda. </p>
       <p>En periodos especiales los plazos de devolución pueden variar, estas variaciones serán debidamente informadas en tiempo y forma en nuestra página web. Ninguna de las devoluciones corre por cuenta de Personaling.es</p>
       <p>Para pedidos a Canarias, Ceuta, Melilla y Baleares sólo son posibles devoluciones, en ningún caso cambios. Ten en cuenta que salvo en caso de un defecto imputable a Personaling, no se admitirán cambios o devoluciones de ropa interior, lencería, baño, medias/calcetines, bisutería, gafas de sol, cosméticos o accesorios para el pelo. Del mismo modo, no se aceptaran devoluciones parciales de artículos que formen parte de un lote.</p>
       <p>En el caso de las devoluciones: <br/>

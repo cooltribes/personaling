@@ -1,6 +1,6 @@
 <?php
 //$this->pageTitle=Yii::app()->name . ' - Página de inicio';
-if($seo){
+if(isset($seo)){
   $this->pageTitle = $seo->title;
   Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
   Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);

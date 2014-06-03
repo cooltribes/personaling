@@ -1,8 +1,10 @@
 <?php
-$this->pageTitle = $seo->title;
-Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
-Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
-Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
+if(isset($seo)){
+	$this->pageTitle = $seo->title;
+	Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
+	Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
+	Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
+}
 ?>
 <?php 
 	$this->breadcrumbs=array(
@@ -478,7 +480,7 @@ function encantar(id)
    		$.ajax({
 	        type: "post",
                 dataType: "json",
-	        url: "../producto/encantar", // action Tallas de Producto
+	        url: "<?php echo $this->createUrl("producto/encantar"); ?>", // action Tallas de Producto
 	        data: { 'idProd':idProd}, 
 	        success: function (data) {
 				if(data.mensaje === "ok")

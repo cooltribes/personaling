@@ -35,7 +35,7 @@
     </td>      
     
     <td>
-        <?php echo "---"; ?>
+        <?php echo $data->cant_recibida; ?>
     </td>      
     <td>
         <div class="dropdown text_align_center"> 

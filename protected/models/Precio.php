@@ -18,6 +18,10 @@
  * @property double $ganancia
  * @property integer $gananciaImpuesto
  *
+ * Tipo de descuento
+ * 0 - Porcentaje
+ * 1 - Monto
+ *
  * The followings are the available model relations:
  * @property Producto $tblProducto
  */

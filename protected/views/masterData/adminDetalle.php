@@ -4,7 +4,7 @@
 
 $this->breadcrumbs = array(
     'Inventario',
-    'MasterData - '.$id => array("masterdata/admin"),
+    'MasterData - '.$id => array("masterData/admin"),
     'Detalle',
 );
 ?>

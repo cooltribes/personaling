@@ -1,8 +1,35 @@
 <tr <?php echo $data->estado == 3 ? "class=\"error\"":""; ?>>        
     
+    <!--Foto-->
+    <td style="text-align:center">        
+        <?php 
+            $imagen = Imagen::model()->findByAttributes(array(
+                        'tbl_producto_id'=>$data->producto->producto->id,
+                        'color_id'=>$data->producto->color_id
+                    ));
+            if(!is_null($imagen))
+            {
+                $foto = CHtml::image(Yii::app()->baseUrl.
+                        str_replace(".","_thumb.",$imagen->url), "Imagen ", array(
+                            "width" => "70", "height" => "70",
+                            "class" => "img-polaroid",
+                            ));
+            }
+            else
+            {
+                $foto = CHtml::image("http://placehold.it/70", "Imagen ", array(
+                            "width" => "70", "height" => "70",
+                            "class" => "img-polaroid",
+                            ));
+                
+            }
+            echo $foto; 
+        ?>
+    </td>
     <!--SKU-->
     <td>
-        <?php echo $data->producto->sku; ?>
+        <b>Referencia:</b> <?php echo $data->producto->sku; ?>
+        <br><b>Nombre de la Prenda:</b> <?php echo $data->producto->producto->nombre; ?>
     </td>
     
     <!--Status-->   

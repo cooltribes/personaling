@@ -28,7 +28,7 @@ class InboundController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','detalle','descargarExcel',
-                                    'descargarXml', "corregirItem"),
+                                    'descargarXml', "corregirItem", 'getConfirmation'),
 				'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
@@ -162,4 +162,99 @@ class InboundController extends Controller
             readfile($archivo);
             
 	}
+        
+	/**
+	 * Analizar el confirmation de un inbound enviado.
+	 */
+	public function actionGetConfirmation($id){
+            
+            $ftpServer = "localhost";
+            $userName = "personaling";
+            $userPwd = "P3rs0n4l1ng";            
+            
+            $tipoArchivo = "InboundConfirmation_";
+            $rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;                    
+            
+            
+//            $directorio = "OUT/"; // En LogisFashion
+            /* Directorio OUT donde estan los confirmation*/
+            $directorio = "html/develop/develop/protected/OUT/";
+            if(strpos(Yii::app()->baseUrl, "develop") == false 
+                && strpos(Yii::app()->baseUrl, "test") == false){
+
+                $directorio = "html/develop/develop/protected/data/produccion";
+            }
+            
+            //realizar la conexion ftp
+            $conexion = ftp_connect($ftpServer); 
+            $loginResult = ftp_login($conexion, $userName, $userPwd); 
+            
+            if ((!$conexion) || (!$loginResult)) {  
+                return false; 
+            }        
+            
+            //ubicarse en el directorio y obtener un listado
+            ftp_chdir($conexion, $directorio);  
+            $listado = ftp_nlist($conexion, "");
+            $nombreArchivo =  $tipoArchivo.$id."_";
+
+            $encontrado = false;
+            
+            foreach ($listado as $arch){
+                
+                //Si ya ha sido cargado el inbound                
+                if(strpos($arch, $nombreArchivo) !== false){                                       
+                    //Descargar el archivo
+                    if(ftp_get($conexion, $rutaArchivo.$arch, $arch, FTP_BINARY)){
+                       
+                    }            
+                    
+                    $xml = simplexml_load_file($rutaArchivo.$arch);   
+                    $conDiscrepancias = false;                    
+                    
+                    foreach ($xml as $elemento){
+                        
+                        if($elemento->getName() == "Item"){
+                            
+                            //Consultar en BD
+                            $item = ItemInbound::model()->with(array(
+                                        "producto" => array(
+                                            "condition" => "sku = '".$elemento->EAN."'",
+                                        )
+                                    ))->findByAttributes(array(
+                                        "inbound_id"=>$id,
+                                        ));
+                            //Guardar lo que viene en el XML
+                            $item->cant_recibida = $elemento->Cantidad;
+                            
+                            if($item->cant_recibida != $item->cant_enviada){
+                                $item->estado = 3; //con discrepancias
+                                $conDiscrepancias = true; //para marcar el inbound completo
+                            }else{
+                                $item->estado = 2; //confirmado
+                            }
+                            
+                            $item->save();   
+                        }                        
+                    }
+                    
+                    //Marcar inbound con estado
+                    $inbound = Inbound::model()->findByPk($id);
+                    if($conDiscrepancias){
+                        $inbound->estado = 3;
+                    }else{
+                        $inbound->estado = 2;                        
+                    }
+                    $inbound->save();
+                    
+                    $encontrado = true;
+                    break;
+                }
+            }
+            // cerrar la conexión ftp 
+            ftp_close($conexion);
+            
+        }
+        
+        
 }

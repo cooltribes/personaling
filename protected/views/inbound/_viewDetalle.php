@@ -7,6 +7,7 @@
                         'tbl_producto_id'=>$data->producto->producto->id,
                         'color_id'=>$data->producto->color_id
                     ));
+            
             if(!is_null($imagen))
             {
                 $foto = CHtml::image(Yii::app()->baseUrl.
@@ -28,7 +29,7 @@
     </td>
     <!--SKU-->
     <td>
-        <b>Referencia:</b> <?php echo $data->producto->sku; ?>
+        <b>SKU:</b> <?php echo $data->producto->sku; ?>
         <br><b>Nombre de la Prenda:</b> <?php echo $data->producto->producto->nombre; ?>
     </td>
     

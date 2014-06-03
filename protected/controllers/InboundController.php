@@ -28,8 +28,12 @@ class InboundController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','detalle','descargarExcel',
-                                    'descargarXml', "corregirItem", 'getConfirmation'),
+                                    'descargarXml', "corregirItem",),
 				'expression' => 'UserModule::isAdmin()',
+			),
+			array('allow', 
+				'actions'=>array('revisarFTP'),
+				'users' => array('*'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -164,9 +168,30 @@ class InboundController extends Controller
 	}
         
 	/**
+	 * revisar el ftp automaticamente y descagar confirmations pendientes
+	 */
+	public function actionRevisarFTP(){
+            
+            //Obtener los inbounds que no han sido confirmados
+            $noConfirmados = Inbound::model()->findAllByAttributes(array(
+                "estado" => 1 //esperando confirmacion
+            ));
+            
+            //Revisar en el ftp por cada uno de ellos
+            foreach ($noConfirmados as $elemento){
+                
+                $this->getInboundConf($elemento->id);
+            
+            }
+
+        
+            
+        }
+        
+	/**
 	 * Analizar el confirmation de un inbound enviado.
 	 */
-	public function actionGetConfirmation($id){
+	function getInboundConf($id){
             
             $ftpServer = "localhost";
             $userName = "personaling";
@@ -176,13 +201,103 @@ class InboundController extends Controller
             $rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;                    
             
             
-//            $directorio = "OUT/"; // En LogisFashion
             /* Directorio OUT donde estan los confirmation*/
             $directorio = "html/develop/develop/protected/OUT/";
             if(strpos(Yii::app()->baseUrl, "develop") == false 
                 && strpos(Yii::app()->baseUrl, "test") == false){
 
-                $directorio = "html/develop/develop/protected/data/produccion";
+                $directorio = "OUT/"; // En LogisFashion
+            }
+            
+            //realizar la conexion ftp
+            $conexion = ftp_connect($ftpServer); 
+            $loginResult = ftp_login($conexion, $userName, $userPwd); 
+            
+            if ((!$conexion) || (!$loginResult)) {  
+                return false; 
+            }        
+            
+            //ubicarse en el directorio y obtener un listado
+            ftp_chdir($conexion, $directorio);  
+            $listado = ftp_nlist($conexion, "");
+            $nombreArchivo =  $tipoArchivo.$id."_";
+
+            $encontrado = false;
+            
+            foreach ($listado as $arch){
+                
+                //Si ya ha sido cargado el inbound                
+                if(strpos($arch, $nombreArchivo) !== false){                                       
+                    //Descargar el archivo
+                    if(ftp_get($conexion, $rutaArchivo.$arch, $arch, FTP_BINARY)){
+                       
+                    }            
+                    
+                    $xml = simplexml_load_file($rutaArchivo.$arch);   
+                    $conDiscrepancias = false;                    
+                    
+                    foreach ($xml as $elemento){
+                        
+                        if($elemento->getName() == "Item"){
+                            
+                            //Consultar en BD
+                            $item = ItemInbound::model()->with(array(
+                                        "producto" => array(
+                                            "condition" => "sku = '".$elemento->EAN."'",
+                                        )
+                                    ))->findByAttributes(array(
+                                        "inbound_id"=>$id,
+                                        ));
+                            //Guardar lo que viene en el XML
+                            $item->cant_recibida = $elemento->Cantidad;
+                            
+                            if($item->cant_recibida != $item->cant_enviada){
+                                $item->estado = 3; //con discrepancias
+                                $conDiscrepancias = true; //para marcar el inbound completo
+                            }else{
+                                $item->estado = 2; //confirmado
+                            }
+                            
+                            $item->save();   
+                        }                        
+                    }
+                    
+                    //Marcar inbound con estado
+                    $inbound = Inbound::model()->findByPk($id);
+                    if($conDiscrepancias){
+                        $inbound->estado = 3;
+                    }else{
+                        $inbound->estado = 2;                        
+                    }
+                    $inbound->save();
+                    
+                    $encontrado = true;
+                    break;
+                }
+            }
+            // cerrar la conexión ftp 
+            ftp_close($conexion);
+            
+        }
+	/**
+	 * Analizar el confirmation de un inbound enviado.
+	 */
+	function getOutboundConf($id){
+            
+            $ftpServer = "localhost";
+            $userName = "personaling";
+            $userPwd = "P3rs0n4l1ng";            
+            
+            $tipoArchivo = "InboundConfirmation_";
+            $rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;                    
+            
+            
+            /* Directorio OUT donde estan los confirmation*/
+            $directorio = "html/develop/develop/protected/OUT/";
+            if(strpos(Yii::app()->baseUrl, "develop") == false 
+                && strpos(Yii::app()->baseUrl, "test") == false){
+
+                $directorio = "OUT/"; // En LogisFashion
             }
             
             //realizar la conexion ftp

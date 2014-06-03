@@ -626,7 +626,7 @@ class BolsaController extends Controller
                     
                     $tipo_pago = Yii::app()->getSession()->get('tipoPago');
                     //Tipos de pago aceptados por Aztive
-                    $idPagoAztive = $tipo_pago == 5? 8:999;                    
+                    $idPagoAztive = $tipo_pago == 5? 8:5;                    
                     $monto = Yii::app()->getSession()->get('total_tarjeta');
                     
                     $optional = array(                        

@@ -1092,7 +1092,7 @@ public function actionCategorias2(){
                 if (($userTmp->status_register != User::STATUS_REGISTER_ESTILO) && !isset($_POST['perfil_propio'])) {
                     //echo "entro"; 
                     $_POST['perfil_propio'] = 0;
-                    $_POST['reset'] = true;
+                   // $_POST['reset'] = true;
                     $todosLosLooks = true;
                 }
             } else {
@@ -1129,10 +1129,18 @@ public function actionCategorias2(){
              * nada por el post (no se esta haciendo una nueva busqueda por filtros)
              * Entonces se saca el valor de la variable de session y se pone en el POST
              */
-            if (isset($_GET['page']) && isset(Yii::app()->session['todoPost']) && !(isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios']) || isset($_POST['perfil_propio']))
-            ) {
+            if (isset($_GET['page']) && isset(Yii::app()->session['todoPost']) && 
+		            !(isset($_POST['check_ocasiones']) || 
+		            isset($_POST['check_shopper']) || 
+		            $filtroPerfil || 
+		            isset($_POST['reset']) 
+		            || isset($_POST['precios']) 
+		            //|| isset($_POST['perfil_propio'])
+					)  
+				){
 
                 $_POST = Yii::app()->session['todoPost'];
+				
             }
 
             $filtroPerfil = false;
@@ -1148,7 +1156,7 @@ public function actionCategorias2(){
 
             if ((isset($_POST['check_ocasiones']) || isset($_POST['check_shopper']) || $filtroPerfil || isset($_POST['reset']) || isset($_POST['precios']) || isset($_POST['perfil_propio']))) {
 
-
+				//echo "rafa entro de nuevo";
                 Yii::app()->session['todoPost'] = $_POST;
 
                 $criteria = new CDbCriteria;
@@ -1250,7 +1258,7 @@ public function actionCategorias2(){
                 $looks = Look::model()->findAll($criteria);
                 $status_register_tmp = isset($userTmp->status_register) ? $userTmp->status_register : User::STATUS_REGISTER_ESTILO;
 
-                if (($status_register_tmp != User::STATUS_REGISTER_ESTILO) && $todosLosLooks) {
+                if (($status_register_tmp != User::STATUS_REGISTER_ESTILO) && $todosLosLooks && !isset($_GET["page"])) {
                     //$rangosArray = Look::model()->getRangosPrecios();
                     $profile = new Profile;
                     $this->render('look', array(

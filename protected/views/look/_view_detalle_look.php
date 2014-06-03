@@ -2,7 +2,7 @@
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel"><?php echo $model->title; ?></h3>
+        <h3 id="myModalLabel"><?php echo $model->title; ?></h3><h4><?php echo $model->campana->nombre; ?></h4>
     </div>
     <div class="modal-body">
       <div class="text_align_center">

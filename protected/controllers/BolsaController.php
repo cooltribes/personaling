@@ -3077,18 +3077,10 @@ class BolsaController extends Controller
                 
             }            
 
-            //Enviar Outbound a LF y guardarlo en local para respaldo
+            //Enviar Outbound a LF y guardarlo en local para respaldo. TODAVIA NO
+            //SE GUARDA NADA
             $subido = MasterData::subirArchivoFtp($outbound, 3, $orden->id);
-
-            Yii::app()->user->updateSession();
-            //Si hubo error conectandose al ftp logisfashion
-            if(!$subido){
-                $mensajeLF = "Ha ocurrido un error enviando el
-                    archivo <b>MasterData.xml</b> a LogisFashion. <i class='icon icon-thumbs-down'></i>";
-                Yii::app()->user->setFlash("error", $mensajeLF);                                   
-                $mensajeLF = "";
-            }
-            Yii::app()->user->setFlash("success", $mensajeSuccess.$mensajeLF); 
+            
             
         }
         

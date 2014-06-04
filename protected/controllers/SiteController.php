@@ -91,7 +91,8 @@ class SiteController extends Controller
 
 	public function actionPreguntas_frecuentes()
 	{
-		$this->render('preguntas_frecuentes');
+		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Preguntas Frecuentes'));
+		$this->render('preguntas_frecuentes', array('seo'=>$seo));
 	}	
 
 	public function actionFormas_de_pago()
@@ -102,12 +103,14 @@ class SiteController extends Controller
 
 	public function actionCondiciones_De_Envios_y_Encomiendas()
 	{
-		$this->render('condiciones_de_envios_y_encomiendas');
+		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Envíos'));
+		$this->render('condiciones_de_envios_y_encomiendas', array('seo'=>$seo));
 	}
 	
 	public function actionAcerca_De()
 	{
-		$this->render('acerca_de');
+		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Acerca de Personaling'));
+		$this->render('acerca_de', array('seo'=>$seo));
 	}
 
 	public function actionActivos_Graficos()

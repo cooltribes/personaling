@@ -38,13 +38,23 @@ if (isset($user)){
 }	
  $model = new RegistrationForm;
 ?>
+<style>
+    #scroller{
+        background-color: white;
+    }    
+</style>
 
-<div class="container">
+<div class="container" id="scroller-anchor">
+    <div class="container" id="scroller">
+        
+    
+  
+    <div class="container">
     <div class="span12">
         <!--    <h1>Todos los looks</h1>-->
 
         <div class="row-fluid margin_bottom_medium">
-            <div class="span6 text_align_right">
+            <div class="span2 offset4 text_align_right botones">
                 <?php
                 //var_dump(Yii::app()->getRequest()->getUrlReferrer());
                 $this->widget('bootstrap.widgets.TbButton', array(
@@ -63,7 +73,7 @@ if (isset($user)){
                 ));
                 ?>
             </div>
-            <div class="span6">
+            <div class="span6 botones2">
                 <?php
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => 'Looks para ti',
@@ -92,9 +102,9 @@ if (isset($user)){
 
 <!-- SUBMENU ON -->
 
-<div class="container" id="scroller-anchor">
-    <div class="navbar  nav-inverse" id="scroller">
-        <div class="navbar-inner"  >
+    <div class="container">
+    <div class="navbar  nav-inverse barra-margen">
+        <div class="navbar-inner" id="barraFiltros">
             <nav class="  ">
                 <ul class="nav">
                     <li class="filtros-header">Filtrar por: <?php echo Yii::app()->session['registerStep']; ?></li>
@@ -309,7 +319,12 @@ foreach ($personal_shopper as $shopper) {
             </div>    	    
         </div>
     </div>
+</div>  
+
+    </div>
 </div>
+
+
 
 <!-- SUBMENU OFF -->
 <div class="container" id="tienda_looks">
@@ -636,7 +651,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
         if (reset) {
             datosRefresh += '&reset=true';
         }
-        console.log(datosRefresh);
+        //console.log(datosRefresh);
 <?php
 echo CHtml::ajax(array(
     'url' => array('tienda/look'),
@@ -651,7 +666,7 @@ echo CHtml::ajax(array(
             }',
     'complete' => 'function(){
                         $("body").removeClass("aplicacion-cargando");
-                        
+                        $(\'html, body\').animate({scrollTop: 0}, 300);
                     }',
     'success' => "function(data)
             {
@@ -686,18 +701,54 @@ echo CHtml::ajax(array(
             var st = $(window).scrollTop();
             var ot = $("#scroller-anchor").offset().top;
             var s = $("#scroller");
-            if (st > ot) {
+            var btnTodos = $(".botones, .botones2");
+            var btn2 = $(".botones2");
+            var filtros = $(".filtros-header");
+            var barra = $("#barraFiltros");
+            var margen = $(".barra-margen");
+            
+            if (st > ot - 80) {
                 s.css({
                     position: "fixed",
-                    top: "60px",
+                    top: "49px",
                 });
-            } else {
-                if (st <= ot) {
-                    s.css({
-                        position: "relative",
-                        top: ""
-                    });
-                }
+                btnTodos.css({
+                    position: "absolute",
+                    top: "29px",
+                    "z-index": 1
+                });
+                barra.css({
+                    "padding-top": "7px",
+                    "padding-bottom": "8px"
+                });
+                margen.css({
+                    "margin-bottom": "0px"
+                });
+                
+                btn2.addClass("offset6");                
+                filtros.hide();
+                
+            } else if (st <= ot) {
+                s.css({
+                    position: "relative",
+                    top: ""
+                });
+                btnTodos.css({
+                    position: "relative",
+                    top: "0px",
+                    "z-index": 0
+                });
+                barra.css({
+                    "padding-top": "0px",
+                    "padding-bottom": "0px"
+                });
+                margen.css({
+                    "margin-bottom": "20px"
+                });
+                
+                btn2.removeClass("offset6");
+                filtros.show();
+                
             }
         };
         $(window).scroll(move);

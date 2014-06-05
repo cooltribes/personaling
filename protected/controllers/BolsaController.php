@@ -624,9 +624,16 @@ class BolsaController extends Controller
                     $nombreProducto = "Looks: ".  $bolsa->getLooks().
                             " - Productos: ".$bolsa->getProductos();
                     
-                    $tipo_pago = Yii::app()->getSession()->get('tipoPago');
-                    //Tipos de pago aceptados por Aztive
-                    $idPagoAztive = $tipo_pago == 5? 8:999;                    
+                    $tipo_pago = Yii::app()->getSession()->get('tipoPago');                   
+                    
+                    $idPagoAztive = $tipo_pago == 5? 8:5;                  
+                    
+                    //Si no esta en produccion
+                    if(strpos(Yii::app()->baseUrl, "develop") !== false 
+                        || strpos(Yii::app()->baseUrl, "test") !== false){
+
+                        $idPagoAztive = $tipo_pago == 8? 999:$idPagoAztive; 
+                    }
                     $monto = Yii::app()->getSession()->get('total_tarjeta');
                     
                     $optional = array(                        
@@ -641,8 +648,10 @@ class BolsaController extends Controller
                     $cData = CJSON::encode($cData);
                     $pago = new AzPay();
 
+//                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
+//                            $idPagoAztive==8?"I":null, $optional, $cData);                    
                     $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
-                            $idPagoAztive==8?"I":null, $optional, $cData);                    
+                            $idPagoAztive==8?NULL:NULL, $optional, $cData);  
                     
                     $this->render('confirmar',array(
                         'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
@@ -3077,18 +3086,10 @@ class BolsaController extends Controller
                 
             }            
 
-            //Enviar Outbound a LF y guardarlo en local para respaldo
+            //Enviar Outbound a LF y guardarlo en local para respaldo. TODAVIA NO
+            //SE GUARDA NADA
             $subido = MasterData::subirArchivoFtp($outbound, 3, $orden->id);
-
-            Yii::app()->user->updateSession();
-            //Si hubo error conectandose al ftp logisfashion
-            if(!$subido){
-                $mensajeLF = "Ha ocurrido un error enviando el
-                    archivo <b>MasterData.xml</b> a LogisFashion. <i class='icon icon-thumbs-down'></i>";
-                Yii::app()->user->setFlash("error", $mensajeLF);                                   
-                $mensajeLF = "";
-            }
-            Yii::app()->user->setFlash("success", $mensajeSuccess.$mensajeLF); 
+            
             
         }
         

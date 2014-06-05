@@ -370,7 +370,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                     $this->endWidget();
                     
                   /*Si es en españa bankCard o Paypal*/  
-		  }else if($tipo_pago == 5  || $tipo_pago == 6){ 
+		  }else if($tipo_pago == 5  || $tipo_pago == 6 || $tipo_pago == 8){ 
           	
                       if($tipo_pago == 5){
                           

@@ -938,7 +938,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	echo '</li>';   
 	?>                 	
                       <?php 
-  $colores = Color::model()->findAll();
+  $colores = Color::model()->findAllByAttributes(array('padreID'=>'0'));
   foreach($colores as $color){
   	$imagen = CHtml::image(Yii::app()->baseUrl.'/images/colores/'.$color->path_image,$color->valor,array('height'=>'20','class'=>'img_crear_look_colores'));
 	  

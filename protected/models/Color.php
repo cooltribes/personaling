@@ -35,12 +35,15 @@ class Color extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+			array('padreID', 'numerical', 'integerOnly'=>true),
 			array('valor', 'length', 'max'=>45),
 			array('path_image', 'length', 'max'=>255),
 			array('rgb', 'length', 'max'=>6),
+			array('title, url', 'length', 'max'=>150),
+			array('description, keywords', 'length', 'max'=>250),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, valor,path_image,rgb', 'safe', 'on'=>'search'),
+			array('id, valor,path_image,rgb, padreID, title, description, keywords, url', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,7 +66,11 @@ class Color extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'valor' => 'Nombre',
-			
+			'padreID' => 'Color padre',
+			'title' => 'Título',
+			'description' => 'Descripción',
+			'keywords' => 'Palabras clave',
+			'url' => 'Url',
 		);
 	}
 
@@ -80,6 +87,11 @@ class Color extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('valor',$this->valor,true);
+		$criteria->compare('padreID',$this->padreID,true);
+		$criteria->compare('title',$this->title,true);
+		$criteria->compare('description',$this->description,true);
+		$criteria->compare('keywords',$this->keywords,true);
+		$criteria->compare('url',$this->url,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

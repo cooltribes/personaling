@@ -468,6 +468,7 @@ public function actionReportexls(){
 			$precio->attributes=$_POST['Precio'];
 			$precio->ganancia=$_POST['Precio']['ganancia'];
 			$precio->gananciaImpuesto=$_POST['Precio']['gananciaImpuesto'];
+			$precio->impuesto = 1;
 			
 			if($id==""){
 				Yii::app()->user->updateSession();
@@ -1998,7 +1999,7 @@ public function actionReportexls(){
                             $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));                                                        
                             
                             if($prodExiste){
-                                $actualizar++; //suma un producto actualizado                                
+                                
                                 // actualiza el producto
                                 Producto::model()->updateByPk($producto->id, array(
                                     'nombre' => $rNombre,
@@ -2010,7 +2011,6 @@ public function actionReportexls(){
                                 )); 
                             } else
                             { // no existe la referencia, es producto nuevo                           
-                                $total++; // suma un producto nuevo
                                 
                                 $producto = new Producto;
                                 $producto->nombre = $rNombre;
@@ -2028,23 +2028,30 @@ public function actionReportexls(){
                             // Si existe o no el producto, actualizar o insertar precio nuevo
                             $precio = Precio::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
                             
-                            if (isset($precio)) {
-                                $precio->costo = $rCosto;
-                                $precio->precioVenta = $rPrecio;
-                                $precio->precioDescuento = $rPrecio;
-                                $precio->impuesto = 1;
-                                $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
-                            } 
-                            else
-                            {
+                            if (!isset($precio)) {
+                                
                                 $precio = new Precio;
-                                $precio->costo = $rCosto;
-                                $precio->precioVenta = $rPrecio;
                                 $precio->tbl_producto_id = $producto->id;
+                                
+                            } 
+                            
+                            $precio->costo = $rCosto;
+                            $precio->impuesto = 1;
+                            
+                            //si es con iva
+                            if(MasterData::TIPO_PRECIO == 1){
+                                
+                                $precio->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+                                $precio->precioDescuento = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+                                $precio->precioImpuesto = $rPrecio; 
+                                
+                            }else{ //si es sin iva
+                                
+                                $precio->precioVenta = $rPrecio;
                                 $precio->precioDescuento = $rPrecio;
-                                $precio->impuesto = 1;
-                                $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
+                                $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                                
                             }
+                            
                             
                             $precio->save();
                             
@@ -2100,6 +2107,9 @@ public function actionReportexls(){
                             // Si no existe crearlo
                             if (!isset($ptc)) { 
 
+                                $total++; // suma un producto nuevo
+
+                                
                                 $ptc = new Preciotallacolor;                                        
                                 $ptc->cantidad = 0; //Creando un producto nuevo, sin existencia
                                 $ptc->sku = $rSku;
@@ -2111,6 +2121,8 @@ public function actionReportexls(){
                                 
                             }else{
                                 //Si ya existe
+                                $actualizar++; //suma un producto actualizado                                
+                                
                                 //Marcar item como actualizado
                                 $itemMasterdataRow->estado = 1;
                             }
@@ -2513,8 +2525,10 @@ public function actionReportexls(){
                             $falla = "Peso";                                                
                         else if ($row['L'] != "Costo sin iva")
                             $falla = "Costo";
-                        else if ($row['M'] != "Precio Venta sin iva")
-                            $falla = "Precio Venta";
+                        else if (MasterData::TIPO_PRECIO == 0 && $row['M'] != "Precio Venta sin iva")
+                            $falla = "Precio Venta sin iva";
+                        else if (MasterData::TIPO_PRECIO == 1 && $row['M'] != "Precio Venta con iva")
+                            $falla = "Precio Venta con iva";
                         else if ($row['N'] != "MetaDescripción")
                             $falla = "MetaDescripción";
                         else if ($row['O'] != "Meta tags")

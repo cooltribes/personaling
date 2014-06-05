@@ -232,18 +232,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         </label>                       
                        
                     </div>
-<!--                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse"
-                           data-parent="#accordion2" href="#collapseFour" id="btn_bankCard">
-                            <label class="radio accordion-toggle">
-                                <input type="radio" name="optionsRadios" id="bankCard" value="option5"> 
-                                <?php echo Yii::t('contentForm', 'Credit Card'); ?>
-                            </label>
-                        </a>
-                    </div>-->
                     
                 </div>
                 <?php } ?>
+                
                 <?php 
                 //Paypal Aztive
                 if(Yii::app()->params['metodosPago']['paypal']){ 
@@ -254,6 +246,23 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                            data-parent="#accordion2">
                             <input type="radio" name="optionsRadios" id="payPal" value="6"> 
                             <?php echo Yii::t('contentForm', 'PayPal'); ?>
+                        </label>                        
+                    </div>
+                    <div id="collapseT" class="accordion-body collapse">
+                    </div>
+                    
+                </div>
+                <?php } ?>
+                <?php 
+                //Aztive de prueba
+                if(isset(Yii::app()->params['metodosPago']['prueba'])){ 
+                ?>                
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <label class="radio accordion-toggle margin_left_small"
+                           data-parent="#accordion2">
+                            <input type="radio" name="optionsRadios" id="prueba" value="8"> 
+                            <?php echo Yii::t('contentForm', 'Para probar las compras'); ?>
                         </label>                        
                     </div>
                     <div id="collapseT" class="accordion-body collapse">

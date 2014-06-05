@@ -42,6 +42,7 @@ return CMap::mergeArray(
                         'metodosPago'=> array(
                                 'bkCard' => true,
                                 'paypal' => true,
+                                'prueba' => true,
                                 ),
 		),
     )

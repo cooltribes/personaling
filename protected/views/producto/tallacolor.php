@@ -133,7 +133,7 @@ $this->breadcrumbs=array(
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label required">Brasssier:</label>
+              <label class="control-label required">Sujetador:</label>
               <div class="controls">
                 <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
 				    'type' => 'primary',

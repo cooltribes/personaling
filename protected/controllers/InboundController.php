@@ -178,14 +178,9 @@ class InboundController extends Controller
             ));
             
             //Revisar en el ftp por cada uno de ellos
-            foreach ($noConfirmados as $elemento){
-                
-                $this->getInboundConf($elemento->id);
-            
+            foreach ($noConfirmados as $elemento){                
+                $this->getInboundConf($elemento->id);            
             }
-
-        
-            
         }
         
 	/**
@@ -198,8 +193,7 @@ class InboundController extends Controller
             $userPwd = "P3rs0n4l1ng";            
             
             $tipoArchivo = "InboundConfirmation_";
-            $rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;                    
-            
+            $rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;        
             
             /* Directorio OUT donde estan los confirmation*/
             $directorio = "html/develop/develop/protected/OUT/";
@@ -279,8 +273,9 @@ class InboundController extends Controller
             ftp_close($conexion);
             
         }
-	/**
-	 * Analizar el confirmation de un inbound enviado.
+	
+        /**
+	 * Analizar el confirmation de un outbound enviado.
 	 */
 	function getOutboundConf($id){
             

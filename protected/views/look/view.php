@@ -148,7 +148,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                             'type' => 'POST',
                             'data'=> "js:$('#producto-form').serialize()",
 
-                            'beforeSend' => "function( request )
+                            'beforeSend' => "function( request )n
                                  {
                                    
                                    
@@ -447,9 +447,9 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           </div>
         </div>
         <!-- Columna secundaria OFF -->
-         <div>
-            <img src="<?php echo Yii::app()->getBaseUrl(); ?>/images/banner-night_non_stop.jpg" width="180" height="150" alt="Banner Accesorize" /> 
-          </div>        
+<!--         <div>
+            <img src="<?php // echo Yii::app()->getBaseUrl(); ?>/images/banner-night_non_stop.jpg" width="180" height="150" alt="Banner Accesorize" /> 
+          </div>        -->
       </div>
 
       <?php if($dataProvider->getItemCount() > 0){ //si hay looks que te puedan gustar para mostrar  ?>

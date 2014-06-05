@@ -17,6 +17,7 @@ class MasterData extends CActiveRecord
 {
     
     const RUTA_ARCHIVOS = '/docs/xlsMasterData/';
+    const TIPO_PRECIO = 1; // 0-sin iva, 1-con inva
     
 	/**
 	 * Returns the static model of the specified AR class.

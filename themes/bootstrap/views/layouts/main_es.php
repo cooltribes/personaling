@@ -64,6 +64,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
                                             array('label'=>'Productos', 'url'=>array('/producto/admin')),
+                                            array('label'=>'Colores', 'url'=>array('/color/admin')),
                                             array('label'=>'Marcas', 'url'=>array('/marca/admin')),
                                             array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
                                             '---',

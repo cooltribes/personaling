@@ -60,9 +60,13 @@ class ColorController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id = null)
 	{
-		$model=new Color;
+		if(is_null($id)){
+			$model = new Color;
+		}else{
+			$model = Color::model()->findByPk($id);
+		}
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -80,8 +84,53 @@ class ColorController extends Controller
                         ));
                     exit;               
                 }
-                else
-                    $this->redirect(array('view','id'=>$model->id));
+                else{
+                	if(!is_dir(Yii::getPathOfAlias('webroot').'/images/colores/')){
+			   			mkdir(Yii::getPathOfAlias('webroot').'/images/colores/',0777,true);
+			 		}
+					
+					$rnd = rand(0,9999);  
+					$images=CUploadedFile::getInstanceByName('path_image');
+					
+					//var_dump($images);
+					//echo "<br>".count($images);
+					if (isset($images) && count($images) > 0) {
+						$model->path_image = "{$rnd}-{$images}";
+						
+						$model->save();
+						
+				        
+				        $nombre = Yii::getPathOfAlias('webroot').'/images/colores/'.$model->id;
+				        $extension_ori = ".jpg";
+						$extension = '.'.$images->extensionName;
+				       
+				       	if ($images->saveAs($nombre . $extension)) {
+				
+				       		$model->path_image = $model->id .$extension;
+				            $model->save();
+											
+									
+							Yii::app()->user->setFlash('success',UserModule::t("Marca guardada exitosamente."));
+
+							$image = Yii::app()->image->load($nombre.$extension);
+							$image->resize(150, 150);
+							$image->save($nombre.'_thumb'.$extension);
+							
+							if($extension == '.png'){
+								$image = Yii::app()->image->load($nombre.$extension);
+								$image->resize(150, 150);
+								$image->save($nombre.'_thumb.jpg');
+							}	
+							
+						}
+						else {
+				        	$marca->delete();
+						}
+				        
+					}
+                	Yii::app()->user->setFlash('success',UserModule::t("Color guardado exitosamente"));
+                    $this->redirect(array('admin'));
+                }
             } 
 		}
 
@@ -132,17 +181,16 @@ class ColorController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
+		//if(Yii::app()->request->isPostRequest)
+		//{
 			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			//if(!isset($_GET['ajax']))
+		Yii::app()->user->setFlash('success',UserModule::t("Color eliminado exitosamente"));
+		$this->redirect(array('admin'));
+		
 	}
 
 	/**

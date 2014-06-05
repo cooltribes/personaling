@@ -1,51 +1,144 @@
 <?php
+
 $this->breadcrumbs=array(
-	'Colors'=>array('index'),
-	'Manage',
+	'Colores',
 );
-
-$this->menu=array(
-	array('label'=>'List Color','url'=>array('index')),
-	array('label'=>'Create Color','url'=>array('create')),
-);
-
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('color-grid', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
 ?>
 
-<h1>Manage Colors</h1>
+		<?php
+			$sql = "select count( * ) as total from tbl_color";
+			$num = Yii::app()->db->createCommand($sql)->queryScalar();
+		?>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
+<div class="container margin_top">
+    <div class="page-header">
+        <h1>Administrar Colores<small> (<?php echo $num; ?> colores registrados)</small></h1>
+    </div>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button btn')); ?>
-<div class="search-form" style="display:none">
-<?php $this->renderPartial('_search',array(
-	'model'=>$model,
-)); ?>
-</div><!-- search-form -->
+	<?php if(Yii::app()->user->hasFlash('success')){?>
+	    <div class="alert in alert-block fade alert-success text_align_center">
+	        <?php echo Yii::app()->user->getFlash('success'); ?>
+	    </div>
+	<?php } ?>
+	<?php if(Yii::app()->user->hasFlash('error')){?>
+	    <div class="alert in alert-block fade alert-error text_align_center">
+	        <?php echo Yii::app()->user->getFlash('error'); ?>
+	    </div>
+	<?php } ?>
 
-<?php $this->widget('bootstrap.widgets.TbGridView',array(
-	'id'=>'color-grid',
-	'dataProvider'=>$model->search(),
-	'filter'=>$model,
-	'columns'=>array(
-		'id',
-		'valor',
-		array(
-			'class'=>'bootstrap.widgets.TbButtonColumn',
-		),
-	),
-)); ?>
+    <div class="row margin_top margin_bottom ">
+        <div class="span4">
+            <form class="no_margin_bottom form-search">
+            <div class="input-append"> <span class="add-on"><i class="icon-search"></i></span>
+            		<input class="span3" id="query" name="query" type="text" placeholder="Buscar">
+                	<a href="#" class="btn" id="btn_search_event">Buscar</a>
+           		</form>
+           	</div>
+
+		
+	<?php
+	Yii::app()->clientScript->registerScript('query1',
+		"var ajaxUpdateTimeout;
+		var ajaxRequest; 
+		$('#btn_search_event').click(function(){
+			ajaxRequest = $('#query').serialize();
+			clearTimeout(ajaxUpdateTimeout);
+			
+			ajaxUpdateTimeout = setTimeout(function () {
+				$.fn.yiiListView.update(
+				'list-auth-marcas',
+				{
+				type: 'POST',	
+				url: '" . CController::createUrl('color/admin') . "',
+				data: ajaxRequest}
+				
+				)
+				},
+		
+		300);
+		return false;
+		});",CClientScript::POS_READY
+	);
+	
+	// Codigo para actualizar el list view cuando presionen ENTER
+	
+	Yii::app()->clientScript->registerScript('query',
+		"var ajaxUpdateTimeout;
+		var ajaxRequest; 
+		
+		$(document).keypress(function(e) {
+		    if(e.which == 13) {
+		        ajaxRequest = $('#query').serialize();
+				clearTimeout(ajaxUpdateTimeout);
+				
+				ajaxUpdateTimeout = setTimeout(function () {
+					$.fn.yiiListView.update(
+					'list-auth-marcas',
+					{
+					type: 'POST',	
+					url: '" . CController::createUrl('color/admin') . "',
+					data: ajaxRequest}
+					
+					)
+					},
+			
+			300);
+			return false;
+		    }
+		});",CClientScript::POS_READY
+	);	
+	
+	
+	
+	?>	
+            
+            
+            
+        </div>
+        <div class="pull-right">
+        <?php
+        	echo CHtml::link('Crear Color', $this->createUrl('create'), array('class'=>'btn btn-success', 'role'=>'button'));
+        ?>
+		</div>
+    </div>
+    <hr/>
+
+<?php
+$template = '{summary}
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+        <tr>
+            <th scope="col">Imagen</th>
+            <th scope="col">Padre</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Título</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Palabras clave</th>
+            <th scope="col">Url</th>
+            <th scope="col">Acción</th>
+        </tr>
+    {items}
+    </table>
+    {pager}
+	';
+
+		$this->widget('zii.widgets.CListView', array(
+	    'id'=>'list-auth-marcas',
+	    'dataProvider'=>$model->search(),
+	    'itemView'=>'_view',
+	    'template'=>$template,
+	    'enableSorting'=>'true',
+	    'afterAjaxUpdate'=>" function(id, data) {
+						   
+							} ",
+		'pager'=>array(
+			'header'=>'',
+			'htmlOptions'=>array(
+			'class'=>'pagination pagination-right',
+		)
+		),					
+	));  
+	
+	?>
+
+</div>
+<!-- /container -->

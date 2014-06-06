@@ -454,7 +454,7 @@ class TiendaController extends Controller
         $dataProvider = Producto::model()->findAll($criteria);
 	
 		$marcas=Marca::model()->findAll();
-		$colores=Color::model()->findAll();
+		$colores=Color::model()->findAllByAttributes(array('padreID'=>'0'));
 		
 
 		$this->render('index_new',

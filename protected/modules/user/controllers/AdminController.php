@@ -308,7 +308,7 @@ class AdminController extends Controller
 		$dataProvider = new CActiveDataProvider('User', array(
                     'criteria' => $criteria,
                     
-        ));
+                ));
 	
 		
 		$pages=new CPagination($dataProvider->totalItemCount);
@@ -338,17 +338,17 @@ class AdminController extends Controller
 		                         ->setKeywords("personaling")
 		                         ->setCategory("personaling");
 		$objPHPExcel->setActiveSheetIndex(0)
-						->setCellValue('A1', 'ID')
-						->setCellValue('B1', 'Nombre')
-						->setCellValue('C1', 'Apellido')
-						->setCellValue('D1', 'Email')
-						->setCellValue('E1', 'Ciudad')
-						->setCellValue('F1', 'Ordenes Registradas')
-						->setCellValue('G1', 'Direcciones Registradas')
-						->setCellValue('H1', 'Saldo Disponible')
-						->setCellValue('I1', 'Ingresos al portal')
-						->setCellValue('J1', 'Ultimo Ingreso')
-						->setCellValue('K1', 'Fecha de Registro');
+                                        ->setCellValue('A1', 'ID')
+                                        ->setCellValue('B1', 'Nombre')
+                                        ->setCellValue('C1', 'Apellido')
+                                        ->setCellValue('D1', 'Email')
+                                        ->setCellValue('E1', 'Ciudad')
+                                        ->setCellValue('F1', 'Ordenes Registradas')
+                                        ->setCellValue('G1', 'Direcciones Registradas')
+                                        ->setCellValue('H1', 'Saldo Disponible')
+                                        ->setCellValue('I1', 'Ingresos al portal')
+                                        ->setCellValue('J1', 'Ultimo Ingreso')
+                                        ->setCellValue('K1', 'Fecha de Registro');
 		foreach(range('A','K') as $columnID) {
     		$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
         	->setAutoSize(true);
@@ -364,9 +364,6 @@ class AdminController extends Controller
 			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('K1')->applyFromArray($title);
-		
-		
-			
 		
 		$fila=2;
 		foreach($dataProvider->getData() as $data){

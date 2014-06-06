@@ -309,8 +309,7 @@ class AdminController extends Controller
                     'criteria' => $criteria,
                     
                 ));
-	
-		
+                
 		$pages=new CPagination($dataProvider->totalItemCount);
 		$pages->pageSize=$dataProvider->totalItemCount;
 		$dataProvider->setPagination($pages);
@@ -349,7 +348,24 @@ class AdminController extends Controller
                                         ->setCellValue('I1', 'Ingresos al portal')
                                         ->setCellValue('J1', 'Ultimo Ingreso')
                                         ->setCellValue('K1', 'Fecha de Registro');
-		foreach(range('A','K') as $columnID) {
+                
+                $objeto = $objPHPExcel->setActiveSheetIndex(0);
+                $objeto->setCellValue('L1', 'Altura')
+                        ->setCellValue('M1', 'Contextura')
+                        ->setCellValue('N1', 'Color de cabello')
+                        ->setCellValue('O1', 'Color de ojos')
+                        ->setCellValue('P1', 'Color de piel')
+                        ->setCellValue('Q1', 'Forma de cuerpo')
+                        ->setCellValue('R1', 'Estilo Diario')
+                        ->setCellValue('S1', 'Estilo Fiesta')
+                        ->setCellValue('T1', 'Estilo Vacaciones')
+                        ->setCellValue('U1', 'Estilo Deporte')
+                        ->setCellValue('V1', 'Estilo Oficina')
+                        ;
+                
+                
+                
+		foreach(range('A','U') as $columnID) {
     		$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
         	->setAutoSize(true);
 		}  
@@ -364,6 +380,19 @@ class AdminController extends Controller
 			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('K1')->applyFromArray($title);
+                        
+			$objPHPExcel->getActiveSheet()->getStyle('L1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('M1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('N1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('O1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('P1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('Q1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('R1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('S1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('T1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('U1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('V1')->applyFromArray($title);
+                        
 		
 		$fila=2;
 		foreach($dataProvider->getData() as $data){
@@ -379,19 +408,50 @@ class AdminController extends Controller
     			$createdAt='N/D'; 
 			
 			$objPHPExcel->setActiveSheetIndex(0)
-							->setCellValue('A'.$fila , $data->id) 
-							->setCellValue('B'.$fila , $user->profile->first_name) 
-							->setCellValue('C'.$fila , $user->profile->last_name) 
-							->setCellValue('D'.$fila , $user->email)
-							->setCellValue('E'.$fila , $user->profile->ciudad)
-							->setCellValue('F'.$fila , $user->ordenCount) 
-							->setCellValue('G'.$fila , $user->direccionCount) 
-							->setCellValue('H'.$fila , $saldo) 
-							->setCellValue('I'.$fila , $user->visit)							
-							->setCellValue('J'.$fila , $lastVisit)
-							->setCellValue('K'.$fila , $createdAt)
-							;
-					$fila++;
+                                        ->setCellValue('A'.$fila , $data->id) 
+                                        ->setCellValue('B'.$fila , $user->profile->first_name) 
+                                        ->setCellValue('C'.$fila , $user->profile->last_name) 
+                                        ->setCellValue('D'.$fila , $user->email)
+                                        ->setCellValue('E'.$fila , $user->profile->ciudad)
+                                        ->setCellValue('F'.$fila , $user->ordenCount) 
+                                        ->setCellValue('G'.$fila , $user->direccionCount) 
+                                        ->setCellValue('H'.$fila , $saldo) 
+                                        ->setCellValue('I'.$fila , $user->visit)							
+                                        ->setCellValue('J'.$fila , $lastVisit)
+                                        ->setCellValue('K'.$fila , $createdAt);
+                        
+                        $objeto = $objPHPExcel->setActiveSheetIndex(0);
+//                        $columnID = "L";
+                        $rangos = array();
+                        $profileFields=$user->profile->getFields();
+                        if ($profileFields) {
+                            foreach($profileFields as $field) {
+                                if($field->id > 4 && $field->id < 16){
+                                    $rangos[] =  Profile::range($field->range).";0==Ninguno";
+                                }
+                            }
+                        }
+//                        
+//                        
+//                        $idProfile = 5;
+//                        foreach(range('L','U') as $columnID) {
+//                            $field = ProfileField::model()->findByPk($idProfile);                            
+//                        }
+		
+                       $objeto     
+                    ->setCellValue('L'.$fila , Profile::range($rangos[0],$user->profile->altura))
+                    ->setCellValue('M'.$fila , Profile::range($rangos[1],$user->profile->contextura))
+                    ->setCellValue('N'.$fila , Profile::range($rangos[2],$user->profile->pelo))
+                    ->setCellValue('O'.$fila , Profile::range($rangos[3],$user->profile->ojos))
+                    ->setCellValue('P'.$fila , Profile::range($rangos[4],$user->profile->piel))
+                    ->setCellValue('Q'.$fila , Profile::range($rangos[5],$user->profile->tipo_cuerpo))
+                    ->setCellValue('R'.$fila , Profile::range($rangos[6],$user->profile->coctel))
+                    ->setCellValue('S'.$fila , Profile::range($rangos[7],$user->profile->fiesta))
+                    ->setCellValue('T'.$fila , Profile::range($rangos[8],$user->profile->playa))
+                    ->setCellValue('U'.$fila , Profile::range($rangos[9],$user->profile->sport))
+                    ->setCellValue('V'.$fila , Profile::range($rangos[10],$user->profile->trabajo))
+                    ;
+                    $fila++;
 	
 		}
 		$objPHPExcel->setActiveSheetIndex(0);

@@ -427,7 +427,7 @@ class AdminController extends Controller
                         if ($profileFields) {
                             foreach($profileFields as $field) {
                                 if($field->id > 4 && $field->id < 16){
-                                    $rangos[] =  Profile::range($field->range).";0==Ninguno";
+                                    $rangos[] =  $field->range.";0==Ninguno";
                                 }
                             }
                         }
@@ -443,13 +443,13 @@ class AdminController extends Controller
                     ->setCellValue('M'.$fila , Profile::range($rangos[1],$user->profile->contextura))
                     ->setCellValue('N'.$fila , Profile::range($rangos[2],$user->profile->pelo))
                     ->setCellValue('O'.$fila , Profile::range($rangos[3],$user->profile->ojos))
-                    ->setCellValue('P'.$fila , Profile::range($rangos[4],$user->profile->piel))
-                    ->setCellValue('Q'.$fila , Profile::range($rangos[5],$user->profile->tipo_cuerpo))
-                    ->setCellValue('R'.$fila , Profile::range($rangos[6],$user->profile->coctel))
-                    ->setCellValue('S'.$fila , Profile::range($rangos[7],$user->profile->fiesta))
-                    ->setCellValue('T'.$fila , Profile::range($rangos[8],$user->profile->playa))
-                    ->setCellValue('U'.$fila , Profile::range($rangos[9],$user->profile->sport))
-                    ->setCellValue('V'.$fila , Profile::range($rangos[10],$user->profile->trabajo))
+                    ->setCellValue('P'.$fila , Profile::range($rangos[10],$user->profile->piel))
+                    ->setCellValue('Q'.$fila , Profile::range($rangos[4],$user->profile->tipo_cuerpo))
+                    ->setCellValue('R'.$fila , Profile::range($rangos[5],$user->profile->coctel))
+                    ->setCellValue('S'.$fila , Profile::range($rangos[6],$user->profile->fiesta))
+                    ->setCellValue('T'.$fila , Profile::range($rangos[7],$user->profile->playa))
+                    ->setCellValue('U'.$fila , Profile::range($rangos[8],$user->profile->sport))
+                    ->setCellValue('V'.$fila , Profile::range($rangos[9],$user->profile->trabajo))
                     ;
                     $fila++;
 	

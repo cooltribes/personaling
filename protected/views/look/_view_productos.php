@@ -39,9 +39,20 @@ if (isset($categoria_padre) ){
 
 		if ($producto->getPrecio(false)!=0 && $producto->mainimage){
 			if(isset($color) && $color != ''){
+				//condicion base, el color seleccionado
+				$condition = 'color_id='.$color;
+
+				// busco si tiene colores hijos para incluirlos en la búsqueda
+				$colores_hijos = Color::model()->findAllByAttributes(array('padreID'=>$color));
+				if(sizeof($colores_hijos) > 0){
+					foreach ($colores_hijos as $hijo) {
+						//echo $producto->id.' - '.$hijo->id.'<br/>';
+						$condition .= ' OR color_id='.$hijo->id;
+					}
+				}
 				$tallacolores=Preciotallacolor::model()->findAllBySql(
-					'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad AND color_id=:color_id GROUP BY color_id',
-					array(':cantidad'=>1, ':producto_id'=>$producto->id, ':color_id'=>$color)
+					'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad AND '.$condition.' GROUP BY color_id',
+					array(':cantidad'=>1, ':producto_id'=>$producto->id)
 				);
 			}else{
 				$tallacolores=Preciotallacolor::model()->findAllBySql(
@@ -50,6 +61,8 @@ if (isset($categoria_padre) ){
 				);
 			}
 			foreach($tallacolores as $tallacolor){
+				//echo $producto->id.'<br/>';
+				//echo $producto->id.' - '.$tallacolor->color_id.'<br/>';
 				$imagecolor = $producto->colorimage( array('condition'=>'color_id=:color_id','params' => array(':color_id'=>$tallacolor->color_id) ) ); 
 				if(isset($imagecolor)){
 					if ( $producto->getImageUrl($tallacolor->color_id)!="http://placehold.it/180"){

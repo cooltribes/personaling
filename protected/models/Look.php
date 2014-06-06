@@ -495,13 +495,30 @@ class Look extends CActiveRecord
 			return $_items;
 		}
 	}
-	public function getMontoVentas($format=true)
-	{
-		if ($format)
-			return Yii::app()->numberFormatter->formatDecimal($this->getPrecio(false)*$this->getLookxStatus(3));
-		else
-			return $this->getPrecio(false)*$this->getLookxStatus(3);
+
+	public function getMontoVentas($format = true){
+            /*El precio en la tabla tbl_orden_has_productotallacolor esta con IVA ? */
+            
+         
+           	$sql ="SELECT SUM(op.precio*op.cantidad) FROM tbl_orden_has_productotallacolor op
+                    where  op.look_id = :id AND tbl_orden_id IN (select id from tbl_orden where estado IN (3, 4, 8, 11))";
+					if ($format)
+			return Yii::app()->numberFormatter->formatDecimal( Yii::app()->db->createCommand($sql)->queryScalar(array("id" => $this->id)));
+					else
+			return  Yii::app()->db->createCommand($sql)->queryScalar(array("id" => $this->id));
+              
+            
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public function getTipo()
 	{
 		return $this->tipo == self::TIPO_CONSERVADOR?'Consevador':'Atrevido';

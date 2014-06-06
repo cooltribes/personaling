@@ -35,7 +35,7 @@ class DireccionController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','distintas'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -84,7 +84,7 @@ class DireccionController extends Controller
 	
 	public function actionCargarProvincias(){
 		if(isset($_POST['pais_id'])){
-			$provincias = Ciudad::model()->findAllBySql("SELECT * FROM tbl_provincia WHERE pais_id =".$_POST['pais_id']." order by nombre ASC");
+			$provincias = Provincia::model()->findAllBySql("SELECT * FROM tbl_provincia WHERE pais_id =".$_POST['pais_id']." order by nombre ASC");
 			if(sizeof($provincias) > 0){
 				$return = '<option value>'.Yii::t('contentForm','Select a province').'</option>';
 				foreach ($provincias as $provincia) {
@@ -94,6 +94,10 @@ class DireccionController extends Controller
 			}
 		}
 	}
+	
+	
+	
+	
 
 	/**
 	 * Creates a new model.
@@ -245,9 +249,11 @@ class DireccionController extends Controller
 					echo "PROVINCIA EXISTENTE  <br/>";
 		}
 		
-	}
+	} 
 	
-	public function actionPoblacionesSeur(){
+	
+
+	public function actionCompararSeur(){
 		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
 		
 		/*
@@ -255,11 +261,16 @@ class DireccionController extends Controller
 		for($i='a'; $i<='z'; $i++)
 		{	 */
 		  
+			$allcities=Ciudad::model()->findAll(array(
+		    'condition'=>" provincia_id < 26 "
+		    ));
+			foreach($allcities as $crit){
 		
-		 	
-			$params4 = array(
+		
+				
+				$params4 = array(
 				'in0'=>'',
-				'in1'=>'S'.'%',
+				'in1'=>$crit->nombre,
 				'in2'=>'',
 				'in3'=>'',
 				'in4'=>'',
@@ -267,40 +278,30 @@ class DireccionController extends Controller
 				'in6'=>'ORACLE',
 				
 				);
-			$response = $soapclient->infoPoblacionesCortoStr($params4);
-			$xml = simplexml_load_string($response->out);
-			foreach ($xml as $reg){
-				$test=Ciudad::model()->findByAttributes(array('nombre'=>utf8_decode($reg->NOM_POBLACION)));
-				if(is_null($test))
-				{
-					
-					$provincia= Provincia::model()->findByAttributes(array('nombre'=>utf8_decode($reg->NOM_PROVINCIA)));
-					if(!is_null($provincia)){
-						$ciudad= new Ciudad;
-						$ciudad->nombre=utf8_decode($reg->NOM_POBLACION);
-						$ciudad->provincia_id=$provincia->id;
-						$ciudad->ruta_id=$provincia->pais_id;
-						$ciudad->cod_zoom=0;
-							  
-						if($ciudad->save())
-							echo "OK <br/>";
-						else
-							print_r ($ciudad->getErrors()); echo $reg->NOM_PROVINCIA."--".$reg->NOM_POBLACION." BAD <br/>";
-					}
-					else{
-						echo "WORSE PROVINCIA ".$reg->NOM_PROVINCIA."--".$reg->NOM_POBLACION."<br/>";
-					   
-					}
-				}else
-					echo "YA ESTABA CIUDAD ".$reg->NOM_POBLACION."--".$reg->NOM_PROVINCIA."<br/>";	
+				
+				$response = $soapclient->infoPoblacionesCortoStr($params4);
+				$xml = simplexml_load_string($response->out);
+				foreach ($xml as $reg){
+					print_r($reg);
+					echo "-- PID: ".$crit->provincia_id." -- ID:".$crit->id."<br/>";
+				}
+				
+				
 				
 			}
+		 	
+			
+			
 			/*$cont++;
 			if($cont==26)
 				break;
 		}*/
 		
 	}
+
+
+
+
 	public function actionDecode(){
 	$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
 		$all=Ciudad::model()->findAll(array(
@@ -329,21 +330,126 @@ class DireccionController extends Controller
 			
 			
 		}
-		
+		   
 			
 	}
+	
+	public function actionDistintas(){
+			$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
+		
+			$sql="select distinct(nombre) from tbl_ciudad where provincia_id>25";
+			$ciudades=Yii::app()->db->createCommand($sql)->queryColumn();
+			foreach ($ciudades as $ciudad){
+				$res= Ciudad::model()->findAllByAttributes(array('nombre'=>$ciudad));
+				if(count($res)>1)
+				{	foreach ($res as $result){
+						
+						$params4 = array(
+						'in0'=>'',
+						'in1'=>$result->nombre,
+						'in2'=>'',
+						'in3'=>'',
+						'in4'=>'',
+						'in5'=>'WSPERSONALING',
+						'in6'=>'ORACLE',
+						
+						);
+						$response = $soapclient->infoPoblacionesCortoStr($params4);
+						$xml = simplexml_load_string($response->out);
+						$cad="(";
+						foreach ($xml as $reg){
+							$cad.="'".$reg->CODIGO_POSTAL."',";
+						}
+						$cad = trim($cad, ',');
+						$cad.=')';
+						echo $result->nombre." - ".$result->provincia->nombre."<br/>";
+						$postales=CodigoPostal::model()->findAllBySql("select * from codigo_postal where codigo in ".$cad);
+						/*foreach($postales as $postal){
+							if($result->provincia->nombre)
+						}*/
+						echo "<br/>";
+					}
+				}
+			}
+			
+	}
+	
+	
+	
+	
+	public function actionPoblacionesSeur(){
+		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
+		
+		/*
+		$cont=0;
+		for($i='a'; $i<='z'; $i++)
+		{	 */
+		  
+		
+		 	
+			$params4 = array(
+				'in0'=>'',
+				'in1'=>'SANT CARLES DE PERALTA',
+				'in2'=>'',
+				'in3'=>'',
+				'in4'=>'',
+				'in5'=>'WSPERSONALING',
+				'in6'=>'ORACLE',
+				
+				);
+			$response = $soapclient->infoPoblacionesCortoStr($params4);
+			$xml = simplexml_load_string($response->out);
+			foreach ($xml as $reg){
+				$pro= Provincia::model()->findByAttributes(array('nombre'=>utf8_decode($reg->NOM_PROVINCIA)));
+				$test=Ciudad::model()->findByAttributes(array('nombre'=>utf8_decode($reg->NOM_POBLACION),'provincia_id'=>$pro->id));
+				
+				if(is_null($test))
+				{
+					
+					$provincia= Provincia::model()->findByAttributes(array('nombre'=>utf8_decode($reg->NOM_PROVINCIA)));
+					if(!is_null($provincia)){
+						$ciudad= new Ciudad;
+						$ciudad->nombre=utf8_decode($reg->NOM_POBLACION);
+						$ciudad->provincia_id=$provincia->id;
+						$ciudad->ruta_id=$provincia->pais_id;
+						$ciudad->cod_zoom=0;
+							  
+						if($ciudad->save())
+							echo "OK <br/>";
+						else
+							print_r ($ciudad->getErrors()); echo $reg->NOM_PROVINCIA."--".$reg->NOM_POBLACION." BAD <br/>";
+					}
+					else{
+						echo "WORSE PROVINCIA ".$reg->NOM_PROVINCIA."--".$reg->NOM_POBLACION."<br/>";
+					   
+					}
+				}else
+					echo "YA ESTABA CIUDAD ".$reg->NOM_POBLACION."--".$reg->NOM_PROVINCIA."- ID: ".$test->id."-- PID:".$test->provincia_id."<br/>";	
+				
+			}
+			/*$cont++;
+			if($cont==26)
+				break;
+		}*/
+		
+	}
+	
+	
+	
+	
+	
 	public function actionCodigosPostalesSeur(){
 		
 		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
-		$all=Ciudad::model()->findAll(array('condition'=>'provincia_id > 25 AND ruta_id=2 and id NOT IN (select distinct(ciudad_id) from tbl_codigo_postal)' ));
+		//$all=Ciudad::model()->findAll(array('condition'=>'nombre="SANTA ANA"' ));
 			
-		foreach($all as $city){
-			print_r('<b>'.$city->nombre.'</b><br/>');
+			$city="SANT CARLES DE PERALTA";
+			print_r('<b>'.$city.'</b><br/>');
 			$params4 = array(
 			'in0'=>'',
-			'in1'=>$city->nombre, 
+			'in1'=>$city, 
 			'in2'=>'',
-			'in3'=>'',
+			'in3'=>'', 
 			'in4'=>'',
 			'in5'=>'WSPERSONALING',
 			'in6'=>'ORACLE',
@@ -352,26 +458,25 @@ class DireccionController extends Controller
 			$response = $soapclient->infoPoblacionesCortoStr($params4);
 			$xml = simplexml_load_string($response->out);
 			foreach ($xml as $reg){
-				
+				$plocal=Provincia::model()->findByAttributes(array('nombre'=>$reg->NOM_PROVINCIA));
+				$clocal=Ciudad::model()->findByAttributes(array('nombre'=>$reg->NOM_POBLACION, 'provincia_id'=>$plocal->id));		
+				$cplocal=CodigoPostal::model()->findByAttributes(array('codigo'=>$reg->CODIGO_POSTAL, 'ciudad_id'=>$clocal->id));
+				if(is_null($cplocal)&&!is_null($clocal)){
 					$codigo=new CodigoPostal;
 					$codigo->codigo=$reg->CODIGO_POSTAL;
-					$codigo->ciudad_id=$city->id;
+					$codigo->ciudad_id=$clocal->id;
 					if($codigo->save())
 						echo "OK<br/>";
 					else	
 						echo "BAD<br/>";
-				
+				}
+				else {
+					echo "YA ESTABA<br/>";
+				}
 			}
 			echo "<br/><br/>";
 			
 			
-		}
-		
-		
-		
-	
-		
-		
 	}
 	
 	

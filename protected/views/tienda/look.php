@@ -24,7 +24,7 @@ if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
 } 
 
 $this->breadcrumbs = array(
-    'Tu Personal Shopper',
+    'Looks',
 );
 $user = User::model()->findByPk(Yii::app()->user->id);
 $status_register = -1;

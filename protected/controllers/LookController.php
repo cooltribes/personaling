@@ -636,7 +636,17 @@ public function actionCategorias(){
 				$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
 		if(isset($_POST['colores']))
 			if ($_POST['colores']!=''){
-				$with['preciotallacolor'] = array('condition'=>'color_id='.$_POST['colores']);
+				//condicion base, el color seleccionado
+				$condition = 'color_id='.$_POST['colores'];
+
+				// busco si tiene colores hijos para incluirlos en la búsqueda
+				$colores_hijos = Color::model()->findAllByAttributes(array('padreID'=>$_POST['colores']));
+				if(sizeof($colores_hijos) > 0){
+					foreach ($colores_hijos as $hijo) {
+						$condition .= ' OR color_id='.$hijo->id;
+					}
+				}
+				$with['preciotallacolor'] = array('condition'=>$condition);
 				$color = $_POST['colores'];
 			}
 

@@ -754,7 +754,17 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		//Filtro por color
 		if(isset(Yii::app()->session['f_color'])){
-			$criteria->addCondition('preciotallacolor.color_id = '.Yii::app()->session['f_color']);
+			$condition = 'preciotallacolor.color_id = '.Yii::app()->session['f_color'];
+
+			// busco si tiene colores hijos para incluirlos en la búsqueda
+			$colores_hijos = Color::model()->findAllByAttributes(array('padreID'=>Yii::app()->session['f_color']));
+			if(sizeof($colores_hijos) > 0){
+				foreach ($colores_hijos as $hijo) {
+					//echo $producto->id.' - '.$hijo->id.'<br/>';
+					$condition .= ' OR preciotallacolor.color_id='.$hijo->id;
+				}
+			}
+			$criteria->addCondition($condition);
 		}
 	
 			

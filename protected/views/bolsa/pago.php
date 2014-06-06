@@ -334,7 +334,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                           $envio = 0;
 						  $peso_total = 0;
 						  $tipo_guia = 0;
-						  $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
+						  $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$user,'admin'=>$admin));
+						  
 						  
 						  //busco productos individuales en la bolsa
 						  $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));

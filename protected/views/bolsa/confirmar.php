@@ -209,6 +209,11 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                     
                     echo "<tr><td valign='top'><i class='icon-exclamation-sign'></i> ".
                             Yii::t('contentForm','Balance').".</td></tr>";
+                
+                }else if(Yii::app()->getSession()->get('tipoPago') == 8){
+                    
+                    echo "<tr><td valign='top'><i class='icon-exclamation-sign'></i> ".
+                            Yii::t('contentForm','Pago para pruebas').".</td></tr>";
                     
                 }
                 
@@ -216,7 +221,6 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
           </table>
         </div>
       	
-      	 	   <hr>white stripes
       	
         <h4 class="braker_bottom"> <?php echo Yii::t('contentForm','Shipping address'); ?></h4>        
         <?php 
@@ -393,7 +397,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                             'type'=>'warning',        
                             //'buttonType'=>'button',
                             'size'=>'large',
-                            'label'=>$tipo_pago==5?Yii::t('contentForm','Pay with credit card') :Yii::t('contentForm','Pay with PayPal'),
+                            'label'=>$tipo_pago==8?Yii::t('contentForm','CONFIRMAR COMPRA') :Yii::t('contentForm','Pay with PayPal'),
                             'url'=> $urlAztive, // action
                             'icon'=>'lock white',
                             'htmlOptions'=>array(

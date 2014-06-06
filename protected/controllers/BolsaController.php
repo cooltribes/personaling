@@ -2620,6 +2620,11 @@ class BolsaController extends Controller
                 exit;
             }
             
+            
+            $orden = Orden::model()->findByPk(11);
+            $this->generarOutbound($orden);
+//            Yii::app()->end();
+            
 	}
         /**
          * Urls para recibir las notificaciones del proceso de compra
@@ -3072,6 +3077,26 @@ class BolsaController extends Controller
             $cliente = $outbound->addChild("Cliente");
             $cliente->addChild("Codigo", "{$usuario->id}");
             $cliente->addChild("Nombre", "{$usuario->profile->getNombre()}");
+            
+            //Direccion
+            $direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+            $dirString = $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;
+            
+            $ciudadEnvio = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
+            
+            $codigoPostal = CodigoPostal::model()->findByPk($direccionEnvio->codigo_postal_id);
+            //ZIP
+            if($codigoPostal){
+                $codigoPostal = $codigoPostal->codigo;                
+            }else{
+               $codigoPostal = "No existe";                
+            }
+            
+            $cliente->addChild("Direccion", "{$dirString}");
+            $cliente->addChild("CP", "{$codigoPostal}");
+            $cliente->addChild("Poblacion", "{$ciudadEnvio->nombre}");
+            $cliente->addChild("Pais", "{$direccionEnvio->pais}");
+            
             $cliente->addChild("Email", "{$usuario->email}");
 
             //Listado de items vendidos   
@@ -3086,8 +3111,7 @@ class BolsaController extends Controller
                 
             }            
 
-            //Enviar Outbound a LF y guardarlo en local para respaldo. TODAVIA NO
-            //SE GUARDA NADA
+            //Enviar Outbound a LF y guardarlo en local para respaldo
             $subido = MasterData::subirArchivoFtp($outbound, 3, $orden->id);
             
             

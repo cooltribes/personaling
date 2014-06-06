@@ -9,7 +9,18 @@ function changeFilter(e){
    
    var fecha = ['lastvisit_at', 'lastorder_at', 'create_at', 'create_at_2'];
    var opciones = ['status', 'tipoUsuario', 'fuenteR' , 'looks_marca',
-                   'looks_ps'  , 'prods_marca', 'tipo_comision_2'];
+                   'looks_ps'  , 'prods_marca', 'tipo_comision_2', 'altura',
+                   'contextura', 
+                    'pelo' , 
+                    'ojos' , 
+                    'piel' , 
+                    'tipo_cuerpo', 
+                    'coctel' , 
+                    'fiesta' , 
+                    'playa' , 
+                    'sport' , 
+                    'trabajo', 
+               ];
    var texto = ['first_name', 'first_name_2', 'last_name', 'last_name_2', 'email', 'email_2', 'telefono', 'ciudad'];
                
    //si es fecha

@@ -1,4 +1,5 @@
-<div class="row" id="filters-view" style="display: none">
+<div class="row" id="filters-view">
+<!--<div class="row" id="filters-view" style="display: none">-->
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -35,6 +36,85 @@
                             ))->findAll('personal_shopper = 1'), 'id', 'profile.first_name'),
                             array('style' => 'display:none'));
     
+    /*************      TIPO DE CUERPO ON   ****************/
+    //Para las alturas    
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('altura', '', $valores,
+                            array('style' => 'display:none'));
+    //Para la contextura
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('contextura', '', $valores,
+                            array('style' => 'display:none'));
+    //Para cabello
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('pelo', '', $valores,
+                            array('style' => 'display:none'));
+    //Para ojos
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('ojos', '', $valores,
+                            array('style' => 'display:none'));
+    //Para piel
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('piel', '', $valores,
+                            array('style' => 'display:none'));
+    
+    //Para tipo_cuerpo
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('tipo_cuerpo', '', $valores,
+                            array('style' => 'display:none'));
+    /*************      TIPO DE CUERPO OFF        ****************/
+    
+    
+    /*************      ESTILO        ****************/
+    
+    //Para coctel
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'coctel'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('coctel', '', $valores,
+                            array('style' => 'display:none'));
+    
+    //Para fiesta
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'fiesta'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('fiesta', '', $valores,
+                            array('style' => 'display:none'));
+    
+    //Para playa
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'playa'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('playa', '', $valores,
+                            array('style' => 'display:none'));
+    
+    //Para sport
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'sport'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('sport', '', $valores,
+                            array('style' => 'display:none'));
+    
+    //Para trabajo
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'trabajo'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('trabajo', '', $valores,
+                            array('style' => 'display:none'));
+    
+    
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersUsuarios.js");
     
@@ -56,7 +136,8 @@
                 <div class="control-group">
                     <div class="controls" >
                         <div class="span3" >
-                            <?php echo Chtml::dropDownList('dropdown_filter[]', '', array(
+                            <?php 
+                            $opcionesFiltros = array(
                                 'id' => 'ID',
                                 'first_name' => 'Nombre',
                                 'last_name' => 'Apellido',
@@ -75,9 +156,22 @@
                                 'lastorder_at' => 'Fecha de última compra',                                
                                 'looks' => 'Cantidad de looks comprados',                                
                                 'looks_ps' => 'Looks comprados por Personal Shopper',
-                                'prods_marca' => 'Looks comprados por Marca',
-                                
-                                 ),
+                                'prods_marca' => 'Looks comprados por Marca',                                
+                                'altura' => 'Altura', 
+                                'contextura' => 'Condición Física', 
+                                'pelo' => 'Color de cabello', 
+                                'ojos' => 'Color de ojos', 
+                                'piel' => 'Color de piel', 
+                                'tipo_cuerpo' => 'Forma de cuerpo', 
+                                'coctel' => 'Estilo Diario', 
+                                'fiesta' => 'Estilo Fiesta', 
+                                'playa' => 'Estilo Vacaciones', 
+                                'sport' => 'Estilo Deporte', 
+                                'trabajo' => 'Estilo Oficina',                                 
+                                 );
+                                 asort($opcionesFiltros);
+                                 
+                            echo Chtml::dropDownList('dropdown_filter[]', '', $opcionesFiltros,
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>
                         <div class="span2" >

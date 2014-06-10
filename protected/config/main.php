@@ -279,8 +279,8 @@ return array(
 			'clientCity'=>'Barcelona',
 			'clientZIP'=>'08003',
 			'clientPhone'=>'934 344 634',
-			'clientEmail'=>'info@personaling.com',
-					
+			'clientEmail'=>'info@personaling.com', 
+		
 					
                   'PRONUNCIACION' => 'Venezolana', 
 				    'currSym'=>'Bs',

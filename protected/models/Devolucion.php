@@ -105,4 +105,12 @@ class Devolucion extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function getReasons(){
+		return 			array("No se parece a la imagen de la web",
+							"Se ve de baja calidad  producto defectuoso",
+							"No es mi talla","No me gusta como me queda la prenda",
+							"El producto que he recibido esta equivocado",
+							"He comprado mas de una talla");
+	}
 }

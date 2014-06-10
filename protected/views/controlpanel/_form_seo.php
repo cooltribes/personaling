@@ -1,9 +1,16 @@
-<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+<?php 
+$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
   'id'=>'seo-form',
   'enableAjaxValidation'=>false,
   'enableClientValidation'=>true,
   'type'=>'horizontal',
-)); ?>
+));
+
+$disabled = '';
+if(!$model->isNewRecord){
+  $disabled = 'disabled';
+}
+?>
 
 
 <!-- SUBMENU OFF -->
@@ -15,7 +22,7 @@
       <div class="control-group">
         <?php echo $form->labelEx($model,'name', array('class' => 'control-label')); ?>
         <div class="controls">
-          <?php echo $form->textField($model,'name',array('class'=>'span5','maxlength'=>50, 'placeholder' => 'Nombre')); ?>
+          <?php echo $form->textField($model,'name',array('class'=>'span5','maxlength'=>50, 'placeholder' => 'Nombre', 'disabled' => $disabled)); ?>
           <?php echo $form->error($model,'name'); ?>
         </div>
       </div>

@@ -221,11 +221,11 @@ $tracking=$orden->getTrackingInfo();
 
                                 if($detalle->estado == 1) // si fue aceptado
                                 {
-
+                                    $transaccion = $detalle->nTransferencia != ""?$detalle->nTransferencia:"-";
                                         echo("<td>".date("d/m/Y",strtotime($detalle->fecha))."</td>");
                                         echo("<td>".$detalle->getTipoPago()."</td>");
 
-                                        echo("<td>".$detalle->nTransferencia."</td>");	
+                                        echo("<td>".$transaccion."</td>");	
                                         echo("<td>".Yii::app()->numberFormatter->formatDecimal($detalle->monto)."</td>");
                                         echo("<td><a href='#' title='Ver'><i class='icon-eye-open'></i></a></td>");
 

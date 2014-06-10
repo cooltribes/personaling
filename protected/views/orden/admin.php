@@ -197,6 +197,7 @@ $template = '{summary}
 	    'dataProvider'=>$dataProvider,
 	    'itemView'=>'_datos',
 	    'template'=>$template,
+      'summaryText' => "Mostrando {start} - {end} de {count} Resultados",
 	    'enableSorting'=>'true',
 	    'afterAjaxUpdate'=>" function(id, data) {
 						    	 

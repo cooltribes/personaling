@@ -99,6 +99,10 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                                     <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->descuento, 2, ',', '.'); ?></td>
                                 </tr>
                                 <tr>
+                                    <td colspan="4"><div class="text_align_right"><strong><?php echo Yii::t('backEnd', 'Used balance'); ?></strong>:</div></td>
+                                    <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->descuentoRegalo, 2, ',', '.'); ?></td>
+                                </tr>
+                                <tr>
                                     <td colspan="4"><div class="text_align_right"><strong><?php echo Yii::t('backEnd', 'VAT on taxable'); ?></strong></div></td>
                                     <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->iva, 2, ',', '.'); ?></td>
                                 </tr>

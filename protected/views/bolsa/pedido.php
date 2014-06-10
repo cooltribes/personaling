@@ -145,7 +145,13 @@ $tipo_pago = $orden->getTipoPago();
               <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
               <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
             </tr>
-            <?php } ?>            
+            <?php } ?>     
+            <?php if($orden->descuentoRegalo != 0){ // si no hay descuento ?> 
+            <tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Used Balance:'); ?></th>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuentoRegalo, ''); ?></td>
+            </tr>
+            <?php } ?>        
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping'); ?>:</th>
               <td><?php 

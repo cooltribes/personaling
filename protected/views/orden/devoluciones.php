@@ -11,6 +11,9 @@ $this->breadcrumbs=array(
 <script type="text/javascript">
 	var indices=Array();
 	var montos=Array();
+	var cantidades=Array();
+	var looks=Array();
+	var motivos=Array();
 
 </script>
 	<?php if(Yii::app()->user->hasFlash('success')){?>
@@ -103,10 +106,14 @@ $this->breadcrumbs=array(
                                         echo("<td>".$talla->valor."</td>");
                                 		echo "<td><input type='number' id='".$ptclk->id."_".$lkid."' value='".$prodlook['cantidad']."' class='input-mini cant' max='".$prodlook['cantidad']."'  min='0' required='required' /></td>";
                                        	echo CHtml::hiddenField($ptclk->id."_".$lkid."hid",$prodlook['cantidad']); 
-                                        echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td><td></td></tr>");
+                                        echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td><td>".
+                                        CHtml::dropDownList($ptclk->id."_".$lkid."motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled'))."</td></tr>");
                                         echo CHtml::hiddenField($ptclk->id."_".$lkid."indice",$indice); 
 										echo"<script>indices.push('".$indice."');</script>";
 										echo"<script>montos.push('0');</script>";
+										echo"<script>cantidades.push('0');</script>";
+										echo"<script>looks.push('".$lkid."');</script>";
+										echo"<script>motivos.push('-');</script>";
 										$indice++;
 				}				
 				
@@ -154,12 +161,16 @@ $this->breadcrumbs=array(
                echo("<td>".$talla->valor."</td>");
                                 
                echo "<td><input type='number' id='".$indiv->id."_0' value='0' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' /></td>";
-			  echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td><td></td></tr>");
+			  echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td><td>".
+			   CHtml::dropDownList($indiv->id."_0motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled'))."</td></tr>");
 				echo CHtml::hiddenField($indiv->id."_0hid",$prod['cantidad']); 
 				echo CHtml::hiddenField($indiv->id."_0precio",$prod['precio']);
 				echo CHtml::hiddenField($indiv->id."_0indice",$indice);
 				echo"<script>indices.push('".$indice."');</script>";
 				echo"<script>montos.push('0');</script>"; 
+				echo"<script>cantidades.push('0');</script>";
+				echo"<script>looks.push('0');</script>";
+				echo"<script>motivos.push('-');</script>";
 				$indice++; 
 				 
 				 
@@ -203,6 +214,7 @@ $this->breadcrumbs=array(
         	<td  class="text_align_right"><input class="text_align_right" type="text" readonly="readonly" id="montoTotal" value="000,00" /></td>
         </tr>       --> 
     	</table>
+    	
     	<div class="pull-right"><a onclick="devolver()" title="Devolver productos" style="cursor: pointer;" class="btn btn-warning btn-large">Hacer devolución</a>
     	</div>
 	</div>
@@ -218,27 +230,35 @@ var monto = 0;
  	var a =  parseInt($(this).val());
  	var b = parseInt($('#'+$(this).attr('id')+'hid').val());
  	if(isNaN(a)){
-	    	$(this).val('0'); montos[parseInt($('#'+$(this).attr('id')+'indice').val())]=0; 
+	    	$(this).val('0'); 
+	    	actualizarArrays(parseInt($('#'+$(this).attr('id')+'indice').val()),a,0);
+	    	$(this).val('0'); $('#'+$(this).attr('id')+'motivo').val('');  $('#'+$(this).attr('id')+'motivo').prop('disabled', 'disabled'); 
 	   		
 	}
 	else {
 		if(a>b){
-			$(this).val('0'); montos[parseInt($('#'+$(this).attr('id')+'indice').val())]=0; 			
+			$(this).val('0'); 
+			actualizarArrays(parseInt($('#'+$(this).attr('id')+'indice').val()),0,0);			
 	   	}
 		if(a<1&&a>0){
-			$(this).val('0'); montos[parseInt($('#'+$(this).attr('id')+'indice').val())]=0; 	
+			$(this).val('0'); $('#'+$(this).attr('id')+'motivo').val('');  $('#'+$(this).attr('id')+'motivo').prop('disabled', 'disabled'); 
+			actualizarArrays(parseInt($('#'+$(this).attr('id')+'indice').val()),0,0);	
 		}
 		if(a<=b&&a>0){
-			montos[parseInt($('#'+$(this).attr('id')+'indice').val())]=a*parseFloat($('#'+$(this).attr('id')+'precio').val());
+			$('#'+$(this).attr('id')+'motivo').val('');  $('#'+$(this).attr('id')+'motivo').prop('disabled', false); 
+			actualizarArrays(parseInt($('#'+$(this).attr('id')+'indice').val()),a,parseFloat($('#'+$(this).attr('id')+'precio').val()));
+			
 		}
 		if(a==0){
-			montos[parseInt($('#'+$(this).attr('id')+'indice').val())]=0; 			
+			$('#'+$(this).attr('id')+'motivo').val('');  $('#'+$(this).attr('id')+'motivo').prop('disabled', 'disabled'); 
+			actualizarArrays(parseInt($('#'+$(this).attr('id')+'indice').val()),0,0); 			
 	   	}		
 	}
 	
 	 calcularDevolucion();
   
 });
+
 
 function calcularDevolucion(){
 	var i=0;
@@ -252,5 +272,33 @@ function calcularDevolucion(){
 $( document ).ready(function() {
   console.log(montos.toString()+" "+indices.toString());
 });
+
+function actualizarArrays(indice,cantidad,monto ){
+	montos[indice]=cantidad*monto;
+	cantidades[indice]=cantidad;
+	console.log(montos.toString()+" - "+cantidades.toString());
+}
+
+function devolver()
+	{
+		
+                    var id = $('#orden_id').attr('value');
+                    var monto = $('#monto').attr('value');
+                 
+                    
+                    
+                    $.ajax({
+                        type: "post", 
+                        url: "orden/devoluciones", // action 
+                        data: { 'orden':id, 'check':checkValues, 'monto':monto, 'motivos':motivos, 'envio':envio}, 
+                        success: function (data) {
+
+                            if(data=="ok")
+                                    window.location.reload();
+
+                        }//success
+                    });				
+		
+		}
 	
 </script>

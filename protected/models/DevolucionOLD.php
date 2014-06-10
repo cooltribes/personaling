@@ -7,13 +7,14 @@
  * @property integer $id
  * @property integer $user_id
  * @property integer $orden_id
- * @property string $fecha
- * @property integer $estado
+ * @property integer $preciotallacolor_id
+ * @property string $motivo
  * @property double $montodevuelto
  * @property double $montoenvio
  *
  * The followings are the available model relations:
  * @property Orden $orden
+ * @property PrecioTallaColor $preciotallacolor
  * @property Users $user
  */
 class Devolucion extends CActiveRecord
@@ -44,12 +45,13 @@ class Devolucion extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, orden_id, fecha, estado, montodevuelto, montoenvio', 'required'),
-			array('user_id, orden_id, estado', 'numerical', 'integerOnly'=>true),
+			array('user_id, orden_id, preciotallacolor_id, motivo, montodevuelto, montoenvio', 'required'),
+			array('user_id, orden_id, preciotallacolor_id', 'numerical', 'integerOnly'=>true),
 			array('montodevuelto, montoenvio', 'numerical'),
+			array('motivo', 'length', 'max'=>300),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, user_id, orden_id, fecha, estado, montodevuelto, montoenvio', 'safe', 'on'=>'search'),
+			array('id, user_id, orden_id, preciotallacolor_id, motivo, montodevuelto, montoenvio', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,6 +64,7 @@ class Devolucion extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'orden' => array(self::BELONGS_TO, 'Orden', 'orden_id'),
+			'preciotallacolor' => array(self::BELONGS_TO, 'PrecioTallaColor', 'preciotallacolor_id'),
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 		);
 	}
@@ -75,8 +78,8 @@ class Devolucion extends CActiveRecord
 			'id' => 'ID',
 			'user_id' => 'User',
 			'orden_id' => 'Orden',
-			'fecha' => 'Fecha',
-			'estado' => 'Estado',
+			'preciotallacolor_id' => 'Preciotallacolor',
+			'motivo' => 'Motivo',
 			'montodevuelto' => 'Montodevuelto',
 			'montoenvio' => 'Montoenvio',
 		);
@@ -96,8 +99,8 @@ class Devolucion extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('orden_id',$this->orden_id);
-		$criteria->compare('fecha',$this->fecha,true);
-		$criteria->compare('estado',$this->estado);
+		$criteria->compare('preciotallacolor_id',$this->preciotallacolor_id);
+		$criteria->compare('motivo',$this->motivo,true);
 		$criteria->compare('montodevuelto',$this->montodevuelto);
 		$criteria->compare('montoenvio',$this->montoenvio);
 

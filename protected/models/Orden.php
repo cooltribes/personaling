@@ -795,5 +795,21 @@ class Orden extends CActiveRecord
            return Yii::app()->db->createCommand($sql)->queryScalar();
 	}
 	
+
+	public function setActualizadas(){
+		if($this->totalActualizado==0||is_null($this->totalActualizado)){
+			$this->totalActualizado=$this->total;
+			if($this->save()){
+				foreach($this->ohptc as $ohptc){
+					if($ohptc->cantidadActualizada==0||is_null($ohptc->cantidadActualizada))
+					{	$ohptc->cantidadActualizada=$ohptc->cantidad;
+						$ohptc->save();
+					}
+				}
+			}
+		}
+		
+	}
+	
 	
 }

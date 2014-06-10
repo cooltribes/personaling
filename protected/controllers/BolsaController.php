@@ -1839,6 +1839,7 @@ class BolsaController extends Controller
             $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
             
             $orden = Orden::model()->findByPk($id);
+			$orden->setActualizadas();
             //$pago = Pago::model()->findByPk($orden->pago_id);
             if(!$admin){                
                 $metric = new ShoppingMetric();

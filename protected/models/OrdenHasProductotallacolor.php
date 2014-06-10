@@ -6,7 +6,7 @@
  * - 1 Pendiente de pago
  * - 2 Pagada  
  */
-
+ 
 /**
  * This is the model class for table "{{orden_has_productotallacolor}}".
  *
@@ -247,7 +247,6 @@ class OrdenHasProductotallacolor extends CActiveRecord
             } 
             
         }
-        
-        
+
 
 }

@@ -772,6 +772,10 @@ $tracking=$orden->getTrackingInfo();
           <td colspan="9" ><div class="text_align_right"><strong>Descuento</strong></div></td>
           <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->descuento, 2, ',', '.'); ?></td>
         </tr>  
+        <tr>
+          <td colspan="9" ><div class="text_align_right"><strong>Balance utilizado</strong></div></td>
+          <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->descuentoRegalo, 2, ',', '.'); ?></td>
+        </tr> 
         <?php if($orden->iva>0){?>
         <tr>
           <td colspan="9" ><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Tax'); ?></strong></div></td>

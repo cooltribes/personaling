@@ -97,6 +97,7 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 					//	echo Color::model()->findByPk($test->color_id)->valor;
 					//}
 					$pre="";
+					$precio_descuento = "";
 					/* 	foreach ($producto->precios as $precio) {
 				   		$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 						
@@ -105,9 +106,10 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 						}
 					 */
 					 	array_push($cantidades,$productotallacolor->cantidad);
-					 	$pre = $producto->precioVenta;
-						array_push($precios,$producto->precioVenta);	
-						array_push($descuentos,0);
+					 	$pre = $producto->getPrecioVenta2(false);
+					 	$precio_descuento = $producto->getPrecioDescuento(false);
+						array_push($precios,floatval($pre));	
+						array_push($descuentos,$producto->getAhorro(false));
                 	?>
                 <tr>
                   <?php
@@ -159,7 +161,15 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
                   </td>
                     
                   
-                  <td> <?php echo Yii::t('contentForm', 'currSym').' '.$pre; ?></td>
+                  <td>
+                  	<?php 
+                  	if(floatval($precio_descuento) < floatval($pre)){
+                  		echo '<del>'.Yii::t('contentForm', 'currSym').' '.$pre.'</del><br/>'.Yii::t('contentForm', 'currSym').' '.$precio_descuento;
+                  	}else{
+                  		echo Yii::t('contentForm', 'currSym').' '.$pre;
+                  	}
+                  	?>
+                  </td>
                   
 				<td width='8%'>
 					<input type="hidden" value="<?php echo $productotallacolor->cantidad; ?>" />
@@ -254,19 +264,31 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                                         
 
                                 $pre="";
+                                $precio_descuento = "";
                                 /*foreach ($producto->precios as $precio) {
                                 $pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 
                                 array_push($precios,$precio->precioDescuento);	
                                 array_push($descuentos,$precio->ahorro);		
                                 }*/
-                                $pre = $producto->precioVenta;
-                                array_push($precios,$producto->precioVenta);	
-                                array_push($descuentos,0);
+                                //$pre = $producto->precioVenta;
+
+								$pre = $producto->getPrecioVenta2(false);
+					 			$precio_descuento = $producto->getPrecioDescuento(false);
+                                array_push($precios,floatval($pre));	
+                                array_push($descuentos,$producto->getAhorro(false));
 
                                 array_push($cantidades,$productoBolsa->cantidad);
 
-                                echo "<td>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
+                                echo "<td>";
+				                  	if(floatval($precio_descuento) < floatval($pre)){
+				                  		echo '<del>'.Yii::t('contentForm', 'currSym').' '.$pre.'</del><br/>'.Yii::t('contentForm', 'currSym').' '.$precio_descuento;
+				                  	}else{
+				                  		echo Yii::t('contentForm', 'currSym').' '.$pre;
+				                  	}
+                  				echo "<td>";
+
+                                //echo "<td>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
                                 ?>
 
                                 <td width='8%'>
@@ -401,13 +423,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				}?>
                  </h5>
                 <hr/>
-<!--                 <label class="checkbox">
-                  <input type="checkbox">
+<!--                 <label class='checkbox'>
+                  <input type='checkbox'>
                   Envolver y enviar como regalo (9Bs. Adicionales) </label>
                 <hr/> -->
-                <div class=" margin_bottom">
-                  <div class="tabla_resumen_bolsa">
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
+                <div class='margin_bottom'>
+                  <div class='tabla_resumen_bolsa'>
+                    <table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-condensed '>
                       <?php
                       	$totalPr=0;
                       	$totalDe=0;
@@ -417,17 +439,17 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 						if (empty($precios)) // si no esta vacio
 						{}
 						else{
-							
 							foreach($precios as $x){
 	                      		$totalPr = $totalPr + ($x * $cantidades[$i]);
 								$i++;
 	                      	}
 						}
-					/*	foreach($descuentos as $y)
+						foreach($descuentos as $y)
                       	{
                       		$totalDe = $totalDe + $y;
-                      	}*/
+                      	}
 						
+						//$iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')); 
 						$iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')); 
 						
 						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')) + $envio; 

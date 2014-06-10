@@ -521,6 +521,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               </tr>
               <?php } ?>
               <tr>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Used Balance:'); ?></th>
+                <td class="text_align_right" id="descuentoBalance"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency(0, ''); ?></td>
+              </tr>
+              <tr>
                 <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total'); ?>:</h4></th>
                 <td class="text_align_right"><h4 id="precio_total"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
               </tr>
@@ -917,19 +921,24 @@ $('#TarjetaCredito_year').change(function(){
 			//console.log('Total: '+total+' - Balance: '+balance);
 			if($('#usar_balance').is(':checked')){
 				$('#usar_balance_hidden').val('1');
-				//console.log('checked');
+				
 				if(balance >= total){
-					$('#descuento').html('<?php echo Yii::t('contentForm','currSym'); ?> '+total);
-					$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> 0');
+                    
+                    $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '+'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');
+					//$('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '+total);
+					$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?>'+'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
 				}else{
-					$('#descuento').html('<?php echo Yii::t('contentForm','currSym'); ?> '+balance.toFixed(2));
-					$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+(total-balance).toFixed(2));
+                    //console.log('<?php echo Yii::app()->numberFormatter->formatCurrency($balance,""); ?> ');
+                    $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym') . " " . Yii::app()->numberFormatter->formatCurrency($balance, "")?>');
+					//$('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '+balance.toFixed(2));
+					$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+'<?php echo Yii::app()->numberFormatter->formatCurrency($t-$balance, "")?>');
+                    //$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+(total-balance).toFixed(2));
 				}
 			}else{
 				$('#usar_balance_hidden').val('0');
 				//console.log('not checked');
-				$('#descuento').html('<?php echo Yii::t('contentForm','currSym'); ?> 0');
-				$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+total.toFixed(2));
+				$('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '+'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
+				$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');
 			}
 		}
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');

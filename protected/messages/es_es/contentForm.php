@@ -48,6 +48,7 @@ return array (
 	'Approved' => 'Aprobados',
 	'availables' => 'disponibles',
 	'Available Balance:'=>'Balance Disponible:',
+	'Used Balance:'=>'Balance utilizado:',
     'Avaliable for {user}:' => 'Disponible para {user}:',
     'Active Orders' => 'Compras Activas',
     

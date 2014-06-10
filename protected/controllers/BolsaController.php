@@ -455,7 +455,11 @@ class BolsaController extends Controller
 							$orden->descuento = Yii::app()->getSession()->get('descuento');
 							$orden->envio = Yii::app()->getSession()->get('envio');
 							$orden->iva = Yii::app()->getSession()->get('iva');
-							$orden->descuentoRegalo = 0;
+							//$orden->descuentoRegalo = 0;
+							if(Yii::app()->getSession()->get('descuentoRegalo')>0)
+                            	$orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
+							else
+                            	$orden->descuentoRegalo = 0;
 							$orden->total = Yii::app()->getSession()->get('total');
 							$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
 							$orden->estado = 1; // en espera de pago
@@ -598,18 +602,21 @@ class BolsaController extends Controller
                             ));
                     
                     $descuento = Yii::app()->getSession()->get('descuento');
+                    $descuentoRegalo = 0;
                     $total = Yii::app()->getSession()->get('total');
                     if(Yii::app()->getSession()->get('usarBalance') == '1'){
                             $balance = User::model()->findByPK($usuario)->saldo;
                             $balance = floor($balance *100)/100; 
                             if($balance > 0){
-                                    if($balance >= $total){
-                                            $descuento = $total;
-                                            $total = 0;
-                                    }else{
-                                            $descuento = $balance;
-                                            $total = $total - $balance;
-                                    }
+                                if($balance >= $total){
+                                        $descuentoRegalo = $total;
+                                        $total = 0;
+                                }else{
+                                        $descuentoRegalo = $balance;
+                                        $total = $total - $balance;
+                                }
+                                Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
+                                //Yii::app()->getSession()->add('total',$total);
                             }
                     }
 
@@ -1164,7 +1171,11 @@ class BolsaController extends Controller
 								else
                                 	$orden->envio = 0;
                                 $orden->iva = Yii::app()->getSession()->get('iva');
-                                $orden->descuentoRegalo = 0;
+                                if(Yii::app()->getSession()->get('descuentoRegalo')>0)
+                                	$orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
+								else
+                                	$orden->descuentoRegalo = 0;
+                                //$orden->descuentoRegalo = 0;
                                 $orden->total = Yii::app()->getSession()->get('total');
                                 $orden->seguro = Yii::app()->getSession()->get('seguro');
                                 $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
@@ -1262,7 +1273,11 @@ class BolsaController extends Controller
                                     $orden->descuento = 0;
                                     $orden->envio = Yii::app()->getSession()->get('envio');
                                     $orden->iva = Yii::app()->getSession()->get('iva');
-                                    $orden->descuentoRegalo = 0;
+                                    //$orden->descuentoRegalo = 0;
+                                    if(Yii::app()->getSession()->get('descuentoRegalo')>0)
+	                                	$orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
+									else
+	                                	$orden->descuentoRegalo = 0;
                                     $orden->total = Yii::app()->getSession()->get('total');
                                     $orden->seguro = Yii::app()->getSession()->get('seguro');
                                     $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
@@ -1352,7 +1367,11 @@ class BolsaController extends Controller
                                 $orden->descuento = 0;
                                 $orden->envio = Yii::app()->getSession()->get('envio');
                                 $orden->iva = Yii::app()->getSession()->get('iva');
-                                $orden->descuentoRegalo = 0;
+                                //$orden->descuentoRegalo = 0;
+                                if(Yii::app()->getSession()->get('descuentoRegalo')>0)
+                                	$orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
+								else
+                                	$orden->descuentoRegalo = 0;
                                 $orden->total = Yii::app()->getSession()->get('total');
                                 $orden->seguro = Yii::app()->getSession()->get('seguro');
                                 $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
@@ -1608,7 +1627,13 @@ class BolsaController extends Controller
 							$orden->descuento = 0;
 							$orden->envio = $_POST['envio'];
 							$orden->iva = $_POST['iva'];
-							$orden->descuentoRegalo = 0;
+							//$orden->descuentoRegalo = 0;
+							if(isset($_POST['descuentoRegalo'])){
+								if($_POST['descuentoRegalo']>0)
+	                            	$orden->descuentoRegalo = $_POST['descuentoRegalo'];
+								else
+	                            	$orden->descuentoRegalo = 0;
+                            }
 							$orden->total = $_POST['total'];
 							$orden->seguro = $_POST['seguro'];
 							$orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
@@ -2845,8 +2870,17 @@ class BolsaController extends Controller
 
             $orden = new Orden;
             $orden->subtotal = Yii::app()->getSession()->get('subtotal');
-            $orden->descuento = 0;
-            $orden->descuentoRegalo = 0;            
+            //$orden->descuento = Yii::app()->getSession()->get('descuento');
+            if(Yii::app()->getSession()->get('descuento')>0){
+            	$orden->descuento = Yii::app()->getSession()->get('descuento');
+            }else{
+            	$orden->descuento = 0;
+            }
+            if(Yii::app()->getSession()->get('descuentoRegalo')>0){
+            	$orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
+            }else{
+            	$orden->descuentoRegalo = 0;
+            }
             $orden->envio = Yii::app()->getSession()->get('envio');
             $orden->iva = Yii::app()->getSession()->get('iva');
             $orden->seguro = Yii::app()->getSession()->get('seguro');
@@ -2859,7 +2893,7 @@ class BolsaController extends Controller
             $orden->tipo_guia = Yii::app()->getSession()->get('tipo_guia');
             $orden->peso = Yii::app()->getSession()->get('peso');
             
-            $totalOrden = round(Yii::app()->getSession()->get('total'), 2);
+            $totalOrden = round(Yii::app()->getSession()->get('total')-$orden->descuentoRegalo, 2);
             $orden->total = $totalOrden;
             if (!($orden->save())) {
                 echo CJSON::encode(array(

@@ -20,16 +20,17 @@ $(":submit").mouseup(function() {
 
 if (!Yii::app()->user->isGuest) { // que este logueado
 	$descuento = Yii::app()->getSession()->get('descuento');
+  $descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
 	$total = Yii::app()->getSession()->get('total');
 	if(Yii::app()->getSession()->get('usarBalance') == '1'){
 		$balance = User::model()->findByPK($user)->saldo;
 		$balance = floor($balance *100)/100; 
 		if($balance > 0){
 			if($balance >= $total){
-				$descuento = $total;
+				$descuentoRegalo = $total;
 				$total = 0;
 			}else{
-				$descuento = $balance;
+				$descuentoRegalo = $balance;
 				$total = $total - $balance;
 			}
 		}
@@ -78,6 +79,7 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
   <input type="hidden" id="tipoPago" value="<?php echo(Yii::app()->getSession()->get('tipoPago')); ?>" />
   <input type="hidden" id="subtotal" value="<?php echo(Yii::app()->getSession()->get('subtotal')); ?>" />
   <input type="hidden" id="descuento" value="<?php echo(Yii::app()->getSession()->get('descuento')); ?>" />
+  <input type="hidden" id="descuentoRegalo" value="<?php echo(Yii::app()->getSession()->get('descuentoRegalo')); ?>" />
   <input type="hidden" id="envio" value="<?php echo(Yii::app()->getSession()->get('envio')); ?>" />
   <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
   <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
@@ -312,6 +314,13 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
               <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
            	</tr>
            	<?php } ?>
+
+            <?php if(Yii::app()->getSession()->get('usarBalance') == '1'){ // si utilizó balance ?> 
+            <tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Used Balance:') ?></th>
+              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuentoRegalo, ''); ?></td>
+            </tr>
+            <?php } ?>
             <tr>
               <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total') ?>:</h4></th>
               <td><h4><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>

@@ -188,18 +188,25 @@ class InboundController extends Controller
 	 */
 	function getInboundConf($id){
             
+            $enProduccion = strpos(Yii::app()->baseUrl, "develop") == false 
+                && strpos(Yii::app()->baseUrl, "test") == false;
+            
             $ftpServer = "localhost";
             $userName = "personaling";
             $userPwd = "P3rs0n4l1ng";            
+
+            if($enProduccion){
+                $ftpServer = "ftp.logisfashion.com";
+                $userName = "personaling@ftp.logisfashion.com";
+                $userPwd = "Personaling789"; 
+            }       
             
             $tipoArchivo = "InboundConfirmation_";
             $rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;        
             
             /* Directorio OUT donde estan los confirmation*/
             $directorio = "html/develop/develop/protected/OUT/";
-            if(strpos(Yii::app()->baseUrl, "develop") == false 
-                && strpos(Yii::app()->baseUrl, "test") == false){
-
+            if($enProduccion){
                 $directorio = "OUT/"; // En LogisFashion
             }
             

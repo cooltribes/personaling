@@ -137,10 +137,18 @@ class MasterData extends CActiveRecord
             usuario: personaling@ftp.logisfashion.com
             PAS: Personaling789
              */
+            $enProduccion = strpos(Yii::app()->baseUrl, "develop") == false 
+                && strpos(Yii::app()->baseUrl, "test") == false;
             
             $ftpServer = "localhost";
             $userName = "personaling";
             $userPwd = "P3rs0n4l1ng";            
+
+            if($enProduccion){
+                $ftpServer = "ftp.logisfashion.com";
+                $userName = "personaling@ftp.logisfashion.com";
+                $userPwd = "Personaling789"; 
+            }
             
             $nombre = "";
             $rutaArchivo = "";
@@ -172,20 +180,17 @@ class MasterData extends CActiveRecord
             //Guardar en local
             $docXml->asXML($rutaArchivo.$idSaved.".xml");                                
             
-            $nombreArchivo = $nombre;//"Outbound.xml";
+            $nombreArchivo = $nombre;
             $archivo = tmpfile();
             fwrite($archivo, $docXml->asXML());
             fseek($archivo, 0);
             
-//            $directorio = "IN/"; // En LogisFashion
             /* en pruebas dejarlos aparte, en produccion
              * subirlo a una carpeta especifica de produccion*/
             $directorio = "html/develop/develop/protected/data";
-            if(strpos(Yii::app()->baseUrl, "develop") == false 
-                && strpos(Yii::app()->baseUrl, "test") == false){
-
-                $directorio = "html/develop/develop/protected/data/produccion";
-            }
+            if($enProduccion){                
+                $directorio = "IN/";
+            }            
             
             //realizar la conexion ftp
             $conexion = ftp_connect($ftpServer); 

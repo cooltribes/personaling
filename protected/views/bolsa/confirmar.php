@@ -397,7 +397,8 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
                             'type'=>'warning',        
                             //'buttonType'=>'button',
                             'size'=>'large',
-                            'label'=>$tipo_pago==8?Yii::t('contentForm','CONFIRMAR COMPRA') :Yii::t('contentForm','Pay with PayPal'),
+                            'label'=>$tipo_pago==8?Yii::t('contentForm','CONFIRMAR COMPRA'):
+                            ($tipo_pago==5?Yii::t('contentForm','Pay with credit card'):Yii::t('contentForm','Pay with PayPal')),
                             'url'=> $urlAztive, // action
                             'icon'=>'lock white',
                             'htmlOptions'=>array(

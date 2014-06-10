@@ -40,7 +40,7 @@ class Giftcard extends CActiveRecord
         //Montos para españa
         public static $montosES = array(1=>1, 5 => 5, 10 => 10, 15 => 15,
                                         20 => 20, 50 => 50, 100 => 100);
-        //Montos para españa
+        //Montos para Venezuela
         public static $montosVE = array(
                         100 => 100,
                         200 => 200,

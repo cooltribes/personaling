@@ -345,6 +345,60 @@ class Producto extends CActiveRecord
             else
                 return 0;
     }
+
+    public function getPrecioDescuento($format=true)
+	{
+            if (is_null($this->_precio)) {
+                $c = new CDbCriteria();
+                $c->order = '`id` desc';
+                $c->compare('tbl_producto_id', $this->id);
+                $this->_precio = Precio::model()->find($c);
+            }
+            if (isset($this->_precio->precioDescuento))
+                if ($format) {
+                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioDescuento);
+                } else {
+                    return $this->_precio->precioDescuento;
+                }
+            else
+                return 0;
+    }
+
+    public function getPrecioVenta2($format=true)
+	{
+            if (is_null($this->_precio)) {
+                $c = new CDbCriteria();
+                $c->order = '`id` desc';
+                $c->compare('tbl_producto_id', $this->id);
+                $this->_precio = Precio::model()->find($c);
+            }
+            if (isset($this->_precio->precioVenta))
+                if ($format) {
+                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioVenta);
+                } else {
+                    return $this->_precio->precioVenta;
+                }
+            else
+                return 0;
+    }
+
+    public function getAhorro($format=true)
+	{
+            if (is_null($this->_precio)) {
+                $c = new CDbCriteria();
+                $c->order = '`id` desc';
+                $c->compare('tbl_producto_id', $this->id);
+                $this->_precio = Precio::model()->find($c);
+            }
+            if (isset($this->_precio->ahorro))
+                if ($format) {
+                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->ahorro);
+                } else {
+                    return $this->_precio->ahorro;
+                }
+            else
+                return 0;
+    }
 	/*
 	public function getPrecioNf()
 	{

@@ -530,6 +530,10 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
         <tr>
+          <td><?php echo Yii::t('contentForm','Used balance');  ?></td>
+          <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuentoRegalo). " ".Yii::t('contentForm','currSym')."."; ?></td>
+        </tr>
+        <tr>
           <td><?php echo Yii::t('contentForm','Shipping and Transport');  ?></td>
           <td><?php 
           	if($orden->envio>0)

@@ -299,7 +299,7 @@ public function actionReportexls(){
               $_POST = $_SESSION['todoPost'];
             }            
             
-            if(isset($_POST['dropdown_filter'])){  
+            if(isset($_POST['dropdown_filter'])){
                                 
                 $_SESSION['todoPost'] = $_POST;          
                 

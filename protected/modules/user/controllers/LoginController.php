@@ -81,9 +81,10 @@ class LoginController extends Controller
 				
 				
 			}
- 
+ 			
+ 			$seo = SeoStatic::model()->findByAttributes(array('name'=>'Inicio de sesión'));
 			// display the login form
-			$this->render('/user/login',array('model'=>$model));
+			$this->render('/user/login',array('model'=>$model, 'seo'=>$seo));
 		} else
 			$this->redirect(Yii::app()->controller->module->returnUrl);
 	}

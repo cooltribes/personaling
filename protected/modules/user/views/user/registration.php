@@ -1,7 +1,15 @@
+<?php
+if(isset($seo)){
+	$this->pageTitle = $seo->title;
+	Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
+	Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
+	Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
+}
+?>
 <?php 
-Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características.', 'description', null, null, null);
-Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, personal shopper, Cortefiel, Suiteblanco, Accesorize, moda, ropa, accesorios', 'keywords', null, null, null);
-$this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Regístrate");
+//Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características.', 'description', null, null, null);
+//Yii::app()->clientScript->registerMetaTag('Personaling, Mango, Timberland, personal shopper, Cortefiel, Suiteblanco, Accesorize, moda, ropa, accesorios', 'keywords', null, null, null);
+//$this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Regístrate");
 Yii::app()->clientScript->registerMetaTag('Personaling.com - Regístrate', null, null, array('property' => 'og:title'), null); 
 Yii::app()->clientScript->registerMetaTag('Portal de moda donde puedes comprar prendas y accesorios de marcas prestigiosas, personalizadas y combinadas a tu gusto, necesidades y características', null, null, array('property' => 'og:description'), null);
 Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);

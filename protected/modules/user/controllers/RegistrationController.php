@@ -297,8 +297,9 @@ class RegistrationController extends Controller
 					}
                 }  
                 	
-             
-                $this->render('/user/registration', array('model' => $model, 'profile' => $profile,'referencia'=>$referencia));
+                $seo = SeoStatic::model()->findByAttributes(array('name'=>'Registro'));
+
+                $this->render('/user/registration', array('model' => $model, 'profile' => $profile,'referencia'=>$referencia, 'seo'=>$seo));
             }//else
     }
 

@@ -128,14 +128,5 @@ class Devolucion extends CActiveRecord
 		else 
 			return $statuses[$id];
 	}
-	public function isValid($cantidad, $ptc, $orden){
-		$sql="select sum(cantidad) from tbl_devolucion_has_preciotallacolor where devoluciones_id IN (select id from tbl_devoluciones where orden_id = ".$orden.") and preciotallacolor_id = ".$ptc;
-		$devolucion=Yii::app()->db->createCommand($sql)->queryScalar();
-		$compra=OrdenHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$ptc,'tbl_orden_id'=>$orden));
-		if($compra>=$devolucion)
-			return true;
-		else
-			return false;
-		
-	}
+	
 }

@@ -1,9 +1,12 @@
 <?php
 /*
- * ESTADOS DEL CODIGO
- * 1. Inactiva
- * 2. Activa
+ * ESTADOS DEL CODIGO:
+ * 0. Inactiv0
+ * 1. Activ0
  * 
+ * TIPO DE DESCUENTO:
+ * 0 - Porcentaje
+ * 1 - Fijo
  */
 /**
  * This is the model class for table "{{codigoDescuento}}".
@@ -23,9 +26,10 @@
  * @property Users $userCreador
  */
 class CodigoDescuento extends CActiveRecord
-{
+{   
     
-    
+    //Estados
+    public static $estados = array(0 => "Inactivo", 1 => "Activo");
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -52,15 +56,18 @@ class CodigoDescuento extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('estado, codigo, descuento, tipo_descuento, creador', 'required'),
-                        array('inicio_vigencia', 'required', 'message' => '¿Desde cuándo es válida la giftcard?'),
-                        array('fin_vigencia', 'required', 'message' => '¿Hasta cuándo es válida la giftcard?'),
+			array('codigo', 'required', "message" => "Debes ingresar el código de descuento"),
+			array('descuento', 'required', "message" => "Debes ingresar un monto o porcentaje"),
+			array('estado, tipo_descuento, creador', 'required'),
+                        array('inicio_vigencia', 'required', 'message' => '¿Desde cuándo es válido el código?'),
+                        array('fin_vigencia', 'required', 'message' => '¿Hasta cuándo es válido el código?'),
                     
                         array( 'inicio_vigencia','compare','compareValue' => date("Y-m-d"),'operator'=>'>=', 'allowEmpty'=>'false', 
                             'message' => 'La fecha de inicio de vigencia debe ser mayor o igual a la fecha de hoy.', 'on' => 'insert'),
 			array( 'fin_vigencia','compare','compareAttribute' => 'inicio_vigencia', 'operator'=>'>=', 'allowEmpty'=>'false', 
                             'message' => 'La fecha de fin de vigencia debe ser mayor o igual a la fecha de inicio.', 'on' => 'insert'),                    
                     
+                        array('codigo', 'unique', 'message'=>'Código de Descuento ya registrado.'),
 			array('estado, tipo_descuento', 'numerical', 'integerOnly'=>true),			
                         array('descuento', 'numerical'),
 //                        array('descuento', 'numerical', 'max' => self::getMontoMaximo()),
@@ -93,11 +100,11 @@ class CodigoDescuento extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'estado' => 'Estado',
-			'codigo' => 'Codigo',
+			'codigo' => 'Código',
 			'descuento' => 'Descuento',
-			'tipo_descuento' => 'Tipo Descuento',
-			'inicio_vigencia' => 'Inicio Vigencia',
-			'fin_vigencia' => 'Fin Vigencia',
+			'tipo_descuento' => 'Tipo de Descuento',
+			'inicio_vigencia' => 'Válido desde',
+			'fin_vigencia' => 'Válido hasta',
 			'plantilla_url' => 'Plantilla Url',
 		);
 	}
@@ -129,16 +136,57 @@ class CodigoDescuento extends CActiveRecord
 	}
         
         
-        public static function getMontoMaximo() {
-                   
-           //si es españa
-           if (Yii::app()->language == "es_es") {
-               return self::MAX_MONTO_ES;            
-           //si es venezuela
-           }else if (Yii::app()->language == "es_ve") {
-               return self::MAX_MONTO_VE;            
-           }
+        public static function getTiposDescuento($value = null) {
+           $array  = array(0 => "Porcentaje (%)",
+                    1 => "Fijo (" . Yii::t('backEnd', 'currSym') . ")");                   
 
-           return 0;
+           return $array;
         }
+        public static function getEstados() {
+           
+           return self::$estados;
+        }
+        public function getEstado() {
+           
+           return self::$estados[$this->estado];
+        }
+        public function getDescuento() {
+           
+           $array  = array(0 => "%",
+                    1 => Yii::t('backEnd', 'currSym')); 
+           
+           return $this->descuento . " " . $array[$this->tipo_descuento];
+           
+        }
+        
+        /*Retorna la fecha de inicio de vigencia como un timestamp*/
+        public function getInicioVigencia() {
+            return strtotime($this->inicio_vigencia);
+        }
+        /*Retorna la fecha de inicio de vigencia como un timestamp*/
+        public function getFinVigencia() {
+            return strtotime($this->fin_vigencia);
+        }
+        
+        /**
+         * This method is invoked before validation starts.
+         * @return boolean whether validation should be executed. Defaults to true.
+         */
+        protected function beforeValidate() {
+
+            if($this->inicio_vigencia){
+                $this->inicio_vigencia = strtotime($this->inicio_vigencia);
+                $this->inicio_vigencia = date('Y-m-d', $this->inicio_vigencia); 
+            }
+            
+            
+            if($this->fin_vigencia){
+                $this->fin_vigencia = strtotime($this->fin_vigencia);
+                $this->fin_vigencia = date('Y-m-d', $this->fin_vigencia); 
+            }
+            
+            return parent::beforeValidate();
+            
+        }
+        
 }

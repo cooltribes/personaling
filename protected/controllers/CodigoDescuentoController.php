@@ -6,7 +6,7 @@ class CodigoDescuentoController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+//	public $layout='//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -26,17 +26,14 @@ class CodigoDescuentoController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
+//			array('allow',  // allow all users to perform 'index' and 'view' actions
+//				'actions'=>array('index','view'),
+//				'users'=>array('*'),
+//			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
+				'actions'=>array('index','delete','view','update', 'create'),
+				//'users'=>array('admin'),
+				'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -62,6 +59,7 @@ class CodigoDescuentoController extends Controller
 	public function actionCreate()
 	{
 		$model=new CodigoDescuento;
+                $model->estado = 1;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -69,8 +67,10 @@ class CodigoDescuentoController extends Controller
 		if(isset($_POST['CodigoDescuento']))
 		{
 			$model->attributes=$_POST['CodigoDescuento'];
+                        $model->creador = Yii::app()->user->id;
+                        
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('index'));
 		}
 
 		$this->render('create',array(
@@ -130,21 +130,6 @@ class CodigoDescuentoController extends Controller
 		$dataProvider=new CActiveDataProvider('CodigoDescuento');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
-		));
-	}
-
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new CodigoDescuento('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['CodigoDescuento']))
-			$model->attributes=$_GET['CodigoDescuento'];
-
-		$this->render('admin',array(
-			'model'=>$model,
 		));
 	}
 

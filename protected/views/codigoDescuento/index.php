@@ -36,6 +36,13 @@ $this->breadcrumbs = array(
         }
     </style>
     
+    <div class="row">
+        <div class="span3 offset9">
+            <a href="create" class="btn btn-success"><i class="icon icon-gift icon-white"></i> <?php echo Yii::t('contentForm' , 'Create')." Código"; ?></a>
+        </div>
+    </div>
+    <hr>
+    
     <?php
     $pagerParams=array(
         'header'=>'',
@@ -49,8 +56,8 @@ $this->breadcrumbs = array(
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>            
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'ID').'</th>
-            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Code').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Creator').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Code').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'State').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Descuento').'</th>
             <th colspan="2" scope="col">'.Yii::t('contentForm' , 'Validity').'</th>            

@@ -181,16 +181,15 @@ class ColorController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		//if(Yii::app()->request->isPostRequest)
-		//{
-			// we only allow deletion via POST request
-		$this->loadModel($id)->delete();
-
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			//if(!isset($_GET['ajax']))
-		Yii::app()->user->setFlash('success',UserModule::t("Color eliminado exitosamente"));
-		$this->redirect(array('admin'));
+		$precios_talla_color = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$id));
+		if(sizeof($precios_talla_color) == 0){
+			$this->loadModel($id)->delete();
+			Yii::app()->user->setFlash('success',UserModule::t("Color eliminado"));
+		}else{
+			Yii::app()->user->setFlash('error',UserModule::t("El color está siendo utilizado y no se puede eliminar"));
+		}
 		
+		$this->redirect(array('admin'));
 	}
 
 	/**

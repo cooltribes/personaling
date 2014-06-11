@@ -5,6 +5,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     
     $nombre = $userObject ? $userObject->profile->first_name." ".$userObject->profile->last_name:
                 "";
+
     
 ?>
 <script> var error=0;</script>
@@ -59,6 +60,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				echo "<legend>".Yii::t('contentForm','You don\'t have any saved address')."</legend>";					
 			}
  	
+      if(isset($_SESSION['idFacturacion']))
+		{	echo CHtml::hiddenField('controlBill',Yii::app()->getSession()->get('idFacturacion'),array('class'=>'hidBill'));
+			unset($_SESSION['idFacturacion']);
+		}
+		else
+			echo CHtml::hiddenField('controlBill','0',array('class'=>'hidBill'));
+      
       ?>
       
        </fieldset>
@@ -292,22 +300,22 @@ else
 <script>
 
 	
-	$('#direccion_nueva').submit(function(e) {
-    		e.preventDefault();
-    		
-	 });
-	 
-	 $('#direccionUsada').submit(function(e) {
-    		
-    		if($('#billAdd').val()=='0'){
-    			e.preventDefault();
-    			alert('Debes seleccionar una dirección de Facturación');
-    		}
-    		else{
-    			$('#direccionUsada').submit();
-    		}
-    		
-	 });
+		$('#direccion_nueva').submit(function(e) {
+	    		e.preventDefault();
+	    		
+		 });
+		 
+		 $('.usadas').submit(function(e) {
+	    		
+	    		if($('#controlBill').val()=='0'){
+	    			e.preventDefault();
+	    			alert('Debes seleccionar una dirección de Facturación');
+	    		}
+	    		else{
+	    			$('#direccionUsada').submit();
+	    		}
+	    		
+		 });
 	
 	
 	function agregar(){

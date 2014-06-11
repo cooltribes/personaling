@@ -19,14 +19,14 @@
 							'validateOnSubmit'=>true,
 								
 						),
-						'htmlOptions'=>array('class'=>'form-horizontal  direccion'.$cadauna->id ),
+						'htmlOptions'=>array('class'=>'form-horizontal usadas  direccion'.$cadauna->id ),
 					));
 						
 		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
 		            echo CHtml::hiddenField('tipo','direccionVieja');
 					if(isset($_SESSION['idFacturacion']))
 						{	echo CHtml::hiddenField('billAdd',Yii::app()->getSession()->get('idFacturacion'),array('class'=>'hidBill'));
-							unset($_SESSION['idFacturacion']);
+							
 						}
 					else
 						echo CHtml::hiddenField('billAdd','0',array('class'=>'hidBill'));
@@ -58,6 +58,7 @@
 			            'type'=>'danger',
 			            'size'=>'small',
 			            'label'=>Yii::t('contentForm','Use this shipping address'),
+			            'htmlOptions'=>array('class'=>'usadasButton')
 			        )); 
 					     	
 					echo"

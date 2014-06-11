@@ -105,12 +105,37 @@ class Devolucion extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-	
-	public function getReasons(){
-		return 			array("No se parece a la imagen de la web",
+	 
+	public function getReasons($id = null){
+		$reasons=array("No se parece a la imagen de la web",
 							"Se ve de baja calidad  producto defectuoso",
 							"No es mi talla","No me gusta como me queda la prenda",
 							"El producto que he recibido esta equivocado",
 							"He comprado mas de una talla");
+		if(is_null($id))
+			return $reasons; 
+		else 
+			return $reasons[$id];
+	}
+	public function getStatus($id = null){
+		$statuses=array("Devolucion solicitada",
+							"Notificado a Almacén",
+							"Confirmado por Almacén",
+							"Devolución Completada",
+							"Devolución Rechazada");
+		if(is_null($id))
+			return $statuses; 
+		else 
+			return $statuses[$id];
+	}
+	public function isValid($cantidad, $ptc, $orden){
+		$sql="select sum(cantidad) from tbl_devolucion_has_preciotallacolor where devoluciones_id IN (select id from tbl_devoluciones where orden_id = ".$orden.") and preciotallacolor_id = ".$ptc;
+		$devolucion=Yii::app()->db->createCommand($sql)->queryScalar();
+		$compra=OrdenHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$ptc,'tbl_orden_id'=>$orden));
+		if($compra>=$devolucion)
+			return true;
+		else
+			return false;
+		
 	}
 }

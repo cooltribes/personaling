@@ -82,11 +82,12 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 					)
 				),
                 array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),
-                array('label'=>'Gift Card', 'url'=>'#', 'items'=>array(                	
-                array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
+                array('label'=>'Promociones', 'url'=>'#', 'items'=>array(                	
+                                array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
+                                array('label'=>'Códigos de Descuento', 'url'=>array('/codigoDescuento/index')),
 
-					),
-				),
+                                ),
+                    ),
                	//array('label'=>'Sistema', 'url'=>array('/site/logout')),
 				array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),

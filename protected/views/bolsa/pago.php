@@ -23,6 +23,15 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                         'htmlOptions'=>array('class'=>''),
                                 )); 
                                 ?>
+<style>
+    .siguiente{
+        text-align: center;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        margin-top: 0px;
+        
+    }
+</style>
 <div class="container margin_top">
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
@@ -295,12 +304,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 ?>
     <?php // Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
     <?php //Yii::app()->getSession()->add('tipoPago',1); ?>
-    <div class="span5 margin_bottom padding_top_xsmall">
+    <div class="span5 margin_bottom">
     	
       <div class="margin_left">
         <div id="resumen" class="well well_personaling_big ">
           <h4><?php echo Yii::t('contentForm','Summary of the purchase'); ?></h4>
-          <div class=" margin_bottom">
+          <div class="">
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
               <tr id="adentro">
                 <?php
@@ -532,22 +541,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
             <div id="precio_total_hidden" style="display: none;"><?php echo $t; ?></div>
             <?php
-            
-				
-                        // variables de sesion
-                        Yii::app()->getSession()->add('subtotal',$totalPr);
-                        Yii::app()->getSession()->add('descuento',$totalDe);
-                        Yii::app()->getSession()->add('envio',$envio);
-                     	Yii::app()->getSession()->add('iva',$iva);
-                        Yii::app()->getSession()->add('total',$t);
-						Yii::app()->getSession()->add('seguro',$seguro);
-						Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
-						Yii::app()->getSession()->add('peso',$peso_total);
+            // variables de sesion
+                Yii::app()->getSession()->add('subtotal',$totalPr);
+                Yii::app()->getSession()->add('descuento',$totalDe);
+                Yii::app()->getSession()->add('envio',$envio);
+                Yii::app()->getSession()->add('iva',$iva);
+                Yii::app()->getSession()->add('total',$t);
+                Yii::app()->getSession()->add('seguro',$seguro);
+                Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
+                Yii::app()->getSession()->add('peso',$peso_total);
 			
-			
-			
-				$balance = User::model()->findByPK($user)->saldo;
-				$balance = floor($balance *100)/100;
+                $balance = User::model()->findByPK($user)->saldo;
+                $balance = floor($balance *100)/100;
                 $class = "";		
 
                 if($balance <= 0){
@@ -555,6 +560,25 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 }
 	    ?>
             <div>
+                <label class="radio">
+                  <input type="radio" name="opcionSaldo" id="optionsRadios1" value="option1" checked>
+                  <?php
+                    if($admin){
+                        echo Yii::t('contentForm', 'Use Balance.'); ?><br>
+                        <?php echo Yii::t ('contentForm', 'Avaliable for {user}:', 
+                                array("{user}"=>$nombre)) ?>
+                        <strong> <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                    <?php                 
+                    }else{
+                        echo Yii::t('contentForm', 'Use Balance available:'); ?> <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>                    
+                    <?php } ?>
+                </label>
+                <label class="radio">
+                  <input type="radio" name="opcionSaldo" id="optionsRadios2" value="option2">
+                    <?php
+                        echo Yii::t('contentForm', 'Usar cupón de descuento'); 
+                    ?>
+                </label>
                 <label class="checkbox<?php echo $class; ?>">
                 <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
                 <?php
@@ -630,7 +654,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <input type="hidden" id="tipo_pago" name="tipo_pago" value="5" />
             <input type="hidden" id="usar_balance_hidden" name="usar_balance_hidden" value="0" />
             <input type="hidden" id="conSeguro" name="conSeguro" value="0" />
-            <div class="form-actions">
+            <div class="form-actions siguiente">
               <?php $this->widget('bootstrap.widgets.TbButton', array(
 	            'type'=>'warning',
 	            'size'=>'large',

@@ -1432,8 +1432,10 @@ class BolsaController extends Controller
 
                                         $detalle_balance->comentario = "Uso de Saldo";
                                         $detalle_balance->estado = 1;
+                                        $detalle_balance->fecha = date("Y-m-d H:i:s");                                        
                                         $detalle_balance->orden_id = $orden->id;
                                         $detalle_balance->tipo_pago = Detalle::USO_BALANCE;
+                                        
                                         if ($detalle_balance->save()) {
                                             
                                             $estado = new Estado;

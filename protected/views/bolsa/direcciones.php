@@ -59,7 +59,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				echo "<legend>".Yii::t('contentForm','You don\'t have any saved address')."</legend>";					
 			}
  	
-      ?>
+     
+		
+	 ?>
       
        </fieldset>
       </form>
@@ -293,21 +295,12 @@ else
 
 	
 	$('#direccion_nueva').submit(function(e) {
-    		e.preventDefault();
-    		
+    		e.preventDefault();    		
 	 });
 	 
-	 $('#direccionUsada').submit(function(e) {
-    		
-    		if($('#billAdd').val()=='0'){
-    			e.preventDefault();
-    			alert('Debes seleccionar una dirección de Facturación');
-    		}
-    		else{
-    			$('#direccionUsada').submit();
-    		}
-    		
-	 });
+	/*
+		
+		 */
 	
 	
 	function agregar(){
@@ -353,7 +346,9 @@ else
 		                        scrollTop: ($('#scrollNueva').offset().top - 150)
 		                    }, 500);
 							$('body').removeClass('aplicacion-cargando');
-							$('#scrollNueva').removeClass('alert-success');											           
+							$('#scrollNueva').removeClass('alert-success');	
+							$('#controlBill').val('0');
+																	           
 				      },
 				      error:function(){
 				  
@@ -460,16 +455,7 @@ else
 	
 	
 	
-	$('.billingAddress').change(function(){
 
-			$('.hidBill').val($(this).val());
-
-			$('.billingAddress').attr('checked', false);
-			$(this).attr('checked','checked');
-			
-		
-		
-	});
 	
 	
 </script>

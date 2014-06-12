@@ -1,4 +1,11 @@
 <?php 
+
+if(isset($_SESSION['idFacturacion']))
+		{	echo CHtml::hiddenField('controlBill',Yii::app()->getSession()->get('idFacturacion'),array('class'=>'hidBill'));
+			unset($_SESSION['idFacturacion']);
+		}
+		else
+			echo CHtml::hiddenField('controlBill','0',array('class'=>'hidBill'));
 	foreach($direcciones as $cadauna){
 	       			$ciudad = Ciudad::model()->findByPk($cadauna->ciudad_id);
 					$provincia = Provincia::model()->findByPk($cadauna->provincia_id);
@@ -19,7 +26,7 @@
 							'validateOnSubmit'=>true,
 								
 						),
-						'htmlOptions'=>array('class'=>'form-horizontal  direccion'.$cadauna->id ),
+						'htmlOptions'=>array('class'=>'form-horizontal usadas direccion'.$cadauna->id ),
 					));
 						
 		            echo $form->hiddenField($cadauna, 'id', array('value'=>$cadauna->id,'type'=>'hidden'));	 	    
@@ -54,9 +61,10 @@
 		                <p>
 					";
 					$this->widget('bootstrap.widgets.TbButton', array(
-			            'buttonType'=>'submit',
+			         //  'buttonType'=>'submit',
 			            'type'=>'danger',
 			            'size'=>'small',
+			            'htmlOptions'=>array('class'=>'bUsadas'),
 			            'label'=>Yii::t('contentForm','Use this shipping address'),
 			        )); 
 					     	
@@ -78,5 +86,42 @@
 			  		$this->endWidget();
 
 			  	}
+
+
+
+	
+
+
 			  	?>
 			  	
+<script>
+			  		
+	$( document ).ready(function() {
+			  			
+		$('.bUsadas').click(function(e) {
+
+	    		if($('#controlBill').val()=='0'){
+	    			e.preventDefault();
+	    			alert('Debes seleccionar una dirección de Facturación');
+	    		}
+	    		else{
+	    			$(this).closest("form").submit();
+	    		}
+	    		
+		 });
+			  			
+		$('.billingAddress').change(function(){
+
+				$('.hidBill').val($(this).val());
+				$('#controlBill').val($(this).val());
+	
+				$('.billingAddress').attr('checked', false);
+				$(this).attr('checked','checked');
+			
+		
+		
+		}); 			
+			  			
+	});
+			  		
+			  	</script>			  	

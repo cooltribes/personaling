@@ -30,7 +30,7 @@ class OrdenController extends Controller
                                     'detalles','devoluciones','validar','enviar',
                                     'factura','entregar','calcularenvio','createexcel',
                                     'importarmasivo','reporte','reportexls','adminxls',
-                                    'generarExcelOut'),
+                                    'generarExcelOut','devolver'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -838,6 +838,65 @@ public function actionReportexls(){
 	 * Action para las devoluciones 
 	 * Recibe parametro id por get
 	 */	  
+    
+    public function actionDevolver(){
+    	 $orden=$_POST['orden'];
+		 $monto=$_POST['monto'];
+		 
+    	 $productos = explode(',',$_POST['ptcs']);
+         $cantidades = explode(',',$_POST['cantidades']);
+		 $indices= explode(',',$_POST['indices']);
+		 $montos = explode(',',$_POST['montos']);
+		 $motivos = explode(',',$_POST['motivos']);
+		 $ptcs = explode(',',$_POST['ptcs']);
+		 $looks = explode(',',$_POST['looks']);
+		 $dhptcs=array();
+		 $i=0;
+		 $out="ok";
+		 $proceder=false;
+		 $devolucion=new Devolucion;
+		 foreach($cantidades as $cantidad){
+		 	if($cantidad!=0)
+			{	$dhptc= new Devolucionhaspreciotallacolor;
+				if($dhptc->isValid($ptcs[$i],$cantidades[$i],$orden)){
+					$dhptc->preciotallacolor_id=$ptcs[$i];
+					$dhptc->cantidad=$cantidades[$i];
+					$dhptc->motivo=$devolucion->getReasons($motivos[$i]);
+					$dhptc->monto=$monto[$i];
+					$dhptc->look_id=$looks[$i];
+					array_push($dhptcs,$dhptc);
+					$proceder=true;
+				}
+			}
+			
+			
+			$i++;
+		 }
+		 if(!$proceder)
+		 	echo "no";
+		 else{
+		 	if(count($dhptcs))
+		 	{
+				$devolucion->user_id=Yii::app()->user->id;
+				$devolucion->orden_id=$orden;
+				$devolucion->fecha=date('Y-mm-dd h:i:s');
+				$devolucion->estado=1;
+				$devolucion->montodevuelto=$monto;
+				$devolucion->montoenvio=0;
+				if($devolucion->save()){
+					 foreach($dhptcs as $dhptc){
+					 	$dhptc->devolucion_id=$devolucion->id;
+						if(!$dhptc->save()){
+							$out="error";
+						}
+				}
+			 }
+			$out="no";
+		
+			}
+			echo $out;
+		 }
+    }
     public function actionDevoluciones(){
     	
 

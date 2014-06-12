@@ -849,6 +849,9 @@ class BolsaController extends Controller
 	 */
 	public function actionCompra()
 	{
+             if(isset($_SESSION['idFacturacion']))
+				unset($_SESSION['idFacturacion']);	
+				
             if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
 
                 /* Si es compra de admin para usuario */

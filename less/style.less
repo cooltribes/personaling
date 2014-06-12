@@ -178,6 +178,26 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 .td-relative{
   width: 25%;
 }
+.strikethrough {
+  position: relative;
+}
+.strikethrough:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 1px solid;
+  border-color: inherit;
+
+  -webkit-transform:rotate(-5deg);
+  -moz-transform:rotate(-5deg);
+  -ms-transform:rotate(-5deg);
+  -o-transform:rotate(-5deg);
+  transform:rotate(-5deg);
+}
+
+
 /*------------------------------------ Miscelaneos ------------------------------------*/
 
 /* Margins */
@@ -2394,6 +2414,11 @@ src: url('../fonts/entypo.woff'),
         span.precio{
             color:lighten(@color4,50%);
             display:block;
+            margin-bottom:.1em;
+
+            }
+        span.preciostrike{
+            color:lighten(@color4,50%);
             margin-bottom:.1em;
 
             }

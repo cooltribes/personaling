@@ -14,6 +14,7 @@ $this->breadcrumbs=array(
 	var cantidades=Array();
 	var looks=Array();
 	var motivos=Array();
+	var ptcs=Array();
 
 </script>
 	<?php if(Yii::app()->user->hasFlash('success')){?>
@@ -110,6 +111,7 @@ $this->breadcrumbs=array(
                                         CHtml::dropDownList($ptclk->id."_".$lkid."motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled'))."</td></tr>");
                                         echo CHtml::hiddenField($ptclk->id."_".$lkid."indice",$indice); 
 										echo"<script>indices.push('".$indice."');</script>";
+										echo"<script>ptcs.push('".$ptclk->id."');</script>";
 										echo"<script>montos.push('0');</script>";
 										echo"<script>cantidades.push('0');</script>";
 										echo"<script>looks.push('".$lkid."');</script>";
@@ -160,12 +162,13 @@ $this->breadcrumbs=array(
               
                echo("<td>".$talla->valor."</td>");
                                 
-               echo "<td><input type='number' id='".$indiv->id."_0' value='0' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' /></td>";
+               echo "<td><input type='number' id='".$ptc->id."_0' value='0' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' /></td>";
 			  echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td><td>".
-			   CHtml::dropDownList($indiv->id."_0motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled'))."</td></tr>");
-				echo CHtml::hiddenField($indiv->id."_0hid",$prod['cantidad']); 
-				echo CHtml::hiddenField($indiv->id."_0precio",$prod['precio']);
-				echo CHtml::hiddenField($indiv->id."_0indice",$indice);
+			   CHtml::dropDownList($ptc->id."_0motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled','class'=>'motivos'))."</td></tr>");
+				echo CHtml::hiddenField($ptc->id."_0hid",$prod['cantidad']); 
+				echo CHtml::hiddenField($ptc->id."_0precio",$prod['precio']);
+				echo CHtml::hiddenField($ptc->id."_0indice",$indice);
+				echo"<script>ptcs.push('".$ptc->id."');</script>";
 				echo"<script>indices.push('".$indice."');</script>";
 				echo"<script>montos.push('0');</script>"; 
 				echo"<script>cantidades.push('0');</script>";
@@ -225,6 +228,17 @@ $this->breadcrumbs=array(
 <script type="text/javascript">
 	
 var monto = 0;        
+	$( ".motivos" ).change(function() {
+  		var hidden = $(this).attr('id').replace('motivo','indice');
+  		var indice = parseInt($('#'+hidden).val());
+
+  		if($(this).val()=='')
+  			motivos[indice]='-';
+  		else
+  			motivos[indice]= $(this).val();  			
+	}); 
+
+
 
  $('body').on('input','.cant', function(){
  	var a =  parseInt($(this).val());
@@ -276,28 +290,51 @@ $( document ).ready(function() {
 function actualizarArrays(indice,cantidad,monto ){
 	montos[indice]=cantidad*monto;
 	cantidades[indice]=cantidad;
-	console.log(montos.toString()+" - "+cantidades.toString());
+	if(cantidad==0)
+		motivos[indice]='-';
+	console.log(montos.toString()+" - "+cantidades.toString()+" - "+ptcs.toString());
 }
 
 function devolver()
 	{
-		
-                    var id = $('#orden_id').attr('value');
+				var ct=0;
+				var mt=0;
+				for(var i =0; i<indices.length; i++){
+					if(parseInt(cantidades[i])>0)
+						ct++;
+					if(motivos[i]!='-')
+						mt++;
+				}
+				if(ct==mt){
+				    var id = $('#orden_id').attr('value');
                     var monto = $('#monto').attr('value');
+                    	var inds=indices.toString();
+						var monts=montos.toString();
+						var cants=cantidades.toString();
+						var lks=looks.toString();
+						var mots=motivos.toString();
+						var prtcs=ptcs.toString();
                  
-                    
+                     
                     
                     $.ajax({
                         type: "post", 
-                        url: "orden/devoluciones", // action 
-                        data: { 'orden':id, 'check':checkValues, 'monto':monto, 'motivos':motivos, 'envio':envio}, 
+                        url: "../devolver", // action 
+                        data: { 'orden':id, 'monto':monto,'indices':inds, 'montos':monts, 'motivos':mots, 'ptcs':prtcs, 'looks':lks,'cantidades':cants}, 
                         success: function (data) {
 
                             if(data=="ok")
-                                    window.location.reload();
-
-                        }//success
-                    });				
+                                    alert('OK');
+                            if(data=="error")
+                                    alert('error');
+                            if(data=='no')
+                            	alert("Devolución No Válida");        
+                         }
+                    });		
+                }
+                else{
+                	alert('Para cada prenda que desees devolver debes especificar el motivo de la devolción');
+                }		
 		
 		}
 	

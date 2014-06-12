@@ -205,17 +205,7 @@ class DireccionController extends Controller
 				.Yii::t('contentForm','Addresses used above').': </legend>'
 				.$this->renderPartial('/bolsa/_direcciones', array(
 	       			'direcciones'=>$direcciones,'user'=>$user, 'iddireccionNueva' =>$direccion->id ),true)
-	       		."<script> $('#direccionUsada').submit(function(e) {
-	       			if($('#billAdd').val()=='0'){
-    			e.preventDefault();
-    			alert('Debes seleccionar una dirección de Facturación');
-	    		}
-	    		else{ $('#direccionUsada').submit();}});
-	 			$('.billingAddress').change(function(){
-	 				$('.hidBill').val($(this).val());
-	 				$('.billingAddress').attr('checked', false);
-	 				$(this).attr('checked','checked');});
-				 </script>";
+	       		;
 		}
 		
 	}

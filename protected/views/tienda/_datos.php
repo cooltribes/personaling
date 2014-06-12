@@ -64,6 +64,7 @@ $b='';
 	   		//$prePub = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 			}
 		}*/ 
+		//var_dump($data);
 		$prePub=$data->precio;
 		echo ' <input id="productos" value="'.$data->id.'" name="ids" class="ids" type="hidden" >';
 		if(isset($ima)){
@@ -95,6 +96,13 @@ $b='';
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 						//$b = CHtml::image($segunda->ge     tUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
 						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out bg_color3","style"=>"display:none","width" => "270", "height" => "270"));
+
+					//reviso si tiene descuento para mostrarlo
+					$precio = "<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>";
+					if($data->precioDescuento < $data->getPrecioImpuesto()){
+						$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span> | ".Yii::t('contentForm', 'currSym')." ".$data->precioDescuento;
+					}
+
 						echo($encabezado."
 						<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
 						".$a.$b.
@@ -113,7 +121,7 @@ $b='';
 						</a>
 						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 						<a href='".$data->getUrl()."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
-						<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->precio."</span>".$gusta);
+						".$precio.$gusta);
 						
 						
 						$con=$id;

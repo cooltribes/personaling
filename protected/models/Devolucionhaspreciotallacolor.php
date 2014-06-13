@@ -110,5 +110,11 @@ class Devolucionhaspreciotallacolor extends CActiveRecord
 			return false;
 		
 	}
+	public function getxDevolucion($id){
+			
+		$sql="select * from tbl_devolucion_has_preciotallacolor where devolucion_id=".$id;	
+		$looks=Yii::app()->db->createCommand($sql)->queryAll();
+		return $looks;
+	}
 
 }

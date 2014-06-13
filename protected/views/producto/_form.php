@@ -50,6 +50,7 @@
                     <div class="control-group"> <?php echo $form->html5EditorRow($model, 'descripcion', array('class'=>'span5', 'rows'=>6, 'height'=>'200', 'options'=>array('color'=>true))); ?> <?php //echo $form->error($model,'descripcion'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'estado', array(0 => 'Activo', 1 => 'Inactivo',)); ?> <?php echo $form->error($model,'estado'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'destacado', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'destacado'); ?> </div>
+                    <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'outlet', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'outlet'); ?> </div>
                     <div class="control-group">
                         <label for="" class="control-label required"> Calendario</label>
                         <div class="controls">

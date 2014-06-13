@@ -85,7 +85,7 @@ class Producto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('estado, marca_id, view_counter', 'numerical', 'integerOnly'=>true),
+			array('estado, marca_id, view_counter, outlet', 'numerical', 'integerOnly'=>true),
 			array('peso', 'numerical', 'min'=>0.1, 'tooSmall'=>'El peso debe ser mayor a 0'),
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
@@ -93,13 +93,13 @@ class Producto extends CActiveRecord
 			//array('proveedor', 'length', 'max'=>45), 
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),
-			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status, peso', 'safe'),
+			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status, peso, outlet', 'safe'),
 			//array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
 			array('fInicio','compare','compareValue'=>date("m/d/Y"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.'),
 			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso, almacen', 'safe', 'on'=>'search'),
+			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso, almacen, outlet', 'safe', 'on'=>'search'),
 		);
 	}
  
@@ -151,6 +151,7 @@ class Producto extends CActiveRecord
 			'peso' => 'Peso',
 			'almacen' => 'Almacen',
 			'temporada' => 'Temporada',
+			'outlet' => '¿Enviar al Outlet?',
 		);
 	}
 
@@ -178,6 +179,7 @@ class Producto extends CActiveRecord
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('peso',$this->peso,true);
 		$criteria->compare('almacen',$this->almacen,true);
+		$criteria->compare('outlet',$this->outlet,true);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -359,6 +361,24 @@ class Producto extends CActiveRecord
                     return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioDescuento);
                 } else {
                     return $this->_precio->precioDescuento;
+                }
+            else
+                return 0;
+    }
+
+    public function getPrecioImpuesto($format=true)
+	{
+            if (is_null($this->_precio)) {
+                $c = new CDbCriteria();
+                $c->order = '`id` desc';
+                $c->compare('tbl_producto_id', $this->id);
+                $this->_precio = Precio::model()->find($c);
+            }
+            if (isset($this->_precio->precioImpuesto))
+                if ($format) {
+                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioImpuesto);
+                } else {
+                    return $this->_precio->precioImpuesto;
                 }
             else
                 return 0;

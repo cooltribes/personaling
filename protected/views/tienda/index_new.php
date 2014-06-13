@@ -263,7 +263,7 @@ if(isset($seo)){
  
 			<?php
 					$this->renderPartial('_datos',array(
-					'prods'=>$dataProvider,'pages'=>$pages),false,false);   
+					'prods'=>$dataProvider,'pages'=>$pages),false,false);
 				
 				
 			

@@ -324,7 +324,7 @@ function devolver()
                         success: function (data) {
 
                             if(data=="ok")
-                                    alert('OK');
+                                    alert('Ok');
                             if(data=="error")
                                     alert('error');
                             if(data=='no')

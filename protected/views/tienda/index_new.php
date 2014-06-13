@@ -116,6 +116,14 @@ if(isset($seo)){
 						else {
 							echo CHtml::hiddenField('colorhid',0);
 						}
+
+						// reviso outlet para ver si se incluye en el filtro
+						if(isset(Yii::app()->session['outlet']))
+							echo CHtml::hiddenField('outlet',Yii::app()->session['outlet']);
+						else {
+							echo CHtml::hiddenField('outlet','false');
+						}
+
 						foreach($colores as $color){
 							echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
 							
@@ -535,7 +543,7 @@ function refresh(reset)
 	
  //$("#catalogo").infinitescroll = null;
 
-	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid ,#chic_hid').serialize();
+	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid, #chic_hid, #outlet').serialize();
   
 
 

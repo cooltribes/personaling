@@ -123,6 +123,24 @@ class TiendaController extends Controller
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
 
+		/*var_dump(Yii::app()->session['outlet']);
+		if(isset($POST['outlet'])){
+			if($POST['outlet'] == 'true'){
+				$producto->outlet = 1; // productos en el outlet
+				Yii::app()->session['outlet'] = $POST['outlet'];
+			}
+		}else if(isset($_GET['outlet'])){
+			if($_GET['outlet'] == 'true'){
+				$producto->outlet = 1; // productos en el outlet
+				Yii::app()->session['outlet'] = $_GET['outlet'];
+			}
+		}else{
+			$producto->outlet = 0;
+			if(isset(Yii::app()->session['outlet'])){
+				unset(Yii::app()->session['outlet']);
+			}
+		}*/
+
 		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
 		/*
 		if(isset(Yii::app()->session['f_color'])){
@@ -202,6 +220,7 @@ class TiendaController extends Controller
 		
 		  
     	if( isset($_POST['colorhid']) ||  (isset($_GET['page']) && isset(Yii::app()->session['bandera']) ) ){
+    		//echo 'if gigante';
     	//	if(isset($_POST['colorhid'])){
     		Yii::app()->session['bandera'] = true;
 		
@@ -235,6 +254,21 @@ class TiendaController extends Controller
 						}
 					}
 				}
+
+				/*if(isset($POST['outlet'])){
+					if($POST['outlet'] == 'true'){
+						//$producto->outlet = 1; // productos en el outlet
+						Yii::app()->session['outlet'] = $POST['outlet'];
+					}else{
+						Yii::app()->session['outlet'] = 'false';
+					}
+				}else{
+					if(isset(Yii::app()->session['outlet'])){
+							unset(Yii::app()->session['outlet']);
+						}
+				}*/
+
+				
 				
 				if (isset($_POST['cathid'])){
 					if($_POST['cathid']!=0){
@@ -349,6 +383,7 @@ class TiendaController extends Controller
 			}
 			
 			$criteria = $producto->nueva2($a);
+
 			if (isset($_GET['page'])&&
 			(!isset(Yii::app()->session['f_cat'])&&
 			!isset(Yii::app()->session['f_text'])&&
@@ -401,6 +436,7 @@ class TiendaController extends Controller
 			}
 		}
 		else{
+			//echo 'else';
 			unset(Yii::app()->session['bandera']);
 		if(isset(Yii::app()->session['f_color'])){
 			unset(Yii::app()->session['f_color']);
@@ -445,6 +481,7 @@ class TiendaController extends Controller
 			Yii::app()->session['order']=rand(0,8);
 		}
 		$criteria = $producto->nueva2($a);
+
 		$criteria->order=$orden[Yii::app()->session['order']];
 		$total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);

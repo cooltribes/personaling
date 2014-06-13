@@ -160,6 +160,7 @@ return array(
 				'looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',
 				'looks-personalizados'=>'tienda/look',
 				'tienda-ropa-personalizada'=>'tienda/index',
+				'outlet'=>'tienda/index/outlet/true',
 				'formas-de-pago'=>'site/formas_de_pago',
 				'envios'=>'site/condiciones_de_envios_y_encomiendas',
 				'preguntas_frecuentes'=>'site/preguntas_frecuentes',

@@ -789,6 +789,14 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		
 		$criteria->compare('marca_id',$this->marca_id,true);
+
+		//$criteria->compare('outlet',$this->outlet,true);
+		/*if(isset(Yii::app()->session['outlet'])){
+			if(Yii::app()->session['outlet'] == 'true'){
+				$criteria->compare('outlet',1,true);
+			}
+		}*/
+		//$criteria->compare('outlet',1,true);
 		//$criteria->compare('t.estado',0,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
 		$criteria->compare('fFin',$this->fFin,true);
@@ -841,7 +849,12 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			$criteria->addCondition($condition);
 		}
 	
-			
+		//Filtro por outlet
+		if(isset(Yii::app()->session['outlet'])){
+			if(Yii::app()->session['outlet'] == 'true'){
+				$criteria->addCondition('outlet = 1');
+			}
+		}
 			
 		//Filtro por marca
 		if(isset(Yii::app()->session['f_marca'])){

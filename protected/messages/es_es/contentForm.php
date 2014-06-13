@@ -54,7 +54,7 @@ return array (
     'Active Orders' => 'Compras Activas',
     
 
-	'Balance' => 'Saldo',
+	'Balance' => 'Uso de Balance',
 	'Bag' => 'Bolsa',
 	'Back to shop' => 'Regresar a la tienda',
 	'Back to top' => 'Ir arriba',

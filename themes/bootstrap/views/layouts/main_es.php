@@ -81,7 +81,9 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                                 )),
 					)
 				),
-                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'))),
+                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),
+                array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'),
+				array('label'=>'Devoluciones', 'url'=>Yii::app()->baseUrl.'/orden/adminDevoluciones'))),
                 array('label'=>'Promociones', 'url'=>'#', 'items'=>array(                	
                                 array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
                                 array('label'=>'Códigos de Descuento', 'url'=>array('/codigoDescuento/index')),

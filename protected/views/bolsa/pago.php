@@ -559,26 +559,40 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     $class = " hidden";
                 }
 	    ?>
-            <div>
-                <label class="radio">
-                  <input type="radio" name="opcionSaldo" id="optionsRadios1" value="option1" checked>
-                  <?php
-                    if($admin){
-                        echo Yii::t('contentForm', 'Use Balance.'); ?><br>
-                        <?php echo Yii::t ('contentForm', 'Avaliable for {user}:', 
-                                array("{user}"=>$nombre)) ?>
-                        <strong> <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
-                    <?php                 
-                    }else{
-                        echo Yii::t('contentForm', 'Use Balance available:'); ?> <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>                    
-                    <?php } ?>
-                </label>
-                <label class="radio">
-                  <input type="radio" name="opcionSaldo" id="optionsRadios2" value="option2">
+            <div class="promociones">
+                
+                
+                <?php if($balance > 0){ ?>  
+                    <label class="radio" id="opt-balance">
+                      <input type="radio" name="opcionSaldo" id="radio-Saldo" value="1" onclick="usarBalance(<?php echo $t; ?>, <?php echo $balance; ?>)">
+                      <?php
+                        if($admin){
+                            echo Yii::t('contentForm', 'Use Balance.'); ?><br>
+                            <?php echo Yii::t ('contentForm', 'Avaliable for {user}:', 
+                                    array("{user}"=>$nombre)) ?>
+                            <strong> <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>
+                        <?php                 
+                        }else{
+                            echo Yii::t('contentForm', 'Use Balance available:'); ?> <strong><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, ''); ?></strong>                    
+                        <?php } ?>
+                    </label>
+                <?php } ?>
+                <label class="radio" id="opt-codigo">
+                  <input type="radio" name="opcionSaldo" id="radio-Cupon" value="2" onclick="usarCupon(<?php echo $t; ?>, <?php echo $balance; ?>)">
                     <?php
-                        echo Yii::t('contentForm', 'Usar cupón de descuento'); 
+                        echo Yii::t('contentForm', 'Tengo un código de descuento!'); 
                     ?>
                 </label>
+                <div class="padding_left_small margin_top_medium row-fluid" style="display:none" id="collapse-cupon">
+                    <?php echo CHtml::label("Ingresa el código de descuento", "textoCodigo"); ?>    
+                    <?php echo CHtml::textField("textoCodigo"); ?>
+                </div>
+
+                
+                
+                
+                <?php if(false){ ?>
+
                 <label class="checkbox<?php echo $class; ?>">
                 <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
                 <?php
@@ -593,6 +607,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <?php } ?>
                 
               </label>
+                <?php } ?>
             </div>
 	    
             <?php 
@@ -937,37 +952,91 @@ $('#TarjetaCredito_year').change(function(){
 		 
 		if($("#asegurado").is(':checked')){
 			total=total+parseFloat($("#asegurado").val());
-			$("#conSeguro").val('1')
+			$("#conSeguro").val('1');
 		}else{
 			$("#conSeguro").val('0');
 		}
+                
 		if(balance > 0){
-			//console.log('Total: '+total+' - Balance: '+balance);
-			if($('#usar_balance').is(':checked')){
-				$('#usar_balance_hidden').val('1');
-				
-				if(balance >= total){
                     
-                    $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '+'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');
-					//$('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '+total);
-					$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?>'+'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
-				}else{
-                    //console.log('<?php echo Yii::app()->numberFormatter->formatCurrency($balance,""); ?> ');
-                    $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym') . " " . Yii::app()->numberFormatter->formatCurrency($balance, "")?>');
-					//$('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '+balance.toFixed(2));
-					$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+'<?php echo Yii::app()->numberFormatter->formatCurrency($t-$balance, "")?>');
-                    //$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+(total-balance).toFixed(2));
-				}
-			}else{
-				$('#usar_balance_hidden').val('0');
-				//console.log('not checked');
-				$('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '+'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
-				$('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '+'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');
-			}
+                    if($('#usar_balance').is(':checked')){
+                    
+                        $('#usar_balance_hidden').val('1');
+				
+                        if(balance >= total){
+                    
+                            $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '
+                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');                        
+                            
+                            $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?>'
+                                    +'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
+                            
+                        }else{                            
+                            $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym') . 
+                                    " " . Yii::app()->numberFormatter->formatCurrency($balance, "")?>');
+                    
+                            $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '
+                                    +'<?php echo Yii::app()->numberFormatter->formatCurrency($t-$balance, "")?>');
+                        }
+                    }else{
+                    
+                        $('#usar_balance_hidden').val('0');
+                        
+                        $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '
+                            +'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
+                        
+                        $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '
+                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');
+                    }
 		}
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
 	}
-	
+        
+        /*NELSON*/
+	function usarCupon(total, balance){
+		
+		if(balance > 0){
+                    
+                     $('#usar_balance_hidden').val('0');
+                        
+                     $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '
+                            +'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
+                        
+                     $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '
+                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');
+		}
+		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
+	}
+
+        function usarBalance(total, balance){
+		
+		if(balance > 0){
+                    
+                    if(balance >= total){
+                    
+                            $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '
+                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');                        
+                            
+                            $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?>'
+                                    +'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
+                            
+                        }else{                            
+                            $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym') . 
+                                    " " . Yii::app()->numberFormatter->formatCurrency($balance, "")?>');
+                    
+                            $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '
+                                    +'<?php echo Yii::app()->numberFormatter->formatCurrency($t-$balance, "")?>');
+                        }
+		}
+	}
+
+        $("#opt-balance").click(function(e){
+            $("#collapse-cupon").slideUp();
+        });
+        $("#opt-codigo").click(function(e){
+            $("#collapse-cupon").slideDown();
+        });
+
 	function tarjetas()
 	{
 		//alert("Entró");

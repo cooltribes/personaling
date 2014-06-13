@@ -333,12 +333,38 @@ class BolsaController extends Controller
             if(isset($_POST['tipo_pago'])){
 
                     Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
+                    Yii::app()->getSession()->add('usarBalance', "0");
+                    
+                    /*Saber que opcion selecciono, usar balance o usar cupon*/
+                    if(isset($_POST['opcionSaldo'])){
+                        
+                        if($_POST['opcionSaldo'] == '1'){
+                            Yii::app()->getSession()->add('usarBalance', "1");
+                             
+                        }else if($_POST['opcionSaldo'] == '2'){
+                            
+                            //Revisar si el código es valido o no.
+                           if(isset($_POST['textoCodigo']) && $_POST['textoCodigo'] != ""){
+                               //Buscar el codigo en la BD
+                               $codigo = CodigoDescuento::model()->findByAttributes(array("codigo"=>$_POST['textoCodigo']));
+                               
+                               if($codigo){
+                                   echo "<pre>";
+                                   print_r($codigo->attributes);
+                                   echo "</pre><br>";
 
-                    if(isset($_POST['usar_balance']) && $_POST['usar_balance'] == '1'){
-                            Yii::app()->getSession()->add('usarBalance',$_POST['usar_balance']);
-                    }else{
-                            Yii::app()->getSession()->add('usarBalance','0');
+                               }else{
+                                   echo "ERROR";
+                               }
+                               Yii::app()->end();
+                           }
+                            
+                            
+                        }
+                        
                     }
+                    
+                    
 
                     if($_POST['tipo_pago']==2){ // pago de tarjeta de credito
 

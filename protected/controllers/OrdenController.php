@@ -30,7 +30,8 @@ class OrdenController extends Controller
                                     'detalles','devoluciones','validar','enviar',
                                     'factura','entregar','calcularenvio','createexcel',
                                     'importarmasivo','reporte','reportexls','adminxls',
-                                    'generarExcelOut','devolver'),
+                                    'generarExcelOut','devolver','adminDevoluciones','detallesDevolucion',
+									'AceptarDevolucion','RechazarDevolucion','AnularDevuelto','cantidadDevuelto'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -862,7 +863,7 @@ public function actionReportexls(){
 					$dhptc->preciotallacolor_id=$ptcs[$i];
 					$dhptc->cantidad=$cantidades[$i];
 					$dhptc->motivo=$devolucion->getReasons($motivos[$i]);
-					$dhptc->monto=$monto[$i];
+					$dhptc->monto=$montos[$i];
 					$dhptc->look_id=$looks[$i];
 					array_push($dhptcs,$dhptc);
 					$proceder=true;
@@ -879,8 +880,8 @@ public function actionReportexls(){
 		 	{
 				$devolucion->user_id=Yii::app()->user->id;
 				$devolucion->orden_id=$orden;
-				$devolucion->fecha=date('Y-mm-dd h:i:s');
-				$devolucion->estado=1;
+				$devolucion->fecha=date('Y-m-d h:i:s');
+				$devolucion->estado=0;
 				$devolucion->montodevuelto=$monto;
 				$devolucion->montoenvio=0;
 				if($devolucion->save()){
@@ -986,6 +987,59 @@ public function actionReportexls(){
 		}
         
     }
+
+	public function actionAceptarDevolucion(){
+		$devolucion=Devolucion::model()->findByPk($_POST['id']);
+		$orden=Orden::model()->findByPk($devolucion->orden_id);
+		$devolucion->estado=1;
+		foreach($devolucion->dptcs as $dhptc){
+			if(!$dhptc->rechazado)	{	
+				$ohptc=OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$devolucion->orden_id,'preciotallacolor_id'=>$dhptc->preciotallacolor_id));
+				$ohptc->cantidadActualizada=$ohptc->cantidad-$dhptc->cantidad;
+				$ohptc->save();
+			}				
+		}
+		$orden->totalActualizado=$orden->totalActualizado-$devolucion->montodevuelto;
+		if($orden->save()){
+			if($devolucion->save()){
+				echo "ok";
+			}
+		}else{
+			echo "no";
+		}
+	}
+	public function actionRechazarDevolucion(){
+		$devolucion=Devolucion::model()->findByPk($_POST['id']);
+		$devolucion->estado=5;
+		if($devolucion->save())
+			echo "ok";
+		else 
+			echo "no";	
+	}
+	public function actionAnularDevuelto(){
+		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
+		$devuelto->rechazado=1;
+		if($devuelto->save())
+			echo "ok";
+		else
+			echo "no";
+	}
+	public function actionCantidadDevuelto(){
+		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
+		$devuelto->cantidad=$_POST['cantidad'];
+		if($devuelto->save())
+			echo "ok";
+		else
+			echo "no";
+	}
+	public function actionActivarDevuelto(){
+		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
+		$devuelto->rechazado=0;
+		if($devuelto->save())
+			echo "ok";
+		else
+			echo "no";
+	}
 	
 	public function actionFactura($id)
 	{
@@ -2075,9 +2129,26 @@ public function actionValidar()
 		);
 	}
 	*/
+	
+	public function actionAdminDevoluciones(){
+		
+		$devolucion=new Devolucion;	
+		$dataProvider=new CActiveDataProvider($devolucion,array('pagination'=>array('pageSize'=>20,),));
+		
+		$this->render('adminDevoluciones',array('dataProvider'=>$dataProvider));
+		
+	}
+	
+	public function actionDetallesDevolucion($id){
+		
+		$devolucion=Devolucion::model()->findByPk($id);	
+		
+		
+		$this->render('detallesDevolucion',array('devolucion'=>$devolucion));
+		
+	}
         
     public function actionGenerarExcelOut($id) {
-
         
         $orden = Orden::model()->findByPk($id);
         $productos = $orden->ohptc;       

@@ -216,8 +216,8 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 //array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
                 array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
-                array('label'=>'Tienda', 'url'=>array('/tienda/index')),
-                array('label'=>'Outlet', 'url'=>array('/outlet')),
+                array('label'=>'Tienda', 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
+                array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
                 array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest),                 
 				array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
@@ -721,10 +721,16 @@ if(!Yii::app()->user->isGuest){
 </script>
 
 <script>
-$(document).ready(function(){
+    $(document).ready(function(){
         var accepted = readCookie('accept_cookies');
         if(!accepted){
             $('#cookies_notification').show();
+        }
+
+        // verificar si es outlet para arreglar las clases del menu
+        if(document.URL.indexOf('outlet') != -1){
+            $('#outlet_menu').addClass('active');
+            $('#tienda_menu').removeClass('active');
         }
     });
 

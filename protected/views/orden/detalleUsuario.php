@@ -566,6 +566,15 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->iva). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
         <?php }?>
+        <?php if($orden->cupon){ //si utiliza cupon?> 
+            <tr>
+              <td><?php echo Yii::t('contentForm','Cupón de Descuento').
+                      " (".$orden->cupon->cupon->getDescuento()."):";
+                      ?></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.
+                      Yii::app()->numberFormatter->formatCurrency($orden->cupon->descuento, ''); ?></td>
+            </tr>
+            <?php } ?> 
         <tr>
           <td><?php echo Yii::t('contentForm','Total');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->total). " ".Yii::t('contentForm','currSym')."."; ?></td>

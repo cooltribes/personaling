@@ -254,6 +254,11 @@ class Precio extends CActiveRecord
 	public function countxRango($min, $max){
 		$sql="SELECT count(p.id) from tbl_precio p JOIN tbl_producto pr ON pr.id=p.tbl_producto_id  where pr.estado=0 AND pr.`status`=1 
 		AND p.precioVenta >".$min." AND p.precioVenta <".$max;
+		if(isset(Yii::app()->session['outlet'])){
+			if(Yii::app()->session['outlet'] == 'true'){
+				$sql .= ' AND pr.outlet = 1';
+			}
+		}
 		return Yii::app()->db->createCommand($sql)->queryScalar();
 	}
 	

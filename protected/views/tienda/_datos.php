@@ -69,7 +69,12 @@ $b='';
 		echo ' <input id="productos" value="'.$data->id.'" name="ids" class="ids" type="hidden" >';
                 
                 //Icono de descuento - Color Negro
-                $iconoDescuento = '<div class="icono-descuento">10%<span>Descuento</span></div>';
+				$iconoDescuento = '';
+				if($data->precioDescuento < $data->getPrecioImpuesto()){
+					$porcentaje = (($data->getPrecioImpuesto() - $data->precioDescuento) * 100) / $data->getPrecioImpuesto();
+					$iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
+				}
+                
 //                $iconoDescuento = '';
                 
 		if(isset($ima)){

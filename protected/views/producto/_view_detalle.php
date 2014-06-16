@@ -183,9 +183,41 @@
         <div class="span4 columna_secundaria margin_bottom margin_top padding_top">
           <div class="row call2action">
             <div class="span2">
-              <h4 class="precio" ><span><?php echo Yii::t('contentForm','Subtotal'); ?></span> <?php echo Yii::t('contentForm', 'currSym').' ';   
+              <h4 class="precio" ><span><?php echo Yii::t('contentForm','Subtotal'); ?></span> 
+                <?php   
+              /*foreach ($producto->precios as $precio) {
+                if($precio->precioDescuento < $precio->precioImpuesto){
+                  $porcentaje = 100 - (($precio->precioDescuento * 100) / $precio->precioImpuesto);
+                  //$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$data->precio."</del></span> | ".Yii::t('contentForm', 'currSym')." ".$data->precioDescuento;
+                  echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio->precioDescuento.' Con '.round($porcentaje).'% de descuento';
+                }else{
+                  echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'';
+                }
+                  //$datos=$datos.'<h4 class="precio"><span>Subtotal</span> '.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
+              }*/
+
+              $precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+              if($precio_producto){
+                if($precio_producto->tipoDescuento){
+                  switch ($precio_producto->tipoDescuento) {
+                    case 0:
+                      $porcentaje = $precio_producto->valorTipo;
+                      break;
+                    case 1:
+                      $porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioVenta;
+                      break;
+                    default:
+                      # code...
+                      break;
+                  }
+                  $precio_mostrar = $precio_producto->precioVenta + ($precio_producto->precioVenta * 0.21);
+                  echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
+                }else{
+                  echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_producto->precioImpuesto).'';
+                }
+              }
                
-            echo $producto->precio; // precio con IVA
+            //echo $producto->precio; // precio con IVA
               Yii::app()->clientScript->registerMetaTag($producto->precio.' '.Yii::t('contentForm', 'currSym').' ', 'twitter:data1', null, null, null); // registrar tag de precio de twitter
               Yii::app()->clientScript->registerMetaTag('Precio', 'twitter:label1', null, null, null); // registrar tag de precio de Twitter
                 Yii::app()->clientScript->registerMetaTag('Personaling - '.$producto->nombre.' - '.$producto->precio.' '.Yii::t('contentForm', 'currSym'), null, null, array('property' => 'og:title'), null); // registro del meta para facebook

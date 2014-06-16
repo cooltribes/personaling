@@ -330,11 +330,11 @@ function devolver()
                         success: function (data) {
 
                             if(data=="ok")
-                                    alert('Ok');
+                                    window.location.replace("<?php echo Yii::app()->baseUrl;?>/orden/detallePedido/"+id);
                             if(data=="error")
-                                    alert('error');
+                                    location.reload();
                             if(data=='no')
-                            	alert("Devolución No Válida");        
+                            	location.reload();       
                          }
                     });		
                 }

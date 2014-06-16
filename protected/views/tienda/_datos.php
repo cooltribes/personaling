@@ -70,10 +70,28 @@ $b='';
                 
                 //Icono de descuento - Color Negro
 				$iconoDescuento = '';
-				if($data->precioDescuento < $data->getPrecioImpuesto()){
-					$porcentaje = (($data->getPrecioImpuesto() - $data->precioDescuento) * 100) / $data->getPrecioImpuesto();
-					$iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
+				$precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
+				if($precio_producto){
+					if($precio_producto->tipoDescuento){
+						switch ($precio_producto->tipoDescuento) {
+							case 0:
+								$porcentaje = $precio_producto->valorTipo;
+								break;
+							case 1:
+								$porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioVenta;
+								break;
+							default:
+								# code...
+								break;
+						}
+						$iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
+					}
 				}
+				//var_dump($data->tipoDescuento);
+				/*if($data->precioVenta < $data->getPrecioImpuesto()){
+					$porcentaje = (($data->getPrecioImpuesto() - $data->precioVenta) * 100) / $data->getPrecioImpuesto();
+					$iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
+				}*/
                 
 //                $iconoDescuento = '';
                 
@@ -111,8 +129,14 @@ $b='';
 
 					//reviso si tiene descuento para mostrarlo
 					$precio = "<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>";
-					if($data->precioDescuento < $data->getPrecioImpuesto()){
-						$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span> | ".Yii::t('contentForm', 'currSym')." ".$data->precioDescuento;
+					if($precio_producto){
+						if($precio_producto->tipoDescuento){
+							$precio_mostrar = $precio_producto->precioVenta + ($precio_producto->precioVenta * 0.21);
+							$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$precio_mostrar."</span> | ".Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto;
+						}
+					}
+					if($data->precioVenta < $data->getPrecioImpuesto()){
+						
 					}
 
 						echo($encabezado."

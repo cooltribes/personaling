@@ -1485,7 +1485,7 @@ public function actionCategorias2(){
 			if($precio->precioDescuento < $precio->precioImpuesto){
 				$porcentaje = 100 - (($precio->precioDescuento * 100) / $precio->precioImpuesto);
 				//$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$data->precio."</del></span> | ".Yii::t('contentForm', 'currSym')." ".$data->precioDescuento;
-				$datos=$datos.'<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio->precioDescuento.' Con '.Yii::app()->numberFormatter->formatDecimal($porcentaje).'% de descuento';
+				$datos=$datos.'<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio->precioDescuento.' Con '.round($porcentaje).'% de descuento';
 			}else{
 				$datos=$datos.''.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'';
 			}

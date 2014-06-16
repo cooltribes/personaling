@@ -183,8 +183,18 @@
           <div class="row call2action">
             <div class="span2">
               <h4 class="precio" ><span><?php echo Yii::t('contentForm','Subtotal'); ?></span> <?php echo Yii::t('contentForm', 'currSym').' ';   
+              foreach ($producto->precios as $precio) {
+                if($precio->precioDescuento < $precio->precioImpuesto){
+                  $porcentaje = 100 - (($precio->precioDescuento * 100) / $precio->precioImpuesto);
+                  //$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$data->precio."</del></span> | ".Yii::t('contentForm', 'currSym')." ".$data->precioDescuento;
+                  echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio->precioDescuento.' Con '.round($porcentaje).'% de descuento';
+                }else{
+                  echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'';
+                }
+                  //$datos=$datos.'<h4 class="precio"><span>Subtotal</span> '.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
+              }
                
-            echo $producto->precio; // precio con IVA
+            //echo $producto->precio; // precio con IVA
               Yii::app()->clientScript->registerMetaTag($producto->precio.' '.Yii::t('contentForm', 'currSym').' ', 'twitter:data1', null, null, null); // registrar tag de precio de twitter
               Yii::app()->clientScript->registerMetaTag('Precio', 'twitter:label1', null, null, null); // registrar tag de precio de Twitter
                 Yii::app()->clientScript->registerMetaTag('Personaling - '.$producto->nombre.' - '.$producto->precio.' '.Yii::t('contentForm', 'currSym'), null, null, array('property' => 'og:title'), null); // registro del meta para facebook

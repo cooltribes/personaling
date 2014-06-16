@@ -137,7 +137,8 @@ class Orden extends CActiveRecord
             		'select' => 'COUNT(preciotallacolor_id)',
             		'condition' => 'cantidad > 0'
         		),
-        	'user'=>array(self::BELONGS_TO, 'User', 'user_id'),
+                        'user'=>array(self::BELONGS_TO, 'User', 'user_id'),
+                        'cupon'=>array(self::HAS_ONE, 'CuponHasOrden', 'orden_id'),
      
 		);
 	}
@@ -809,6 +810,12 @@ class Orden extends CActiveRecord
 			}
 		}
 		
+	}
+	
+	public function getFechaEstado($estado){
+
+			$sql="select fecha from tbl_estado where orden_id=".$this->id." and estado =".$estado;
+			return Yii::app()->db->createCommand($sql)->queryScalar();
 	}
 	
 	

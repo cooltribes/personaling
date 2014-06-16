@@ -560,7 +560,18 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 }
 	    ?>
             <div class="promociones">
-                
+                <!-- FLASH ON --> 
+                <?php $this->widget('bootstrap.widgets.TbAlert', array(
+                        'block'=>true, // display a larger alert block?
+                        'fade'=>true, // use transitions?
+                        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+                        'alerts'=>array( // configurations per alert type
+                            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+                            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+                        ),
+                    )
+                ); ?>	
+                <!-- FLASH OFF -->
                 
                 <?php if($balance > 0){ ?>  
                     <label class="radio" id="opt-balance">
@@ -584,7 +595,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     ?>
                 </label>
                 <div class="padding_left_small margin_top_medium row-fluid" style="display:none" id="collapse-cupon">
-                    <?php echo CHtml::label("Ingresa el código de descuento", "textoCodigo"); ?>    
+                    <?php echo CHtml::label("Ingresa el código de descuento: ", "textoCodigo"); ?>    
                     <?php echo CHtml::textField("textoCodigo"); ?>
                 </div>
 

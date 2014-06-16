@@ -19,28 +19,28 @@ $(":submit").mouseup(function() {
 })',CClientScript::POS_READY);
 
 if (!Yii::app()->user->isGuest) { // que este logueado
-	$descuento = Yii::app()->getSession()->get('descuento');
-  $descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
-	$total = Yii::app()->getSession()->get('total');
-	if(Yii::app()->getSession()->get('usarBalance') == '1'){
-		$balance = User::model()->findByPK($user)->saldo;
-		$balance = floor($balance *100)/100; 
-		if($balance > 0){
-			if($balance >= $total){
-				$descuentoRegalo = $total;
-				$total = 0;
-			}else{
-				$descuentoRegalo = $balance;
-				$total = $total - $balance;
-			}
-		}
-	}
-        
-if($total == 0){
-    Yii::app()->getSession()->add('tipoPago', 7); //pagar la orden totalmente con saldo
-}
-Yii::app()->getSession()->add('total_tarjeta',$total);	
-	
+    $descuento = Yii::app()->getSession()->get('descuento');
+    $descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
+    $total = Yii::app()->getSession()->get('total');
+//	if(Yii::app()->getSession()->get('usarBalance') == '1'){
+//		$balance = User::model()->findByPK($user)->saldo;
+//		$balance = floor($balance *100)/100; 
+//		if($balance > 0){
+//			if($balance >= $total){
+//				$descuentoRegalo = $total;
+//				$total = 0;
+//			}else{
+//				$descuentoRegalo = $balance;
+//				$total = $total - $balance;
+//			}
+//		}
+//	}
+//        
+//if($total == 0){
+//    Yii::app()->getSession()->add('tipoPago', 7); //pagar la orden totalmente con saldo
+//}
+//Yii::app()->getSession()->add('total_tarjeta',$total);	
+//	
 ?>
 
 <div class="container margin_top">
@@ -319,6 +319,14 @@ Yii::app()->getSession()->add('total_tarjeta',$total);
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Used Balance:') ?></th>
               <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuentoRegalo, ''); ?></td>
+            </tr>
+            <?php } ?>
+            <?php if(Yii::app()->getSession()->get('usarCupon') != -1){ //si utiliza cupon?> 
+            <tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Cupón de Descuento').
+                      " ($cupon[0]):";
+                      ?></th>
+              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($cupon[1], ''); ?></td>
             </tr>
             <?php } ?>
             <tr>

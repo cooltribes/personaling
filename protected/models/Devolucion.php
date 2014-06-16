@@ -124,7 +124,8 @@ class Devolucion extends CActiveRecord
 							"Notificado a Almacén",
 							"Confirmado por Almacén",
 							"Devolución Completada",
-							"Devolución Rechazada");
+							"Devolución Rechazada",
+							"Devolución Aceptada por Administrador");
 		if(is_null($id))
 			return $statuses; 
 		else 

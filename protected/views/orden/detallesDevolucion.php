@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 );
 
 ?>
-
+<style> .table td {vertical-align:middle;}</style>
 	<?php if(Yii::app()->user->hasFlash('success')){?>
 	    <div class="alert in alert-block fade alert-success text_align_center">
 	        <?php echo Yii::app()->user->getFlash('success'); ?>
@@ -25,18 +25,24 @@ $this->breadcrumbs=array(
 	<input type="hidden" id="dev_id" value="<?php echo $devolucion->id; ?>" />
 	<hr/>
 	<div class="row">
-		<div class="span8">
+		<div class="span4">
 			<div class="margin_left_small margin_top">
 				<p class="T_xlarge"><?php echo number_format($devolucion->montodevuelto, 2, ',', '.');  ?></p>
 				<span>Monto a Devolver</span>
 			</div>
 		</div>
-		<div class="span2">
-			<a class="btn btn-danger margin_top" onclick="aceptar(<?php echo $devolucion->id;?>)" href='#'>Aceptar Devolución</a>
+		<?php if($devolucion->estado==0){?>
+		<div class="span8">
+			<a class="btn btn-danger margin_top pull-right" onclick="aceptar(<?php echo $devolucion->id;?>)" href='#'>Aceptar Devolución</a>
 		</div>
-		<div class="span2">
-			<a class="btn margin_top" href='#' onclick="rechazar(<?php echo $devolucion->id;?>)">Rechazar Devolución</a>
+		<div class="span8">
+			<a class="btn margin_top pull-right" href='#' onclick="rechazar(<?php echo $devolucion->id;?>)">Rechazar Devolución</a>
 		</div>
+		<?php }else{
+			echo'
+		<div class="span8 margin_top"><p class="T_large pull-right">'.$devolucion->getStatus($devolucion->estado).'</p></div>';
+			
+		} ?>
 	</div>
 	</div>
 

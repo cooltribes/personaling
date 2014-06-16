@@ -21,7 +21,7 @@ class OrdenController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter','historial','mensajes'),
+				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter','historial','mensajes','devolver','devoluciones'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
@@ -900,7 +900,7 @@ public function actionReportexls(){
     }
     public function actionDevoluciones(){
     	
-
+		/*
 		if(isset($_POST['orden']) && isset($_POST['check']))
 		{
 			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
@@ -978,12 +978,16 @@ public function actionReportexls(){
 			$orden->save();
 			
 			echo "ok";
-		}
+		}*/
 		
 		if(isset($_GET['id']))
-		{
+		{	
 			$orden = Orden::model()->findByPk($_GET['id']);
-			$this->render('devoluciones',array('orden'=>$orden));
+			if(UserModule::isAdmin()||$orden->user_id==Yii::app()->user->id)
+				$this->render('devoluciones',array('orden'=>$orden));
+			else {
+				$this->redirect(Yii::app()->request->baseUrl.'/orden/listado');
+			}
 		}
         
     }
@@ -991,18 +995,44 @@ public function actionReportexls(){
 	public function actionAceptarDevolucion(){
 		$devolucion=Devolucion::model()->findByPk($_POST['id']);
 		$orden=Orden::model()->findByPk($devolucion->orden_id);
-		$devolucion->estado=1;
+		$devolucion->estado=5;
 		foreach($devolucion->dptcs as $dhptc){
 			if(!$dhptc->rechazado)	{	
 				$ohptc=OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$devolucion->orden_id,'preciotallacolor_id'=>$dhptc->preciotallacolor_id));
+				$ptc=Preciotallacolor::model()->findByPk($dhptc->preciotallacolor_id);
 				$ohptc->cantidadActualizada=$ohptc->cantidad-$dhptc->cantidad;
+				$ptc->cantidad=$ptc->cantidad+$dhptc->cantidad;
+				$ptc->save();
 				$ohptc->save();
 			}				
 		}
 		$orden->totalActualizado=$orden->totalActualizado-$devolucion->montodevuelto;
 		if($orden->save()){
 			if($devolucion->save()){
-				echo "ok";
+				$balance=new Balance;
+				$balance->total=$devolucion->montodevuelto;
+				$balance->orden_id=$devolucion->orden_id;
+				$balance->user_id=Yii::app()->user->id;
+				$balance->tipo=4;
+				if($balance->save()){	
+					$user = User::model()->findByPk($devolucion->orden->user_id);
+					$comments="Tu solicitud de devolución cumple con las condiciones y políticas de personaling.es y tenemos el gusto de informarte que el monto de la misma ha sido cargado a tu saldo en nuestro portal.";	
+									$message            = new YiiMailMessage;
+							           //this points to the file test.php inside the view path
+							        $message->view = "mail_devolucion";
+									$subject = 'Tu solicitud de devolución fué aprobada.';
+							        $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
+							        $message->subject    = $subject;
+							        $message->setBody($params, 'text/html');
+							        $message->addTo($user->email);
+									$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+							        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+							        Yii::app()->mail->send($message);
+									
+					
+						
+					echo "ok";
+				}
 			}
 		}else{
 			echo "no";
@@ -1011,8 +1041,25 @@ public function actionReportexls(){
 	public function actionRechazarDevolucion(){
 		$devolucion=Devolucion::model()->findByPk($_POST['id']);
 		$devolucion->estado=5;
-		if($devolucion->save())
+		if($devolucion->save()){
+			$user = User::model()->findByPk($devolucion->orden->user_id);
+			$comments="Lamentamos informarte que tu solicitud de devolución no cumple con las condiciones y políticas de devoluciones de personaling.es, para mayor información puedes comunicarte via
+			e-mail a info@personaling.com o visitar nuestro apartado de politicas de devoluciones haciendo click <a href='http://www.personaling.es/develop/site/politicas_de_devoluciones'>aquí.</a>";	
+								$message            = new YiiMailMessage;
+						           //this points to the file test.php inside the view path
+						        $message->view = "mail_devolucion";
+								$subject = 'Tenemos inconvenientes para procesar tu devolución';
+						        $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
+						        $message->subject    = $subject;
+						        $message->setBody($params, 'text/html');
+						        $message->addTo($user->email);
+								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+						        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+						        Yii::app()->mail->send($message);
+								
 			echo "ok";
+		}
+			
 		else 
 			echo "no";	
 	}
@@ -2128,7 +2175,7 @@ public function actionValidar()
 			),
 		);
 	}
-	*/
+	*/ 
 	
 	public function actionAdminDevoluciones(){
 		

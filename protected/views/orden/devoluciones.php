@@ -4,10 +4,11 @@
 $this->breadcrumbs=array(
 	'Pedidos'=>array('admin'),
 	'Detalle'=>array('detalles','id'=>$orden->id),
-	'Devoluciones',
+	'Devolucion',
 );
 
 ?>
+<style> .table td {vertical-align:middle;}</style>
 <script type="text/javascript">
 	var indices=Array();
 	var montos=Array();
@@ -17,6 +18,10 @@ $this->breadcrumbs=array(
 	var ptcs=Array();
 
 </script>
+	<div class="alert in alert-block fade alert-warning text_align_center">
+	        Recibiste tu orden en <b><?php echo date('d/m/Y',strtotime($orden->getFechaEstado(8)));?></b>, por lo que preferiblemente tu devolución debería solicitarse <b>antes de  
+	       <?php echo date('d/m/Y',strtotime ( '+2 day',strtotime($orden->getFechaEstado(8))));?></b> para que sea canalizada adecuadamente. 
+	    </div>
 	<?php if(Yii::app()->user->hasFlash('success')){?>
 	    <div class="alert in alert-block fade alert-success text_align_center">
 	        <?php echo Yii::app()->user->getFlash('success'); ?>
@@ -29,7 +34,7 @@ $this->breadcrumbs=array(
 	<?php } ?>
 
 <div class="container margin_top">
-	<h1> Devoluciones </h1>  
+	<h1> Solicitud de Devolución <small>(Pedido #<?php echo $orden->id;?>)</small> </h1>  
 	<input type="hidden" id="orden_id" value="<?php echo $orden->id; ?>" />
 	<hr/>
 	<div class="margin_left_small margin_top">
@@ -81,7 +86,7 @@ $this->breadcrumbs=array(
                                         $contador=0;
                                         $foto = "";
                                         $label = $color->valor;
-                                
+                                if($prodlook['cantidadActualizada']>0){
                                         if(!is_null($ptclk->imagen))
 											  $foto = CHtml::image(Yii::app()->baseUrl . 
                                                                         str_replace(".","_thumb.",$ptclk->imagen['url']), "Imagen ", 
@@ -105,7 +110,7 @@ $this->breadcrumbs=array(
                                    
                                         echo("<td>".$color->valor."</td>");
                                         echo("<td>".$talla->valor."</td>");
-                                		echo "<td><input type='number' id='".$ptclk->id."_".$lkid."' value='".$prodlook['cantidad']."' class='input-mini cant' max='".$prodlook['cantidad']."'  min='0' required='required' /></td>";
+                                		echo "<td><input type='number' id='".$ptclk->id."_".$lkid."' value='0' class='input-mini cant' max='".$prodlook['cantidadActualizada']."'  min='0' required='required' /></td>";
                                        	echo CHtml::hiddenField($ptclk->id."_".$lkid."hid",$prodlook['cantidad']); 
                                         echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td><td>".
                                         CHtml::dropDownList($ptclk->id."_".$lkid."motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled'))."</td></tr>");
@@ -117,13 +122,14 @@ $this->breadcrumbs=array(
 										echo"<script>looks.push('".$lkid."');</script>";
 										echo"<script>motivos.push('-');</script>";
 										$indice++;
+					}
 				}				
 				
 			}
 			//INDIVIDUALES
 			
-			
-			echo("<tr class='bg_color5'><td colspan='10'>Prendas Individuales</td></tr>");
+			if(count($lkids)>0)	
+				echo("<tr class='bg_color5'><td colspan='10'>Prendas Individuales</td></tr>");
 			$separados=OrdenHasProductotallacolor::model()->getIndividuales($orden->id);			
 			foreach($separados as $prod){
 				$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
@@ -132,7 +138,7 @@ $this->breadcrumbs=array(
 				$marca=Marca::model()->findByPk($indiv->marca_id);
 				$talla=Talla::model()->findByPk($ptc->talla_id);
 				$color=Color::model()->findByPk($ptc->color_id);
-				
+				if($prod['cantidadActualizada']>0){
                                 $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id,'color_id'=>$color->id),array('order'=>'orden'));
                                 $contador=0;
                                 $foto = "";
@@ -162,9 +168,9 @@ $this->breadcrumbs=array(
               
                echo("<td>".$talla->valor."</td>");
                                 
-               echo "<td><input type='number' id='".$ptc->id."_0' value='0' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' /></td>";
+               echo "<td><input type='number' id='".$ptc->id."_0' value='0' class='input-mini cant' max='".$prod['cantidadActualizada']."'  min='0' required='required' /></td>";
 			  echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td><td>".
-			   CHtml::dropDownList($ptc->id."_0motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled','class'=>'motivos'))."</td></tr>");
+			   CHtml::dropDownList($ptc->id."_0motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled','class'=>'motivos'))."</td>");
 				echo CHtml::hiddenField($ptc->id."_0hid",$prod['cantidad']); 
 				echo CHtml::hiddenField($ptc->id."_0precio",$prod['precio']);
 				echo CHtml::hiddenField($ptc->id."_0indice",$indice);
@@ -175,13 +181,13 @@ $this->breadcrumbs=array(
 				echo"<script>looks.push('0');</script>";
 				echo"<script>motivos.push('-');</script>";
 				$indice++; 
-				 
+				 echo "</tr>";
 				 
 				 
 				              
 			}
 			
-		
+		}
 		
 			
 

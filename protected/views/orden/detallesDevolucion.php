@@ -167,11 +167,12 @@ $this->breadcrumbs=array(
                         success: function (data) {
 
                             if(data=="ok")
-                                    alert('OK');
-                            if(data=="error")
-                                    alert('error');
+                               window.location.replace("<?php echo Yii::app()->baseUrl;?>/orden/admindevoluciones");
+                          		
+                           if(data=="error")
+                                    location.reload();
                             if(data=='no')
-                            	alert("Devolución No Válida");        
+                            	location.reload();      
                          }
                     });
  		
@@ -184,11 +185,11 @@ $this->breadcrumbs=array(
                         success: function (data) {
 
                             if(data=="ok")
-                                    alert('OK');
+                                    window.location.replace("<?php echo Yii::app()->baseUrl;?>/orden/admindevoluciones");
                             if(data=="error")
-                                    alert('error');
+                                    location.reload();
                             if(data=='no')
-                            	alert("Devolución No Válida");        
+                            	location.reload();       
                          }
                     });
   		
@@ -202,11 +203,30 @@ $this->breadcrumbs=array(
                         success: function (data) {
 
                             if(data=="ok")
-                                    alert('OK');
+                                    location.reload();
                             if(data=="error")
-                                    alert('error');
+                                   location.reload();
                             if(data=='no')
-                            	alert("Devolución No Válida");        
+                            	location.reload();       
+                         }
+                    });
+  		
+  	}
+  	
+  	function activar(id){
+  		
+  		$.ajax({
+                        type: "post", 
+                        url: "../activarDevuelto", // action 
+                        data: { 'id':id}, 
+                        success: function (data) {
+
+                            if(data=="ok")
+                                    location.reload();
+                            if(data=="error")
+                                   location.reload();
+                            if(data=='no')
+                            	location.reload();       
                          }
                     });
   		
@@ -221,11 +241,11 @@ $this->breadcrumbs=array(
                         success: function (data) {
 
                             if(data=="ok")
-                                    alert('OK');
+                                    location.reload();
                             if(data=="error")
-                                    alert('error');
+                                    location.reload();
                             if(data=='no')
-                            	alert("Devolución No Válida");        
+                            	location.reload();       
                          }
                     });
   		

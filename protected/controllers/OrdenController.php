@@ -1024,7 +1024,7 @@ public function actionReportexls(){
 							        $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
 							        $message->subject    = $subject;
 							        $message->setBody($params, 'text/html');
-							        $message->addTo('cruiz@upsidecorp.ch'/*$user->email*/);
+							        $message->addTo($user->email);
 									$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 							        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
 							        Yii::app()->mail->send($message);
@@ -1052,7 +1052,7 @@ public function actionReportexls(){
 						        $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
 						        $message->subject    = $subject;
 						        $message->setBody($params, 'text/html');
-						        $message->addTo('cruiz@upsidecorp.ch'/*$user->email*/);
+						        $message->addTo($user->email);
 								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 						        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
 						        Yii::app()->mail->send($message);

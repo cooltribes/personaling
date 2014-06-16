@@ -25,13 +25,13 @@ class OrdenController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
-
+ 
 				'actions'=>array('index','cancel','admin','modalventas',
                                     'detalles','devoluciones','validar','enviar',
                                     'factura','entregar','calcularenvio','createexcel',
                                     'importarmasivo','reporte','reportexls','adminxls',
                                     'generarExcelOut','devolver','adminDevoluciones','detallesDevolucion',
-									'AceptarDevolucion','RechazarDevolucion','AnularDevuelto','cantidadDevuelto'),
+									'AceptarDevolucion','RechazarDevolucion','AnularDevuelto','cantidadDevuelto','activarDevuelto'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -867,6 +867,7 @@ public function actionReportexls(){
 					$dhptc->look_id=$looks[$i];
 					array_push($dhptcs,$dhptc);
 					$proceder=true;
+					Yii::app()->user->setFlash('error', 'Su Devolución fue registrada exitosamente.');
 				}
 			}
 			
@@ -874,7 +875,8 @@ public function actionReportexls(){
 			$i++;
 		 }
 		 if(!$proceder)
-		 	echo "no";
+		 	{	Yii::app()->user->setFlash('error', 'Su Devolución no procede.');
+		 		echo "no";}
 		 else{
 		 	if(count($dhptcs))
 		 	{
@@ -892,6 +894,7 @@ public function actionReportexls(){
 						}
 				}
 			 }
+			Yii::app()->user->setFlash('error', 'Su Devolución no procede.');
 			$out="no";
 		
 			}
@@ -1031,11 +1034,12 @@ public function actionReportexls(){
 									
 					
 						
+					Yii::app()->user->setFlash('success', 'Devolución Aceptada exitosamente.');
 					echo "ok";
 				}
 			}
 		}else{
-			echo "no";
+			Yii::app()->user->setFlash('error', 'La devolución no pudo aceptarse.');
 		}
 	}
 	public function actionRechazarDevolucion(){
@@ -1057,35 +1061,48 @@ public function actionReportexls(){
 						        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
 						        Yii::app()->mail->send($message);
 								
+			Yii::app()->user->setFlash('success', 'Devolución Rechazada correctamente.e');
 			echo "ok";
 		}
 			
 		else 
-			echo "no";	
+			{	Yii::app()->user->setFlash('error', 'La devolución no pudo rechazarse.');
+				echo "no";	}
 	}
 	public function actionAnularDevuelto(){
 		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
 		$devuelto->rechazado=1;
 		if($devuelto->save())
+		{
+			Yii::app()->user->setFlash('success', 'Producto Anulado correctamente.');	
 			echo "ok";
+		}	
 		else
+		{
+			Yii::app()->user->setFlash('error', 'El producto no pudo anularse');	
 			echo "no";
+		}
+			
 	}
 	public function actionCantidadDevuelto(){
 		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
 		$devuelto->cantidad=$_POST['cantidad'];
 		if($devuelto->save())
-			echo "ok";
+			{	Yii::app()->user->setFlash('success', 'Cantidad a devolver actualizada');
+				echo "ok";}
 		else
-			echo "no";
+			{	Yii::app()->user->setFlash('error', 'La cantidad a devolcer no pudo actualizarse');
+				echo "no";}
 	}
 	public function actionActivarDevuelto(){
 		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
 		$devuelto->rechazado=0;
 		if($devuelto->save())
-			echo "ok";
+			{	Yii::app()->user->setFlash('success', 'Producto activado correctamente');
+				echo "ok";}
 		else
-			echo "no";
+			{	Yii::app()->user->setFlash('success', 'Producto no pudo ser activado');
+				echo "no";}
 	}
 	
 	public function actionFactura($id)

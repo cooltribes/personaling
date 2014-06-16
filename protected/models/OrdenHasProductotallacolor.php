@@ -20,6 +20,7 @@
  * @property double $comision
  * @property int $tipo_comision
  * @property int $status_comision 
+ * @property int $cantidadActualizada 
  * 
  * The followings are the available model relations:
  * @property PrecioTallaColor $preciotallacolor

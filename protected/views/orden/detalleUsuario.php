@@ -88,12 +88,31 @@ $usuario = User::model()->findByPk($orden->user_id);
 ?>
        </td>
          <td><?php if ($orden->estado==1||$orden->estado==6||$orden->estado==7){?><a href="#myModal" role="button" class="btn btn-info margin_top pull-right" data-toggle="modal" ><i class="icon-check icon-white">
-         	
+         		
 
          </i> <?php echo Yii::t('contentForm','Payment report'); ?>
 
          	<?php } ?></td>
-          <td><a onclick="window.print();" class="btn margin_top pull-right"><i class="icon-print"></i> <?php echo Yii::t('contentForm','Print order'); ?></a></td>
+         	
+          <td>
+          	<?php if($orden->estado == 8) // recibido
+	{
+      		
+      		$url = Yii::app()->baseUrl."/orden/devoluciones/".$orden->id;
+      		
+      		$this->widget('bootstrap.widgets.TbButton', array(
+			    'label'=>'Solicitar devolución',
+			    'buttonType'=>'link',
+			    'url'=>$url,
+			    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			    'htmlOptions'=>array('class'=>'span2 pull-right margin_top_xsmall')
+			)); ?>
+	
+	<?php 	} 	?>	<br/>
+          	
+          	
+          	
+          	<a onclick="window.print();" class="span2 btn margin_top_xsmall pull-right"><i class="icon-print"></i> <?php echo Yii::t('contentForm','Print order'); ?></a></td>
     </tr>
   </table>
   <hr/>

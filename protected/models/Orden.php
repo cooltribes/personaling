@@ -811,5 +811,11 @@ class Orden extends CActiveRecord
 		
 	}
 	
+	public function getFechaEstado($estado){
+
+			$sql="select fecha from tbl_estado where orden_id=".$this->id." and estado =".$estado;
+			return Yii::app()->db->createCommand($sql)->queryScalar();
+	}
+	
 	
 }

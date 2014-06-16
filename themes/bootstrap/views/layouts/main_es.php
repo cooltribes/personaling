@@ -18,7 +18,7 @@
     <?php  Yii::app()->clientScript->registerScriptFile( Yii::app()->theme->baseUrl."/js/jquery.hoverIntent.minified.js" ); ?>
     <noscript><img height='1' width='1' alt='' style='display:none' src='https://www.facebook.com/offsite_event.php?id=6016397659254&amp;value=0.01&amp;currency=EUR' /></noscript>
 </head>
-
+ 
 <body class="<?php echo $this->getBodyClasses(); ?>">
   <div class="barra-carga"></div>
   <div id="navegacion_principal">

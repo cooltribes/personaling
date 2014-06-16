@@ -20,7 +20,7 @@ $template = '<br/><hr/>
 				<th>N° Orden</th>
 				<th>Fecha</th>
 			     <th>Status</th>
-			     <th>Opciones</th>
+			     <th>Ver</th>
                 </tr>
 			    </thead>
 			    <tbody>

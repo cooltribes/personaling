@@ -993,7 +993,7 @@ public function actionReportexls(){
     }
 
 	public function actionAceptarDevolucion(){
-		$devolucion=Devolucion::model()->findByPk(12);
+		$devolucion=Devolucion::model()->findByPk($_POST['id']);
 		$orden=Orden::model()->findByPk($devolucion->orden_id);
 		$devolucion->estado=5;
 		foreach($devolucion->dptcs as $dhptc){

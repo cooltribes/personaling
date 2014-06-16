@@ -152,6 +152,7 @@ $tipo_pago = $orden->getTipoPago();
               <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuentoRegalo, ''); ?></td>
             </tr>
             <?php } ?>        
+                 
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping'); ?>:</th>
               <td><?php 
@@ -167,7 +168,16 @@ $tipo_pago = $orden->getTipoPago();
               <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
               <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
             </tr>  
-            <?php }?>          
+            <?php }?>   
+            <?php if($orden->cupon){ //si utiliza cupon?> 
+            <tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Cupón de Descuento').
+                      " (".$orden->cupon->cupon->getDescuento()."):";
+                      ?></th>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.
+                      Yii::app()->numberFormatter->formatCurrency($orden->cupon->descuento, ''); ?></td>
+            </tr>
+            <?php } ?>   
             <tr>
               <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total'); ?>:</h4></th>
               <td><h4><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>

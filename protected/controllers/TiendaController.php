@@ -123,11 +123,12 @@ class TiendaController extends Controller
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
 
-		/*var_dump(Yii::app()->session['outlet']);
-		if(isset($POST['outlet'])){
-			if($POST['outlet'] == 'true'){
+		//var_dump(Yii::app()->session);
+		//var_dump($_POST);
+		if(isset($_POST['outlet'])){
+			if($_POST['outlet'] == 'true'){
 				$producto->outlet = 1; // productos en el outlet
-				Yii::app()->session['outlet'] = $POST['outlet'];
+				Yii::app()->session['outlet'] = $_POST['outlet'];
 			}
 		}else if(isset($_GET['outlet'])){
 			if($_GET['outlet'] == 'true'){
@@ -139,7 +140,7 @@ class TiendaController extends Controller
 			if(isset(Yii::app()->session['outlet'])){
 				unset(Yii::app()->session['outlet']);
 			}
-		}*/
+		}
 
 		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
 		/*
@@ -255,10 +256,10 @@ class TiendaController extends Controller
 					}
 				}
 
-				/*if(isset($POST['outlet'])){
-					if($POST['outlet'] == 'true'){
+				if(isset($_POST['outlet'])){
+					if($_POST['outlet'] == 'true'){
 						//$producto->outlet = 1; // productos en el outlet
-						Yii::app()->session['outlet'] = $POST['outlet'];
+						Yii::app()->session['outlet'] = $_POST['outlet'];
 					}else{
 						Yii::app()->session['outlet'] = 'false';
 					}
@@ -266,7 +267,7 @@ class TiendaController extends Controller
 					if(isset(Yii::app()->session['outlet'])){
 							unset(Yii::app()->session['outlet']);
 						}
-				}*/
+				}
 
 				
 				

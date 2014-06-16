@@ -104,11 +104,12 @@
             </div>
           </div>
           <div class="row">
-            <?php
               
+            <?php
+              $iconoDescuento = '<div class="icono-descuento">10%<span>Descuento</span></div>';
               $colorPredet="";
               
-              echo "<div class='span6'><div class='imagen_principal'> 
+              echo "<div class='span6' style=' position: relative; '>{$iconoDescuento}<div class='imagen_principal'> 
                   <!-- FOTO principal ON -->";
               
               $ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));

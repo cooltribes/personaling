@@ -318,9 +318,7 @@ class BolsaController extends Controller
             $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                 : Yii::app()->user->id;
 
-            $tarjeta = new TarjetaCredito;                        
-
-
+            $tarjeta = new TarjetaCredito;  
 
             if(isset($_POST['tipo_pago']) && $_POST['tipo_pago']!=1){
                     if(isset($_POST['ajax']) && $_POST['ajax']==='tarjeta-form')
@@ -334,13 +332,19 @@ class BolsaController extends Controller
 
                     Yii::app()->getSession()->add('tipoPago',$_POST['tipo_pago']);
                     Yii::app()->getSession()->add('usarBalance', "0");
+                    Yii::app()->getSession()->add('usarCupon', -1);
+                    
+                    //Errores en codigo de descuento
+                    $errores = false;
                     
                     /*Saber que opcion selecciono, usar balance o usar cupon*/
                     if(isset($_POST['opcionSaldo'])){
                         
+                        //Si selecciono usar balance
                         if($_POST['opcionSaldo'] == '1'){
                             Yii::app()->getSession()->add('usarBalance', "1");
                              
+                        //Si selecciono usar cupon
                         }else if($_POST['opcionSaldo'] == '2'){
                             
                             //Revisar si el código es valido o no.
@@ -348,63 +352,67 @@ class BolsaController extends Controller
                                //Buscar el codigo en la BD
                                $codigo = CodigoDescuento::model()->findByAttributes(array("codigo"=>$_POST['textoCodigo']));
                                
-                               if($codigo){
-                                   echo "<pre>";
-                                   print_r($codigo->attributes);
-                                   echo "</pre><br>";
-
+                               //si es correcto
+                               if($codigo && $codigo->esValido()){
+                                   Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+                                  
                                }else{
-                                   echo "ERROR";
+                                   Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                           "Has ingresado un código de descuento inválido"));
+                                   $errores = true;
                                }
-                               Yii::app()->end();
-                           }
-                            
+                               
+                           }                            
                             
                         }
                         
                     }
                     
-                    
+                    //Si no hay errores en el codigo de descuento
+                    // preguntar por otros tipos de pago y redirigir 
+                    //al siguiente paso
+                    if(!$errores){
+                        if($_POST['tipo_pago']==2){ // pago de tarjeta de credito
 
-                    if($_POST['tipo_pago']==2){ // pago de tarjeta de credito
+                                $idUsuario = $_POST["user"]; 
 
-                            $idUsuario = $_POST["user"]; 
+                                $tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
+                                $tarjeta->numero = $_POST['TarjetaCredito']['numero'];
+                                $tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
 
-                            $tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
-                            $tarjeta->numero = $_POST['TarjetaCredito']['numero'];
-                            $tarjeta->codigo = $_POST['TarjetaCredito']['codigo'];
+                                /*$tarjeta->month = $_POST['mes'];
+                                $tarjeta->year = $_POST['ano'];*/
 
-                            /*$tarjeta->month = $_POST['mes'];
-                            $tarjeta->year = $_POST['ano'];*/
+                                $tarjeta->month = $_POST['TarjetaCredito']['month'];
+                                $tarjeta->year = $_POST['TarjetaCredito']['year'];
+                                $tarjeta->ci = $_POST['TarjetaCredito']['ci'];
+                                $tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
+                                $tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
+                                $tarjeta->zip = $_POST['TarjetaCredito']['zip'];
+                                $tarjeta->estado = $_POST['TarjetaCredito']['estado'];
+                                $tarjeta->user_id = $idUsuario;		
 
-                            $tarjeta->month = $_POST['TarjetaCredito']['month'];
-                            $tarjeta->year = $_POST['TarjetaCredito']['year'];
-                            $tarjeta->ci = $_POST['TarjetaCredito']['ci'];
-                            $tarjeta->direccion = $_POST['TarjetaCredito']['direccion'];
-                            $tarjeta->ciudad = $_POST['TarjetaCredito']['ciudad'];
-                            $tarjeta->zip = $_POST['TarjetaCredito']['zip'];
-                            $tarjeta->estado = $_POST['TarjetaCredito']['estado'];
-                            $tarjeta->user_id = $idUsuario;		
+                                if($tarjeta->save())
+                                {
+                                        $tipoPago = $_POST['tipo_pago'];
 
-                            if($tarjeta->save())
-                            {
-                                    $tipoPago = $_POST['tipo_pago'];
+                                        Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
+                                        //$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
+    //                                            $this->redirect(array('bolsa/confirmar'));
+                                        $this->redirect($this->createUrl('bolsa/confirmar'));
+                                }
+                                else
+                                echo CActiveForm::validate($tarjeta);
 
-                                    Yii::app()->getSession()->add('idTarjeta',$tarjeta->id);
-                                    //$this->render('confirmar',array('idTarjeta'=>$tarjeta->id));
-//                                            $this->redirect(array('bolsa/confirmar'));
-                                    $this->redirect($this->createUrl('bolsa/confirmar'));
-                            }
-                            else
-                            echo CActiveForm::validate($tarjeta);
-
-                    }
-                    else {
+                        }
+                        
                         $this->redirect($this->createUrl('bolsa/confirmar'));
-                    }
-
+                        
+                    } //fin si no hay errores
+                    
+                    
+                    //Si hay errores, quedarse en la pagina de pagos
             }
-            else {
                 //$tarjeta = new TarjetaCredito;
                 /*Si es compra del usuario*/
                 if(!$admin){
@@ -425,7 +433,7 @@ class BolsaController extends Controller
                     'user'=>$usuario,
 
                         ));		
-            }
+            
 
         }
 		
@@ -649,6 +657,36 @@ class BolsaController extends Controller
                     if($total == 0){
                         Yii::app()->getSession()->add('tipoPago', 7); //pagar la orden totalmente con saldo
                     }
+                    
+                    $cupon = array();
+                    /** Si esta usando un codigo de descuento**/
+                    $idCupon = Yii::app()->getSession()->get('usarCupon');
+                    if($idCupon != -1){
+                        
+                        $codigo = CodigoDescuento::model()->findByPk($idCupon);
+                        
+                        //para mostrar
+                        $cupon[0] = $codigo->getDescuento();
+                        
+                        //si es un monto fijo
+                        if($codigo->tipo_descuento == 1){
+                            $cupon[1] = $codigo->descuento;                            
+                        }else{
+                            
+                            $cupon[1] = $total * ($codigo->descuento / 100);
+                            $cupon[1] = floor($cupon[1] * 100) / 100;
+                                                       
+                        }
+                            
+                        //$total = floor(($total - $cupon[1]) * 100) / 100;
+                        $total = $total - $cupon[1];
+                        /*el monto total de la orden*/
+                        Yii::app()->getSession()->add('total', $total);
+                        
+                    }
+                    
+                    
+                    /*Ya el monto final a pagar*/
                     Yii::app()->getSession()->add('total_tarjeta',$total);
 
                     /*
@@ -667,7 +705,7 @@ class BolsaController extends Controller
 
                         $idPagoAztive = $tipo_pago == 8? 999:$idPagoAztive; 
                     }
-                    $monto = Yii::app()->getSession()->get('total_tarjeta');
+                    $monto = Yii::app()->getSession()->get('total_tarjeta');                    
                     
                     $optional = array(                        
                         'name'          => 'Personaling Enterprise S.L.',
@@ -692,6 +730,7 @@ class BolsaController extends Controller
                         'admin'=> $admin,
                         'user'=> $usuario,
                         'urlAztive'=> $urlAztive,
+                        'cupon'=> $cupon,
                             ));
                     
 		}
@@ -2829,7 +2868,10 @@ class BolsaController extends Controller
             
             /*Revisar si uso balance en la compra*/
             $this->usarBalance($orden, $usuario);
-                   
+            
+            /*Revisar si uso cupones de descuento*/
+            $this->agregarCupon($orden);
+            
             /*Vaciar bolsa, enviar a la orden*/
             $this->hacerCompra($bolsa->id, $orden->id);
             
@@ -2934,7 +2976,7 @@ class BolsaController extends Controller
                 ));
                 Yii::trace('UserID:' . $userId . ' Error al guardar la orden:' . print_r($orden->getErrors(), true), 'registro');
                 Yii::app()->end();
-            }
+            }            
             
             return $orden;
         }
@@ -2994,6 +3036,33 @@ class BolsaController extends Controller
                         $balance->save();
                     }
                 }
+            }
+
+        }
+        /*Determinar si se uso un cupon de descuento*/
+        function agregarCupon($orden) {
+            
+            // Si uso cupon, registrarlo
+            $idCupon = Yii::app()->getSession()->get('usarCupon');
+            if($idCupon != -1){
+                
+                $cuponHasOrden = new CuponHasOrden();
+                $cuponHasOrden->cupon_id = $idCupon;
+                $cuponHasOrden->orden_id = $orden->id;                
+                        
+                $codigo = CodigoDescuento::model()->findByPk($idCupon);
+                
+                //si es un monto fijo
+                if($codigo->tipo_descuento == 1){
+                    $cuponHasOrden->descuento = $codigo->descuento;                            
+                }else{
+
+                    $descuento = $orden->total * ($codigo->descuento / 100);
+                    $cuponHasOrden->descuento = floor($descuento * 100) / 100;
+
+                }
+                
+                $cuponHasOrden->save();
             }
 
         }

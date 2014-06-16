@@ -1,8 +1,8 @@
 <?php
 /*
  * ESTADOS DEL CODIGO:
- * 0. Inactiv0
- * 1. Activ0
+ * 0. Inactivo
+ * 1. Activo
  * 
  * TIPO DE DESCUENTO:
  * 0 - Porcentaje
@@ -155,7 +155,7 @@ class CodigoDescuento extends CActiveRecord
            $array  = array(0 => "%",
                     1 => Yii::t('backEnd', 'currSym')); 
            
-           return $this->descuento . " " . $array[$this->tipo_descuento];
+           return Yii::app()->numberFormatter->formatCurrency($this->descuento, ''). $array[$this->tipo_descuento];
            
         }
         
@@ -188,5 +188,16 @@ class CodigoDescuento extends CActiveRecord
             return parent::beforeValidate();
             
         }
+        
+        //Revisa fechas y estado
+        public function esValido(){
+            
+            $now = time();
+            $validoFecha = $this->getInicioVigencia() < $now && $now < $this->getFinVigencia();
+            
+                    
+            return $this->estado == 1 && $validoFecha;
+        }
+                
         
 }

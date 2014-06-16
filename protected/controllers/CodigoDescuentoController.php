@@ -94,7 +94,7 @@ class CodigoDescuentoController extends Controller
 		{
 			$model->attributes=$_POST['CodigoDescuento'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('index'));
 		}
 
 		$this->render('update',array(

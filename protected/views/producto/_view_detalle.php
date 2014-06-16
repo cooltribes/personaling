@@ -183,7 +183,7 @@
           <div class="row call2action">
             <div class="span2">
               <h4 class="precio" ><span><?php echo Yii::t('contentForm','Subtotal'); ?></span> <?php echo Yii::t('contentForm', 'currSym').' ';   
-              foreach ($producto->precios as $precio) {
+              /*foreach ($producto->precios as $precio) {
                 if($precio->precioDescuento < $precio->precioImpuesto){
                   $porcentaje = 100 - (($precio->precioDescuento * 100) / $precio->precioImpuesto);
                   //$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$data->precio."</del></span> | ".Yii::t('contentForm', 'currSym')." ".$data->precioDescuento;
@@ -192,6 +192,25 @@
                   echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'';
                 }
                   //$datos=$datos.'<h4 class="precio"><span>Subtotal</span> '.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
+              }*/
+
+              $precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+              if($precio_producto){
+                if($precio_producto->tipoDescuento){
+                  switch ($precio_producto->tipoDescuento) {
+                    case 0:
+                      $porcentaje = $precio_producto->valorTipo;
+                      break;
+                    case 1:
+                      $porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioVenta;
+                      break;
+                    default:
+                      # code...
+                      break;
+                  }
+                  $precio_mostrar = $precio_producto->precioVenta + ($precio_producto->precioVenta * 0.21);
+                  echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
+                }
               }
                
             //echo $producto->precio; // precio con IVA

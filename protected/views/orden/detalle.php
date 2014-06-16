@@ -781,7 +781,16 @@ $tracking=$orden->getTrackingInfo();
           <td colspan="9" ><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Tax'); ?></strong></div></td>
           <td ><?php echo Yii::t('contentForm','currSym'); ?> <?php echo number_format($orden->iva, 2, ',', '.'); ?></td>
         </tr>
-        <?php }?>   
+        <?php }?>  
+        <?php if($orden->cupon){ //si utiliza cupon?> 
+            <tr >
+              <td colspan="9"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Cupón de Descuento').
+                      " (".$orden->cupon->cupon->getDescuento()."):";
+                      ?></strong></div></td>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.
+                      Yii::app()->numberFormatter->formatCurrency($orden->cupon->descuento, ''); ?></td>
+            </tr>
+        <?php } ?>
         <tr>
           <th colspan="9" ><div class="text_align_right"><strong>Total</strong></div></th>
           <th ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->total, 2, ',', '.'); ?></th>

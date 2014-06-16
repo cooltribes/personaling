@@ -67,6 +67,11 @@ $b='';
 		//var_dump($data);
 		$prePub=$data->precio;
 		echo ' <input id="productos" value="'.$data->id.'" name="ids" class="ids" type="hidden" >';
+                
+                //Icono de descuento - Color Negro
+                $iconoDescuento = '<div class="icono-descuento">10%<span>Descuento</span></div>';
+//                $iconoDescuento = '';
+                
 		if(isset($ima)){
 			
 			//if($prePub!=""){
@@ -77,14 +82,16 @@ $b='';
             	if(isset($like)) // le ha dado like
 				{
 					$encabezado="<td><article class='span3'><div onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'> ";
-					$gusta="<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;</a></div></article></td>";
+					$gusta="{$iconoDescuento}<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;
+                                            </a></div></article></td>";
 				}
 				else{
 					$encabezado="<article class='span3'><div  onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'>";
-					$gusta="<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>";
+					$gusta="{$iconoDescuento}<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;
+                                            </a></div></article>";
 				}
 				if(Yii::app()->user->isGuest){
-					$gusta="</div></article>";
+					$gusta="{$iconoDescuento}</div></article>";
 				}
 					$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Imagen ", array("class"=>"img_hover bg_color3","width" => "270", "height" => "270",'id'=>'img-'.$data->id));
 					$b = '';

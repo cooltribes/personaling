@@ -73,7 +73,18 @@
         </div>
     </div>
     <div class="modal-footer"> 
-    	
+    
+    <?php
+    if(UserModule::isAdmin() ){
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'label'=>'Descuento',
+            'icon'=>'minus-sign',
+            'url' => CController::createUrl('look/descuento',array('id'=>$model->id)),
+            //'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+            //'size'=>'large', // null, 'large', 'small' or 'mini'
+        ));             
+    }
+    ?>
     	
     <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'label'=>'Eliminar',

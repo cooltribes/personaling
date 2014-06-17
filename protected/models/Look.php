@@ -22,6 +22,8 @@
  * @property integer $url_amigable
  * @property string $sent_on
  * @property string $approved_on
+ * @property string $tipoDescuento
+ * @property string $valorDescuento
  *
  * The followings are the available model relations:
  * @property LookHasTblBolsa[] $lookHasTblBolsas
@@ -45,6 +47,7 @@ class Look extends CActiveRecord
 	 
 	 private $_precio = null; 
 	 private $_precionf = null;
+	 private $_precioDescuento = null;
 	 private $_items;
 	 private $_ocasiones = array(36=>'fiesta',37=>'trabajo',38=>'playa',39=>'sport',40=>'coctel');
 	 public $has_ocasiones;
@@ -97,6 +100,9 @@ class Look extends CActiveRecord
 			array('has_ocasiones','required','on'=>'update','message'=> 'Al menos debes elegir una ocasión'),
 			array('view_counter','numerical', 'integerOnly'=>true,'on'=>'increaseview'),
 			array('view_counter','required','on'=>'increaseview'),
+			array('tipoDescuento','numerical', 'integerOnly'=>true,'on'=>'descuento'),
+			array('valorDescuento','numerical', 'integerOnly'=>false,'on'=>'descuento'),
+			array('tipoDescuento, valorDescuento','required','on'=>'descuento'),
 			array('title', 'length', 'max'=>45),
 			array('deleted,deleted_on', 'required', 'on'=>'softdelete'),
 			array('description, created_on, sent_on, approved_on, modified_on', 'safe'),
@@ -106,7 +112,7 @@ class Look extends CActiveRecord
 			// Please remove those attributes that should not be searched. 
 			array('id, title, description, altura, contextura, pelo, ojos, 
                             tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, 
-                            campana_id, view_counter, url_amigable, sent_on, approved_on, modified_on', 'safe', 'on'=>'search'),
+                            campana_id, view_counter, url_amigable, sent_on, approved_on, modified_on, tipoDescuento, valorDescuento', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -159,6 +165,8 @@ class Look extends CActiveRecord
 			'url_amigable' => 'Url Amigable',
                         'sent_on' => 'Fecha de envío',
                         'approved_on' => 'Fecha de aprobación',
+                        'tipoDescuento' => 'Tipo de Descuento',
+                        'valorDescuento' => 'Valor',
 		);
 	}
 	public function matchOcaciones($user) 
@@ -308,6 +316,8 @@ class Look extends CActiveRecord
                 $criteria->compare('sent_on',$this->sent_on);
                 $criteria->compare('approved_on',$this->approved_on);
                 $criteria->compare('modified_on',$this->modified_on);
+                $criteria->compare('tipoDescuento',$this->tipoDescuento);
+                $criteria->compare('valorDescuento',$this->valorDescuento);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -465,6 +475,27 @@ class Look extends CActiveRecord
 		else
 			return $this->_precio;
 	}
+
+	public function getPrecioDescuento($format=true){
+		if (is_null($this->_precioDescuento)) {
+			$this->_precioDescuento = 0;
+			foreach($this->lookhasproducto as $lookhasproducto){
+				if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+				$this->_precioDescuento += $lookhasproducto->producto->getPrecio(false);
+			}
+			if($this->tipoDescuento == 0){ // porcentaje
+				$this->_precioDescuento -= $this->_precioDescuento * ($this->valorDescuento / 100);
+			}else if($this->tipoDescuento == 1){ // monto
+				$this->_precioDescuento -= $this->valorDescuento;
+			}
+
+		}
+		if ($format)
+			return Yii::app()->numberFormatter->format("#,##0.00",$this->_precioDescuento);
+		else
+			return $this->_precioDescuento;
+	}
+
         public function getPrecioTotal($format=true)
 	{
 		if (is_null($this->_precio)) {

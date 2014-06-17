@@ -108,7 +108,7 @@ class LookController extends Controller
 				'users'=>Yii::app()->params['registro']?array('@'):array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks','softdelete'),
+				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks','softdelete','descuento','calcularPrecioDescuento'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -325,6 +325,38 @@ class LookController extends Controller
 					),true
 				);		
 	}
+
+	public function actionDescuento($id){
+		$model = Look::model()->findByPk($id);
+		$model->scenario = 'descuento';
+		if(isset($_POST['Look'])){
+			if($_POST['Look']['valorDescuento'] != ''){
+				$model->tipoDescuento = $_POST['Look']['tipoDescuento'];
+				$model->valorDescuento = $_POST['Look']['valorDescuento'];
+				if($model->save()){
+					Yii::app()->user->setFlash('success',UserModule::t("Descuento guardado"));
+				}else{
+					Yii::app()->user->setFlash('error',UserModule::t("No se pudo guardar el descuento"));
+				}
+				$this->redirect(array('mislooks'));
+			}else{
+				Yii::app()->user->setFlash('error',UserModule::t("Debe ingresar un valor para el descuento"));
+			}
+		}
+
+		$this->render('descuento',array(
+				'model'=>$model,
+			)
+		);
+	}
+
+	public function actionCalcularPrecioDescuento(){
+		$model = Look::model()->findByPk($_POST['id']);
+		$model->tipoDescuento = $_POST['tipo_descuento'];
+		$model->valorDescuento = $_POST['valor_descuento'];
+		echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento();
+	}
+
 	public function actionView()
 	{
 		if(isset($_GET['alias'])){
@@ -349,7 +381,7 @@ class LookController extends Controller
 						'user'=>$user,	
 						//'categorias'=>$categorias,
 					)
-				);		
+				);
 	}
 	public function actionIndex() 
 	{

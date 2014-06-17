@@ -70,7 +70,7 @@ $this->breadcrumbs=array(
 							// echo("<td></td>");
 				echo("<td colspan='9'><strong>".$lookpedido->title."</strong></td>");// Referencia
 							
-				echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
+				//echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
 			
 							
 							echo("</tr>");
@@ -113,23 +113,39 @@ $this->breadcrumbs=array(
                                 		echo "<td><input type='number' id='".$ptclk->id."_".$lkid."' value='0' class='input-mini cant' max='".$prodlook['cantidadActualizada']."'  min='0' required='required' /></td>";
                                        	echo CHtml::hiddenField($ptclk->id."_".$lkid."hid",$prodlook['cantidad']); 
                                         echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td><td>".
-                                        CHtml::dropDownList($ptclk->id."_".$lkid."motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled'))."</td></tr>");
+                                        CHtml::dropDownList($ptclk->id."_".$lkid."motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled','class'=>'motivos'))."</td></tr>");
                                         echo CHtml::hiddenField($ptclk->id."_".$lkid."indice",$indice); 
+										echo CHtml::hiddenField($ptclk->id."_".$lkid."precio",$prodlook['precio']);
+										
+								
 										echo"<script>indices.push('".$indice."');</script>";
 										echo"<script>ptcs.push('".$ptclk->id."');</script>";
 										echo"<script>montos.push('0');</script>";
 										echo"<script>cantidades.push('0');</script>";
-										echo"<script>looks.push('".$lkid."');</script>";
+										echo"<script>looks.push('".$lookpedido->id."');</script>";
 										echo"<script>motivos.push('-');</script>";
 										$indice++;
+										 
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
 					}
+					
 				}				
 				
 			}
 			//INDIVIDUALES
 			
 			if(count($lkids)>0)	
-				echo("<tr class='bg_color5'><td colspan='10'>Prendas Individuales</td></tr>");
+				echo("<tr class='bg_color5'><td colspan='9'>Prendas Individuales</td></tr>");
 			$separados=OrdenHasProductotallacolor::model()->getIndividuales($orden->id);			
 			foreach($separados as $prod){
 				$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
@@ -183,8 +199,6 @@ $this->breadcrumbs=array(
 				$indice++; 
 				 echo "</tr>";
 				 
-				 
-				              
 			}
 			
 		}
@@ -193,21 +207,6 @@ $this->breadcrumbs=array(
 
 	   
       ?>
-		
-		
-		
-		
-		
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
 
           
         <tr>
@@ -290,12 +289,12 @@ function calcularDevolucion(){
 }
 
 $( document ).ready(function() {
-  console.log(montos.toString()+" "+indices.toString());
+  console.log(montos.toString()+" "+indices.toString()+" "+cantidades.toString());
 });
 
 function actualizarArrays(indice,cantidad,monto ){
-	montos[indice]=cantidad*monto;
-	cantidades[indice]=cantidad;
+	montos[indice]=parseFloat(cantidad)*parseFloat(monto);
+	cantidades[indice]=parseFloat(cantidad);
 	if(cantidad==0)
 		motivos[indice]='-';
 	console.log(montos.toString()+" - "+cantidades.toString()+" - "+ptcs.toString());
@@ -303,6 +302,7 @@ function actualizarArrays(indice,cantidad,monto ){
 
 function devolver()
 	{
+				
 				var ct=0;
 				var mt=0;
 				for(var i =0; i<indices.length; i++){

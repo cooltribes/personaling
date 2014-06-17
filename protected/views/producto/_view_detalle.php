@@ -182,7 +182,7 @@
         <div class="span4 columna_secundaria margin_bottom margin_top padding_top">
           <div class="row call2action">
             <div class="span2">
-              <h4 class="precio" ><span><?php echo Yii::t('contentForm','Subtotal'); ?></span> 
+          
                 <?php   
               /*foreach ($producto->precios as $precio) {
                 if($precio->precioDescuento < $precio->precioImpuesto){
@@ -210,7 +210,9 @@
                       break;
                   }
                   $precio_mostrar = $precio_producto->precioVenta + ($precio_producto->precioVenta * 0.21);
-                  echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
+                  echo '<span class="preciostrike strikethrough T_mediumLarge color9" >'.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).
+                  "</span><span class='T_large'>|</span><span class='T_large pDescuento' >
+                  ".Yii::t('contentForm', 'currSym').' '.$precio_producto->precioImpuesto.'</span><br/><span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
                 }else{
                   echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_producto->precioImpuesto).'';
                 }
@@ -223,7 +225,7 @@
 
             
   
-      ?></h4>
+      ?>
             </div>
             <?php
             

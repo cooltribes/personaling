@@ -621,7 +621,7 @@ Para una futura iteración
 </div>
  <!-- Tabla Productos Devueltos ON -->
  <hr/>
-     <div class="row">
+     <!--<div class="row">
 		   <div class="span12 well well-small margin_top well_personaling_small">
 		     <h3 class="braker_bottom margin_top"><?php echo Yii::t('contentForm','Returned items');  ?></h3>
 		      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
@@ -681,7 +681,7 @@ Para una futura iteración
 		            <th colspan="7"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Sumary');  ?></strong></div></th>
 		        </tr>
 		        <tr>
-<!--
+
 		            <td colspan="6"><div class="text_align_right"><strong>Monto devuelto:</strong></div></td>
 		            <td  class="text_align_right"><?php echo $totaldevuelto.' '.Yii::t('contentForm', 'currSym');; ?> </td>
 		        </tr>
@@ -692,7 +692,7 @@ Para una futura iteración
 		        <tr>
 		            <th colspan="6"><div class="text_align_right"><strong>Total devuelto:</strong></div></th>
 		            <th  class="text_align_right"><?php echo ($totaldevuelto + $totalenvio).' '.Yii::t('contentForm', 'currSym'); ?> Bs</th>
--->
+
 		            <td colspan="6"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Amount returned');  ?>:</strong></div></td>
 		            <td  class="text_align_right"><?php echo $totaldevuelto." ".Yii::t('contentForm','currSym'); ?></td>
 		        </tr> 
@@ -708,7 +708,7 @@ Para una futura iteración
 		        </table>
 		    </div>
         </div>
-    </div>
+    </div>-->
  <!-- Tabla Productos Devueltos OFF -->
   
      

@@ -840,7 +840,7 @@ public function actionReportexls(){
 	 * Recibe parametro id por get
 	 */	  
     
-    public function actionDevolver(){
+   public function actionDevolver(){
     	 $orden=$_POST['orden'];
 		 $monto=$_POST['monto'];
 		 
@@ -863,11 +863,12 @@ public function actionReportexls(){
 					$dhptc->preciotallacolor_id=$ptcs[$i];
 					$dhptc->cantidad=$cantidades[$i];
 					$dhptc->motivo=$devolucion->getReasons($motivos[$i]);
+					$dhptc->motivoAdmin=$devolucion->getReasons($motivos[$i]);
 					$dhptc->monto=$montos[$i];
 					$dhptc->look_id=$looks[$i];
 					array_push($dhptcs,$dhptc);
 					$proceder=true;
-					Yii::app()->user->setFlash('error', 'Su Devolución fue registrada exitosamente.');
+					Yii::app()->user->setFlash('success', 'Su Devolución fue registrada exitosamente.');
 				}
 			}
 			
@@ -876,7 +877,8 @@ public function actionReportexls(){
 		 }
 		 if(!$proceder)
 		 	{	Yii::app()->user->setFlash('error', 'Su Devolución no procede.');
-		 		echo "no";}
+		 		echo "no";
+			}
 		 else{
 		 	if(count($dhptcs))
 		 	{
@@ -894,9 +896,10 @@ public function actionReportexls(){
 						}
 				}
 			 }
-			Yii::app()->user->setFlash('error', 'Su Devolución no procede.');
-			$out="no";
-		
+			if($out=="ok")
+				Yii::app()->user->setFlash('success', 'Devolucion Registrada exitosamente.');
+			else
+				Yii::app()->user->setFlash('error', 'Su devolución no se pudo registrar.');
 			}
 			echo $out;
 		 }
@@ -1087,6 +1090,7 @@ public function actionReportexls(){
 	public function actionCantidadDevuelto(){
 		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
 		$devuelto->cantidad=$_POST['cantidad'];
+		$devuelto->motivoAdmin=$_POST['motivo'];
 		if($devuelto->save())
 			{	Yii::app()->user->setFlash('success', 'Cantidad a devolver actualizada');
 				echo "ok";}

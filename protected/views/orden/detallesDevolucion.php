@@ -109,11 +109,20 @@ $this->breadcrumbs=array(
                echo("<td>".$talla->valor."</td>");
 			   echo("<td>".$prod['monto']."</td>");
 			   if($prod['cantidad']>1)
-			   		echo "<td><input type='number' id='".$ptc->id."' value='0' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' /></td>";
+			   		$dis="";
 			   else
-			   		echo "<td>".$prod['cantidad']."</td>"; 
+			   		$dis="disabled='disabled'";
 			   
-			   echo("<td>".$prod['motivo']."</td>");
+			   		echo "<td><input type='number' id='cant".$prod['id']."' value='".$prod['id']."' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' ".$dis." /></td>";
+			
+			
+			
+		
+			   echo("<td>".CHtml::dropDownList("motivo".$prod['id'],array_search($prod['motivoAdmin'],Devolucion::model()->reasons),Devolucion::model()->reasons,array('class'=>'motivos'))."</td>");
+                                        
+			   
+			   
+			   
 			   echo "
 	<td>
 	<div class='dropdown pull-right'>
@@ -233,11 +242,12 @@ $this->breadcrumbs=array(
   	}
   	
   	function guardar(id){
-  		var cantidad=$('#'+id).val();
+  		var cantidad=$('#cant'+id).val();
+  		var motivo=$('#motivo'+id).val();
   		$.ajax({
                         type: "post", 
                         url: "../cantidadDevuelto", // action 
-                        data: { 'id':id, 'cantidad':cantidad}, 
+                        data: { 'id':id, 'cantidad':cantidad, 'motivo':motivo}, 
                         success: function (data) {
 
                             if(data=="ok")

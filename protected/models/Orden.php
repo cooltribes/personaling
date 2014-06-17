@@ -12,7 +12,7 @@ include("class.zoom.json.services.php");
  * 7 - Pago insuficiente
  * 8 - Recibido
  * 9 - Devuelto
- * 10 - Parcialmente devuelto
+ * 10 - Parcialmente devuelto 
  * 11 - Finalizada
  * 12 - Finalizada - Devuelta
  * 13 - Finalizada - Parcialmente devuelta
@@ -810,7 +810,7 @@ class Orden extends CActiveRecord
 			}
 		}
 		
-	}
+	} 
 	
 	public function getFechaEstado($estado){
 

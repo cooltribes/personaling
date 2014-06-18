@@ -72,7 +72,7 @@ $b='';
 				$iconoDescuento = '';
 				$precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
 				if($precio_producto){
-					if($precio_producto->tipoDescuento){
+					if(!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0){
 						switch ($precio_producto->tipoDescuento) {
 							case 0:
 								$porcentaje = $precio_producto->valorTipo;

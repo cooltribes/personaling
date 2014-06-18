@@ -790,16 +790,16 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		$criteria->compare('marca_id',$this->marca_id,true);
 
-		$criteria->compare('outlet',$this->outlet,true);
-		/*if(isset(Yii::app()->session['outlet'])){
+		//$criteria->compare('outlet',$this->outlet,true);
+		if(isset(Yii::app()->session['outlet'])){
 			if(Yii::app()->session['outlet'] == 'true'){
 				$criteria->compare('outlet',1,true);
 			}else{
 				$criteria->compare('outlet',0,true);
 			}
 		}else{
-			$criteria->compare('outlet',0,true);
-		}*/
+			//$criteria->compare('outlet',0,true);
+		}
 		//$criteria->compare('outlet',1,true);
 		//$criteria->compare('t.estado',0,true);
 		$criteria->compare('fInicio',$this->fInicio,true);
@@ -901,6 +901,19 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 					$text=$text."OR  t.nombre LIKE '%".$word."%' ";
 				}
 			}
+
+			//verificar outlet
+
+			/*if(isset(Yii::app()->session['outlet'])){
+					if(Yii::app()->session['outlet'] == 'true'){
+						$text=$text."AND t.outlet = 1 ";
+					}else{
+						$text=$text."AND (t.outlet = 0 OR t.outlet = 1) ";
+					}
+				}else{
+					$text=$text."AND (t.outlet = 0 OR t.outlet = 1) ";
+				}*/
+
 			if(strlen($text)>3)
 				$criteria->addCondition($text);
 		}

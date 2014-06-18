@@ -1511,7 +1511,7 @@ public function actionCategorias2(){
 	          $datos=$datos.'<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::app()->numberFormatter->formatDecimal($precio_mostrar)."</span><span class='T_large'>|</span> <span class='pDescuento'> ".''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.'</span><br/> <span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
 	          //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
 	        }else{
-	        	$datos=$datos.''.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'';
+	        	$datos=$datos."<span class='pDescuento'>".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_producto->precioImpuesto).'</span>';
 	        }
 	    }
 

@@ -136,7 +136,7 @@ class TiendaController extends Controller
 				Yii::app()->session['outlet'] = $_GET['outlet'];
 			}
 		}else{
-			$producto->outlet = 0;
+			//$producto->outlet = null;
 			if(isset(Yii::app()->session['outlet'])){
 				unset(Yii::app()->session['outlet']);
 			}
@@ -242,6 +242,21 @@ class TiendaController extends Controller
 			if (isset($_POST['texthid']))
 			if(strlen($_POST['texthid'])>0){
 				Yii::app()->session['f_text'] = $_POST['texthid'];
+
+				/*if(isset($_POST['outlet'])){
+					if($_POST['outlet'] == 'true'){
+						//$producto->outlet = 1; // productos en el outlet
+						Yii::app()->session['outlet'] = $_POST['outlet'];
+					}else{
+						Yii::app()->session['outlet'] = 'false';
+					}
+				}else{
+					if(isset(Yii::app()->session['outlet'])){
+							unset(Yii::app()->session['outlet']);
+						}
+				}*/
+
+				//var_dump(Yii::app()->session['outlet']);
 				
 			} else {
 				if (isset($_POST['colorhid'])){	 
@@ -1495,7 +1510,7 @@ public function actionCategorias2(){
 
    		$precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 	    if($precio_producto){
-	        if($precio_producto->tipoDescuento){
+	        if(!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0){
 	          switch ($precio_producto->tipoDescuento) {
 	            case 0:
 	              $porcentaje = $precio_producto->valorTipo;
@@ -1508,10 +1523,10 @@ public function actionCategorias2(){
 	              break;
 	          }
 	          $precio_mostrar = $precio_producto->precioVenta + ($precio_producto->precioVenta * 0.21);
-	          $datos=$datos.'<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::app()->numberFormatter->formatDecimal($precio_mostrar)."</span><span class='T_large'>|</span> <span class='pDescuento'> ".''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.'</span><br/> <span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
+	          $datos=$datos.'<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span><span class='T_large'>|</span><span class='pDescuento'>".''.Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span><br/> <span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
 	          //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
 	        }else{
-	        	$datos=$datos."<span class='pDescuento'>".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_producto->precioImpuesto).'</span>';
+	        	$datos=$datos."<span class='pDescuento'>".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span>';
 	        }
 	    }
 

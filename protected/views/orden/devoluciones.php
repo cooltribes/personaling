@@ -125,18 +125,7 @@ $this->breadcrumbs=array(
 										echo"<script>looks.push('".$lookpedido->id."');</script>";
 										echo"<script>motivos.push('-');</script>";
 										$indice++;
-										 
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
+										 					
 					}
 					
 				}				

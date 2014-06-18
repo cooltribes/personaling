@@ -248,6 +248,7 @@ class OrdenHasProductotallacolor extends CActiveRecord
             } 
             
         }
+		
 
 
 }

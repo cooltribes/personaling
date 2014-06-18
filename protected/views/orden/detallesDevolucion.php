@@ -98,7 +98,7 @@ $this->breadcrumbs=array(
 //				echo("<td>".$indiv->codigo."</td>");// Referencia
 //				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
 				/*Datos resumidos + foto*/
-				echo("<td style='text-align:center'><div>".$foto."<br/>".$label."</div></td>");
+				echo("<td style='text-align:center'><div>".$foto."<br/>".$label.$ptc->id."</div></td>");
                  
 				echo('<td style="vertical-align: middle">'.$indiv->codigo.'</td>');
                echo("<td>".$marca->nombre."</td>");
@@ -113,7 +113,7 @@ $this->breadcrumbs=array(
 			   else
 			   		$dis="disabled='disabled'";
 			   
-			   		echo "<td><input type='number' id='cant".$prod['id']."' value='".$prod['id']."' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' ".$dis." /></td>";
+			   		echo "<td><input type='number' id='cant".$prod['id']."' value='".$prod['cantidad']."' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' ".$dis." /></td>";
 			
 			
 			
@@ -131,7 +131,7 @@ $this->breadcrumbs=array(
 	</a> 
           <!-- Link or button to toggle dropdown -->
           <ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>";
-             if(!$prod['rechazado'])
+             if(!$prod['rechazado']&&$devolucion!=5)
 				   echo("<li><a href='#' onclick='anular(".$prod['id'].")'><i class='icon-remove'></i> Anular Producto</a></li>");
 			   else
 				   echo("<li><a href='#' onclick='activar(".$prod['id'].")'><i class='icon-ok'></i> Reaceptar Producto</a></li>");

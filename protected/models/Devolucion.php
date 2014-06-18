@@ -131,5 +131,15 @@ class Devolucion extends CActiveRecord
 		else 
 			return $statuses[$id];
 	}
-	
+	public function devueltosxOrden($orden,$ptcid,$lookid){
+		$sql="select sum(cantidad) from tbl_devolucion_has_preciotallacolor dh 
+		JOIN tbl_devolucion d  where dh.preciotallacolor_id=".$ptcid." 
+		AND dh.look_id=".$lookid." AND d.orden_id=".$orden;
+		$cant=Yii::app()->db->createCommand($sql)->queryScalar();
+		if(is_null($cant))
+			return 0;
+		else
+			return $cant;
+		
+	}
 }

@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 );
 
 ?>
-<style> .table td {vertical-align:middle;}</style>
+<style> .table td {vertical-align:middle; text-align:center;}</style>
 <script type="text/javascript">
 	var indices=Array();
 	var montos=Array();
@@ -110,6 +110,8 @@ $this->breadcrumbs=array(
                                    
                                         echo("<td>".$color->valor."</td>");
                                         echo("<td>".$talla->valor."</td>");
+										
+									if($prodlook['cantidadActualizada']>Devolucion::model()->devueltosxOrden($orden->id, $ptc->id, $lkid)){   
                                 		echo "<td><input type='number' id='".$ptclk->id."_".$lkid."' value='0' class='input-mini cant' max='".$prodlook['cantidadActualizada']."'  min='0' required='required' /></td>";
                                        	echo CHtml::hiddenField($ptclk->id."_".$lkid."hid",$prodlook['cantidad']); 
                                         echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td><td>".
@@ -125,7 +127,21 @@ $this->breadcrumbs=array(
 										echo"<script>looks.push('".$lookpedido->id."');</script>";
 										echo"<script>motivos.push('-');</script>";
 										$indice++;
-										 					
+										 
+										 }
+										 	else{
+				echo "<td colspan='3'>Este producto se encuentra en proceso de devolución </td>";
+			}
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
 					}
 					
 				}				
@@ -133,9 +149,10 @@ $this->breadcrumbs=array(
 			}
 			//INDIVIDUALES
 			
-			if(count($lkids)>0)	
-				echo("<tr class='bg_color5'><td colspan='9'>Prendas Individuales</td></tr>");
+			
 			$separados=OrdenHasProductotallacolor::model()->getIndividuales($orden->id);			
+			if(count($lkids)>0&&count($separados)>0)	
+				echo("<tr class='bg_color5'><td colspan='9'>Prendas Individuales</td></tr>");
 			foreach($separados as $prod){
 				$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
 				$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
@@ -172,20 +189,30 @@ $this->breadcrumbs=array(
                
               
                echo("<td>".$talla->valor."</td>");
-                                
+			   
+			   
+               if($prod['cantidadActualizada']>Devolucion::model()->devueltosxOrden($orden->id, $ptc->id, 0)){                  
                echo "<td><input type='number' id='".$ptc->id."_0' value='0' class='input-mini cant' max='".$prod['cantidadActualizada']."'  min='0' required='required' /></td>";
-			  echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td><td>".
-			   CHtml::dropDownList($ptc->id."_0motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled','class'=>'motivos'))."</td>");
-				echo CHtml::hiddenField($ptc->id."_0hid",$prod['cantidad']); 
-				echo CHtml::hiddenField($ptc->id."_0precio",$prod['precio']);
-				echo CHtml::hiddenField($ptc->id."_0indice",$indice);
-				echo"<script>ptcs.push('".$ptc->id."');</script>";
-				echo"<script>indices.push('".$indice."');</script>";
-				echo"<script>montos.push('0');</script>"; 
-				echo"<script>cantidades.push('0');</script>";
-				echo"<script>looks.push('0');</script>";
-				echo"<script>motivos.push('-');</script>";
-				$indice++; 
+			  echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td><td>");
+			   
+			  
+				  echo  (CHtml::dropDownList($ptc->id."_0motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled','class'=>'motivos'))."</td>");
+					echo CHtml::hiddenField($ptc->id."_0hid",$prod['cantidad']); 
+					echo CHtml::hiddenField($ptc->id."_0precio",$prod['precio']);
+					echo CHtml::hiddenField($ptc->id."_0indice",$indice);
+					echo"<script>ptcs.push('".$ptc->id."');</script>";
+					echo"<script>indices.push('".$indice."');</script>";
+					echo"<script>montos.push('0');</script>"; 
+					echo"<script>cantidades.push('0');</script>";
+					echo"<script>looks.push('0');</script>";
+					echo"<script>motivos.push('-');</script>";
+					$indice++; 
+				}
+			else{
+				echo "<td colspan='3'>Este producto se encuentra en proceso de devolución </td>";
+			}
+					
+					
 				 echo "</tr>";
 				 
 			}
@@ -290,7 +317,7 @@ function actualizarArrays(indice,cantidad,monto ){
 }
 
 function devolver()
-	{
+	{			console.log(cantidades.toString()+" // "+motivos.toString());
 				
 				var ct=0;
 				var mt=0;

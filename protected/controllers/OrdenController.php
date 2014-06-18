@@ -837,10 +837,10 @@ public function actionReportexls(){
 
 	/*
 	 * Action para las devoluciones 
-	 * Recibe parametro id por get
+	 * 
 	 */	  
     
-   public function actionDevolver(){
+        public function actionDevolver(){
     	 $orden=$_POST['orden'];
 		 $monto=$_POST['monto'];
 		 
@@ -863,12 +863,11 @@ public function actionReportexls(){
 					$dhptc->preciotallacolor_id=$ptcs[$i];
 					$dhptc->cantidad=$cantidades[$i];
 					$dhptc->motivo=$devolucion->getReasons($motivos[$i]);
-					$dhptc->motivoAdmin=$devolucion->getReasons($motivos[$i]);
 					$dhptc->monto=$montos[$i];
 					$dhptc->look_id=$looks[$i];
 					array_push($dhptcs,$dhptc);
 					$proceder=true;
-					Yii::app()->user->setFlash('success', 'Su Devolución fue registrada exitosamente.');
+					Yii::app()->user->setFlash('error', 'Su Devolución fue registrada exitosamente.');
 				}
 			}
 			
@@ -904,6 +903,7 @@ public function actionReportexls(){
 			echo $out;
 		 }
     }
+   
     public function actionDevoluciones(){
     	
 		/*
@@ -1013,12 +1013,19 @@ public function actionReportexls(){
 			}				
 		}
 		$orden->totalActualizado=$orden->totalActualizado-$devolucion->montodevuelto;
+		$orden->estado=9;
 		if($orden->save()){
+			$estado=new Estado;
+			$estado->estado=9;
+			$estado->user_id=Yii::app()->user->id;
+			$estado->fecha=date('Y-m-d');
+			$estado->orden_id=$orden->id;
+			
 			if($devolucion->save()){
 				$balance=new Balance;
 				$balance->total=$devolucion->montodevuelto;
 				$balance->orden_id=$devolucion->orden_id;
-				$balance->user_id=Yii::app()->user->id;
+				$balance->user_id=$orden->user_id;
 				$balance->tipo=4;
 				if($balance->save()){	
 					$user = User::model()->findByPk($devolucion->orden->user_id);

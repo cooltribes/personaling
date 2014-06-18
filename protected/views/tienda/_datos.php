@@ -132,7 +132,7 @@ $b='';
 					if($precio_producto){
 						if($precio_producto->tipoDescuento){
 							$precio_mostrar = $precio_producto->precioVenta + ($precio_producto->precioVenta * 0.21);
-							$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$precio_mostrar."</span> | ".Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto;
+							$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span> | ".Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto);
 						}
 					}
 

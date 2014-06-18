@@ -211,11 +211,11 @@
                       break;
                   }
                   $precio_mostrar = $precio_producto->precioVenta + ($precio_producto->precioVenta * 0.21);
-                  echo '<span class="preciostrike strikethrough T_mediumLarge color9" >'.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).
+                  echo '<span class="preciostrike strikethrough T_mediumLarge color9" >'.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar).
                   "</span><span class='T_large'>|</span><span class='T_large pDescuento' >
-                  ".Yii::t('contentForm', 'currSym').' '.$precio_producto->precioImpuesto.'</span><br/><span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
+                  ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span><br/><span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
                 }else{
-                  echo "<span class='T_large pDescuento' >".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_producto->precioImpuesto).'</span>';
+                  echo "<span class='T_large pDescuento' >".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span>';
                 }
               }
                

@@ -106,7 +106,25 @@
           <div class="row">
               
             <?php
-              $iconoDescuento = '<div class="icono-descuento">10%<span>Descuento</span></div>';
+              $iconoDescuento = '';
+              $precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+              if($precio_producto){
+                if(!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0){
+                  switch ($precio_producto->tipoDescuento) {
+                    case 0:
+                      $porcentaje = $precio_producto->valorTipo;
+                      break;
+                    case 1:
+                      $porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioVenta;
+                      break;
+                    default:
+                      # code...
+                      break;
+                  }
+                  $iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
+                  //$iconoDescuento = '<div class="icono-descuento">%<span>Descuento</span></div>';
+                }
+              }
               $colorPredet="";
               
               echo "<div class='span6' style=' position: relative; '>{$iconoDescuento}<div class='imagen_principal'> 

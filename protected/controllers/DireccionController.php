@@ -432,8 +432,12 @@ class DireccionController extends Controller
 		
 		$soapclient = new SoapClient('https://ws.seur.com/WSEcatalogoPublicos/servlet/XFireServlet/WSServiciosWebPublicos?wsdl');
 		//$all=Ciudad::model()->findAll(array('condition'=>'nombre="SANTA ANA"' ));
-			
-			$city="SANT CARLES DE PERALTA";
+		$ciudades=Ciudad::model()->findAllByAttributes(array('provincia_id'=>39));	
+		
+		
+		foreach($ciudades as $ciudad)
+		{
+			$city=$ciudad->nombre;
 			print_r('<b>'.$city.'</b><br/>');
 			$params4 = array(
 			'in0'=>'',
@@ -448,23 +452,24 @@ class DireccionController extends Controller
 			$response = $soapclient->infoPoblacionesCortoStr($params4);
 			$xml = simplexml_load_string($response->out);
 			foreach ($xml as $reg){
-				$plocal=Provincia::model()->findByAttributes(array('nombre'=>$reg->NOM_PROVINCIA));
+				/*$plocal=Provincia::model()->findByAttributes(array('nombre'=>$reg->NOM_PROVINCIA));
 				$clocal=Ciudad::model()->findByAttributes(array('nombre'=>$reg->NOM_POBLACION, 'provincia_id'=>$plocal->id));		
 				$cplocal=CodigoPostal::model()->findByAttributes(array('codigo'=>$reg->CODIGO_POSTAL, 'ciudad_id'=>$clocal->id));
-				if(is_null($cplocal)&&!is_null($clocal)){
+				if(is_null($cplocal)&&!is_null($clocal)){*/
 					$codigo=new CodigoPostal;
 					$codigo->codigo=$reg->CODIGO_POSTAL;
-					$codigo->ciudad_id=$clocal->id;
+					$codigo->ciudad_id=$ciudad->id;
 					if($codigo->save())
 						echo "OK<br/>";
 					else	
 						echo "BAD<br/>";
-				}
+			/*	}
 				else {
 					echo "YA ESTABA<br/>";
-				}
+				}*/
 			}
 			echo "<br/><br/>";
+			}
 			
 			
 	}

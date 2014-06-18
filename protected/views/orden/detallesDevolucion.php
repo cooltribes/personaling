@@ -131,12 +131,12 @@ $this->breadcrumbs=array(
 	</a> 
           <!-- Link or button to toggle dropdown -->
           <ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>";
-             if(!$prod['rechazado']&&$devolucion!=5)
+             if(!$prod['rechazado']&&$devolucion->estado!=5)
 				   echo("<li><a href='#' onclick='anular(".$prod['id'].")'><i class='icon-remove'></i> Anular Producto</a></li>");
 			   else
 				   echo("<li><a href='#' onclick='activar(".$prod['id'].")'><i class='icon-ok'></i> Reaceptar Producto</a></li>");
-			  if($prod['cantidad']>1)
-			   	echo("<li><a href='#' onclick='guardar(".$prod['id'].")'><i class='icon-check'></i> Guardar Cantidad</a></li>");
+		
+			   	echo("<li><a href='#' onclick='guardar(".$prod['id'].")'><i class='icon-check'></i> Actualizar</a></li>");
             
           echo "</ul>
         </div></td>";

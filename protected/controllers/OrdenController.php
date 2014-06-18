@@ -1007,8 +1007,10 @@ public function actionReportexls(){
 				$ohptc=OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$devolucion->orden_id,'preciotallacolor_id'=>$dhptc->preciotallacolor_id));
 				$ptc=Preciotallacolor::model()->findByPk($dhptc->preciotallacolor_id);
 				$ohptc->cantidadActualizada=$ohptc->cantidad-$dhptc->cantidad;
-				$ptc->cantidad=$ptc->cantidad+$dhptc->cantidad;
-				$ptc->save();
+				if($dhptc->motivoAdmin!=5){
+					$ptc->cantidad=$ptc->cantidad+$dhptc->cantidad;
+					$ptc->save();
+				}
 				$ohptc->save();
 			}				
 		}
@@ -1099,10 +1101,10 @@ public function actionReportexls(){
 		$devuelto->cantidad=$_POST['cantidad'];
 		$devuelto->motivoAdmin=$_POST['motivo'];
 		if($devuelto->save())
-			{	Yii::app()->user->setFlash('success', 'Cantidad a devolver actualizada');
+			{	Yii::app()->user->setFlash('success', 'Actualización realizada.');
 				echo "ok";}
 		else
-			{	Yii::app()->user->setFlash('error', 'La cantidad a devolcer no pudo actualizarse');
+			{	Yii::app()->user->setFlash('error', 'No pudo actualizarse información.');
 				echo "no";}
 	}
 	public function actionActivarDevuelto(){

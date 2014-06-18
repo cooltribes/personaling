@@ -330,6 +330,7 @@ var cols = document.querySelectorAll('.column');
     col.classList.remove('over');
     col.style.opacity = '1';
   });
+  $('.canvas').css('background',"white center center no-repeat");
   
 }
 $(window).load(function(){

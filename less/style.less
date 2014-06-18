@@ -181,6 +181,7 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 }
 .strikethrough {
   position: relative;
+  display:inline;
 }
 .strikethrough:before {
   position: absolute;
@@ -2471,8 +2472,8 @@ src: url('../fonts/entypo.woff'),
         span.preciostrike{
             color:lighten(@color4,50%);
             margin-bottom:.1em;
-            display:table-cell;
-
+            display:inline!important;
+            
             }
         .like{
             display:block;

@@ -215,7 +215,7 @@
                   "</span><span class='T_large'>|</span><span class='T_large pDescuento' >
                   ".Yii::t('contentForm', 'currSym').' '.$precio_producto->precioImpuesto.'</span><br/><span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
                 }else{
-                  echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_producto->precioImpuesto).'';
+                  echo "<span class='T_large pDescuento' >".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_producto->precioImpuesto).'</span>';
                 }
               }
                

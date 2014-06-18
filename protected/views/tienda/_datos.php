@@ -135,9 +135,6 @@ $b='';
 							$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$precio_mostrar."</span> | ".Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto;
 						}
 					}
-					if($data->precioVenta < $data->getPrecioImpuesto()){
-						
-					}
 
 						echo($encabezado."
 						<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>

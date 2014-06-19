@@ -22,7 +22,7 @@
  * @property integer $url_amigable
  * @property string $sent_on
  * @property string $approved_on
- * @property string $tipoDescuento
+ * @property string $tipoDescuento -> 0: porcentaje | 1: monto
  * @property string $valorDescuento
  *
  * The followings are the available model relations:

@@ -82,12 +82,10 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 					$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
 					//$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
 					//$doblimg= CHtml::image( str_replace(".","_x90.",$producto->getImageUrl($productotallacolor->preciotallacolor->color_id)) , "Imagen", array("width" => "70", "height" => "70"));
-					if(!is_null($productotallacolor->preciotallacolor->imagen))
-											  {$doblimg=CHtml::image(Yii::app()->baseUrl.str_replace(".","_x90.",$productotallacolor->preciotallacolor->imagen['url']), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
-												 
-											  }
-								else {
-											$doblimg= "No hay foto</br>para el color";
+					if(!is_null($productotallacolor->preciotallacolor->imagen)){
+						$doblimg=CHtml::image(Yii::app()->baseUrl.str_replace(".","_x90.",$productotallacolor->preciotallacolor->imagen['url']), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+					}else{
+						$doblimg= "No hay foto</br>para el color";
 					} 
 					
                 	//$test = PrecioTallaColor::model()->findByPK($productotallacolor->preciotallacolor->id);
@@ -174,13 +172,27 @@ $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bols
 				<td width='8%'>
 					<input type="hidden" value="<?php echo $productotallacolor->cantidad; ?>" />
 					<input type='text' name="cant[<?php echo $productotallacolor->preciotallacolor_id; ?>][<?php echo $look->id; ?>]" maxlength='2' placeholder='Cant.' value='<?php echo $productotallacolor->cantidad; ?>' class='span1 cantidades'/>
-	            	<a id=""<?php echo $productotallacolor->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
+	            	<a id="<?php echo $productotallacolor->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
 	            	
 	            </td>
 	            <td style='cursor: pointer' onclick='eliminar(<?php echo $productotallacolor->preciotallacolor_id; ?>)' id='elim<?php echo $productotallacolor->preciotallacolor_id; ?>'>&times;</td>
 				
                 </tr>
-                <?php } ?>
+	                <?php 
+	            } 
+
+	            // revisar si el look tiene descuento
+			 	if(!is_null($look->tipoDescuento)){
+			 		// revisar si está comprando el look completo para aplicar descuento
+				 	if($bolsa->getLookProducts($look_id) == $look->countItems()){
+				 		//echo 'Precio: '.$look->getPrecio(false).' - Precio desc: '.$look->getPrecioDescuento(false);
+				 		$descuento_look = $look->getPrecio(false) - $look->getPrecioDescuento(false);
+				 		array_push($descuentos,$descuento_look);
+				 	}
+			 	}
+
+
+	            ?>
               </tbody>
             </table>
             <hr/>
@@ -450,9 +462,10 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                       	}
 						
 						//$iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')); 
-						$iva = (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')); 
+						$iva = (($totalPr)*Yii::t('contentForm', 'IVA')); 
 						
-						$t = $totalPr - $totalDe + (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')) + $envio; 
+						//$t = $totalPr - $totalDe + (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')) + $envio; 
+						$t = $totalPr - $totalDe + (($totalPr)*Yii::t('contentForm', 'IVA')) + $envio; 
 						
 						$seguro = $t*0.013;
 						

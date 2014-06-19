@@ -83,7 +83,22 @@
 			echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
 			</h5>
           </div>
-          <div class="span5"><span class="precio"><small><?php echo Yii::t('contentForm', 'currSym')?> </small><?php echo $look->getPrecio(); ?></span></div>
+          <div class="span5">
+            <span class="precio">
+              <?php
+              if($look->getPrecioDescuento(false) < $look->getPrecio(false)){
+                ?>
+                <small><?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecio(); ?></small>|<small><?php echo Yii::t('contentForm', 'currSym'); ?><?php echo $look->getPrecioDescuento(); ?></small>
+                <?php
+              }else{
+                ?>
+                <small><?php echo Yii::t('contentForm', 'currSym'); ?> </small>
+                <?php 
+                echo $look->getPrecio();
+                }
+              ?>
+            </span>
+          </div>
         </div>
         <div class="share_like">
          <?php if(!Yii::app()->user->isGuest){?>

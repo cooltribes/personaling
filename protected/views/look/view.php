@@ -127,7 +127,22 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           <!-- Boton de comprar  -->
           <div class="row-fluid call2action">
             <div class="span6">
-              <h4 class="precio" ><div id="price"><span><?php echo Yii::t('contentForm' , 'Subtotal'); ?></span><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></div></h4>
+               <?php
+                if($model->getPrecioDescuento(false) < $model->getPrecio(false)){
+                  ?>
+                  <h4 class="precio" ><div id="price"><span><?php echo Yii::t('contentForm' , 'Look Completo'); ?></span><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento(); ?></div></h4>
+                  <h5 class="precio" ><small><div id="price"><span><?php echo Yii::t('contentForm' , 'Por Separado'); ?></span><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></div></small></h5>
+                  
+                  <?php
+                }else{
+                  ?>
+                  <h4 class="precio" ><div id="price"><span><?php echo Yii::t('contentForm' , 'Subtotal'); ?></span><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></div></h4>
+                  
+                  <?php 
+                  
+                  }
+                ?>
+              
             </div>
             <div class="span6">
               <div class="">

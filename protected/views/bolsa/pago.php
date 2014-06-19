@@ -400,7 +400,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 							
 						}
 						else{
-							$iva = (($totalPr - $totalDe)*Yii::app()->params['IVA']);
+							//$iva = (($totalPr - $totalDe)*Yii::app()->params['IVA']);
+                            $iva = (($totalPr)*Yii::app()->params['IVA']);
 						}
                         
                         $t = $totalPr - $totalDe + $iva ;

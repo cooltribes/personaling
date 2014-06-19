@@ -49,10 +49,22 @@ width="1" height="1" border="0" alt="" />
 <style>
     #scroller{
         background-color: white;
+    }
+    .toolGift{
+    	position: absolute;
+    	width:10px;
+    	height:10px;
+    	background: #000;
+    	top:150px;
+    	left:1000px;
+    	z-index:2000;
+    	
     }    
 </style>
 
 <div class="container" id="scroller-anchor">
+	
+	
     <div class="container" id="scroller">
         
     
@@ -633,7 +645,13 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 
 <script type="text/javascript">
-
+$('#gift').tooltip({
+    title:"Hemos abonado <?php echo Yii::app()->params['registerGift']." ".Yii::t('contentForm','currSym');?> a tu balance para comprar YA",
+    trigger:"manual",
+    placement:"bottom"
+    
+});
+$('#gift').tooltip('show');
 
     var actionGuardarFiltro = '<?php echo $this->createUrl('guardarFiltro'); ?>';
 

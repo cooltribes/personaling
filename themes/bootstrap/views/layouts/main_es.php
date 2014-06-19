@@ -1,4 +1,3 @@
-  
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
 <head>
@@ -219,7 +218,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Tienda', 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
                 array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
-                array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest),                 
+                array('label'=>'&nbsp;','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('id'=>'gift','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest,),                 
 				array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 	array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone to-white-icon') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
@@ -247,6 +246,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 <div class="header_notification" id="cookies_notification" style="margin-top: 88px; display: none;">
     Esta web utiliza <strong>cookies</strong> para mejorar tu experiencia de usuario y para recopilar información estadística sobre tu navegación. Si continúas navegando, consideramos que aceptas su uso. <a href="<?php echo Yii::app()->baseUrl; ?>/site/politicas_de_cookies" style="color: #0000FF">Más información</a> | <a id="accept_cookies" href="#" style="color: #0000FF">No mostrar de nuevo</a>
     <button id="buttomCookies" type="button" class="close" aria-hidden="true">&times;</button>
+
 </div>
 <!-- Mensaje Cookies OFF -->
 
@@ -376,7 +376,15 @@ if(!Yii::app()->user->isGuest){
   $(document).on('ready',HandlerReady);
 
   <?php 
-
+		$url="'".Yii::app()->baseUrl."/giftcard/comprar'";
+		echo 'var gift = ""; ';
+		
+		'<p class="padding_small"><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
+   
+		
+		$gift="<p class='padding_left_small'><span class='gifts-menu'>Tu Balance:<strong> ".Profile::model()->getSaldo(Yii::app()->user->id,true)." ".Yii::t('contentForm','currSym').
+		"</strong></span><br/><span class='gifts-menuA'><a href='".$url."'>Comprar Giftcard</a></span></p>";
+		 echo 'gift = "'.$gift.'";';
         $htmlMensaje = '';
          echo 'var contenidoMensajes = ""; ';
         // Si el usuario no es administrador buscar mensajes para mostrar
@@ -407,7 +415,7 @@ if(!Yii::app()->user->isGuest){
     // //Boton Notificaciones
 
     contenidoMensajes = contenidoMensajes + '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones"  class="btn btn-block btn-small btn-danger">Ver notificaciones</a></div>';
-
+	
     $('#btn-notifications').popover(
     {
       title: '<strong>Notificaciones ('+ <?php echo $contadorMensaje ?>+')</strong>',
@@ -429,6 +437,32 @@ if(!Yii::app()->user->isGuest){
         });   
 
       });
+      
+       $('#gift').popover(
+    {
+     
+      title:'<strong>Balance y Giftcards</strong>',
+      content: gift,
+      placement: 'bottom',
+      trigger: 'manual',
+      html: true,
+    });
+ 
+    $('#gift').hoverIntent(function(){
+        $(this).popover('show');
+        $(this).addClass('bg_color10');
+        $('.popover').addClass('active_two');
+      },
+      function(){
+        $('.active_two').hover(function(){},function(){
+          $('#gift').popover('hide');
+          $('#gift').removeClass('bg_color10');
+        });   
+
+      });
+      
+      
+      
         $('.active_two').hover(function(){},function(){
           $('#btn-notifications').popover('hide');
           $('#btn-notifications').removeClass('bg_color10');

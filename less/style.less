@@ -58,6 +58,7 @@
 .bg_color13{ background-color:@color13;}
 
 
+
 .border_radius (@radius: 5px) {
   border-radius: @radius;
   -webkit-border-radius: @radius;
@@ -948,6 +949,21 @@ src: url('../fonts/entypo.woff'),
     display: none;
     
 }
+
+
+  .gifts-menu{
+    color:#000;
+    font-size:14px;
+
+    font-family: 'Open Sans',sans-serif;
+  }
+  .gifts-menuA:hover{
+
+    font-size:14px;
+    color:#000;
+    text-decoration:none;
+    font-family: 'Open Sans',sans-serif;
+  }
 
 /*------------ HEADER OFF --------------*/
 
@@ -2103,6 +2119,69 @@ src: url('../fonts/entypo.woff'),
 
 /*----------- Tienda ON -------------*/
 
+.slide-out-div {
+          padding: 20px;
+          width: 210px;
+          height: 210px;
+          background: #e3dede;
+          z-index:2000;
+          color:#000;
+          font-size:16px;
+          text-align: center;
+       } 
+      .regYa{
+        background-color: #000;
+        text-transform: none;        
+      }
+      .regYa:hover{
+        background-color: #000;
+        color:#FFF;        
+      }
+      .handle{
+        background-color: #000;
+        color:#FFF;
+        font-size:30px;
+        width: 50px;
+        height: 250px;
+        left:auto;
+        top:auto;
+         z-index:1029;
+            -webkit-border-top-left-radius: 50px;
+-webkit-border-bottom-left-radius: 20px;
+-moz-border-radius-topleft: 20px;
+-moz-border-radius-bottomleft: 20px;
+border-top-left-radius: 20px;
+border-bottom-left-radius: 20px;
+      }     
+      
+      .rotate {
+        margin-top: 113px;
+    margin-left: -91px;
+    width: 235px;
+    font-size:15px;
+    font-weight:800;
+
+
+    /* Safari */
+    -webkit-transform: rotate(-90deg);
+    
+    /* Firefox */
+    -moz-transform: rotate(-90deg);
+    
+    /* IE */
+    -ms-transform: rotate(-90deg);
+    
+    /* Opera */
+    -o-transform: rotate(-90deg);
+    
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    
+ }
+
+
+
+
 .bard_tienda{
   background: @color3;
   font-weight: 200;
@@ -2719,7 +2798,7 @@ ul.yiiPager .last
 
  .go-top {
   position: fixed;
-  bottom: 36em;
+  bottom: 6em;
   right: 1em;
   font-size: 12px;
   padding: 1em;

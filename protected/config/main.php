@@ -166,6 +166,7 @@ return array(
 				'preguntas_frecuentes'=>'site/preguntas_frecuentes',
 				'acerca-personaling'=>'site/acerca_de',
 				'reportico'=>'reportico',
+				'tt'=>'site/tienda',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',

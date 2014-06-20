@@ -637,6 +637,7 @@ class BolsaController extends Controller
                     
                     $descuento = Yii::app()->getSession()->get('descuento');
                     $descuentoRegalo = 0;
+                    Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
                     $total = Yii::app()->getSession()->get('total');
                     if(Yii::app()->getSession()->get('usarBalance') == '1'){
                             $balance = User::model()->findByPK($usuario)->saldo;
@@ -680,11 +681,11 @@ class BolsaController extends Controller
                             
                         //$total = floor(($total - $cupon[1]) * 100) / 100;
                         $total = $total - $cupon[1];
-                        /*el monto total de la orden*/
-                        Yii::app()->getSession()->add('total', $total);
                         
                     }
                     
+                    /*el monto total de la orden*/
+                    Yii::app()->getSession()->add('total', $total);
                     
                     /*Ya el monto final a pagar*/
                     Yii::app()->getSession()->add('total_tarjeta',$total);
@@ -840,8 +841,8 @@ class BolsaController extends Controller
 							
 
 //				$this->redirect(array('bolsa/pagos'));
-							if(isset(Yii::app()->session['login']))
-								unset(Yii::app()->session['login']);
+                            if(isset(Yii::app()->session['login']))
+                                    unset(Yii::app()->session['login']);
                             $this->redirect($this->createUrl('bolsa/pagos'));
 			}
 			else
@@ -3026,6 +3027,7 @@ class BolsaController extends Controller
 
                     $detalleBalance->comentario = "Uso de Saldo";
                     $detalleBalance->estado = 1;//Aprobado
+                    $detalleBalance->fecha = date("Y-m-d H:i:s");
                     $detalleBalance->orden_id = $orden->id;
                     $detalleBalance->tipo_pago = Detalle::USO_BALANCE;
                     

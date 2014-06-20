@@ -818,5 +818,14 @@ class Orden extends CActiveRecord
 			return Yii::app()->db->createCommand($sql)->queryScalar();
 	}
 	
-	
+	public function getLookProducts($look_id)
+	{
+		
+		$sql = "
+                select count(*) from tbl_orden_has_productotallacolor 
+                where look_id = ".$look_id." and tbl_orden_id = ".$this->id;
+                
+		return Yii::app()->db->createCommand($sql)->queryScalar();
+		
+	}
 }

@@ -50,18 +50,16 @@ width="1" height="1" border="0" alt="" />
     #scroller{
         background-color: white;
     }
-    .toolGift{
-    	position: absolute;
-    	width:10px;
-    	height:10px;
-    	background: #000;
-    	top:150px;
-    	left:1000px;
-    	z-index:2000;
-    	
-    }    
 </style>
-
+<script>
+	$('#btn-gift').tooltip({
+    title:"Hemos abonado<br/><?php echo Yii::app()->params['registerGift']." ".Yii::t('contentForm','currSym');?><br/>a tu balance para comprar YA",
+    trigger:"manual",
+    placement:"bottom"
+    
+});
+	
+</script>
 <div class="container" id="scroller-anchor">
 	
 	
@@ -624,19 +622,20 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 </div>
 <a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
   
-<?php if($gift){?>
-<div id="myModalRegalo" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+<?php if($gift){
+	echo "<script>$('#btn-gift').tooltip('show');</script>";?>
+<!--<div id="myModalRegalo" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
  <div class="modal-header">
     <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
    <!--  <h3 id="myModalLabel">¡Enhorabuena!</h3>-->
-   
+ <!--  
   </div>
   <div class="modal-body">
  		 <h4><?php echo Yii::t('contentForm','Who said '.Yii::app()->params['registerGift'].'{currSym} is nothing ?');?></h4>
   </div>
   <div class="modal-footer">  <button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
   </div>
-</div><?php }?>
+</div>--><?php }?>
 
 <!-- Modal Registro OFF -->
 
@@ -645,13 +644,8 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 
 <script type="text/javascript">
-$('#gift').tooltip({
-    title:"Hemos abonado <?php echo Yii::app()->params['registerGift']." ".Yii::t('contentForm','currSym');?> a tu balance para comprar YA",
-    trigger:"manual",
-    placement:"bottom"
-    
-});
-$('#gift').tooltip('show');
+
+
 
     var actionGuardarFiltro = '<?php echo $this->createUrl('guardarFiltro'); ?>';
 

@@ -74,6 +74,8 @@ class MarcaController extends Controller
 		if(isset($_POST['Marca'])){
 			
 			$marca->attributes = $_POST['Marca'];
+			if(isset($_POST['padreId']))
+				$marca->padreId=$_POST['padreId'];
 			if(isset($_POST['Marca']['ciudad_id'])){				
 				$marca->contacto= $_POST['Marca']['contacto'];	
 				$marca->cif= $_POST['Marca']['cif'];
@@ -98,6 +100,8 @@ class MarcaController extends Controller
 						$marca = Marca::model()->findByPk($id);
 					}
 					$marca->attributes = $_POST['Marca'];
+					if(isset($_POST['padreId']))
+						$marca->padreId=$_POST['padreId'];
 				}
 				
 			}

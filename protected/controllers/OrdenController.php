@@ -21,14 +21,14 @@ class OrdenController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('detallepedido','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter','historial','mensajes','devolver','devoluciones'),
+				'actions'=>array('detallepedido','entregar','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter','historial','mensajes','devolver','devoluciones'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
  
 				'actions'=>array('index','cancel','admin','modalventas',
                                     'detalles','devoluciones','validar','enviar',
-                                    'factura','entregar','calcularenvio','createexcel',
+                                    'factura','calcularenvio','createexcel',
                                     'importarmasivo','reporte','reportexls','adminxls',
                                     'generarExcelOut','devolver','adminDevoluciones','detallesDevolucion',
 									'AceptarDevolucion','RechazarDevolucion','AnularDevuelto','cantidadDevuelto','activarDevuelto'),
@@ -192,10 +192,30 @@ public function actionReportexls(){
 		 
 		 	foreach($ordenes->getData() as $data)
 			{
+
+				$precio = $data['Precio'];
+				$precio_iva = $data['pIVA'];
+				if($data['look']!=0){
+				    $look = Look::model()->findByPk($data['look']);
+				    $orden = Orden::model()->findByPk($data['Orden']);
+				    if($look && $orden){
+				        if(!is_null($look->tipoDescuento) && $look->valorDescuento > 0){
+				            if($orden->getLookProducts($look->id) == $look->countItems()){
+				                //echo 'Precio: '.$look->getPrecio(false).' - Precio desc: '.$look->getPrecioDescuento(false);
+				                $descuento_look = $look->getPrecio(false) - $look->getPrecioDescuento(false);
+				                $porcentaje = ($descuento_look * 100) / $look->getPrecio(false);
+				                //////echo $descuento_look.' - '.$porcentaje;
+
+				                $precio -= $data['Precio'] * ($porcentaje / 100);
+				                $precio_iva -= $data['pIVA'] * ($porcentaje / 100);
+				            }
+				        }
+				    }
+				}
 					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
              
-                    $I=number_format($data['Precio'],2,',','.'); 
-                    $J=number_format($data['pIVA'],2,',','.');
+                    $I=number_format($precio,2,',','.'); 
+                    $J=number_format($precio_iva,2,',','.');
 
 
 					$objPHPExcel->setActiveSheetIndex(0)
@@ -1056,7 +1076,7 @@ public function actionReportexls(){
 	}
 	public function actionRechazarDevolucion(){
 		$devolucion=Devolucion::model()->findByPk($_POST['id']);
-		$devolucion->estado=5;
+		$devolucion->estado=4;
 		if($devolucion->save()){
 			$user = User::model()->findByPk($devolucion->orden->user_id);
 			$comments="Lamentamos informarte que tu solicitud de devolución no cumple con las condiciones y políticas de devoluciones de personaling.es, para mayor información puedes comunicarte via
@@ -1618,80 +1638,86 @@ public function actionValidar()
 
 		public function actionEntregar()
 	{
+			
+		
 		$orden = Orden::model()->findByPK($_POST['id']);
-		
+		if(UserModule::isAdmin()||Yii::app()->user->id==$orden->user_id)
+		{
 
-		$orden->estado=8; // Entregado
-		
-		if($orden->save())
-			{
-				
-				//agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-				$estado = new Estado;
-										
-				$estado->estado = 8;
-				$estado->user_id = Yii::app()->user->id; // 
-				$estado->fecha = date("Y-m-d");
-				$estado->orden_id = $orden->id;
-						
-					if($estado->save())
+			$orden->estado=8; // Entregado
+			
+			if($orden->save())
 				{
-					Yii::app()->user->setFlash('success',"La Entrega fué Registrada");
 					
-					echo "ok";	
+					//agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+					$estado = new Estado;
+											
+					$estado->estado = 8;
+					$estado->user_id = Yii::app()->user->id; // 
+					$estado->fecha = date("Y-m-d");
+					$estado->orden_id = $orden->id;
+							
+						if($estado->save())
+					{
+						Yii::app()->user->setFlash('success',"La Entrega fué Registrada");
 						
-					
-					/*	$user = User::model()->findByPk($orden->user_id);		
-						$message            = new YiiMailMessage;
-						$message->view = "mail_template";
-						$subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
-						$body = "Nos complace informar que tu pedido #".$orden->id." ha sido enviado <br/>
-								<br/>
-								Empresa: Zoom <br/>
-								Número de seguimiento: ".$orden->tracking." <br/> 
-								";
-						$params              = array('subject'=>$subject, 'body'=>$body);
-						$message->subject    = $subject;
-						$message->setBody($params, 'text/html');                
-						$message->addTo($user->email);
-						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-						Yii::app()->mail->send($message);
 						
-					/*
-						// Enviar correo cuando se envia la compra
-						$user = User::model()->findByPk($orden->user_id);
-						$message             = new YiiMailMessage;
-						//this points to the file test.php inside the view path
-						$message->view = "mail_template";
-						$subject = 'Tu compra en Pesonaling #'.$orden->id.' ha sido enviada';
-						$body = "Nos complace informarte que tu pedido #".$orden->id." ha sido enviado </br>
-								</br>
-								Empresa: Zoom </br>
-								Número de seguimiento: ".$orden->tracking." </br> 
-								";
-						$params              = array('body'=>$body);
-						$message->subject    = $subject;
-						$message->setBody($params, 'text/html');
-						$message->addTo($user->email);
-						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+							
 						
-						Yii::app()->mail->send($message);					
-					
-					
-					Yii::app()->user->setFlash('success', 'Se ha enviado la orden.');
-					
-					echo "ok";
-				}*/
-					
-			
+						/*	$user = User::model()->findByPk($orden->user_id);		
+							$message            = new YiiMailMessage;
+							$message->view = "mail_template";
+							$subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
+							$body = "Nos complace informar que tu pedido #".$orden->id." ha sido enviado <br/>
+									<br/>
+									Empresa: Zoom <br/>
+									Número de seguimiento: ".$orden->tracking." <br/> 
+									";
+							$params              = array('subject'=>$subject, 'body'=>$body);
+							$message->subject    = $subject;
+							$message->setBody($params, 'text/html');                
+							$message->addTo($user->email);
+							$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+							Yii::app()->mail->send($message);
+							
+						/*
+							// Enviar correo cuando se envia la compra
+							$user = User::model()->findByPk($orden->user_id);
+							$message             = new YiiMailMessage;
+							//this points to the file test.php inside the view path
+							$message->view = "mail_template";
+							$subject = 'Tu compra en Pesonaling #'.$orden->id.' ha sido enviada';
+							$body = "Nos complace informarte que tu pedido #".$orden->id." ha sido enviado </br>
+									</br>
+									Empresa: Zoom </br>
+									Número de seguimiento: ".$orden->tracking." </br> 
+									";
+							$params              = array('body'=>$body);
+							$message->subject    = $subject;
+							$message->setBody($params, 'text/html');
+							$message->addTo($user->email);
+							$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+							
+							Yii::app()->mail->send($message);					
+						
+						
+						Yii::app()->user->setFlash('success', 'Se ha enviado la orden.');
+						
+						echo "ok";
+					}*/
+						
+				
+				}
+			else{
+				
+				Yii::app()->user->setFlash('success',"No se pudo registrar la Entrega");
+			}	
 			}
-		else{
-			
-			Yii::app()->user->setFlash('success',"No se pudo registrar la Entrega");
-		}	
-		}
+		}else
+			Yii::app()->user->setFlash('success',"No esta autorizado para registrar la entrega");
+		
+		echo "ok";	
 	}
-
 	
 
 	public function actionEnviar()

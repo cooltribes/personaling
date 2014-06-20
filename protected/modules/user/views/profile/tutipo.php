@@ -19,7 +19,7 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/joyride-2.1.
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 if((isset($editar) && $editar)){
   $this->breadcrumbs=array(
-  	UserModule::t("Mi cuenta")=>array('micuenta'),
+  	UserModule::t("Tu cuenta")=>array('micuenta'),
   	UserModule::t("Tu perfil corporal"),
   );
 }

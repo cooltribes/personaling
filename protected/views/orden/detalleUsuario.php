@@ -92,7 +92,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 
          </i> <?php echo Yii::t('contentForm','Payment report'); ?>
 
-         	<?php } ?></td>
+         	<?php } if($orden->estado == 4)
+         	echo"<div><a onclick='entregado(".$orden->id.")' class='btn btn-info margin_top margin_bottom pull-left'>Notificar Entrega</a></div>"; ?>
+        </td>
          	
           <td>
           	<?php if($orden->estado == 8) // recibido
@@ -862,7 +864,25 @@ function mensaje(user_id,orden_id){
 	       }) 
 				
 	}
-
+	function entregado(id){
+		
+	
+		
+		$.ajax({
+	        type: "post", 
+	        url: "../entregar", // action 
+	        data: { 'id':id}, 
+	        success: function (data) {
+				if(data=="ok")
+				{
+					window.location.reload();
+				}
+	       	}//success
+	       })	
+	      
+	   //  alert(guia);	
+		
+	}
 
 
 </script>

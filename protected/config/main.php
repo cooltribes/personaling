@@ -165,6 +165,8 @@ return array(
 				'envios'=>'site/condiciones_de_envios_y_encomiendas',
 				'preguntas_frecuentes'=>'site/preguntas_frecuentes',
 				'acerca-personaling'=>'site/acerca_de',
+				'registro-personaling'=>'user/registration',
+				'inicio-personaling'=>'user/login',
 				'reportico'=>'reportico',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',

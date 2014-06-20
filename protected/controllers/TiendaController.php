@@ -1412,11 +1412,10 @@ public function actionCategorias2(){
 						$balance->orden_id=0;
 						$balance->total=Yii::app()->params['registerGift'];
 						if($balance->save()){
-							unset(Yii::app()->session['registerStep']);
 							$gift=true;
 						}
 						
-					}else
+					}
 						unset(Yii::app()->session['registerStep']);
 				}
 

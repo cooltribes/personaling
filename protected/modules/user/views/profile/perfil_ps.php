@@ -1,8 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");?>
 <div class="container margin_top tu_perfil">
-  <div class="page-header">
+ <!-- <div class="page-header">
     <h1>Perfil</h1>
-  </div>
+  </div>-->
   <div class="row">
     <aside class="span3">
       <div class="card">

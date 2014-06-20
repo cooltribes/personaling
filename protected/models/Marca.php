@@ -18,6 +18,7 @@
  *  @property integer $ciudad_id
  * @property integer $codigo_postal_id
  *  @property integer $pais
+ *  *  @property integer $padreId
 
  */
 class Marca extends CActiveRecord
@@ -70,6 +71,8 @@ class Marca extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 		'productos' => array(self::HAS_MANY, 'Producto', 'marca_id'),
+		'hijos' => array(self::HAS_MANY, 'Marca', 'padreId'),
+
 		//'clasificaciones' => array(self::HAS_MANY, 'ClasificacionMarca', 'marca_id'),
 		);
 	}
@@ -92,7 +95,8 @@ class Marca extends CActiveRecord
 			'pais'=>'País',
 			'provincia_id'=>'Provincia',
 			'ciudad_id'=>'Población',
-			'codigo_postal_id'=>'Postal'
+			'codigo_postal_id'=>'Postal',
+			'padreId'=>'Marca padre'
 
 		);
 	}

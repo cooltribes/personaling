@@ -393,6 +393,8 @@
             </div>
          
             <?php  $marca = Marca::model()->findByPk($producto->marca_id);
+					if($marca->padreId>0)
+						$marca=Marca::model()->findByPk($marca->padreId);
                 Yii::app()->clientScript->registerMetaTag($marca->nombre, 'twitter:data2', null, null, null);
 
              ?>

@@ -1010,6 +1010,13 @@ public function actionReportexls(){
 				if($dhptc->motivoAdmin!=5){
 					$ptc->cantidad=$ptc->cantidad+$dhptc->cantidad;
 					$ptc->save();
+				}else{
+					$def=new Defectuoso;
+					$def->cantidad=$dhptc->cantidad;
+					$def->fecha=date("Y-m-d");
+					$def->user_id=Yii::app()->user->id;
+					$def->preciotallacolor_id=$dhptc->preciotallacolor_id;
+					$def->save();					
 				}
 				$ohptc->save();
 			}				

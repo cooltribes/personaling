@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 );
 
 ?>
-<style> .table td {vertical-align:middle;}</style>
+
 	<?php if(Yii::app()->user->hasFlash('success')){?>
 	    <div class="alert in alert-block fade alert-success text_align_center">
 	        <?php echo Yii::app()->user->getFlash('success'); ?>
@@ -48,7 +48,7 @@ $this->breadcrumbs=array(
 
    <div> 
      <h3 class="braker_bottom">Productos</h3>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+      <table id="myTable" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
         	<th scope="col"></th>
         	<th scope="col">Referencia</th>
@@ -98,7 +98,7 @@ $this->breadcrumbs=array(
 //				echo("<td>".$indiv->codigo."</td>");// Referencia
 //				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
 				/*Datos resumidos + foto*/
-				echo("<td style='text-align:center'><div>".$foto."<br/>".$label.$ptc->id."</div></td>");
+				echo("<td style='text-align:center'><div>".$foto."<br/>".$label."</div></td>");
                  
 				echo('<td style="vertical-align: middle">'.$indiv->codigo.'</td>');
                echo("<td>".$marca->nombre."</td>");
@@ -122,7 +122,7 @@ $this->breadcrumbs=array(
                                         
 			   
 			   
-			   
+			   if($devolucion->estado==0){
 			   echo "
 	<td>
 	<div class='dropdown pull-right'>
@@ -139,7 +139,8 @@ $this->breadcrumbs=array(
 			   	echo("<li><a href='#' onclick='guardar(".$prod['id'].")'><i class='icon-check'></i> Actualizar</a></li>");
             
           echo "</ul>
-        </div></td>";
+        </div></td>";}
+else echo "<td></td>";
 			   
 			   
 			   

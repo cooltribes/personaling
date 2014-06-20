@@ -636,6 +636,8 @@ function refresh(reset)
  
 <script>
 		$(document).ready(function() {
+			$('.handle').show();
+			$('.slide-out-div').show();
 
 			// Show or hide the sticky footer button
 			$(window).scroll(function() {

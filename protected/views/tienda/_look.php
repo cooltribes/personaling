@@ -74,7 +74,7 @@
             	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
           	</a>
           	</div>
-          <div class="span5"> <span class="muted"><?php echo Yii::t('contentForm','Look created by'); ?>: </span>
+          <div class="span4"> <span class="muted"><?php echo Yii::t('contentForm','Look created by'); ?>: </span>
             <h5>
 			<?php 
 			
@@ -83,21 +83,40 @@
 			echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
 			</h5>
           </div>
-          <div class="span5">
-            <span class="precio">
-              <?php
+          <div class="span6">
+            <div class="row-fluid">
+            	 <?php
               if($look->getPrecioDescuento(false) < $look->getPrecio(false)){
                 ?>
-                <small><?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecio(); ?></small>|<small><?php echo Yii::t('contentForm', 'currSym'); ?><?php echo $look->getPrecioDescuento(); ?></small>
-                <?php
+            	<div class="span6 color9" >
+            		<div class="tPrecio">Por Separado</div>
+            		<div class="pDoble">
+            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecio(); ?>
+            		</div>
+            	</div>
+            	<div class="span6">
+            		<div  class="tPrecio">Look Completo</div>
+            		<div class="pDoble">
+            			<?php echo Yii::t('contentForm', 'currSym'); ?><?php echo $look->getPrecioDescuento(); ?>
+            		</div>
+            	</div>
+            	<?php
               }else{
                 ?>
-                <small><?php echo Yii::t('contentForm', 'currSym'); ?> </small>
-                <?php 
-                echo $look->getPrecio();
+            	<div class="span12" >
+            		<div class="pUnico">
+            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecio(); ?>
+            		</div>
+            	</div>
+            	<?php 
+              
                 }
               ?>
-            </span>
+            	
+            	
+            	
+            </div>
+            
           </div>
         </div>
         <div class="share_like">

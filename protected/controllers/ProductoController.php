@@ -1867,7 +1867,7 @@ public function actionReportexls(){
                     }                    
                     
                     //Si no hubo errores
-                    if(is_array($resValidacion = $this->validarArchivoV2($nombre . $extension))){
+                    if(is_array($resValidacion = $this->validarArchivo($nombre . $extension))){
                         
                         Yii::app()->user->updateSession();
                         Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
@@ -1920,7 +1920,7 @@ public function actionReportexls(){
                     // ==============================================================================
 
                     // Validar (de nuevo)
-                    if( !is_array($resValidacion = $this->validarArchivoV2($nombre . $extension)) ){
+                    if( !is_array($resValidacion = $this->validarArchivo($nombre . $extension)) ){
                         
                         // Archivo con errores, eliminar del servidor
                         unlink($nombre . $extension);
@@ -2478,7 +2478,7 @@ public function actionReportexls(){
 		}
 	}
         
-        protected function validarArchivoV2($archivo){
+        protected function validarArchivo($archivo){
             
             $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
 
@@ -2492,6 +2492,7 @@ public function actionReportexls(){
             $erroresPeso = "";
             $erroresCosto = "";
             $erroresPrecio = "";
+            $erroresColumnasVacias = "";
             
 
             $linea = 1;
@@ -2538,7 +2539,7 @@ public function actionReportexls(){
                         else if ($row['P'] != "Almacén")
                             $falla = "Almacén";
 
-                        if ($falla != "") { // algo falló
+                        if ($falla != "") { // algo falló :O
                             Yii::app()->user->updateSession();
                             Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
                                             $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita"));                                   
@@ -2558,6 +2559,29 @@ public function actionReportexls(){
                         $row['L'] = str_replace(",", ".", $row['L']);
                         $row['M'] = str_replace(",", ".", $row['M']);                        
                         
+                        echo "<pre>";
+                        print_r($row);
+                        echo "</pre><br>";
+
+                        foreach ($row as $col => $valor){
+                            
+                            if(!isset($valor) || $valor == ""){
+                                $colsVacias = "Hay columnas vacías";
+                            }
+                            
+                            if($col == "P"){
+                                break;
+                            }
+                        }
+
+                        Yii::app()->end();
+
+
+
+                        //Columnas Vacias
+                        if(isset($row['M']) && $row['M'] != "" && !is_numeric($row['M'])){
+                            $erroresColumnasVacias = "<li> <b>" . $row['M'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
+                        }
                         //Peso
                         if(isset($row['K']) && $row['K'] != "" && !is_numeric($row['K'])){
                             $erroresPeso = "<li> <b>" . $row['K'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
@@ -2638,8 +2662,9 @@ public function actionReportexls(){
                             }	
                         }
                         
+                                //Bisutería
                         //la cantidad de categorias
-                        if ($cantCategorias == 0){
+                        if ($cantCategorias < 2){
                             $erroresCatVacias .= "<li> Línea <b>" . $linea."</b></li>";
                         }
                     
@@ -2666,7 +2691,7 @@ public function actionReportexls(){
                                  </ul><br>";
             }
             if($erroresCatVacias != ""){
-                $erroresCatVacias = "Los siguientes productos deben tener al menos una (1) categoría asociada:<br><ul>
+                $erroresCatVacias = "Los siguientes productos deben tener al menos dos (2) categorías asociadas:<br><ul>
                                  {$erroresCatVacias}
                                  </ul><br>";
             }

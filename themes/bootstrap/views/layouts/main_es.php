@@ -218,7 +218,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Tienda', 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
                 array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
-                array('label'=>'&nbsp;','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('id'=>'gift','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest,),                 
+                array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('id'=>'btn-gift','class'=>'hidden-phone to-white-icon', 'data-html'=>"true"), 'visible'=>!Yii::app()->user->isGuest,),                 
 				array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 	array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone to-white-icon') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
@@ -438,7 +438,7 @@ if(!Yii::app()->user->isGuest){
 
       });
       
-       $('#gift').popover(
+       $('#btn-gift').popover(
     {
      
       title:'<strong>Balance y Giftcards</strong>',
@@ -448,15 +448,15 @@ if(!Yii::app()->user->isGuest){
       html: true,
     });
  
-    $('#gift').hoverIntent(function(){
+    $('#btn-gift').hoverIntent(function(){
         $(this).popover('show');
         $(this).addClass('bg_color10');
         $('.popover').addClass('active_two');
       },
       function(){
         $('.active_two').hover(function(){},function(){
-          $('#gift').popover('hide');
-          $('#gift').removeClass('bg_color10');
+          $('#btn-gift').popover('hide');
+          $('#btn-gift').removeClass('bg_color10');
         });   
 
       });
@@ -471,6 +471,8 @@ if(!Yii::app()->user->isGuest){
         $('#magazine').hover(function(){
           $('#btn-notifications').popover('hide');          
           $('#btn-notifications').removeClass('bg_color10');
+          $('#btn-gift').popover('hide');          
+          $('#btn-gift').removeClass('bg_color10');
 
         },function(){});
 
@@ -478,7 +480,11 @@ if(!Yii::app()->user->isGuest){
           $('#btn-notifications').popover('hide');          
           $('#btn-notifications').removeClass('bg_color10');          
         },function(){});
-
+		
+		 $('#btn-gift').hover(function(){
+          $('#btn-notifications').popover('hide');          
+          $('#btn-notifications').removeClass('bg_color10');          
+        },function(){});
     
     var listaCarrito;
 
@@ -616,7 +622,9 @@ if(!Yii::app()->user->isGuest){
 
     $('#dropdownUser, #btn-notifications,#magazine').hover(function(){
       $('#btn-shoppingcart').popover('hide');      
-      $('#btn-shoppingcart').removeClass('bg_color10');              
+      $('#btn-shoppingcart').removeClass('bg_color10');      
+      $('#btn-gift').popover('hide');          
+      $('#btn-gift').removeClass('bg_color10');        
     },function(){});
     
     $('#dropdownUser').hoverIntent(function(){

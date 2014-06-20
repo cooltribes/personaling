@@ -1,3 +1,26 @@
+<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.tabSlideOut.v1.3.js" type="text/javascript"></script>
+ <script type="text/javascript">
+    $(function(){
+        $('.slide-out-div').tabSlideOut({
+            tabHandle: '.handle',                     //class of the element that will become your tab
+          //  pathToTabImage: '<?php echo Yii::app()->baseUrl; ?>/images/icon_twitter_2.png', //path to the image for the tab //Optionally can be set using css
+            imageHeight: '210px',                     //height of tab image           //Optionally can be set using css
+           // imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
+            tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
+            speed: 300,                               //speed of animation
+            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
+            topPos: '200px',                          //position from the top/ use if tabLocation is left or right
+            leftPos: '20px',                          //position from left/ use if tabLocation is bottom or top
+            fixedPosition: false                      //options: true makes it stick(fixed position) on scroll
+        });
+
+    });
+ 
+    </script>
+
+
+
+
 <?php
 if(isset($seo)){
 	$this->pageTitle = $seo->title;
@@ -36,6 +59,18 @@ if(isset($seo)){
 	</div>
 </div>
 <!-- BAR ON -->
+<?php if(Yii::app()->user->isGuest&&Yii::app()->params['registerGift']) {?>
+<div class="slide-out-div">
+            <div class="handle" href="#"><div class="rotate">Gana un bono de 5 EUR&nbsp;&nbsp;&nbsp;<img src="<?php echo Yii::app()->baseUrl; ?>/images/backtopWhite.png" width="20px" height="20px"> </div></div>
+           <div class="row-fluid margin_top_small">
+           		<div class="span12 margin_top_small">
+           				Al registrarte y completar tu perfil.<br/><br/>
+           				Disfruta de la primera Shoping Experience unica y repetible<br>
+           				<a class="span8 offset2 margin_top_small btn btn-danger regYa" href="<?php echo Yii::app()->baseUrl;?>/user/registration">¡Registrate YA!</a>
+           		</div>
+           	
+           </div>
+</div><?php }?>
 <section class="bard_tienda">
 
 	 	<ul class="nav unstyled">
@@ -290,8 +325,7 @@ if(isset($seo)){
 <!-- PRODUCTOS OFF -->
 <script>
 
-		
-
+		  
 
 		
 		

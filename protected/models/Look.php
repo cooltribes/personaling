@@ -513,7 +513,11 @@ class Look extends CActiveRecord
 	public function getMarcas(){
 		$marcas = array();
 		foreach ($this->productos_todos(array('group'=>'marca_id')) as $producto){
-			$marcas[] = Marca::model()->findByPk($producto->marca_id);
+			$marca=Marca::model()->findByPk($producto->marca_id);
+			if($marca->padreId>0)
+				$marca = Marca::model()->findByPk($marca->padreId);
+			if(!in_array($marca,$marcas))
+					$marcas[] = $marca;
 		}
 		return $marcas;
 	}

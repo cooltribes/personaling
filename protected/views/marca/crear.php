@@ -33,22 +33,34 @@ $this->breadcrumbs=array(
             <div class="bg_color3 margin_bottom_small padding_small box_1">
                 <form class="form-stacked personaling_form padding_top_small" >
                     <fieldset>
-                    		                                  	
-                    	<div class="control-group">
+                    <?php if(count($marca->hijos)<1){ $margin='';?>	                                  	
+                    	<div class="control-group margin_top_medium">
+                    		 <?php echo $form->labelEx($marca,'padreId', array('class' => 'control-label required')); ?>
+				              <div class="controls">
+				              	<?php echo CHtml::dropDownList('padreId',$marca->padreId,CHtml::listData(Marca::model()->findAllByAttributes(array('padreId'=>'0'),array('order'=>'nombre')),'id','nombre') ,array('empty'=>'Esta es una marca padre')); ?>
+				                <?php echo $form->error($marca,'padreId'); ?>
+				              </div>
+                        </div> 
+                    <?php }else{$margin="margin_top_medium";}?>
+                    	
+                    	<div class="control-group <?php echo $margin;?>">
                               <?php echo $form->labelEx($marca,'nombre', array('class' => 'control-label required')); ?>
 				              <div class="controls">
 				              	<?php echo $form->textField($marca,'nombre',array('class'=>'span6', 'placeholder' => 'Nombre de la marca')); ?>
 				                <?php echo $form->error($marca,'nombre'); ?>
 				              </div>
                         </div>
-
 						<div class="control-group">
                               <?php echo $form->labelEx($marca,'descripcion', array('class' => 'control-label')); ?>
 				              <div class="controls">
 				              	<?php echo $form->textArea($marca,'descripcion',array('rows'=>'5','class'=>'span6', 'placeholder' => 'Descripcion de la marca')); ?>
 				                <?php echo $form->error($marca,'descripcion'); ?>
 				              </div>   
+                        
                         </div>
+                        
+                        
+                        
                         
                          <div class="control-group">
                         	<label class="control-label required"> Logotipo </label>

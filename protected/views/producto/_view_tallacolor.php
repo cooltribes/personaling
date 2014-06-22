@@ -46,9 +46,27 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 <!--<td><img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <br/>
                   <a href="#" class="btn btn-mini margin_top_xsmall"><i class="icon-picture"></i> Agregar/editar imágenes</a></td>-->
                 <td>
-                	<a href="#" class="pull-right btn btn-mini margin_left_xsmall"><i class="icon-edit"></i></a> 
-                	<a href="#"></a> <a href="#" onclick="suprimir(<?php echo $item->id ?>)" class="pull-right"><i class="icon-trash"></i></a>
-                	<?php echo $form->hiddenField($item,"[$i]id"); ?>
+                    <div class="dropdown"> 
+                        <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="" title="acciones">
+                            <i class="icon-cog"></i> <b class='caret'></b>
+                        </a> 
+                        <!-- Link or button to toggle dropdown -->
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
+                            <li>
+                                <?php echo CHtml::link('<i class="icon-list-alt"></i>  Ver cambios',
+                                        $this->createUrl("/producto/historial", array("id"=>$item->id))
+                                ); ?>                                
+                            </li>
+                            <li>
+                                <a href="#" onclick="suprimir(<?php echo $item->id ?>)"><i class="icon-trash"></i>
+                                    Eliminar
+                                </a>
+                                <?php echo $form->hiddenField($item,"[$i]id"); ?>                           
+                            </li>                                              
+                        </ul>
+                    </div>
+                	
+                	
                 </td>
               </tr>
  <?php endforeach; ?>             

@@ -38,7 +38,7 @@ class ProductoController extends Controller
                                     'delete','precios','producto','imagenes','multi',
                                     'orden','eliminar','inventario','detalles',
                                     'tallacolor','addtallacolor','varias','categorias',
-                                    'recatprod','seo','importar','descuentos'
+                                    'recatprod','seo', 'historial','importar','descuentos'
 				,'reporte','reportexls', "createExcel"),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -443,6 +443,31 @@ public function actionReportexls(){
 		}
 
 		$this->render('_view_seo',array('model'=>$model,'seo'=>$seo,));
+	}
+        
+        /*Muestra el historial de cambios en la tabla preciotallacolor*/
+	public function actionHistorial($id)
+	{
+            //Buscar el preciotallacolor
+            $model = Preciotallacolor::model()->findByPk($id);               
+
+            /*todos los cambios del sku*/
+            $criteria=new CDbCriteria;
+            $criteria->compare("id_elemento", $id);
+            $criteria->compare("tabla", LogModificacion::T_PrecioTallaColor);		     
+
+            $dataProvider = new CActiveDataProvider('LogModificacion', array(
+                'criteria'=>$criteria,
+                'pagination'=>array(
+                    'pageSize'=>20,
+                ),
+
+
+            ));
+            $this->render('historial',array(
+                'model'=>$model->producto,
+                'dataProvider'=>$dataProvider,
+                ));
 	}
 
 	//acceso para la pestaña de precios
@@ -1397,70 +1422,95 @@ public function actionReportexls(){
 		
 		if (isset($_POST['PrecioTallaColor'])){
 			$valid = true;
+                        $logActualizar = array();
 			 foreach ( $_POST['PrecioTallaColor'] as $i => $tallacolor ) {
-			 	if ($tallacolor['id']!='')
-			 		$preciotallacolor[$i] = Preciotallacolor::model()->findByPk($tallacolor['id']);
-				else 
-					$preciotallacolor[$i] = new Preciotallacolor;
-				if ($tallacolor['sku']!='' && $tallacolor['cantidad']!=''){
-				$this->performAjaxValidation($preciotallacolor[$i]);  
-					$preciotallacolor[$i]->attributes=$tallacolor; 
-					$preciotallacolor[$i]->producto_id = $model->id;
-					$valid  = $valid  && $preciotallacolor[$i]->validate();
-					if(!($valid)){
-						$error = CActiveForm::validate($preciotallacolor[$i]);
-	                    if($error!='[]'){
-	                    	$error = CJSON::decode($error);
-	                    	$error['id']= $i;
-							echo CJSON::encode($error);
-						}
-	                    Yii::app()->end();	  				
-					}
-				} else {
-					if ($preciotallacolor[$i]->isNewRecord){
-						unset($preciotallacolor[$i]);
-					}else{
-						try{
-							$preciotallacolor[$i]->delete(); 
-						} catch (Exception $e) {
-	                    	$error['PrecioTallaColor_sku'] = "No es posible eliminar este codigo.";
-							$error['id']= $i;
-							echo CJSON::encode($error);
-						 	Yii::app()->end();
-						}
+                            $actualizando = false; 
+                            if ($tallacolor['id']!=''){
+                                $preciotallacolor[$i] = Preciotallacolor::model()->findByPk($tallacolor['id']);
+                                $actualizando = true; //para saber si hay que guardar en el log
+                                
+                            }else {
+                                $preciotallacolor[$i] = new Preciotallacolor;                                
+                            }
+                            
+                            if ($tallacolor['sku']!='' && $tallacolor['cantidad']!=''){				
+                                
+                                $this->performAjaxValidation($preciotallacolor[$i]); 
+                                $cantAnterior = $preciotallacolor[$i]->cantidad;
+                                $preciotallacolor[$i]->attributes=$tallacolor; 
+                                $preciotallacolor[$i]->producto_id = $model->id;
+                                $valid  = $valid  && $preciotallacolor[$i]->validate();
+                                
+                                //si esta actualizando una cantidad, guardar en el log
+                                if($actualizando && $cantAnterior != $preciotallacolor[$i]->cantidad){ 
+                                    $logActualizar[$i] = new LogModificacion();
+                                    $logActualizar[$i]->tabla = LogModificacion::T_PrecioTallaColor;
+                                    $logActualizar[$i]->columna = "cantidad";
+                                    $logActualizar[$i]->id_elemento = $preciotallacolor[$i]->id;
+                                    $logActualizar[$i]->valor_anterior = $cantAnterior;
+                                    $logActualizar[$i]->valor_nuevo = $preciotallacolor[$i]->cantidad;
+                                    $logActualizar[$i]->fecha = date("Y-m-d H:i:s");
+                                    $logActualizar[$i]->user_id = Yii::app()->user->id;                                    
+                                }
+                                
+                                if(!($valid)){
+                                    $error = CActiveForm::validate($preciotallacolor[$i]);
+                                    
+                                    if($error!='[]'){
+                                        $error = CJSON::decode($error);
+                                        $error['id']= $i;
+                                        echo CJSON::encode($error);
+                                    }
+                                    Yii::app()->end();	  				
+                                }
+                            } else {
+                                if ($preciotallacolor[$i]->isNewRecord){
+                                        unset($preciotallacolor[$i]);
+                                }else{
+                                    try{
+                                        $preciotallacolor[$i]->delete(); 
+                                    } catch (Exception $e) {
+                                        
+                                        $error['PrecioTallaColor_sku'] = "No es posible eliminar este codigo.";
+                                        $error['id']= $i;
+                                        echo CJSON::encode($error);
+                                        Yii::app()->end();
+                                    }
 						
-					}
-				}
+                                }
+                            }
 			 }
 			if ($valid){
-				
-				  foreach ( $preciotallacolor as $i => $tallacolor ) {
-					//	$preciotallacolor->attributes=$tallacolor;  
-					  
-					  if ($tallacolor->save()){
-						Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('success',UserModule::t("Se guardaron las cantidades"));	
-						
-							
-							 	  	
-					  }	else {
-					  	$valid = false;
-					  	Yii::trace('PrecioTallaColor Error:'.print_r($tallacolor->getErrors(),true), 'registro');
-						Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('error',UserModule::t("No se pudieron guardar las cantidades, por favor intente de nuevo mas tarde"));				  	
-					  }
-				  }
-				if ($valid)  
-					echo CJSON::encode(array(
-	                                  'status'=>'success',
-	                                  'id'=>$model->id
-	                             ));
-			}
-		} 
-		else {
-		$this->render('tallacolor',array(
-			'model'=>$model
-		));
+                           
+                            foreach ( $preciotallacolor as $i => $tallacolor ) {
+                                //	$preciotallacolor->attributes=$tallacolor;  
+                                if ($tallacolor->save()) {
+                                    
+                                    //si este producto fue actualizado, guardar en el log
+                                    if(array_key_exists($i, $logActualizar)){ 
+                                        $logActualizar[$i]->save();                                        
+                                    }
+                                    
+                                    Yii::app()->user->updateSession();
+                                    Yii::app()->user->setFlash('success', UserModule::t("Se guardaron las cantidades"));
+
+                                } else {
+                                    $valid = false;
+                                    Yii::trace('PrecioTallaColor Error:' . print_r($tallacolor->getErrors(), true), 'registro');
+                                    Yii::app()->user->updateSession();
+                                    Yii::app()->user->setFlash('error', UserModule::t("No se pudieron guardar las cantidades, por favor intente de nuevo mas tarde"));
+                                }
+                            }
+                            if ($valid)  
+                                echo CJSON::encode(array(
+                                  'status'=>'success',
+                                  'id'=>$model->id
+                                ));
+                        }
+		}else {
+                    $this->render('tallacolor',array(
+                            'model'=>$model
+                    ));
 		}
 		
 		
@@ -2559,29 +2609,20 @@ public function actionReportexls(){
                         $row['L'] = str_replace(",", ".", $row['L']);
                         $row['M'] = str_replace(",", ".", $row['M']);                        
                         
-                        echo "<pre>";
-                        print_r($row);
-                        echo "</pre><br>";
-
+                        /*Columnas Vacias*/
                         foreach ($row as $col => $valor){
                             
                             if(!isset($valor) || $valor == ""){
-                                $colsVacias = "Hay columnas vacías";
+                                $erroresColumnasVacias.= "<li> Columna: <b>" . $col .
+                                        "</b>, en la línea <b>" . $linea."</b></li>";
                             }
                             
                             if($col == "P"){
                                 break;
                             }
-                        }
-
-                        Yii::app()->end();
+                        }                        
 
 
-
-                        //Columnas Vacias
-                        if(isset($row['M']) && $row['M'] != "" && !is_numeric($row['M'])){
-                            $erroresColumnasVacias = "<li> <b>" . $row['M'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
-                        }
                         //Peso
                         if(isset($row['K']) && $row['K'] != "" && !is_numeric($row['K'])){
                             $erroresPeso = "<li> <b>" . $row['K'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
@@ -2680,6 +2721,11 @@ public function actionReportexls(){
             
 
             //Si hubo errores en marcas, cat, tallas, colores
+            if($erroresColumnasVacias != ""){
+                $erroresColumnasVacias = "Las siguientes Columnas están vacías:<br><ul>
+                                 {$erroresColumnasVacias}
+                                 </ul><br>";
+            }
             if($erroresCategorias != ""){
                 $erroresCategorias = "Las siguientes Categorías no existen en la plataforma o están mal escritas:<br><ul>
                                  {$erroresCategorias}
@@ -2731,7 +2777,7 @@ public function actionReportexls(){
                 
             $errores = $erroresTallas .$erroresColores . $erroresMarcas .
                     $erroresCatRepetidas. $erroresCategorias . $erroresCatVacias.
-                    $erroresPrecio . $erroresCosto . $erroresPeso;
+                    $erroresPrecio . $erroresCosto . $erroresPeso . $erroresColumnasVacias;
             
             if($errores != ""){
                 

@@ -114,6 +114,12 @@
     echo CHtml::dropDownList('trabajo', '', $valores,
                             array('style' => 'display:none'));
     
+    /*Para el genero*/
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'sex'));  
+    $valores = Profile::range($field->range);      
+    echo CHtml::dropDownList('sex', '', $valores,
+                            array('style' => 'display:none'));
+    
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filtersUsuarios.js");
@@ -168,6 +174,7 @@
                                 'playa' => 'Estilo Vacaciones', 
                                 'sport' => 'Estilo Deporte', 
                                 'trabajo' => 'Estilo Oficina',                                 
+                                'sex' => 'Género',                                 
                                  );
                                  asort($opcionesFiltros);
                                  

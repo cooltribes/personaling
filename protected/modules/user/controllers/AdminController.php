@@ -362,11 +362,14 @@ class AdminController extends Controller
                         ->setCellValue('U1', 'Estilo Deporte')
                         ->setCellValue('V1', 'Estilo Oficina')
                         ->setCellValue('W1', 'Género')
+						->setCellValue('X1', 'Status')
+						->setCellValue('Y1', 'Perfil Corporal')
+                        ->setCellValue('Z1', 'Test Estilos')
                         ;
                 
                 
                 
-		foreach(range('A','W') as $columnID) {
+		foreach(range('A','Z') as $columnID) {
     		$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
         	->setAutoSize(true);
 		}  
@@ -394,6 +397,9 @@ class AdminController extends Controller
 			$objPHPExcel->getActiveSheet()->getStyle('U1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('V1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('W1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('X1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('Y1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('Z1')->applyFromArray($title);
                         
 		
 		$fila=2;
@@ -408,6 +414,8 @@ class AdminController extends Controller
     			$createdAt=date("d/m/Y",$user->getCreatetime()); 
     		else 
     			$createdAt='N/D'; 
+			
+		
 			
 			$objPHPExcel->setActiveSheetIndex(0)
                                         ->setCellValue('A'.$fila , $data->id) 
@@ -458,6 +466,9 @@ class AdminController extends Controller
                     ->setCellValue('U'.$fila , Profile::range($rangos[8],$user->profile->sport))
                     ->setCellValue('V'.$fila , Profile::range($rangos[9],$user->profile->trabajo))
                     ->setCellValue('W'.$fila , Profile::range($rangosSex,$user->profile->sex))
+					->setCellValue('X'.$fila , $user->getStatus($user->status))
+					->setCellValue('Y'.$fila , $user->profile->getCompletedProfile($user->id,false))
+                    ->setCellValue('Z'.$fila , $user->profile->getStyleTest($user->id,false))
                     ;
                     $fila++;
 	

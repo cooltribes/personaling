@@ -45,7 +45,8 @@
 		$estilo = 'coctel';
 ?>
 
-<div class="container margin_top">
+<div class="container margin_top margin_top_medLarge_minus padding_top_small">
+
   <div class="row">
     <div class="span12">
 	<!-- FLASH ON --> 

@@ -29,7 +29,7 @@ src="<?php echo $this->createUrl("site/conversion"); ?>?campaignID=15920&product
 &conversionType=lead&https=0&transactionID=<?php echo Yii::app()->user->id; ?>"
 width="1" height="1" border="0" alt="" />
 
-<div class="container tu_perfil">
+<div class="container tu_perfil margin_top_medLarge_minus">
   <div class="row">
     <?php if (isset($editar) && $editar){ ?>
     <!-- SIDEBAR ON -->

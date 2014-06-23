@@ -48,6 +48,7 @@ include("class.zoom.json.services.php");
  * @property DireccionEnvio $direccionEnvio
  * @property Pago $pago
  * @property Pago $detalle
+ * @property integer $estadoLF
  */
 class Orden extends CActiveRecord
 {
@@ -107,7 +108,9 @@ class Orden extends CActiveRecord
 			array('subtotal, descuento, envio, iva, descuentoRegalo, total, seguro', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo, total, estado, bolsa_id, user_id,   direccionEnvio_id, tracking, seguro, tipo_guia, peso', 'safe', 'on'=>'search'),
+			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo,
+                            total, estado, bolsa_id, user_id,   direccionEnvio_id, tracking,
+                            seguro, tipo_guia, peso, estadoLF', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -198,6 +201,7 @@ class Orden extends CActiveRecord
 		$criteria->compare('tracking',$this->tracking);
 		$criteria->compare('seguro',$this->seguro);
 		$criteria->compare('peso',$this->peso);
+		$criteria->compare('estadoLF',$this->estadoLF);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -826,6 +830,23 @@ class Orden extends CActiveRecord
                 where look_id = ".$look_id." and tbl_orden_id = ".$this->id;
                 
 		return Yii::app()->db->createCommand($sql)->queryScalar();
+		
+	}
+        
+        
+        /*Retorna El estado*/
+	public function getEstadoLF()
+	{
+            $status = "Enviado a LF";
+            switch ($this->estadoLF){                
+                case 1: $status = "Confirmado"; break;                
+                case 2: $status = "Anulado Checking"; break;                
+                case 3: $status = "Anulado Picking"; break;                
+                case 4: $status = "Finalizado"; break;                
+                case 5: $status = "Enviado"; break;                
+            }
+            return $status;
+        
 		
 	}
 }

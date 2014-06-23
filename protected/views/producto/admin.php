@@ -320,6 +320,8 @@ $template = '{summary}
 			)); ?>
 
     <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
+    <div class="span3"><a href="plantillaDescuentos" title="Exportar plantilla" class="btn btn-success">
+            <i class="icon icon-download icon-white"></i> Descar plantilla descuentos</a></div>
     
   </div>	  
 		  

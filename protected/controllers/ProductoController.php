@@ -39,7 +39,7 @@ class ProductoController extends Controller
                                     'orden','eliminar','inventario','detalles',
                                     'tallacolor','addtallacolor','varias','categorias',
                                     'recatprod','seo', 'historial','importar','descuentos'
-				,'reporte','reportexls', "createExcel"),
+				,'reporte','reportexls', "createExcel", 'plantillaDescuentos'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -1172,6 +1172,9 @@ public function actionReportexls(){
                     $dataProvider = $producto->busquedaNombreReferencia($_POST['query']);
             }	
 
+            /*Agregar el criteria a la sesion para cuando se pida exportar*/
+            Yii::app()->getSession()->add("productosCriteria", $dataProvider->getCriteria());
+            
             $this->render('admin',
             array('model'=>$producto,
             'dataProvider'=>$dataProvider,
@@ -2956,6 +2959,86 @@ public function actionReportexls(){
             $objWriter->save('php://output');
             Yii::app()->end();
 				  
+	}
+        
+        public function actionPlantillaDescuentos(){
+        
+            ini_set('memory_limit','256M'); 
+
+            $criteria = Yii::app()->getSession()->get("productosCriteria");
+            $arrayProductos = Producto::model()->findAll($criteria);
+                      
+            /*Formato del titulo*/
+            $title = array(
+                'font' => array(
+
+                    'size' => 12,
+                    'bold' => true,
+                    'color' => array(
+                        'rgb' => '000000'
+                    ),
+                ),
+                'background' => array(                    
+                    'color' => array(
+                        'rgb' => '246598'
+                    ),
+                ),
+            );
+
+            Yii::import('ext.phpexcel.XPHPExcel');    
+            $objPHPExcel = XPHPExcel::createPHPExcel();
+
+            $objPHPExcel->getProperties()->setCreator("Personaling.com")
+                                     ->setLastModifiedBy("Personaling.com")
+                                     ->setTitle("Listado de Productos");
+
+            // creando el encabezado
+            $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A1', 'Referencia')
+                        ->setCellValue('B1', 'Costo')
+                        ->setCellValue('C1', 'Precio Venta con IVA')
+                        ->setCellValue('D1', '% Descuento')
+                        ->setCellValue('E1', 'Precio Descuento con IVA');
+
+            $colI = 'A';
+            $colF = 'E';
+
+            //Poner autosize todas las columnas
+            foreach(range($colI,$colF) as $columnID) {
+
+                $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+                    ->setAutoSize(true);
+
+//                if($columnID)//Poner color amarillo
+                    
+                $objPHPExcel->getActiveSheet()->getStyle($columnID.'1')->applyFromArray($title);
+
+            }
+            
+            //Agregar los productos
+            $i = 2;
+            foreach ($arrayProductos as $producto) {
+                //Agregar la fila al documento xls
+                $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A'.($i), $producto->codigo) 
+                        ->setCellValue('B'.($i), $producto->precios[0]->costo)
+                        ->setCellValue('C'.($i), $producto->precios[0]->precioImpuesto);
+                        
+//                        ->setCellValue('D'.($i), $producto->user->profile->getNombre())
+//                        ->setCellValue('E'.($i), $producto->getPrecio());
+                $i++;
+            }
+
+            $objPHPExcel->setActiveSheetIndex(0);          
+
+            // Redirect output to a client's web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="Plantilla de Descuentos.xls"');
+            header('Cache-Control: max-age=0');
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            Yii::app()->end();
 	}
         
 }

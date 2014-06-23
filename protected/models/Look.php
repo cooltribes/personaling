@@ -48,6 +48,10 @@ class Look extends CActiveRecord
 	 private $_precio = null; 
 	 private $_precionf = null;
 	 private $_precioDescuento = null;
+	 private $_precioProductosFull = null;
+	 private $_precioProductosDescuento = null;
+	 private $_porcentajeDescuento = null;
+	 
 	 private $_items;
 	 private $_ocasiones = array(36=>'fiesta',37=>'trabajo',38=>'playa',39=>'sport',40=>'coctel');
 	 public $has_ocasiones;
@@ -510,6 +514,57 @@ class Look extends CActiveRecord
 		else
 			return $this->_precio;
 	}
+
+	// sumatoria del precio full de cada producto
+	public function getPrecioProductosFull($format=true){
+		if (is_null($this->_precioProductosFull)) {
+			$this->_precioProductosFull = 0;
+			foreach($this->lookhasproducto as $lookhasproducto){
+				if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+				$this->_precioProductosFull += $lookhasproducto->producto->getPrecio(false);
+			}
+
+		}
+		if ($format)
+			return Yii::app()->numberFormatter->format("#,##0.00",$this->_precioProductosFull);
+		else
+			return $this->_precioProductosFull;
+	}
+
+	// sumatoria del precio con descuento de cada producto
+	public function getPrecioProductosDescuento($format=true){
+		if (is_null($this->_precioProductosDescuento)) {
+			$this->_precioProductosDescuento = 0;
+			foreach($this->lookhasproducto as $lookhasproducto){
+				if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+				$this->_precioProductosDescuento += $lookhasproducto->producto->getPrecioDescuento(false);
+			}
+
+		}
+		if ($format)
+			return Yii::app()->numberFormatter->format("#,##0.00",$this->_precioProductosDescuento);
+		else
+			return $this->_precioProductosDescuento;
+	}
+
+	// porcentaje de descuento del look
+	public function getPorcentajeDescuento($format=true){
+		if (is_null($this->_porcentajeDescuento)) {
+			$this->_porcentajeDescuento = 0;
+			
+			if($this->tipoDescuento == 0){ // porcentaje
+				$this->_porcentajeDescuento = $this->valorDescuento;
+			}else if($this->tipoDescuento == 1){ // monto
+				$this->_porcentajeDescuento = ($this->valorDescuento * 100) / $this->getPrecio(false);
+			}
+
+		}
+		if ($format)
+			return Yii::app()->numberFormatter->format("#,##0.00",$this->_porcentajeDescuento);
+		else
+			return $this->_porcentajeDescuento;
+	}
+
 	public function getMarcas(){
 		$marcas = array();
 		foreach ($this->productos_todos(array('group'=>'marca_id')) as $producto){

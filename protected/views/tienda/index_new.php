@@ -247,8 +247,20 @@ if(isset($seo)){
 				echo CHtml::hiddenField('texthid','');
 			} ?>
 			<li class="item" id="li_chic">
+				<a class="btn btn-danger" id="100chic">0<big>8</big>0</a>
+		<?php if(isset(Yii::app()->session['100chic']))
+				echo CHtml::hiddenField('chic_hid','1');
+				else {
+					echo CHtml::hiddenField('chic_hid','0');
+				}
+				?>
+				
+		</li>
 
-<!-- 			<li class="item" id="li_chic">
+
+<!-- 			
+	
+	<li class="item" id="li_chic">
 >>>>>>> 6b3c77a4efba5677a5d32cc4c06a0cfd1ce8987a
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >

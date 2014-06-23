@@ -1272,7 +1272,7 @@ $('.imagen_principal').zoom({url: imgZ});
       $.ajax({
           type: "post",
           dataType:"json",
-          url: "../encantar", // action Tallas de Producto
+          url: "<?php echo Yii::app()->baseUrl;?>/producto/encantar", // action Tallas de Producto
           data: { 'idProd':idProd}, 
           success: function (data) {
             

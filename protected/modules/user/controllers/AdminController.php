@@ -1052,15 +1052,17 @@ if(isset($_POST['Profile']))
 				echo $html;
 			}
 		if(isset($_POST['cant'])&&isset($_POST['id'])&&isset($_POST['desc']))	{
-			
+                                
 				$balance=new Balance;
 				$balance->total=$_POST['cant'];
 				if($_POST['desc']){
 					$balance->total=$balance->total*(-1);
 				}
 				$balance->orden_id=0;
+				$balance->admin_id = Yii::app()->user->id; //guardar cual admin fue
 				$balance->user_id=$_POST['id'];
 				$balance->tipo=3;
+                                
 				if($balance->save()){
 					
 					Yii::app()->user->setFlash('success', UserModule::t("Carga realizada exitosamente"));				
@@ -1068,7 +1070,8 @@ if(isset($_POST['Profile']))
 				else{
 					
 					Yii::app()->user->setFlash('error', UserModule::t("No se pudo realizar carga"));
-				}
+				}                               
+                                
 							
 		}
 	}
@@ -1872,9 +1875,7 @@ if(isset($_POST['Profile']))
         
 		$model=$this->loadModel();
 		$balances=Balance::model()->findAllByAttributes(array('user_id'=>$id));
-		
-       
-		
+		              		
 		$this->render('balance',array(
 			'model'=>$model,
 			'balances'=>$balances

@@ -25,7 +25,7 @@ function str_lreplace($search, $replace, $subject)
     <div class="row margin_bottom_large">
         <div class="span12" >
 
-<h2><?php echo Yii::t('contentForm','Looks in promotion'); ?></h2>
+<h2><?php echo Yii::t('contentForm','Outstanding Looks'); ?></h2>
                      <div class="margin_top" >
                         <div class="items row " id="perfil_looks">
 <?php

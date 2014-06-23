@@ -20,6 +20,7 @@ function changeFilter(e){
                     'playa' , 
                     'sport' , 
                     'trabajo', 
+                    'sex', 
                ];
    var texto = ['first_name', 'first_name_2', 'last_name', 'last_name_2', 'email', 'email_2', 'telefono', 'ciudad'];
                

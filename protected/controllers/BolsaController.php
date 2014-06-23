@@ -605,6 +605,7 @@ class BolsaController extends Controller
 		public function actionConfirmar()
 		{
                     
+                    
                     if (Yii::app()->user->isGuest){
                         //Redirigir a login
                         Yii::app()->user->setReturnUrl($this->createUrl('bolsa/compra'));
@@ -634,11 +635,60 @@ class BolsaController extends Controller
                              */
                             'admin' => $admin, 
                             ));
+                 
+                    /*Revisar si actualizo la pagina para hacer la compra de nuevo
+                     * en menos de un minuto
+                     */
+                    if(User::hasRecentOrder()){                       
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash("warning", "Al parecer estás intentando
+                            hacer otra compra.<br>Revisa tu lista de pedidos, acabamos de registrar uno nuevo.");                
+
+                        $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+                    }
+
+                    if (!$bolsa->checkInventario())
+                    $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+                    
+                    
+                    $totalProductos = Yii::app()->getSession()->get('subtotal');
+                    $totalDescuentos = Yii::app()->getSession()->get('descuento');
+                    $iva = Yii::app()->getSession()->get('iva');
+                    
+                    $subtotal = $totalProductos - $totalDescuentos + $iva;
+                    
+                    /** Si esta usando un codigo de descuento**/
+                    $cupon = array();                    
+                    $idCupon = Yii::app()->getSession()->get('usarCupon');
+                    if($idCupon != -1){
+                        
+                        $codigo = CodigoDescuento::model()->findByPk($idCupon);                        
+                        //para mostrar
+                        $cupon[0] = $codigo->getDescuento();
+                        
+                        //si es un monto fijo
+                        if($codigo->tipo_descuento == 1){
+                            $cupon[1] = $codigo->descuento;                                                    
+                            
+                        }else{       //si es porcentaje                     
+                            
+                            $cupon[1] = $subtotal * ($codigo->descuento / 100);
+                            $cupon[1] = floor($cupon[1] * 100) / 100;                                                       
+                        }                            
+                        $subtotal = $subtotal - (($subtotal > $cupon[1])? $cupon[1] : $subtotal);                        
+                    }
+                                        
+                    
+                    /*El subtotal con descuentos, iva y cupon*/
+                    Yii::app()->getSession()->add('subTotal',$subtotal);
+                    
+                    /*Sumarle el Envio*/
+                    $envio = Yii::app()->getSession()->get('envio');
+                    $total = $subtotal + $envio;                                        
                     
                     $descuento = Yii::app()->getSession()->get('descuento');
                     $descuentoRegalo = 0;
                     Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
-                    $total = Yii::app()->getSession()->get('total');
                     if(Yii::app()->getSession()->get('usarBalance') == '1'){
                             $balance = User::model()->findByPK($usuario)->saldo;
                             $balance = floor($balance *100)/100; 
@@ -657,32 +707,8 @@ class BolsaController extends Controller
 
                     if($total == 0){
                         Yii::app()->getSession()->add('tipoPago', 7); //pagar la orden totalmente con saldo
-                    }
+                    }                   
                     
-                    $cupon = array();
-                    /** Si esta usando un codigo de descuento**/
-                    $idCupon = Yii::app()->getSession()->get('usarCupon');
-                    if($idCupon != -1){
-                        
-                        $codigo = CodigoDescuento::model()->findByPk($idCupon);
-                        
-                        //para mostrar
-                        $cupon[0] = $codigo->getDescuento();
-                        
-                        //si es un monto fijo
-                        if($codigo->tipo_descuento == 1){
-                            $cupon[1] = $codigo->descuento;                            
-                        }else{
-                            
-                            $cupon[1] = $total * ($codigo->descuento / 100);
-                            $cupon[1] = floor($cupon[1] * 100) / 100;
-                                                       
-                        }
-                            
-                        //$total = floor(($total - $cupon[1]) * 100) / 100;
-                        $total = $total - $cupon[1];
-                        
-                    }
                     
                     /*el monto total de la orden*/
                     Yii::app()->getSession()->add('total', $total);
@@ -2856,6 +2882,20 @@ class BolsaController extends Controller
                             'user_id' => $userId,
                             'admin' => $admin, //Revisar para compras desde admin
                             ));
+            
+            
+            if(User::hasRecentOrder()){
+                Yii::app()->user->setFlash("warning", "Al parecer estás intentando
+                    hacer otra compra, revisa tu lista de pedidos, acabamos de registrar uno nuevo.");                
+                
+                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+            }
+            
+//            if(!$bolsa->hasProductos()){
+//                Yii::app()->user->setFlash("warning", "Al parecer estás intentando
+//                    hacer otra compra, revisa tu lista de pedidos, acabamos de registrar uno nuevo.");
+//                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+//            }
             
             
             if (!$bolsa->checkInventario())

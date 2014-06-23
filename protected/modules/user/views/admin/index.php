@@ -368,7 +368,7 @@ function saldo(id){
 			data: { 'cant':cant,
 			'id':id,'desc':desc}, 
 			'success': function(data){
-				window.location.reload();			
+				window.location.reload();	                                    
 			},
 			'cache' :false});
         }else{

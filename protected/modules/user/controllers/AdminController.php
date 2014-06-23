@@ -361,11 +361,12 @@ class AdminController extends Controller
                         ->setCellValue('T1', 'Estilo Vacaciones')
                         ->setCellValue('U1', 'Estilo Deporte')
                         ->setCellValue('V1', 'Estilo Oficina')
+                        ->setCellValue('W1', 'Género')
                         ;
                 
                 
                 
-		foreach(range('A','U') as $columnID) {
+		foreach(range('A','W') as $columnID) {
     		$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
         	->setAutoSize(true);
 		}  
@@ -392,6 +393,7 @@ class AdminController extends Controller
 			$objPHPExcel->getActiveSheet()->getStyle('T1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('U1')->applyFromArray($title);
 			$objPHPExcel->getActiveSheet()->getStyle('V1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('W1')->applyFromArray($title);
                         
 		
 		$fila=2;
@@ -423,12 +425,17 @@ class AdminController extends Controller
                         $objeto = $objPHPExcel->setActiveSheetIndex(0);
 //                        $columnID = "L";
                         $rangos = array();
+                        
                         $profileFields=$user->profile->getFields();
                         if ($profileFields) {
                             foreach($profileFields as $field) {
                                 if($field->id > 4 && $field->id < 16){
                                     $rangos[] =  $field->range.";0==Ninguno";
                                 }
+                                if($field->id == 4){
+                                    $rangosSex = $field->range;
+                                }
+                                
                             }
                         }
 //                        
@@ -450,6 +457,7 @@ class AdminController extends Controller
                     ->setCellValue('T'.$fila , Profile::range($rangos[7],$user->profile->playa))
                     ->setCellValue('U'.$fila , Profile::range($rangos[8],$user->profile->sport))
                     ->setCellValue('V'.$fila , Profile::range($rangos[9],$user->profile->trabajo))
+                    ->setCellValue('W'.$fila , Profile::range($rangosSex,$user->profile->sex))
                     ;
                     $fila++;
 	
@@ -1044,15 +1052,17 @@ if(isset($_POST['Profile']))
 				echo $html;
 			}
 		if(isset($_POST['cant'])&&isset($_POST['id'])&&isset($_POST['desc']))	{
-			
+                                
 				$balance=new Balance;
 				$balance->total=$_POST['cant'];
 				if($_POST['desc']){
 					$balance->total=$balance->total*(-1);
 				}
 				$balance->orden_id=0;
+				$balance->admin_id = Yii::app()->user->id; //guardar cual admin fue
 				$balance->user_id=$_POST['id'];
 				$balance->tipo=3;
+                                
 				if($balance->save()){
 					
 					Yii::app()->user->setFlash('success', UserModule::t("Carga realizada exitosamente"));				
@@ -1060,7 +1070,8 @@ if(isset($_POST['Profile']))
 				else{
 					
 					Yii::app()->user->setFlash('error', UserModule::t("No se pudo realizar carga"));
-				}
+				}                               
+                                
 							
 		}
 	}
@@ -1864,9 +1875,7 @@ if(isset($_POST['Profile']))
         
 		$model=$this->loadModel();
 		$balances=Balance::model()->findAllByAttributes(array('user_id'=>$id));
-		
-       
-		
+		              		
 		$this->render('balance',array(
 			'model'=>$model,
 			'balances'=>$balances

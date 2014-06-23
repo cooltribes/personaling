@@ -329,10 +329,11 @@ $tracking=$orden->getTrackingInfo();
               <span class="locality"><?php echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos; ?>.</span>
               <span class="locality"><?php echo $ciudad_envio->nombre ?>, <?php echo $provincia_envio->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
+              <div><strong>Código Postal: </strong><?php echo $direccionEnvio->codigoPostal->codigo; ?></div>
             </div>
            <div class="row-fluid tel pull_left">
             <?php if(Yii::app()->params['askId']){ ?> 
-            	<div class="span3"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?> </strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
+            	<div class="span4"> <span class="type"><strong><?php echo Yii::t("contentForm","C.I.");?> </strong>:</span><?php echo $direccionEnvio->cedula; ?></div>
             <?php } ?>
             <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $direccionEnvio->telefono; ?></span> </div>
             <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>

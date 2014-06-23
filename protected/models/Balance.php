@@ -73,6 +73,7 @@ class Balance extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+			'admin' => array(self::BELONGS_TO, 'User', 'admin_id'),
 		);
 	}
 

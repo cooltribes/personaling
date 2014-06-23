@@ -272,66 +272,85 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 			echo Yii::t('contentForm','Individual products').': '.Yii::app()->getSession()->get('totalIndiv');
             ?>
         </h5>
+          
+          <style>
+              td.text_align_right{
+                  text-align: right;
+              }
+          </style>
         
+      
+          
         <div class="margin_bottom">
-            
-         
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed ">
             <tr>
-              <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal') ?>:</th>
-              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
-            </tr>
-            <tr>
-              <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping') ?>:</th>
-              <td><?php 
-              	if(Yii::app()->getSession()->get('envio')>0)
-                	 echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('envio'), ''); 
-                else
-                	echo "<b class='text-success'>GRATIS</b>"; ?></td>              
-            </tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Products') ?>:</th>
+              <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
+            </tr>            
            <?php if(Yii::app()->getSession()->get('seguro')>0){ ?>
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Assurance') ?>:</th>
-              <td><?php 
+              <td class="text_align_right"><?php 
               	echo Yii::t('contentForm','currSym').' '.Yii::app()->getSession()->get('seguro'); ?>
                 	 </td>              
             </tr>
-            <?php }?>
-            
-            <?php if(!$direccion->ciudad->provincia->pais->exento)
-			{?>
-				<tr>
-	              <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
-	              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
-	            </tr>
-			<?php }
-			?>
-            
-            
-            <?php if($descuento != 0){ // si no hay descuento ?> 
+            <?php }?>            
+            <?php if($descuento != 0){ // si hay descuento ?> 
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>
-              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
+              <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
            	</tr>
            	<?php } ?>
 
-            <?php if(Yii::app()->getSession()->get('usarBalance') == '1'){ // si utilizó balance ?> 
-            <tr>
-              <th class="text_align_left"><?php echo Yii::t('contentForm','Used Balance:') ?></th>
-              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuentoRegalo, ''); ?></td>
-            </tr>
+            
+            <!--IVA-->
+            <?php if(!$direccion->ciudad->provincia->pais->exento){ ?>
+                <tr>
+                  <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
+                  <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
+                </tr>
             <?php } ?>
+                
+            <!--CUPON-->    
             <?php if(Yii::app()->getSession()->get('usarCupon') != -1){ //si utiliza cupon?> 
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Cupón de Descuento').
                       " ($cupon[0]):";
                       ?></th>
-              <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($cupon[1], ''); ?></td>
+              <td class="text_align_right"><?php echo " - ".Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($cupon[1], ''); ?></td>
+            </tr>
+            <?php } ?>            
+            <tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal') ?>:</th>
+              <td class="text_align_right"><?php 
+              echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(
+                            Yii::app()->getSession()->get('subTotal'), ''); 
+                ?>
+              </td>              
+            </tr>
+
+            <!--ENVIO-->
+            <tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping') ?>:</th>
+              <td class="text_align_right"><?php 
+              	if(Yii::app()->getSession()->get('envio')>0){
+                    echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(
+                            Yii::app()->getSession()->get('envio'), ''); 
+                }else{
+                    echo "<b class='text-success'>GRATIS</b>";                 
+                }
+                ?>
+              </td>              
+            </tr>
+            <?php if(Yii::app()->getSession()->get('usarBalance') == '1'){ // si utilizó balance ?> 
+            <tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Used Balance:') ?></th>
+              <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuentoRegalo, ''); ?></td>
             </tr>
             <?php } ?>
             <tr>
               <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total') ?>:</h4></th>
-              <td><h4><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
+              <td class="text_align_right"><h4><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
             </tr>
           </table>
           <?php

@@ -70,7 +70,7 @@ $this->breadcrumbs = array(
             <th colspan="2" scope="col">'.Yii::t('contentForm' , 'User').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Status').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Upload date').'</th>
-            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'No. of products').'</th>
+            <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'No. of SKU').'</th>
             <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Total sent amount').'</th>
             <th class="totales" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Total acknowledged amount').'</th>
             <th class="acciones" rowspan="2" scope="col">'.Yii::t('contentForm' , 'Actions').'</th>

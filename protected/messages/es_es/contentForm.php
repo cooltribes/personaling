@@ -211,6 +211,7 @@ return array (
 	'Nro. looks' => 'No. de looks',
 	'Nro. items' => 'No. de Prendas',
 	'No. of products' => 'Nro. de productos',
+	'No. of SKU' => 'Cantidad de SKU',
 	'Number' => 'Número',
 
 	'Last step' => 'Último paso',

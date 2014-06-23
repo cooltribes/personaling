@@ -835,6 +835,35 @@ class User extends CActiveRecord {
 			$user=User::model()->findByPk($id);
 			return $user->personal_shopper;
 		}
+                
+                
+        /* 
+         * Buscar la ultima orden del usuario y ver si fue hace menos de un minuto
+         * Se usa para validar que no se hagan compras seguidas por error.
+         */
+        public static function hasRecentOrder(){            
+            
+            $orden = Orden::model()->findByAttributes(array("user_id" => Yii::app()->user->id),
+                    array("order" => "fecha DESC")
+                    );
+
+            if(!$orden){
+                return false;
+            }
+            
+            $haceUnMinuto = time() - 60;
+            $fechaOrden = strtotime($orden->fecha);            
+                
+//            echo "<br>";
+//            echo "<br>unmi ". $haceUnMinuto;
+//            echo "<br>orden ". $fechaOrden;
+//            
+//            Yii::app()->end();
+            
+            
+            return  $fechaOrden >= $haceUnMinuto;            
+            
+        }
         
 
 }

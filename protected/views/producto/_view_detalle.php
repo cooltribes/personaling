@@ -1267,7 +1267,7 @@ $('.imagen_principal').zoom({url: imgZ});
     function encantar()
     {
       var idProd = $("#producto").attr("value");
-      //alert("id:"+idProd);    
+     // alert("id:"+idProd);    
       
       $.ajax({
           type: "post",

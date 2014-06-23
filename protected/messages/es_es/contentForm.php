@@ -235,6 +235,7 @@ return array (
 	'Output' => 'Salida',
 	'Our deliveries through' => 'Nuestros envíos se realizan a través de',
 	'On this look' => 'En este look',
+	'Outstanding Looks' => 'Looks destacados',
 
 	'P.S' => 'P.S',
 	'Paid' => 'Ya pagados',

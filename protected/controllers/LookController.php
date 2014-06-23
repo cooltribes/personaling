@@ -108,7 +108,10 @@ class LookController extends Controller
 				'users'=>Yii::app()->params['registro']?array('@'):array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias','publicar','admin','detalle','edit','update','create','publicar','marcas','mislooks','softdelete','descuento','calcularPrecioDescuento'),
+				'actions'=>array('admin','delete','create','categorias',
+                                    'publicar','admin','detalle','edit','update','create',
+                                    'publicar','marcas','mislooks','softdelete','descuento',
+                                    'calcularPrecioDescuento', 'exportarExcel'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -1300,6 +1303,9 @@ public function actionCategorias(){
                 $model->title = $_POST['buscar_look'];
                 $dataProvider = $model->lookAdminAprobar();
             }
+                       
+            /*Agregar el criteria a la sesion para cuando se pida exportar*/
+            Yii::app()->getSession()->add("looksCriteria", $dataProvider->getCriteria());
             
             $this->render('admin', array('model' => $model,
                 'dataProvider' => $dataProvider,
@@ -1432,31 +1438,90 @@ public function actionCategorias(){
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-	}
-	// Uncomment the following methods and override them if needed
-	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
+	}	
+        
+        public function actionExportarExcel(){
+            
+            ini_set('memory_limit','256M'); 
 
-	public function actions()
-	{
-		// return external action classes, e.g.:
-		return array(
-			'action1'=>'path.to.ActionClass',
-			'action2'=>array(
-				'class'=>'path.to.AnotherActionClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
+            $criteria = Yii::app()->getSession()->get("looksCriteria");
+            $arrayLooks = Look::model()->findAll($criteria);
+
+            /*Formato del titulo*/
+            $title = array(
+		    'font' => array(
+		     
+		        'size' => 14,
+		        'bold' => true,
+		        'color' => array(
+		            'rgb' => '000000'
+		        ),
+	    ));
+            
+
+            Yii::import('ext.phpexcel.XPHPExcel');    
+            $objPHPExcel = XPHPExcel::createPHPExcel();
+
+            $objPHPExcel->getProperties()->setCreator("Personaling.com")
+                                     ->setLastModifiedBy("Personaling.com")
+                                     ->setTitle("Listado de Looks");
+            
+            // creando el encabezado
+            $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A1', 'ID')
+                        ->setCellValue('B1', 'TITULO')
+                        ->setCellValue('C1', 'NRO. ITEMS')
+                        ->setCellValue('D1', 'PERSONAL SHOPPER')
+                        ->setCellValue('E1', 'PRECIO ('.Yii::t('contentForm', 'currSym').')')
+                        ->setCellValue('F1', 'VENDIDOS')
+                        ->setCellValue('G1', 'VENTAS '.Yii::t('contentForm', 'currSym'))
+                        ->setCellValue('H1', 'ESTADO')
+                        ->setCellValue('I1', 'URL');
+            
+            $colI = 'A';
+            $colF = 'I';
+            
+            //Poner autosize todas las columnas
+            foreach(range($colI,$colF) as $columnID) {
+                
+                $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+                    ->setAutoSize(true);
+                
+                $objPHPExcel->getActiveSheet()->getStyle($columnID.'1')->applyFromArray($title);
+                
+            }
+            
+            
+            //$this->createUrl('look/detalle',array('id'=>$data->id))
+            
+            //Agregar los looks al documento
+            $i = 2;
+            foreach ($arrayLooks as $look) {
+                //AGregar la fila al documento xls
+                $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A'.($i) ,$look->id) 
+                        ->setCellValue('B'.($i), $look->title)
+                        ->setCellValue('C'.($i), $look->countItems())
+                        ->setCellValue('D'.($i), $look->user->profile->getNombre())
+                        ->setCellValue('E'.($i), $look->getPrecio())
+                        ->setCellValue('F'.($i), $look->getLookxStatus(3))
+                        ->setCellValue('G'.($i), $look->getMontoVentas())
+                        ->setCellValue('H'.($i), $look->getStatus())
+                        ->setCellValue('I'.($i), $this->createAbsoluteUrl('look/detalle',array('id'=>$look->id))) ;
+                $i++;
+            }
+            
+            $objPHPExcel->setActiveSheetIndex(0);          
+            
+            // Redirect output to a client's web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="Reporte de Looks.xls"');
+            header('Cache-Control: max-age=0');
+           
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            Yii::app()->end();
 	}
-	*/
+        
+        
 }

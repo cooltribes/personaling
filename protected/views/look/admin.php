@@ -147,7 +147,9 @@ $template = '{summary}
         <div class="span3">
             <a href="exportarExcel" title="Exportar a excel" class="btn btn-info">Exportar a excel</a>
         </div>
-        
+        <div class="span3">
+            <a href="plantillaDescuentos" title="Plantilla Descuentos" class="btn btn-info">Plantilla Descuentos</a>
+        </div>
     </div>
 </div>
 <!-- /container --> 

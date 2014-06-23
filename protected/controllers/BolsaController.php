@@ -685,10 +685,9 @@ class BolsaController extends Controller
                     /*Sumarle el Envio*/
                     $envio = Yii::app()->getSession()->get('envio');
                     $total = $subtotal + $envio;                                        
-                    
-                    $descuento = Yii::app()->getSession()->get('descuento');
+                                    
+                    //Si usa balance
                     $descuentoRegalo = 0;
-                    Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
                     if(Yii::app()->getSession()->get('usarBalance') == '1'){
                             $balance = User::model()->findByPK($usuario)->saldo;
                             $balance = floor($balance *100)/100; 
@@ -700,10 +699,12 @@ class BolsaController extends Controller
                                         $descuentoRegalo = $balance;
                                         $total = $total - $balance;
                                 }
-                                Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
+                                
                                 //Yii::app()->getSession()->add('total',$total);
                             }
                     }
+                    Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
+
 
                     if($total == 0){
                         Yii::app()->getSession()->add('tipoPago', 7); //pagar la orden totalmente con saldo
@@ -2501,7 +2502,7 @@ class BolsaController extends Controller
             $pago = new AzPay();
 
             $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
-                    $idPagoAztive==8?"I":null, $optional, $cData);   
+                    $idPagoAztive==8?null:null, $optional, $cData);   
 
 
 

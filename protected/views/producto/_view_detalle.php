@@ -1267,12 +1267,12 @@ $('.imagen_principal').zoom({url: imgZ});
     function encantar()
     {
       var idProd = $("#producto").attr("value");
-      //alert("id:"+idProd);    
+     // alert("id:"+idProd);    
       
       $.ajax({
           type: "post",
           dataType:"json",
-          url: "../encantar", // action Tallas de Producto
+          url: "<?php echo Yii::app()->baseUrl;?>/producto/encantar", // action Tallas de Producto
           data: { 'idProd':idProd}, 
           success: function (data) {
             

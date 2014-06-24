@@ -113,12 +113,20 @@ $this->breadcrumbs=array(
 			   else
 			   		$dis="disabled='disabled'";
 			   
+			   if($prod['motivoAdmin']==0)
+			   		$motivo=$motivo=array_search($prod['motivo'],Devolucion::model()->reasons);
+			   else
+			   		$motivo=$prod['motivoAdmin'];
+			  	
+			   		
+			  	
+			   
 			   		echo "<td><input type='number' id='cant".$prod['id']."' value='".$prod['cantidad']."' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' ".$dis." /></td>";
 			
 			
 			
 		
-			   echo("<td>".CHtml::dropDownList("motivo".$prod['id'],array_search($prod['motivoAdmin'],Devolucion::model()->reasons),Devolucion::model()->reasons,array('class'=>'motivos'))."</td>");
+			   echo("<td><small>".$prod['motivo']."</small><br/>".CHtml::dropDownList("motivo".$prod['id'],$motivo,Devolucion::model()->reasons,array('class'=>'motivos'))."</td>");
                                         
 			   
 			   

@@ -47,7 +47,7 @@ $this->breadcrumbs=array(
         $estilo = 'coctel';
 ?>
 
-<div class="container margin_top">
+<div class="container margin_top_medLarge_minus">
   <div class="row">
     <div class="span12">
     <!-- FLASH ON -->

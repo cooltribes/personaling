@@ -9,7 +9,7 @@
             tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
             speed: 300,                               //speed of animation
             action: 'click',                          //options: 'click' or 'hover', action to trigger animation
-            topPos: '200px',                          //position from the top/ use if tabLocation is left or right
+            topPos: '244px',                          //position from the top/ use if tabLocation is left or right
             leftPos: '20px',                          //position from left/ use if tabLocation is bottom or top
             fixedPosition: false                      //options: true makes it stick(fixed position) on scroll
         });
@@ -62,10 +62,10 @@ if(isset($seo)){
 <?php if(Yii::app()->user->isGuest&&Yii::app()->params['registerGift']) {?>
 <div class="slide-out-div">
             <div class="handle" href="#"><div class="rotate">Gana un bono de 5 EUR&nbsp;&nbsp;&nbsp;<img src="<?php echo Yii::app()->baseUrl; ?>/images/backtopWhite.png" width="20px" height="20px"> </div></div>
-           <div class="row-fluid margin_top_small">
-           		<div class="span12 margin_top_small">
+           <div class="row-fluid margin_top_medium">
+           		<div class="span12">
            				Al registrarte y completar tu perfil.<br/><br/>
-           				Disfruta de la primera Shoping Experience unica y repetible<br>
+           				Disfruta ya de la primera Shopping Experience única<br/>y repetible.<br/>
            				<a class="span8 offset2 margin_top_small btn btn-danger regYa" href="<?php echo Yii::app()->baseUrl;?>/user/registration">¡Registrate YA!</a>
            		</div>
            	

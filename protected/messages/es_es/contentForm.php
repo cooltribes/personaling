@@ -168,6 +168,7 @@ return array (
 	'Individual items' => 'Prendas individuales',
 	'Individual products' => 'Productos Individuales',
 	'Input' => 'Entrada',
+	'Important'=>'Importante',
 	'Instructions have been sent and email summary: {email}' => ' Se han enviado las instrucciones y el resumen al correo electrónico: {email}',
 	'In 10 seconds this page will be redirected to the Shopping Bag' => 'En 10 segundos esta página será redirigida a la Bolsa de Compras',
 	'In <b id="segundos">10</b> seconds this page will be redirected to the Shopping Bag' => 'En <b id="segundos">10</b> segundos serás redirigid@ al proceso de compra nuevamente',     
@@ -255,6 +256,7 @@ return array (
 	'Pending confirmation' => 'Pendientes por confirmar',
 	'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
 	    <b>Atrás</b> en tu navegador',
+	'Please complete your registration to make a purchase on Personaling.'=>'Por favor completa tu registro para realizar una compra en Personaling.',
 	'Personal Shoppers outstanding' => 'Personal shoppers destacados',
     'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling.es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlos en la comodidad de tu casa u oficina. <br/>¿Quieres vivir la primera shopping experience única y repetible? <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',	
     'Personaling has a Gift Card as a gift for you.' => 'Personaling tiene una Gift Card para ti.',    
@@ -292,6 +294,7 @@ return array (
 	'Reference' => 'Referencia',
 	'Returned items' => 'Productos devueltos',
 	'Returned' => 'Devuelto',
+	'Complete Registration' => 'Registrarme',
 	'Recommended Looks with this product' => 'Looks recomendados con este producto',
 
 

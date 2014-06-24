@@ -400,4 +400,68 @@ class Profile extends UActiveRecord
 	 				
 	 }
 	 
+	 public function getStyleTest($id=null,$bool = true){
+	 	if(!is_null($id))
+			$user=Profile::model()->findByPk($id);
+		else
+			$user=$this;	
+	 	$count=0;
+		if($user->coctel >0)
+			$count++;
+		if($user->fiesta >0)
+			$count++;
+		if($user->playa >0)
+			$count++;
+		if($user->sport >0)
+			$count++;
+		if($user->trabajo >0)
+			$count++;
+		if($user->piel >0)
+			$count++;
+		
+		if($count==6){
+	 		if($bool)
+	 			return true;
+			else
+				return "Completo";
+		}
+		else{
+			if($bool)
+	 			return false;
+			else
+				return "Incompleto";
+		}
+	 }	
+	 
+	 public function getCompletedProfile($id=null,$bool = true){
+	 	if(!is_null($id))
+			$user=Profile::model()->findByPk($id);
+		else
+			$user=$this;		
+	 	$count=0;
+		if($user->altura >0)
+			$count++;
+		if($user->contextura >0)
+			$count++;
+		if($user->pelo >0)
+			$count++;
+		if($user->ojos >0)
+			$count++;
+		if($user->tipo_cuerpo >0)
+			$count++;
+		if($count==5){
+	 		if($bool)
+	 			return true;
+			else
+				return "Completo";
+		}
+		else{
+			if($bool)
+	 			return false;
+			else
+				return "Incompleto";
+		}
+			
+	 }
+	 
 }

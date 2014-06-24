@@ -651,13 +651,17 @@ class BolsaController extends Controller
                     $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
                     
                     
+                    
+                    /**********INICIO DEL CALCULO DEL MONTO DE LA ORDEN******/
+                    
                     $totalProductos = Yii::app()->getSession()->get('subtotal');
                     $totalDescuentos = Yii::app()->getSession()->get('descuento');
                     $iva = Yii::app()->getSession()->get('iva');
                     
+                    //monto por productos, con sus descuentos y su iva
                     $subtotal = $totalProductos - $totalDescuentos + $iva;
                     
-                    /** Si esta usando un codigo de descuento**/
+                    /** Si esta usando un codigo de descuento, restarselo al subtotal**/
                     $cupon = array();                    
                     $idCupon = Yii::app()->getSession()->get('usarCupon');
                     if($idCupon != -1){
@@ -679,7 +683,7 @@ class BolsaController extends Controller
                     }
                                         
                     
-                    /*El subtotal con descuentos, iva y cupon*/
+                    /*El subtotal con descuentos, iva y el cupon restado*/
                     Yii::app()->getSession()->add('subTotal',$subtotal);
                     
                     /*Sumarle el Envio*/
@@ -694,28 +698,32 @@ class BolsaController extends Controller
                             if($balance > 0){
                                 if($balance >= $total){
                                         $descuentoRegalo = $total;
-                                        $total = 0;
+//                                        $total = 0;
                                 }else{
                                         $descuentoRegalo = $balance;
-                                        $total = $total - $balance;
+//                                        $total = $total - $balance;
                                 }
-                                
-                                //Yii::app()->getSession()->add('total',$total);
                             }
                     }
                     Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
 
-
-                    if($total == 0){
-                        Yii::app()->getSession()->add('tipoPago', 7); //pagar la orden totalmente con saldo
+                    //si pago toda la orden con balance
+                    if($total == $descuentoRegalo){
+                        Yii::app()->getSession()->add('tipoPago', 7); //pagar la orden totalmente con balance
                     }                   
                     
                     
                     /*el monto total de la orden*/
                     Yii::app()->getSession()->add('total', $total);
                     
-                    /*Ya el monto final a pagar*/
-                    Yii::app()->getSession()->add('total_tarjeta',$total);
+                    /* El monto final a pagar con la tarjeta, que es el total menos
+                     * lo que pago con balance
+                     */
+                    Yii::app()->getSession()->add('totalTarjeta', $total - $descuentoRegalo);
+                    
+                    /******FIN DEL CALCULO DEL MONTO DEL LA ORDEN****/
+                    
+                    
 
                     /*
                      * Para pago con tarjeta y paypal
@@ -733,7 +741,7 @@ class BolsaController extends Controller
 
                         $idPagoAztive = $tipo_pago == 8? 999:$idPagoAztive; 
                     }
-                    $monto = Yii::app()->getSession()->get('total_tarjeta');                    
+                    $monto = Yii::app()->getSession()->get('totalTarjeta');                    
                     
                     $optional = array(                        
                         'name'          => 'Personaling Enterprise S.L.',
@@ -741,14 +749,16 @@ class BolsaController extends Controller
                     );               
                     
                     $cData = array(
-                        "src" => 1, //origen de la compra, 1-Normal, 2-GC
+                        "src" => 1, //origen de la compra, 1-Normal, 2-GiftCard
                     );
 
                     $cData = CJSON::encode($cData);
                     $pago = new AzPay();
 
+                    //Para cuando hay recurrencias
 //                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
-//                            $idPagoAztive==8?"I":null, $optional, $cData);                    
+//                            $idPagoAztive==8?"I":null, $optional, $cData);    
+                    
                     $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
                             $idPagoAztive==8?NULL:NULL, $optional, $cData);  
                     
@@ -1459,15 +1469,11 @@ class BolsaController extends Controller
                                 $dirFacturacion = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idFacturacion'),'user_id'=>$usuario)),true);
                                 
                                 $orden = new Orden;
-                                $orden->subtotal = Yii::app()->getSession()->get('subtotal');
+                                $orden->subtotal = Yii::app()->getSession()->get('subtotal'); //suma de los productos sin iva ni descuentos
                                 $orden->descuento = 0;
                                 $orden->envio = Yii::app()->getSession()->get('envio');
-                                $orden->iva = Yii::app()->getSession()->get('iva');
-                                //$orden->descuentoRegalo = 0;
-                                if(Yii::app()->getSession()->get('descuentoRegalo')>0)
-                                	$orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
-								else
-                                	$orden->descuentoRegalo = 0;
+                                $orden->iva = Yii::app()->getSession()->get('iva');                                
+                                $orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo'); //por balance usado
                                 $orden->total = Yii::app()->getSession()->get('total');
                                 $orden->seguro = Yii::app()->getSession()->get('seguro');
                                 $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
@@ -3009,7 +3015,7 @@ class BolsaController extends Controller
             $orden->tipo_guia = Yii::app()->getSession()->get('tipo_guia');
             $orden->peso = Yii::app()->getSession()->get('peso');
             
-            $totalOrden = round(Yii::app()->getSession()->get('total')-$orden->descuentoRegalo, 2);
+            $totalOrden = round(Yii::app()->getSession()->get('total'), 2);
             $orden->total = $totalOrden;
             if (!($orden->save())) {
                 echo CJSON::encode(array(
@@ -3036,7 +3042,7 @@ class BolsaController extends Controller
             $detalle->nTransferencia = $codigoTransaccion;
             $detalle->nombre = $usuario->profile->first_name." ".$usuario->profile->last_name;            
             //lo que queda por pagar despues de usar el saldo
-            $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
+            $detalle->monto = Yii::app()->getSession()->get('totalTarjeta');
             $detalle->fecha = date("Y-m-d H:i:s");
             $detalle->banco = $metodoPago == Detalle::TDC_AZTIVE ? 'Sabadell' : 'PayPal'; //TDC o PayPal
             $detalle->estado = 1; // aceptado
@@ -3048,38 +3054,59 @@ class BolsaController extends Controller
         /*Determinar si se uso el balance, registrar pago respectivo*/
         function usarBalance($orden, $usuario) {
             
-            $usarBalance = Yii::app()->getSession()->get('usarBalance');
-            $totalOrden = $orden->total;
-            if ($usarBalance == '1') {                                
-                $balanceUsuario = floor($usuario->saldo * 100) / 100;
-                if ($balanceUsuario > 0) {
-                    $balance = new Balance;
-                    $detalleBalance = new Detalle;
-                    if ($balanceUsuario >= $totalOrden) {
-                        //Descontar del saldo el monto total de la orden
-                        $balance->total = $totalOrden * (-1);
-                        $detalleBalance->monto = $totalOrden;
-                        
-                    } else {
-                        //Descontar todo el saldo del usuario
-                        $balance->total = $balanceUsuario * (-1);
-                        $detalleBalance->monto = $balanceUsuario;
-                    }
+            $descuentoRegalo = $orden->descuentoRegalo; //Pagado con balance
+            
+            $balance = new Balance;
+            $balance->total = $descuentoRegalo * (-1); //Descontar al usuario
+            
+            $detalleBalance = new Detalle;
+            $detalleBalance->monto = $descuentoRegalo;
+            
+            $detalleBalance->comentario = "Uso de Saldo";
+            $detalleBalance->estado = 1;//Aprobado
+            $detalleBalance->fecha = date("Y-m-d H:i:s");
+            $detalleBalance->orden_id = $orden->id;
+            $detalleBalance->tipo_pago = Detalle::USO_BALANCE;
 
-                    $detalleBalance->comentario = "Uso de Saldo";
-                    $detalleBalance->estado = 1;//Aprobado
-                    $detalleBalance->fecha = date("Y-m-d H:i:s");
-                    $detalleBalance->orden_id = $orden->id;
-                    $detalleBalance->tipo_pago = Detalle::USO_BALANCE;
-                    
-                    if ($detalleBalance->save()) {
-                        $balance->orden_id = $orden->id;
-                        $balance->user_id = $usuario->id;
-                        $balance->tipo = 1;                        
-                        $balance->save();
-                    }
-                }
+            if ($detalleBalance->save()) {
+                $balance->orden_id = $orden->id;
+                $balance->user_id = $usuario->id;
+                $balance->tipo = 1;                        
+                $balance->save();
             }
+            
+//            $usarBalance = Yii::app()->getSession()->get('usarBalance');
+//            $totalOrden = $orden->total;
+//            if ($usarBalance == '1') {                                
+//                $balanceUsuario = floor($usuario->saldo * 100) / 100;
+//                if ($balanceUsuario > 0) {
+//                    $balance = new Balance;
+//                    $detalleBalance = new Detalle;
+//                    if ($balanceUsuario >= $totalOrden) {
+//                        //Descontar del saldo el monto total de la orden
+//                        $balance->total = $totalOrden * (-1);
+//                        $detalleBalance->monto = $totalOrden;
+//                        
+//                    } else {
+//                        //Descontar todo el saldo del usuario
+//                        $balance->total = $balanceUsuario * (-1);
+//                        $detalleBalance->monto = $balanceUsuario;
+//                    }
+//
+//                    $detalleBalance->comentario = "Uso de Saldo";
+//                    $detalleBalance->estado = 1;//Aprobado
+//                    $detalleBalance->fecha = date("Y-m-d H:i:s");
+//                    $detalleBalance->orden_id = $orden->id;
+//                    $detalleBalance->tipo_pago = Detalle::USO_BALANCE;
+//                    
+//                    if ($detalleBalance->save()) {
+//                        $balance->orden_id = $orden->id;
+//                        $balance->user_id = $usuario->id;
+//                        $balance->tipo = 1;                        
+//                        $balance->save();
+//                    }
+//                }
+//            }
 
         }
         /*Determinar si se uso un cupon de descuento*/

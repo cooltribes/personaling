@@ -39,6 +39,7 @@ return array (
 	'Amount in' => 'Monto en',
 	'Amount Gift Card' => 'Monto de la GiftCard',
 	'Amount returned' => 'Monto devuelto',
+	'Amount to pay' => 'Monto a pagar',
 	'Authentication' => 'Autenticación',
 	'Awaiting confimation' => 'Espera confirmación',
 	'Awaiting confirmation deposit'=> 'Depósito en espera de confirmación',
@@ -173,7 +174,8 @@ return array (
 	'In which occasion you think this Look could be used?' => '¿En que ocasión se puede usar este look?',
 	'Items' => 'Prendas',
 	'It was not possible to continue with the order.' => 'No ha sido posible continuar con el pedido.',
-	'I.V.A' => 'I.V.A',
+	'I.V.A' => 'I.V.A.',
+	'I.V.A.' => 'I.V.A.',
 
 
 	'Keep buying'  => 'Seguir comprando',

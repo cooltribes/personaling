@@ -22,25 +22,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     $descuento = Yii::app()->getSession()->get('descuento');
     $descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
     $total = Yii::app()->getSession()->get('total');
-//	if(Yii::app()->getSession()->get('usarBalance') == '1'){
-//		$balance = User::model()->findByPK($user)->saldo;
-//		$balance = floor($balance *100)/100; 
-//		if($balance > 0){
-//			if($balance >= $total){
-//				$descuentoRegalo = $total;
-//				$total = 0;
-//			}else{
-//				$descuentoRegalo = $balance;
-//				$total = $total - $balance;
-//			}
-//		}
-//	}
-//        
-//if($total == 0){
-//    Yii::app()->getSession()->add('tipoPago', 7); //pagar la orden totalmente con saldo
-//}
-//Yii::app()->getSession()->add('total_tarjeta',$total);	
-//	
+    $totalPagar = Yii::app()->getSession()->get('totalTarjeta');	
 ?>
 
 <div class="container margin_top">
@@ -294,23 +276,24 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               	echo Yii::t('contentForm','currSym').' '.Yii::app()->getSession()->get('seguro'); ?>
                 	 </td>              
             </tr>
-            <?php }?>            
-            <?php if($descuento != 0){ // si hay descuento ?> 
-            <tr>
-              <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>
-              <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
-           	</tr>
-           	<?php } ?>
-
+            <?php }?>    
             
             <!--IVA-->
             <?php if(!$direccion->ciudad->provincia->pais->exento){ ?>
                 <tr>
-                  <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
+                  <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A.'); ?> (<?php echo Yii::app()->params['IVAtext'];?>):</th>
                   <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
                 </tr>
             <?php } ?>
                 
+            <?php if($descuento != 0){ // si hay descuento ?> 
+                <tr>
+                  <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>
+                  <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
+                </tr>
+            <?php } ?>
+
+            
             <!--CUPON-->    
             <?php if(Yii::app()->getSession()->get('usarCupon') != -1){ //si utiliza cupon?> 
             <tr>
@@ -320,6 +303,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <td class="text_align_right"><?php echo " - ".Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($cupon[1], ''); ?></td>
             </tr>
             <?php } ?>            
+            
+            <!--SUBTOTAL-->
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal') ?>:</th>
               <td class="text_align_right"><?php 
@@ -342,12 +327,28 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 ?>
               </td>              
             </tr>
+            
+            <!--BALANCE-->
             <?php if(Yii::app()->getSession()->get('usarBalance') == '1'){ // si utilizó balance ?> 
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Used Balance:') ?></th>
               <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuentoRegalo, ''); ?></td>
             </tr>
             <?php } ?>
+            
+            <!--BALANCE-->
+            <?php //if(Yii::app()->getSession()->get('montoTarjeta') == '1'){ // si utilizó balance ?> 
+            <tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Amount to pay').":" ?></th>
+              <td class="text_align_right">
+                  <strong>
+                      <?php echo Yii::t('contentForm','currSym').' '.
+                      Yii::app()->numberFormatter->formatCurrency($totalPagar, ''); ?>
+                  </strong>
+              </td>
+            </tr>
+            <?php //} ?>
+            
             <tr>
               <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total') ?>:</h4></th>
               <td class="text_align_right"><h4><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
@@ -409,7 +410,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                     $this->endWidget();
                     
-                  /*Si es en españa bankCard o Paypal*/  
+                  /*Si es en españa bankCard (5) o Paypal (6) o prueba para develop y test (8)*/  
 		  }else if($tipo_pago == 5  || $tipo_pago == 6 || $tipo_pago == 8){ 
           	
                       if($tipo_pago == 5){
@@ -433,8 +434,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             'type'=>'warning',        
                             //'buttonType'=>'button',
                             'size'=>'large',
-                            'label'=>$tipo_pago==8?Yii::t('contentForm','CONFIRMAR COMPRA'):
-                            ($tipo_pago==5?Yii::t('contentForm','Pay with credit card'):Yii::t('contentForm','Pay with PayPal')),
+                            'label'=>$tipo_pago==8 ? Yii::t('contentForm','CONFIRMAR COMPRA'):
+                            ($tipo_pago==5 ? Yii::t('contentForm','Pay with credit card'):
+                                Yii::t('contentForm','Pay with PayPal')),
                             'url'=> $urlAztive, // action
                             'icon'=>'lock white',
                             'htmlOptions'=>array(

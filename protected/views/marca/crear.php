@@ -80,7 +80,7 @@ $this->breadcrumbs=array(
 	                            $checked="";
 	                            if($marca->is_100chic)
 									$checked=' checked';
-					            	echo "<input type='checkbox' name='chic' id='chic'".$checked.">100% Chic";
+					            	echo "<input type='checkbox' name='chic' id='chic'".$checked.">080 Barcelona Fashion";
 							
 									?>
                             </div>

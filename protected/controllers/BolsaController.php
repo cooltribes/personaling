@@ -2951,9 +2951,8 @@ class BolsaController extends Controller
             
             
             /*Enviar correo OPERACIONES (operaciones@personaling.com*/
-            /*Solo enviar correos cuando este en producccion, not develop, not test*/
-            if(strpos(Yii::app()->baseUrl, "develop") == false 
-                && strpos(Yii::app()->baseUrl, "test") == false){
+            /*Solo enviar correos cuando este en producccion o en test*/
+            if(strpos(Yii::app()->baseUrl, "develop") === false){
                 
                 $this->enviarEmailOperaciones($orden);  
 
@@ -3200,7 +3199,16 @@ class BolsaController extends Controller
                      <br/>
                          
                      <br/>");
-            
+                     
+                     
+            $destinatario = "operaciones@personaling.com";
+            //si esta en test, enviarlo a cristal
+            if(strpos(Yii::app()->baseUrl, "test") !== false){
+                
+                $destinatario = "cmontanez@upsidecorp.ch";
+            }
+                    
+                     
             $params = array('subject'=>$subject, 'body'=>$body);
             $message->subject = $subject;
             $message->setBody($params, 'text/html');

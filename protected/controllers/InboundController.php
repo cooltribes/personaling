@@ -322,21 +322,42 @@ class InboundController extends Controller
             
             //ubicarse en el directorio y obtener un listado
             ftp_chdir($conexion, $directorio);  
-            $listado = ftp_nlist($conexion, "");
+            $listadoArchivos = ftp_nlist($conexion, "");
             
-            foreach ($listado as $arch){
-                echo "<br>".$arch;
-                foreach($ordenes as $orden){
-                    echo "<br>    ".$orden->id;                   
-                    
-                    
-                }
-                
-                
-                
-            }
             // cerrar la conexión ftp 
             ftp_close($conexion);
+
+            //Recorrer las ordenes
+            foreach($ordenes as $orden){
+                
+                $estado = "";
+                
+                //si la orden esta en estadoLF 0, buscar los confirmados
+                if($orden->estadoLF == 0){
+                    $estado = "_CONFIRMADO_";
+                }
+                
+                $nombreArchivo = $tipoArchivo . $estado . $orden->id . "_";
+
+                //Revisar los archivos del ftp
+                foreach ($listadoArchivos as $archivo){
+                    
+                    if(strpos($archivo, $nombreArchivo) !== false){
+                        
+                        if($orden->estadoLF == 0){ //si estaba enviado
+                            $orden->estadoLF = 1; //cambiarlo a confirmado
+                        }
+                        
+                        $orden->save();
+                        break;
+                    }
+
+                } //Fin for revisar listado de archivos
+            
+            }
+            
+            
+            
             
         }
         

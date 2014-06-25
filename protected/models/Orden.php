@@ -23,6 +23,17 @@ include("class.zoom.json.services.php");
  * 0 - Envio Estandar
  * 1 - Entre 0.5 kg y 5 kg
  * 2 - Mayor a 5 kg
+ * 
+ * ----------------------
+ * ESTADOS DE LOGIS FASHION
+ * 0 - enviado a lf
+ * 1 - confirmado por lf
+ * 2 - anulada checking
+ * 3 - anulada picking
+ * 4 - finalizada (paquete armado para enviar)
+ * 5 - enviada
+ * 
+ * 
  * */
 
 /**
@@ -201,7 +212,7 @@ class Orden extends CActiveRecord
 		$criteria->compare('tracking',$this->tracking);
 		$criteria->compare('seguro',$this->seguro);
 		$criteria->compare('peso',$this->peso);
-		$criteria->compare('estadoLF',$this->estadoLF);
+		
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

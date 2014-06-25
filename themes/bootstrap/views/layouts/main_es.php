@@ -71,8 +71,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                                 'items' => array(
                                                     array('label' => 'Reporte de Inventario',
                                                         'url'=>array('/producto/reporte'),),
-                                                    array('label' => 'Importación',
+                                                    array('label' => 'Importar Productos',
                                                         'url'=>array('/producto/importar'),),
+                                                    array('label' => 'Importar Precios',
+                                                        'url'=>array('/producto/importarPrecios'),),
                                                     array('label' => 'Ver MasterDatas',
                                                         'url'=>array('/masterData/admin'),),
                                                     array('label' => 'Ver Inbounds',

@@ -38,8 +38,9 @@ class ProductoController extends Controller
                                     'delete','precios','producto','imagenes','multi',
                                     'orden','eliminar','inventario','detalles',
                                     'tallacolor','addtallacolor','varias','categorias',
-                                    'recatprod','seo', 'historial','importar','descuentos'
-				,'reporte','reportexls', "createExcel", 'plantillaDescuentos'),
+                                    'recatprod','seo', 'historial','importar','descuentos',
+                                    'reporte','reportexls', "createExcel", 'plantillaDescuentos',
+                                    'importarPrecios'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -2141,7 +2142,7 @@ public function actionReportexls(){
                             }
 
                             if ($rCatego3 != "") {
-                                $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego2));
+                                $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego3));
                                 $cat3->tbl_producto_id = $producto->id;
                                 $cat3->tbl_categoria_id = $x->id;
 
@@ -2504,6 +2505,23 @@ public function actionReportexls(){
 
 	}
 
+        // importar desde excel
+	public function actionImportarPrecios(){
+            
+            //Productos en el archivo
+            $total = 0;
+            //Productos modificados en precio
+            $modificados = 0;
+            
+            
+            
+            
+            $this->render('importarPrecios', array(               
+                'total' => $total,
+                'modificados' => $modificados,                
+            ));
+        }
+        
 	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

@@ -52,7 +52,7 @@ if(isset($seo)){
 
 <div id="banner100chic" style=" display:none; " class="margin_top ">
 	<div class="margin_bottom">
-		<img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Titina Penzini">
+		<img src="<?php echo Yii::app()->baseUrl; ?>/images/080banner.jpg" alt="Titina Penzini">
 	</div>
 	<div class="">
 		<a href="#" onclick="unchic()" ><span class="entypo">&larr; </span>	<?php echo Yii::t('contentForm','Back to shop');?></a>
@@ -246,26 +246,20 @@ if(isset($seo)){
 							}
 				echo CHtml::hiddenField('texthid','');
 			} ?>
-			<li class="item" id="li_chic">
-				<a class="btn btn-danger" id="100chic">0<big>8</big>0</a>
-		<?php if(isset(Yii::app()->session['100chic']))
-				echo CHtml::hiddenField('chic_hid','1');
-				else {
-					echo CHtml::hiddenField('chic_hid','0');
-				}
-				?>
-				
-		</li>
+			
+			
+			
+	
 
 
-<!-- 			
+		
 	
 	<li class="item" id="li_chic">
->>>>>>> 6b3c77a4efba5677a5d32cc4c06a0cfd1ce8987a
-				<div class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-						<div class="dropdown100Chic" >
-								<span id="100chic" name="1" >100% chic</span>
+
+				<div class="dropdown" id="dd080" >
+					<a href="#" class="dropdown-toggle a080" data-toggle="dropdown" >
+						<div class="dropdown080" >
+								<span id="100chic" name="1" ><img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/></span>
 							<small> 
 								<b class="caret"></b>
 							</small>
@@ -293,7 +287,7 @@ if(isset($seo)){
 						?>
 					</ul>  
 				</div>			
-			</li> -->
+			</li> 
 			<li class="item itemInput">
 				<div class="contenedorInput">
 					<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search"> 
@@ -427,6 +421,7 @@ if(isset($seo)){
 				$('#chic_hid').val('0');
 				$('#banner100chic').fadeOut(3000);
 				preRefresh();
+				$('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/>");
 		}		
 		
 		$(".hijo").click(function() { 
@@ -473,6 +468,17 @@ if(isset($seo)){
 
 		});
 		
+		$("body").click(function() { 
+         	if($( "#dd080" ).hasClass( "open" )&&!$('#chic_hid').val()){
+         		$('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/>");       	
+         	}
+
+		});
+		
+		$(".dropdown080").click(function() { 
+			$('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonblanco.jpg";?>'/>");
+		});
+		
 		
 		$("#btn_search").click(function() { 
             	
@@ -488,7 +494,7 @@ if(isset($seo)){
            }
 
 		});
-		
+				
 		$("#reset").click(function() { 
             	
 

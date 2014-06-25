@@ -270,6 +270,26 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     </div>
   </div>
 </div>
+
+<div id="alertBillingAddress" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+ <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+     <h3 ><?php echo Yii::t('contentForm','Remember');?></h3>
+ 
+  </div>
+  <div class="modal-body">
+ 		 <h4><?php echo Yii::t('contentForm','You should select a Billing Address.');?></h4>
+ 		 
+  </div>
+  <div class="modal-footer">  
+
+ 
+ 		<button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
+ 	
+
+  	
+  </div>
+</div>
 <!-- /container -->
 
 <?php 
@@ -298,9 +318,9 @@ else
     		e.preventDefault();    		
 	 });
 	 
-	/*
-		
-		 */
+	$('.closeModal').click(function(event) {
+			$('#alertBillingAddress').hide();
+		});
 	
 	
 	function agregar(){

@@ -113,20 +113,23 @@ $this->breadcrumbs=array(
 			   else
 			   		$dis="disabled='disabled'";
 			   
-			   if($prod['motivoAdmin']==0)
-			   		$motivo=$motivo=array_search($prod['motivo'],Devolucion::model()->reasons);
+			   if(is_null($prod['motivoAdmin']))
+			   		$motivo=array_search($prod['motivo'],Devolucion::model()->reasons);
 			   else
-			   		$motivo=$prod['motivoAdmin'];
+			   		$motivo=array_search($prod['motivoAdmin'],Devolucion::model()->reasons);
 			  	
 			   		
 			  	
 			   
-			   		echo "<td><input type='number' id='cant".$prod['id']."' value='".$prod['cantidad']."' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' ".$dis." /></td>";
+			  echo "<td><input type='number' id='cant".$prod['id']."' value='".$prod['cantidad']."' class='input-mini cant' max='".$prod['cantidad']."'  min='0' required='required' ".$dis." /></td>";
 			
 			
 			
+		if($devolucion->estado==0)
+			echo("<td>".CHtml::dropDownList("motivo".$prod['id'],$motivo,Devolucion::model()->reasons,array('class'=>'motivos'))."<br/><small><strong>Usuario:</strong> ".$prod['motivo']."</small></td>");
+		else
+			echo("<td><small><strong>Admin:</strong> ".$prod['motivoAdmin']."</small><br/><small><strong>Usuario:</strong> ".$prod['motivo']."</small></td>");
 		
-			   echo("<td><small>".$prod['motivo']."</small><br/>".CHtml::dropDownList("motivo".$prod['id'],$motivo,Devolucion::model()->reasons,array('class'=>'motivos'))."</td>");
                                         
 			   
 			   
@@ -148,7 +151,7 @@ $this->breadcrumbs=array(
             
           echo "</ul>
         </div></td>";}
-else echo "<td></td>";
+
 			   
 			   
 			   
@@ -164,7 +167,7 @@ else echo "<td></td>";
 			
 	   
       ?>
-	    
+	   
 
     	</table>
     	

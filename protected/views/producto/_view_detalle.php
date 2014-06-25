@@ -145,7 +145,7 @@
 		  
 		   if($producto->mymarca->is_100chic){
 	
-				echo "<div class='text_align_center btn-block is_100chic'> <span>100% CHIC</span> </div>";
+				echo "<div class='text_align_center btn-block is_080chic'><img src='".Yii::app()->baseUrl."/images/080_566x34.jpg'/></div>";
 				
 		  }
 		  
@@ -315,7 +315,7 @@
           if($producto->mymarca->is_100chic){
           	echo CHtml::hiddenField('chic',1);
 	       ?>
-            <img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Banner Titina Penzini" class="margin_top_medium_minus">
+            <img src="<?php echo Yii::app()->baseUrl; ?>/images/080minibanner.jpg" alt="Banner Titina Penzini" class="margin_top_medium_minus">
 		  <?php
 		  }
 		  else

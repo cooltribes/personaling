@@ -1,6 +1,6 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 $this->breadcrumbs=array(
-    UserModule::t("Mi cuenta")=>array('micuenta'),
+    UserModule::t("Tu cuenta")=>array('micuenta'),
     UserModule::t("Tu estilo"),
 );
     function getTabs($field,$profile){

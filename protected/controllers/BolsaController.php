@@ -74,6 +74,7 @@ class BolsaController extends Controller
                             ));
 
                 if (!is_null($bolsa)){
+                    
                     $bolsa->actualizar();
                     if($bolsa->deleteInactivos()){
                         Yii::app()->user->updateSession();

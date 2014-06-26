@@ -2513,7 +2513,39 @@ public function actionReportexls(){
             //Productos modificados en precio
             $modificados = 0;
             
-            
+            //si esta validando el archivo
+            if(isset($_POST["validar"])){
+                
+                $archivo = CUploadedFile::getInstancesByName('validar');                    
+                    
+                //Guardarlo en el servidor para luego abrirlo y revisar
+                if (isset($archivo) && count($archivo) > 0) {
+                    foreach ($archivo as $arc => $xls) {
+                        $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsMasterData/' . "Temporal";//date('d-m-Y-H:i:s', strtotime('now'));
+                        $extension = '.' . $xls->extensionName;                     
+
+                        if ($xls->saveAs($nombre . $extension)) {
+
+                        } else {
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
+                            $this->render('importar_productos', array(
+                                'tabla' => $tabla,
+                                'total' => $total,
+                                'actualizar' => $actualizar,
+                                'totalInbound' => $totalInbound,
+                                'actualizadosInbound' => $actualizadosInbound,
+                            ));
+                            Yii::app()->end();
+                        }
+                    }
+                } 
+            //si esta cargandolo ya
+            }else if(isset($_POST["validar"])){
+                echo "CArgando";
+                Yii::app()->end();
+                
+            }
             
             
             $this->render('importarPrecios', array(               
@@ -2816,6 +2848,88 @@ public function actionReportexls(){
         }
         
         protected function validarArchivoInbound($archivo){
+            
+            $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
+
+            $falla = "";
+            $erroresSKU = "";
+            $erroresCantidad = "";
+
+            $linea = 1;                    
+            foreach ($sheet_array as $row) {
+
+                if ($row['A'] != "") {
+
+                    if ($linea == 1) { // revisar los nombres / encabezados de las columnas
+                        
+                        if ($row['A'] != "SKU")
+                            $falla = "SKU";
+                        else if ($row['B'] != "Cantidad")
+                            $falla = "Cantidad";                        
+
+                        if ($falla != "") { // algo falló
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
+                                            $falla . "</b> no se encuentra el lugar correspondiente que debe ir o está mal escrita"));                                   
+
+                            return false;
+                        }
+                    }
+
+                    /*si pasa las columnas entonces que revise
+                    SKU y Cantidad */                          
+                    if($linea > 1){
+                        
+                        //SKU
+                        if (isset($row['A']) && $row['A'] != "") {                        
+                            $producto = Preciotallacolor::model()->findByAttributes(
+                                    array("sku" => $row["A"]));
+
+                            if (!isset($producto)) {
+                                $erroresSKU .= "<li><b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }                    
+                        //Cantidades
+                        if (isset($row['B']) && $row['B'] != "") {                        
+                            $row['B'] = strval($row['B']);
+                            if (!ctype_digit($row['B']) || $row['B'] < 0){
+                                $erroresCantidad .= "<li> <b>" . $row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        } 
+
+                    }
+                }
+
+                $linea++;
+            } 
+
+            //Si hubo errores en marcas, cat, tallas, colores
+            if($erroresSKU!= ""){
+                $erroresSKU = "Los siguientes SKU no existen en la plataforma:<br><ul>
+                                 {$erroresSKU}
+                                 </ul><br>";
+            }
+            if($erroresCantidad!= ""){
+                $erroresCantidad = "Las siguientes cantidades están mal escritas:<br><ul>
+                                 {$erroresCantidad}
+                                 </ul><br>";
+            }
+
+            if($erroresSKU != "" || $erroresCantidad != ""){
+
+                $erroresSKU .= $erroresCantidad."No se ha cargado el archivo Inbound debido a que presenta errores.";
+                Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash('error', $erroresSKU);
+
+                return false;                
+            } 
+            
+            return true;            
+        }
+        
+        
+        
+        protected function validarArchivoPrecios($archivo){
             
             $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
 

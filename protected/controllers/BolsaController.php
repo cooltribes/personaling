@@ -649,7 +649,7 @@ class BolsaController extends Controller
                     }
 
                     if (!$bolsa->checkInventario())
-                    $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+                        $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
                     
                     
                     
@@ -3056,24 +3056,28 @@ class BolsaController extends Controller
             
             $descuentoRegalo = $orden->descuentoRegalo; //Pagado con balance
             
-            $balance = new Balance;
-            $balance->total = $descuentoRegalo * (-1); //Descontar al usuario
-            
-            $detalleBalance = new Detalle;
-            $detalleBalance->monto = $descuentoRegalo;
-            
-            $detalleBalance->comentario = "Uso de Saldo";
-            $detalleBalance->estado = 1;//Aprobado
-            $detalleBalance->fecha = date("Y-m-d H:i:s");
-            $detalleBalance->orden_id = $orden->id;
-            $detalleBalance->tipo_pago = Detalle::USO_BALANCE;
+            if($descuentoRegalo > 0){
+                
+                $balance = new Balance;
+                $balance->total = $descuentoRegalo * (-1); //Descontar al usuario
 
-            if ($detalleBalance->save()) {
-                $balance->orden_id = $orden->id;
-                $balance->user_id = $usuario->id;
-                $balance->tipo = 1;                        
-                $balance->save();
+                $detalleBalance = new Detalle;
+                $detalleBalance->monto = $descuentoRegalo;
+
+                $detalleBalance->comentario = "Uso de Saldo";
+                $detalleBalance->estado = 1;//Aprobado
+                $detalleBalance->fecha = date("Y-m-d H:i:s");
+                $detalleBalance->orden_id = $orden->id;
+                $detalleBalance->tipo_pago = Detalle::USO_BALANCE;
+
+                if ($detalleBalance->save()) {
+                    $balance->orden_id = $orden->id;
+                    $balance->user_id = $usuario->id;
+                    $balance->tipo = 1;                        
+                    $balance->save();
+                }
             }
+            
             
 //            $usarBalance = Yii::app()->getSession()->get('usarBalance');
 //            $totalOrden = $orden->total;

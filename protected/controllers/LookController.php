@@ -111,7 +111,7 @@ class LookController extends Controller
 				'actions'=>array('admin','delete','create','categorias',
                                     'publicar','admin','detalle','edit','update','create',
                                     'publicar','marcas','mislooks','softdelete','descuento',
-                                    'calcularPrecioDescuento', 'exportarExcel', 'plantillaDescuentos'),
+                                    'calcularPrecioDescuento', 'exportarExcel', 'plantillaDescuentos', 'importarDescuentos'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -1597,4 +1597,331 @@ public function actionCategorias(){
         $objWriter->save('php://output');
         Yii::app()->end();
 	}
+
+	// importar descuentos masivos desde excel
+	public function actionImportarDescuentos()
+	{
+            $total_prod = 0;
+            $total = 0;
+            $actualizar = 0;
+            $tabla = "";
+            $totalInbound = 0;
+            $actualizadosInbound = 0;
+
+            if (isset($_POST['valido'])) { // enviaron un archivo
+
+                /*Primer paso - Validar el archivo*/
+                if(isset($_POST["validar"])){
+                    
+                    $archivo = CUploadedFile::getInstancesByName('validar');
+                    
+                    //Guardarlo en el servidor para luego abrirlo y revisar
+                    
+                    if (isset($archivo) && count($archivo) > 0) {
+                        foreach ($archivo as $arc => $xls) {
+                            $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsDescuentosLooks/' . "Temporal";//date('d-m-Y-H:i:s', strtotime('now'));
+                            $extension = '.' . $xls->extensionName;                     
+
+                            if ($xls->saveAs($nombre . $extension)) {
+
+                            } else {
+                                Yii::app()->user->updateSession();
+                                Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
+                                $this->render('importar_descuentos', array(
+                                    'tabla' => $tabla,
+                                    'total' => $total,
+                                    'actualizar' => $actualizar,
+                                    'totalInbound' => $totalInbound,
+                                    'actualizadosInbound' => $actualizadosInbound,
+                                ));
+                                Yii::app()->end();
+                            }
+                        }
+                    }                    
+                    
+                    //Si no hubo errores
+                    if(is_array($resValidacion = $this->validarArchivo($nombre . $extension))){
+                        
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
+                                                    Puede continuar con el siguiente paso.<br><br>
+                                                    Este archivo contiene <b>{$resValidacion['nLooks']}
+                                                    </b> looks.");                    
+                    }                    
+                    
+                    $this->render('importar_descuentos', array(
+                        'tabla' => $tabla,
+                        'total' => $total,
+                        'actualizar' => $actualizar,
+                        'totalInbound' => $totalInbound,
+                        'actualizadosInbound' => $actualizadosInbound,
+                    ));
+                    Yii::app()->end();
+
+                //Segundo paso - Subir el Archivo
+                }
+                else if(isset($_POST["cargar"])){
+                    
+                    $archivo = CUploadedFile::getInstancesByName('url');
+                           
+                    if (isset($archivo) && count($archivo) > 0) {
+                        $nombreTemporal = "Archivo";
+                        $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsDescuentosLooks/';
+                        foreach ($archivo as $arc => $xls) {
+
+                            $nombre = $rutaArchivo.$nombreTemporal;
+                            $extension = '.' . $xls->extensionName;
+                            
+                            if ($xls->saveAs($nombre . $extension)) {
+                                
+                            } else {
+                                Yii::app()->user->updateSession();
+                                Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
+                                $this->render('importar_descuentos', array(
+                                    'tabla' => $tabla,
+                                    'total' => $total,
+                                    'actualizar' => $actualizar,
+                                    'totalInbound' => $totalInbound,
+                                    'actualizadosInbound' => $actualizadosInbound,
+                                ));
+                                Yii::app()->end();
+                                
+                            }
+                        }
+                    }
+                    
+                    // ==============================================================================
+
+                    // Validar (de nuevo)
+                    if( !is_array($resValidacion = $this->validarArchivo($nombre . $extension)) ){
+                        
+                        // Archivo con errores, eliminar del servidor
+                        unlink($nombre . $extension);
+                        
+                        $this->render('importar_descuentos', array(
+                            'tabla' => $tabla,
+                            'total' => $total,
+                            'actualizar' => $actualizar,
+                            'totalInbound' => $totalInbound,
+                            'actualizadosInbound' => $actualizadosInbound,
+                        ));
+                        Yii::app()->end();
+                    }
+                    
+                    // Si pasa la validacion
+                    $sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
+                    $errores = '';
+                   
+                    // segundo foreach, si llega aqui es para insertar y todo es valido
+                    foreach ($sheet_array as $row) {
+                        
+                        if ($row['A'] != "" && $row['A'] != "CÓDIGO") { // para que no tome la primera ni vacios
+                            
+                            //Modificaciones a las columnas
+                            //antes de procesarlas                            
+                            //Transformar los datos numericos
+                            $row['B'] = str_replace(",", ".", $row['B']);
+                            $row['C'] = str_replace(",", ".", $row['C']);
+                            $row['D'] = str_replace(",", ".", $row['D']); 
+                            $row['E'] = str_replace(",", ".", $row['E']); 
+                            
+                            $look = Look::model()->findByPK($row['A']);
+                            if($look){
+                            	$look->scenario = 'descuentosMasivos';
+                            	if($row['D'] > 0){
+	                            	$look->tipoDescuento = 0;
+	                            	$look->valorDescuento = $row['D'];
+	                            }else{
+	                            	$look->tipoDescuento = NULL;
+	                            	$look->valorDescuento = NULL;
+	                            }
+                            	//$look->save();
+                            	if(!$look->save()){
+                            		foreach ($look->getErrors() as $key => $value) {
+                            			$errores .= print_r($value);
+                            		}
+                            	}
+                            }
+                            
+                            $anterior = $row;
+                            
+                        } 
+                        
+                    }// foreach
+                    
+                    $mensajeSuccess = "Se ha cargado con éxito el archivo.
+                                Puede ver los detalles de la carga a continuación.<br>";
+                    Yii::app()->user->setFlash("success", $mensajeSuccess.$errores);                                   
+                }
+            }// isset
+
+            $this->render('importar_descuentos', array(
+                'tabla' => $tabla,
+                'total' => $total,
+                'actualizar' => $actualizar,
+                'totalInbound' => $totalInbound,
+                'actualizadosInbound' => $actualizadosInbound,
+            ));
+
+	}
+
+	protected function validarArchivo($archivo){
+            
+        $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
+
+        $falla = "";
+        $erroresCodigos = "";
+        $erroresPrecioFullIva = "";
+        $erroresPrecioDescuentoIva = "";
+        $erroresPorcentaje = "";
+        $erroresPrecioDescuento = "";
+        $erroresColumnasVacias = "";
+        
+
+        $linea = 1;
+        $lineaProducto = 0;
+
+        //Revisar cada fila de la hoja de excel.
+        foreach ($sheet_array as $row) {
+
+            if ($row['A'] != "") {
+
+                if ($linea == 1) { // revisar los nombres / encabezados de las columnas
+                    if ($row['A'] != "CÓDIGO")
+                        $falla = "CÓDIGO";
+                    else if ($row['B'] != "PRECIO VENTA FULL CON IVA")
+                        $falla = "PRECIO VENTA FULL CON IVA";
+                    else if ($row['C'] != "PRECIO DESCUENTO CON IVA")
+                        $falla = "PRECIO DESCUENTO CON IVA";
+                    if ($row['D'] != "% DESCUENTO ADICIONAL")
+                        $falla = "% DESCUENTO ADICIONAL";
+                    else if ($row['E'] != "PRECIO DESCUENTO ADICIONAL")
+                        $falla = "PRECIO DESCUENTO ADICIONAL";
+
+                    if ($falla != "") { // algo falló :O
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
+                                        $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita"));                                   
+
+                        return false;
+                    }
+                }
+
+                /*si pasa las columnas entonces que revise
+                Código, porcentaje de descuento y precio descuento*/                          
+                if($linea > 1){
+                    
+                    $row['B'] = str_replace(",", ".", $row['B']);
+                    $row['C'] = str_replace(",", ".", $row['C']);
+                    $row['D'] = str_replace(",", ".", $row['D']);
+                    $row['E'] = str_replace(",", ".", $row['E']);
+                    
+                    /*Columnas Vacias*/
+                    foreach ($row as $col => $valor){
+                        
+                        if(!isset($valor) || $valor == ""){
+                            $erroresColumnasVacias.= "<li> Columna: <b>" . $col .
+                                    "</b>, en la línea <b>" . $linea."</b></li>";
+                        }
+                        
+                        if($col == "E"){
+                            break;
+                        }
+                    }
+
+                    //Código
+                    if (isset($row['A']) && $row['A'] != "") {                        
+                        $look = Look::model()->findByPk($row["A"]);
+
+                        if (!isset($look)) {
+                            $erroresCodigos .= "<li> <b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                        }
+                    }                    
+                    
+                    //Precio venta full con iva
+                    if(isset($row['B']) && $row['B'] != "" && !is_numeric($row['B'])){
+                        $erroresPrecioFullIva = "<li> <b>" . $row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
+                    }
+
+                    //Precio descuento con iva
+                    if(isset($row['C']) && $row['C'] != "" && !is_numeric($row['C'])){
+                        $erroresPrecioDescuentoIva = "<li> <b>" . $row['C'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
+                    }
+                    
+                    //Porcentaje
+                    if(isset($row['D']) && $row['D'] != "" && !is_numeric($row['D'])){
+                        $erroresPorcentaje = "<li> <b>" . $row['D'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
+                    }
+                    //Precio Descuento
+                    if(isset($row['E']) && $row['E'] != "" && !is_numeric($row['E'])){
+                        $erroresPrecioDescuento = "<li> <b>" . $row['E'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
+                    }
+
+                    
+                    
+                    
+                
+                    //sumar solo si la linea tiene algo
+                    //y si esta por encima de la fila 1 (header)
+                    $lineaProducto++;
+                }
+                
+            }
+
+            $linea++;
+        }
+        
+
+        //Si hubo errores en marcas, cat, tallas, colores
+        if($erroresColumnasVacias != ""){
+            $erroresColumnasVacias = "Las siguientes Columnas están vacías:<br><ul>
+                             {$erroresColumnasVacias}
+                             </ul><br>";
+        }
+        if($erroresCodigos != ""){
+            $erroresCodigos = "Los siguientes Looks no existen en la plataforma o están mal escrit0s:<br><ul>
+                             {$erroresCodigos}
+                             </ul><br>";
+        }
+        
+        
+        if($erroresPrecioFullIva != ""){
+            $erroresPrecioFullIva = "Los siguientes Precios están mal escritos, recuerde usar un solo punto (.) o coma (,):<br><ul>
+                             {$erroresPrecioFullIva}
+                             </ul><br>";
+        }
+        if($erroresPrecioDescuentoIva != ""){
+            $erroresPrecioDescuentoIva = "Los siguientes Precios están mal escritos, recuerde usar un solo punto (.) o coma (,):<br><ul>
+                             {$erroresPrecioDescuentoIva}
+                             </ul><br>";
+        }
+        if($erroresPorcentaje != ""){
+            $erroresPorcentaje = "Los siguientes porcentajes están mal escritos, recuerde usar un solo punto (.) o coma (,):<br><ul>
+                             {$erroresPorcentaje}
+                             </ul><br>";
+        }
+        if($erroresPrecioDescuento != ""){
+            $erroresPrecioDescuento = "Los siguientes Precios están mal escritos, recuerde usar un solo punto (.) o coma (,):<br><ul>
+                             {$erroresPrecioDescuento}
+                             </ul><br>";
+        }
+
+            
+        $errores = $erroresColumnasVacias .$erroresCodigos . $erroresPrecioFullIva .
+                $erroresPrecioDescuentoIva. $erroresPorcentaje . $erroresPrecioDescuento;
+        
+        if($errores != ""){
+            
+            Yii::app()->user->updateSession();
+            Yii::app()->user->setFlash('error', $errores);
+
+            return false;                
+        } 
+        
+        return array(
+            "valid"=>true,
+            "nLooks"=>$lineaProducto,
+            "nLineas"=>$linea-2,
+            );            
+    }
 }

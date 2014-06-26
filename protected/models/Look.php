@@ -470,7 +470,7 @@ class Look extends CActiveRecord
 		if (is_null($this->_precio)) {
 				$this->_precio = 0;
 		foreach($this->lookhasproducto as $lookhasproducto){
-			if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+			//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
 			$this->_precio += $lookhasproducto->producto->getPrecio(false);
 		}
 		}
@@ -484,7 +484,7 @@ class Look extends CActiveRecord
 		if (is_null($this->_precioDescuento)) {
 			$this->_precioDescuento = 0;
 			foreach($this->lookhasproducto as $lookhasproducto){
-				if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+				//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
 				$this->_precioDescuento += $lookhasproducto->producto->getPrecio(false);
 			}
 			if($this->tipoDescuento == 0){ // porcentaje
@@ -520,7 +520,7 @@ class Look extends CActiveRecord
 		if (is_null($this->_precioProductosFull)) {
 			$this->_precioProductosFull = 0;
 			foreach($this->lookhasproducto as $lookhasproducto){
-				if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+				//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
 				$this->_precioProductosFull += $lookhasproducto->producto->getPrecio(false);
 			}
 
@@ -536,7 +536,7 @@ class Look extends CActiveRecord
 		if (is_null($this->_precioProductosDescuento)) {
 			$this->_precioProductosDescuento = 0;
 			foreach($this->lookhasproducto as $lookhasproducto){
-				if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+				//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
 				$this->_precioProductosDescuento += $lookhasproducto->producto->getPrecioDescuento(false);
 			}
 

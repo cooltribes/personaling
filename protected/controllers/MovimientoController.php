@@ -169,7 +169,7 @@ class MovimientoController extends Controller
                                             
                     }
                 }
-$productos="PRODS";
+			$productos="PRODS";
 //                $this->redirect(array('admin/compradir'));
 //                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'https'));
                	$this->render('confirmar',array('ptcs'=>$productos));

@@ -21,7 +21,7 @@
         	<?php foreach($model->lookhasproducto as $lookhasproducto){ ?>     
 <tr> <th scope="row"><?php echo $lookhasproducto->producto->nombre; ?></th>
  <td><?php echo $lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id); ?> <?php echo Yii::t('contentForm','availables'); ?></td>
-<td>           <?php   echo $lookhasproducto->producto->getPrecio().' '.Yii::t('contentForm', 'currSym'); ?> </td>
+<td>           <?php   echo $lookhasproducto->producto->getPrecioImpuesto().' '.Yii::t('contentForm', 'currSym'); ?> </td>
 
  
 </tr>
@@ -49,7 +49,7 @@
                     <td> Bs. 700,00 </td>
                 </tr> -->
                 <tr>
-                    <th scope="row">Precio</th>
+                    <th scope="row">Precio productos sin IVA</th>
                     <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></td>
                 </tr>
                 <tr>
@@ -69,7 +69,7 @@
                                     break;
                             }
                             $precio_mostrar = $model->getPrecio(false) + ($model->getPrecio(false) * 0.21);
-                            echo round($porcentaje).'%';
+                            echo Yii::app()->numberFormatter->format("#,##0.00",$porcentaje).'%';
                             //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
                         }else{
                             echo '0%';
@@ -95,11 +95,38 @@
                                     break;
                             }
                             $precio_mostrar = $model->getPrecio(false) - $model->getPrecioDescuento(false);
-                            echo Yii::app()->numberFormatter->formatDecimal($precio_mostrar);
+                            echo Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar);
                             //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
                         }else{
                             echo '0';
                         }
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Precio con Descuento (Sin IVA)</th>
+                    <td>
+                        <?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento();?>
+                        <?php
+                        
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">IVA</th>
+                    <td>
+                        <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$model->getPrecioDescuento(false)*0.21);?>
+                        <?php
+                        
+                        ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Precio Total</th>
+                    <td>
+                        <?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioTotal();?>
+                        <?php
+                        
                         ?>
                     </td>
                 </tr>

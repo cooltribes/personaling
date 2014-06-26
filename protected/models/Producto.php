@@ -338,11 +338,11 @@ class Producto extends CActiveRecord
                 $c->compare('tbl_producto_id', $this->id);
                 $this->_precio = Precio::model()->find($c);
             }
-            if (isset($this->_precio->precioImpuesto))
+            if (isset($this->_precio->precioDescuento))
                 if ($format) {
-                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioImpuesto);
+                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioDescuento);
                 } else {
-                    return $this->_precio->precioImpuesto;
+                    return $this->_precio->precioDescuento;
                 }
             else
                 return 0;

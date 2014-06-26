@@ -465,13 +465,14 @@ class Look extends CActiveRecord
 		}
 		return $this->_precionf;
 	}*/
+	// calcula el precio del look sin iva
 	public function getPrecio($format=true)
 	{
 		if (is_null($this->_precio)) {
 				$this->_precio = 0;
 		foreach($this->lookhasproducto as $lookhasproducto){
-			if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
-			$this->_precio += $lookhasproducto->producto->getPrecio(false);
+			//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+			$this->_precio += $lookhasproducto->producto->getPrecioDescuento(false);
 		}
 		}
 		if ($format)
@@ -480,12 +481,13 @@ class Look extends CActiveRecord
 			return $this->_precio;
 	}
 
+	// calcula el precio del look con el descuento sobre el precio sin iva
 	public function getPrecioDescuento($format=true){
 		if (is_null($this->_precioDescuento)) {
 			$this->_precioDescuento = 0;
 			foreach($this->lookhasproducto as $lookhasproducto){
-				if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
-				$this->_precioDescuento += $lookhasproducto->producto->getPrecio(false);
+				//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+				$this->_precioDescuento += $lookhasproducto->producto->getPrecioDescuento(false);
 			}
 			if($this->tipoDescuento == 0){ // porcentaje
 				$this->_precioDescuento -= $this->_precioDescuento * ($this->valorDescuento / 100);
@@ -500,28 +502,22 @@ class Look extends CActiveRecord
 			return $this->_precioDescuento;
 	}
 
-        public function getPrecioTotal($format=true)
+	// calcula el precio total del look, restando el descuento y sumando el iva
+    public function getPrecioTotal($format=true)
 	{
-		if (is_null($this->_precio)) {
-				$this->_precio = 0;
-		foreach($this->lookhasproducto as $lookhasproducto){
-			//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
-			$this->_precio += $lookhasproducto->producto->getPrecio(false);
-		}
-		}
 		if ($format)
-			return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio);
+			return Yii::app()->numberFormatter->format("#,##0.00",($this->getPrecioDescuento(false)*0.21)+$this->getPrecioDescuento(false));
 		else
-			return $this->_precio;
+			return ($this->getPrecioDescuento(false)*0.21)+$this->getPrecioDescuento(false);
 	}
 
-	// sumatoria del precio full de cada producto
+	// sumatoria del precio full de cada producto (con iva)
 	public function getPrecioProductosFull($format=true){
 		if (is_null($this->_precioProductosFull)) {
 			$this->_precioProductosFull = 0;
 			foreach($this->lookhasproducto as $lookhasproducto){
-				if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
-				$this->_precioProductosFull += $lookhasproducto->producto->getPrecio(false);
+				//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+				$this->_precioProductosFull += $lookhasproducto->producto->getPrecioImpuesto(false);
 			}
 
 		}
@@ -536,7 +532,7 @@ class Look extends CActiveRecord
 		if (is_null($this->_precioProductosDescuento)) {
 			$this->_precioProductosDescuento = 0;
 			foreach($this->lookhasproducto as $lookhasproducto){
-				if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
+				//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
 				$this->_precioProductosDescuento += $lookhasproducto->producto->getPrecioDescuento(false);
 			}
 

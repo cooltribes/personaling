@@ -62,11 +62,11 @@ $this->breadcrumbs=array(
 				<h4>Precio</h4>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed">
 					<tr>
-						<th scope="row">Precio</th>
+						<th scope="row">Precio (Sin IVA)</th>
 						<td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></td>
 					</tr>
 					<tr>
-						<th scope="row">Precio con descuento</th>
+						<th scope="row">Precio Total</th>
 						<td id='precio_descuento'><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento(); ?></td>
 					</tr>
 				</table>

@@ -86,18 +86,18 @@
           <div class="span6">
             <div class="row-fluid">
             	 <?php
-              if($look->getPrecioDescuento(false) < $look->getPrecio(false)){
+              if(!is_null($look->tipoDescuento) && $look->valorDescuento > 0){
                 ?>
             	<div class="span6 color9" >
             		<div class="tPrecio">Por Separado</div>
             		<div class="pDoble">
-            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecio(); ?>
+            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecioProductosFull(); ?>
             		</div>
             	</div>
             	<div class="span6">
             		<div  class="tPrecio">Look Completo</div>
             		<div class="pDoble">
-            			<?php echo Yii::t('contentForm', 'currSym'); ?><?php echo $look->getPrecioDescuento(); ?>
+            			<?php echo Yii::t('contentForm', 'currSym'); ?><?php echo $look->getPrecioTotal(); ?>
             		</div>
             	</div>
             	<?php
@@ -105,7 +105,7 @@
                 ?>
             	<div class="span12" >
             		<div class="pUnico">
-            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecio(); ?>
+            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecioTotal(); ?>
             		</div>
             	</div>
             	<?php 

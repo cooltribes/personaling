@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs = array(
-    'Productos' => array('admin'),
-    'Importar Precios',
+    'Look' => array('admin'),
+    'Importar Descuentos',
 );
 ?>
 <!-- FLASH ON --> 
@@ -16,31 +16,38 @@ $this->widget('bootstrap.widgets.TbAlert', array(
     ),
         )
 );
-?>	
+?>  
 <!-- FLASH OFF --> 
 
 <div class="row margin_top">
     <div class="span12">
         <?php
-        if ($total > 0 || $modificados > 0) {
-            echo "<h3>Total de productos en el archivo: <b>" . $total. "</b></h3>";                        
-            echo "<h4>Productos actualizados: <b>" . $modificados . "</b></h4><br><hr><br>";
+        if ($total > 0 || $actualizar > 0) {
+            echo "<h3>Total de productos en el archivo: <b>" . ($total + $actualizar). "</b></h3>";            
+            echo "<h4>Productos nuevos: <b>" . $total . "</b></h4>";
+            echo "<h4>Productos actualizados: <b>" . $actualizar . "</b></h4><br><hr><br>";
             //echo $tabla. "<br/><br/>";
         }
-        ?>        
+        ?>
+        <?php
+        if ($totalInbound > 0) {
+            echo "<h3>Total de productos en el archivo: <b>" . $totalInbound. "</b></h3>";            
+            echo "<h4>Productos actualizados: <b>" . $actualizadosInbound . "</b></h4><br><hr><br>";            
+        }
+        ?>
         <div class="page-header">
-            <h1>Importar Precios</h1>
+            <h1>Importar Descuentos de Looks</h1>
         </div>        
         <div class="bg_color3 margin_bottom_small padding_small box_1">
             <?php
             $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-//                    'action' => CController::createUrl('importar'),
+                    'action' => CController::createUrl('importarDescuentos'),
                     'id' => 'form-validar',
                     'enableAjaxValidation' => false,
                     'type' => 'horizontal',
                     'htmlOptions' => array('enctype' => 'multipart/form-data'),
                 ));
-                
+                echo TbHtml::hiddenField("valido", 1);
             
             ?>
             <fieldset>
@@ -57,7 +64,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                     ));
                     ?>
                     
-                    <div class="margin_top_small">	              		    
+                    <div class="margin_top_small">                          
                         <?php
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'buttonType' => 'submit',
@@ -85,13 +92,13 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                     ));
                     ?>
 
-                    <div class="margin_top_small">	              		    
+                    <div class="margin_top_small">                          
                         <?php
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'buttonType' => 'submit',
                             'type' => 'warning',
                             'icon' => 'upload white',
-                            'label' => 'Cargar Archivo',
+                            'label' => 'Cargar Descuentos',
                             'loadingText'=>'Cargando ...',
                             'htmlOptions' => array(
                                 'name' => 'cargar',
@@ -100,16 +107,16 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                         ));
                         ?>
                     </div>
-                </div>                
+                </div>
             </fieldset>
             
             <?php $this->endWidget(); ?>
 
-        </div>	
+        </div>  
     </div>
 </div>
 <script type="text/javascript">
-    
+
 $('#buttonCargaMD').click(function(e) {
     var btn = $(this);
     var res = confirm("El archivo será cargado.\n¿Está seguro de que ha sido validado ya?");
@@ -122,8 +129,6 @@ $('#buttonCargaMD').click(function(e) {
     }
     
 });
-
-
 </script>
 
 

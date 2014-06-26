@@ -36,7 +36,8 @@ echo"<tr>";
 	
 	//----------------------Estado
 	echo "<td>".$data->textestado."</td>";
-	// agregar demas estados	
+	
+        echo "<td>".$data->getEstadoLF()."</td>";
         
 	//------------------ acciones
 	$canc="";

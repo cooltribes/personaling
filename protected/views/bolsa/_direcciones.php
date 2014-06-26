@@ -97,12 +97,13 @@ if(isset($_SESSION['idFacturacion']))
 <script>
 			  		
 	$( document ).ready(function() {
+		
 			  			
 		$('.bUsadas').click(function(e) {
 
 	    		if($('#controlBill').val()=='0'){
 	    			e.preventDefault();
-	    			alert('Debes seleccionar una dirección de Facturación');
+	    			$('#alertBillingAddress').show();
 	    		}
 	    		else{
 	    			$(this).closest("form").submit();

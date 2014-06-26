@@ -179,8 +179,18 @@ class InboundController extends Controller
             
             //Revisar en el ftp por cada uno de ellos
             foreach ($noConfirmados as $elemento){                
-                $this->getInboundConf($elemento->id);            
+                //$this->getInboundConf($elemento->id);            
             }
+            
+            
+            //Buscar las ordenes que estan en Pago Confirmado (3) para revisar
+            //los outbound CONFIRMADO
+            $ordenes = Orden::model()->findAllByAttributes(array(
+                "estado" => 3 //esperando confirmacion                
+            ), "id > 27");            
+            //Revisar en el ftp con todas las ordenes
+            $this->getOutboundConfirmations($ordenes);            
+            
         }
         
 	/**
@@ -284,13 +294,13 @@ class InboundController extends Controller
         /**
 	 * Analizar el confirmation de un outbound enviado.
 	 */
-	function getOutboundConf($id){
+	function getOutboundConfirmations($ordenes){
             
             $ftpServer = "localhost";
             $userName = "personaling";
             $userPwd = "P3rs0n4l1ng";            
             
-            $tipoArchivo = "InboundConfirmation_";
+            $tipoArchivo = "OutboundComfirmation"; /*CORREGIR*/
             $rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;                    
             
             
@@ -312,64 +322,42 @@ class InboundController extends Controller
             
             //ubicarse en el directorio y obtener un listado
             ftp_chdir($conexion, $directorio);  
-            $listado = ftp_nlist($conexion, "");
-            $nombreArchivo =  $tipoArchivo.$id."_";
-
-            $encontrado = false;
+            $listadoArchivos = ftp_nlist($conexion, "");
             
-            foreach ($listado as $arch){
-                
-                //Si ya ha sido cargado el inbound                
-                if(strpos($arch, $nombreArchivo) !== false){                                       
-                    //Descargar el archivo
-                    if(ftp_get($conexion, $rutaArchivo.$arch, $arch, FTP_BINARY)){
-                       
-                    }            
-                    
-                    $xml = simplexml_load_file($rutaArchivo.$arch);   
-                    $conDiscrepancias = false;                    
-                    
-                    foreach ($xml as $elemento){
-                        
-                        if($elemento->getName() == "Item"){
-                            
-                            //Consultar en BD
-                            $item = ItemInbound::model()->with(array(
-                                        "producto" => array(
-                                            "condition" => "sku = '".$elemento->EAN."'",
-                                        )
-                                    ))->findByAttributes(array(
-                                        "inbound_id"=>$id,
-                                        ));
-                            //Guardar lo que viene en el XML
-                            $item->cant_recibida = $elemento->Cantidad;
-                            
-                            if($item->cant_recibida != $item->cant_enviada){
-                                $item->estado = 3; //con discrepancias
-                                $conDiscrepancias = true; //para marcar el inbound completo
-                            }else{
-                                $item->estado = 2; //confirmado
-                            }
-                            
-                            $item->save();   
-                        }                        
-                    }
-                    
-                    //Marcar inbound con estado
-                    $inbound = Inbound::model()->findByPk($id);
-                    if($conDiscrepancias){
-                        $inbound->estado = 3;
-                    }else{
-                        $inbound->estado = 2;                        
-                    }
-                    $inbound->save();
-                    
-                    $encontrado = true;
-                    break;
-                }
-            }
             // cerrar la conexión ftp 
             ftp_close($conexion);
+
+            //Recorrer las ordenes
+            foreach($ordenes as $orden){
+                
+                $estado = "";
+                
+                //si la orden esta en estadoLF 0, buscar los confirmados
+                if($orden->estadoLF == 0){
+                    $estado = "_CONFIRMADO_";
+                }
+                
+                $nombreArchivo = $tipoArchivo . $estado . $orden->id . "_";
+
+                //Revisar los archivos del ftp
+                foreach ($listadoArchivos as $archivo){
+                    
+                    if(strpos($archivo, $nombreArchivo) !== false){
+                        
+                        if($orden->estadoLF == 0){ //si estaba enviado
+                            $orden->estadoLF = 1; //cambiarlo a confirmado
+                        }
+                        
+                        $orden->save();
+                        break;
+                    }
+
+                } //Fin for revisar listado de archivos
+            
+            }
+            
+            
+            
             
         }
         

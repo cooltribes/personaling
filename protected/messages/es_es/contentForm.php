@@ -39,6 +39,7 @@ return array (
 	'Amount in' => 'Monto en',
 	'Amount Gift Card' => 'Monto de la GiftCard',
 	'Amount returned' => 'Monto devuelto',
+	'Amount to pay' => 'Monto a pagar',
 	'Authentication' => 'Autenticación',
 	'Awaiting confimation' => 'Espera confirmación',
 	'Awaiting confirmation deposit'=> 'Depósito en espera de confirmación',
@@ -52,6 +53,7 @@ return array (
 	'Used balance'=>'Balance utilizado',
     'Avaliable for {user}:' => 'Disponible para {user}:',
     'Active Orders' => 'Compras Activas',
+    'Ask for Return' => 'Solicitar Devolución',
     
 
 	'Balance' => 'Uso de Balance',
@@ -167,13 +169,15 @@ return array (
 	'Individual items' => 'Prendas individuales',
 	'Individual products' => 'Productos Individuales',
 	'Input' => 'Entrada',
+	'Important'=>'Importante',
 	'Instructions have been sent and email summary: {email}' => ' Se han enviado las instrucciones y el resumen al correo electrónico: {email}',
 	'In 10 seconds this page will be redirected to the Shopping Bag' => 'En 10 segundos esta página será redirigida a la Bolsa de Compras',
 	'In <b id="segundos">10</b> seconds this page will be redirected to the Shopping Bag' => 'En <b id="segundos">10</b> segundos serás redirigid@ al proceso de compra nuevamente',     
 	'In which occasion you think this Look could be used?' => '¿En que ocasión se puede usar este look?',
 	'Items' => 'Prendas',
 	'It was not possible to continue with the order.' => 'No ha sido posible continuar con el pedido.',
-	'I.V.A' => 'I.V.A',
+	'I.V.A' => 'I.V.A.',
+	'I.V.A.' => 'I.V.A.',
 
 
 	'Keep buying'  => 'Seguir comprando',
@@ -253,6 +257,7 @@ return array (
 	'Pending confirmation' => 'Pendientes por confirmar',
 	'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
 	    <b>Atrás</b> en tu navegador',
+	'Please complete your registration to make a purchase on Personaling.'=>'Por favor completa tu registro para realizar una compra en Personaling.',
 	'Personal Shoppers outstanding' => 'Personal shoppers destacados',
     'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling.es el primer portal de moda en España donde podrás adquirir las mejores marcas de ropa y accesorios, a partir de looks personalizados por expertos en moda (celebrities, fashion bloggers y personal shoppers) quienes tendrán en cuenta tus gustos, preferencias y características físicas; permitiéndote adquirir los productos en un solo clic y recibirlos en la comodidad de tu casa u oficina. <br/>¿Quieres vivir la primera shopping experience única y repetible? <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',	
     'Personaling has a Gift Card as a gift for you.' => 'Personaling tiene una Gift Card para ti.',    
@@ -290,7 +295,9 @@ return array (
 	'Reference' => 'Referencia',
 	'Returned items' => 'Productos devueltos',
 	'Returned' => 'Devuelto',
+	'Complete Registration' => 'Registrarme',
 	'Recommended Looks with this product' => 'Looks recomendados con este producto',
+	'Remember'=>'Recuerda',
 
 
 	'Save' => 'Guardar',
@@ -400,6 +407,7 @@ return array (
     'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Seur: https://www.seur.com/seguimiento-online.do?accion=nuevaBusqueda con el siguiente número de seguimiento: {number}',
 	'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',
 	'You must select all sizes' => 'Debes seleccionar todas las tallas',
+	'You should select a Billing Address.'=>'Debes seleccionar una dirección de facturación',
 	'Your bag' =>'Tu bolsa',
     'Your Purchases' => 'Tus Compras',	
 	'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,

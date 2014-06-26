@@ -52,6 +52,7 @@ return array (
      'availables' => 'disponibles',
      'Avaliable for {user}:' => 'Disponible para {user}:',
      'Active Orders' => 'Pedidos Activos',
+     'Ask for Return' => 'Solicitar Devolución',
 
 
      'Balance' => 'Saldo',
@@ -377,6 +378,7 @@ return array (
      'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Zoom: http://www.grupozoom.com con el siguiente número de seguimiento: {number}',
      'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',
      'You must select all sizes' => 'Debes seleccionar todas las tallas',
+     'You should select a Billing Address.'=>'Debes seleccionar una dirección de facturación',
      'Your bag' =>'Tu bolsa',
      'Your Purchases' => 'Tus Compras',
      'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,

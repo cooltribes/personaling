@@ -1536,7 +1536,7 @@ public function actionCategorias2(){
         $datos=$datos.'</div></div>';
         
         $datos=$datos.'<p class="muted t_small CAPS">Selecciona Color y talla </p>';
-        $datos=$datos.'<div class="row-fluid"><div class="row-fluid">';
+        $datos=$datos.'<div class="row-fluid"><div class="span12"><img src="'.Yii::app()->baseUrl.'/images/080bannerprevia.jpg'.'"</div><div class="row-fluid">';
         $datos=$datos.'<div class="span6">';
         $datos=$datos.'<h5>Colores</h5>';
         $datos=$datos.'<div class="clearfix colores" id="vCo">';
@@ -1642,11 +1642,34 @@ public function actionCategorias2(){
 		$datos=$datos.'<a href="'.$producto->getUrl().'" class="btn btn-info pull-left"> Ver el producto </a>';
     	$datos=$datos.'<button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>';
     	$datos=$datos.'</div>';
-    //	$datos=$datos.'</div>';
+    	$datos=$datos.'
+    	<div id="alertRegister" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+		 <div class="modal-header">
+		    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+		     <h3 >'.Yii::t('contentForm','Important').'</h3>
+		 
+		  </div>
+		  <div class="modal-body">
+		 		 <h4>'.Yii::t('contentForm','Please complete your registration to make a purchase on Personaling.').'</h4>
+		 		 
+		  </div>  
+		  <div class="modal-footer">  
+		  	<div class="row-fluid">
+		  		<a class="btn btn-danger span3" href="<?php echo Yii::app()->baseUrl;?>/registro-personaling">'.Yii::t('contentForm','Complete Registration').'</a>
+		 		<div class="span6"></div>
+		 		<button class="btn closeModal span3" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+		 	
+		  	</div>
+		  	
+		  	
+		  </div>
+		</div>';
     
     	$datos=$datos."<script>";
 		$datos.='$("body").removeClass("aplicacion-cargando");var bandera=false;';
 		$datos=$datos."$(document).ready(function() {";
+		$datos=$datos."$('.closeModal').click(function(event){";
+		$datos=$datos."$('#alertRegister').hide();});";
 			$datos=$datos."$('.coloress').click(function(ev){"; // Click en alguno de los colores -> cambia las tallas disponibles para el color
 				$datos=$datos."ev.preventDefault();";
 				//$datos=$datos."alert($(this).attr('id'));";
@@ -1788,7 +1811,7 @@ public function actionCategorias2(){
 						}
 						
 						if(data=='no es usuario'){
-							alert('Debes primero ingresar con tu cuenta de usuario o registrarte');
+							$('#alertRegister').show();
 						}
 						
 			        } ",

@@ -32,7 +32,7 @@ $this->breadcrumbs=array(
                         
                          <?php echo $form->errorSummary($model); ?>
                         
-                        <div class="control-group input-prepend<?php echo $model->hasErrors(monto)?" error":""; ?>">
+                        <div class="control-group input-prepend<?php echo $model->hasErrors("monto")?" error":""; ?>">
                             <label class="control-label required" for="Giftcard_monto">
                                 <?php echo Yii::t('contentForm','Amount'); ?> <span class="required">*</span>
                             </label>

@@ -120,7 +120,7 @@ $b='';
 					$b = '';
 					$style='';
 					if($data->mymarca->is_100chic){
-						$style="<span class=' btn btn-block is_100chic'> <span>100% Chic</span> </span> ";
+						$style="<span class='btn-block is_080'><img src='".Yii::app()->baseUrl."/images/080_270x34.jpg'/></span> ";
 					}
 					if(isset($segunda))
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";

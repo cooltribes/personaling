@@ -63,7 +63,7 @@
             </div>
             <div class="span2 share_like hidden-phone">
               
-              <?php
+              <?php if(!Yii::app()->user->isGuest){
               $entro = 0;
         
         $like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$producto->id));
@@ -87,7 +87,7 @@
                  </button>";
           }
 
-                ?>
+              }  ?>
                 
 <!--                 <div class="btn-group hidden-phone">
                   <button class="dropdown-toggle btn-mini btn-success" data-toggle="dropdown"><span class="">&#59157; Compartir</span></button>
@@ -145,7 +145,7 @@
 		  
 		   if($producto->mymarca->is_100chic){
 	
-				echo "<div class='text_align_center btn-block is_100chic'> <span>100% CHIC</span> </div>";
+				echo "<div class='text_align_center btn-block is_080chic'><img src='".Yii::app()->baseUrl."/images/080_566x34.jpg'/></div>";
 				
 		  }
 		  
@@ -315,7 +315,7 @@
           if($producto->mymarca->is_100chic){
           	echo CHtml::hiddenField('chic',1);
 	       ?>
-            <img src="<?php echo Yii::app()->baseUrl; ?>/images/bannerTitina.jpg" alt="Banner Titina Penzini" class="margin_top_medium_minus">
+            <img src="<?php echo Yii::app()->baseUrl; ?>/images/080minibanner.jpg" alt="Banner Titina Penzini" class="margin_top_medium_minus">
 		  <?php
 		  }
 		  else
@@ -876,6 +876,27 @@ $cont=0;
   </div>
 </div><!-- Modal Guia Talla OFF -->
 
+
+<div id="alertRegister" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+ <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+     <h3 ><?php echo Yii::t('contentForm','Important');?></h3>
+ 
+  </div>
+  <div class="modal-body">
+ 		 <h4><?php echo Yii::t('contentForm','Please complete your registration to make a purchase on Personaling.');?></h4>
+ 		 
+  </div>
+  <div class="modal-footer">  
+  	<div class="row-fluid">
+  		<a class="btn btn-danger span3" href="<?php echo Yii::app()->baseUrl;?>/registro-personaling"><?php echo Yii::t('contentForm','Complete Registration');?></a>
+ 		<div class="span6"></div>
+ 		<button class="btn closeModal span3" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+ 	
+  	</div>
+  	
+  </div>
+</div>
 <?php 
 
 //$cs = Yii::app()->getClientScript();
@@ -887,6 +908,11 @@ $cont=0;
 var comprando = true;
 
 $(document).ready(function(){
+
+$('.closeModal').click(function(event) {
+	$('#alertRegister').hide();
+});
+
 
 $('#tooltipColor').tooltip({
     title:"Selecciona el color para poder añadir a la bolsa",
@@ -1251,7 +1277,8 @@ $('.imagen_principal').zoom({url: imgZ});
 
               if(data=="no es usuario")
               {
-                bootbox.alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
+                $('#alertRegister').show();
+                //bootbox.alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
               }
 
             }//success

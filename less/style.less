@@ -219,6 +219,16 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 .margin_right_medium{margin-right:1.56em}
 .margin_bottom_medium{margin-bottom:1.56em}
 
+.margin_top_medLarge{margin-top:3em}
+.margin_left_medLarge{margin-left:3em}
+.margin_right_medLarge{margin-right:3em}
+.margin_bottom_medLarge{margin-bottom:3em}
+
+.margin_top_medLarge_minus{margin-top:-3em}
+.margin_left_medLarge_minus{margin-left:-3em}
+.margin_right_medLarge_minus{margin-right:-3em}
+.margin_bottom_medLarge_minus{margin-bottom:-3em}
+
 .margin_top_small{margin-top:1em}
 .margin_left_small{margin-left:1em}
 .margin_right_small{margin-right:1em}
@@ -2122,19 +2132,21 @@ src: url('../fonts/entypo.woff'),
 /*----------- Tienda ON -------------*/
 
 .slide-out-div {
-          padding: 20px;
+          padding: 10px;
           width: 210px;
           height: 210px;
-          background: #e3dede;
+          background: #e6e6e6;
           z-index:2000;
           color:#000;
           font-size:16px;
           text-align: center;
+          line-height:1.2px;
           display:none;
        } 
       .regYa{
         background-color: #000;
-        text-transform: none;        
+        text-transform: none; 
+        padding:8px 2px;       
       }
       .regYa:hover{
         background-color: #000;
@@ -2144,26 +2156,26 @@ src: url('../fonts/entypo.woff'),
         background-color: #000;
         color:#FFF;
         font-size:30px;
-        width: 50px;
-        height: 250px;
+        width: 36px;
+        height: 230px;
         left:auto;
         top:auto;
          z-index:1029;
-            -webkit-border-top-left-radius: 50px;
--webkit-border-bottom-left-radius: 20px;
--moz-border-radius-topleft: 20px;
--moz-border-radius-bottomleft: 20px;
-border-top-left-radius: 20px;
-border-bottom-left-radius: 20px;
+            -webkit-border-top-left-radius: 10px;
+-webkit-border-bottom-left-radius: 10px;
+-moz-border-radius-topleft: 10px;
+-moz-border-radius-bottomleft: 10px;
+border-top-left-radius: 10px;
+border-bottom-left-radius: 10px;
 display:none;
       }     
       
       .rotate {
-        margin-top: 113px;
-    margin-left: -91px;
+        margin-top: 105px;
+    margin-left: -100px;
     width: 235px;
     font-size:15px;
-    font-weight:800;
+    font-weight:500;
 
 
     /* Safari */
@@ -2303,6 +2315,19 @@ display:none;
       border-bottom-color: black;
     }      
   }
+  .dropdown080{
+    color: white;
+    background: white; 
+    padding-right:5px;
+    b.caret{
+      margin-top:14px;
+      border-top-color: black;
+      border-bottom-color: black;
+    }      
+  }
+  
+  
+  
   .itemcolor{
     padding-top: 5px;
     vertical-align: top;
@@ -2595,6 +2620,20 @@ display:none;
         position: absolute;  
         text-shadow: none;
     }
+    .is_080{
+      // background-image: url(../images/080_270x34.jpg);
+       // background-color: #F0F;
+     // background-repeat: no-repeat;
+    //  background-position:center;
+        border: 0; 
+        color: #fff;
+       margin-top: -34px;  
+        //opacity: 0.7767656456; 
+       //padding: 0.5em;   
+        position: absolute;  
+        text-shadow: none;
+    }
+    
     
     
 }

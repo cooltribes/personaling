@@ -72,8 +72,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                                 'items' => array(
                                                     array('label' => 'Reporte de Inventario',
                                                         'url'=>array('/producto/reporte'),),
-                                                    array('label' => 'Importación',
+                                                    array('label' => 'Importar Productos',
                                                         'url'=>array('/producto/importar'),),
+                                                    array('label' => 'Importar Precios',
+                                                        'url'=>array('/producto/importarPrecios'),),
                                                     array('label' => 'Ver MasterDatas',
                                                         'url'=>array('/masterData/admin'),),
                                                     array('label' => 'Ver Inbounds',
@@ -383,7 +385,7 @@ if(!Yii::app()->user->isGuest){
 		'<p class="padding_small"><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
    
 		
-		$gift="<p class='padding_left_small'><span class='gifts-menu'>Tu Balance:<strong> ".Profile::model()->getSaldo(Yii::app()->user->id,true)." ".Yii::t('contentForm','currSym').
+		$gift="<p class='padding_left_small'><span class='gifts-menu'>Tu Balance:<strong> ".Yii::app()->numberFormatter->format("#,##0.00",Profile::model()->getSaldo(Yii::app()->user->id,true))." ".Yii::t('contentForm','currSym').
 		"</strong></span><br/><span class='gifts-menuA'><a href='".$url."'>Comprar Giftcard</a></span></p>";
 		 echo 'gift = "'.$gift.'";';
         $htmlMensaje = '';

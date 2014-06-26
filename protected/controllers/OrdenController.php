@@ -1027,7 +1027,7 @@ public function actionReportexls(){
 				$ohptc=OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$devolucion->orden_id,'preciotallacolor_id'=>$dhptc->preciotallacolor_id));
 				$ptc=Preciotallacolor::model()->findByPk($dhptc->preciotallacolor_id);
 				$ohptc->cantidadActualizada=$ohptc->cantidad-$dhptc->cantidad;
-				if($dhptc->motivoAdmin!=5){
+				if(array_search($prod['motivoAdmin'],Devolucion::model()->reasons)!=5){
 					$ptc->cantidad=$ptc->cantidad+$dhptc->cantidad;
 					$ptc->save();
 				}else{
@@ -1126,7 +1126,7 @@ public function actionReportexls(){
 	public function actionCantidadDevuelto(){
 		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
 		$devuelto->cantidad=$_POST['cantidad'];
-		$devuelto->motivoAdmin=$_POST['motivo'];
+		$devuelto->motivoAdmin=Devolucion::model()->getReasons($_POST['motivo']);
 		if($devuelto->save())
 			{	Yii::app()->user->setFlash('success', 'Actualización realizada.');
 				echo "ok";}

@@ -11,6 +11,8 @@
  * @property double $monto
  * @property integer $devolucion_id
  * @property integer $look_id
+ * @property integer $rechazado
+ * @property string $motivoAdmin
  */
 class Devolucionhaspreciotallacolor extends CActiveRecord
 {
@@ -40,12 +42,12 @@ class Devolucionhaspreciotallacolor extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('preciotallacolor_id, cantidad, devolucion_id, look_id', 'numerical', 'integerOnly'=>true),
+			array('preciotallacolor_id, cantidad, devolucion_id, look_id, rechazado', 'numerical', 'integerOnly'=>true),
 			array('monto', 'numerical'),
-			array('motivo', 'length', 'max'=>150),
+			array('motivo, motivoAdmin', 'length', 'max'=>150),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, preciotallacolor_id, cantidad, motivo, monto, devolucion_id, look_id', 'safe', 'on'=>'search'),
+			array('id, preciotallacolor_id, cantidad, motivo, monto, devolucion_id, look_id, rechazado, motivoAdmin', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,6 +75,8 @@ class Devolucionhaspreciotallacolor extends CActiveRecord
 			'monto' => 'Monto',
 			'devolucion_id' => 'Devolucion',
 			'look_id' => 'Look',
+			'rechazado' => 'Rechazado',
+			'motivoAdmin' => 'Motivo Admin',
 		);
 	}
 
@@ -94,12 +98,14 @@ class Devolucionhaspreciotallacolor extends CActiveRecord
 		$criteria->compare('monto',$this->monto);
 		$criteria->compare('devolucion_id',$this->devolucion_id);
 		$criteria->compare('look_id',$this->look_id);
+		$criteria->compare('rechazado',$this->rechazado);
+		$criteria->compare('motivoAdmin',$this->motivoAdmin,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
-
+	
 	public function isValid($cantidad, $ptc, $orden){
 		$sql="select sum(cantidad) from tbl_devolucion_has_preciotallacolor where devolucion_id IN (select id from tbl_devolucion where orden_id = ".$orden.") and preciotallacolor_id = ".$ptc;
 		$devolucion=Yii::app()->db->createCommand($sql)->queryScalar();
@@ -116,5 +122,4 @@ class Devolucionhaspreciotallacolor extends CActiveRecord
 		$looks=Yii::app()->db->createCommand($sql)->queryAll();
 		return $looks;
 	}
-
 }

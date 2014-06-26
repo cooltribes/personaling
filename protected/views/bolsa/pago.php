@@ -490,16 +490,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                           ?>
                </td>  
               </tr>          
-              <tr>
-                <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping');
-				
-				?>:</th>
-                <td class="text_align_right"><?php 
-                if($shipping)
-                	echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio, ''); 
-                else
-                	echo "<b class='text-success'>GRATIS</b>"; ?></td>
-              </tr>
+              
               
              <!-- <tr >
                 <td class="text_align_left" colspan="2"><?php echo  CHtml::CheckBox('asegurado','', array ( 'checked'=>'checked', 'value'=>$seguro, )).' '.Yii::t('contentForm','Deseo asegurar mi pedido por').' '.$seguro.' '.Yii::t('contentForm','currSym');
@@ -530,6 +521,16 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <td class="text_align_right" id="descuento"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
               </tr>
               <?php } ?>
+              <tr>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping');
+				
+				?>:</th>
+                <td class="text_align_right"><?php 
+                if($shipping)
+                	echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($envio, ''); 
+                else
+                	echo "<b class='text-success'>GRATIS</b>"; ?></td>
+              </tr>
               <tr>
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Used Balance:'); ?></th>
                 <td class="text_align_right" id="descuentoBalance"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency(0, ''); ?></td>

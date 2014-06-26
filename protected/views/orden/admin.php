@@ -199,6 +199,7 @@ $template = '{summary}
 	    'itemView'=>'_datos',
 	    'template'=>$template,
       'summaryText' => "Mostrando {start} - {end} de {count} Resultados",
+      'sorterHeader'=>'Ordenar Por:',
 	    'enableSorting'=>'true',
 	    'afterAjaxUpdate'=>" function(id, data) {
 						    	 

@@ -1,23 +1,22 @@
 <?php
 
 /**
- * This is the model class for table "{{defectuoso}}".
+ * This is the model class for table "{{movimiento}}".
  *
- * The followings are the available columns in table '{{defectuoso}}':
+ * The followings are the available columns in table '{{movimiento}}':
  * @property integer $id
- * @property integer $cantidad
+ * @property double $total
  * @property string $fecha
  * @property integer $user_id
- * @property integer $preciotallacolor_id
- * @property double $costo
- * @property string $procedencia
+ * @property string $comentario
+ * @property integer $egreso
  */
-class Defectuoso extends CActiveRecord
+class Movimiento extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Defectuoso the static model class
+	 * @return Movimiento the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -29,7 +28,7 @@ class Defectuoso extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{defectuoso}}';
+		return '{{movimiento}}';
 	}
 
 	/**
@@ -40,13 +39,14 @@ class Defectuoso extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('cantidad, user_id, preciotallacolor_id', 'numerical', 'integerOnly'=>true),
-			array('costo', 'numerical'),
-			array('procedencia', 'length', 'max'=>50),
+			array('user_id, comentario', 'required'),
+			array('user_id, egreso', 'numerical', 'integerOnly'=>true),
+			array('total', 'numerical'),
+			array('comentario', 'length', 'max'=>250),
 			array('fecha', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, cantidad, fecha, user_id, preciotallacolor_id, costo, procedencia', 'safe', 'on'=>'search'),
+			array('id, total, fecha, user_id, comentario, egreso', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,12 +68,11 @@ class Defectuoso extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'cantidad' => 'Cantidad',
+			'total' => 'Total',
 			'fecha' => 'Fecha',
 			'user_id' => 'User',
-			'preciotallacolor_id' => 'Preciotallacolor',
-			'costo' => 'Costo',
-			'procedencia' => 'Procedencia',
+			'comentario' => 'Comentario',
+			'egreso' => 'Egreso',
 		);
 	}
 
@@ -89,12 +88,11 @@ class Defectuoso extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('cantidad',$this->cantidad);
+		$criteria->compare('total',$this->total);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('preciotallacolor_id',$this->preciotallacolor_id);
-		$criteria->compare('costo',$this->costo);
-		$criteria->compare('procedencia',$this->procedencia,true);
+		$criteria->compare('comentario',$this->comentario,true);
+		$criteria->compare('egreso',$this->egreso);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

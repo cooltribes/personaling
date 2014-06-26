@@ -1,23 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "{{defectuoso}}".
+ * This is the model class for table "{{movimiento_has_preciotallacolor}}".
  *
- * The followings are the available columns in table '{{defectuoso}}':
+ * The followings are the available columns in table '{{movimiento_has_preciotallacolor}}':
  * @property integer $id
- * @property integer $cantidad
- * @property string $fecha
- * @property integer $user_id
+ * @property integer $movimiento_id
  * @property integer $preciotallacolor_id
+ * @property integer $cantidad
  * @property double $costo
- * @property string $procedencia
  */
-class Defectuoso extends CActiveRecord
+class Movimientohaspreciotallacolor extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Defectuoso the static model class
+	 * @return Movimientohaspreciotallacolor the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -29,7 +27,7 @@ class Defectuoso extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{defectuoso}}';
+		return '{{movimiento_has_preciotallacolor}}';
 	}
 
 	/**
@@ -40,13 +38,12 @@ class Defectuoso extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('cantidad, user_id, preciotallacolor_id', 'numerical', 'integerOnly'=>true),
+			array('movimiento_id, preciotallacolor_id, cantidad', 'required'),
+			array('movimiento_id, preciotallacolor_id, cantidad', 'numerical', 'integerOnly'=>true),
 			array('costo', 'numerical'),
-			array('procedencia', 'length', 'max'=>50),
-			array('fecha', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, cantidad, fecha, user_id, preciotallacolor_id, costo, procedencia', 'safe', 'on'=>'search'),
+			array('id, movimiento_id, preciotallacolor_id, cantidad, costo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,12 +65,10 @@ class Defectuoso extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'cantidad' => 'Cantidad',
-			'fecha' => 'Fecha',
-			'user_id' => 'User',
+			'movimiento_id' => 'Movimiento',
 			'preciotallacolor_id' => 'Preciotallacolor',
+			'cantidad' => 'Cantidad',
 			'costo' => 'Costo',
-			'procedencia' => 'Procedencia',
 		);
 	}
 
@@ -89,12 +84,10 @@ class Defectuoso extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('cantidad',$this->cantidad);
-		$criteria->compare('fecha',$this->fecha,true);
-		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('movimiento_id',$this->movimiento_id);
 		$criteria->compare('preciotallacolor_id',$this->preciotallacolor_id);
+		$criteria->compare('cantidad',$this->cantidad);
 		$criteria->compare('costo',$this->costo);
-		$criteria->compare('procedencia',$this->procedencia,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

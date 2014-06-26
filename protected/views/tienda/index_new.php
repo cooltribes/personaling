@@ -260,12 +260,19 @@ if(isset($seo)){
 					<a href="#" class="dropdown-toggle a080" data-toggle="dropdown" >
 						<div class="dropdown080" >
 								<span id="100chic" name="1" ><img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/></span>
-							<small> 
+							<?php if(isset(Yii::app()->session['100chic']))
+								echo CHtml::hiddenField('chic_hid','1');
+							else {
+								echo CHtml::hiddenField('chic_hid','0');
+							}?>
+							
+							<!--<small> 
 								<b class="caret"></b>
-							</small>
+							</small>-->
 						</div>
 					</a>
-					<ul class="dropdown-menu" >
+	</li>
+		<!--			<ul class="dropdown-menu" >
 						<?php
 						if(isset(Yii::app()->session['100chic']))
 								echo CHtml::hiddenField('chic_hid','1');
@@ -287,7 +294,7 @@ if(isset($seo)){
 						?>
 					</ul>  
 				</div>			
-			</li> 
+			</li> -->
 			<li class="item itemInput">
 				<div class="contenedorInput">
 					<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search"> 

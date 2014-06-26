@@ -278,6 +278,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </tr>
             <?php }?>    
             
+                <!--DESCUENTOS-->
+            <?php if($descuento != 0){ // si hay descuento ?> 
+                <tr>
+                  <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>
+                  <td class="text_align_right"><?php echo "- ".Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
+                </tr>
+            <?php } ?>
+                
             <!--IVA-->
             <?php if(!$direccion->ciudad->provincia->pais->exento){ ?>
                 <tr>
@@ -285,14 +293,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                   <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('iva'), ''); ?></td>
                 </tr>
             <?php } ?>
-                
-            <?php if($descuento != 0){ // si hay descuento ?> 
-                <tr>
-                  <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>
-                  <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
-                </tr>
-            <?php } ?>
-
             
             <!--CUPON-->    
             <?php if(Yii::app()->getSession()->get('usarCupon') != -1){ //si utiliza cupon?> 

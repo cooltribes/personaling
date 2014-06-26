@@ -388,7 +388,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     }
                     else
                     {
-                        $iva = Yii::app()->getSession()->get('subtotal');
+                        $iva = Yii::app()->getSession()->get('iva');
                     }
                         
                     $t = $subtotalConDescuento + $iva ;
@@ -487,7 +487,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				?></td>
                 
               </tr>-->
-              
+              <?php if($totalDe != 0){ // si HAY descuento ?> 
+              <tr>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
+                <td class="text_align_right" id="descuento"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+              </tr>
+              <?php } ?>
               <?php 
               if(!$direccion->ciudad->provincia->pais->exento){
               ?>
@@ -504,12 +509,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               }?>
               
               
-              <?php if($totalDe != 0){ // si no hay descuento ?> 
-              <tr>
-                <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
-                <td class="text_align_right" id="descuento"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
-              </tr>
-              <?php } ?>
+              
               <tr>
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping');
 				

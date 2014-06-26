@@ -1582,7 +1582,7 @@ public function actionCategorias(){
                     ->setCellValue('B'.($i), $look->getPrecioProductosFull())
                     ->setCellValue('C'.($i), $look->getPrecioProductosDescuento())
                     ->setCellValue('D'.($i), $look->getPorcentajeDescuento())
-                    ->setCellValue('E'.($i), $look->getPrecioDescuento());
+                    ->setCellValue('E'.($i), $look->getPrecioTotal());
             $i++;
         }
         
@@ -1776,6 +1776,7 @@ public function actionCategorias(){
         $erroresPorcentaje = "";
         $erroresPrecioDescuento = "";
         $erroresColumnasVacias = "";
+        $erroresPrecioProcentaje = "";
         
 
         $linea = 1;
@@ -1857,7 +1858,10 @@ public function actionCategorias(){
                         $erroresPrecioDescuento = "<li> <b>" . $row['E'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
                     }
 
-                    
+                    // comprobar que el porcentaje y el precio final con descuento coincidan, esto en realidad no importa pero ellas lo quieren, si falla y jode mucho solo se quita este bloque
+                    //$if(floatval($row['B'])*(floatval($row['D'])/100) != floatval($row['E'])){
+                    	//$erroresPrecioProcentaje .= "<li> El precio final y el porcentaje no coinciden en la línea <b>" . $linea."</b></li>";
+                    //}
                     
                     
                 
@@ -1905,10 +1909,15 @@ public function actionCategorias(){
                              {$erroresPrecioDescuento}
                              </ul><br>";
         }
+        if($erroresPrecioProcentaje != ""){
+            $erroresPrecioProcentaje = "Algunos precios no coinciden:<br><ul>
+                             {$erroresPrecioProcentaje}
+                             </ul><br>";
+        }
 
             
         $errores = $erroresColumnasVacias .$erroresCodigos . $erroresPrecioFullIva .
-                $erroresPrecioDescuentoIva. $erroresPorcentaje . $erroresPrecioDescuento;
+                $erroresPrecioDescuentoIva. $erroresPorcentaje . $erroresPrecioDescuento. $erroresPrecioProcentaje;
         
         if($errores != ""){
             

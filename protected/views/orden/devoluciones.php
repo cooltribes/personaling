@@ -111,7 +111,7 @@ $this->breadcrumbs=array(
                                         echo("<td>".$color->valor."</td>");
                                         echo("<td>".$talla->valor."</td>");
 										
-									if($prodlook['cantidadActualizada']>Devolucion::model()->devueltosxOrden($orden->id, $ptc->id, $lkid)){   
+									if($prodlook['cantidadActualizada']>Devolucion::model()->devueltosxOrden($orden->id, $ptclk->id, $lkid)){   
                                 		echo "<td><input type='number' id='".$ptclk->id."_".$lkid."' value='0' class='input-mini cant' max='".$prodlook['cantidadActualizada']."'  min='0' required='required' /></td>";
                                        	echo CHtml::hiddenField($ptclk->id."_".$lkid."hid",$prodlook['cantidad']); 
                                         echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td><td>".

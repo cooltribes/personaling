@@ -1065,7 +1065,7 @@ $('.imagen_principal').zoom({url: imgZ});
             // cambiando la imagen principal :@
             $(".imagen_principal").fadeOut("10",function(){
             	if($('#chic').val()==1){
-            		zona=zona+"<div class='text_align_center btn-block is_100chic'> <span>100% CHIC</span> </div>";
+            		zona=zona+"<div class='text_align_center btn-block is_080chic'><img src='<?php echo Yii::app()->baseUrl;?>/images/080_566x34.jpg'/></div>";
             	}
             	
               $(".imagen_principal").html(zona);

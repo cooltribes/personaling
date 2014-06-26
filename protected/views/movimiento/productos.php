@@ -13,7 +13,7 @@
 </script>
 <div class="container margin_top">
   <div class="page-header">
-    <h1>Generar Orden de Compra</h1>
+    <h1>Selecciona los productos</h1>
   </div>
 
   
@@ -27,11 +27,13 @@
 			   	</div>
 			</form>
 			<div class="span4">
-		    	<a class="btn span2" id="ver_orden">Ver Orden</a>
+		    	<a class="btn span2" id="ver_orden">Resumen</a>
 			</div>
 			<div class="span2">
 				<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-									'id'=>'productos'
+									'id'=>'productos',
+									'action'=>'confirmar',
+								
 									
 								));
 									
@@ -41,7 +43,9 @@
 				$this->widget('bootstrap.widgets.TbButton', array(
 			            'buttonType'=>'submit',
 			            'type'=>'info',
+			            'id'=>'continuar',
 			            'label'=>'Continuar',
+			            'htmlOptions'=>array('name'=>'continuar')
 			        )); 
 				
 				$this->endWidget();	
@@ -301,7 +305,7 @@ $(document).ready(function(){
 
 	$.ajax({
 		type: "post",
-		'url' :'<?php echo  CController::createUrl('admin/porcomprar');?>',
+		'url' :'<?php echo  CController::createUrl('movimiento/pormover');?>',
 		data: { 'ids':arr.toString(), 'cants':arr2.toString()}, 
 		'success': function(data){
 			$('#modal-body').html(data);
@@ -311,7 +315,10 @@ $(document).ready(function(){
 
 }
 
- 
+
+
+
+
  
  
 </script>	

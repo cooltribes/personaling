@@ -65,7 +65,7 @@ $template = '<br/><hr/>
 	    'itemView'=>'_datosDevoluciones',
 	    'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',    
 	    'template'=>$template,
-	    
+	    'sorterHeader'=>'Ordenar Por:',
 	    //'enableSorting'=>true,
 
 	 

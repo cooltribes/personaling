@@ -357,7 +357,7 @@ class LookController extends Controller
 		$model = Look::model()->findByPk($_POST['id']);
 		$model->tipoDescuento = $_POST['tipo_descuento'];
 		$model->valorDescuento = $_POST['valor_descuento'];
-		echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento();
+		echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioTotal();
 	}
 
 	public function actionView()
@@ -1552,10 +1552,10 @@ public function actionCategorias(){
         // creando el encabezado
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'PRECIO VENTA FULL CON IVA')
-                    ->setCellValue('C1', 'PRECIO DESCUENTO CON IVA')
+                    ->setCellValue('B1', 'PRECIO PRODUCTOS CON IVA')
+                    ->setCellValue('C1', 'PRECIO PRODUCTOS SIN IVA')
                     ->setCellValue('D1', '% DESCUENTO ADICIONAL')
-                    ->setCellValue('E1', 'PRECIO DESCUENTO ADICIONAL');
+                    ->setCellValue('E1', 'PRECIO TOTAL');
         
         $colI = 'A';
         $colF = 'E';
@@ -1581,8 +1581,8 @@ public function actionCategorias(){
                     ->setCellValue('A'.($i), $look->id) 
                     ->setCellValue('B'.($i), $look->getPrecioProductosFull())
                     ->setCellValue('C'.($i), $look->getPrecioProductosDescuento())
-                    ->setCellValue('D'.($i), $look->getPorcentajeDescuento())
-                    ->setCellValue('E'.($i), $look->getPrecioDescuento());
+                    ->setCellValue('D'.($i), $look->getPorcentajeDescuento(false))
+                    ->setCellValue('E'.($i), $look->getPrecioTotal());
             $i++;
         }
         
@@ -1738,7 +1738,7 @@ public function actionCategorias(){
                             	//$look->save();
                             	if(!$look->save()){
                             		foreach ($look->getErrors() as $key => $value) {
-                            			$errores .= print_r($value);
+                            			$errores .= $value;
                             		}
                             	}
                             }
@@ -1749,8 +1749,7 @@ public function actionCategorias(){
                         
                     }// foreach
                     
-                    $mensajeSuccess = "Se ha cargado con éxito el archivo.
-                                Puede ver los detalles de la carga a continuación.<br>";
+                    $mensajeSuccess = "Se ha cargado con éxito el archivo.<br>";
                     Yii::app()->user->setFlash("success", $mensajeSuccess.$errores);                                   
                 }
             }// isset
@@ -1776,6 +1775,7 @@ public function actionCategorias(){
         $erroresPorcentaje = "";
         $erroresPrecioDescuento = "";
         $erroresColumnasVacias = "";
+        $erroresPrecioProcentaje = "";
         
 
         $linea = 1;
@@ -1789,14 +1789,14 @@ public function actionCategorias(){
                 if ($linea == 1) { // revisar los nombres / encabezados de las columnas
                     if ($row['A'] != "CÓDIGO")
                         $falla = "CÓDIGO";
-                    else if ($row['B'] != "PRECIO VENTA FULL CON IVA")
-                        $falla = "PRECIO VENTA FULL CON IVA";
-                    else if ($row['C'] != "PRECIO DESCUENTO CON IVA")
-                        $falla = "PRECIO DESCUENTO CON IVA";
+                    else if ($row['B'] != "PRECIO PRODUCTOS CON IVA")
+                        $falla = "PRECIO PRODUCTOS CON IVA";
+                    else if ($row['C'] != "PRECIO PRODUCTOS SIN IVA")
+                        $falla = "PRECIO PRODUCTOS SIN IVA";
                     if ($row['D'] != "% DESCUENTO ADICIONAL")
                         $falla = "% DESCUENTO ADICIONAL";
-                    else if ($row['E'] != "PRECIO DESCUENTO ADICIONAL")
-                        $falla = "PRECIO DESCUENTO ADICIONAL";
+                    else if ($row['E'] != "PRECIO TOTAL")
+                        $falla = "PRECIO TOTAL";
 
                     if ($falla != "") { // algo falló :O
                         Yii::app()->user->updateSession();
@@ -1813,15 +1813,16 @@ public function actionCategorias(){
                     
                     $row['B'] = str_replace(",", ".", $row['B']);
                     $row['C'] = str_replace(",", ".", $row['C']);
-                    $row['D'] = str_replace(",", ".", $row['D']);
+                    //php cont$row['D'] = str_replace(",", ".", $row['D']);
                     $row['E'] = str_replace(",", ".", $row['E']);
                     
                     /*Columnas Vacias*/
                     foreach ($row as $col => $valor){
-                        
+                        if($col != 'D'){
                         if(!isset($valor) || $valor == ""){
                             $erroresColumnasVacias.= "<li> Columna: <b>" . $col .
                                     "</b>, en la línea <b>" . $linea."</b></li>";
+                        }
                         }
                         
                         if($col == "E"){
@@ -1849,15 +1850,32 @@ public function actionCategorias(){
                     }
                     
                     //Porcentaje
-                    if(isset($row['D']) && $row['D'] != "" && !is_numeric($row['D'])){
-                        $erroresPorcentaje = "<li> <b>" . $row['D'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
+                    if(isset($row['D']) && !is_numeric($row['D'])){
+                        $erroresPorcentaje .= "<li> <b>" . $row['D'] . "</b>, en la línea <b>" . $linea."</b></li>";   
+                                                                           
                     }
+                    //No permitir decimales para el porcentaje
+                    if (strpos($row['D'], '.') !== FALSE){
+                    	$erroresPorcentaje .= "<li> <b>" . $row['D'] . "</b>, en la línea <b>" . $linea."</b></li>";   
+                    }  
                     //Precio Descuento
                     if(isset($row['E']) && $row['E'] != "" && !is_numeric($row['E'])){
                         $erroresPrecioDescuento = "<li> <b>" . $row['E'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
                     }
 
-                    
+                    // comprobar que el porcentaje y el precio final con descuento coincidan, esto en realidad no importa pero ellas lo quieren, si falla y jode mucho solo se quita este bloque
+                    if(floatval($row['D'] > 0)){
+                    	$precio_con_descuento = $row['C']-($row['C']*($row['D']/100));
+                    	$iva = $precio_con_descuento*0.21;
+                    	$precio_total = $precio_con_descuento + $iva;
+                    	$precio_formato = Yii::app()->numberFormatter->format("#,##0.00",$precio_total);
+                    	$precio_formato = str_replace(",", ".", $precio_formato);
+	                    //$precio_calculado = Yii::app()->numberFormatter->format("#,##0.00",$row['B']-($row['B']*($row['D']/100)));
+
+	                    if($precio_formato != floatval($row['E'])){
+	                   		$erroresPrecioProcentaje .= "<li> El precio final (".$row['E'].") y el porcentaje (".$row['D'].") no coinciden en la línea <b>" . $linea."</b></li>";
+	                    }
+                    }
                     
                     
                 
@@ -1896,7 +1914,7 @@ public function actionCategorias(){
                              </ul><br>";
         }
         if($erroresPorcentaje != ""){
-            $erroresPorcentaje = "Los siguientes porcentajes están mal escritos, recuerde usar un solo punto (.) o coma (,):<br><ul>
+            $erroresPorcentaje = "Los siguientes porcentajes están mal escritos (no se permiten decimales):<br><ul>
                              {$erroresPorcentaje}
                              </ul><br>";
         }
@@ -1905,10 +1923,15 @@ public function actionCategorias(){
                              {$erroresPrecioDescuento}
                              </ul><br>";
         }
+        if($erroresPrecioProcentaje != ""){
+            $erroresPrecioProcentaje = "Algunos precios no coinciden:<br><ul>
+                             {$erroresPrecioProcentaje}
+                             </ul><br>";
+        }
 
             
         $errores = $erroresColumnasVacias .$erroresCodigos . $erroresPrecioFullIva .
-                $erroresPrecioDescuentoIva. $erroresPorcentaje . $erroresPrecioDescuento;
+                $erroresPrecioDescuentoIva. $erroresPorcentaje . $erroresPrecioDescuento. $erroresPrecioProcentaje;
         
         if($errores != ""){
             

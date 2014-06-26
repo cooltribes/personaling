@@ -1027,7 +1027,7 @@ public function actionReportexls(){
 				$ohptc=OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$devolucion->orden_id,'preciotallacolor_id'=>$dhptc->preciotallacolor_id));
 				$ptc=Preciotallacolor::model()->findByPk($dhptc->preciotallacolor_id);
 				$ohptc->cantidadActualizada=$ohptc->cantidad-$dhptc->cantidad;
-				if(array_search($prod['motivoAdmin'],Devolucion::model()->reasons)!=5){
+				if(array_search($dhptc->motivoAdmin,Devolucion::model()->reasons)!=1){
 					$ptc->cantidad=$ptc->cantidad+$dhptc->cantidad;
 					$ptc->save();
 				}else{
@@ -1036,7 +1036,9 @@ public function actionReportexls(){
 					$def->fecha=date("Y-m-d");
 					$def->user_id=Yii::app()->user->id;
 					$def->preciotallacolor_id=$dhptc->preciotallacolor_id;
-					$def->save();					
+					$def->procedencia="Devolucion";
+					$def->costo=$ptc->producto->getCosto(false);
+					$def->save();			
 				}
 				$ohptc->save();
 			}				
@@ -1124,6 +1126,7 @@ public function actionReportexls(){
 			
 	}
 	public function actionCantidadDevuelto(){
+	
 		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
 		$devuelto->cantidad=$_POST['cantidad'];
 		$devuelto->motivoAdmin=Devolucion::model()->getReasons($_POST['motivo']);

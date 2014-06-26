@@ -347,6 +347,24 @@ class Producto extends CActiveRecord
             else
                 return 0;
     }
+	
+	public function getCosto($format=true)
+	{
+            if (is_null($this->_precio)) {
+                $c = new CDbCriteria();
+                $c->order = '`id` desc';
+                $c->compare('tbl_producto_id', $this->id);
+                $this->_precio = Precio::model()->find($c);
+            }
+            if (isset($this->_precio->costo))
+                if ($format) {
+                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->costo);
+                } else {
+                    return $this->_precio->costo;
+                }
+            else
+                return 0;
+    }
 
     public function getPrecioDescuento($format=true)
 	{

@@ -151,6 +151,14 @@ $this->breadcrumbs=array(
             
           echo "</ul>
         </div></td>";}
+	else{
+		if($prod['rechazado']==1){
+			echo "<td><i class='icon-remove' title='Producto Anulado para devolución'></i></td>";
+		}
+		else{
+			echo "<td><i class='icon-ok' title='Producto Aceptado para devolución'></i></td>";
+		}
+	}
 
 			   
 			   

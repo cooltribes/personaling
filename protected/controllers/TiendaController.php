@@ -1536,7 +1536,10 @@ public function actionCategorias2(){
         $datos=$datos.'</div></div>';
         
         $datos=$datos.'<p class="muted t_small CAPS">Selecciona Color y talla </p>';
-        $datos=$datos.'<div class="row-fluid"><div class="span12"><img src="'.Yii::app()->baseUrl.'/images/080bannerprevia.jpg'.'"</div><div class="row-fluid">';
+        if($producto->mymarca->is_100chic)
+        	$datos=$datos.'<div class="row-fluid"><div class="span12"><img src="'.Yii::app()->baseUrl.'/images/080bannerprevia.jpg'.'"</div><div class="row-fluid">';
+		else
+			$datos=$datos.'<div class="row-fluid"><div class="row-fluid">';
         $datos=$datos.'<div class="span6">';
         $datos=$datos.'<h5>Colores</h5>';
         $datos=$datos.'<div class="clearfix colores" id="vCo">';

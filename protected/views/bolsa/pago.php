@@ -384,12 +384,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     /*Calcular iva segun la ciudad de envio */
                     if($direccion->ciudad->provincia->pais->exento)
                     {
-                        $iva = 0;
+                        Yii::app()->getSession()->add("iva", 0); //no hay iva                        
                     }
-                    else
-                    {
-                        $iva = Yii::app()->getSession()->get('iva');
-                    }
+                    
+                    $iva = Yii::app()->getSession()->get('iva');
                         
                     $t = $subtotalConDescuento + $iva ;
 

@@ -1424,19 +1424,41 @@ public function multipleColor2($idColor, $idact)
          }
          
          public function asignarPrecios($porcentajeDescuento){
+             /* @var $this Producto
+              * @var $precio Precio
+              *  */
+             $precio = $this->precios[0];
              
-             $final = 1 - ($porcentajeDescuento / 100);
-             $precioConDescuento = $this->precios[0]->precioVenta * $final;
-             $iva = $precioConDescuento * Yii::t('contentForm', 'IVA');
-
-             $precioFinal = $precioConDescuento + $iva;
-             $precioFinal = round($precioFinal, 2);
-//             echo $precioFinal; 
-//             Yii::app()->end();
+             $precio->tipoDescuento = 0; //porcentaje
+             $precio->valorTipo = $porcentajeDescuento;
              
-//             return Yii::app()->numberFormatter->formatCurrency($precioFinal, '');
-             return $precioFinal;
+             //Calcular el ahorro             
+             $ahorro = $precio->precioVenta * ($porcentajeDescuento / 100);
+             $precio->ahorro = $ahorro;
+             
+             //Calcular el descuento             
+             $precio->precioDescuento = $precio->precioVenta - $ahorro;
+             
+             //calcular el iva
+             $iva = $precio->precioDescuento * Yii::t('contentForm', 'IVA');
+             //Asignar el iva
+             $precio->precioImpuesto = $precio->precioDescuento + $iva;
+             
+            
+             return $precio->save();
              
          }
+         public function getUrlGeneral() 
+	{
+		//	if(isset($this->url_amigable) && $this->url_amigable != "")	
+		
+		if(isset($this->seo->urlAmigable) && $this->seo->urlAmigable != ""){
+			return "/productos/".$this->seo->urlAmigable;
+		}
+		else{
+			return "/producto/detalle/".$this->id;
+		}	
+		
+	}
 		 
 }

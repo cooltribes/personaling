@@ -28,6 +28,7 @@ if(isset($seo)){
 	Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
 	Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
 }
+
 ?>
 <?php 
 	$this->breadcrumbs=array(
@@ -483,7 +484,7 @@ if(isset($seo)){
 		});
 		
 		$(".dropdown080").click(function() { 
-			$('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonblanco.jpg";?>'/>");
+			white080();
 		});
 		
 		
@@ -537,7 +538,9 @@ if(isset($seo)){
  
 <script>
 
-
+function white080(){
+	$('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonblanco.jpg";?>'/>");
+}
 function encantar(id)
    	{
             
@@ -663,7 +666,12 @@ function refresh(reset)
 		$(document).ready(function() {
 			$('.handle').show();
 			$('.slide-out-div').show();
-
+			<?php
+			if(isset(Yii::app()->session['080'])){
+				echo "$('#chic_hid').val('1');	$('#banner100chic').fadeIn(3000);	preRefresh(); white080();";
+				unset (Yii::app()->session['080']);
+			}
+			?>
 			// Show or hide the sticky footer button
 			$(window).scroll(function() {
 				if ($(this).scrollTop() > 200&&$(this).scrollTop()+200<$('#wrapper_footer').offset().top) {
@@ -686,4 +694,6 @@ function refresh(reset)
 				$('html, body').animate({scrollTop: 0}, 300);
 			})
 		});
+		
+		
 	</script>

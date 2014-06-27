@@ -23,7 +23,7 @@ class MovimientoController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
  
-				'actions'=>array('productos','pormover','confirmar'),
+				'actions'=>array('productos','pormover','confirmar','registraregreso'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -143,40 +143,64 @@ class MovimientoController extends Controller
 	public function actionConfirmar(){
 		if(isset($_POST['ptcs']))
             {
-                if($_POST['ptcs']!='nothing'){ //Selecciono productos
-                    
-                    Yii::app()->session['ptcs']=$_POST['ptcs'];
-                    Yii::app()->session['vals']=$_POST['vals'];                
+                 if($_POST['ptcs']!='nothing'){ //Selecciono productos
+         
 
                              
 
                     /*id de preciotallacolor y su respectiva cantidad*/
                     $productos = explode(',',$_POST['ptcs']);
                     $cantidades = explode(',',$_POST['vals']);
-
+					$ptcs=array();
                     for($i=0; $i < count($productos); $i++){
 
                         $idPrecioTallaColor = $productos[$i];
                         $cantidad = $cantidades[$i];
 
-                        $precioTallaColor = Preciotallacolor::model()->findByPk($idPrecioTallaColor);
+                       	array_push($ptcs,Preciotallacolor::model()->findByPk($idPrecioTallaColor));
 
-                        $idProducto = $precioTallaColor->producto_id;
-                        $idTalla = $precioTallaColor->talla_id;
-                        $idColor = $precioTallaColor->color_id;
+                        
 
                         //Agregarlo a la bolsa tantas veces como indique la cantidad
                                             
                     }
+                	$this->render('confirmar',array('ptcs'=>$ptcs,'cantidades'=>$cantidades,'ids'=>$productos));
+					Yii::app()->end();
                 }
-			$productos="PRODS";
+
 //                $this->redirect(array('admin/compradir'));
 //                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'https'));
-               	$this->render('confirmar',array('ptcs'=>$productos));
+               	
 
               }
+			 $this->redirect(array('productos'));
 					
 		
+	}
+	public function actionRegistrarEgreso(){
+		$ids=explode(',',$_POST['ids']);
+		$cantidades=explode(',',$_POST['cantidades']);
+		$movimiento=new Movimiento;
+		$movimiento->total=$_POST['total'];
+		$movimiento->fecha=date('Y-m-d');
+		$movimiento->user_id=Yii::app()->user->id;
+		$movimiento->comentario=$_POST['comentario'];
+		if($movimiento->save()){
+			foreach($ids as $key=>$id){
+				$mhptc=new Movimientohaspreciotallacolor;
+				$ptc=Preciotallacolor::model()->findByPk($id);
+				$mhptc->preciotallacolor_id=$ptc->id;
+				$mhptc->cantidad=$cantidades[$key];
+				$mhptc->movimiento_id=$movimiento->id;
+				$mhptc->costo=$ptc->producto->getCosto(false);
+				if($mhptc->save()){
+					$ptc->cantidad=$ptc->cantidad-$mhptc->cantidad;
+					$ptc->save();
+				}
+				
+			}
+		}
+		$this->redirect(array('controlpanel/index'));
 	}
 	
 }

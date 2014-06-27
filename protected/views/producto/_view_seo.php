@@ -206,7 +206,7 @@ $this->breadcrumbs=array(
  });*/
  
  function valSeo(){
-	 var exp= /^\w{1}([a-zA-Z_|\-]*[a-zA-Z]+[a-zA-Z_|\-]*)$/;
+	 var exp= /^\w{1}([a-zA-Z0-9_|\-]*[a-zA-Z0-9]+[a-zA-Z0-9_|\-]*)$/;
 	 var val=$('#Seo_urlAmigable').val();
 	 if(val.match(exp))
 	 	return true;

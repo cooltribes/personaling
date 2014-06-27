@@ -1377,7 +1377,13 @@ class BolsaController extends Controller
                                     $dirFacturacion = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id' => Yii::app()->getSession()->get('idFacturacion'), 'user_id' => $usuario)), true);
                                     $orden = new Orden;
                                     $orden->subtotal = Yii::app()->getSession()->get('subtotal');
-                                    $orden->descuento = 0;
+                                    /*if(isset(Yii::app()->getSession()->get('descuento'))){
+                                    	$orden->descuento = Yii::app()->getSession()->get('descuento');
+                                    }else{
+                                    	$orden->descuento = 0;
+                                    }*/
+                                    $orden->descuento = Yii::app()->getSession()->get('descuento');
+                                    
                                     $orden->envio = Yii::app()->getSession()->get('envio');
                                     $orden->iva = Yii::app()->getSession()->get('iva');
                                     //$orden->descuentoRegalo = 0;
@@ -1471,7 +1477,13 @@ class BolsaController extends Controller
                                 
                                 $orden = new Orden;
                                 $orden->subtotal = Yii::app()->getSession()->get('subtotal'); //suma de los productos sin iva ni descuentos
-                                $orden->descuento = 0;
+                                //$orden->descuento = 0;
+                                /*if(isset(Yii::app()->getSession()->get('descuento'))){
+                                	$orden->descuento = Yii::app()->getSession()->get('descuento');
+                                }else{
+                                	$orden->descuento = 0;
+                                }*/
+                                $orden->descuento = Yii::app()->getSession()->get('descuento');
                                 $orden->envio = Yii::app()->getSession()->get('envio');
                                 $orden->iva = Yii::app()->getSession()->get('iva');                                
                                 $orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo'); //por balance usado

@@ -14,7 +14,7 @@ class TiendaController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
                                     'segunda','ocasiones','modal','doble', 'crearFiltro',
-                                    'getFilter','xmltest','rangoslook'),
+                                    'getFilter','xmltest','rangoslook','bf080'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -2039,6 +2039,10 @@ public function actionCategorias2(){
 	public function actionXmltest(){
 		$this->renderPartial('xmltest');
 	}
-       
+      
+	public function actionBF080(){
+		Yii::app()->session['080']=1;
+		$this->redirect(array('index'));
+	}
         
 }

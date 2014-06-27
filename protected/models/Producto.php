@@ -346,7 +346,7 @@ class Producto extends CActiveRecord
                 }
             else
                 return 0;
-    }
+    } 
 	
 	public function getCosto($format=true)
 	{
@@ -1410,6 +1410,33 @@ public function multipleColor2($idColor, $idact)
         	return Yii::app()->db->createCommand($sql)->queryAll();
 		}
         
+         public function calcularPrecioFinal($porcentajeDescuento){
+             
+             $final = 1 - ($porcentajeDescuento / 100);
+             $precioConDescuento = $this->precios[0]->precioVenta * $final;
+             $iva = $precioConDescuento * Yii::t('contentForm', 'IVA');
+
+             $precioFinal = $precioConDescuento + $iva;
+             $precioFinal = round($precioFinal, 2);
+
+             return $precioFinal;
+             
+         }
          
+         public function asignarPrecios($porcentajeDescuento){
+             
+             $final = 1 - ($porcentajeDescuento / 100);
+             $precioConDescuento = $this->precios[0]->precioVenta * $final;
+             $iva = $precioConDescuento * Yii::t('contentForm', 'IVA');
+
+             $precioFinal = $precioConDescuento + $iva;
+             $precioFinal = round($precioFinal, 2);
+//             echo $precioFinal; 
+//             Yii::app()->end();
+             
+//             return Yii::app()->numberFormatter->formatCurrency($precioFinal, '');
+             return $precioFinal;
+             
+         }
 		 
 }

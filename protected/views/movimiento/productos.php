@@ -27,7 +27,7 @@
 			   	</div>
 			</form>
 			<div class="span4">
-		    	<a class="btn span2" id="ver_orden">Resumen</a>
+		    	<a class="btn span2" id="ver_orden" disabled='disabled'>Resumen</a>
 			</div>
 			<div class="span2">
 				<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
@@ -43,9 +43,8 @@
 				$this->widget('bootstrap.widgets.TbButton', array(
 			            'buttonType'=>'submit',
 			            'type'=>'info',
-			            'id'=>'continuar',
 			            'label'=>'Continuar',
-			            'htmlOptions'=>array('name'=>'continuar')
+			            'htmlOptions'=>array('name'=>'continuar','id'=>'continuar', 'disabled'=>'disabled')
 			        )); 
 				
 				$this->endWidget();	
@@ -215,7 +214,7 @@
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h3 id="myModalLabel">Resumen de Compra</h3>
+		<h3 id="myModalLabel">Productos seleccionados</h3>
 	</div>
 	<div class="modal-body" id="modal-body">
 	</div>
@@ -254,7 +253,11 @@ function compara_fechas($fecha1,$fecha2)
  
 $(document).ready(function(){
 	  
-	    
+	    	if(arr.length>0){
+	   		$('#continuar').attr('disabled',false);
+	   		$('#ver_orden').attr('disabled',false);
+	   		}
+	    	
 	    	$("#ver_orden").click(function() { 
             	if(arr.toString().length>0)
             		modal();
@@ -282,8 +285,8 @@ $(document).ready(function(){
  $('body').on('input','.cant', function() { 
      // get the current value of the input field.
      	
-	    var a =  parseInt($(this).val());
-	    if(isNaN(a)){
+	   var a =  parseInt($(this).val());
+	   if(isNaN(a)){
 	    	$(this).val('0'); 
 	   		a=0;
 	   }
@@ -299,6 +302,16 @@ $(document).ready(function(){
 	   		$('#ptcs').val(arr.toString());
 	   		$('#vals').val(arr2.toString());
 	   	}
+	   	if(arr.length>0){
+	   		$('#continuar').attr('disabled',false);
+	   		$('#ver_orden').attr('disabled',false);
+	   	}
+	   		
+	   	else{
+	   		$('#continuar').attr('disabled','disabled');
+	   		$('#ver_orden').attr('disabled','disabled');
+	   	}
+	   		
  });
  
  function modal(id){
@@ -312,7 +325,6 @@ $(document).ready(function(){
 			$('#myModal').modal(); 
 		},
 		'cache' :false});
-
 }
 
 

@@ -50,7 +50,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                     
                     <?php
                     $this->widget('CMultiFileUpload', array(
-                        'name' => 'validar',
+                        'name' => 'validacion',
                         'accept' => 'xls|xlsx', // useful for verifying files
                         'duplicate' => 'El archivo está duplicado.', // useful, i think
                         'denied' => 'Tipo de archivo inválido.', // useful, i think
@@ -78,7 +78,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                    
                     <?php
                     $this->widget('CMultiFileUpload', array(
-                        'name' => 'url',
+                        'name' => 'carga',
                         'accept' => 'xls|xlsx', // useful for verifying files
                         'duplicate' => 'El archivo está duplicado.', // useful, i think
                         'denied' => 'Tipo de archivo inválido.', // useful, i think

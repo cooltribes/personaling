@@ -40,7 +40,7 @@ if (isset($user)){
 ?>
 <?php if(!Yii::app()->user->isGuest){ ?>
 <img 
-src="<?php echo $this->createUrl("site/conversion"); ?>?campaignID=15920&productID=23773
+src="<?php echo $this->createUrl("/site/conversion"); ?>?campaignID=15920&productID=23773
 &conversionType=lead&https=0&transactionID=<?php echo Yii::app()->user->id; ?>"
 width="1" height="1" border="0" alt="" />
 <?php } ?>

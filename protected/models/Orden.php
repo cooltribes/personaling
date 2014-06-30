@@ -79,7 +79,7 @@ class Orden extends CActiveRecord
         const ESTADO_FINALIZADA = 11;
 	const ESTADO_FIN_DEVUELTA = 12;
         
-	const ESTADO_FIN_PARC_DEV = 13;
+	const ESTADO_FIN_PARC_DEV = 13;        
 
 	public static $estados = array('1' => 'En espera de pago',
         '2' => 'En espera de confirmación', '3' => 'Pago confirmado',
@@ -767,6 +767,8 @@ class Orden extends CActiveRecord
 	                    $text.="TPV Banco Sabadell"; 
 	            else if($detallePago->tipo_pago==5)
 	                    $text.="PayPal"; 
+                    else if ($detallePago->tipo_pago == Detalle::PRUEBAS)
+                            $text.= "Pago para pruebas";
 	            else
 	                    $text.="ERROR EN EL PAGO";
 				$i++;

@@ -51,6 +51,7 @@ class Detalle extends CActiveRecord
     const TDC_AZTIVE = 4;
     const PAYPAL_AZTIVE = 5;
     
+    const PRUEBAS = 7;
     
         /**
 	 * Returns the static model of the specified AR class.
@@ -173,20 +174,22 @@ class Detalle extends CActiveRecord
 	}
         
         public function getTipoPago() {
-
+                      
             $text = "";
             if ($this->tipo_pago == self::DEP_TRANSF)
                 $text.= "Dep. o Transfer"; // metodo de pago
             else if ($this->tipo_pago == self::TDC_INSTAPAGO)
-                $text.="Tarjeta de Crédito";
+                $text.= "Tarjeta de Crédito";
             else if ($this->tipo_pago == self::USO_BALANCE)
-                $text.="Uso de Balance";
+                $text.= "Uso de Balance";
             else if ($this->tipo_pago == self::TDC_AZTIVE)
-                $text.="TPV Banco Sabadell";
+                $text.= "TPV Banco Sabadell";
             else if ($this->tipo_pago == self::PAYPAL_AZTIVE)
-                $text.="PayPal";
+                $text.= "PayPal";            
+            else if ($this->tipo_pago == self::PRUEBAS)
+                $text.= "PAGO PARA PRUEBAS";
             else
-                $text.="ERROR EN EL PAGO";
+                $text.= "ERROR EN EL PAGO";
 
             return $text;
         }

@@ -3048,6 +3048,7 @@ class BolsaController extends Controller
             
             //5 BkCard - 6 Paypal
             $metodoPago = Yii::app()->getSession()->get('tipoPago');
+            
             $metodoPago--; //llevarlo a los metodos de pago usados para las órdenes
             
             $detalle = new Detalle;            

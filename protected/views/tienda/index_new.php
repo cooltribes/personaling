@@ -424,6 +424,11 @@ if(isset($seo)){
 				$('#banner100chic').fadeIn(3000);
 				preRefresh();
 			});
+		$("#100chic").bind( "touchstart", function(e){
+			$('#chic_hid').val('1');
+			$('#banner100chic').fadeIn(3000);
+			preRefresh();
+		} );	
 			
 		function unchic(){
 				$('#chic_hid').val('0');

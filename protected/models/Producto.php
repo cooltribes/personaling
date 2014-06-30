@@ -346,7 +346,7 @@ class Producto extends CActiveRecord
                 }
             else
                 return 0;
-    }
+    } 
 	
 	public function getCosto($format=true)
 	{

@@ -42,14 +42,20 @@ if(isset($seo)){
                 <div class="slider-home slide-1">
                     <div class="slide-content">
                         <div class="copy-right">
-                            <div class="border-bottom">
+                          
                                 <figure class="logo-personaling ">
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="73"  heigth="73"> 
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="215"> 
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="130"  heigth="130"> 
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="175"> 
                                 </figure>
-                                <h2>La primera <br><strong>shopping experience</strong><br>única y…repetible.</h2>
-                            </div>
-                            <a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" class="btn-call2action">¡Regístrate!</a>
+                                <div class="margin_top_small">
+                                <h2 >Las únicas<strong> rebajas<br/>personalizadas</strong><br></h2>
+                            	<a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" class="btn btn-danger margin_top_small Bold">¡Regístrate!</a>
+                            	</div>
+                            	<div class="margintop65">
+                            		<p class="personaling-slogan">La primera<b> shopping</b> experience <b>única </b>y... <b>repetible</b></p>
+                            	</div>
+                            
+                            
                         </div>
                     </div>
                 </div>                
@@ -58,15 +64,16 @@ if(isset($seo)){
                 <div class="slider-home slide-2">
                     <div class="slide-content">
                         <div class="copy-right">
-                            <div class="border-bottom">
-                                <h2 class="">Solamente tú, <br/> eres <strong>irrepetible.</strong></h2>
-
+                            <div>
+                                
                                 <figure class="logo-personaling ">
                                     <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="102"  heigth="102">                                    
+                               		 <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="146"> 
                                 </figure>
                             </div>
-                            <div>
-                                <p class="personaling-slogan  margin_top_medium">La primera <strong>shopping experience</strong> única y…repetible</p>
+                            <a href="<?php echo Yii::app()->baseUrl; ?>/tienda/index" class="btn btn-danger margin_top_xlarge Bold goStore">¡Ir a la Tienda!</a>
+                            <div class="margintop80">
+                                <p class="personaling-slogan  margin_top_large">La primera <strong>shopping experience</strong> única y…repetible</p>
                             </div>
                         </div>
                         
@@ -77,14 +84,18 @@ if(isset($seo)){
                 <div class="slider-home slide-3">
                     <div class="slide-content">
                         <div class="copy-right">
-                            <div class="border-bottom">
-                                <h2>Si algo puede mejorar el <br> carácter de <strong>la moda</strong>,<br>sin duda, es <strong>tu personalidad.</strong></h2>
-                                <figure class="logo-personaling ">
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="110"  heigth="110">                                                                    
-                                </figure>
-                            </div>
                             <div>
-                                <p class="personaling-slogan ">La primera <strong>shopping experience</strong> única y…repetible</p>
+                                <figure class="logo-personaling ">
+                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="102"  heigth="102">                                    
+                               		 <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="146"> 
+                                </figure>
+                                <h2>¿Un <b>look completo</b> por <b><?php echo Yii::t('contentForm','currSym');?> 49,00?</b></h2>
+                                <div class="separator90"></div>
+                                 <h2>¡Consígue uno hecho<br/><b>especialmente para ti</b>!</h2>
+                            </div>
+                            <a href="<?php echo Yii::app()->baseUrl; ?>/tienda/look" class="btn btn-danger margin_top_small Bold">¡Cómpralo Ya!</a>
+                            <div class="margintop50">
+                                <p class="personaling-slogan ">Las únicas <b>rebajas personalizadas</b></p>
                             </div>
                         </div>                            
                         
@@ -97,9 +108,10 @@ if(isset($seo)){
 </section>
 
 
+
 <script type="text/javascript">
 $('#sliderHome').carousel({
-  interval: 6000,
+  interval: 6000000,
 });
 $('#buttomCookies').on('click',function(){
     $('.message-cookies').css({display:'none',});

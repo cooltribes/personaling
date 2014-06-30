@@ -137,7 +137,7 @@ $this->breadcrumbs=array(
                         success: function (data) {
 
                             if(data=="ok")
-                               window.location.replace("<?php echo Yii::app()->baseUrl;?>/orden/admindevoluciones");
+                               window.location.replace("<?php echo Yii::app()->baseUrl;?>/movimiento/adminEgresos");
                           		
                            if(data=="error")
                                     location.reload();

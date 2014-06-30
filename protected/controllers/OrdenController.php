@@ -887,7 +887,7 @@ public function actionReportexls(){
 					$dhptc->look_id=$looks[$i];
 					array_push($dhptcs,$dhptc);
 					$proceder=true;
-					Yii::app()->user->setFlash('error', 'Su Devolución fue registrada exitosamente.');
+					Yii::app()->user->setFlash('success', 'Su Devolución fue registrada exitosamente.');
 				}
 			}
 			

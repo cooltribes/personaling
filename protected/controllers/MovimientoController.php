@@ -199,8 +199,13 @@ class MovimientoController extends Controller
 				}
 				
 			}
+			Yii::app()->user->setFlash('success', 'Egreso Registrado exitosamente.');
+			echo "ok";
 		}
-		$this->redirect(array('controlpanel/index'));
+		else {
+			Yii::app()->user->setFlash('error', 'No se pudo registrar el egreso de mercancía.');
+			echo "error";
+		}
 	}
 	
 }

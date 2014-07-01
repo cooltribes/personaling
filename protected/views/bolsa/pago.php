@@ -584,7 +584,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     ?>
                 </label>
                 <div class="padding_left_small margin_top_medium row-fluid" style="display:none" id="collapse-cupon">
-                    <?php echo CHtml::label("Ingresa el código de descuento: ", "textoCodigo"); ?>    
+                    <?php echo CHtml::label("Ingresa tu código aquí: ", "textoCodigo"); ?>    
                     <?php echo CHtml::textField("textoCodigo"); ?>
                 </div>
 

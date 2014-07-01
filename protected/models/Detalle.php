@@ -50,6 +50,7 @@ class Detalle extends CActiveRecord
     const USO_BALANCE = 3;
     const TDC_AZTIVE = 4;
     const PAYPAL_AZTIVE = 5;
+    const CUPON_DESCUENTO = 6;
     
     const PRUEBAS = 7;
     
@@ -186,6 +187,8 @@ class Detalle extends CActiveRecord
                 $text.= "TPV Banco Sabadell";
             else if ($this->tipo_pago == self::PAYPAL_AZTIVE)
                 $text.= "PayPal";            
+            else if ($this->tipo_pago == self::CUPON_DESCUENTO)
+                $text.= "Cupón de Descuento";            
             else if ($this->tipo_pago == self::PRUEBAS)
                 $text.= "PAGO PARA PRUEBAS";
             else

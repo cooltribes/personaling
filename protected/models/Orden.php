@@ -767,6 +767,8 @@ class Orden extends CActiveRecord
 	                    $text.="TPV Banco Sabadell"; 
 	            else if($detallePago->tipo_pago==5)
 	                    $text.="PayPal"; 
+	            else if($detallePago->tipo_pago== Detalle::CUPON_DESCUENTO)
+	                    $text.="Cupón de Descuento"; 
                     else if ($detallePago->tipo_pago == Detalle::PRUEBAS)
                             $text.= "Pago para pruebas";
 	            else

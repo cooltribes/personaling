@@ -547,12 +547,13 @@ class Look extends CActiveRecord
 			if($this->tipoDescuento == 0){ // porcentaje
 				$this->_porcentajeDescuento = $this->valorDescuento;
 			}else if($this->tipoDescuento == 1){ // monto
-				$this->_porcentajeDescuento = ($this->valorDescuento * 100) / $this->getPrecio(false);
+				//$this->_porcentajeDescuento = ($this->valorDescuento * 100) / $this->getPrecio(false);
+				$this->_porcentajeDescuento = 100 - (($this->getPrecioDescuento(false) * 100) / $this->getPrecioProductosDescuento(false));
 			}
 
 		}
 		if ($format)
-			return Yii::app()->numberFormatter->format("#,##0.00",$this->_porcentajeDescuento);
+			return Yii::app()->numberFormatter->format("#",$this->_porcentajeDescuento);
 		else
 			return $this->_porcentajeDescuento;
 	}

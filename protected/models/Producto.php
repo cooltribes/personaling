@@ -400,6 +400,10 @@ class Producto extends CActiveRecord
         		}else if($this->_precio->tipoDescuento == 1){
         			$precio_mostrar = $this->_precio->precioImpuesto - $this->_precio->valorTipo;
         		}
+                //Guardar el precio con descuento
+                    $this->_precio->precioDescuento = $precio_mostrar;
+                    $this->_precio->save();
+                        
         	}else{
         		$precio_mostrar = $this->_precio->precioImpuesto;
         	}
@@ -420,13 +424,17 @@ class Producto extends CActiveRecord
                 $c->compare('tbl_producto_id', $this->id);
                 $this->_precio = Precio::model()->find($c);
             }
-            if (isset($this->_precio->precioImpuesto))
+            if (isset($this->_precio->precioImpuesto)){
+                
+                $this->_precio->precioImpuesto = $this->_precio->precioVenta * (1 + Yii::t('contentForm', 'IVA'));
+                $this->_precio->save();
+                
                 if ($format) {
                     return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioImpuesto);
                 } else {
                     return $this->_precio->precioImpuesto;
                 }
-            else
+            }else
                 return 0;
     }
 
@@ -448,6 +456,8 @@ class Producto extends CActiveRecord
                 return 0;
     }
 
+
+    
     public function getAhorro($format=true)
 	{
             if (is_null($this->_precio)) {
@@ -456,15 +466,39 @@ class Producto extends CActiveRecord
                 $c->compare('tbl_producto_id', $this->id);
                 $this->_precio = Precio::model()->find($c);
             }
-            if (isset($this->_precio->ahorro))
+            if (isset($this->_precio->ahorro)){
+                
+                $this->_precio->ahorro = $this->getPrecioImpuesto() - $this->getPrecioDescuento();
+                $this->_precio->save();
+                
                 if ($format) {
                     return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->ahorro);
                 } else {
                     return $this->_precio->ahorro;
                 }
-            else
+            }else
                 return 0;
     }
+    
+    
+    
+//    public function getAhorro($format=true)
+//	{
+//            if (is_null($this->_precio)) {
+//                $c = new CDbCriteria();
+//                $c->order = '`id` desc';
+//                $c->compare('tbl_producto_id', $this->id);
+//                $this->_precio = Precio::model()->find($c);
+//            }
+//            if (isset($this->_precio->ahorro))
+//                if ($format) {
+//                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->ahorro);
+//                } else {
+//                    return $this->_precio->ahorro;
+//                }
+//            else
+//                return 0;
+//    }
 	/*
 	public function getPrecioNf()
 	{

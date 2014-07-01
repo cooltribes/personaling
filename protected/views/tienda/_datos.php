@@ -78,7 +78,7 @@ $b='';
 								$porcentaje = $precio_producto->valorTipo;
 								break;
 							case 1:
-								$porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioVenta;
+								$porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioImpuesto;
 								break;
 							default:
 								# code...
@@ -131,8 +131,8 @@ $b='';
 					$precio = "<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>";
 					if($precio_producto){
 						if(!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0){
-							$precio_mostrar = $precio_producto->precioVenta + ($precio_producto->precioVenta * 0.21);
-							$precio = "<span class='preciostrike strikethrough'><small>".Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</small></span> | ".Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto);
+							$precio_mostrar = $precio_producto->precioImpuesto;
+							$precio = "<span class='preciostrike strikethrough'><small>".Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</small></span> | ".Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento);
 						}
 					}
 

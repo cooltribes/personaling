@@ -23,7 +23,7 @@ class MovimientoController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
  
-				'actions'=>array('productos','pormover','confirmar','registraregreso'),
+				'actions'=>array('productos','pormover','confirmar','registraregreso','adminEgresos'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -193,19 +193,49 @@ class MovimientoController extends Controller
 				$mhptc->cantidad=$cantidades[$key];
 				$mhptc->movimiento_id=$movimiento->id;
 				$mhptc->costo=$ptc->producto->getCosto(false);
+				$mhptc->motivo=$_POST['tipo'];
 				if($mhptc->save()){
 					$ptc->cantidad=$ptc->cantidad-$mhptc->cantidad;
 					$ptc->save();
 				}
+				if($_POST['tipo']){
+					$defectuoso = new Defectuoso;
+					$defectuoso->cantidad = $mhptc->cantidad;
+					$defectuoso->fecha = date('Y-m-d');
+					$defectuoso->user_id = Yii::app()->user->id;
+					$defectuoso->preciotallacolor_id = $ptc->id;
+					$defectuoso->preciotallacolor_id = $ptc->id;
+					$defectuoso->procedencia = "Egreso desde Admin";
+					$defectuoso->save();
+					
+				}
+				
 				
 			}
 			Yii::app()->user->setFlash('success', 'Egreso Registrado exitosamente.');
 			echo "ok";
 		}
 		else {
+			print_r($movimiento->errors);
 			Yii::app()->user->setFlash('error', 'No se pudo registrar el egreso de mercancía.');
 			echo "error";
 		}
 	}
 	
+	public function actionAdminEgresos(){
+		
+		$movimiento=new Movimiento;	
+		$dataProvider=new CActiveDataProvider($movimiento,array('criteria'=>array('condition'=>'egreso=1','order'=>'fecha'), 'pagination'=>array('pageSize'=>20,),));
+		
+		$this->render('adminEgresos',array('dataProvider'=>$dataProvider));
+		
+	}
+	public function actionDetallesEgreso($id){
+		
+		$movimiento=Movimiento::model()->findByPk($id);	
+		
+		
+		$this->render('detallesEgreso',array('movimiento'=>$movimiento));
+		
+	}
 }

@@ -93,4 +93,11 @@ class Movimientohaspreciotallacolor extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function getxMovimiento($id){
+			
+		$sql="select * from tbl_movimiento_has_preciotallacolor where movimiento_id=".$id;	
+		$looks=Yii::app()->db->createCommand($sql)->queryAll();
+		return $looks;
+	}
 }

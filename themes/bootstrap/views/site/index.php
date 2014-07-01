@@ -111,7 +111,7 @@ if(isset($seo)){
 
 <script type="text/javascript">
 $('#sliderHome').carousel({
-  interval: 6000000,
+  interval: 6000,
 });
 $('#buttomCookies').on('click',function(){
     $('.message-cookies').css({display:'none',});

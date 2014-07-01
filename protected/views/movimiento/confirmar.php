@@ -118,22 +118,56 @@ $this->breadcrumbs=array(
 			<textarea id="comentario" name="comentario" rows="3" cols="50" class="span12" maxlength="250" placeholder="Describe el motivo de este egreso de mercancía"></textarea>
 		</div>
 		<div class="span12">
-			<a class="btn btn-danger margin_top pull-right" onclick="aceptar('<?php echo implode(',',$ids); ?>','<?php echo implode(',',$cantidades); ?>','<?php echo $total; ?>')" href='#'>Registrar Egreso</a>
+			<a class="btn btn-danger margin_top pull-right"  href='#' onclick="$('#alertTipo').modal();">Registrar Egreso</a>
 		</div>
 		
 	</div>
 
 </div> 
 <!-- /container --> 
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'alertTipo','htmlOptions'=>array('class'=>'modal hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+
+<div class="modal-header">
+        <h3 ><?php echo Yii::t('contentForm','Important');?></h3>
+ </div>
+  <div class="modal-body">
+ 		 <h3><?php echo Yii::t('contentForm','You should select the destination of this expenditure');?></h3>
+
+ 		 
+  </div>
+  <div class="modal-footer">
+  	<div class="row-fluid">
+ 		 	<div class="span6" align="center">
+ 		 		<button class="btn btn-danger closeModal" data-dismiss="modal" aria-hidden="true" onclick="aceptar('<?php echo implode(',',$ids); ?>','<?php echo implode(',',$cantidades); ?>','<?php echo $total; ?>',0)"><i class='icon-thumbs-up icon-white'></i> Mercadeo</button>
+ 		 	</div>
+ 		 	<div class="span6" align="center">
+ 		 		<button class="btn btn-danger closeModal" data-dismiss="modal" aria-hidden="true" onclick="aceptar('<?php echo implode(',',$ids); ?>','<?php echo implode(',',$cantidades); ?>','<?php echo $total; ?>',1)"><i class='icon-thumbs-down icon-white'></i> Prenda dañada</button>
+ 		 	</div>
+ 		 </div>
+  	
+  </div>
+
+
+<?php $this->endWidget(); ?>
+
+
+
+
+
 
 <script type="text/javascript"> 
 	
- 	function aceptar(ids,cantidades,total){
-		var comentario=$('#comentario').val();
+ 	function aceptar(ids,cantidades,total,tipo){
+		
+		
+		if($('#comentario').val()!='')
+			comentario=$('#comentario').val();
+		else
+			comentario="No especificado";
  		$.ajax({
                         type: "post", 
                         url: "registrarEgreso", // action 
-                        data: { 'ids':ids, 'cantidades':cantidades,'total':total,'comentario':comentario}, 
+                        data: { 'ids':ids, 'cantidades':cantidades,'total':total,'comentario':comentario,'tipo':tipo}, 
                         success: function (data) {
 
                             if(data=="ok")
@@ -147,6 +181,7 @@ $this->breadcrumbs=array(
                     });
  		
  	}
+ 	
 
   
 

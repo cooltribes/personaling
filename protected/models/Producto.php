@@ -95,8 +95,8 @@ class Producto extends CActiveRecord
 			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),
 			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status, peso, outlet', 'safe'),
 			//array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
-			array('fInicio','compare','compareValue'=>date("m/d/Y"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.'),
-			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.'),
+			array('fInicio','compare','compareValue'=>date("m/d/Y"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.', 'except' => 'outlet'),
+			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.', 'except' => 'outlet'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso, almacen, outlet', 'safe', 'on'=>'search'),
@@ -366,7 +366,7 @@ class Producto extends CActiveRecord
                 return 0;
     }
 
-    public function getPrecioDescuento($format=true)
+    /*public function getPrecioDescuento($format=true)
 	{
             if (is_null($this->_precio)) {
                 $c = new CDbCriteria();
@@ -382,6 +382,34 @@ class Producto extends CActiveRecord
                 }
             else
                 return 0;
+    }*/
+
+    public function getPrecioDescuento($format=true)
+	{
+		$precio_mostrar = 0;
+        if (is_null($this->_precio)) {
+            $c = new CDbCriteria();
+            $c->order = '`id` desc';
+            $c->compare('tbl_producto_id', $this->id);
+            $this->_precio = Precio::model()->find($c);
+        }
+        if (isset($this->_precio->precioImpuesto)){
+        	if(isset($this->_precio->tipoDescuento)){
+        		if($this->_precio->tipoDescuento == 0){
+        			$precio_mostrar = $this->_precio->precioImpuesto - ($this->_precio->precioImpuesto * $this->_precio->valorTipo / 100);
+        		}else if($this->_precio->tipoDescuento == 1){
+        			$precio_mostrar = $this->_precio->precioImpuesto - $this->_precio->valorTipo;
+        		}
+        	}else{
+        		$precio_mostrar = $this->_precio->precioImpuesto;
+        	}
+        	if ($format) {
+                return Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar);
+            } else {
+                return $precio_mostrar;
+            }
+        }else
+            return 0;
     }
 
     public function getPrecioImpuesto($format=true)

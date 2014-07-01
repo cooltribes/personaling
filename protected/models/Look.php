@@ -481,18 +481,14 @@ class Look extends CActiveRecord
 			return $this->_precio;
 	}
 
-	// calcula el precio del look con el descuento sobre el precio sin iva
+	// calcula el precio del look con el descuento adicional si se compra completp
 	public function getPrecioDescuento($format=true){
 		if (is_null($this->_precioDescuento)) {
 			$this->_precioDescuento = 0;
-			foreach($this->lookhasproducto as $lookhasproducto){
-				//if ($lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id) > 0)
-				$this->_precioDescuento += $lookhasproducto->producto->getPrecioDescuento(false);
-			}
 			if($this->tipoDescuento == 0){ // porcentaje
-				$this->_precioDescuento -= $this->_precioDescuento * ($this->valorDescuento / 100);
+				$this->_precioDescuento = $this->getPrecioProductosDescuento(false) - ($this->getPrecioProductosDescuento(false) * $this->valorDescuento / 100);
 			}else if($this->tipoDescuento == 1){ // monto
-				$this->_precioDescuento -= $this->valorDescuento;
+				$this->_precioDescuento = $this->valorDescuento;
 			}
 
 		}
@@ -506,9 +502,9 @@ class Look extends CActiveRecord
     public function getPrecioTotal($format=true)
 	{
 		if ($format)
-			return Yii::app()->numberFormatter->format("#,##0.00",($this->getPrecioDescuento(false)*0.21)+$this->getPrecioDescuento(false));
+			return Yii::app()->numberFormatter->format("#,##0.00",($this->getPrecio(false)*0.21)+$this->getPrecio(false));
 		else
-			return ($this->getPrecioDescuento(false)*0.21)+$this->getPrecioDescuento(false);
+			return ($this->getPrecio(false)*0.21)+$this->getPrecio(false);
 	}
 
 	// sumatoria del precio full de cada producto (con iva)
@@ -527,7 +523,7 @@ class Look extends CActiveRecord
 			return $this->_precioProductosFull;
 	}
 
-	// sumatoria del precio con descuento de cada producto
+	// sumatoria del precio con descuento de cada producto, precio total del look si se compran los productos separados
 	public function getPrecioProductosDescuento($format=true){
 		if (is_null($this->_precioProductosDescuento)) {
 			$this->_precioProductosDescuento = 0;

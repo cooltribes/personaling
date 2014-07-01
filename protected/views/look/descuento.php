@@ -32,120 +32,65 @@ $this->breadcrumbs=array(
     <div class="span9">
       <div class="bg_color3   margin_bottom_small padding_small box_1">
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
-          <fieldset>
+        	<fieldset>
+	          	<legend>Productos: </legend>
+				<div>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed"> 
+						<tr>
+							<th>Nombre</th>
+							<th>Disponibilidad</th>
+							<th>Precio total</th>
+							<th>Precio con descuento</th>
+						</tr>
+						<?php foreach($model->lookhasproducto as $lookhasproducto){ 
+							?>
+							<tr> <th scope="row"><?php echo $lookhasproducto->producto->nombre; ?></th>
+								<td><?php echo $lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id); ?> <?php echo Yii::t('contentForm','availables'); ?></td>
+								<td>           <?php   echo Yii::t('contentForm', 'currSym').' '.$lookhasproducto->producto->getPrecioImpuesto(); ?> </td>
+								<td>           <?php   echo Yii::t('contentForm', 'currSym').' '.$lookhasproducto->producto->getPrecioDescuento(); ?> </td>
+							</tr>
+							<?php 
+						} 
+						?>
+					</table>
+					
+				</div>
+          	</fieldset>
+        	<fieldset>
+        		<legend>Precios del look: </legend>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed">
+					<tr>
+	                    <th scope="row">Precio total de productos con IVA</th>
+	                    <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioProductosFull(); ?></td>
+	                </tr>
+	                <tr>
+	                    <th scope="row">Precio total de productos con descuento (incluye IVA)</th>
+	                    <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioProductosDescuento(); ?></td>
+	                </tr>
+				</table>
+			</fieldset>
+          	<fieldset>
             <legend >Descuento: </legend>
-            <div class="control-group"> <?php echo $form->dropDownListRow($model, 'tipoDescuento', array(0 => 'Porcentaje %', 1 => 'Monto en '.Yii::t('contentForm','currSym'),)); ?> 
-            	<?php echo $form->error($model,'tipoDescuento'); ?> </div>
+            <div class="control-group"> 
+            	<?php echo $form->dropDownListRow($model, 'tipoDescuento', array(0 => 'Porcentaje %', 1 => 'Establecer total en '.Yii::t('contentForm','currSym'),)); ?> 
+            	<?php echo $form->error($model,'tipoDescuento'); ?> 
+            </div>
             <div class="control-group"> <?php echo $form->textFieldRow($model, 'valorDescuento', array('class'=>'span5','id'=>'valordescuento', 'placeholder'=>'0.00')); ?>
             	<?php echo $form->error($model,'valorDescuento'); ?>
-              <div class="controls">
-                <div class=" muted">Si el producto no tendrá descuento ingrese 0</div>
-              </div>
+				<div class="controls">
+					<div class=" muted">Si el look no tendrá descuento ingrese 0</div>
+				</div>
+            </div>
+            <div class="control-group"> 
+            	<?php echo CHtml::label('Precio Total Definitivo', 'precio_total', array('class'=>'control-label')); ?>
+            	<div class="controls">
+            		<?php echo CHtml::textField('precio_total', Yii::t('contentForm','currSym').' '.$model->getPrecioDescuento(), array('class'=>'span5','id'=>'precio_total', 'disabled'=>'disabled')); ?>
+            	</div>
             </div>
             <?php echo $form->hiddenField($model, 'id', array('id'=>'hidden_id')); ?>
           </fieldset>
-          <fieldset>
-          	<legend>Productos: </legend>
-			<div>
-				<h4><?php echo Yii::t('contentForm', 'Products'); ?></h4>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed"> 
-					<?php foreach($model->lookhasproducto as $lookhasproducto){ 
-						?>
-						<tr> <th scope="row"><?php echo $lookhasproducto->producto->nombre; ?></th>
-							<td><?php echo $lookhasproducto->producto->getCantidad(null,$lookhasproducto->color_id); ?> <?php echo Yii::t('contentForm','availables'); ?></td>
-							<td>           <?php   echo $lookhasproducto->producto->getPrecio().' '.Yii::t('contentForm', 'currSym'); ?> </td>
-						</tr>
-						<?php 
-					} 
-					?>
-				</table>
-				<h4>Precio</h4>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-condensed">
-					<tr>
-	                    <th scope="row">Precio productos sin IVA</th>
-	                    <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></td>
-	                </tr>
-	                <tr>
-	                    <th scope="row">Descuento %</th>
-	                    <td>
-	                        <?php
-	                        if(!is_null($model->tipoDescuento) && $model->valorDescuento > 0){
-	                            switch ($model->tipoDescuento) {
-	                                case 0:
-	                                    $porcentaje = $model->valorDescuento;
-	                                    break;
-	                                case 1:
-	                                    $porcentaje = ($model->valorDescuento * 100) / $model->getPrecio(false);
-	                                    break;
-	                                default:
-	                                    # code...
-	                                    break;
-	                            }
-	                            $precio_mostrar = $model->getPrecio(false) + ($model->getPrecio(false) * 0.21);
-	                            echo Yii::app()->numberFormatter->format("#,##0.00",$porcentaje).'%';
-	                            //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
-	                        }else{
-	                            echo '0%';
-	                        }
-	                        ?>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th scope="row">Descuento <?php echo Yii::t('contentForm', 'currSym'); ?></th>
-	                    <td>
-	                        <?php echo Yii::t('contentForm', 'currSym');?>
-	                        <?php
-	                        if(!is_null($model->tipoDescuento) && $model->valorDescuento > 0){
-	                            switch ($model->tipoDescuento) {
-	                                case 0:
-	                                    $porcentaje = $model->valorDescuento;
-	                                    break;
-	                                case 1:
-	                                    $porcentaje = ($model->valorDescuento * 100) / $model->getPrecio(false);
-	                                    break;
-	                                default:
-	                                    # code...
-	                                    break;
-	                            }
-	                            $precio_mostrar = $model->getPrecio(false) - $model->getPrecioDescuento(false);
-	                            echo Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar);
-	                            //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
-	                        }else{
-	                            echo '0';
-	                        }
-	                        ?>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th scope="row">Precio con Descuento (Sin IVA)</th>
-	                    <td>
-	                        <?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento();?>
-	                        <?php
-	                        
-	                        ?>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th scope="row">IVA</th>
-	                    <td>
-	                        <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$model->getPrecioDescuento(false)*0.21);?>
-	                        <?php
-	                        
-	                        ?>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <th scope="row">Precio Total</th>
-	                    <td id='precio_descuento'>
-	                        <?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioTotal();?>
-	                        <?php
-	                        
-	                        ?>
-	                    </td>
-	                </tr>
-				</table>
-			</div>
-          </fieldset>
+			
+          
         </form>
       </div>
     </div>
@@ -219,11 +164,19 @@ var pre;
 });
 */
 	$("#valordescuento").keyup(function(){
-		calcular_precio_descuento();
+		if($('#Look_tipoDescuento').val() == '0'){
+			calcular_precio_descuento();
+		}else{
+			$('#precio_total').val("<?php echo Yii::t('contentForm','currSym'); ?> "+$("#valordescuento").val());
+		}
 	});
 
 	$("#Look_tipoDescuento").change(function(){
-		calcular_precio_descuento();
+		if($('#Look_tipoDescuento').val() == '0'){
+			calcular_precio_descuento();
+		}else{
+			$('#precio_total').val("<?php echo Yii::t('contentForm','currSym'); ?> "+$("#valordescuento").val());
+		}
 	});
 
 	function calcular_precio_descuento(){
@@ -232,7 +185,7 @@ var pre;
 	        url: "../calcularPrecioDescuento", // action 
 	        data: { 'id': $('#hidden_id').val(), 'tipo_descuento': $('#Look_tipoDescuento').val(), 'valor_descuento': $("#valordescuento").val() }, 
 	        success: function (data) {
-				$('#precio_descuento').html(data);
+				$('#precio_total').val(data);
 	       	}//success
 	    });
 	}

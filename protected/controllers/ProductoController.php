@@ -748,7 +748,7 @@ public function actionReportexls(){
         $datos=$datos."<th scope='row'>Precio base</th>";
 		
 		if($precio)
-	        $datos=$datos."<td>".Yii::t('contentForm','currSym')." ".Yii::app()->numberFormatter->formatDecimal($precio->precioVenta); 
+	        $datos=$datos."<td>".Yii::t('contentForm','currSym')." ".Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto); 
 		else
         	$datos=$datos."<td>"; 
 
@@ -1342,21 +1342,21 @@ public function actionReportexls(){
 					$price = Precio::model()->findByAttributes(array('tbl_producto_id'=>$id));
 					if ($_POST['tipo']=='monto') { // es descuento es un monto fijo
 						$price->tipoDescuento = 1;
-						$price->precioDescuento = $price->precioVenta - $_POST['valor'];
+						$price->precioDescuento = $price->precioImpuesto - $_POST['valor'];
 						$price->valorTipo = $_POST['valor'];
 						$price->ahorro = $_POST['valor'];
 					}elseif ($_POST['tipo']=='porcentaje') { // el descuento es un porcentaje del precio de venta
 						$price->tipoDescuento = 0;
-						$price->precioDescuento = $price->precioVenta - ($price->precioVenta * ($_POST['valor'] / 100));
+						$price->precioDescuento = $price->precioImpuesto - ($price->precioImpuesto * ($_POST['valor'] / 100));
 						$price->valorTipo = $_POST['valor'];
-						$price->ahorro = $price->precioVenta * ($_POST['valor'] / 100);
+						$price->ahorro = $price->precioImpuesto* ($_POST['valor'] / 100);
 					}
 
-					if($price->impuesto == 0){ // no tiene impuesto
+					/*if($price->impuesto == 0){ // no tiene impuesto
 						$price->precioImpuesto = $price->precioDescuento;
 					}else{
 						$price->precioImpuesto = $price->precioDescuento + ($price->precioDescuento*Yii::app()->params['IVA']);
-					}
+					}*/
 
 					if($price->save()){
 						$cont_updated++;

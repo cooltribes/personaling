@@ -95,8 +95,8 @@ class Producto extends CActiveRecord
 			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),
 			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status, peso, outlet', 'safe'),
 			//array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
-			array('fInicio','compare','compareValue'=>date("m/d/Y"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.'),
-			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.'),
+			array('fInicio','compare','compareValue'=>date("m/d/Y"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.', 'except' => 'outlet'),
+			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.', 'except' => 'outlet'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso, almacen, outlet', 'safe', 'on'=>'search'),

@@ -40,7 +40,7 @@ class ProductoController extends Controller
                                     'tallacolor','addtallacolor','varias','categorias',
                                     'recatprod','seo', 'historial','importar','descuentos',
                                     'reporte','reportexls', "createExcel", 'plantillaDescuentos',
-                                    'importarPrecios', 'exportarExcel'),
+                                    'importarPrecios', 'exportarExcel', 'outlet'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -1012,6 +1012,7 @@ public function actionReportexls(){
 	{
                       
             $producto = new Producto;
+            $producto->unsetAttributes();
 
             $producto->status = 1;
 
@@ -1288,6 +1289,37 @@ public function actionReportexls(){
 					$datos=$datos."</div>";	
 				$datos .= '</form>';
 				$result['html'] = $datos;
+			}else if($accion=="Outlet") {
+				$result['status'] = "7";
+				foreach($checks as $id){
+					if($id!='todos'){
+						$model = Producto::model()->findByPk($id);
+						$result['products'][$id] = array();
+						$result['products'][$id]['codigo'] = $model->codigo;
+						$result['products'][$id]['nombre'] = $model->nombre;
+					}
+				}
+				$datos="";
+				$datos=$datos."	<div class='modal-header'>"; 
+				$datos=$datos. "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>";
+				$datos=$datos."<h3 id='myModalLabel'>Enviar al outlet - ".sizeof($checks)." productos";
+				$datos=$datos."</h3></div>";
+				
+				// fin del header
+				$datos .= '<form method="post" action="'.Yii::app()->baseUrl.'/producto/outlet" id="outlet-form" class="form-horizontal" enctype="multipart/form-data">';
+					$datos=$datos."<div class='modal-body'>";
+						$datos .= 'Se enviaran estos productos al outlet. ¿Desea continuar?';
+	                          $datos .= CHtml::hiddenField('product_list', $_POST['check'], array());
+					$datos=$datos."</div>";
+					// fin del body
+					
+					$datos=$datos."<div class='modal-footer'>";
+						$datos .= CHtml::submitButton('Continuar', array('class'=>'btn btn-success', 'id'=>'procesar_descuento'));
+						$datos=$datos. "<button type='button' class='btn' data-dismiss='modal' aria-hidden='true'>Cancelar</button>";
+						//$datos=$datos."<in href='detalle/' title='Procesar' class='btn btn-success'><i class='icon-pencil'></i> Procesar</a> ";
+					$datos=$datos."</div>";	
+				$datos .= '</form>';
+				$result['html'] = $datos;
 			}
 
 		}
@@ -1341,6 +1373,43 @@ public function actionReportexls(){
 			}
 			if($cont_error > 0){
 				Yii::app()->user->setFlash('error', $error_msg.'Revise que el descuento no sea mayor al precio de venta');
+			}
+		}else{
+			Yii::app()->user->setFlash('error', 'Solicitud inválida');
+		}
+		$this->redirect(array('admin'));
+	}
+
+	public function actionOutlet(){
+		if(isset($_POST['product_list'])){
+			$products = explode(',',$_POST['product_list']);
+			$cont_updated = 0;
+			$cont_error = 0;
+			$error_msg = '';
+			foreach ($products as $id) {
+				if($id!='todos'){
+					$product = Producto::model()->findByPk($id);
+					$product->scenario = 'outlet';
+					//$price = Precio::model()->findByAttributes(array('tbl_producto_id'=>$id));
+					$product->outlet = 1;
+
+					
+
+					if($product->save()){
+						$cont_updated++;
+					}else{
+						$cont_error++;
+						$ar = $product->getErrors();
+						$error_msg .= 'Producto '.$id.' no actualizado<br/>';
+						print_r($product->getErrors());
+					}
+				}
+			}
+			if($cont_updated > 0){
+				Yii::app()->user->setFlash('success', $cont_updated.' productos enviados al outlet');
+			}
+			if($cont_error > 0){
+				Yii::app()->user->setFlash('error', $error_msg.'Ocurrió un error al procesar la solicitud');
 			}
 		}else{
 			Yii::app()->user->setFlash('error', 'Solicitud inválida');

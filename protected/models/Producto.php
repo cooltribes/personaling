@@ -366,7 +366,7 @@ class Producto extends CActiveRecord
                 return 0;
     }
 
-    public function getPrecioDescuento($format=true)
+    /*public function getPrecioDescuento($format=true)
 	{
             if (is_null($this->_precio)) {
                 $c = new CDbCriteria();
@@ -382,6 +382,34 @@ class Producto extends CActiveRecord
                 }
             else
                 return 0;
+    }*/
+
+    public function getPrecioDescuento($format=true)
+	{
+		$precio_mostrar = 0;
+        if (is_null($this->_precio)) {
+            $c = new CDbCriteria();
+            $c->order = '`id` desc';
+            $c->compare('tbl_producto_id', $this->id);
+            $this->_precio = Precio::model()->find($c);
+        }
+        if (isset($this->_precio->precioImpuesto)){
+        	if(isset($this->_precio->tipoDescuento)){
+        		if($this->_precio->tipoDescuento == 0){
+        			$precio_mostrar = $this->_precio->precioImpuesto - ($this->_precio->precioImpuesto * $this->_precio->valorTipo / 100);
+        		}else if($this->_precio->tipoDescuento == 1){
+        			$precio_mostrar = $this->_precio->precioImpuesto - $this->_precio->valorTipo;
+        		}
+        	}else{
+        		$precio_mostrar = $this->_precio->precioImpuesto;
+        	}
+        	if ($format) {
+                return Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar);
+            } else {
+                return $precio_mostrar;
+            }
+        }else
+            return 0;
     }
 
     public function getPrecioImpuesto($format=true)

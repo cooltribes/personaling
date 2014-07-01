@@ -357,7 +357,7 @@ class LookController extends Controller
 		$model = Look::model()->findByPk($_POST['id']);
 		$model->tipoDescuento = $_POST['tipo_descuento'];
 		$model->valorDescuento = $_POST['valor_descuento'];
-		echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioTotal();
+		echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento();
 	}
 
 	public function actionView()

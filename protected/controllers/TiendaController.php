@@ -1515,14 +1515,14 @@ public function actionCategorias2(){
 	              $porcentaje = $precio_producto->valorTipo;
 	              break;
 	            case 1:
-	              $porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioVenta;
+	              $porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioImpuesto;
 	              break;
 	            default:
 	              # code...
 	              break;
 	          }
-	          $precio_mostrar = $precio_producto->precioVenta + ($precio_producto->precioVenta * 0.21);
-	          $datos=$datos.'<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span><span class='T_large'>|</span><span class='pDescuento'>".''.Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span><br/> <span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
+	          $precio_mostrar = $precio_producto->precioImpuesto;
+	          $datos=$datos.'<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span><span class='T_large'>|</span><span class='pDescuento'>".''.Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span><br/> <span class="conDescuento">Con '.Yii::app()->numberFormatter->format("#",$porcentaje).'% de descuento</span>';
 	          //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
 	        }else{
 	        	$datos=$datos."<span class='pDescuento'>".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span>';

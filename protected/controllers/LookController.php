@@ -357,7 +357,7 @@ class LookController extends Controller
 		$model = Look::model()->findByPk($_POST['id']);
 		$model->tipoDescuento = $_POST['tipo_descuento'];
 		$model->valorDescuento = $_POST['valor_descuento'];
-		echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioTotal();
+		echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento();
 	}
 
 	public function actionView()
@@ -1552,8 +1552,8 @@ public function actionCategorias(){
         // creando el encabezado
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'CÓDIGO')
-                    ->setCellValue('B1', 'PRECIO PRODUCTOS CON IVA')
-                    ->setCellValue('C1', 'PRECIO PRODUCTOS SIN IVA')
+                    ->setCellValue('B1', 'PRECIO PRODUCTOS')
+                    ->setCellValue('C1', 'PRECIO PRODUCTOS CON DESCUENTO')
                     ->setCellValue('D1', '% DESCUENTO ADICIONAL')
                     ->setCellValue('E1', 'PRECIO TOTAL');
         
@@ -1581,8 +1581,8 @@ public function actionCategorias(){
                     ->setCellValue('A'.($i), $look->id) 
                     ->setCellValue('B'.($i), $look->getPrecioProductosFull())
                     ->setCellValue('C'.($i), $look->getPrecioProductosDescuento())
-                    ->setCellValue('D'.($i), $look->getPorcentajeDescuento(false))
-                    ->setCellValue('E'.($i), $look->getPrecioTotal());
+                    ->setCellValue('D'.($i), $look->getPorcentajeDescuento())
+                    ->setCellValue('E'.($i), $look->getPrecioDescuento());
             $i++;
         }
         
@@ -1789,9 +1789,9 @@ public function actionCategorias(){
                 if ($linea == 1) { // revisar los nombres / encabezados de las columnas
                     if ($row['A'] != "CÓDIGO")
                         $falla = "CÓDIGO";
-                    else if ($row['B'] != "PRECIO PRODUCTOS CON IVA")
+                    else if ($row['B'] != "PRECIO PRODUCTOS")
                         $falla = "PRECIO PRODUCTOS CON IVA";
-                    else if ($row['C'] != "PRECIO PRODUCTOS SIN IVA")
+                    else if ($row['C'] != "PRECIO PRODUCTOS CON DESCUENTO")
                         $falla = "PRECIO PRODUCTOS SIN IVA";
                     if ($row['D'] != "% DESCUENTO ADICIONAL")
                         $falla = "% DESCUENTO ADICIONAL";
@@ -1865,9 +1865,11 @@ public function actionCategorias(){
 
                     // comprobar que el porcentaje y el precio final con descuento coincidan, esto en realidad no importa pero ellas lo quieren, si falla y jode mucho solo se quita este bloque
                     if(floatval($row['D'] > 0)){
-                    	$precio_con_descuento = $row['C']-($row['C']*($row['D']/100));
-                    	$iva = $precio_con_descuento*0.21;
-                    	$precio_total = $precio_con_descuento + $iva;
+                    	//$precio_con_descuento = $row['C']-($row['C']*($row['D']/100));
+                    	$precio_con_descuento = $row['E'];
+                    	//$iva = $precio_con_descuento*0.21;
+                    	//$precio_total = $precio_con_descuento + $iva;
+                    	$precio_total = $precio_con_descuento;
                     	$precio_formato = Yii::app()->numberFormatter->format("#,##0.00",$precio_total);
                     	$precio_formato = str_replace(",", ".", $precio_formato);
 	                    //$precio_calculado = Yii::app()->numberFormatter->format("#,##0.00",$row['B']-($row['B']*($row['D']/100)));

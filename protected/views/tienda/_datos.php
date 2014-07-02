@@ -132,7 +132,7 @@ $b='';
 					if($precio_producto){
 						if(!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0){
 							$precio_mostrar = $precio_producto->precioImpuesto;
-							$precio = "<span class='preciostrike strikethrough'><small>".Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</small></span> | ".Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento);
+							$precio = "<span class='preciostrike strikethrough'><small>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</small></span> | ".Yii::t('contentForm', 'currSym')." ".$data->getPrecioDescuento();
 						}
 					}
 

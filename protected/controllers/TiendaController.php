@@ -422,7 +422,7 @@ class TiendaController extends Controller
 			$dataProvider = Producto::model()->findAll($criteria);
 			if ((isset($_GET['page']))){
 				
-				$marcas=Marca::model()->findAll();
+				$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 				$colores=Color::model()->findAll();
 				$this->render('index_new',
 						array('index'=>$producto,
@@ -506,7 +506,7 @@ class TiendaController extends Controller
 		$pages->applyLimit($criteria);
         $dataProvider = Producto::model()->findAll($criteria);
 	
-		$marcas=Marca::model()->findAll();
+		$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 		$colores=Color::model()->findAllByAttributes(array('padreID'=>'0'));
 		
 
@@ -1132,7 +1132,7 @@ public function actionCategorias2(){
             	 
 			//$start = microtime(true);
             $userTmp = User::model()->findByPk(Yii::app()->user->id);
-            $todosLosLooks = false;
+            $todosLosLooks = true;
             if (isset($userTmp)) {
                 
                 //echo "user".$userTmp->status_register;

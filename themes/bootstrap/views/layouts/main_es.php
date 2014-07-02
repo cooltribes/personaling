@@ -72,6 +72,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                                 'items' => array(
                                                     array('label' => 'Reporte de Inventario',
                                                         'url'=>array('/producto/reporte'),),
+                                                    array('label' => 'Egresos de Mercancía',
+                                                        'url'=>array('/movimiento/adminEgresos'),),
+                                                    array('label' => 'Reporte de Defectuosos',
+                                                        'url'=>array('/movimiento/defectuosos'),),
                                                     array('label' => 'Importar Productos',
                                                         'url'=>array('/producto/importar'),),
                                                     array('label' => 'Importar Precios',

@@ -70,11 +70,6 @@ class ProductoController extends Controller
 
 		}
 	
-	
-			
-
-	
-			
 			$dataProvider = Preciotallacolor::model()->existencia();
 		
 		

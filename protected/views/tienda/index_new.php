@@ -232,7 +232,6 @@ if(isset($seo)){
 								echo'<li><a class="marca '.$cien.'" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
 								 
 							}
-							echo CHtml::hiddenField('texthid','');
 						?>
 						<li><a class="marca" value="0" href="#"><?php echo Yii::t('contentForm','All Brands');?></a></li>											
 					</ul>  	
@@ -245,7 +244,7 @@ if(isset($seo)){
 							else {
 								echo CHtml::hiddenField('marcahid',0);
 							}
-				echo CHtml::hiddenField('texthid','');
+				
 			} ?>
 			
 			
@@ -298,7 +297,7 @@ if(isset($seo)){
 			</li> -->
 			<li class="item itemInput">
 				<div class="contenedorInput">
-					<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search"> 
+					<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search" maxlength="50" > 
 					<button class="btn btn-danger btn-buscar" id="btn_search" type="button"><i class="icon-search"></i></button>	
 				</div>
 			</li>	
@@ -306,7 +305,8 @@ if(isset($seo)){
 
 </section>
 <div class="row ">
-<?php	echo CHtml::hiddenField('resethid',0);?>
+<?php	echo CHtml::hiddenField('texthid','');
+		echo CHtml::hiddenField('resethid',0);?>
 	<div class="offset10 span2 margin_bottom_small margin_top_small_minus">
 		<a href="" class="btn btn-block" id="reset"><?php echo Yii::t('contentForm','Clean Filters');?></a>
 	</div>

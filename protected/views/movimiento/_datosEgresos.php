@@ -1,6 +1,6 @@
 <?php 
  
-    echo"<tr> 
+    echo"<tr>  
     <td>".$data->id."</td> 
     <td>".$data->user->username."</td> 
     <td>".date("d/m/Y",strtotime($data->fecha))."</td> 

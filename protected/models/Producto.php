@@ -957,21 +957,47 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		
 		//------------------ BUSQUEDA POR TEXTO (marca, categoria, color, nombre de la prenda) ----------------
 		$text="";
+		
 		if(isset(Yii::app()->session['f_text'])){
-			if(strlen(Yii::app()->session['f_text'])>0)	{
+		
+		if(strlen(Yii::app()->session['f_text'])>0)	{
+				$vocals=array('a','e','i','o','u','y');
+				$string = str_replace(
+			        array("\\", "¨", "º", "-", "~",
+			             "#", "@", "|", "!", "\"",
+			             "·", "$", "%", "&", "/",
+			             "(", ")", "?", "'", "¡",
+			             "¿", "[", "^", "`", "]",
+			             "+", "}", "{", "¨", "´",
+			             ">", "< ", ";", ",", ":",
+			             "."),
+			        '',
+			        strtolower(Yii::app()->session['f_text'])
+			    );	
 				$words=array();
-				$palabras=explode( ' ', Yii::app()->session['f_text']);
+				$palabras=explode( ' ',$string);
 				foreach ($palabras as $palabra){
-					if(substr($palabra, (strlen($palabra)-1), 1)=='s'||substr($palabra, (strlen($palabra)-1), 1)=='S')
-						$palabra=substr($palabra, 0, -2);
-					else
-						$palabra=substr($palabra, 0, -1);
+					
 					if(strlen($palabra)>2){
+						
+						$text=" categorias.nombre LIKE '%".$palabra."%' ";
+						$text=$text."OR  mymarca.nombre LIKE '%".$palabra."%' ";
+						$text=$text."OR  mycolor.valor LIKE '%".$palabra."%' ";
+						$text=$text."OR  t.nombre LIKE '%".$palabra."%' ";
+						
+						
+						if(substr($palabra, (strlen($palabra)-1), 1)=='s')
+							$palabra=substr($palabra, 0, -1);
+					
+						if(in_array(substr($palabra, (strlen($palabra)-1), 1),$vocals))
+							$palabra=substr($palabra, 0, -1);
+						
+						if(strlen($palabra)>3)
+							array_push($words,$palabra);
+					}else
 						array_push($words,$palabra);
-						
-					}
-						
 				}
+				
 				foreach ($words as $key=>$word){
 					if($key>0)
 						$text=$text." OR ";
@@ -980,6 +1006,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 					$text=$text."OR  mycolor.valor LIKE '%".$word."%' ";
 					$text=$text."OR  t.nombre LIKE '%".$word."%' ";
 				}
+				$text=$text."OR  t.nombre LIKE '%".Yii::app()->session['f_text']."%' ";
 			}
 
 			//verificar outlet

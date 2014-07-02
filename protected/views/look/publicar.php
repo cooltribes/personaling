@@ -34,7 +34,7 @@ $disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::
   });
  </script> 
  <style>
- 	 #slider .ui-slider-range { background: #6d2d56; }
+ 	 #slider .ui-slider-range { background: #000; }
  </style>
 <div class="container margin_top" id="crear_look">
   <div class="page-header">

@@ -131,7 +131,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                 if(!is_null($model->tipoDescuento) && $model->valorDescuento > 0){
                   ?>
                   <h4 class="precio" ><div id="price"><span><?php echo Yii::t('contentForm' , 'Look Completo'); ?></span><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento(); ?></div></h4>
-                  <h5 class="precio" ><small><div id="price"><span><?php echo Yii::t('contentForm' , 'Por Separado'); ?></span><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioProductosDescuento(); ?></div></small></h5>
+                  <h5 class="precio" ><small><div id="price"><span><?php echo Yii::t('contentForm' , 'Piezas Separadas'); ?></span><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioProductosDescuento(); ?></div></small></h5>
                   
                   <?php
                 }else{

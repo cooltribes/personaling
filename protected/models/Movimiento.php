@@ -30,7 +30,7 @@ class Movimiento extends CActiveRecord
 	{
 		return '{{movimiento}}';
 	}
-
+  
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -39,7 +39,7 @@ class Movimiento extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, comentario', 'required'),
+			array('user_id', 'required'),
 			array('user_id, egreso', 'numerical', 'integerOnly'=>true),
 			array('total', 'numerical'),
 			array('comentario', 'length', 'max'=>250),
@@ -110,5 +110,13 @@ class Movimiento extends CActiveRecord
 		else
 			return $cant;
 		
+	}
+	public function getTypes($id=null)
+	{
+		$types=array("por Mercadeo","por Devolucion");
+		if(is_null($id)||$id>=count($types))
+			return $types;
+		else
+			return $types[$id];
 	}
 }  

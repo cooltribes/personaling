@@ -6,7 +6,7 @@ $this->breadcrumbs=array(
 	'Detalle'=>array('egresos','id'=>$movimiento->id),
 
 );*/
-?>
+?> 
 
 	<?php if(Yii::app()->user->hasFlash('success')){?>
 	    <div class="alert in alert-block fade alert-success text_align_center">
@@ -20,15 +20,16 @@ $this->breadcrumbs=array(
 	<?php } ?>
 
 <div class="container margin_top">
-	<h1> Egreso #<?php echo $movimiento->id; ?></h1>  
+	<h1> Egreso #<?php echo $movimiento->id; ?><small>(<?php echo $movimiento->motivo;?>)</small></h1>  
 	<input type="hidden" id="mov_id" value="<?php echo $movimiento->id; ?>" />
 	<hr/>
+	<?php if(!is_null($movimiento->comentario)){ ?>
 	<div class="row">
 		<div class="span12">
-		<h4>"<?php echo $movimiento->comentario;?>"</h4>
+		<h4><i>"<?php echo $movimiento->comentario;?>"</i></h4>
 		</div>
 	</div>
-
+	<?php } ?>
    <div> 
      <h3 class="braker_bottom">Productos</h3>
       <table id="myTable" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">

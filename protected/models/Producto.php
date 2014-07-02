@@ -400,6 +400,10 @@ class Producto extends CActiveRecord
         		}else if($this->_precio->tipoDescuento == 1){
         			$precio_mostrar = $this->_precio->precioImpuesto - $this->_precio->valorTipo;
         		}
+                //Guardar el precio con descuento
+                    $this->_precio->precioDescuento = $precio_mostrar;
+                    $this->_precio->save();
+                        
         	}else{
         		$precio_mostrar = $this->_precio->precioImpuesto;
         	}
@@ -420,13 +424,17 @@ class Producto extends CActiveRecord
                 $c->compare('tbl_producto_id', $this->id);
                 $this->_precio = Precio::model()->find($c);
             }
-            if (isset($this->_precio->precioImpuesto))
+            if (isset($this->_precio->precioImpuesto)){
+                
+                $this->_precio->precioImpuesto = $this->_precio->precioVenta * (1 + Yii::t('contentForm', 'IVA'));
+                $this->_precio->save();
+                
                 if ($format) {
                     return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioImpuesto);
                 } else {
                     return $this->_precio->precioImpuesto;
                 }
-            else
+            }else
                 return 0;
     }
 
@@ -448,6 +456,8 @@ class Producto extends CActiveRecord
                 return 0;
     }
 
+
+    
     public function getAhorro($format=true)
 	{
             if (is_null($this->_precio)) {
@@ -456,15 +466,39 @@ class Producto extends CActiveRecord
                 $c->compare('tbl_producto_id', $this->id);
                 $this->_precio = Precio::model()->find($c);
             }
-            if (isset($this->_precio->ahorro))
+            if (isset($this->_precio->ahorro)){
+                
+                $this->_precio->ahorro = $this->getPrecioImpuesto() - $this->getPrecioDescuento();
+                $this->_precio->save();
+                
                 if ($format) {
                     return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->ahorro);
                 } else {
                     return $this->_precio->ahorro;
                 }
-            else
+            }else
                 return 0;
     }
+    
+    
+    
+//    public function getAhorro($format=true)
+//	{
+//            if (is_null($this->_precio)) {
+//                $c = new CDbCriteria();
+//                $c->order = '`id` desc';
+//                $c->compare('tbl_producto_id', $this->id);
+//                $this->_precio = Precio::model()->find($c);
+//            }
+//            if (isset($this->_precio->ahorro))
+//                if ($format) {
+//                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->ahorro);
+//                } else {
+//                    return $this->_precio->ahorro;
+//                }
+//            else
+//                return 0;
+//    }
 	/*
 	public function getPrecioNf()
 	{
@@ -1452,19 +1486,41 @@ public function multipleColor2($idColor, $idact)
          }
          
          public function asignarPrecios($porcentajeDescuento){
+             /* @var $this Producto
+              * @var $precio Precio
+              *  */
+             $precio = $this->precios[0];
              
-             $final = 1 - ($porcentajeDescuento / 100);
-             $precioConDescuento = $this->precios[0]->precioVenta * $final;
-             $iva = $precioConDescuento * Yii::t('contentForm', 'IVA');
-
-             $precioFinal = $precioConDescuento + $iva;
-             $precioFinal = round($precioFinal, 2);
-//             echo $precioFinal; 
-//             Yii::app()->end();
+             $precio->tipoDescuento = 0; //porcentaje
+             $precio->valorTipo = $porcentajeDescuento;
              
-//             return Yii::app()->numberFormatter->formatCurrency($precioFinal, '');
-             return $precioFinal;
+             //Calcular el ahorro             
+             $ahorro = $precio->precioVenta * ($porcentajeDescuento / 100);
+             $precio->ahorro = $ahorro;
+             
+             //Calcular el descuento             
+             $precio->precioDescuento = $precio->precioVenta - $ahorro;
+             
+             //calcular el iva
+             $iva = $precio->precioDescuento * Yii::t('contentForm', 'IVA');
+             //Asignar el iva
+             $precio->precioImpuesto = $precio->precioDescuento + $iva;
+             
+            
+             return $precio->save();
              
          }
+         public function getUrlGeneral() 
+	{
+		//	if(isset($this->url_amigable) && $this->url_amigable != "")	
+		
+		if(isset($this->seo->urlAmigable) && $this->seo->urlAmigable != ""){
+			return "/productos/".$this->seo->urlAmigable;
+		}
+		else{
+			return "/producto/detalle/".$this->id;
+		}	
+		
+	}
 		 
 }

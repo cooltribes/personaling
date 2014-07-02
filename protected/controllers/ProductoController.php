@@ -2656,18 +2656,35 @@ public function actionReportexls(){
                             //Transformar la columna del porcentaje
                             $row['E'] = strval($row['E']);
                             $porcentaje = $row["E"];
-                            
-                            $producto = Producto::model()->findByAttributes(
-                                    array("codigo" => $row["A"]));
+                            $total++; //sumar el total de prods en el archivo
+                            //
+                            //solo si ingresaron un porcentaje
+                            if($porcentaje != ""){
                                 
+                                $producto = Producto::model()->findByAttributes(
+                                        array("codigo" => $row["A"]));
+
+                                //si existe la referencia
+                                if(isset($producto)){
                                     
-//                            $precioFinal = $producto->calcularPrecioFinal(intval($porcentaje));
+                                    //si esta inactivo no modificar
+                                    //modificar los precios de acuerdo al nuevo porcentaje
+                                    $resultado = $producto->asignarPrecios(intval($porcentaje));
+
+                                    if($resultado){
+                                        $modificados++; //incrementar el numero de modificados
+                                    }                                        
+                                }
                             
-                            
+                            }//fin si no esta vacia la columna E
                             
                         }
+                        
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash('success', UserModule::t("Se ha cargado el archivo con éxito. Vea los detalles a continuación:"));                            
+                        
                                            
-                    }
+                    }//fin si cargo el archivo
                 }
                 
                 
@@ -2676,7 +2693,7 @@ public function actionReportexls(){
             
             $this->render('importarPrecios', array(               
                 'total' => $total,
-                'modificados' => $modificados,                
+                'modificados' => $modificados,                                
             ));
         }
         
@@ -3063,6 +3080,7 @@ public function actionReportexls(){
 
             $falla = "";
             $erroresReferencia = "";
+            $erroresInactivo = "";
             $erroresPorcentaje = "";
             $erroresCalculo = "";
 
@@ -3101,6 +3119,12 @@ public function actionReportexls(){
 
                             if (!isset($producto)) {
                                 $erroresReferencia .= "<li><b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }else{
+                                //si existe, preguntar si esta inactivo
+                                if($producto->estado == 1){
+                                    $erroresInactivo .= "<li><b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";                                    
+                                }
+                                
                             }
                         }                    
                         //Porcentajes
@@ -3124,6 +3148,8 @@ public function actionReportexls(){
                                         //si la colummna F no es numerica 
                                         if (!is_numeric($row['F']) || $row['F'] != $precioFinal)
                                         {
+                                            $row['F'] = $row['F'] == "" ? "Nada":$row['F'];
+                                            
                                             $erroresCalculo .= "<li> En el archivo: <b>" . $row['F'] . "</b>   -   
                                              Calculado: <b>" . $precioFinal . "</b>.   (Línea <b>" . $linea."</b>)</li>";
 
@@ -3140,10 +3166,15 @@ public function actionReportexls(){
                 $linea++;
             } 
 
-            //Si hubo errores en marcas, cat, tallas, colores
+            //Si hubo errores 
             if($erroresReferencia!= ""){
                 $erroresReferencia = "Las siguientes Referencias no existen en la plataforma:<br><ul>
                                  {$erroresReferencia}
+                                 </ul><br>";
+            }
+            if($erroresInactivo!= ""){
+                $erroresInactivo = "Los siguientes Productos están inactivos en la plataforma:<br><ul>
+                                 {$erroresInactivo}
                                  </ul><br>";
             }
             if($erroresPorcentaje!= ""){
@@ -3157,7 +3188,7 @@ public function actionReportexls(){
                                  </ul><br>";
             }
 
-            $errores = $erroresReferencia.$erroresPorcentaje.$erroresCalculo;
+            $errores = $erroresReferencia.$erroresPorcentaje.$erroresCalculo.$erroresInactivo;
             
             if($errores != ""){
                 
@@ -3373,12 +3404,11 @@ public function actionReportexls(){
             $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A1', 'Producto')
                         ->setCellValue('B1', 'Referencia')
-                        ->setCellValue('C1', 'Precio')
-                        ->setCellValue('D1', '% Descuento')
-                        ->setCellValue('E1', 'Precio Descuento con IVA');
+                        ->setCellValue('C1', 'Estado')
+                        ->setCellValue('D1', 'URL');
 
             $colI = 'A';
-            $colF = 'E';
+            $colF = 'D';
 
             //Poner autosize todas las columnas
             foreach(range($colI,$colF) as $columnID) {
@@ -3395,13 +3425,23 @@ public function actionReportexls(){
             //Agregar los productos
             $i = 2;
             foreach ($arrayProductos as $producto) {
+                
+                //Revisar si tiene url amigable por SEO
+                
+//                $url = $this->createAbsoluteUrl($colF)
+//                
+//                $seo = Seo::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+//                
+//                if($seo && $seo->urlAmigable != ""){
+//                    $url = 
+//                }
+                
                 //Agregar la fila al documento xls
                 $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('A'.($i), $producto->codigo) 
-                        ->setCellValue('B'.($i), $producto->precios[0]->costo)
-                        ->setCellValue('C'.($i), $producto->precios[0]->precioImpuesto);
-                        
-//                        ->setCellValue('D'.($i), $producto->user->profile->getNombre())
+                        ->setCellValue('A'.($i), $producto->nombre) 
+                        ->setCellValue('B'.($i), $producto->codigo)
+                        ->setCellValue('C'.($i), $producto->estado == 1 ? "Inactivo":"Activo" )                        
+                        ->setCellValue('D'.($i), CController::createAbsoluteUrl($producto->getUrlGeneral()));
 //                        ->setCellValue('E'.($i), $producto->getPrecio());
                 $i++;
             }
@@ -3410,7 +3450,7 @@ public function actionReportexls(){
 
             // Redirect output to a client's web browser (Excel5)
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="Plantilla de Descuentos.xls"');
+            header('Content-Disposition: attachment;filename="Reporte de Productos.xls"');
             header('Cache-Control: max-age=0');
 
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');

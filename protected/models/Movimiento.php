@@ -58,6 +58,10 @@ class Movimiento extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+
+			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+			'mptcs' => array(self::HAS_MANY, 'Movimientohaspreciotallacolor','movimiento_id'),
+		
 		);
 	}
 
@@ -98,4 +102,13 @@ class Movimiento extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-}
+	public function getEgresados($movid){
+		$sql="select sum(cantidad) from tbl_movimiento_has_preciotallacolor where movimiento_id = ".$movid;
+			$cant=Yii::app()->db->createCommand($sql)->queryScalar();
+		if(is_null($cant))
+			return 0;
+		else
+			return $cant;
+		
+	}
+}  

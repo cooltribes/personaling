@@ -150,7 +150,8 @@ $total_productos_look = 0;
                     if(!is_null($look->tipoDescuento)){
                             // revisar si está comprando el look completo para aplicar descuento
                             if($bolsa->getLookProducts($look_id) == $look->countItems()){
-                                    $descuento_look = $look->getPrecio(false) - $look->getPrecioDescuento(false);
+                                    $descuento_look = $look->getPrecioDescuento(false);
+//                                    $descuento_look = $look->getPrecio(false) - $look->getPrecioDescuento(false);
                                     array_push($descuentos,$descuento_look);
                             }
                     }

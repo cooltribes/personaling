@@ -64,7 +64,7 @@
   -webkit-border-radius: @radius;
   -moz-border-radius: @radius;
 }
-
+.Bold{ font-weight:bold;}
 .text_light{text-shadow:0 1px #fff}
 .text_shadow{text-shadow:1px 1px #000}
 .non_visible{text-indent:-9999px;font-size:0;height:0;padding:0}
@@ -268,6 +268,22 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 .margin_left_xsmall_minus{margin-left:-7px}
 .margin_right_xsmall_minus{margin-right:-7px}
 .margin_bottom_xsmall_minus{margin-bottom:-7px}
+
+.margintop50{
+  margin-top:50px;
+}
+.margintop65{
+  margin-top:65px;
+}
+.margintop80{
+  margin-top:80px;
+}
+.separator90{
+  width:90%; height:1px; background-color: #000; margin-left:5%;
+}
+.goStore{
+  margin-top: 132px; margin-left: 235px;
+}
 
 /* No margin */
 .no_margin_left{ margin-left:0;}
@@ -1086,7 +1102,7 @@ src: url('../fonts/entypo.woff'),
       margin-bottom: -30px;
       margin-top: 12px;
     .carousel {
-      height: 575px;
+      height: 590px;
       .item img{
         margin: 0 auto;
       }
@@ -1229,7 +1245,7 @@ src: url('../fonts/entypo.woff'),
 }
 
   .carousel-indicators {
-  bottom: 11px;
+  bottom: 10px;
   cursor: pointer;
   left: 0;
   right: 0;
@@ -1269,9 +1285,9 @@ src: url('../fonts/entypo.woff'),
 
 // Hack para cargar imagenes del slider antes que todos pasen ONNNNNNNN
 .no-backgrounds{
-  background: url(../images/model-slide1.jpg) no-repeat 250px 66px,
-              url(../images/model-slide2.jpg) no-repeat 250px 50px,  
-              url(../images/model-slide3.jpg) no-repeat 170px 50px; 
+  background: url(../images/slider/01.jpg) no-repeat,
+              url(../images/slider/02.jpg) no-repeat,  
+              url(../images/slider/03.jpg) no-repeat; 
   margin: -1000px;
   position: absolute;
   top: -1000px;
@@ -1279,17 +1295,18 @@ src: url('../fonts/entypo.woff'),
 }
 // hack para cargar imagenes del slider antes que todos pasen OFFFFFFFF
 .slider-home{
-  height: 518px;
+  height: 540px;
   margin: 0 auto;
-  max-width: 1203px;
+  max-width: 1200px;
 
 }
 .slide-1,.slide-2,.slide-3{
   .slide-content{
-    border: 2px solid white;
-    height: 513px;
+   // border: 2px solid white;
+    height: 540px;
     .copy-right{
-      .border-bottom{
+      color:@negro;
+     .border-bottom{
         border-bottom: 1px solid @color3;
         margin-bottom: 1em;
       }
@@ -1298,11 +1315,13 @@ src: url('../fonts/entypo.woff'),
       h2{
         font-size: 37px;
         strong{
-          color: @color4;
+          color: @negro;
           font-weight: 700;
         }
       }
-
+      .btn-danger{
+        background-color:@negro;
+      }
       .personaling-slogan{
         margin-top: 1em;
         font-weight: 100;
@@ -1316,14 +1335,14 @@ src: url('../fonts/entypo.woff'),
 }
 .slide-1{
 
-  background: #ffd571;
-  border: 11px solid #ffd571;
+ // background: #ffd571;
+  border: 11px solid #fff;// #ffd571;
   .slide-content{
-    background: url(../images/model-slide1.jpg) no-repeat 256px 21px;
+    background: url(../images/slider/01.jpg) no-repeat;
       .copy-right{
         padding-top: 7.8em;
         width: 475px;
-        padding: 4.7em 5.7em 0 0;
+        padding: 3.7em 8.7em 0 0;
       }
       a.btn-call2action{
         border: 2px solid @color4;
@@ -1340,6 +1359,16 @@ src: url('../fonts/entypo.woff'),
           .transition_all;
         }
     }
+    a.btn{
+
+        height: 26px;
+        width: 95px;
+        padding-top: 8px;
+        font-size: 16px;
+      
+    
+    }
+    
     h2{
       line-height: 46px;
       margin-top: 0;
@@ -1352,13 +1381,13 @@ src: url('../fonts/entypo.woff'),
   }
 }
 .slide-2{
-  background: #86e9f8;
-  border: 11px solid #86e9f8;
+ //background: #86e9f8;
+  border: 11px solid #fff;//#f3efe8;
   .slide-content{
-    background: url(../images/model-slide2.jpg) no-repeat 263px 20px;  
+    background: url(../images/slider/02.jpg) no-repeat;  
     .copy-right{
       width: 530px;
-      padding: 7em 7em 0 0;
+      padding: 2em 7em 0 0;
     }
     h2{
       line-height: 46px;
@@ -1372,13 +1401,12 @@ src: url('../fonts/entypo.woff'),
 }
 
 .slide-3{
-  background: #f3efe8;
-  border: 11px solid #f3efe8;
+  //background: #f3efe8;
+  border: 11px solid #fff;//#f3efe8;
   .slide-content{
-    background: url(../images/model-slide3.jpg) no-repeat 68px 38px;    
+    background: url(../images/slider/03.jpg) no-repeat;     
     .copy-right{
-      padding-right: 6em; 
-      padding-top: 6.8em;
+      padding: 2em 7em 0 0;
     }
     a.btn-call2action{
       border: 2px solid @color4;
@@ -4257,6 +4285,24 @@ img[alt="Loading"]{
 .wrapper_home{
 
  }
+ 
+ .margintop50{
+  margin-top:50px;
+}
+.margintop65{
+  margin-top:65px;
+}
+.margintop80{
+  margin-top:80px;
+}
+.separator90{
+  width:90%; height:1px; background-color: #000; margin-left:5%;
+}
+.goStore{
+  margin-top: 132px; margin-left: 235px;
+}
+ 
+ 
       #scroller-anchor #scroller{
          width:940px;
      }
@@ -4289,6 +4335,25 @@ img[alt="Loading"]{
 .wrapper_home{
 
  }
+ 
+.margintop50{
+  margin-top:0px;
+}
+.margintop65{
+  margin-top:0px;
+}
+.margintop80{
+  margin-top:0px;
+}
+.separator90{
+  width:90%; height:1px; background-color: #000; margin-left:5%;
+}
+.goStore{
+  margin-top: 0px; margin-left: 0px;
+}
+ 
+
+ 
       #scroller-anchor #scroller{
          width:724px;
      }
@@ -4300,10 +4365,13 @@ img[alt="Loading"]{
     // Responsive del slider home ON
     .slide-1 .slide-content{
       background-position: 14% 21px;
+      
       h2{
         line-height: 40px;
       }      
     }
+    
+    
     .slide-1,.slide-2,.slide-3{
       .slide-content .copy-right{
           padding: 2em 2em 0 0;
@@ -4328,6 +4396,8 @@ img[alt="Loading"]{
       font-size: 22px !important;
       margin: 40px auto !important;
     }
+    
+    
     // Responsive del slider home OFF
     .wrapper_home,#page{
       margin-top: 0;

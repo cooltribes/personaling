@@ -336,15 +336,15 @@ else
             <tr>
               <td><strong> Deposito o Transferencia</strong>:</td>
               <td><?php $detalle=new Detalle; 
-              echo Yii::app()->numberFormatter->formatDecimal($detalle->sumxDeposito)." Bs";?></td>
+              echo Yii::app()->numberFormatter->formatDecimal($detalle->sumxDeposito)." ".Yii::t('contentForm', 'currSym');?></td>
             </tr>
             <tr>
               <td><strong> Tarjeta de Crédito</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($detalle->sumxTDC)." Bs"; ?></td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($detalle->sumxTDC)." ".Yii::t('contentForm', 'currSym');; ?></td>
             </tr>
             <tr>
               <td><strong> Uso de Saldo</strong>:</td>
-              <td><?php echo Yii::app()->numberFormatter->formatDecimal($detalle->sumxSaldo)." Bs"; ?></td>
+              <td><?php echo Yii::app()->numberFormatter->formatDecimal($detalle->sumxSaldo)." ".Yii::t('contentForm', 'currSym');; ?></td>
             </tr>
           </table>
           <h4 class="margin_top">ACCIONES PENDIENTES</h4>

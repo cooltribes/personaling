@@ -355,7 +355,18 @@ class BolsaController extends Controller
                                
                                //si es correcto
                                if($codigo && $codigo->esValido()){
-                                   Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+                                   
+                                   //si el cliente ya uso ese cupon
+                                   if(CuponHasOrden::clienteUsoCupon($codigo->id)){
+                                       
+                                       Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                           "Ya has usado este cupón. Solo puedes usarlo una vez."));
+                                       $errores = true;
+                                       
+                                   }else{
+                                       
+                                       Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+                                   }
                                   
                                }else{
                                    Yii::app()->user->setFlash('error',Yii::t("contentForm",
@@ -3129,7 +3140,7 @@ class BolsaController extends Controller
                 if($codigo->tipo_descuento == 1){
                     $cuponHasOrden->descuento = $codigo->descuento;                            
                 }else{
-
+                    //modificar - Calcular bien
                     $descuento = $orden->total * ($codigo->descuento / 100);
                     $cuponHasOrden->descuento = floor($descuento * 100) / 100;
 

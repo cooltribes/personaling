@@ -93,4 +93,20 @@ class CuponHasOrden extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        public static function clienteUsoCupon($id){
+            
+            $user = User::model()->findByPk(Yii::app()->user->id);
+            $ordenesUsuario = $user->ordenes;
+            
+            foreach($ordenesUsuario as $orden){
+                if($orden->hasCupon($id)){
+                    return true;
+                }
+            }
+            
+            return false;
+            
+        }
+        
 }

@@ -432,8 +432,7 @@ class BolsaController extends Controller
                     'model'=>$aplicar,
                     'admin'=>$admin,
                     'user'=>$usuario,
-
-                        ));		
+                    ));		
             
 
         }
@@ -653,14 +652,13 @@ class BolsaController extends Controller
                     
                     
                     
-                    /**********INICIO DEL CALCULO DEL MONTO DE LA ORDEN******/
-                    
+                    /**********INICIO DEL CALCULO DEL MONTO DE LA ORDEN******/                    
                     $totalProductos = Yii::app()->getSession()->get('subtotal');
                     $totalDescuentos = Yii::app()->getSession()->get('descuento');
                     $iva = Yii::app()->getSession()->get('iva');
                     
                     //monto por productos, con sus descuentos y su iva
-                    $subtotal = $totalProductos - $totalDescuentos + $iva;
+                    $subtotal = $totalProductos + $iva - $totalDescuentos;                    
                     
                     /** Si esta usando un codigo de descuento, restarselo al subtotal**/
                     $cupon = array();                    
@@ -1538,7 +1536,7 @@ class BolsaController extends Controller
 
                                     if ($detalleBalance->save()) {
                                         $balance->orden_id = $orden->id;
-                                        $balance->user_id = $usuario->id;
+                                        $balance->user_id = $usuario;
                                         $balance->tipo = 1;                        
                                         $balance->save();
                                     }                                                                       

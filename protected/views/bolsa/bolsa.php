@@ -640,9 +640,15 @@ $total_productos_look = 0;
 	}
 	
 </script> 
-<?php 
+<?php /*
 echo "<pre>";
 print_r($descuentos);
 echo "</pre><br>";
 Yii::app()->end();
+ 
+187.23
+ 
+ 
+ 
+ */
 ?>

@@ -313,7 +313,7 @@ class InboundController extends Controller
             $userPwd = "P3rs0n4l1ng";            
             
             $tipoArchivo = "OutboundConfirmation"; /*CORREGIR*/
-            //$rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;                    
+            $rutaArchivo = Yii::getPathOfAlias('webroot').Outbound::RUTA_ARCHIVOS;                    
             
             
             /* Directorio OUT donde estan los confirmation*/
@@ -363,7 +363,7 @@ class InboundController extends Controller
                         }else if($orden->estadoLF == 1){ //si estaba confirmado
                             //Revisar inconsistencias
                             //Descargar el archivo
-                            ftp_get($conexion, $rutaArchivo.$arch, $arch, FTP_BINARY);
+                            ftp_get($conexion, $rutaArchivo.$archivo, $archivo, FTP_BINARY);
                             
                             
                            // $orden->estadoLF = 4; //cambiarlo a finalizado

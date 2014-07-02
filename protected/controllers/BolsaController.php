@@ -3330,6 +3330,12 @@ class BolsaController extends Controller
                 
             }            
 
+            //Guardar Outbound en la BD
+            $outboundBD = new Outbound();
+            $outboundBD->orden_id = $orden->id;
+            //discrep, estado, cantBultos por defecto en 0
+            
+            
             //Enviar Outbound a LF y guardarlo en local para respaldo
             $subido = MasterData::subirArchivoFtp($outbound, 3, $orden->id);
             

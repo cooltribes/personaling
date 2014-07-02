@@ -9,6 +9,10 @@
  * 3 - anulada picking
  * 4 - finalizada (paquete armado para enviar)
  * 5 - enviada
+ * -------------
+ * Discrepancias:
+ * 0 - no hay
+ * 1 - hay discrepancias
  * 
  * This is the model class for table "{{outbound}}".
  *

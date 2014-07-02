@@ -1475,13 +1475,18 @@ public function multipleColor2($idColor, $idact)
         
          public function calcularPrecioFinal($porcentajeDescuento){
              
-             $final = 1 - ($porcentajeDescuento / 100);
-             $precioConDescuento = $this->precios[0]->precioVenta * $final;
-             $iva = $precioConDescuento * Yii::t('contentForm', 'IVA');
-
-             $precioFinal = $precioConDescuento + $iva;
+//             $final = 1 - ($porcentajeDescuento / 100);
+//             $precioConDescuento = $this->precios[0]->precioVenta * $final;
+//             $iva = $precioConDescuento * Yii::t('contentForm', 'IVA');
+//
+//             $precioFinal = $precioConDescuento + $iva;
+//             $precioFinal = round($precioFinal, 2);
+             
+             $porcentajeFinal = 1 - ($porcentajeDescuento / 100);
+             
+             $precioFinal = $this->precios[0]->precioImpuesto * $porcentajeFinal;
              $precioFinal = round($precioFinal, 2);
-
+             
              return $precioFinal;
              
          }
@@ -1496,18 +1501,12 @@ public function multipleColor2($idColor, $idact)
              $precio->valorTipo = $porcentajeDescuento;
              
              //Calcular el ahorro             
-             $ahorro = $precio->precioVenta * ($porcentajeDescuento / 100);
+             $ahorro = $precio->precioImpuesto * ($porcentajeDescuento / 100);
              $precio->ahorro = $ahorro;
              
              //Calcular el descuento             
-             $precio->precioDescuento = $precio->precioVenta - $ahorro;
-             
-             //calcular el iva
-             $iva = $precio->precioDescuento * Yii::t('contentForm', 'IVA');
-             //Asignar el iva
-             $precio->precioImpuesto = $precio->precioDescuento + $iva;
-             
-            
+             $precio->precioDescuento = $precio->precioImpuesto - $ahorro;
+                         
              return $precio->save();
              
          }

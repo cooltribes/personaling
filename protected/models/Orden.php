@@ -864,4 +864,9 @@ class Orden extends CActiveRecord
         
 		
 	}
+        //Si tiene un cupon usado
+	public function hasCupon($idCupon)
+	{
+            return $this->cupon && $this->cupon->cupon_id == $idCupon;
+	}
 }

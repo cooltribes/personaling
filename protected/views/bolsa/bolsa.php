@@ -78,44 +78,34 @@ $total_productos_look = 0;
                 <?php 
                 	$total_productos_look++;
                 	$color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
-					$talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
-					$producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
-					//$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-					//$doblimg= CHtml::image( str_replace(".","_x90.",$producto->getImageUrl($productotallacolor->preciotallacolor->color_id)) , "Imagen", array("width" => "70", "height" => "70"));
-					if(!is_null($productotallacolor->preciotallacolor->imagen)){
-						$doblimg=CHtml::image(Yii::app()->baseUrl.str_replace(".","_x90.",$productotallacolor->preciotallacolor->imagen['url']), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
-					}else{
-						$doblimg= "No hay foto</br>para el color";
-					} 
-					
-                	//$test = PrecioTallaColor::model()->findByPK($productotallacolor->preciotallacolor->id);
-					//if(isset($test)){
-					//	echo $test->color_id;
-						
-					//	echo Color::model()->findByPk($test->color_id)->valor;
-					//}
-					$pre="";
-					$precio_descuento = "";
-					/* 	foreach ($producto->precios as $precio) {
-				   		$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
-						
-						array_push($precios,$precio->precioDescuento);	
-						array_push($descuentos,$precio->ahorro);		
-						}
-					 */
-					 	array_push($cantidades,$productotallacolor->cantidad);
-					 	$pre = $producto->getPrecioVenta2(false);
-					 	$precio_descuento = $producto->getPrecioDescuento(false);
-						array_push($precios,floatval($pre));	
-						array_push($descuentos,$producto->getAhorro(false));
-                	?>
+                        $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
+                        $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+                        //$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+                        //$doblimg= CHtml::image( str_replace(".","_x90.",$producto->getImageUrl($productotallacolor->preciotallacolor->color_id)) , "Imagen", array("width" => "70", "height" => "70"));
+                        if(!is_null($productotallacolor->preciotallacolor->imagen)){
+                                $doblimg=CHtml::image(Yii::app()->baseUrl.str_replace(".","_x90.",$productotallacolor->preciotallacolor->imagen['url']), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+                        }else{
+                                $doblimg= "No hay foto</br>para el color";
+                        } 					
+
+                        array_push($cantidades,$productotallacolor->cantidad);
+
+
+                        $precioSumar = $producto->getPrecioVenta2(false);
+                        $precioMostrar = $producto->getPrecioImpuesto();
+                        $precio_descuento = $producto->getPrecioDescuento();
+                        array_push($precios,floatval($precioSumar));	
+                        //array_push($precios,floatval($pre));	
+                        array_push($descuentos,$producto->getAhorro(false));
+                                        
+                            
+                    ?>
                 <tr>
                   <?php
-               				  	
-						//$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-						echo "<td>".$doblimg."</td>";
+                    //$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+                    echo "<td>".$doblimg."</td>";
+                  ?>              				  	
 					
-					?>
                   <td><strong><?php echo $producto->nombre; ?></strong> <br/>
                     <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
                     <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?> 
@@ -125,11 +115,12 @@ $total_productos_look = 0;
                   
                   <td>
                   	<?php                        
-                  	if(floatval($precio_descuento) < floatval($pre)){
+                  	if(floatval($precio_descuento) < floatval($precioMostrar)){
                             
-                            echo '<del>'.Yii::t('contentForm', 'currSym').' '.$pre.'</del><br/>'.Yii::t('contentForm', 'currSym').' '.$precio_descuento;
+                            echo '<del>'.Yii::t('contentForm', 'currSym').' '.$precioMostrar.'</del>
+                                <br/>'.Yii::t('contentForm', 'currSym').' '.$precio_descuento;
                   	}else{
-                            echo Yii::t('contentForm', 'currSym').' '.$pre;
+                            echo Yii::t('contentForm', 'currSym').' '.$precioMostrar;
                   	}
                   	?>
                   </td>
@@ -150,7 +141,7 @@ $total_productos_look = 0;
                     if(!is_null($look->tipoDescuento)){
                             // revisar si está comprando el look completo para aplicar descuento
                             if($bolsa->getLookProducts($look_id) == $look->countItems()){
-                                    $descuento_look = $look->getPrecioDescuento(false);
+                                    $descuento_look = $look->getPrecioProductosDescuento(false) - $look->getPrecioDescuento(false);                                    
 //                                    $descuento_look = $look->getPrecio(false) - $look->getPrecioDescuento(false);
                                     array_push($descuentos,$descuento_look);
                             }
@@ -169,8 +160,8 @@ $total_productos_look = 0;
 			}
 		  }
 
-$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";
-$pr = Yii::app()->db->createCommand($sql)->queryScalar();
+                $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id = 0 and bolsa_id = ".$bolsa->id."";
+                $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 
 		if($pr!=0) // si hay productos individuales
 		{
@@ -187,97 +178,76 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
               </thead>
               <tbody>
                 <?php
-                  
+                  if(isset($bptcolor)) // si hay productos en la bolsa del usuario
+                  {
+                      foreach($bptcolor as $productoBolsa) // cada producto en la bolsa
+                      {
+                    
+                            $todo = Preciotallacolor::model()->findByPk($productoBolsa->preciotallacolor_id);
 
-                  
-				  if(isset($bptcolor)) // si hay productos en la bolsa del usuario
-				  {
-				  
-	                  foreach($bptcolor as $productoBolsa) // cada producto en la bolsa
-					  {
-					  	$todo = Preciotallacolor::model()->findByPk($productoBolsa->preciotallacolor_id);
-						
-							$producto = Producto::model()->findByPk($todo->producto_id);
-					  		$talla = Talla::model()->findByPk($todo->talla_id);
-					  		$color = Color::model()->findByPk($todo->color_id);
-							
-							// $imagen = CHtml::image($producto->getImageUrl($todo->color_id), "Imagen", array("width" => "70", "height" => "70"));
-							$imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
-					
-							echo "<tr><td>";		
-							
-					/*if($imagen){
-						
-						$con = 0;
-						
-						foreach($imagen as $ima){
-							if($con == 0){	
-								$con++;						  	
-								$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x180.",$ima->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-								echo "<td>".$aaa."</td>";
-							}
-						}
-					}else
-                                echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";*/
-                                
-                                if(!is_null($todo->imagen))
-                                  {echo CHtml::image(Yii::app()->baseUrl . str_replace(".", "_x180.", $todo->imagen['url']), "Imagen ", array("width" => "150", "height" => "150", 'class' => 'margin_bottom'));
-                                } else {
-                                    echo "No hay foto</br>para el color";
+                            $producto = Producto::model()->findByPk($todo->producto_id);
+                            $talla = Talla::model()->findByPk($todo->talla_id);
+                            $color = Color::model()->findByPk($todo->color_id);
+
+                            // $imagen = CHtml::image($producto->getImageUrl($todo->color_id), "Imagen", array("width" => "70", "height" => "70"));
+                            $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
+
+                            echo "<tr><td>";									
+
+
+                            if(!is_null($todo->imagen))
+                              {echo CHtml::image(Yii::app()->baseUrl . str_replace(".", "_x180.", $todo->imagen['url']), "Imagen ", array("width" => "150", "height" => "150", 'class' => 'margin_bottom'));
+                            } else {
+                                echo "No hay foto</br>para el color";
+                            }
+
+                            echo "</td>
+                            <td>
+                            <strong>".$producto->nombre."</strong> <br/>
+                            <strong>".Yii::t('contentForm','Color')."</strong>: ".$color->valor."<br/>";
+                            echo "<strong>".Yii::t('contentForm','Size')."</strong>: ".$talla->valor;	
+
+                            echo "</td>";           
+
+                            $precioSumar = $producto->getPrecioVenta2(false);
+                            //mostrar el precio final a pagar
+                            $precioMostrar = $producto->getPrecioImpuesto();
+                            $precio_descuento = $producto->getPrecioDescuento();
+                            
+                            array_push($precios,floatval($precioSumar));	
+                            array_push($descuentos,$producto->getAhorro(false));
+                            array_push($cantidades,$productoBolsa->cantidad);                           
+                            
+
+                            echo "<td>";
+                                if(floatval($precio_descuento) < floatval($precioMostrar)){
+                                        echo '<del>'.Yii::t('contentForm', 'currSym').' '.$precioMostrar.
+                                                '</del><br/>'.Yii::t('contentForm', 'currSym').' '.$precio_descuento;
+                                }else{
+                                        echo Yii::t('contentForm', 'currSym').' '.$precioMostrar;
                                 }
+                            echo "<td>";
 
-                                echo "</td>
-                                <td>
-                                <strong>".$producto->nombre."</strong> <br/>
-                                <strong>".Yii::t('contentForm','Color')."</strong>: ".$color->valor."<br/>";
-                                echo "<strong>".Yii::t('contentForm','Size')."</strong>: ".$talla->valor;	
-                                
-                                echo "</td>";
-                                        
+                            //echo "<td>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
+                            ?>
 
-                                $pre="";
-                                $precio_descuento = "";
-                                /*foreach ($producto->precios as $precio) {
-                                $pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+                            <td width='8%'>
+                                    <input type="hidden" value="<?php echo $productoBolsa->cantidad; ?>" />
+                                    <input type='text' name="cant[<?php echo $productoBolsa->preciotallacolor_id; ?>][0]"
+                                           maxlength='2' placeholder='Cant.' value='<?php echo $productoBolsa->cantidad; ?>'
+                                           class='span1 cantidades'/>
+                            <a id="<?php echo $productoBolsa->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
 
-                                array_push($precios,$precio->precioDescuento);	
-                                array_push($descuentos,$precio->ahorro);		
-                                }*/
-                                //$pre = $producto->precioVenta;
+                            </td>
+                            <td style='cursor: pointer' onclick='eliminar(<?php echo $productoBolsa->preciotallacolor_id; ?>)' id='elim<?php echo $productoBolsa->preciotallacolor_id; ?>'>&times;</td>
+                            </tr>
 
-                                $pre = $producto->getPrecioVenta2(false);
-                                $precio_descuento = $producto->getPrecioDescuento(false);
-                                array_push($precios,floatval($pre));	
-                                array_push($descuentos,$producto->getAhorro(false));
+                            <?php
+                                }// foreach
+                        }//if isset    
+                        else {
 
-                                array_push($cantidades,$productoBolsa->cantidad);
-
-                                echo "<td>";
-                                    if(floatval($precio_descuento) < floatval($pre)){
-                                            echo '<del>'.Yii::t('contentForm', 'currSym').' '.$pre.'</del><br/>'.Yii::t('contentForm', 'currSym').' '.$precio_descuento;
-                                    }else{
-                                            echo Yii::t('contentForm', 'currSym').' '.$pre;
-                                    }
-                                echo "<td>";
-
-                                //echo "<td>".Yii::t('contentForm', 'currSym').' '.$pre."</td>";
-                                ?>
-
-                                <td width='8%'>
-                                        <input type="hidden" value="<?php echo $productoBolsa->cantidad; ?>" />
-                                        <input type='text' name="cant[<?php echo $productoBolsa->preciotallacolor_id; ?>][0]" maxlength='2' placeholder='Cant.' value='<?php echo $productoBolsa->cantidad; ?>' class='span1 cantidades'/>
-                                <a id="<?php echo $productoBolsa->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
-	                    	
-	                    </td>
-	                  	<td style='cursor: pointer' onclick='eliminar(<?php echo $productoBolsa->preciotallacolor_id; ?>)' id='elim<?php echo $productoBolsa->preciotallacolor_id; ?>'>&times;</td>
-	                	</tr>
-	                	
-	                	<?php
-				  	}// foreach
-				}//if isset    
-				else {
-							
-				}
+                        }
 				  
                   ?>
               </tbody>
@@ -286,27 +256,27 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
           <!-- Look OFF -->
           
           <?php
-			}// if de productos individuales
-			else
-			{ 
-                             $mensaje = $bolsa->admin ? Yii::t('contentForm', 'The bag is empty')
-                              :  Yii::t('contentForm', 'What are you waiting for? Looks amazing clothes and waiting for you');   
-			 
-                         echo "<h4 class='braker_bottom margin_top'>{$mensaje}</h4>";
-                         
-                         if($bolsa->admin){
-                             
-                             echo CHtml::link('<i class="icon-shopping-cart icon-white"> 
-                             </i>  Registrar Orden',array("/user/admin/compra", "id"=>$bolsa->user->id),
-                                 array(
-                                     "class" => "btn btn-danger"
-                                 ));
-                             
-                         }
-			 	
-			}
+                }// if de productos individuales
+                else
+                { 
+                     $mensaje = $bolsa->admin ? Yii::t('contentForm', 'The bag is empty')
+                      :  Yii::t('contentForm', 'What are you waiting for? Looks amazing clothes and waiting for you');   
+
+                 echo "<h4 class='braker_bottom margin_top'>{$mensaje}</h4>";
+
+                 if($bolsa->admin){
+
+                     echo CHtml::link('<i class="icon-shopping-cart icon-white"> 
+                     </i>  Registrar Orden',array("/user/admin/compra", "id"=>$bolsa->user->id),
+                         array(
+                             "class" => "btn btn-danger"
+                         ));
+
+                 }
+
+                }
 			
-		?>
+            ?>
 		
           <?php
         if($pr!=0 || $num!=0) // si hay productos individuales o bien si hay looks (aqui se puede poner la comparacion de si hay looks)
@@ -320,41 +290,41 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
           <!-- SIDEBAR ON --> 
           <script > 
 			// Script para dejar el sidebar fijo Parte 1
-			function moveScroller() {
-				var move = function() {
-					var st = $(window).scrollTop();
-					var ot = $("#scroller-anchor").offset().top;
-					var s = $("#scroller");
-					if( (st + 600) <= ($(document).height() -  $('#wrapper_footer footer').height()) ){
-						console.log()
-						if(st > ot ) {
-							s.css({
-								position: "fixed",
-								top: "70px"
-							});
-						} else {
-							if(st <= ot ) {
-								s.css({
-									position: "relative",
-									top: "0"
-								});
-							}
-						}
-					}
-					else{
-						console.log("chao");	
-						var Hcotenido = ( ($(document).height() -  $('#wrapper_footer footer').height()) - 792 ).toString() + "px";
-						s.css({
-							position: "relative",
-							top: Hcotenido
-						});							
-					}
-				};
-				
-				$(window).scroll(move);
+                function moveScroller() {
+                        var move = function() {
+                                var st = $(window).scrollTop();
+                                var ot = $("#scroller-anchor").offset().top;
+                                var s = $("#scroller");
+                                if( (st + 600) <= ($(document).height() -  $('#wrapper_footer footer').height()) ){
+                                        console.log()
+                                        if(st > ot ) {
+                                                s.css({
+                                                        position: "fixed",
+                                                        top: "70px"
+                                                });
+                                        } else {
+                                                if(st <= ot ) {
+                                                        s.css({
+                                                                position: "relative",
+                                                                top: "0"
+                                                        });
+                                                }
+                                        }
+                                }
+                                else{
+                                        console.log("chao");	
+                                        var Hcotenido = ( ($(document).height() -  $('#wrapper_footer footer').height()) - 792 ).toString() + "px";
+                                        s.css({
+                                                position: "relative",
+                                                top: Hcotenido
+                                        });							
+                                }
+                        };
 
-			}
-		</script>
+                        $(window).scroll(move);
+
+                }
+          </script>
           <div id="scroller-anchor"></div>
           <div id="scroller">
             <div class="well margin_top_large well_personaling_big">
@@ -373,14 +343,14 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                   <?php 
               	
               	if($total_look!=0)
+                { 
+                    echo Yii::t('contentForm', 'Products that make the Looks').": ". $total_productos_look ."<br/>";
 
-				{ 
-					echo Yii::t('contentForm', 'Products that make the Looks').": ". $total_productos_look ."<br/>";
-				}
-				$balance=Profile::getSaldo(Yii::app()->user->id);
+                }
+                $balance=Profile::getSaldo(Yii::app()->user->id);
 								
               	?>
-                  <?php 
+                <?php 
               	//variables de sesion
               	Yii::app()->getSession()->add('totalLook',$total_look); 
               	Yii::app()->getSession()->add('totalProductosLook',$total_productos_look);
@@ -406,14 +376,13 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                   <div class='tabla_resumen_bolsa'>
                     <table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-condensed '>
                       <?php
-                      	$totalPr=0;
+                      	$totalPr=0;                        
                       	$totalDe=0;
-                        $totalConDescuentos = 0;                      	
+                                             	
                         $i=0;
 						
-                        if (empty($precios)) // si no esta vacio
-                        {}
-                        else{
+                        if (!empty($precios)) // si no esta vacio
+                        {
                             foreach ($precios as $x) {
                                 $totalPr = $totalPr + ($x * $cantidades[$i]);
                                 $i++;
@@ -421,53 +390,55 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                         }
                         
                         foreach ($descuentos as $y) {
-                            $totalDe = $totalDe + $y;
+                            $totalDe += $y;
                         }
                         
-                        $totalConDescuentos = $totalPr - $totalDe;
+                        //Calcular el IVA
+                        $IVA = $totalPr * Yii::t('contentForm', 'IVA');
+                        //Sumar todo mas IVA
+                        $totalConIVA = $totalPr + $IVA;
                         
-                        //Calcular el iva despues de haber restado los descuentos                        
-                        $iva = (($totalConDescuentos) * Yii::t('contentForm', 'IVA'));
-
-                            //$t = $totalPr - $totalDe + (($totalPr - $totalDe)*Yii::t('contentForm', 'IVA')) + $envio; 
-                        $t = $totalConDescuentos + $iva;                      
+                        //Restarle los descuentos                        
+                        $total = $totalConIVA - $totalDe;                      
                             
                         // variables de sesion
                         Yii::app()->getSession()->add('subtotal', $totalPr);
                         Yii::app()->getSession()->add('descuento', $totalDe);
-                        Yii::app()->getSession()->add('subtotalConDescuento', $totalConDescuentos);
-                        Yii::app()->getSession()->add('iva', $iva);
-                        Yii::app()->getSession()->add('total', $t);
+                        Yii::app()->getSession()->add('iva', $IVA);
+                        Yii::app()->getSession()->add('total', $total);
+                        //Yii::app()->getSession()->add('totalConIva', $totalConIVA);
                            
                       	?>
                       <!--PRODUCTOS-->  
                       <tr>
                         <th class="text_align_left"><?php echo Yii::t('contentForm', 'Products'); ?>:</th>
-                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalPr, ''); ?></td>
+                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.
+                                Yii::app()->numberFormatter->formatCurrency($totalPr, ''); ?></td>
                       </tr>
+                      
+                      <tr>
+                        <th class="text_align_left">I.V.A. (<?php echo Yii::app()->params['IVAtext'];?>):</th>
+                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.
+                                Yii::app()->numberFormatter->formatCurrency($IVA, ''); ?></td>
+                      </tr>
+                      
                       <!--DESCUENTOS-->
                       <?php if($totalDe != 0){ // si HAY descuento ?> 
                       <tr>
                         <th class="text_align_left"><?php echo Yii::t('contentForm', 'Discount'); ?>:</th>
-                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+                        <td class="text_align_right"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.
+                                Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
                       </tr>
                       <?php } ?>
                       
                       <tr>
-                        <th class="text_align_left">I.V.A. (<?php echo Yii::app()->params['IVAtext'];?>):</th>
-                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($iva, ''); ?></td>
-                      </tr>
-                      
-                      
-                      <tr>
                         <th class="text_align_left"><h4><?php echo Yii::t('contentForm', 'Subtotal'); ?>:</h4></th>
-                        <td class="text_align_right"><h4><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
+                        <td class="text_align_right"><h4><?php echo Yii::t('contentForm', 'currSym').' '.
+                                Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
                       </tr>
                     </table>
                     
                     <?php
-                       /*Si es una compra del admin para el usuario*/
-//                       $params = $bolsa->admin ? array("admin" => 1, "user" => $bolsa->user->id) : array();                    
                        $params = array();                    
                        $this->widget('bootstrap.widgets.TbButton', array(
 				    'label'=>Yii::t('contentForm', 'Complete purchase'),
@@ -475,21 +446,10 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 				    'size'=>'normal', // null, 'large', 'small' or 'mini'
 				    'url'=> $this->createAbsoluteUrl('bolsa/compra',$params,'https'), // action ir 
 				    'icon'=>'lock white',
-				)); 
-				 
-				//<a href="Proceso_de_Compra_1.php" class="btn btn-danger"><i class="icon-shopping-cart icon-white"></i> Completar compra</a>
-				?>
-                    <?php
-                	
-     //            	if($total_look!=0)
-					// {
-					// 	echo '<div class="alert alert-info margin_top_small">';
-					// 	echo "Con la compra  del Look completo estas ahorrando 184 Bs.";
-					// 	echo '</div>';
-
-					// }
-                	
-                	?>
+				)); 				 
+		
+                        ?>
+                   
                 	<a  onclick='actualizartodos()' class='btn btn-mini'><?php echo Yii::t('contentForm', 'Update all'); ?></a>
                   </div>
                 </div>
@@ -680,3 +640,15 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
 	}
 	
 </script> 
+<?php /*
+echo "<pre>";
+print_r($descuentos);
+echo "</pre><br>";
+Yii::app()->end();
+ 
+187.23
+ 
+ 
+ 
+ */
+?>

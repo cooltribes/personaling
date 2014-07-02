@@ -355,7 +355,18 @@ class BolsaController extends Controller
                                
                                //si es correcto
                                if($codigo && $codigo->esValido()){
-                                   Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+                                   
+                                   //si el cliente ya uso ese cupon
+                                   if(CuponHasOrden::clienteUsoCupon($codigo->id)){
+                                       
+                                       Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                           "Ya has usado este cupón. Solo puedes usarlo una vez."));
+                                       $errores = true;
+                                       
+                                   }else{
+                                       
+                                       Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+                                   }
                                   
                                }else{
                                    Yii::app()->user->setFlash('error',Yii::t("contentForm",
@@ -432,8 +443,7 @@ class BolsaController extends Controller
                     'model'=>$aplicar,
                     'admin'=>$admin,
                     'user'=>$usuario,
-
-                        ));		
+                    ));		
             
 
         }
@@ -653,14 +663,13 @@ class BolsaController extends Controller
                     
                     
                     
-                    /**********INICIO DEL CALCULO DEL MONTO DE LA ORDEN******/
-                    
+                    /**********INICIO DEL CALCULO DEL MONTO DE LA ORDEN******/                    
                     $totalProductos = Yii::app()->getSession()->get('subtotal');
                     $totalDescuentos = Yii::app()->getSession()->get('descuento');
                     $iva = Yii::app()->getSession()->get('iva');
                     
                     //monto por productos, con sus descuentos y su iva
-                    $subtotal = $totalProductos - $totalDescuentos + $iva;
+                    $subtotal = $totalProductos + $iva - $totalDescuentos;                    
                     
                     /** Si esta usando un codigo de descuento, restarselo al subtotal**/
                     $cupon = array();                    
@@ -1538,7 +1547,7 @@ class BolsaController extends Controller
 
                                     if ($detalleBalance->save()) {
                                         $balance->orden_id = $orden->id;
-                                        $balance->user_id = $usuario->id;
+                                        $balance->user_id = $usuario;
                                         $balance->tipo = 1;                        
                                         $balance->save();
                                     }                                                                       
@@ -3131,7 +3140,7 @@ class BolsaController extends Controller
                 if($codigo->tipo_descuento == 1){
                     $cuponHasOrden->descuento = $codigo->descuento;                            
                 }else{
-
+                    //modificar - Calcular bien
                     $descuento = $orden->total * ($codigo->descuento / 100);
                     $cuponHasOrden->descuento = floor($descuento * 100) / 100;
 
@@ -3144,22 +3153,13 @@ class BolsaController extends Controller
         
         /*Cambiar estado de la orden a Pago Confirmado*/
         function cambiarEstadoOrden($orden, $userId) {
-            
-            $estado = new Estado;
-            $estado->estado = Orden::ESTADO_ESPERA;
-            $estado->user_id = $userId;
-            $estado->fecha = date("Y-m-d");
-            $estado->orden_id = $orden->id;            
-            if ($estado->save()) {
-                
-                // pasar a estado confirmado de una vez por que ya se pagó el dinero 
+             // pasar a estado confirmado de una vez por que ya se pagó el dinero 
                 $estado = new Estado;
                 $estado->estado = Orden::ESTADO_CONFIRMADO;
                 $estado->user_id = $userId;
                 $estado->fecha = date("Y-m-d");
                 $estado->orden_id = $orden->id;
                 $estado->save();
-            }
         }
         
         /*Enviar el correo con el resumen de la orden al usuario*/

@@ -253,13 +253,13 @@ $looks_recomendados = $look->match($model);
           <div class="span4">
              <h2 class="braker_bottom">Notificaciones </h2>
            <ul class="nav nav-stacked nav-tabs">
-              <li><a href="Configuracion_de_Tu_Cuenta_Notificaciones.php" title="Notificaciones">Gestionar correos de Personaling</a></li>
-              <li><a href="Desuscribir_de_la_lista_correos.php" title="Desuscribir de la lista correos">Desuscribir de la lista correos</a></li>
+              <li><?php echo CHtml::link('Gestionar correos de Personaling',array('notificaciones'),array("title"=>"Gestionar correos de Personaling")); ?></li>
+              <!-- <li><a href="Desuscribir_de_la_lista_correos.php" title="Desuscribir de la lista correos">Desuscribir de la lista correos</a></li> -->
             </ul>
              <h2 class="braker_bottom">Privacidad </h2>
            <ul class="nav nav-stacked nav-tabs">
-              <li><a href="Configuracion_de_Tu_Cuenta_Privacidad.php" title="Informacion publica"> Informacion publica</a></li>
-              <li><a href="Configuracion_de_Tu_Cuenta_Eliminar_Cuenta.php" title="Eliminar cuenta">Eliminar Cuenta</a> </li>
+              <li><?php echo CHtml::link('Información Pública',array('privacidad'),array("title"=>"Cambia tu información pública")); ?></li>
+              <li><?php echo CHtml::link('Eliminar Cuenta',array('delete'),array("title"=>"Eliminar Cuenta")); ?> </li>
             </ul>
           </div>
         </div>

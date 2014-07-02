@@ -3126,8 +3126,8 @@ public function actionReportexls(){
                         if (isset($row['E'])) {
                             //si no esta vacia
                             if($row['E'] != ""){
-                                //si no es numerica y entera
-                                if (!ctype_digit($row['E']) || $row['E'] < 0){
+                                //si no es numerica ni entera ni en los rangos de porcentaje
+                                if (!ctype_digit($row['E']) || $row['E'] < 0 || $row['E'] > 100){
                                     
                                     $erroresPorcentaje .= "<li> <b>" . $row['E'] . "</b>, en la línea <b>" . $linea."</b></li>";
                                  

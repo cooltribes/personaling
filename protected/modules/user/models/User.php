@@ -739,7 +739,7 @@ class User extends CActiveRecord {
 		if(!is_null($id))
 		{
 			$null=$this->findByPk($id);	
-			return $null->username; 		
+			return $null?$null->username:"No Existe"; 		
 		}
 		return $this->username; 
 	} 

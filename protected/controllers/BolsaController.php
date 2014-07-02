@@ -3142,22 +3142,13 @@ class BolsaController extends Controller
         
         /*Cambiar estado de la orden a Pago Confirmado*/
         function cambiarEstadoOrden($orden, $userId) {
-            
-            $estado = new Estado;
-            $estado->estado = Orden::ESTADO_ESPERA;
-            $estado->user_id = $userId;
-            $estado->fecha = date("Y-m-d");
-            $estado->orden_id = $orden->id;            
-            if ($estado->save()) {
-                
-                // pasar a estado confirmado de una vez por que ya se pagó el dinero 
+             // pasar a estado confirmado de una vez por que ya se pagó el dinero 
                 $estado = new Estado;
                 $estado->estado = Orden::ESTADO_CONFIRMADO;
                 $estado->user_id = $userId;
                 $estado->fecha = date("Y-m-d");
                 $estado->orden_id = $orden->id;
                 $estado->save();
-            }
         }
         
         /*Enviar el correo con el resumen de la orden al usuario*/

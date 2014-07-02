@@ -33,9 +33,7 @@ $disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::
       " a " + $( "#slider" ).slider( "values", 1 )+" Años" );
   });
  </script> 
- <style>
- 	 #slider .ui-slider-range { background: #000; }
- </style>
+
 <div class="container margin_top" id="crear_look">
   <div class="page-header">
   		<!-- FLASH ON --> 

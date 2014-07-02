@@ -74,7 +74,7 @@ $template = '{summary}
       <th colspan="2" scope="col" style="text-align: center">Ventas</th>
       <th rowspan="2" scope="col" style="text-align: center">Comisión<br>Actual</th>
       <th rowspan="2" scope="col" style="text-align: center">Validez<br>Bolsa</th>
-      <th colspan="2" scope="col" style="text-align: center">Saldo (Bs)</th>
+      <th colspan="2" scope="col" style="text-align: center">Saldo ('.Yii::t('contentForm', 'currSym').')</th>
       <th rowspan="2" scope="col">Fecha de Registro</th>
       <th rowspan="2" scope="col">Detalle</th>
     </tr>

@@ -183,11 +183,23 @@ class InboundController extends Controller
             }
             
             
-            //Buscar las ordenes que estan en Pago Confirmado (3) para revisar
+            //Buscar las ordenes que estan en EstadosLF:
+            //pagoConfirmado (3)
+            //
             //los outbound CONFIRMADO
             $ordenes = Orden::model()->findAllByAttributes(array(
-                "estado" => 3 //esperando confirmacion                
-            ), "id > 27");            
+                "estadoLF" => array(0,1,4)
+            ));        
+            
+//            foreach ($ordenes as $orden){
+//                
+//            echo "<pre>";
+//            print_r($orden->attributes);
+//            echo "</pre><br>";
+//            }
+//            Yii::app()->end();
+
+
             //Revisar en el ftp con todas las ordenes
             $this->getOutboundConfirmations($ordenes);            
             
@@ -300,8 +312,8 @@ class InboundController extends Controller
             $userName = "personaling";
             $userPwd = "P3rs0n4l1ng";            
             
-            $tipoArchivo = "OutboundComfirmation"; /*CORREGIR*/
-            $rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;                    
+            $tipoArchivo = "OutboundConfirmation"; /*CORREGIR*/
+            //$rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;                    
             
             
             /* Directorio OUT donde estan los confirmation*/
@@ -330,22 +342,33 @@ class InboundController extends Controller
             //Recorrer las ordenes
             foreach($ordenes as $orden){
                 
-                $estado = "";
+                $estadoABuscar = "";
                 
                 //si la orden esta en estadoLF 0, buscar los confirmados
                 if($orden->estadoLF == 0){
-                    $estado = "_CONFIRMADO_";
+                    $estadoABuscar = "_CONFIRMADO_";
+                }else if($orden->estadoLF == 1){
+                    $estadoABuscar = "_FINALIZADO_";
                 }
                 
-                $nombreArchivo = $tipoArchivo . $estado . $orden->id . "_";
+                $nombreArchivo = $tipoArchivo . $estadoABuscar . $orden->id . "_";
 
                 //Revisar los archivos del ftp
                 foreach ($listadoArchivos as $archivo){
                     
                     if(strpos($archivo, $nombreArchivo) !== false){
                         
-                        if($orden->estadoLF == 0){ //si estaba enviado
+                        if($orden->estadoLF == 0){ //si estaba enviado a lf
                             $orden->estadoLF = 1; //cambiarlo a confirmado
+                        }else if($orden->estadoLF == 1){ //si estaba confirmado
+                            //Revisar inconsistencias
+                            //Descargar el archivo
+                            ftp_get($conexion, $rutaArchivo.$arch, $arch, FTP_BINARY);
+                            
+                            
+                           // $orden->estadoLF = 4; //cambiarlo a finalizado
+                            
+                            
                         }
                         
                         $orden->save();

@@ -247,6 +247,7 @@ $template = '{summary}
         <option>Inactivar</option>
         <option>Borrar</option>
         <option>Descuentos</option>
+        <option>Outlet</option>
       </select>
     </div>
 
@@ -314,12 +315,18 @@ $template = '{summary}
 					$('#myModal').html(data.html);
 					$('#myModal').modal();
 				}
+
+				if(data.status==7)
+				{
+					$('#myModal').html(data.html);
+					$('#myModal').modal();
+				}
 				
 			}",
 			),
 			)); ?>
 
-    <!--<div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>-->
+    <div class="span2"><a href="exportarExcel" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
     <div class="span3"><a href="plantillaDescuentos" title="Exportar plantilla" class="btn btn-success">
             <i class="icon icon-download icon-white"></i> Descargar planilla de precios</a></div>
     

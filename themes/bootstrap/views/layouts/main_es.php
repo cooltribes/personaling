@@ -349,7 +349,7 @@ if(!Yii::app()->user->isGuest){
       </div>
       <div class="span3 offset1 ">
         <div class="banner-envio">
-          <h2 class="text_align_center margin_bottom_small margin_top_xsmall color14 ">Envíos <strong>gratis</strong> <br/> a partir de <strong>30€</strong></h2>
+          <h2 class="text_align_center margin_bottom_small margin_top_xsmall color14 ">Envíos y<br/>devoluciones<br/><strong>gratis*</strong><br/><span class="tPrecio">*Excepto Canarias, Ceuta, Melilla y Baleares.</span></h2>
         </div>
         <div class="braker_top text_align_center padding_top_xsmall padding_bottom_xsmall">
           <h3 class="">¡Síguenos! </h3>

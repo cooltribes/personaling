@@ -763,6 +763,7 @@ class BolsaController extends Controller
                     $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
                             $idPagoAztive==8?NULL:NULL, $optional, $cData);  
                     
+                    
                     $this->render('confirmar',array(
                         'idTarjeta'=> Yii::app()->getSession()->get('idTarjeta'),
                         'bolsa' =>  $bolsa,
@@ -1470,27 +1471,22 @@ class BolsaController extends Controller
                                     $this->redirect($this->createAbsoluteUrl('bolsa/error', array('codigo' => $resultado['codigo'], 'mensaje' => $resultado['mensaje']), 'http'));
                                 }			
 			        break; 
-                            case 7:
+                            case 7: //SI LA ORDEN SALIO EN CERO, PAGANDO CON BALANCE O CUPON
                                 
                                 $dirEnvio = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idDireccion'),'user_id'=>$usuario)));
                                 $dirFacturacion = $this->clonarDireccion(Direccion::model()->findByAttributes(array('id'=>Yii::app()->getSession()->get('idFacturacion'),'user_id'=>$usuario)),true);
                                 
                                 $orden = new Orden;
-                                $orden->subtotal = Yii::app()->getSession()->get('subtotal'); //suma de los productos sin iva ni descuentos
-                                //$orden->descuento = 0;
-                                /*if(isset(Yii::app()->getSession()->get('descuento'))){
-                                	$orden->descuento = Yii::app()->getSession()->get('descuento');
-                                }else{
-                                	$orden->descuento = 0;
-                                }*/
+                                $orden->subtotal = Yii::app()->getSession()->get('subtotal'); //suma de los productos sin iva ni descuentos                                
                                 $orden->descuento = Yii::app()->getSession()->get('descuento');
                                 $orden->envio = Yii::app()->getSession()->get('envio');
                                 $orden->iva = Yii::app()->getSession()->get('iva');                                
                                 $orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo'); //por balance usado
                                 $orden->total = Yii::app()->getSession()->get('total');
                                 $orden->seguro = Yii::app()->getSession()->get('seguro');
+                                
                                 $orden->fecha = date("Y-m-d H:i:s"); // Datetime exacto del momento de la compra 
-                                $orden->estado = Orden::ESTADO_ESPERA; // en espera de pago
+                                $orden->estado = Orden::ESTADO_CONFIRMADO; // en espera de pago
                                 $orden->bolsa_id = $bolsa->id; 
                                 $orden->user_id = $usuario;
                                 $orden->direccionEnvio_id = $dirEnvio->id;
@@ -1516,56 +1512,57 @@ class BolsaController extends Controller
 
                                 }	
                                 
-                                //Poner inicialmente la orden en espera de pago
+                                //Poner la orden en estado "pagado" (3)
                                 $estado = new Estado;
-                                $estado->estado = Orden::ESTADO_ESPERA;
+                                $estado->estado = Orden::ESTADO_CONFIRMADO;
                                 $estado->user_id = $usuario;
                                 $estado->fecha = date("Y-m-d");
                                 $estado->orden_id = $orden->id;
                                 $estado->save();
                                 
-                                $userBalance = 	Yii::app()->getSession()->get('usarBalance');			
-                                if($userBalance == '1'){                                    
-                                    $balance_usuario = $user->saldo;
-                                    $balance_usuario = floor($balance_usuario * 100) / 100;
-                                    if ($balance_usuario > 0) {
-                                        $balance = new Balance;
-                                        $detalle_balance = new Detalle;
-                                        if ($balance_usuario >= $total_orden) {
-                                            $orden->cambiarEstado(Orden::ESTADO_CONFIRMADO);
-                                            $balance->total = $total_orden * (-1);
-                                            $detalle_balance->monto = $total_orden;
-                                            
-                                        } else {
-                                            $orden->cambiarEstado(Orden::ESTADO_INSUFICIENTE);
-                                            $balance->total = $balance_usuario * (-1);
-                                            $detalle_balance->monto = $balance_usuario;
-                                        }
+                                //Si fue usando balance
+                               $descuentoRegalo = $orden->descuentoRegalo; //Pagado con balance            
+                               if($descuentoRegalo > 0){ 
+                                    
+                                    $balance = new Balance;
+                                    $balance->total = $descuentoRegalo * (-1); //Descontar al usuario
 
-                                        $detalle_balance->comentario = "Uso de Saldo";
-                                        $detalle_balance->estado = 1;
-                                        $detalle_balance->fecha = date("Y-m-d H:i:s");                                        
-                                        $detalle_balance->orden_id = $orden->id;
-                                        $detalle_balance->tipo_pago = Detalle::USO_BALANCE;
-                                        
-                                        if ($detalle_balance->save()) {
-                                            
-                                            $estado = new Estado;
-                                            $estado->estado = $orden->estado;
-                                            $estado->user_id = $usuario;
-                                            $estado->fecha = date("Y-m-d");
-                                            $estado->orden_id = $orden->id;
-                                            $estado->save();                                            
-                                            
-                                            $balance->orden_id = $orden->id;
-                                            $balance->user_id = $usuario;
-                                            $balance->tipo = 1;
-                                            //$balance->total=round($balance->total,2);
-                                            $balance->save();
-                                        }
-                                    }
+                                    $detalleBalance = new Detalle;
+                                    $detalleBalance->monto = $descuentoRegalo;
+
+                                    $detalleBalance->comentario = "Uso de Saldo";
+                                    $detalleBalance->estado = 1;//Aprobado
+                                    $detalleBalance->fecha = date("Y-m-d H:i:s");
+                                    $detalleBalance->orden_id = $orden->id;
+                                    $detalleBalance->tipo_pago = Detalle::USO_BALANCE;
+
+                                    if ($detalleBalance->save()) {
+                                        $balance->orden_id = $orden->id;
+                                        $balance->user_id = $usuario->id;
+                                        $balance->tipo = 1;                        
+                                        $balance->save();
+                                    }                                                                       
+                                    
                                 }
+                                
+                                //si uso cupon en vez de balance
+                                $idCupon = Yii::app()->getSession()->get('usarCupon');
+                                if($idCupon != -1){ 
+                                    
+                                    $detallePago = new Detalle;
+                                    $detallePago->monto = $orden->total;
 
+                                    $detallePago->comentario = "Pago con cupon";
+                                    $detallePago->estado = 1;//Aprobado
+                                    $detallePago->fecha = date("Y-m-d H:i:s");
+                                    $detallePago->orden_id = $orden->id;
+                                    $detallePago->tipo_pago = Detalle::CUPON_DESCUENTO;
+
+                                    $detallePago->save();
+                                    
+                                }
+                                
+                                
                                 $this->hacerCompra($bolsa->id,$orden->id);
                                 
                                 break;
@@ -1582,10 +1579,8 @@ class BolsaController extends Controller
                         // Enviar correo con resumen de la compra
                         $this->enviarEmail($orden, $user);
                         
-                        /*Enviar correo OPERACIONES (operaciones@personaling.com*/
-                        /*Solo enviar correos cuando este en producccion, not develop, not test*/
-                        if(strpos(Yii::app()->baseUrl, "develop") == false 
-                            && strpos(Yii::app()->baseUrl, "test") == false){
+                        /*Enviar correo OPERACIONES (operaciones@personaling.com*/                        
+                        if(strpos(Yii::app()->baseUrl, "develop") === false){
 
                             $this->enviarEmailOperaciones($orden);  
 
@@ -2909,15 +2904,8 @@ class BolsaController extends Controller
                     hacer otra compra, revisa tu lista de pedidos, acabamos de registrar uno nuevo.");                
                 
                 $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
-            }
-            
-//            if(!$bolsa->hasProductos()){
-//                Yii::app()->user->setFlash("warning", "Al parecer estás intentando
-//                    hacer otra compra, revisa tu lista de pedidos, acabamos de registrar uno nuevo.");
-//                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
-//            }
-            
-            
+            }          
+                        
             if (!$bolsa->checkInventario())
                     $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
             
@@ -3048,6 +3036,7 @@ class BolsaController extends Controller
             
             //5 BkCard - 6 Paypal
             $metodoPago = Yii::app()->getSession()->get('tipoPago');
+            
             $metodoPago--; //llevarlo a los metodos de pago usados para las órdenes
             
             $detalle = new Detalle;            

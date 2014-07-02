@@ -91,13 +91,13 @@
             	<div class="span6 color9" >
             		<div class="tPrecio">Por Separado</div>
             		<div class="pDoble">
-            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecioProductosFull(); ?>
+            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecioProductosDescuento(); ?>
             		</div>
             	</div>
             	<div class="span6">
             		<div  class="tPrecio">Look Completo</div>
             		<div class="pDoble">
-            			<?php echo Yii::t('contentForm', 'currSym'); ?><?php echo $look->getPrecioTotal(); ?>
+            			<?php echo Yii::t('contentForm', 'currSym'); ?><?php echo $look->getPrecioDescuento(); ?>
             		</div>
             	</div>
             	<?php
@@ -105,7 +105,7 @@
                 ?>
             	<div class="span12" >
             		<div class="pUnico">
-            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecioTotal(); ?>
+            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecioDescuento(); ?>
             		</div>
             	</div>
             	<?php 

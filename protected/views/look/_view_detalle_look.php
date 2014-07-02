@@ -49,86 +49,16 @@
                     <td> Bs. 700,00 </td>
                 </tr> -->
                 <tr>
-                    <th scope="row">Precio productos sin IVA</th>
-                    <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecio(); ?></td>
+                    <th scope="row">Precio total de productos con IVA</th>
+                    <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioProductosFull(); ?></td>
                 </tr>
                 <tr>
-                    <th scope="row">Descuento %</th>
-                    <td>
-                        <?php
-                        if(!is_null($model->tipoDescuento) && $model->valorDescuento > 0){
-                            switch ($model->tipoDescuento) {
-                                case 0:
-                                    $porcentaje = $model->valorDescuento;
-                                    break;
-                                case 1:
-                                    $porcentaje = ($model->valorDescuento * 100) / $model->getPrecio(false);
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            $precio_mostrar = $model->getPrecio(false) + ($model->getPrecio(false) * 0.21);
-                            echo Yii::app()->numberFormatter->format("#,##0.00",$porcentaje).'%';
-                            //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
-                        }else{
-                            echo '0%';
-                        }
-                        ?>
-                    </td>
+                    <th scope="row">Precio total de productos con descuento (incluye IVA)</th>
+                    <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioProductosDescuento(); ?></td>
                 </tr>
                 <tr>
-                    <th scope="row">Descuento <?php echo Yii::t('contentForm', 'currSym'); ?></th>
-                    <td>
-                        <?php echo Yii::t('contentForm', 'currSym');?>
-                        <?php
-                        if(!is_null($model->tipoDescuento) && $model->valorDescuento > 0){
-                            switch ($model->tipoDescuento) {
-                                case 0:
-                                    $porcentaje = $model->valorDescuento;
-                                    break;
-                                case 1:
-                                    $porcentaje = ($model->valorDescuento * 100) / $model->getPrecio(false);
-                                    break;
-                                default:
-                                    # code...
-                                    break;
-                            }
-                            $precio_mostrar = $model->getPrecio(false) - $model->getPrecioDescuento(false);
-                            echo Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar);
-                            //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
-                        }else{
-                            echo '0';
-                        }
-                        ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">Precio con Descuento (Sin IVA)</th>
-                    <td>
-                        <?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento();?>
-                        <?php
-                        
-                        ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">IVA</th>
-                    <td>
-                        <?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$model->getPrecioDescuento(false)*0.21);?>
-                        <?php
-                        
-                        ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">Precio Total</th>
-                    <td>
-                        <?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioTotal();?>
-                        <?php
-                        
-                        ?>
-                    </td>
+                    <th scope="row">Precio total con descuento (incluye IVA)</th>
+                    <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento(); ?></td>
                 </tr>
             </table>
             <hr/>

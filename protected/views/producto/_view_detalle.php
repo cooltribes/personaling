@@ -115,7 +115,7 @@
                       $porcentaje = $precio_producto->valorTipo;
                       break;
                     case 1:
-                      $porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioVenta;
+                      $porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioImpuesto;
                       break;
                     default:
                       # code...
@@ -222,16 +222,16 @@
                       $porcentaje = $precio_producto->valorTipo;
                       break;
                     case 1:
-                      $porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioVenta;
+                      $porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioImpuesto;
                       break;
                     default:
                       # code...
                       break;
                   }
-                  $precio_mostrar = $precio_producto->precioVenta + ($precio_producto->precioVenta * 0.21);
+                  $precio_mostrar = $precio_producto->precioImpuesto;
                   echo '<span class="preciostrike strikethrough T_mediumLarge color9" >'.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar).
                   "</span><span class='T_large'>|</span><span class='T_large pDescuento' >
-                  ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span><br/><span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
+                  ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span><br/><span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
                 }else{
                   echo "<span class='T_large pDescuento' >".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span>';
                 }

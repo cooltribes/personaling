@@ -193,7 +193,7 @@ class MovimientoController extends Controller
 				$mhptc->cantidad=$cantidades[$key];
 				$mhptc->movimiento_id=$movimiento->id;
 				$mhptc->costo=$ptc->producto->getCosto(false);
-				$mhptc->motivo=$_POST['tipo'];
+				$mhptc->motivo=$movimiento->getTypes($_POST['tipo']);
 				if($mhptc->save()){
 					$ptc->cantidad=$ptc->cantidad-$mhptc->cantidad;
 					$ptc->save();
@@ -210,7 +210,7 @@ class MovimientoController extends Controller
 					
 				}
 				
-				
+			 	
 			}
 			Yii::app()->user->setFlash('success', 'Egreso Registrado exitosamente.');
 			echo "ok";

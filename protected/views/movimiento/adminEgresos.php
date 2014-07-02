@@ -34,6 +34,7 @@ $template = '<br/><hr/>
 				<th>Fecha</th>
 			     <th>Prendas<br/>Diferentes</th>
 			     <th>Total<br/>prendas</th>
+			     <th>Motivo</th>
 			     <th width="20%">Comentario</th>
 			     <th></th>
                 </tr>

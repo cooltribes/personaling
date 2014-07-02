@@ -114,7 +114,7 @@ class Devolucion extends CActiveRecord
 							"No es mi talla","No me gusta como me queda la prenda",
 							"El producto que he recibido esta equivocado",
 							"He comprado mas de una talla");
-		if(is_null($id))
+		if(is_null($id)||$id>=count($reasons))
 			return $reasons; 
 		else 
 			return $reasons[$id];
@@ -126,7 +126,7 @@ class Devolucion extends CActiveRecord
 							"Devolución Completada",
 							"Devolución Rechazada por Administrador",
 							"Devolución Aceptada por Administrador");
-		if(is_null($id))
+		if(is_null($id)||$id>=count($statuses))
 			return $statuses; 
 		else 
 			return $statuses[$id];

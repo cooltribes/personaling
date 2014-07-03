@@ -1245,7 +1245,8 @@ public function actionCategorias2(){
 
                         foreach ($looks as $look) {
 
-                            $price = $look->getPrecio(false);
+                           // $price = $look->getPrecio(false);
+                            $price = $look->getPrecioDescuento(false);
 
                             if ($price >= $limits[0] && $price <= $limits[1]) {
                                 $inValues[] = $look->id;

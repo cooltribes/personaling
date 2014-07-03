@@ -206,7 +206,7 @@ width="1" height="1" border="0" alt="" />
 
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
 						<?php Yii::app()->clientScript->registerScript('rangoprecios', "
-						$.get('/develop/tienda/rangoslook',function(data){
+						$.get('".Yii::app()->createUrl('tienda/rangoslook')."',function(data){
 							$('#li_rangos').append(data);
 							    $('#price-ranges a.price-filter').click(function(e){
 							        var id = $(this).attr('id');

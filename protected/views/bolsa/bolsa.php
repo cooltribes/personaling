@@ -300,7 +300,9 @@ $total_productos_look = 0;
                                         if(st > ot ) {
                                                 s.css({
                                                         position: "fixed",
-                                                        top: "70px"
+                                                        top: "70px",
+                                                        width: "439px",
+                                                        height: "439px"
                                                 });
                                         } else {
                                                 if(st <= ot ) {
@@ -312,7 +314,7 @@ $total_productos_look = 0;
                                         }
                                 }
                                 else{
-                                        console.log("chao");	
+                                        // console.log("chao");	
                                         var Hcotenido = ( ($(document).height() -  $('#wrapper_footer footer').height()) - 792 ).toString() + "px";
                                         s.css({
                                                 position: "relative",

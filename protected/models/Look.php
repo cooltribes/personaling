@@ -1084,7 +1084,9 @@ $start = microtime(true);
 //$time_taken = microtime(true) - $start;
 //echo $time_taken."x<br>";            
             foreach ($allLooks as $look) {
-                $allPrices[] = $look->getPrecio(false);
+               // $allPrices[] = $look->getPrecio(false); //Precio sin descuento
+               $allPrices[] = $look->getPrecioDescuento(false); // Precio con descuento
+               
                 //$allPrices[] = $look->precioNf;
 //$time_taken = microtime(true) - $start;
 //echo $time_taken."x<br>";				

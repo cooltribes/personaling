@@ -852,19 +852,20 @@ class Orden extends CActiveRecord
         
         /*Retorna El estado*/
 	public function getEstadoLF()
-	{
-            $status = "Enviado a LF";
-            switch ($this->estadoLF){                
-                case 1: $status = "Confirmado"; break;                
-                case 2: $status = "Anulado Checking"; break;                
-                case 3: $status = "Anulado Picking"; break;                
-                case 4: $status = "Finalizado"; break;                
-                case 5: $status = "Enviado"; break;                
-            }
-            return $status;
-        
-		
+	{            
+            if($this->outbound)
+                return $this->outbound->getEstado();        		
+            else
+                return "-";        		
 	}
+        /*boolean, si el outbound tiene discrepancias*/
+	public function tieneDiscrepancias()
+	{   
+            return $this->outbound && $this->outbound->discrepancias == 1;
+	}
+        
+        
+        
         //Si tiene un cupon usado
 	public function hasCupon($idCupon)
 	{

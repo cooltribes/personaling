@@ -6,6 +6,14 @@
  * - 1 Pendiente de pago
  * - 2 Pagada  
  */
+
+/* ESTADOS LF
+ * 0. Esperando confirmacion
+ * 1. Confirmado
+ * 2. Con discrepancias 
+ * 3. Corregido
+ * 
+ */
  
 /**
  * This is the model class for table "{{orden_has_productotallacolor}}".
@@ -21,6 +29,8 @@
  * @property int $tipo_comision
  * @property int $status_comision 
  * @property int $cantidadActualizada 
+ * @property int $cantidadLF 
+ * @property int $estadoLF
  * 
  * The followings are the available model relations:
  * @property PrecioTallaColor $preciotallacolor
@@ -247,6 +257,18 @@ class OrdenHasProductotallacolor extends CActiveRecord
 
             } 
             
+        }
+        
+        /*Retorna el estado*/
+        public function getEstadoLF() {
+            $status = "No Enviado";
+            switch ($this->estado){
+                case 0: $status = "Enviado a LF"; break;
+                case 1: $status = "Confirmado"; break;
+                case 2: $status = "Con Discrepancias"; break;
+                case 3: $status = "Corregido"; break;
+            }
+            return $status;
         }
 		
 

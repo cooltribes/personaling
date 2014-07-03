@@ -1,7 +1,7 @@
 <?php
 /* ESTADOS
- * 0. Esperando confirmacion
- * 1. ...
+ * 0. Enviado
+ * 1. Enviado
  * 2. Confirmado
  * 3. Con discrepancias 
  * 4. Corregido

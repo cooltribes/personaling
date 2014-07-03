@@ -37,7 +37,9 @@ echo"<tr>";
 	//----------------------Estado
 	echo "<td>".$data->textestado."</td>";
 	
-        echo "<td>".$data->getEstadoLF()."</td>";
+        //si la orden tiene discrepancias, mostrar en rojo el estado de LF
+        $discrepancias = $data->tieneDiscrepancias()?" class='text-error'":"";
+        echo "<td{$discrepancias}>".$data->getEstadoLF()."</td>";
         
 	//------------------ acciones
 	$canc="";

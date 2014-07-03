@@ -183,12 +183,9 @@ class InboundController extends Controller
             }
             
             
-            //Buscar las ordenes que estan en EstadosLF:
-            //pagoConfirmado (3)
-            //
-            //los outbound CONFIRMADO
-            $ordenes = Orden::model()->findAllByAttributes(array(
-                "estadoLF" => array(0,1,4)
+            //Buscar los outbounds que estan en espera de respuesta
+            $outbounds = Outbound::model()->findAllByAttributes(array(
+                "estado" => array(0,1,4)
             ));        
             
 //            foreach ($ordenes as $orden){
@@ -201,7 +198,7 @@ class InboundController extends Controller
 
 
             //Revisar en el ftp con todas las ordenes
-            $this->getOutboundConfirmations($ordenes);            
+            $this->getOutboundConfirmations($outbounds);            
             
         }
         
@@ -306,7 +303,7 @@ class InboundController extends Controller
         /**
 	 * Analizar el confirmation de un outbound enviado.
 	 */
-	function getOutboundConfirmations($ordenes){
+	function getOutboundConfirmations($outbounds){
             
             $ftpServer = "localhost";
             $userName = "personaling";
@@ -335,43 +332,103 @@ class InboundController extends Controller
             //ubicarse en el directorio y obtener un listado
             ftp_chdir($conexion, $directorio);  
             $listadoArchivos = ftp_nlist($conexion, "");
-            
-            // cerrar la conexión ftp 
-            ftp_close($conexion);
 
             //Recorrer las ordenes
-            foreach($ordenes as $orden){
+            foreach($outbounds as $outB){
                 
                 $estadoABuscar = "";
                 
                 //si la orden esta en estadoLF 0, buscar los confirmados
-                if($orden->estadoLF == 0){
+                if($outB->estado == 0){
                     $estadoABuscar = "_CONFIRMADO_";
-                }else if($orden->estadoLF == 1){
+                }else if($outB->estado == 1){
                     $estadoABuscar = "_FINALIZADO_";
                 }
                 
-                $nombreArchivo = $tipoArchivo . $estadoABuscar . $orden->id . "_";
+                $nombreArchivo = $tipoArchivo . $estadoABuscar . $outB->orden_id . "_";
 
                 //Revisar los archivos del ftp
                 foreach ($listadoArchivos as $archivo){
                     
                     if(strpos($archivo, $nombreArchivo) !== false){
                         
-                        if($orden->estadoLF == 0){ //si estaba enviado a lf
-                            $orden->estadoLF = 1; //cambiarlo a confirmado
-                        }else if($orden->estadoLF == 1){ //si estaba confirmado
+                        if($outB->estado == 0){ //si estaba enviado a lf
+                            
+                            $outB->estado = 1; //cambiarlo a confirmado
+                            
+                        }else if($outB->estado == 1){ //si estaba confirmado
+                        
                             //Revisar inconsistencias
                             //Descargar el archivo
                             ftp_get($conexion, $rutaArchivo.$archivo, $archivo, FTP_BINARY);
+                            $xml = simplexml_load_file($rutaArchivo.$archivo);   
+                            $discrepancias =  0; //inicialmente no hay discrepancias                                                        
+                            
+                            $outB->cantidad_bultos = count($xml->Bulto);
+
+                            
+                                
+                            foreach ($xml->Bulto as $bulto){
+                                //Tracking
+                                //Cada elemento del bulto
+                                foreach ($bulto->Item as $item){
+
+                                    $productoOrden = OrdenHasProductotallacolor::model()->with(array(
+                                        "preciotallacolor" => array(
+                                            "condition" => "sku = '".$item->EAN."'",
+                                        )
+                                        ))->findByAttributes(array(
+                                            "tbl_orden_id"=>$outB->orden_id,
+                                        ));
+
+                                    //cantidad recibida de LF
+                                    $productoOrden->cantidadLF = $item->Cantidad;
+                                    //si hay discrepancias en las cant enviadas
+                                    if($productoOrden->cantidadLF != $productoOrden->cantidad){
+
+                                        $productoOrden->estadoLF = 2; //con discrep
+                                        $discrepancias = 1;
+
+                                    }else{                                            
+                                        $productoOrden->estadoLF = 1; //confirmado                                            
+                                    }
+
+                                    $productoOrden->save();                                        
+                                }                                    
+
+                            } //Fin recorrer los bultos
+
+                            //buscar los que quedaron en 0 (no recibidos de LF)
+                            $productosOrden = OrdenHasProductotallacolor::model()
+                                         ->findAllByAttributes(array(
+                                            "tbl_orden_id"=>$outB->orden_id,
+                                            "cantidadLF"=>0,
+                                        ));
+
+                            //si hubo productos con cant 0 recibida de LF
+                            if($productosOrden){
+                                $discrepancias = 1; //hay productos que no se enviaron
+//                                    Cambiar cada uno a estado 2 (con discrep)
+                                foreach($productosOrden as $producto){
+
+                                    $producto->estadoLF = 2;                                       
+                                    $producto->save();                                    
+                                }                              
+
+                            }
+
+                            $outB->discrepancias = $discrepancias;
+                            $outB->estado = 4; //cambiarlo a finalizado
+                                
                             
                             
-                           // $orden->estadoLF = 4; //cambiarlo a finalizado
-                            
+                        }//fin si estaba confirmado
+                        else if($outB->estado == 4)
+                        {
                             
                         }
                         
-                        $orden->save();
+                        $outB->save();
                         break;
                     }
 
@@ -379,7 +436,8 @@ class InboundController extends Controller
             
             }
             
-            
+            // cerrar la conexión ftp 
+            ftp_close($conexion);
             
             
         }

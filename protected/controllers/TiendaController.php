@@ -422,7 +422,7 @@ class TiendaController extends Controller
 			$dataProvider = Producto::model()->findAll($criteria);
 			if ((isset($_GET['page']))){
 				
-				$marcas=Marca::model()->findAll();
+				$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 				$colores=Color::model()->findAll();
 				$this->render('index_new',
 						array('index'=>$producto,
@@ -506,7 +506,7 @@ class TiendaController extends Controller
 		$pages->applyLimit($criteria);
         $dataProvider = Producto::model()->findAll($criteria);
 	
-		$marcas=Marca::model()->findAll();
+		$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 		$colores=Color::model()->findAllByAttributes(array('padreID'=>'0'));
 		
 
@@ -1132,7 +1132,7 @@ public function actionCategorias2(){
             	 
 			//$start = microtime(true);
             $userTmp = User::model()->findByPk(Yii::app()->user->id);
-            $todosLosLooks = false;
+            $todosLosLooks = true;
             if (isset($userTmp)) {
                 
                 //echo "user".$userTmp->status_register;
@@ -1523,7 +1523,7 @@ public function actionCategorias2(){
 	              break;
 	          }
 	          $precio_mostrar = $precio_producto->precioImpuesto;
-	          $datos=$datos.'<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span><span class='T_large'>|</span><span class='pDescuento'>".''.Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span><br/> <span class="conDescuento">Con '.Yii::app()->numberFormatter->format("#",$porcentaje).'% de descuento</span>';
+	          $datos=$datos.'<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span><span class='T_large'>|</span><span class='pDescuento'>".''.Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span><br/> <span class="conDescuento">Con '.Yii::app()->numberFormatter->format("#",$porcentaje).'% de descuento</span>';
 	          //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
 	        }else{
 	        	$datos=$datos."<span class='pDescuento'>".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span>';

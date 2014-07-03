@@ -11,10 +11,16 @@
 <div class="container margin_top">  
 	<h1> Egresos de mercancía </h1>  
 </div>
+<div class="row">
+	<div class="span2 offset9">
+	<a href="productos" class="span2 btn btn-success">Crear Egreso</a>
+</div>
+</div>
+<br/><hr/>
 
 <?php
 
-$template = '<br/><hr/>
+$template = '
 				<div>
 					<div class="row">
 						<div  class="span3"> 
@@ -34,6 +40,7 @@ $template = '<br/><hr/>
 				<th>Fecha</th>
 			     <th>Prendas<br/>Diferentes</th>
 			     <th>Total<br/>prendas</th>
+			     <th>Motivo</th>
 			     <th width="20%">Comentario</th>
 			     <th></th>
                 </tr>

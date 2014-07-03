@@ -75,7 +75,7 @@
 
 <?php 
 
-$sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_producto b, tbl_producto c, tbl_marca d where a.user_id=".$model->id." and a.id = b.look_id and b.producto_id = c.id and d.id = c.marca_id group by d.id order by cant DESC";
+$sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_producto b, tbl_producto c, tbl_marca d where a.user_id=".$model->id." and a.id = b.look_id and b.producto_id = c.id and d.id = c.marca_id and d.padreId = 0 group by d.id order by cant DESC";
 
 	$marcas = new CSqlDataProvider($sql, array(
 		    'TotalItemCount'=>6,

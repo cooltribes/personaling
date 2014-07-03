@@ -23,7 +23,7 @@ class MovimientoController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
  
-				'actions'=>array('productos','pormover','confirmar','registraregreso','adminEgresos'),
+				'actions'=>array('productos','pormover','confirmar','registraregreso','adminEgresos','defectuosos','defectuososxls'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -193,7 +193,7 @@ class MovimientoController extends Controller
 				$mhptc->cantidad=$cantidades[$key];
 				$mhptc->movimiento_id=$movimiento->id;
 				$mhptc->costo=$ptc->producto->getCosto(false);
-				$mhptc->motivo=$_POST['tipo'];
+				$mhptc->motivo=$movimiento->getTypes($_POST['tipo']);
 				if($mhptc->save()){
 					$ptc->cantidad=$ptc->cantidad-$mhptc->cantidad;
 					$ptc->save();
@@ -210,7 +210,7 @@ class MovimientoController extends Controller
 					
 				}
 				
-				
+			 	
 			}
 			Yii::app()->user->setFlash('success', 'Egreso Registrado exitosamente.');
 			echo "ok";
@@ -238,4 +238,163 @@ class MovimientoController extends Controller
 		$this->render('detallesEgreso',array('movimiento'=>$movimiento));
 		
 	}
+	
+	public function actionDefectuosos()
+	{ 
+   
+		if(!isset($_GET['data_page'])){
+			
+			if(isset(Yii::app()->session['idMarca']))
+				unset(Yii::app()->session['idMarca']);
+		}		
+		if(isset($_POST['marcaId'])){
+			Yii::app()->session['idMarca']=$_POST['marcaId'];
+		}	
+			$dataProvider = Defectuoso::model()->all();
+		
+		
+		//$orden->user_id = Yii::app()->user->id;
+		
+		$marcas=Marca::model()->getAll();
+		$this->render('defectuosos',
+		array(
+		'dataProvider'=>$dataProvider,'marcas'=>$marcas
+		));
+
+
+	}
+	
+	public function actionDefectuososxls(){
+	
+	$title = array(
+    'font' => array(
+     
+        'size' => 14,
+        'bold' => true,
+        'color' => array(
+            'rgb' => '000000'
+        ),
+    ),
+   /*'fill' => array(
+        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+        'startcolor' => array(
+            'rgb' => '6D2D56',
+        ),
+    ),*/
+);
+
+		Yii::import('ext.phpexcel.XPHPExcel');    
+	
+		$objPHPExcel = XPHPExcel::createPHPExcel();
+	
+		$objPHPExcel->getProperties()->setCreator("Personaling.com")
+		                         ->setLastModifiedBy("Personaling.com")
+		                         ->setTitle("Reporte-defectuosos")
+		                         ->setSubject("Reporte de Defectuosos")
+		                         ->setDescription("Reporte de Productos en existencia")
+		                         ->setKeywords("personaling")
+		                         ->setCategory("personaling");
+
+			// creando el encabezado
+			$objPHPExcel->setActiveSheetIndex(0)
+						->setCellValue('A1', 'SKU')
+						->setCellValue('B1', 'Referencia')
+						->setCellValue('C1', 'Marca')
+						->setCellValue('D1', 'Nombre')
+						
+						->setCellValue('E1', 'Color')
+						->setCellValue('F1', 'Talla')
+						->setCellValue('G1', 'Costo ('.Yii::t('contentForm','currSym').')')
+						->setCellValue('H1', 'Cantidad')
+						->setCellValue('I1', 'Registrado Por')
+						->setCellValue('J1', 'Fecha')
+						->setCellValue('K1', 'Procedencia');
+			// encabezado end			
+		 	
+			foreach(range('A','K') as $columnID) {
+    $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+        ->setAutoSize(true);
+}  
+			 
+			 
+		 	$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($title);
+			$objPHPExcel->getActiveSheet()->getStyle('K1')->applyFromArray($title);
+
+		 	
+		 	
+		 	//Eliminar filtrado por marca antes de consultar
+		 	/*$fake=false;
+		 	if(isset(Yii::app()->session['idMarca'])){
+		 		$marca=Yii::app()->session['idMarca'];
+		 		$fake=true;
+		 		unset(Yii::app()->session['idMarca']);
+		 	}*/
+			//fin			
+		 	
+		 	
+		 	$def= Defectuoso::model()->all(false); 
+		 	$fila = 2;
+		
+			
+			//Reestablecer filtrado por marca si existia
+			/*if($fake)
+				Yii::app()->session['idMarca']=$marca;*/
+		 	//fin	 
+		 
+		 	foreach($def->getData() as $data)
+			{
+
+
+
+
+					$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A'.$fila , $data['SKU']) 
+							->setCellValue('B'.$fila , $data['Referencia']) 							
+							->setCellValue('C'.$fila , $data['Marca']) 
+							->setCellValue('D'.$fila , $data['Nombre'])
+							
+							->setCellValue('E'.$fila , $data['Color'])
+							->setCellValue('F'.$fila , $data['Talla']) 
+							->setCellValue('G'.$fila , number_format($data['Costo'],2,',','.')) 
+							->setCellValue('H'.$fila , $data['Cantidad']) 
+							->setCellValue('I'.$fila , $data['Usuario'])							
+							->setCellValue('J'.$fila , $data['Fecha'])
+							->setCellValue('K'.$fila , $data['Procedencia']);
+					$fila++;
+
+			} // foreach
+		 
+			// Rename worksheet
+	
+			$objPHPExcel->setActiveSheetIndex(0);
+
+			// Redirect output to a clientâ€™s web browser (Excel5)
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="ReporteDefectuosos.xls"');
+			header('Cache-Control: max-age=0');
+			// If you're serving to IE 9, then the following may be needed
+			header('Cache-Control: max-age=1');
+		 
+			// If you're serving to IE over SSL, then the following may be needed
+			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+			header ('Pragma: public'); // HTTP/1.0
+		 
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+			$objWriter->save('php://output');
+			Yii::app()->end();
+				  
+	}
+	
+	
 }

@@ -89,7 +89,7 @@
               if(!is_null($look->tipoDescuento) && $look->valorDescuento > 0){
                 ?>
             	<div class="span6 color9" >
-            		<div class="tPrecio">Por Separado</div>
+            		<div class="tPrecioLight">Piezas Separadas</div>
             		<div class="pDoble">
             			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecioProductosDescuento(); ?>
             		</div>

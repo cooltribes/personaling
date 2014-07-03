@@ -1,23 +1,40 @@
 <?php
 
 /**
- * This is the model class for table "{{cupon_has_orden}}".
+ * ----------------------
+ * ESTADOS DE LOGIS FASHION
+ * 0 - enviado a lf
+ * 1 - confirmado por lf
+ * 2 - anulada checking
+ * 3 - anulada picking
+ * 4 - finalizada (paquete armado para enviar)
+ * 5 - enviada
+ * -------------
+ * Discrepancias:
+ * 0 - no hay
+ * 1 - hay discrepancias
+ * 
+ * This is the model class for table "{{outbound}}".
  *
- * The followings are the available columns in table '{{cupon_has_orden}}':
- * @property integer $cupon_id
+ * The followings are the available columns in table '{{outbound}}':
+ * @property integer $id
  * @property integer $orden_id
- * @property double $descuento
+ * @property integer $estado
+ * @property integer $discrepancias
+ * @property integer $cantidad_bultos
  *
  * The followings are the available model relations:
- * @property CodigoDescuento $cupon
  * @property Orden $orden
  */
-class CuponHasOrden extends CActiveRecord
+class Outbound extends CActiveRecord
 {
+    
+    const RUTA_ARCHIVOS = '/docs/xlsOutbound/';
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return CuponHasOrden the static model class
+	 * @return Outbound the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -29,7 +46,7 @@ class CuponHasOrden extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{cupon_has_orden}}';
+		return '{{outbound}}';
 	}
 
 	/**
@@ -40,12 +57,11 @@ class CuponHasOrden extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('cupon_id, orden_id, descuento', 'required'),
-			array('cupon_id, orden_id', 'numerical', 'integerOnly'=>true),
-			array('descuento', 'numerical'),
+			array('orden_id', 'required'),
+			array('orden_id, estado, discrepancias, cantidad_bultos', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('cupon_id, orden_id, descuento', 'safe', 'on'=>'search'),
+			array('id, orden_id, estado, discrepancias, cantidad_bultos', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,7 +73,6 @@ class CuponHasOrden extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'cupon' => array(self::BELONGS_TO, 'CodigoDescuento', 'cupon_id'),
 			'orden' => array(self::BELONGS_TO, 'Orden', 'orden_id'),
 		);
 	}
@@ -68,9 +83,11 @@ class CuponHasOrden extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'cupon_id' => 'Cupon',
+			'id' => 'ID',
 			'orden_id' => 'Orden',
-			'descuento' => 'Descuento',
+			'estado' => 'Estado',
+			'discrepancias' => 'Discrepancias',
+			'cantidad_bultos' => 'Cantidad Bultos',
 		);
 	}
 
@@ -85,28 +102,14 @@ class CuponHasOrden extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('cupon_id',$this->cupon_id);
+		$criteria->compare('id',$this->id);
 		$criteria->compare('orden_id',$this->orden_id);
-		$criteria->compare('descuento',$this->descuento);
+		$criteria->compare('estado',$this->estado);
+		$criteria->compare('discrepancias',$this->discrepancias);
+		$criteria->compare('cantidad_bultos',$this->cantidad_bultos);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
-        
-        public static function clienteUsoCupon($id){
-            
-            $user = User::model()->findByPk(Yii::app()->user->id);
-            $ordenesUsuario = $user->ordenes;
-            
-            foreach($ordenesUsuario as $orden){
-                if($orden->hasCupon($id)){
-                    return true;
-                }
-            }
-            
-            return false;
-            
-        }
-        
 }

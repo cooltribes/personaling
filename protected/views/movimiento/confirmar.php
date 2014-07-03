@@ -159,11 +159,10 @@ $this->breadcrumbs=array(
 	
  	function aceptar(ids,cantidades,total,tipo){
 		
-		
-		if($('#comentario').val()!='')
+		 
+
 			comentario=$('#comentario').val();
-		else
-			comentario="No especificado";
+
  		$.ajax({
                         type: "post", 
                         url: "registrarEgreso", // action 

@@ -22,10 +22,10 @@ function str_lreplace($search, $replace, $subject)
   //$cs->registerCssFile($baseUrl.'/css/yourcss.css');
 ?>
 <div class="container margin_top">
-    <div class="row margin_bottom_large">
+    <div class="row margin_bottom">
         <div class="span12" >
 
-<h2><?php echo Yii::t('contentForm','Outstanding Looks'); ?></h2>
+<h2 class="text_align_center"><?php echo Yii::t('contentForm','Outstanding Looks'); ?></h2>
                      <div class="margin_top" >
                         <div class="items row " id="perfil_looks">
 <?php
@@ -87,8 +87,8 @@ function str_lreplace($search, $replace, $subject)
             
         </div>
     </div>
-    <div class=" margin_bottom_large braker_horz_top_1 personal_shoppers_list">
-        <h2 class="margin_bottom"><?php echo Yii::t('contentForm','Personal Shoppers outstanding'); ?></h2>
+    <div class=" margin_bottom_large braker_horz_top_less_space personal_shoppers_list">
+        <h2 class="margin_bottom text_align_center"><?php echo Yii::t('contentForm','Personal Shoppers outstanding'); ?></h2>
         <ul class="thumbnails ">
             <?php if(count($psDestacados)){ ?>
                 <?php foreach($psDestacados as $ps){ ?>
@@ -131,7 +131,7 @@ function str_lreplace($search, $replace, $subject)
         <div class=" margin_bottom_large braker_horz_top_1">
             <div class="row">
                 <div class="span12">
-                    <h3 class="margin_bottom_small"><?php echo Yii::t('contentForm','Best selling items'); ?></h3>
+                    <h3 class="margin_bottom_small text_align_center"><?php echo Yii::t('contentForm','Best selling items'); ?></h3>
                     <div class="thumbnails">
                             <?php
                             foreach($iterator as $record) {
@@ -205,7 +205,7 @@ foreach($posts_parent as $posts_parent){
         <div class="row">
             <div class="offset3 span6">
                 <div  class="">
-                	 <a class="btn btn-danger btn-block  color3" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" ><?php echo Yii::t('contentForm','See all looks'); ?> </a>
+                	 <a class="btn btn-danger btn-block btn-large color3" href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda/look" ><?php echo Yii::t('contentForm','See all looks'); ?> </a>
                     
                 </div>
             </div>

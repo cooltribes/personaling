@@ -100,4 +100,74 @@ class Defectuoso extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	
+	public function all($pages = NULL)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+ 
+	$sql="select d.fecha as 'Fecha', u.username as 'Usuario', d.costo as 'Costo', 
+	d.procedencia as 'Procedencia', p.id,
+		p.codigo as 'Referencia', 
+		m.nombre as 'Marca', m.id, 
+		p.nombre as 'Nombre', 
+		ptc.sku as 'SKU', 
+		c.valor as 'Color', 
+		t.valor as 'Talla', 
+		d.cantidad as 'Cantidad' from tbl_defectuoso d 
+		JOIN tbl_precioTallaColor ptc ON d.preciotallacolor_id=ptc.id
+		JOIN tbl_producto p ON p.id=ptc.producto_id 
+		JOIN tbl_marca m ON p.marca_id = m.id 
+		JOIN tbl_color c ON ptc.color_id = c.id 
+		JOIN tbl_talla t ON ptc.talla_id=t.id
+		JOIN tbl_users u ON d.user_id=u.id";
+ 	
+ 	 
+		
+		if(isset(Yii::app()->session['idMarca'])){
+			if(Yii::app()->session['idMarca']!=0)
+				$sql=$sql." WHERE m.id=".Yii::app()->session['idMarca'];
+
+		}
+		
+		$sql=$sql." group by d.id";
+		
+	
+		
+		
+		$rawData=Yii::app()->db->createCommand($sql)->queryAll();
+		
+		if(!is_null($pages)){
+				
+			if(!$pages){
+				$sql="select count(id) from  tbl_defectuoso";
+				$pages=Yii::app()->db->createCommand($sql)->queryScalar();
+			}
+			else
+				$pages=30;
+		}
+
+				// or using: $rawData=User::model()->findAll(); <--this better represents your question
+	
+				return new CArrayDataProvider($rawData, array(
+				    'id'=>'data',
+				    'pagination'=>array(
+				        'pageSize'=>$pages,
+				    ),
+					 
+				    'sort'=>array(
+				        'attributes'=>array(
+				            'Marca', 'Nombre', 'Color', 'Talla',  'Costo','Cantidad','Usuario','Procedencia'
+				        ),
+	    ),
+				));
+		
+		
+
+	}
+	
+	
+	
+	
 }

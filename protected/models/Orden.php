@@ -153,6 +153,7 @@ class Orden extends CActiveRecord
         		),
                         'user'=>array(self::BELONGS_TO, 'User', 'user_id'),
                         'cupon'=>array(self::HAS_ONE, 'CuponHasOrden', 'orden_id'),
+                        'outbound'=>array(self::HAS_ONE, 'Outbound', 'orden_id'),
      
 		);
 	}
@@ -863,5 +864,10 @@ class Orden extends CActiveRecord
             return $status;
         
 		
+	}
+        //Si tiene un cupon usado
+	public function hasCupon($idCupon)
+	{
+            return $this->cupon && $this->cupon->cupon_id == $idCupon;
 	}
 }

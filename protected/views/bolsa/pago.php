@@ -297,13 +297,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </div>
  
     </section>
-    <?php
-
-// echo CHtml::hiddenField('idDireccion',$idDireccion);
-// echo CHtml::hiddenField('tipoPago','1');
-?>
-    <?php // Yii::app()->getSession()->add('idDireccion',$idDireccion); ?>
-    <?php //Yii::app()->getSession()->add('tipoPago',1); ?>
+    <style>
+        td.text_align_right{
+            text-align: right;
+        }
+    </style>
     <div class="span5 margin_bottom">
     	
       <div class="margin_left">
@@ -311,188 +309,172 @@ if (!Yii::app()->user->isGuest) { // que este logueado
           <h4><?php echo Yii::t('contentForm','Summary of the purchase'); ?></h4>
           <div class="">
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
-              <tr id="adentro">
-                <?php
-              /*
-                <td valign="top"><i class="icon-picture"></i></td>
-                <td>MaterCard<br/>
-                  XXXX XXXX XXXX 6589<br/>
-                  Vence: 12/2018<br/>
-                  JOHANN MARUQEZ </td>
-              </tr>
-              <tr>
-                <td valign="top"><i class="icon-tag"></i></td>
-                <td>Balance de Tarjetas <br/>
-                  de Regalo <strong>250 Bs.</strong></td>
-              </tr>
-              <tr>
-                <td valign="top"><i class="icon-certificate"></i></td>
-                <td>Balance de Puntos <br/>
-                  Ganados <strong>250 Bs.</strong></td>
-              */
-              ?>
+              <tr id="adentro">                
               </tr>
             </table>
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed " id="tabla_resumen">
               <tr>
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal'); ?>:</th>
-                <td><?php
-                      $totalPr = Yii::app()->getSession()->get('subtotal');
-                      $totalDe = Yii::app()->getSession()->get('descuento');
-                      $subtotalConDescuento = Yii::app()->getSession()->get('subtotalConDescuento');
-                      
-                      $envio = 0;
-                      $peso_total = 0;
-                      $tipo_guia = 0;
-                      $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$user,'admin'=>$admin));
+                <td class="text_align_right"><?php
+                  $envio = 0;
+                  $peso_total = 0;
+                  $tipo_guia = 0;
+                  $bolsa = Bolsa::model()->findByAttributes(array('user_id'=>$user,'admin'=>$admin));
 
 
-                      //busco productos individuales en la bolsa
-                      $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
-                      foreach($bptcolor as $productotallacolor){
-                                    $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
-                                    $peso_total += ($producto->peso*$productotallacolor->cantidad); 
-                      }
+                  //busco productos individuales en la bolsa
+                  $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id'=> 0));
+                  foreach($bptcolor as $productotallacolor){
+                                $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+                                $peso_total += ($producto->peso*$productotallacolor->cantidad); 
+                  }
 
-                      // busco looks en la bolsa
-                      $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
-                      $num = Yii::app()->db->createCommand($sql)->queryScalar();
-                      $nproductos=0;
-                      if($num!=0){
-                            foreach ($bolsa->looks() as $look_id){
-                                    $bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
-                                    $look = Look::model()->findByPk($look_id);
-                                    foreach($bolsahasproductotallacolor as $productotallacolor){
-                                            $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
-                                            $peso_total += ($producto->peso*$productotallacolor->cantidad); 
-                                            $nproductos=$nproductos+$productotallacolor->cantidad;
-                                    }
-                            }
-                      }
+                  // busco looks en la bolsa
+                  $sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
+                  $num = Yii::app()->db->createCommand($sql)->queryScalar();
+                  $nproductos=0;
+                  if($num!=0){
+                        foreach ($bolsa->looks() as $look_id){
+                                $bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
+                                //$look = Look::model()->findByPk($look_id);
+                                foreach($bolsahasproductotallacolor as $productotallacolor){
+                                        $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+                                        $peso_total += ($producto->peso*$productotallacolor->cantidad); 
+                                        $nproductos=$nproductos+$productotallacolor->cantidad;
+                                }
+                        }
+                  }
 
-                    $direccion = Direccion::model()->findByPk($idDireccion);
-                    $ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id); 
+                $direccion = Direccion::model()->findByPk($idDireccion);
+                $ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id); 
 
-                    $i=0;
 
-                    if (!empty($precio))
-                        foreach ($precios as $i => $x)
-                            $totalPr+=$x*$cantidades[$i];
+//                    if (!empty($precio))
+//                        foreach ($precios as $i => $x)
+//                            $totalPr+=$x*$cantidades[$i];
 			
-                    $seguro=0;
-                    
-                    /*Calcular iva segun la ciudad de envio */
-                    if($direccion->ciudad->provincia->pais->exento)
-                    {
-                        Yii::app()->getSession()->add("iva", 0); //no hay iva                        
-                    }
-                    
-                    $iva = Yii::app()->getSession()->get('iva');
-                        
-                    $t = $subtotalConDescuento + $iva ;
+                //$i=0;
+                $seguro=0;
+                //subtotal sin iva
+                $totalPr = Yii::app()->getSession()->get('subtotal');                
+                
+                /*Calcular iva segun la ciudad de envio */
+                $exento = $direccion->ciudad->provincia->pais->exento;
+                if($exento)
+                {
+                    Yii::app()->getSession()->add("iva", 0); //no hay iva                        
+                }
 
-                    /*Calcular si hay envio o no*/
+                $IVA = Yii::app()->getSession()->get('iva');
+
+                //Sumar todo mas IVA
+                $totalConIVA = $totalPr + $IVA;
+                
+                /****OJO - recalcularlo para productos sin iva*****/
+                $totalDe = Yii::app()->getSession()->get('descuento');
+                
+                //Restarle los descuentos                        
+                $total = $totalConIVA - $totalDe;  
+
+                /*Calcular si hay envio o no*/
+                $shipping=true;
+
+                if(Yii::app()->params['noShipping']==0)
+                {
                     $shipping=true;
-                    
-                    if(Yii::app()->params['noShipping']==0)
-                    {
+                }
+                else{
+
+                    if($total>Yii::app()->params['noShipping']){
+                            $shipping=false;
+                    }
+
+                }
+
+                if($ciudad_destino->ruta_id==9)
                         $shipping=true;
+
+                    if($shipping){
+                            if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
+                            {	
+                                    if($peso_total < 5){
+
+
+                                            //$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+
+                                            $flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$total);
+
+                                            if(!is_null($flete)){
+
+
+                                                    $envio=$flete->total-$flete->seguro;
+                                                    $seguro=str_replace(',','.',$flete->seguro);
+
+
+                                            }else{
+                                                    $envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+                                                    $seguro=$envio*0.13;
+                                            }
+
+
+                                            $tipo_guia = 1;
+                                    }else{
+                                            $peso_adicional = ceil($peso_total-5);
+                                            $direccion = Direccion::model()->findByPk($idDireccion);
+                                            $ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
+                                            $envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
+                                            if($envio > 327.04){
+                                                    $envio = 327.04;
+                                            }
+                                            $tipo_guia = 2;
+                                            $seguro=$envio*0.13;
+                                    }
+
+                            }
+                            else{
+                                    $seur=Tarifa::model()->envioSeur($ciudad_destino->nombre, $direccion->codigopostal->codigo, $peso_total);
+                                    if(!is_null($seur)){
+
+                                            $envio =floatval($seur['porte'])+floatval($seur['iva'])+floatval($seur['combustible']);
+
+                                            $seguro=0;
+                                    }
+                                    else {
+                                            $envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
+                                            $seguro=0;
+                                    } 
+
+
+
+                            }
                     }
                     else{
-
-                        if($t>Yii::app()->params['noShipping']){
-                                $shipping=false;
-                        }
-
-                    }
-
-                    if($ciudad_destino->ruta_id==9)
-                            $shipping=true;
-
-                        if($shipping){
-                                if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
-                                {	
-                                        if($peso_total < 5){
-
-
-                                                //$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-
-                                                $flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$t);
-
-                                                if(!is_null($flete)){
-
-
-                                                        $envio=$flete->total-$flete->seguro;
-                                                        $seguro=str_replace(',','.',$flete->seguro);
-
-
-                                                }else{
-                                                        $envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-                                                        $seguro=$envio*0.13;
-                                                }
-
-
-                                                $tipo_guia = 1;
-                                        }else{
-                                                $peso_adicional = ceil($peso_total-5);
-                                                $direccion = Direccion::model()->findByPk($idDireccion);
-                                                $ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
-                                                $envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
-                                                if($envio > 327.04){
-                                                        $envio = 327.04;
-                                                }
-                                                $tipo_guia = 2;
-                                                $seguro=$envio*0.13;
-                                        }
-
-                                }
-                                else{
-                                        $seur=Tarifa::model()->envioSeur($ciudad_destino->nombre, $direccion->codigopostal->codigo, $peso_total);
-                                        if(!is_null($seur)){
-
-                                                $envio =floatval($seur['porte'])+floatval($seur['iva'])+floatval($seur['combustible']);
-
-                                                $seguro=0;
-                                        }
-                                        else {
-                                                $envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-                                                $seguro=0;
-                                        } 
-
-
-
-                                }
-                        }
-                        else{
-                                $envio=0;
-                                $seguro=0;
-                        }
-						 
-                        $t = $t + $envio;
+                            $envio=0;
+                            $seguro=0;
+                    }			
                         
-					
+                //Sumar el ENVIO
+                $total += $envio;
+                
+                // Agregar las variables de sesion
+                //Yii::app()->getSession()->add('subtotal',$totalPr);
+                //Yii::app()->getSession()->add('descuento',$totalDe);
+                Yii::app()->getSession()->add('envio',$envio);
+                Yii::app()->getSession()->add('totalConIva', $totalConIVA);
+                //Yii::app()->getSession()->add('iva',$iva); YA esta
+                Yii::app()->getSession()->add('total',$total);
+                Yii::app()->getSession()->add('seguro',$seguro);
+                Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
+                Yii::app()->getSession()->add('peso',$peso_total);
 
 						
                 echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalPr, '');
-                          ?>
+              ?>
                </td>  
               </tr>          
-              
-              
-             <!-- <tr >
-                <td class="text_align_left" colspan="2"><?php echo  CHtml::CheckBox('asegurado','', array ( 'checked'=>'checked', 'value'=>$seguro, )).' '.Yii::t('contentForm','Deseo asegurar mi pedido por').' '.$seguro.' '.Yii::t('contentForm','currSym');
-				 
-				?></td>
-                
-              </tr>-->
-              <?php if($totalDe != 0){ // si HAY descuento ?> 
-              <tr>
-                <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
-                <td class="text_align_right" id="descuento"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
-              </tr>
-              <?php } ?>
+            
               <?php 
-              if(!$direccion->ciudad->provincia->pais->exento){
+              /*if(!$direccion->ciudad->provincia->pais->exento){
               ?>
                 <tr>
                   <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
@@ -504,8 +486,20 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             $iva=0;	
 
 
-              }?>
+              }*/
+              ?>
               
+              <tr>
+                  <th class="text_align_left"><?php echo Yii::t('contentForm','I.V.A'); ?>: (<?php echo Yii::app()->params['IVAtext'];?>):</th>
+                  <td class="text_align_right"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($IVA, ''); ?></td>
+              </tr>
+              
+              <?php if($totalDe != 0){ // si HAY descuento ?> 
+              <tr>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
+                <td class="text_align_right" id="descuento"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+              </tr>
+              <?php } ?>
               
               
               <tr>
@@ -524,21 +518,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               </tr>
               <tr>
                 <th class="text_align_left"><h4><?php echo Yii::t('contentForm','Total'); ?>:</h4></th>
-                <td class="text_align_right"><h4 id="precio_total"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($t, ''); ?></h4></td>
+                <td class="text_align_right"><h4 id="precio_total"><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
               </tr>
             </table>
 
-            <div id="precio_total_hidden" style="display: none;"><?php echo $t; ?></div>
-            <?php
-            // variables de sesion
-                Yii::app()->getSession()->add('subtotal',$totalPr);
-                Yii::app()->getSession()->add('descuento',$totalDe);
-                Yii::app()->getSession()->add('envio',$envio);
-                //Yii::app()->getSession()->add('iva',$iva); YA esta
-                Yii::app()->getSession()->add('total',$t);
-                Yii::app()->getSession()->add('seguro',$seguro);
-                Yii::app()->getSession()->add('tipo_guia',$tipo_guia);
-                Yii::app()->getSession()->add('peso',$peso_total);
+            <div id="precio_total_hidden" style="display: none;"><?php echo $total; ?></div>
+            <?php            
 			
                 $balance = User::model()->findByPK($user)->saldo;
                 $balance = floor($balance *100)/100;
@@ -564,7 +549,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 
                 <?php if($balance > 0){ ?>  
                     <label class="radio" id="opt-balance">
-                      <input type="radio" name="opcionSaldo" id="radio-Saldo" value="1" onclick="usarBalance(<?php echo $t; ?>, <?php echo $balance; ?>)">
+                      <input type="radio" name="opcionSaldo" id="radio-Saldo" value="1" onclick="usarBalance(<?php echo $total; ?>, <?php echo $balance; ?>)">
                       <?php
                         if($admin){
                             echo Yii::t('contentForm', 'Use Balance.'); ?><br>
@@ -578,7 +563,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     </label>
                 <?php } ?>
                 <label class="radio" id="opt-codigo">
-                  <input type="radio" name="opcionSaldo" id="radio-Cupon" value="2" onclick="usarCupon(<?php echo $t; ?>, <?php echo $balance; ?>)">
+                  <input type="radio" name="opcionSaldo" id="radio-Cupon" value="2" onclick="usarCupon(<?php echo $total; ?>, <?php echo $balance; ?>)">
                     <?php
                         echo Yii::t('contentForm', 'Tengo un código de descuento!'); 
                     ?>
@@ -594,7 +579,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <?php if(false){ ?>
 
                 <label class="checkbox<?php echo $class; ?>">
-                <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)" />
+                <input type="checkbox" name="usar_balance" id="usar_balance" value="1" onclick="calcular_total(<?php echo $total; ?>, <?php echo $balance; ?>)" />
                 <?php
                 if($admin){
                     echo Yii::t('contentForm', 'Use Balance.'); ?><br>
@@ -942,7 +927,7 @@ $('#TarjetaCredito_year').change(function(){
 
 	$("#asegurado").change(function(e){
 		
-		calcular_total(<?php echo $t; ?>, <?php echo $balance; ?>)
+		calcular_total(<?php echo $total; ?>, <?php echo $balance; ?>)
 		
 	});
 	
@@ -966,7 +951,7 @@ $('#TarjetaCredito_year').change(function(){
                         if(balance >= total){
                     
                             $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '
-                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');                        
+                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($total, "")?>');                        
                             
                             $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?>'
                                     +'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
@@ -976,7 +961,7 @@ $('#TarjetaCredito_year').change(function(){
                                     " " . Yii::app()->numberFormatter->formatCurrency($balance, "")?>');
                     
                             $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '
-                                    +'<?php echo Yii::app()->numberFormatter->formatCurrency($t-$balance, "")?>');
+                                    +'<?php echo Yii::app()->numberFormatter->formatCurrency($total-$balance, "")?>');
                         }
                     }else{
                     
@@ -986,7 +971,7 @@ $('#TarjetaCredito_year').change(function(){
                             +'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
                         
                         $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '
-                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');
+                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($total, "")?>');
                     }
 		}
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
@@ -1003,7 +988,7 @@ $('#TarjetaCredito_year').change(function(){
                             +'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
                         
                      $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '
-                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');
+                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($total, "")?>');
 		}
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
 	}
@@ -1015,7 +1000,7 @@ $('#TarjetaCredito_year').change(function(){
                     if(balance >= total){
                     
                             $('#descuentoBalance').html('<?php echo Yii::t('contentForm','currSym'); ?> '
-                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($t, "")?>');                        
+                            +'<?php echo Yii::app()->numberFormatter->formatCurrency($total, "")?>');                        
                             
                             $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?>'
                                     +'<?php echo Yii::app()->numberFormatter->formatCurrency(0, "")?>');
@@ -1025,7 +1010,7 @@ $('#TarjetaCredito_year').change(function(){
                                     " " . Yii::app()->numberFormatter->formatCurrency($balance, "")?>');
                     
                             $('#precio_total').html('<?php echo Yii::t('contentForm','currSym'); ?> '
-                                    +'<?php echo Yii::app()->numberFormatter->formatCurrency($t-$balance, "")?>');
+                                    +'<?php echo Yii::app()->numberFormatter->formatCurrency($total-$balance, "")?>');
                         }
 		}
 	}

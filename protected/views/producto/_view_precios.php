@@ -46,23 +46,40 @@ $this->breadcrumbs=array(
                 <div class=" muted">Precio al que compró este producto como mayorista </div>
               </div>
             </div>
-            <div class="control-group"> <?php echo $form->textFieldRow($precio, 'precioVenta', array('class'=>'span5')); ?>
+            <div class="control-group"> <?php echo $form->textFieldRow($precio, 'precioVenta',
+                    array('class'=>'span5')); ?>
               <div class="controls">
-                <div class=" muted">Precio sin Iva de venta de este producto</div>
+                <div class=" muted">Precio de venta de este producto (sin IVA)</div>
               </div>
             </div>
-            <div class="control-group"> <?php echo $form->dropDownListRow($precio, 'tipoDescuento', array(0 => 'Porcentaje %', 1 => 'Monto en '.Yii::t('contentForm','currSym'),)); ?> <?php echo $form->error($precio,'tipoDescuento'); ?> </div>
-            <div class="control-group"> <?php echo $form->textFieldRow($precio, 'valorTipo', array('class'=>'span5','id'=>'valordescuento')); ?>
+            
+            <div class="control-group"> <?php echo $form->dropDownListRow($precio, 'impuesto', array(0 => 'Sin IVA (Zona Libre)', 1 => 'Con IVA '.Yii::app()->params['IVAtext'].' (Tierra Firme)',2 => 'Ambos'), array('disabled'=>'disabled', 'options' => array('1'=>array('selected'=>true)))); ?> <?php echo $form->error($precio,'impuesto'); ?> </div>
+            <div class="control-group"> <?php echo $form->textFieldRow($precio, 'precioImpuesto', array('class'=>'span5')); ?> </div>
+            
+            
+            <!--Tipo descuento-->
+            <div class="control-group"> <?php echo $form->dropDownListRow($precio,
+                    'tipoDescuento', array(0 => 'Porcentaje %', 1 => 'Monto en '.Yii::t('contentForm','currSym'),)); ?> 
+                        <?php echo $form->error($precio,'tipoDescuento'); ?> 
+            </div>
+            
+            <!--Valor del descuento-->
+            <div class="control-group"> <?php echo $form->textFieldRow($precio,
+                    'valorTipo', array('class'=>'span5','id'=>'valordescuento')); ?>
               <div class="controls">
                 <div class=" muted">Si el producto no tendrá descuento ingrese 0</div>
               </div>
             </div>
+            
             <div class="control-group"> <?php echo $form->textFieldRow($precio, 'ahorro', array('class'=>'span5','readonly'=>true)); ?> </div>
             <div class="control-group"> <?php echo $form->labelEx($precio,'precioDescuento', array('class' => 'control-label required')); ?>
               <div class="controls"> <?php echo $form->textField($precio, 'precioDescuento', array('class'=>'span5','readonly'=>true)); ?> <?php echo $form->error($precio,'precioDescuento'); ?> </div>
             </div>
-            <div class="control-group"> <?php echo $form->dropDownListRow($precio, 'impuesto', array(0 => 'Sin IVA (Zona Libre)', 1 => 'Con IVA '.Yii::app()->params['IVAtext'].' (Tierra Firme)',2 => 'Ambos'), array('disabled'=>'disabled', 'options' => array('1'=>array('selected'=>true)))); ?> <?php echo $form->error($precio,'impuesto'); ?> </div>
-            <div class="control-group"> <?php echo $form->textFieldRow($precio, 'precioImpuesto', array('class'=>'span5')); ?> </div>
+            
+            
+            
+            
+            
              <div class="control-group"> <?php echo $form->textFieldRow($precio, 'ganancia', array('class'=>'span5')); ?> 
               <?php echo "<div class='span5'><input type='checkbox' id='ganImp' name='ganImp' ".$checked.">".$precio->getAttributeLabel('gananciaImpuesto')."</div>";
               echo CHtml::activeHiddenField($precio, 'gananciaImpuesto', array('value'=>'0')) ?></div>
@@ -84,8 +101,9 @@ $this->breadcrumbs=array(
         	</thead>
         	<tbody>
         		<?php foreach ($precio->anteriores as $historico) {
-					
-				?>
+     
+                         ?>
+
         		<tr>
         			<td><?php echo User::model()->getUsername($historico->user_id); ?></td>
         			<td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$historico->costo); ?></td>
@@ -164,117 +182,91 @@ $this->breadcrumbs=array(
 
 $("#Precio_precioVenta").keyup(function(){
 
-var uno;
-var dos;
-var valor;
-var tres;
-var pre;
+        var uno;
+        var dos;
+        var valor;
+        var precioDescuento;
 
 	
 	uno = document.getElementById("Precio_tipoDescuento").value;
-	dos = document.getElementById("valordescuento").value;
-	
+	dos = document.getElementById("valordescuento").value;	
 	valor = document.getElementById("Precio_impuesto").value;
 	
+        //Cambiar el precio con impuesto
+        if(valor==0)
+            $("#Precio_precioImpuesto").val(this.value);	
+        else{                    		
+            precioDescuento = parseFloat(this.value) * ( 1 + parseFloat($("#iva").val()));			
+            $("#Precio_precioImpuesto").val(precioDescuento);
+        }
+        
+        //Cambiar el ahorro y el precio con descuento
 	if(uno==0)
 	{
-		$("#Precio_ahorro").val(this.value * (dos/100));		
-		$("#Precio_precioDescuento").val(this.value - (this.value * (dos/100)));
+            $("#Precio_ahorro").val(precioDescuento * (dos/100));		
+            $("#Precio_precioDescuento").val(precioDescuento - (precioDescuento * (dos/100)));		
 		
-		if(valor==0)
-			$("#Precio_precioImpuesto").val(this.value - (this.value * (dos/100)));		
-		else{
-			pre = document.getElementById("Precio_precioDescuento").value;
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
-			$("#Precio_precioImpuesto").val(tres);
-		}// else
 	}
 	else
 	{
-		$("#Precio_ahorro").val(dos);
-		$("#Precio_precioDescuento").val(this.value - dos);
-		
-		if(valor==0)
-			$("#Precio_precioImpuesto").val(this.value - dos);	
-		else{
-			pre = document.getElementById("Precio_precioDescuento").value;
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
-			$("#Precio_precioImpuesto").val(tres);
-		}	
+            $("#Precio_ahorro").val(dos);
+            $("#Precio_precioDescuento").val(this.value - dos);
 	}
     
 });
 
 $("#valordescuento").keyup(function(){
 
-var uno;
-var dos;	
-var tres;
-var valor;
+        var uno;
+        var dos;	
+        var tres;
+        var valor;
+        var pre;
 	
 	uno = document.getElementById("Precio_tipoDescuento").value;
-	dos = document.getElementById("Precio_precioVenta").value;
-	
-	valor = document.getElementById("Precio_impuesto").value;
-	
+	precioImpuesto = document.getElementById("Precio_precioImpuesto").value;
 	
 	if(uno==0)
 	{
-		$("#Precio_ahorro").val(dos * (this.value/100));		
-		$("#Precio_precioDescuento").val(dos - (dos * (this.value/100)));
-		
-		if(valor==0)
-			$("#Precio_precioImpuesto").val(dos - (dos * (this.value/100)));	
-		else{
-			pre = document.getElementById("Precio_precioDescuento").value;
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
-			$("#Precio_precioImpuesto").val(tres);
-		}
+            $("#Precio_ahorro").val(precioImpuesto * (this.value/100));		
+            $("#Precio_precioDescuento").val(precioImpuesto - (precioImpuesto * (this.value/100)));				
 	}
 	else
 	{
-		$("#Precio_ahorro").val(this.value);
-		$("#Precio_precioDescuento").val(dos - this.value);
+            $("#Precio_ahorro").val(this.value);
+            $("#Precio_precioDescuento").val(precioImpuesto - this.value);		
 		
-		if(valor==0)
-			$("#Precio_precioImpuesto").val(dos - this.value);	
-		else{
-			pre = document.getElementById("Precio_precioDescuento").value;
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
-			$("#Precio_precioImpuesto").val(tres);
-		}				
 	}
 	
     
 });
 
+/*Cambiar el tipo de iva - regla de impuestos*/
+//$("#Precio_impuesto").click(function(){
+//	
+//var uno;
+//var dos;
+//var tres;
+//
+//uno= document.getElementById("Precio_impuesto").value;
+//dos= document.getElementById("Precio_precioDescuento").value;	
+//	
+//	if(uno==0)
+//		$("#Precio_precioImpuesto").val(dos);
+//	
+//	if(uno==1 || uno==2){
+//		tres = parseFloat(dos) * parseFloat($("#iva").val());
+//		
+//		dos = parseFloat(dos)+parseFloat(tres);
+//		
+//		$("#Precio_precioImpuesto").val(dos);
+//	}
+//
+//	
+//});
 
-$("#Precio_impuesto").click(function(){
-	
-var uno;
-var dos;
-var tres;
 
-uno= document.getElementById("Precio_impuesto").value;
-dos= document.getElementById("Precio_precioDescuento").value;	
-	
-	if(uno==0)
-		$("#Precio_precioImpuesto").val(dos);
-	
-	if(uno==1 || uno==2){
-		tres = parseFloat(dos) * parseFloat($("#iva").val());
-		
-		dos = parseFloat(dos)+parseFloat(tres);
-		
-		$("#Precio_precioImpuesto").val(dos);
-	}
-
-	
-});
-
-
-
-$("#Precio_tipoDescuento").click(function(){
+$("#Precio_tipoDescuento").change(function(){
 
 var uno;
 var dos;
@@ -284,40 +276,23 @@ var cinco;
 var pre;
 var valor;
 
-	valor = document.getElementById("Precio_impuesto").value;
-
-uno = $("#Precio_precioVenta").val();
-dos = $("#valordescuento").val();	
-tres = $("#Precio_ahorro").val();
-cuatro = $("#Precio_precioDescuento").val();
-cinco = $("#Precio_tipoDescuento").val();
+        uno = $("#Precio_precioVenta").val();
+        dos = $("#valordescuento").val();	
+        tres = $("#Precio_ahorro").val();
+        cuatro = $("#Precio_precioDescuento").val();
+        cinco = $("#Precio_tipoDescuento").val();
+        
+        var precioImpuesto = $("#Precio_precioImpuesto").val();
 
 	if(cinco==0){
 	
-		$("#Precio_ahorro").val(uno * (dos/100));		
-		$("#Precio_precioDescuento").val(uno - (uno * (dos/100)));
+            $("#Precio_ahorro").val(precioImpuesto * (dos/100));		
+            $("#Precio_precioDescuento").val(precioImpuesto - (precioImpuesto * (dos/100)));
 		
-		if(valor==0)
-			$("#Precio_precioImpuesto").val(uno - (uno * (dos/100)));	
-		else{
-			pre = $("#Precio_precioDescuento").val();
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
-			$("#Precio_precioImpuesto").val(tres);
-		}
-		
-	}else 
-	if(cinco==1){
+	}else{ 
 	
-		$("#Precio_ahorro").val(dos);		
-		$("#Precio_precioDescuento").val(uno - dos);
-		
-		if(valor==0)
-			$("#Precio_precioImpuesto").val(uno - dos);	
-		else{
-			pre = $("#Precio_precioDescuento").val();
-			tres = parseFloat(pre) + (parseFloat(pre) * parseFloat($("#iva").val()));			
-			$("#Precio_precioImpuesto").val(tres);
-		}
+            $("#Precio_ahorro").val(dos);		
+            $("#Precio_precioDescuento").val(precioImpuesto - dos);
 		
 	}
 

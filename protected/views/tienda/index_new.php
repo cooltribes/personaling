@@ -164,7 +164,7 @@ if(isset($seo)){
 							echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
 							
 						}  
-							
+							 
 						?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 						</ul>  
 						<a href="#" value="0" class="todos scolor CAPS" ><?php echo Yii::t('contentForm','All colors');?></a>

@@ -29,6 +29,7 @@ return array (
 	'Add a new shipping address' => 'Agregar una nueva dirección de envío',
 	'<strong>Add your payment:</strong> through MercadoPago system.' => '<strong>Registra tu pago</strong>: a través del sistema MercadoPago.',
 	'Admin Profiles' => 'Administrar Perfiles',
+	'All' => 'Todo',
 	'All the' => 'Toda la',
 	'All the1' => 'Todos los',
 	'All Brands' => 'Todas las Marcas',

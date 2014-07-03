@@ -910,13 +910,29 @@ public function actionReportexls(){
 				if($devolucion->save()){
 					 foreach($dhptcs as $dhptc){
 					 	$dhptc->devolucion_id=$devolucion->id;
-						if(!$dhptc->save()){
-							$out="error";
+						if($dhptc->save()){
+							$out="ok";
 						}
 				}
 			 }
-			if($out=="ok")
+			if($out=="ok"){
+				$user = User::model()->findByPk($devolucion->orden->user_id);
+					$comments="";	
+									$message            = new YiiMailMessage;
+							           //this points to the file test.php inside the view path
+							        $message->view = "mail_devolucion";
+									$subject = '';
+							        $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
+							        $message->subject    = $subject;
+							        $message->setBody($params, 'text/html');
+							        $message->addTo($user->email);
+									$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+							        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+							        Yii::app()->mail->send($message);
+				
 				Yii::app()->user->setFlash('success', 'Devolucion Registrada exitosamente.');
+				
+			}
 			else
 				Yii::app()->user->setFlash('error', 'Su devolución no se pudo registrar.');
 			}

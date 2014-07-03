@@ -43,7 +43,7 @@
 
     if ($data->estado == 8 || $data->estado == 9) {
         echo "<li>" .
-        CHtml::link("<i class='icon-arrow-left'></i> ".Yii::t('backEnd', 'Ask for Return')."", $this->createUrl('orden/devoluciones', array('id' => $data->id)), array(
+        CHtml::link("<i class='icon-arrow-left'></i> ".Yii::t('contentForm', 'Ask for Return')."", $this->createUrl('orden/devoluciones', array('id' => $data->id)), array(
             'id' => 'linkDevolver' . $data->id)
         )
         . "</li>";

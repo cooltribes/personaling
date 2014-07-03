@@ -29,7 +29,7 @@ return CMap::mergeArray(
 		    'askId'=>false, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
 		    'IVAtext' => '21%',	
 		    'registro' => false,	
-		    'mostrarMarcas'=>false,
+		    'mostrarMarcas'=>true,
 		    'mostrarChic'=>false,
 		    'country'=>'España',
 			'pais'=>'espana',

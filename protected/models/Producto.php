@@ -943,7 +943,19 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			
 		//Filtro por marca
 		if(isset(Yii::app()->session['f_marca'])){
-			$criteria->addCondition('t.marca_id = '.Yii::app()->session['f_marca']);
+			$condition = 't.marca_id = '.Yii::app()->session['f_marca'];
+			
+
+			// busco si tiene marcas hijas para incluirlas en la búsqueda
+			$marcas_hijas = Marca::model()->findAllByAttributes(array('padreId'=>Yii::app()->session['f_marca']));
+			if(sizeof($marcas_hijas) > 0){
+				foreach ($marcas_hijas as $hijo) {
+					//echo $producto->id.' - '.$hijo->id.'<br/>';
+					$condition .= ' OR t.marca_id='.$hijo->id;
+				}
+			}
+
+			$criteria->addCondition($condition);
 		}
 		
 		//Filtro por categoria

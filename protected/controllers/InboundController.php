@@ -365,8 +365,6 @@ class InboundController extends Controller
                             $discrepancias =  0; //inicialmente no hay discrepancias                                                        
                             
                             $outB->cantidad_bultos = count($xml->Bulto);
-
-                            
                                 
                             foreach ($xml->Bulto as $bulto){
                                 //Tracking

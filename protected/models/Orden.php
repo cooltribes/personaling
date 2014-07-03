@@ -853,10 +853,19 @@ class Orden extends CActiveRecord
         /*Retorna El estado*/
 	public function getEstadoLF()
 	{            
-            if($this->outbound)
-                return $this->outbound->getEstado();        		
-            else
-                return "-";        		
+            $estado = "-";
+            if($this->outbound){
+                
+                $estado = $this->outbound->getEstado(); 
+
+                //Agregar el contador de productos
+                if($this->tieneDiscrepancias()){
+                    $estado .= "<br>(".$this->cantidadEnviadosLF()."/".
+                            $this->cantidadProductos().")";
+                }                
+            }
+            
+            return $estado;        		
 	}
         /*boolean, si el outbound tiene discrepancias*/
 	public function tieneDiscrepancias()
@@ -864,7 +873,27 @@ class Orden extends CActiveRecord
             return $this->outbound && $this->outbound->discrepancias == 1;
 	}
         
+        /*Retorna el numero de prendas totales*/
+	public function cantidadProductos()
+	{   
+            $total = 0;
+            foreach($this->ohptc as $producto){
+                $total += $producto->cantidad;
+            }
+            
+            return $total;
+	}
         
+        /*Retorna el numero de prendas totales*/
+	public function cantidadEnviadosLF()
+	{   
+            $total = 0;
+            foreach($this->ohptc as $producto){
+                $total += $producto->cantidadLF;
+            }
+            
+            return $total;
+	}
         
         //Si tiene un cupon usado
 	public function hasCupon($idCupon)

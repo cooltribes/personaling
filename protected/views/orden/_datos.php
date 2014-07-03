@@ -1,10 +1,8 @@
 <?php
+        //si la orden tiene discrepancias, mostrar en rojo el estado de LF
+        $discrepancias = $data->tieneDiscrepancias()?" class='text-error'":"";
 	
-	$looks=0;
-	$indiv=0;
-	$xlook=0;
-	
-echo"<tr>";
+    echo"<tr{$discrepancias}>";
 	echo "<td><input name='check' type='checkbox' id='".$data->id."' /></td>";
    	echo "<td>".$data->id."</td>"; // id
 	
@@ -28,18 +26,15 @@ echo"<tr>";
 	//--------------------
 	echo "<td>";
         
-      echo $data->getTiposPago();  
-        
-        
+          echo $data->getTiposPago();  
        
 	echo "</td>";
 	
 	//----------------------Estado
 	echo "<td>".$data->textestado."</td>";
 	
-        //si la orden tiene discrepancias, mostrar en rojo el estado de LF
-        $discrepancias = $data->tieneDiscrepancias()?" class='text-error'":"";
-        echo "<td{$discrepancias}>".$data->getEstadoLF()."</td>";
+        
+        echo "<td>".$data->getEstadoLF()."</td>";
         
 	//------------------ acciones
 	$canc="";
@@ -59,7 +54,7 @@ echo"<tr>";
                     ."</li>";
             
         }
-        
+                       
         //Si es cancelada, ver motivo
 	$motivo = "";
         
@@ -84,6 +79,23 @@ echo"<tr>";
             
         }
         
+        //Si tiene discrepancias, boton de resolver
+        $resolver = "";
+        if($data->tieneDiscrepancias()){	
+            
+            $resolver = "<li>".
+                    CHtml::link("<i class='icon-ok'></i> Marcar Resuelta","#",
+                        //$this->createUrl('orden/resolverOutbound',array('id'=>$data->id)),
+                        array(
+                        //'id'=>'linkCancelar'.$data->id,
+                        'onclick' => "resolverOutbound($data->id)",
+                         )
+                    )            
+                    ."</li>";
+            
+        }       
+        
+        
 	echo "
 	<td>
 	<div class='dropdown pull-right'>
@@ -95,7 +107,8 @@ echo"<tr>";
             <li><a tabindex='-1' href='detalles/".$data->id."'><i class='icon-eye-open'></i> Ver detalles</a></li>
             <li><a onclick='modal(".$data->id.")' tabindex='-1' href='#'><i class='icon-th-list'></i> Ver prendas</a></li>
             ".$canc.
-             $motivo."
+             $motivo.
+             $resolver."
                     
             
             <li><a tabindex='-1' href='#'><i class='icon-file'></i> Generar etiqueta de dirección</a></li>

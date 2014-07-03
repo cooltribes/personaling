@@ -300,5 +300,48 @@ $("a[id^='linkCancelar']").click(function (e){
 }); 
 }    
 
+function resolverOutbound(idOutbound){   
+    bootbox.dialog("Indica como fue resuelta la discrepancia...  \n\
+        <br><br><textarea id='mensajeResolver'  maxlength='255' style='resize:none; width: 520px;' rows='4' cols='400'> ",
+        [{
+            "label" : "Continuar",
+            "class" : "btn-danger",
+            "callback": function() {
+                var mensaje = $("#mensajeResolver").val().trim();
+                 console.log(mensaje);
+//                $.ajax({
+//                    type: 'GET',
+//                    url: 'resolverOutbound',
+//                    dataType: 'JSON',
+//                    data: {id: vect[1], mensaje: $("#hiddenMensaje").val(), admin: 1},
+//                    success: function(data){
+//                        console.log(data);
+//                        bootbox.alert(data.message);
+//                        if(data.status === 'success'){
+//                           ajaxUpdateTimeout = setTimeout(function () {
+//                           $.fn.yiiListView.update(
+//                                'list-auth-items',
+//                                {
+//                                    type: 'POST',	
+//                                    url: '<?php echo CController::createUrl('orden/admin')?>',
+//                                    data: ajaxRequest
+//                                }
+//
+//                           )
+//                           },
+//                           300);
+//                           
+//                        }else if(data.status === 'error'){
+//                          
+//                        }
+//                        
+//                    }
+//                });
+
+            }
+        }]);
+}
+
+
 </script>
 

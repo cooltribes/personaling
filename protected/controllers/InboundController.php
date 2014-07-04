@@ -417,7 +417,11 @@ class InboundController extends Controller
 
                             $outB->discrepancias = $discrepancias;
                             $outB->estado = 4; //cambiarlo a finalizado
-                                
+                            
+                            if($discrepancias == 1){
+                                //notificar a Operaciones
+                                $this->enviarEmailOperaciones();
+                            }
                             
                             
                         }//fin si estaba confirmado
@@ -438,6 +442,50 @@ class InboundController extends Controller
             ftp_close($conexion);
             
             
+        }
+        
+        /*Enviar el correo para notificar a Operaciones*/
+        function enviarEmailOperaciones($orden) {
+            
+            $message = new YiiMailMessage;
+            //this points to the file test.php inside the view path
+            $message->view = "mail_template";
+            
+            $subject = 'Error en Compra de Personaling';
+            $body = $body = Yii::t('contentForm',
+                    'Ha habido una discrepancia entre los productos incluidos en la Orden Nro. '.$orden->id.
+                    ' y los que fueron enviados por LogisFashion.
+                     <br>
+                     <br>
+                     <br>
+                     <a title="Ver órdenes" 
+                     href="http://www.personaling.es'.Yii::app()->baseUrl.
+                    '/orden/admin" 
+                        style="text-align:center;text-decoration:none;color:#ffffff;
+                        word-wrap:break-word;background: #231f20; padding: 12px;" 
+                        target="_blank">Ver órdenes</a><br><br/><br/><br/><br/>'
+                     ."Los datos de la orden generada son:<br/>
+                     Codigo: {$orden->id}<br/>
+                     Fecha: {$orden->fecha}<br/>
+                     <br/>
+                         
+                     <br/>");
+                     
+                     
+            $destinatario = "operaciones@personaling.com";
+            //si esta en test, enviarlo a cristal
+            if(strpos(Yii::app()->baseUrl, "test") !== false){
+                
+                $destinatario = "cmontanez@upsidecorp.ch";
+            }
+                    
+                     
+            $params = array('subject'=>$subject, 'body'=>$body);
+            $message->subject = $subject;
+            $message->setBody($params, 'text/html');
+            $message->addTo($destinatario);
+            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            Yii::app()->mail->send($message);
         }
         
         

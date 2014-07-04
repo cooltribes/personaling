@@ -1,8 +1,9 @@
 <?php
         //si la orden tiene discrepancias, mostrar en rojo el estado de LF
-        $discrepancias = $data->tieneDiscrepancias()?" class='text-error'":"";
+        $claseFila = $data->tieneDiscrepancias()?" class='error'":
+                $data->fueCorregido()? " class='success'":"";
 	
-    echo"<tr{$discrepancias}>";
+    echo"<tr{$claseFila}>";
 	echo "<td><input name='check' type='checkbox' id='".$data->id."' /></td>";
    	echo "<td>".$data->id."</td>"; // id
 	
@@ -94,6 +95,28 @@
                     ."</li>";
             
         }       
+        //Si es corregida, ver la observacion
+	$motivo = "";
+        
+	if($data->fueCorregido()){
+            
+            if($data->outbound && $data->outbound->observacion != ""){
+                
+                $message = $data->outbound->observacion;
+            }else{
+                
+                $message = "";
+            }
+                        
+            $motivo = "<li>".
+                        CHtml::link("<i class='icon-comment'></i> Ver corrección",
+                                        'javascript:verObservacion("'.$message.'")', array(
+                                        
+                                        )
+                                    )            
+                     ."</li>";
+            
+        }   
         
         
 	echo "
@@ -131,6 +154,13 @@
 function verMotivo(mensaje){
     if(mensaje.trim() == ""){
         mensaje = "<i>El usuario no indicó ningun motivo.</i>";
+    }
+
+    bootbox.alert("\"" + mensaje + "\".");
+}
+function verObservacion(mensaje){
+    if(mensaje.trim() == ""){
+        mensaje = "<i>No se indicó ninguna observación.</i>";
     }
 
     bootbox.alert("\"" + mensaje + "\".");

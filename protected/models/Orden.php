@@ -862,6 +862,8 @@ class Orden extends CActiveRecord
                 if($this->tieneDiscrepancias()){
                     $estado .= "<br>(".$this->cantidadEnviadosLF()."/".
                             $this->cantidadProductos().")";
+                }else if($this->fueCorregido()){
+                    $estado .= "<br>(Corregido)";
                 }                
             }
             
@@ -871,6 +873,17 @@ class Orden extends CActiveRecord
 	public function tieneDiscrepancias()
 	{   
             return $this->outbound && $this->outbound->discrepancias == 1;
+	}
+        /*boolean, si el outbound tiene discrepancias*/
+	public function fueCorregido()
+	{   
+            foreach($this->ohptc as $producto){
+                if($producto->estadoLF == 3) //si tenia discrepancias marcarlo corregido
+                {
+                    return true;
+                }                    
+            }
+            return false;
 	}
         
         /*Retorna el numero de prendas totales*/

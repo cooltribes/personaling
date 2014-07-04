@@ -159,7 +159,11 @@
   <hr/>
   <?php $this->renderPartial('_filters'); ?>
   <hr/>
-
+  <style>
+      .table tbody tr.success td {
+          background-color: #dff0d8;
+      }
+  </style>
   <?php
   
 $template = '{summary}
@@ -308,35 +312,38 @@ function resolverOutbound(idOutbound){
             "class" : "btn-danger",
             "callback": function() {
                 var mensaje = $("#mensajeResolver").val().trim();
-                 console.log(mensaje);
-//                $.ajax({
-//                    type: 'GET',
-//                    url: 'resolverOutbound',
-//                    dataType: 'JSON',
-//                    data: {id: vect[1], mensaje: $("#hiddenMensaje").val(), admin: 1},
-//                    success: function(data){
-//                        console.log(data);
-//                        bootbox.alert(data.message);
-//                        if(data.status === 'success'){
-//                           ajaxUpdateTimeout = setTimeout(function () {
-//                           $.fn.yiiListView.update(
-//                                'list-auth-items',
-//                                {
-//                                    type: 'POST',	
-//                                    url: '<?php echo CController::createUrl('orden/admin')?>',
-//                                    data: ajaxRequest
-//                                }
-//
-//                           )
-//                           },
-//                           300);
-//                           
-//                        }else if(data.status === 'error'){
-//                          
-//                        }
-//                        
-//                    }
-//                });
+                 ajaxRequest = $('#query').serialize();
+                 
+                $.ajax({
+                    type: 'POST',
+                    url: 'resolverOutbound',
+                    dataType: 'JSON',
+                    data: {idOutbound: idOutbound, observacion: mensaje},
+                    success: function(data){        
+                                 
+                        bootbox.alert(data.message); 
+                        
+                        if(data.status === 'success'){                           
+                            
+                           ajaxUpdateTimeout = setTimeout(function () {
+                           $.fn.yiiListView.update(
+                                'list-auth-items',
+                                {
+                                    type: 'POST',	
+                                    url: '<?php echo CController::createUrl('orden/admin')?>',
+                                    data: ajaxRequest
+                                }
+
+                           )
+                           },
+                           300);
+                           
+                        }else if(data.status === 'error'){
+                          
+                        }
+                        
+                    }
+                });
 
             }
         }]);

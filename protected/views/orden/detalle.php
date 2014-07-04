@@ -669,7 +669,10 @@ $tracking=$orden->getTrackingInfo();
                                     $foto="No hay foto</br>para el color";
                                 } 
 
-                            $class = $prod['estadoLF'] == 2 ? " class='error'":"";
+                            $class = $prod['estadoLF'] == 2 ? " class='error'":
+                                    $prod['estadoLF'] == 3 ?" class='text-success'":"";
+                            
+                            
                             echo("<tr$class>");
                             /*Datos resumidos + foto*/
                             echo("<td style='text-align:center'><div>".$foto."<br/>".$label."</div></td>");

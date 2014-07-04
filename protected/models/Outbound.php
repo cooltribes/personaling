@@ -124,8 +124,8 @@ class Outbound extends CActiveRecord
                 case 4: $status = "Finalizado"; break;                
                 case 5: $status = "Enviado"; break;                
             }
-            return $status;
-        
+            return $status;        
 		
 	}
+        
 }

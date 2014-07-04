@@ -883,6 +883,7 @@ public function actionReportexls(){
 					$dhptc->preciotallacolor_id=$ptcs[$i];
 					$dhptc->cantidad=$cantidades[$i];
 					$dhptc->motivo=$devolucion->getReasons($motivos[$i]);
+					$dhptc->motivoAdmin=$dhptc->motivo;
 					$dhptc->monto=$montos[$i];
 					$dhptc->look_id=$looks[$i];
 					array_push($dhptcs,$dhptc);
@@ -917,11 +918,12 @@ public function actionReportexls(){
 			 }
 			if($out=="ok"){
 				$user = User::model()->findByPk($devolucion->orden->user_id);
-					$comments="";	
+					
+					$comments="Disculpa las posibles molestias ocasionadas.<br/>Te recomendamos consultar nuestras politicas de devolución haciendo click <a href='http://www.personaling.es/develop/site/politicas_de_devoluciones'>aquí.</a>";
 									$message            = new YiiMailMessage;
 							           //this points to the file test.php inside the view path
 							        $message->view = "mail_devolucion";
-									$subject = '';
+									$subject = 'Hemos recibido tu solicitud de devolución.';
 							        $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
 							        $message->subject    = $subject;
 							        $message->setBody($params, 'text/html');
@@ -1043,10 +1045,7 @@ public function actionReportexls(){
 				$ohptc=OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$devolucion->orden_id,'preciotallacolor_id'=>$dhptc->preciotallacolor_id));
 				$ptc=Preciotallacolor::model()->findByPk($dhptc->preciotallacolor_id);
 				$ohptc->cantidadActualizada=$ohptc->cantidad-$dhptc->cantidad;
-				if(array_search($dhptc->motivoAdmin,Devolucion::model()->reasons)!=1){
-					$ptc->cantidad=$ptc->cantidad+$dhptc->cantidad;
-					$ptc->save();
-				}else{
+				if(array_search($dhptc->motivoAdmin,Devolucion::model()->reasons)==1){
 					$def=new Defectuoso;
 					$def->cantidad=$dhptc->cantidad;
 					$def->fecha=date("Y-m-d");
@@ -1054,7 +1053,10 @@ public function actionReportexls(){
 					$def->preciotallacolor_id=$dhptc->preciotallacolor_id;
 					$def->procedencia="Devolucion";
 					$def->costo=$ptc->producto->getCosto(false);
-					$def->save();			
+					$def->save();
+				}else{					
+					$ptc->cantidad=$ptc->cantidad+$dhptc->cantidad;
+					$ptc->save();			
 				}
 				$ohptc->save();
 			}				
@@ -1146,6 +1148,7 @@ public function actionReportexls(){
 		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
 		$devuelto->cantidad=$_POST['cantidad'];
 		$devuelto->motivoAdmin=Devolucion::model()->getReasons($_POST['motivo']);
+		
 		if($devuelto->save())
 			{	Yii::app()->user->setFlash('success', 'Actualización realizada.');
 				echo "ok";}

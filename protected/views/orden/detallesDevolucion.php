@@ -98,7 +98,7 @@ $this->breadcrumbs=array(
 //				echo("<td>".$indiv->codigo."</td>");// Referencia
 //				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
 				/*Datos resumidos + foto*/
-				echo("<td style='text-align:center'><div>".$foto."<br/>".$label.$ptc->id."</div></td>");
+				echo("<td style='text-align:center'><div>".$foto."<br/>".$label."</div></td>");
                  
 				echo('<td style="vertical-align: middle">'.$indiv->codigo.'</td>');
                echo("<td>".$marca->nombre."</td>");
@@ -106,7 +106,7 @@ $this->breadcrumbs=array(
                 echo("<td>".$color->valor."</td>");                         
                
               
-               echo("<td>".$talla->valor."</td>");
+               echo("<td>".$talla->valor." ".array_search($prod['motivoAdmin'],Devolucion::model()->reasons)."</td>");
 			   echo("<td>".$prod['monto']."</td>");
 			   if($prod['cantidad']>1)
 			   		$dis="";
@@ -147,7 +147,7 @@ $this->breadcrumbs=array(
 			   else
 				   echo("<li><a href='#' onclick='activar(".$prod['id'].")'><i class='icon-ok'></i> Reaceptar Producto</a></li>");
 		
-			   	echo("<li><a href='#' onclick='guardar(".$prod['id'].")'><i class='icon-check'></i> Actualizar</a></li>");
+			   	echo("<li><a href='#' onclick='guardar(".$prod['id'].",true)'><i class='icon-check'></i> Actualizar</a></li>");
             
           echo "</ul>
         </div></td>";}
@@ -159,19 +159,8 @@ $this->breadcrumbs=array(
 			echo "<td><i class='icon-ok' title='Producto Aceptado para devolución'></i></td>";
 		}
 	}
-
-			   
-			   
-			   
-			   
-			   
-			   
-			   
-			  
-                                
               
-			              
-			}
+}
 			
 	   
       ?>
@@ -187,6 +176,11 @@ $this->breadcrumbs=array(
 
 <script type="text/javascript"> 
 	
+ 		$( ".motivos" ).change(function() {
+  			var id=$(this).attr("name").replace("motivo", "");
+  			guardar(id ,false);
+		});
+ 	
  	function aceptar(id){
  		
  		$.ajax({
@@ -261,21 +255,22 @@ $this->breadcrumbs=array(
   		
   	}
   	
-  	function guardar(id){
+  	function guardar(id,reload){
   		var cantidad=$('#cant'+id).val();
   		var motivo=$('#motivo'+id).val();
+
   		$.ajax({
                         type: "post", 
                         url: "../cantidadDevuelto", // action 
                         data: { 'id':id, 'cantidad':cantidad, 'motivo':motivo}, 
                         success: function (data) {
 
-                            if(data=="ok")
-                                    location.reload();
-                            if(data=="error")
-                                    location.reload();
-                            if(data=='no')
-                            	location.reload();       
+                            if(data=="ok")if(reload){location.reload();}
+                                    
+                            if(data=="error")if(reload){location.reload();}
+                                    
+                            if(data=='no')if(reload){location.reload();  }
+                            	     
                          }
                     });
   		

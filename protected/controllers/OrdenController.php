@@ -30,8 +30,10 @@ class OrdenController extends Controller
                                     'detalles','devoluciones','validar','enviar',
                                     'factura','calcularenvio','createexcel',
                                     'importarmasivo','reporte','reportexls','adminxls',
-                                    'generarExcelOut','devolver','adminDevoluciones','detallesDevolucion',
-									'AceptarDevolucion','RechazarDevolucion','AnularDevuelto','cantidadDevuelto','activarDevuelto'),
+                                    'generarExcelOut','devolver','adminDevoluciones',
+                                    'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
+                                    'AnularDevuelto','cantidadDevuelto','activarDevuelto',
+                                    'resolverOutbound'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -2358,5 +2360,47 @@ public function actionValidar()
         
         fclose($out);
     }
+    
+    public function actionResolverOutbound() {
+        
+        $response = array();
+        $response["message"] = Yii::t('contentForm', 'No se puede resolver la discrepancia.');
+        $response["status"] = "error";
+        
+        if(isset($_POST["idOutbound"])){
+            
+            $outbound = Outbound::model()->findByPk($_POST["idOutbound"]);
+            
+            if($outbound && $outbound->discrepancias == 1){
+                $outbound->discrepancias = 0;
+                
+                //si escribieron algo en la observacion
+                if(isset($_POST["observacion"]) && $_POST["observacion"] != ""){
+                    
+                    $outbound->observacion = $_POST["observacion"];
+                    
+                }
+                
+                //marcar los productos como corregidos
+                foreach($outbound->orden->ohptc as $producto){
+                    if($producto->estadoLF == 2) //si tenia discrepancias marcarlo corregido
+                    {
+                        $producto->estadoLF = 3;
+                        $producto->save();
+                    }                    
+                }                
+                
+                $outbound->save();
+                
+                $response["message"] = Yii::t('contentForm', 'Se han resuelto las discrepancias con éxito');                
+                $response["status"] = "success";
+                
+            }
+        }
+        
+        echo CJSON::encode($response);
+        
+    }
+    
         
 }

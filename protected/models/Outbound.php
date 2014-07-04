@@ -112,4 +112,20 @@ class Outbound extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+         /*Retorna El estado*/
+	public function getEstado()
+	{
+            $status = "Enviado a LF";
+            switch ($this->estado){                
+                case 1: $status = "Confirmado"; break;                
+                case 2: $status = "Anulado Checking"; break;                
+                case 3: $status = "Anulado Picking"; break;                
+                case 4: $status = "Finalizado"; break;                
+                case 5: $status = "Enviado"; break;                
+            }
+            return $status;        
+		
+	}
+        
 }

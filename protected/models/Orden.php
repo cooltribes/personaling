@@ -852,19 +852,62 @@ class Orden extends CActiveRecord
         
         /*Retorna El estado*/
 	public function getEstadoLF()
-	{
-            $status = "Enviado a LF";
-            switch ($this->estadoLF){                
-                case 1: $status = "Confirmado"; break;                
-                case 2: $status = "Anulado Checking"; break;                
-                case 3: $status = "Anulado Picking"; break;                
-                case 4: $status = "Finalizado"; break;                
-                case 5: $status = "Enviado"; break;                
+	{            
+            $estado = "-";
+            if($this->outbound){
+                
+                $estado = $this->outbound->getEstado(); 
+
+                //Agregar el contador de productos
+                if($this->tieneDiscrepancias()){
+                    $estado .= "<br>(".$this->cantidadEnviadosLF()."/".
+                            $this->cantidadProductos().")";
+                }else if($this->fueCorregido()){
+                    $estado .= "<br>(Corregido)";
+                }                
             }
-            return $status;
-        
-		
+            
+            return $estado;        		
 	}
+        /*boolean, si el outbound tiene discrepancias*/
+	public function tieneDiscrepancias()
+	{   
+            return $this->outbound && $this->outbound->discrepancias == 1;
+	}
+        /*boolean, si el outbound tiene discrepancias*/
+	public function fueCorregido()
+	{   
+            foreach($this->ohptc as $producto){
+                if($producto->estadoLF == 3) //si tenia discrepancias marcarlo corregido
+                {
+                    return true;
+                }                    
+            }
+            return false;
+	}
+        
+        /*Retorna el numero de prendas totales*/
+	public function cantidadProductos()
+	{   
+            $total = 0;
+            foreach($this->ohptc as $producto){
+                $total += $producto->cantidad;
+            }
+            
+            return $total;
+	}
+        
+        /*Retorna el numero de prendas totales*/
+	public function cantidadEnviadosLF()
+	{   
+            $total = 0;
+            foreach($this->ohptc as $producto){
+                $total += $producto->cantidadLF;
+            }
+            
+            return $total;
+	}
+        
         //Si tiene un cupon usado
 	public function hasCupon($idCupon)
 	{

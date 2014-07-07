@@ -258,6 +258,9 @@ $template = '{summary}
 function cancelarOrden(){   
 
 $("a[id^='linkCancelar']").click(function (e){
+    
+    console.log("NELSON");
+
     e.preventDefault();
     var urlCancel = $(this).attr('href');        
 
@@ -349,6 +352,9 @@ function resolverOutbound(idOutbound){
         }]);
 }
 
+$(document).ready(function(){
+    cancelarOrden();
+});
 
 </script>
 

@@ -402,8 +402,8 @@ class Producto extends CActiveRecord
         		}                        
                     
                     //Guardar el precio con descuento
-                    $this->_precio->precioDescuento = $precio_mostrar;
-                    $this->_precio->save();
+//                    $this->_precio->precioDescuento = $precio_mostrar;
+//                    $this->_precio->save();
                         
         	}else{
         		$precio_mostrar = $this->_precio->precioImpuesto;
@@ -427,8 +427,8 @@ class Producto extends CActiveRecord
             }
             if (isset($this->_precio->precioImpuesto)){
                 
-                $this->_precio->precioImpuesto = $this->_precio->precioVenta * (1 + Yii::t('contentForm', 'IVA'));
-                $this->_precio->save();
+//                $this->_precio->precioImpuesto = $this->_precio->precioVenta * (1 + Yii::t('contentForm', 'IVA'));
+//                $this->_precio->save();
                 
                 if ($format) {
                     return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioImpuesto);

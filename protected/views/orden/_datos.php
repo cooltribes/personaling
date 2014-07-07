@@ -46,7 +46,7 @@
             
             $canc = "<li>".
                     CHtml::link("<i class='icon-ban-circle'></i> Cancelar Orden",
-                        $this->createUrl('orden/cancelar',array('id'=>$data->id)),
+                        $this->createUrl('orden/cancelar',array('id'=>$data->id, 'admin'=>1)),
                         array(
                         'id'=>'linkCancelar'.$data->id,
                         //'onclick' => "cancelarOrden()",
@@ -96,7 +96,7 @@
             
         }       
         //Si es corregida, ver la observacion
-	$motivo = "";
+	$correccion = "";
         
 	if($data->fueCorregido()){
             
@@ -108,7 +108,7 @@
                 $message = "";
             }
                         
-            $motivo = "<li>".
+            $correccion = "<li>".
                         CHtml::link("<i class='icon-comment'></i> Ver corrección",
                                         'javascript:verObservacion("'.$message.'")', array(
                                         
@@ -131,7 +131,8 @@
             <li><a onclick='modal(".$data->id.")' tabindex='-1' href='#'><i class='icon-th-list'></i> Ver prendas</a></li>
             ".$canc.
              $motivo.
-             $resolver."
+             $resolver.
+            $correccion."
                     
             
             <li><a tabindex='-1' href='#'><i class='icon-file'></i> Generar etiqueta de dirección</a></li>

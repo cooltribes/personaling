@@ -1571,6 +1571,7 @@ class BolsaController extends Controller
                                     
                                 }
                                 
+                                $this->agregarCupon($orden);
                                 
                                 $this->hacerCompra($bolsa->id,$orden->id);
                                 

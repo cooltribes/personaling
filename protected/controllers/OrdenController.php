@@ -1588,6 +1588,7 @@ public function actionValidar()
             $orden = Orden::model()->findByPK($id);            
             $response = array();
             $esAdmin = isset($_POST['admin']) || isset($_GET['admin']);
+            
             $pagoHecho = $orden->estado == Orden::ESTADO_CONFIRMADO
                          || $orden->estado == Orden::ESTADO_INSUFICIENTE;   
             

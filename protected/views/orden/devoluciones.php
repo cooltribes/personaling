@@ -345,8 +345,11 @@ function devolver()
                         data: { 'orden':id, 'monto':monto,'indices':inds, 'montos':monts, 'motivos':mots, 'ptcs':prtcs, 'looks':lks,'cantidades':cants}, 
                         success: function (data) {
 
-                            if(data=="ok")
+                            if(data=="okuser")
                                     window.location.replace("<?php echo Yii::app()->baseUrl;?>/orden/detallePedido/"+id);
+                            if(data=="okadmin")
+                                    window.location.replace("<?php echo Yii::app()->baseUrl;?>/orden/detalles/"+id);
+                            
                             if(data=="error")
                                     location.reload();
                             if(data=='no')
@@ -355,7 +358,7 @@ function devolver()
                     });		
                 }
                 else{
-                	alert('Para cada prenda que desees devolver debes especificar el motivo de la devolción');
+                	alert('Para cada prenda que desees devolver debes especificar el motivo de la devolución');
                 }		
 		
 		}

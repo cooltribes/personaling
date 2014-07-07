@@ -547,9 +547,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 ); ?>	
                 <!-- FLASH OFF -->
                 
-                <?php if($balance > 0){ ?>  
-                    <label class="radio" id="opt-balance">
-                      <input type="radio" name="opcionSaldo" id="radio-Saldo" value="1" onclick="usarBalance(<?php echo $total; ?>, <?php echo $balance; ?>)">
+                <?php if(true || $balance > 0){ ?>  
+                <label class="radio<?php echo $class ?>" id="opt-balance">
+                      <input type="radio" name="opcionSaldo" id="radio-Saldo" value="1" onclick="usarBalance(<?php echo $total; ?>)">
                       <?php
                         if($admin){
                             echo Yii::t('contentForm', 'Use Balance.'); ?><br>
@@ -563,7 +563,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     </label>
                 <?php } ?>
                 <label class="radio" id="opt-codigo">
-                  <input type="radio" name="opcionSaldo" id="radio-Cupon" value="2" onclick="usarCupon(<?php echo $total; ?>, <?php echo $balance; ?>)">
+                  <input type="radio" name="opcionSaldo" id="radio-Cupon" value="2" onclick="usarCupon()">
                     <?php
                         echo Yii::t('contentForm', 'Tengo un código de descuento!'); 
                     ?>
@@ -572,9 +572,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     <?php echo CHtml::label("Ingresa tu código aquí: ", "textoCodigo"); ?>    
                     <?php echo CHtml::textField("textoCodigo"); ?>
                 </div>
-
-                
-                
                 
                 <?php if(false){ ?>
 
@@ -691,13 +688,15 @@ else
 
 <script>
 	
+    var balanceUsuario = <?php echo $balance; ?>;
 	
-	
-    $("#aplicarGC").click(function(e){
+        $("#aplicarGC").click(function(e){
             $("#aplicarAjax").val("1");
                         
             var datos = $("#giftCard").find("input").serialize();
-            
+            //("#giftCard").find(".controls input").prop("disabled", true);
+            $("body").addClass("aplicacion-cargando");
+           
             $.ajax({
                 type: 'POST',
                 url: '<?php echo CController::createUrl("/giftcard/aplicar"); ?>',
@@ -721,31 +720,35 @@ else
                         
                         if(data[0].type == 'success'){ //si fue success la aplicacion de GC
                             
-                            var check = $("#usar_balance");
+                            var radioB = $("#radio-Saldo");
                             
-                                var element = $("#usar_balance").next();
-                                
-                                element.parent().removeClass("hidden");
-                                element.animate({                                  
-                                  opacity: 0,
-                                }, {
-                                    duration: 1000,
-                                    complete: function(){
-                                      element.text("Bs. " + data[0].amount);
-                                      showAlert(data[0].type, data[0].message);
-                                    }
-                                } );                                
-                                
-                                element.animate({                                  
-                                  opacity: 1,
-                                  //color : "#468847",
-                                }, 1000 );
+                            var element = radioB.next();
+
+                            element.parent().removeClass("hidden");
+                            element.animate({                                  
+                              opacity: 0,
+                            }, {
+                                duration: 1000,
+                                complete: function(){                                   
+                                    //Agregar el saldo por si selecciona usar saldo
+                                    balanceUsuario = data[0].amount;
+                                    element.text("<?php  echo Yii::t('backEnd', 'currSym'); ?> " + data[0].amount);
+                                    showAlert(data[0].type, data[0].message);
+                                }
+                            } );                                
+
+                            element.animate({                                  
+                              opacity: 1,
+                              //color : "#468847",
+                            }, 1000 );
 
                         }else{
                             showAlert(data[0].type, data[0].message);  
                         }
                         
                     }
+                    
+                    $("body").removeClass("aplicacion-cargando");                   
                     
                 }
             });    
@@ -931,8 +934,7 @@ $('#TarjetaCredito_year').change(function(){
 		
 	});
 	
-	
-
+        
 	function calcular_total(total, balance){
 		 
 		if($("#asegurado").is(':checked')){
@@ -977,9 +979,9 @@ $('#TarjetaCredito_year').change(function(){
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
 	}
         
-        /*NELSON*/
-	function usarCupon(total, balance){
-		
+        /*NELSON*/        
+	function usarCupon(){
+		var balance = balanceUsuario;
 		if(balance > 0){
                     
                      $('#usar_balance_hidden').val('0');
@@ -993,8 +995,9 @@ $('#TarjetaCredito_year').change(function(){
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
 	}
 
-        function usarBalance(total, balance){
+        function usarBalance(total){
 		
+                var balance = balanceUsuario;
 		if(balance > 0){
                     
                     if(balance >= total){

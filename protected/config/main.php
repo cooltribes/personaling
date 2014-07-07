@@ -220,7 +220,7 @@ return array(
                     'autoCreateLogTable' => false,
                     'logTableName' => 'tbl_logger',
                     'levels' => 'trace',
-                    'categories' => 'registro',
+                    'categories' => 'registro,compra,tienda,admin,otro',
 
 			),
 			),

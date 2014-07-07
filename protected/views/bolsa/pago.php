@@ -547,8 +547,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 ); ?>	
                 <!-- FLASH OFF -->
                 
-                <?php if($balance > 0){ ?>  
-                    <label class="radio" id="opt-balance">
+                <?php if(true || $balance > 0){ ?>  
+                <label class="radio<?php echo $class ?>" id="opt-balance">
                       <input type="radio" name="opcionSaldo" id="radio-Saldo" value="1" onclick="usarBalance(<?php echo $total; ?>, <?php echo $balance; ?>)">
                       <?php
                         if($admin){
@@ -572,9 +572,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     <?php echo CHtml::label("Ingresa tu código aquí: ", "textoCodigo"); ?>    
                     <?php echo CHtml::textField("textoCodigo"); ?>
                 </div>
-
-                
-                
                 
                 <?php if(false){ ?>
 
@@ -693,11 +690,11 @@ else
 	
 	
 	
-    $("#aplicarGC").click(function(e){
+        $("#aplicarGC").click(function(e){
             $("#aplicarAjax").val("1");
                         
             var datos = $("#giftCard").find("input").serialize();
-            
+           
             $.ajax({
                 type: 'POST',
                 url: '<?php echo CController::createUrl("/giftcard/aplicar"); ?>',
@@ -721,25 +718,25 @@ else
                         
                         if(data[0].type == 'success'){ //si fue success la aplicacion de GC
                             
-                            var check = $("#usar_balance");
+                            var radioB = $("#radio-Saldo");
                             
-                                var element = $("#usar_balance").next();
-                                
-                                element.parent().removeClass("hidden");
-                                element.animate({                                  
-                                  opacity: 0,
-                                }, {
-                                    duration: 1000,
-                                    complete: function(){
-                                      element.text("Bs. " + data[0].amount);
-                                      showAlert(data[0].type, data[0].message);
-                                    }
-                                } );                                
-                                
-                                element.animate({                                  
-                                  opacity: 1,
-                                  //color : "#468847",
-                                }, 1000 );
+                            var element = radioB.next();
+
+                            element.parent().removeClass("hidden");
+                            element.animate({                                  
+                              opacity: 0,
+                            }, {
+                                duration: 1000,
+                                complete: function(){
+                                  element.text("<?php  echo Yii::t('backEnd', 'currSym'); ?> " + data[0].amount);
+                                  showAlert(data[0].type, data[0].message);
+                                }
+                            } );                                
+
+                            element.animate({                                  
+                              opacity: 1,
+                              //color : "#468847",
+                            }, 1000 );
 
                         }else{
                             showAlert(data[0].type, data[0].message);  

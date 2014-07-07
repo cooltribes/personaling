@@ -476,14 +476,13 @@ class Orden extends CActiveRecord
                    
                     continue;
                 }
-                // ARREGLAR PAGO_ID NELSON
-                //en vez de tbl_pago.tipo es tbl_detalle.tipo_pago  
+                               
                 if($column == 'pago_id'){                
                    
-                    if (!strpos($joinPagos, 'tbl_pago')) {
-                        $joinPagos .= ' JOIN tbl_pago on tbl_pago.id = pago_id AND ( tbl_pago.tipo '.$comparator.' '.$value.' )';
+                    if (!strpos($joinPagos, 'tbl_detalle')) {
+                        $joinPagos .= ' JOIN tbl_detalle on tbl_detalle.orden_id = t.id AND ( tbl_detalle.tipo_pago '.$comparator.' '.$value.' )';
                     }else{
-                        $joinPagos = str_replace(")", $logicOp.' tbl_pago.tipo '.$comparator.' '.$value.' )', $joinPagos) ; 
+                        $joinPagos = str_replace(")", $logicOp.' tbl_detalle.tipo_pago '.$comparator.' '.$value.' )', $joinPagos) ; 
                     }           
                     
                     continue;

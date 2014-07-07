@@ -87,12 +87,17 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                                 )),
 					)
 				),
-                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),
-                array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'),
-				array('label'=>'Devoluciones', 'url'=>Yii::app()->baseUrl.'/orden/adminDevoluciones'))),
+                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(
+                    array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),
+                    array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'),
+                    array('label'=>'Devoluciones', 'url'=>Yii::app()->baseUrl.'/orden/adminDevoluciones'),
+                    array('label'=>'Pagos a PS', 'url'=>Yii::app()->baseUrl.'/pago/admin')
+                    )
+                ),
+                
                 array('label'=>'Promociones', 'url'=>'#', 'items'=>array(                	
-                                array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
-                                array('label'=>'Códigos de Descuento', 'url'=>array('/codigoDescuento/index')),
+                    array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
+                    array('label'=>'Códigos de Descuento', 'url'=>array('/codigoDescuento/index')),
 
                                 ),
                     ),
@@ -157,6 +162,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Tus Compras', 'url'=>array('/orden/listado')),
                     array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
                     array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
+                    array('label'=>'Solicitar Pago', 'url'=>array('/pago/solicitar'), 'visible' => !UserModule::isPersonalShopper()),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    

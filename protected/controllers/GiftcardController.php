@@ -436,8 +436,9 @@ class GiftcardController extends Controller
                        Yii::app()->user->setFlash('error',Yii::t('contentForm',"¡Gift Card inválida!"));
                    }
                    
-               }else{ //Invalido
-
+               }
+               else
+               { //Invalido                   
                    
                     $cRequerido = 0;
                     $cLength = 0;
@@ -450,7 +451,7 @@ class GiftcardController extends Controller
                     if($cRequerido){
                        $aplicar->addError("campo1", "Debes escribir el código de tu Gift Card completo."); 
                     }
-                    if($cLen){
+                    if($cLength){
                        $aplicar->addError("campo1", "Los campos deben ser de 4 caracteres cada uno."); 
                     } 
                     
@@ -461,7 +462,7 @@ class GiftcardController extends Controller
                     }
                }               
             }
-            
+           
             if(!$ajax){                    
                 $this->render('aplicar', array('model' => $aplicar));
             }else{

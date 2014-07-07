@@ -2,8 +2,6 @@
 /* @var $this GiftcardController */
 /* @var $model Giftcard */
 
-//Yii::app()->getClientScript()->registerScriptFile('http://jquery-ui.googlecode.com/svn/tags/latest/ui/minified/i18n/jquery-ui-i18n.min.js', 
-//        null, array("charset"=>"UTF-8"));
 
 $this->breadcrumbs=array(
 	'Giftcards'=>array('index'),

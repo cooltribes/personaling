@@ -1,10 +1,9 @@
 <?php
+        //si la orden tiene discrepancias, mostrar en rojo el estado de LF
+        $claseFila = $data->tieneDiscrepancias()?" class='error'":
+                $data->fueCorregido()? " class='success'":"";
 	
-	$looks=0;
-	$indiv=0;
-	$xlook=0;
-	
-echo"<tr>";
+    echo"<tr{$claseFila}>";
 	echo "<td><input name='check' type='checkbox' id='".$data->id."' /></td>";
    	echo "<td>".$data->id."</td>"; // id
 	
@@ -28,15 +27,14 @@ echo"<tr>";
 	//--------------------
 	echo "<td>";
         
-      echo $data->getTiposPago();  
-        
-        
+          echo $data->getTiposPago();  
        
 	echo "</td>";
 	
 	//----------------------Estado
 	echo "<td>".$data->textestado."</td>";
 	
+        
         echo "<td>".$data->getEstadoLF()."</td>";
         
 	//------------------ acciones
@@ -57,7 +55,7 @@ echo"<tr>";
                     ."</li>";
             
         }
-        
+                       
         //Si es cancelada, ver motivo
 	$motivo = "";
         
@@ -82,6 +80,45 @@ echo"<tr>";
             
         }
         
+        //Si tiene discrepancias, boton de resolver
+        $resolver = "";
+        if($data->tieneDiscrepancias()){	
+            
+            $resolver = "<li>".
+                    CHtml::link("<i class='icon-ok'></i> Marcar Resuelta","#",
+                        //$this->createUrl('orden/resolverOutbound',array('id'=>$data->id)),
+                        array(
+                        //'id'=>'linkCancelar'.$data->id,
+                        'onclick' => "resolverOutbound($data->id)",
+                         )
+                    )            
+                    ."</li>";
+            
+        }       
+        //Si es corregida, ver la observacion
+	$motivo = "";
+        
+	if($data->fueCorregido()){
+            
+            if($data->outbound && $data->outbound->observacion != ""){
+                
+                $message = $data->outbound->observacion;
+            }else{
+                
+                $message = "";
+            }
+                        
+            $motivo = "<li>".
+                        CHtml::link("<i class='icon-comment'></i> Ver corrección",
+                                        'javascript:verObservacion("'.$message.'")', array(
+                                        
+                                        )
+                                    )            
+                     ."</li>";
+            
+        }   
+        
+        
 	echo "
 	<td>
 	<div class='dropdown pull-right'>
@@ -93,7 +130,8 @@ echo"<tr>";
             <li><a tabindex='-1' href='detalles/".$data->id."'><i class='icon-eye-open'></i> Ver detalles</a></li>
             <li><a onclick='modal(".$data->id.")' tabindex='-1' href='#'><i class='icon-th-list'></i> Ver prendas</a></li>
             ".$canc.
-             $motivo."
+             $motivo.
+             $resolver."
                     
             
             <li><a tabindex='-1' href='#'><i class='icon-file'></i> Generar etiqueta de dirección</a></li>
@@ -116,6 +154,13 @@ echo"<tr>";
 function verMotivo(mensaje){
     if(mensaje.trim() == ""){
         mensaje = "<i>El usuario no indicó ningun motivo.</i>";
+    }
+
+    bootbox.alert("\"" + mensaje + "\".");
+}
+function verObservacion(mensaje){
+    if(mensaje.trim() == ""){
+        mensaje = "<i>No se indicó ninguna observación.</i>";
     }
 
     bootbox.alert("\"" + mensaje + "\".");

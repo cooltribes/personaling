@@ -30,8 +30,10 @@ class OrdenController extends Controller
                                     'detalles','devoluciones','validar','enviar',
                                     'factura','calcularenvio','createexcel',
                                     'importarmasivo','reporte','reportexls','adminxls',
-                                    'generarExcelOut','devolver','adminDevoluciones','detallesDevolucion',
-									'AceptarDevolucion','RechazarDevolucion','AnularDevuelto','cantidadDevuelto','activarDevuelto'),
+                                    'generarExcelOut','devolver','adminDevoluciones',
+                                    'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
+                                    'AnularDevuelto','cantidadDevuelto','activarDevuelto',
+                                    'resolverOutbound'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -883,6 +885,7 @@ public function actionReportexls(){
 					$dhptc->preciotallacolor_id=$ptcs[$i];
 					$dhptc->cantidad=$cantidades[$i];
 					$dhptc->motivo=$devolucion->getReasons($motivos[$i]);
+					$dhptc->motivoAdmin=$dhptc->motivo;
 					$dhptc->monto=$montos[$i];
 					$dhptc->look_id=$looks[$i];
 					array_push($dhptcs,$dhptc);
@@ -910,13 +913,30 @@ public function actionReportexls(){
 				if($devolucion->save()){
 					 foreach($dhptcs as $dhptc){
 					 	$dhptc->devolucion_id=$devolucion->id;
-						if(!$dhptc->save()){
-							$out="error";
+						if($dhptc->save()){
+							$out="ok";
 						}
 				}
 			 }
-			if($out=="ok")
+			if($out=="ok"){
+				$user = User::model()->findByPk($devolucion->orden->user_id);
+					
+					$comments="Disculpa las posibles molestias ocasionadas.<br/>Te recomendamos consultar nuestras politicas de devolución haciendo click <a href='http://www.personaling.es/develop/site/politicas_de_devoluciones'>aquí.</a>";
+									$message            = new YiiMailMessage;
+							           //this points to the file test.php inside the view path
+							        $message->view = "mail_devolucion";
+									$subject = 'Hemos recibido tu solicitud de devolución.';
+							        $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
+							        $message->subject    = $subject;
+							        $message->setBody($params, 'text/html');
+							        $message->addTo($user->email);
+									$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+							        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+							        Yii::app()->mail->send($message);
+				
 				Yii::app()->user->setFlash('success', 'Devolucion Registrada exitosamente.');
+				
+			}
 			else
 				Yii::app()->user->setFlash('error', 'Su devolución no se pudo registrar.');
 			}
@@ -1027,10 +1047,7 @@ public function actionReportexls(){
 				$ohptc=OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$devolucion->orden_id,'preciotallacolor_id'=>$dhptc->preciotallacolor_id));
 				$ptc=Preciotallacolor::model()->findByPk($dhptc->preciotallacolor_id);
 				$ohptc->cantidadActualizada=$ohptc->cantidad-$dhptc->cantidad;
-				if(array_search($dhptc->motivoAdmin,Devolucion::model()->reasons)!=1){
-					$ptc->cantidad=$ptc->cantidad+$dhptc->cantidad;
-					$ptc->save();
-				}else{
+				if(array_search($dhptc->motivoAdmin,Devolucion::model()->reasons)==1){
 					$def=new Defectuoso;
 					$def->cantidad=$dhptc->cantidad;
 					$def->fecha=date("Y-m-d");
@@ -1038,7 +1055,10 @@ public function actionReportexls(){
 					$def->preciotallacolor_id=$dhptc->preciotallacolor_id;
 					$def->procedencia="Devolucion";
 					$def->costo=$ptc->producto->getCosto(false);
-					$def->save();			
+					$def->save();
+				}else{					
+					$ptc->cantidad=$ptc->cantidad+$dhptc->cantidad;
+					$ptc->save();			
 				}
 				$ohptc->save();
 			}				
@@ -1130,6 +1150,7 @@ public function actionReportexls(){
 		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
 		$devuelto->cantidad=$_POST['cantidad'];
 		$devuelto->motivoAdmin=Devolucion::model()->getReasons($_POST['motivo']);
+		
 		if($devuelto->save())
 			{	Yii::app()->user->setFlash('success', 'Actualización realizada.');
 				echo "ok";}
@@ -2339,5 +2360,47 @@ public function actionValidar()
         
         fclose($out);
     }
+    
+    public function actionResolverOutbound() {
+        
+        $response = array();
+        $response["message"] = Yii::t('contentForm', 'No se puede resolver la discrepancia.');
+        $response["status"] = "error";
+        
+        if(isset($_POST["idOutbound"])){
+            
+            $outbound = Outbound::model()->findByPk($_POST["idOutbound"]);
+            
+            if($outbound && $outbound->discrepancias == 1){
+                $outbound->discrepancias = 0;
+                
+                //si escribieron algo en la observacion
+                if(isset($_POST["observacion"]) && $_POST["observacion"] != ""){
+                    
+                    $outbound->observacion = $_POST["observacion"];
+                    
+                }
+                
+                //marcar los productos como corregidos
+                foreach($outbound->orden->ohptc as $producto){
+                    if($producto->estadoLF == 2) //si tenia discrepancias marcarlo corregido
+                    {
+                        $producto->estadoLF = 3;
+                        $producto->save();
+                    }                    
+                }                
+                
+                $outbound->save();
+                
+                $response["message"] = Yii::t('contentForm', 'Se han resuelto las discrepancias con éxito');                
+                $response["status"] = "success";
+                
+            }
+        }
+        
+        echo CJSON::encode($response);
+        
+    }
+    
         
 }

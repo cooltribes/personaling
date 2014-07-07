@@ -568,201 +568,160 @@ $tracking=$orden->getTrackingInfo();
    <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top">Productos</h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped" align="center">
         <tr>
-<!--          <th scope="col">Referencia</th>
-          <th scope="col">Nombre de la prenda</th>-->
-            <th scope="col" colspan="2">Datos de la Prenda</th>
-          <th scope="col">Marca</th>
-          <th scope="col">Color</th>
-          <th scope="col">Talla</th>
-          <th scope="col">Peso</th>
+          <th rowspan="2" scope="col" colspan="2">Datos de la Prenda</th>
+          <th rowspan="2" scope="col">Marca</th>
+          <th rowspan="2" scope="col">Color</th>
+          <th rowspan="2" scope="col">Talla</th>
+          <th rowspan="2" scope="col">Peso</th>
+          <th scope="col" colspan="3">Cantidad</th>           
+          <th rowspan="2" scope="col">Almacen</th>
+          <th rowspan="2" scope="col">Precio</th>
+        </tr>
+        <tr>          
           <th scope="col">Existencia</th>
           <th scope="col">Pedido</th>
-           
-          <th scope="col">Almacen</th>
-          <th scope="col">Precio</th>
-        <!--  <th scope="col">Acción</th>-->
+          <th scope="col">Enviado LF</th>
+          
         </tr>
         <?php
         	$row=0;
         	$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id)); // productos de la orden
         	$lkids=OrdenHasProductotallacolor::model()->getLooks($orden->id);
-			foreach ($lkids as  $lkid){
+                
+                //PRENDAS POR LOOKS                
+                    foreach ($lkids as  $lkid){
 				
-				$lookpedido = Look::model()->findByPk($lkid['look_id']);
-				$precio = $lookpedido->getPrecio(false);
-				echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
-							// echo("<td></td>");
-				echo("<td colspan='9'><strong>".$lookpedido->title."</strong></td>");// Referencia
+                        $lookpedido = Look::model()->findByPk($lkid['look_id']);
+                        $precio = $lookpedido->getPrecio(false);
+                        echo("<tr class='bg_color5' >"); // Aplicar fondo de tr, eliminar borde**
+                        echo("<td colspan='10'><strong>".$lookpedido->title."</strong></td>");// Referencia
+
+                        echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
+				
+                        echo("</tr>");
 							
-				echo("<td>".number_format(OrdenHasProductotallacolor::model()->precioLook($orden->id, $lkid['look_id']), 2, ',', '.')."</td>"); // precio 	 
-				/*echo("
-							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
-			              	<!-- Link or button to toggle dropdown -->
-			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
-			                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
-			                	<li class='divider'></li>
-			                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
-			              	</ul>
-			            	</div></td>
-							");*/
-							
-							echo("</tr>");
-				$prodslook=OrdenHasProductotallacolor::model()->getByLook($orden->id, $lkid['look_id']);
-				foreach($prodslook as $prodlook){
-					$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook['preciotallacolor_id']));
-                                        $prdlk = Producto::model()->findByPk($ptclk->producto_id);
-                                        $marca=Marca::model()->findByPk($prdlk->marca_id);
-                                        $talla=Talla::model()->findByPk($ptclk->talla_id);
-                                        $color=Color::model()->findByPk($ptclk->color_id);
-                                        
-                                        $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$prdlk->id,'color_id'=>$color->id), array('order'=>'orden'));
-                                        $contador=0;
-                                        $foto = "";
-                                        $label = $color->valor;
-                                        //$label = "No hay foto</br>para el color</br> ".$color->valor;
-                                        /*if(count($imagen)>0){
-                                                echo count($imagen);	
-                                                foreach($imagen as $img) {
-                                                        if($contador==0){		 
-                                                              							
-                                                                $contador++;
-                                                        }
-                                                }					   	
+                        $prodslook=OrdenHasProductotallacolor::model()->getByLook($orden->id, $lkid['look_id']);
+                        foreach($prodslook as $prodlook){
+                                $ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook['preciotallacolor_id']));
+                                $prdlk = Producto::model()->findByPk($ptclk->producto_id);
+                                $marca=Marca::model()->findByPk($prdlk->marca_id);
+                                $talla=Talla::model()->findByPk($ptclk->talla_id);
+                                $color=Color::model()->findByPk($ptclk->color_id);
 
-
-                                        }else{
-                                            $foto = "";//"<img src='http://placehold.it/70x70' >";
-                                            $label = "No hay foto</br>para el color</br> ".$color->valor;
-                                        }*/
-                                        if(!is_null($ptclk->imagen))
-											  $foto = CHtml::image(Yii::app()->baseUrl . 
-                                                                        str_replace(".","_thumb.",$ptclk->imagen['url']), "Imagen ", 
-                                                                        array("width" => "70", "height" => "70"));
-										else {
-											$foto="No hay foto</br>para el color";
-										}
-										
-
-                                        echo("<tr>");
-                                        //echo("<td>".$prdlk->codigo."</td>"); // nombre
-                                        //echo("<td>".CHtml::link($prdlk->nombre, $this->createUrl('producto/detalle', array('id'=>$prdlk->id)), array('target'=>'_blank'))."</td>"); // nombre
-                                        echo("<td style='text-align:center'>".$foto."<br><div>".$label."</div></td>");
-                                        echo('<td style="vertical-align: middle">
-                                            <b>Referencia:</b> '.$prdlk->codigo.
-                                            "</pre><br><b>Nombre de la Prenda:</b> ".
-                                            //CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))
-                                            $prdlk->nombre
-                                            ."</td>");
-                                        
-                                        echo("<td>".$marca->nombre."</td>");
-                                        echo("<td>".$color->valor."</td>");
-                                        echo("<td>".$talla->valor."</td>");
-                                        echo("<td>".$prdlk->peso." Kg.</td>");	
-                                        echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
-                                        echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
-                                        echo("<td>".$prdlk->almacen."</td>"); 
-
-                                        //echo("<td>oid".$prod->tbl_orden_id."lid ".$prod->look_id." ptcid".$ptclk->id."</td>");//.$prodlook->precio."</td>"); // precio 
-                                        echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td></tr>");
-				}				
-				
-			}
-			//INDIVIDUALES
-			
-			
-			echo("<tr class='bg_color5'><td colspan='10'>Prendas Individuales</td></tr>");
-			$separados=OrdenHasProductotallacolor::model()->getIndividuales($orden->id);			
-			foreach($separados as $prod){
-				$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
-				$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
-				$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
-				$marca=Marca::model()->findByPk($indiv->marca_id);
-				$talla=Talla::model()->findByPk($ptc->talla_id);
-				$color=Color::model()->findByPk($ptc->color_id);
-				
-                                $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id,'color_id'=>$color->id),array('order'=>'orden'));
+                                $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$prdlk->id,'color_id'=>$color->id), array('order'=>'orden'));
                                 $contador=0;
                                 $foto = "";
                                 $label = $color->valor;
-                                //$label = "No hay foto</br>para el color</br> ".$color->valor;
-                                 if(!is_null($ptc->imagen))
-                                  {
-                                     $foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "70", "height" => "70"));
-
-                                  }
-                                    else {
-                                        $foto="No hay foto</br>para el color";
-                                    } 
-                            
                                 
-				echo("<tr>");
-//				echo("<td>".$indiv->codigo."</td>");// Referencia
-//				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
-				/*Datos resumidos + foto*/
-				echo("<td style='text-align:center'><div>".$foto."<br/>".$label."</div></td>");
-                                echo('<td style="vertical-align: middle">
-                                        <b>Referencia:</b> '.$indiv->codigo.
-                                        "</pre><br><b>Nombre de la Prenda:</b> ".
-                                        //CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))
-                                        $indiv->nombre
-                                        ."</td>");
-				echo("<td>".$marca->nombre."</td>");
-				echo("<td>".$color->valor."</td>");
-				echo("<td>".$talla->valor."</td>");	
-				echo("<td>".$indiv->peso." Kg.</td>");					
-				echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
-				echo("<td>".$prod['cantidad']."</td>"); // cantidad en pedido
-				echo("<td>".$indiv->almacen."</td>"); 
-				echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td>"); // precio
-				/*echo("
-							<td><div class='dropdown'> <a class='dropdown-toggle' id='dLabel' role='button' data-toggle='dropdown' data-target='#' href='/page.html'> <i class='icon-cog'></i></a> 
-			              	<!-- Link or button to toggle dropdown -->
-			              	<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>
-			                	<li><a tabindex='-1' href='#'><i class='icon-edit'></i> Editar</a></li>
-			                	<li class='divider'></li>
-			                	<li><a tabindex='-1' href='#'><i class='icon-trash'></i> Eliminar</a></li>
-			              	</ul>
-			            	</div></td>
-						");
-						*/
-						echo("</tr>");
-			}
-			
-		
-		
-			
+                                if(!is_null($ptclk->imagen))
+                                    $foto = CHtml::image(Yii::app()->baseUrl . 
+                                    str_replace(".","_thumb.",$ptclk->imagen['url']), "Imagen ", 
+                                    array("width" => "70", "height" => "70"));
+                                else {
+                                    $foto="No hay foto</br>para el color";
+                                }
 
-      $individuales=OrdenHasProductotallacolor::model()->countIndividuales($orden->id);
-	  $looks=OrdenHasProductotallacolor::model()->countLooks($orden->id);
-      $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
+
+                                echo("<tr>");
+                                echo("<td style='text-align:center'>".$foto."<br><div>".$label."</div></td>");
+                                echo('<td style="vertical-align: middle">
+                                    <b>Referencia:</b> '.$prdlk->codigo.
+                                    "</pre><br><b>Nombre de la Prenda:</b> ".
+                                    $prdlk->nombre
+                                    ."</td>");
+
+                                echo("<td>".$marca->nombre."</td>");
+                                echo("<td>".$color->valor."</td>");
+                                echo("<td>".$talla->valor."</td>");
+                                echo("<td>".$prdlk->peso." Kg.</td>");	
+                                echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
+                                echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
+                                echo("<td>".$prdlk->almacen."</td>"); 
+
+                                echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td></tr>");
+                            }				
+				
+			}
+                        
+                        
+			//INDIVIDUALES
+			echo("<tr class='bg_color5'><td colspan='11'>Prendas Individuales</td></tr>");
+			$separados=OrdenHasProductotallacolor::model()->getIndividuales($orden->id);			
+			foreach($separados as $prod){
+                            
+                            $ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
+                            $indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
+                            $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
+                            $marca=Marca::model()->findByPk($indiv->marca_id);
+                            $talla=Talla::model()->findByPk($ptc->talla_id);
+                            $color=Color::model()->findByPk($ptc->color_id);
+
+                            $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id,'color_id'=>$color->id),array('order'=>'orden'));
+                            $contador=0;
+                            $foto = "";
+                            $label = $color->valor;
+                             if(!is_null($ptc->imagen))
+                              {
+                                 $foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "70", "height" => "70"));
+
+                              }
+                                else {
+                                    $foto="No hay foto</br>para el color";
+                                } 
+
+                            $class = $prod['estadoLF'] == 2 ? " class='error'":
+                                    $prod['estadoLF'] == 3 ?" class='text-success'":"";
+                            
+                            
+                            echo("<tr$class>");
+                            /*Datos resumidos + foto*/
+                            echo("<td style='text-align:center'><div>".$foto."<br/>".$label."</div></td>");
+                            echo('<td style="vertical-align: middle">
+                                    <b>Referencia:</b> '.$indiv->codigo.
+                                    "</pre><br><b>Nombre de la Prenda:</b> ".
+                                    $indiv->nombre
+                                    ."</td>");
+                            echo("<td>".$marca->nombre."</td>");
+                            echo("<td>".$color->valor."</td>");
+                            echo("<td>".$talla->valor."</td>");	
+                            echo("<td>".$indiv->peso." Kg.</td>");					
+                            echo("<td>".$ptc->cantidad."</td>"); // cantidad en existencia
+                            echo("<td>".$prod['cantidad']."</td>"); // cantidad en pedido
+                            
+                            
+                            
+                            echo("<td>".$prod['cantidadLF']."</td>"); // cantidad enviada por LF
+                            echo("<td>".$indiv->almacen."</td>"); 
+                            echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td>"); // precio
+                            echo("</tr>");
+				
+			}
+
+          $individuales=OrdenHasProductotallacolor::model()->countIndividuales($orden->id);
+              $looks=OrdenHasProductotallacolor::model()->countLooks($orden->id);
+          $compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$orden->id));
 	   
       ?>
         
 
         <!-- Comienzo del resumen del pedido -->
-        
-
-        
-        
-        
-        
         <tr>
-          <th colspan="10" ><div class="text_align_right"><strong>Resumen</strong></div></th>
+          <th colspan="11" ><div class="text_align_right"><strong>Resumen</strong></div></th>
         </tr>         
         <tr>
-          <td colspan="9" ><div class="text_align_right"><strong>No. de Looks</strong></div></td>
+          <td colspan="10" ><div class="text_align_right"><strong>No. de Looks</strong></div></td>
           <td ><?php echo($looks); ?></td> 
         </tr>  
         <tr>
-          <td colspan="9" ><div class="text_align_right"><strong>No. de Prendas Individuales</strong></div></td>
+          <td colspan="10" ><div class="text_align_right"><strong>No. de Prendas Individuales</strong></div></td>
           <td ><?php echo ($individuales); ?></td>
         </tr>
         <tr>
-          <td colspan="9" ><div class="text_align_right"><strong>Subtotal</strong></div></td>
+          <td colspan="10" ><div class="text_align_right"><strong>Subtotal</strong></div></td>
           <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->subtotal, 2, ',', '.'); ?></td>
         </tr>  
         <tr>
-          <td colspan="9" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
+          <td colspan="10" ><div class="text_align_right"><strong>Envio y Transporte</strong></div></td>
           <td ><?php 
           	if($orden->envio>0)
           		echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; 
@@ -770,22 +729,22 @@ $tracking=$orden->getTrackingInfo();
         		echo "<b class='text-success'>GRATIS</b>";  ?></td>
         </tr>    
         <tr>
-          <td colspan="9" ><div class="text_align_right"><strong>Descuento</strong></div></td>
+          <td colspan="10" ><div class="text_align_right"><strong>Descuento</strong></div></td>
           <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->descuento, 2, ',', '.'); ?></td>
         </tr>  
         <tr>
-          <td colspan="9" ><div class="text_align_right"><strong>Balance utilizado</strong></div></td>
+          <td colspan="10" ><div class="text_align_right"><strong>Balance utilizado</strong></div></td>
           <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->descuentoRegalo, 2, ',', '.'); ?></td>
         </tr> 
         <?php if($orden->iva>0){?>
         <tr>
-          <td colspan="9" ><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Tax'); ?></strong></div></td>
+          <td colspan="10" ><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Tax'); ?></strong></div></td>
           <td ><?php echo Yii::t('contentForm','currSym'); ?> <?php echo number_format($orden->iva, 2, ',', '.'); ?></td>
         </tr>
         <?php }?>  
         <?php if($orden->cupon){ //si utiliza cupon?> 
             <tr >
-              <td colspan="9"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Cupón de Descuento').
+              <td colspan="10"><div class="text_align_right"><strong><?php echo Yii::t('contentForm','Cupón de Descuento').
                       " (".$orden->cupon->cupon->getDescuento()."):";
                       ?></strong></div></td>
               <td><?php echo Yii::t('contentForm', 'currSym').' '.
@@ -793,11 +752,11 @@ $tracking=$orden->getTrackingInfo();
             </tr>
         <?php } ?>
         <tr>
-          <th colspan="9" ><div class="text_align_right"><strong>Total</strong></div></th>
+          <th colspan="10" ><div class="text_align_right"><strong>Total</strong></div></th>
           <th ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->total, 2, ',', '.'); ?></th>
         </tr>
         <tr>
-          <td colspan="9" ><div class="text_align_right"><strong>Peso total del pedido</strong></div></td>
+          <td colspan="10" ><div class="text_align_right"><strong>Peso total del pedido</strong></div></td>
           <td ><?php echo $orden->peso." Kg."; ?></td>
         </tr>           
       </table>

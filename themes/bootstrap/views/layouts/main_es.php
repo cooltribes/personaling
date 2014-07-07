@@ -389,8 +389,8 @@ if(!Yii::app()->user->isGuest){
 		'<p class="padding_small"><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
    
 		
-		$gift="<p class='padding_left_small'><span class='gifts-menu'>Tu Balance:<strong> ".Yii::app()->numberFormatter->format("#,##0.00",Profile::model()->getSaldo(Yii::app()->user->id,true))." ".Yii::t('contentForm','currSym').
-		"</strong></span><br/><span class='gifts-menuA'><a href='".$url."'>Comprar Giftcard</a></span></p>";
+		$gift="<p class='padding_left_small padding_top_xsmall'><span class='gifts-menu'>Tu Balance:<strong> ".Yii::app()->numberFormatter->format("#,##0.00",Profile::model()->getSaldo(Yii::app()->user->id,true))." ".Yii::t('contentForm','currSym').
+		"</strong></span><br/><div class='padding_right_xsmall padding_left_xsmall padding_bottom_xsmall'><a href='".Yii::app()->baseUrl."/giftcard/comprar"."' class='btn btn-block btn-small btn-danger'>Comprar Giftcard</a></div>";
 		 echo 'gift = "'.$gift.'";';
         $htmlMensaje = '';
          echo 'var contenidoMensajes = ""; ';

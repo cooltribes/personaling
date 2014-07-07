@@ -862,7 +862,7 @@ public function actionReportexls(){
 	 * 
 	 */	  
     
-        public function actionDevolver(){
+    public function actionDevolver(){
     	 $orden=$_POST['orden'];
 		 $monto=$_POST['monto'];
 		 
@@ -935,6 +935,10 @@ public function actionReportexls(){
 							        Yii::app()->mail->send($message);
 				
 				Yii::app()->user->setFlash('success', 'Devolucion Registrada exitosamente.');
+				if(UserModule::isAdmin())
+					$out="okadmin";
+				else
+					$out="okuser";
 				
 			}
 			else

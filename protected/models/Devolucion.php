@@ -142,4 +142,68 @@ class Devolucion extends CActiveRecord
 			return $cant;
 		
 	}
+	function getReturn(){
+            
+            $return = new SimpleXMLElement('<Return/>');
+            
+            //Codigo de Albaran
+            $codigo = $orden->id;
+            $return->addChild('Albaran', $this->id);
+            
+            //Fecha de Albaran
+            $fecha = date("Y-m-d", strtotime($this->fecha));
+            $return->addChild("FechaAlbaran", "{$fecha}");
+			$return->addChild("MotivoDevolucion", "Ropa Fea");
+			$return->addChild("Outbound", $this->orden_id);             
+            //Cliente - Usuario
+    
+            $item= $return->addChild("item");
+            $item->addChild("EAN", "{$ptc->SKU}");
+            $item->addChild("Nombre", "{$usuario->profile->getNombre()}");
+            
+            //Direccion
+            $direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
+            $dirString = $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;
+            
+            $ciudadEnvio = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
+            
+            $codigoPostal = CodigoPostal::model()->findByPk($direccionEnvio->codigo_postal_id);
+            //ZIP
+            if($codigoPostal){
+                $codigoPostal = $codigoPostal->codigo;                
+            }else{
+               $codigoPostal = "No existe";                
+            }
+            
+            $cliente->addChild("Direccion", "{$dirString}");
+            $cliente->addChild("CP", "{$codigoPostal}");
+            $cliente->addChild("Poblacion", "{$ciudadEnvio->nombre}");
+            $cliente->addChild("Pais", "{$direccionEnvio->pais}");
+            
+            $cliente->addChild("Email", "{$usuario->email}");
+
+            //Listado de items vendidos   
+            $productos = $orden->ohptc;
+            foreach ($productos as $producto) {
+                
+                $item = $return->addChild("Item");                
+                //Agregar el SKU
+                $item->addChild("EAN", "{$producto->preciotallacolor->sku}");
+                //Agregar la cantidad vendida.                
+                $item->addChild("Cantidad", "{$producto->cantidad}");                
+                
+            }            
+
+            //Guardar return en la BD
+            $returnBD = new ReturnXSD();
+            $returnBD->orden_id = $orden->id;
+            //discrep, estado, cantBultos por defecto en 0
+            
+            
+            //Enviar return a LF y guardarlo en local para respaldo
+            $subido = MasterData::subirArchivoFtp($return, 3, $orden->id);
+            
+            
+        }
+	
 }

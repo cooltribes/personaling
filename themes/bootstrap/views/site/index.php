@@ -107,7 +107,35 @@ if(isset($seo)){
     </div>
 </section>
 
-
+<?php
+	
+	
+	if(Yii::app()->user->isGuest){
+		echo'<div class="margin_top_large"></div><div class="braker_horz_top_less_space no_margin_bottom"></div>';
+		
+		
+		$user = User::model()->findByPk(Yii::app()->user->id);
+		$looks = new Look;
+		$productos = new Producto;
+		$psDestacados = new User;
+                
+                
+                $psDestacados = User::model()->findAllByAttributes(array('ps_destacado' => '1'), new CDbCriteria(array(
+                    'limit' => 4,
+                    'order' => 'fecha_destacado DESC'
+                )));
+                
+		$this->renderPartial('/site/top',array(
+					'dataProvider' => $looks->masvendidos(3),
+					'dataProvider_productos' => $productos->masvendidos(6),
+					'dataProvider_destacados' => $looks->lookDestacados(3),
+					'user'=>$user,
+                                        'psDestacados' => $psDestacados,//->getPsDestacados(4),
+				));	
+		
+		
+	}
+?>
 
 <script type="text/javascript">
 $('#sliderHome').carousel({

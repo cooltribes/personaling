@@ -70,44 +70,51 @@ width="1" height="1" border="0" alt="" />
     <div class="container">
     <div class="span12">
         <!--    <h1>Todos los looks</h1>-->
+        <?php
+        // este bloque no se debe mostrar si el usuario es hombre
+        if((isset($user) && $user->profile->sex == 1) || !isset($user)){
+            ?>
+            <div class="row-fluid margin_bottom_medium">
+                <div class="span2 offset4 text_align_right botones">
+                    <?php
+                    //var_dump(Yii::app()->getRequest()->getUrlReferrer());
+                    $this->widget('bootstrap.widgets.TbButton', array(
+                        'label' => 'Todos los looks',
+                        'buttonType' => 'button',
+                        'type' => $todosLosLooks?'danger':'',
+                        'size' => 'large',
+                        //'disabled' => true,
+                        'htmlOptions' => array(
+                            'id' => 'btnTodos',
+                            'onclick' => 'js:clickTodos()',
+                            'role' => 'button',
+                            'class' => $todosLosLooks?'':'btn-rectangle',
+                            'data-toggle' => 'modal',
+                        ),
+                    ));
+                    ?>
+                </div>
+                <div class="span6 botones2">
+                    <?php
+                    $this->widget('bootstrap.widgets.TbButton', array(
+                        'label' => 'Looks para ti',
+                        'buttonType' => 'button',
+                        
+                        'type' => $todosLosLooks?'':'danger',
+                        'size' => 'large',
+                        'htmlOptions' => array(
+                            'id' => 'btnMatch', 
+                            'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
+                            'class' => $todosLosLooks?'btn-rectangle':'',
+                        ),
+                    ));
+                    ?>
+                </div>
+            </div>
 
-        <div class="row-fluid margin_bottom_medium">
-            <div class="span2 offset4 text_align_right botones">
-                <?php
-                //var_dump(Yii::app()->getRequest()->getUrlReferrer());
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'label' => 'Todos los looks',
-                    'buttonType' => 'button',
-                    'type' => $todosLosLooks?'danger':'',
-                    'size' => 'large',
-                    //'disabled' => true,
-                    'htmlOptions' => array(
-                        'id' => 'btnTodos',
-                        'onclick' => 'js:clickTodos()',
-                        'role' => 'button',
-                        'class' => $todosLosLooks?'':'btn-rectangle',
-                        'data-toggle' => 'modal',
-                    ),
-                ));
-                ?>
-            </div>
-            <div class="span6 botones2">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'label' => 'Looks para ti',
-                    'buttonType' => 'button',
-                    
-                    'type' => $todosLosLooks?'':'danger',
-                    'size' => 'large',
-                    'htmlOptions' => array(
-                        'id' => 'btnMatch', 
-                        'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
-                        'class' => $todosLosLooks?'btn-rectangle':'',
-                    ),
-                ));
-                ?>
-            </div>
-        </div>
+            <?php
+        }
+        ?>
 
 
     </div>

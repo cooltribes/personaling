@@ -87,6 +87,12 @@ $b='';
 						$iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
 					}
 				}
+
+				// si no tiene descuento reviso si está marcada como precio especial para agregar el ícono
+				if($iconoDescuento == '' && $data->precio_especial == 1){
+					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 1.2em;">Precio especial</span></div>';
+				}
+
 				//var_dump($data->tipoDescuento);
 				/*if($data->precioVenta < $data->getPrecioImpuesto()){
 					$porcentaje = (($data->getPrecioImpuesto() - $data->precioVenta) * 100) / $data->getPrecioImpuesto();

@@ -26,29 +26,50 @@ $this->breadcrumbs=array(
     
 
             <fieldset>
-                <legend>Nueva solicitud</legend>
+                <legend><h3>Tu balance actual: <strong><?php echo Yii::t('contentForm', 'currSym').
+                        " " . $user->getSaldoPorComisiones(); ?></strong></h3></legend>
 
-                <?php echo $form->errorSummary($model); ?>
+                <?php  echo $form->errorSummary($model, ""); ?>
                 <div class="control-group input-prepend<?php echo $model->hasErrors("monto") ? " error" : ""; ?>">
                     <label class="control-label required">
                         <?php echo Yii::t('contentForm', 'Amount'); ?> <span class="required">*</span>
                     </label>
                     <div class="controls">
                         <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>
-                        <?php echo CHtml::activeNumberField($model, 'monto', array('class' => 'span1'));
+                        <?php echo CHtml::activeNumberField($model, 'monto', array(
+                            'class' => 'span1 text_align_right',
+                            'step' => 'any',
+                            'min' => Pago::MONTO_MIN,
+                            'max' => Pago::MONTO_MAX,
+                            ));
                         ?>
                     </div>
                 </div>
                 <div class="control-group<?php echo $model->hasErrors("tipo") ? " error" : ""; ?>">
                     <label class="control-label required">
-                        <?php echo Yii::t('contentForm', 'Payment Type'); ?> <span class="required">*</span>
+                        <?php echo Yii::t('contentForm', 'Pay through'); ?> <span class="required">*</span>
                     </label>
                     <div class="controls">                        
-                        <?php echo CHtml::activeDropDownList($model, 'monto',Pago::getTiposPago(), array('class' => 'span2')); ?>
+                        <?php echo TbHtml::activeDropDownList($model, 'tipo',Pago::getTiposPago(), array('class' => 'span2')); ?>
                     </div>
                 </div>
 
-
+                <!--BANCO-->
+                <?php                
+                echo $form->textFieldRow($model, 'entidad', array(
+                    'class' => 'span2',
+                    'hint' => 'En caso de seleccionar pago mediante Cuenta Bancaria',
+//                    'required' => true,
+                ));
+                ?>	
+                <!--Cuenta-->
+                <?php                
+                echo $form->textFieldRow($model, 'cuenta', array(
+                    'class' => 'span3',
+                    'hint' => 'Cuenta PayPal o Nro. de cuenta bancaria',
+                    'required' => true,
+                ));
+                ?>	
                 <?php
                 /*
                 echo $form->textFieldRow($model, 'inicio_vigencia', array(

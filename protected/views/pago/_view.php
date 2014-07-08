@@ -14,7 +14,7 @@
     
     <!--Usuario-->
     <td>
-        <h5 class="no_margin_bottom no_margin_top"> <?php echo $data->user->getName();?></h5>
+        <h5 class="no_margin_bottom no_margin_top"> <?php echo $data->user->profile->getNombre();?></h5>
         <small>
             <?php            
                echo $data->user->email;            
@@ -39,7 +39,7 @@
     
     <!--Fecha de Solicitud-->
     <td>
-        <?php echo date("d/m/Y", $data->getFechaSolicitud()); ?>
+        <?php echo date("d/m/Y h:i:s a", $data->getFechaSolicitud()); ?>
     </td>
     
     <!--Fecha de Respuesta-->

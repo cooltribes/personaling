@@ -45,15 +45,15 @@ $this->breadcrumbs=array(
         $template = '{summary}
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
             <tr>
-                <th rowspan="2" scope="col"></th>
-                <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'ID').'</th>
-                <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'User').'</th>
-                <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'State').'</th>                
-                <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Payment Type').'</th>
-                <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Amount').' '.Yii::t('contentForm', 'currSym').'</th>
-                <th colspan="2" scope="col">'.Yii::t('contentForm' , 'Request Date').'</th>
-                <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Response Date').'</th>
-                <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Actions').'</th>
+                <th scope="col"></th>
+                <th scope="col">'.Yii::t('contentForm' , 'ID').'</th>
+                <th scope="col">'.Yii::t('contentForm' , 'User').'</th>
+                <th scope="col">'.Yii::t('contentForm' , 'State').'</th>                
+                <th scope="col">'.Yii::t('contentForm' , 'Payment Type').'</th>
+                <th scope="col">'.Yii::t('contentForm' , 'Amount').' '.Yii::t('contentForm', 'currSym').'</th>
+                <th scope="col">'.Yii::t('contentForm' , 'Request Date').'</th>
+                <th scope="col">'.Yii::t('contentForm' , 'Response Date').'</th>
+                <th scope="col">'.Yii::t('contentForm' , 'Actions').'</th>
             </tr>           
         {items}
         </table>

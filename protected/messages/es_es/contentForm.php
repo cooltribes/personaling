@@ -246,6 +246,7 @@ return array (
 	'Paid' => 'Ya pagados',
 	'Parcial Returned' => 'Devolución Parcial',
 	'Pay MercadoPago' => 'Pagar con MercadoPago',
+	'Pay through' => 'Pagar mediante',
 	'Pay with credit card' => 'Pagar con tarjeta de crédito',
 	'Pay with PayPal' => 'Pagar con Paypal',
 	'Payment confirmet' => 'Pago confirmado',

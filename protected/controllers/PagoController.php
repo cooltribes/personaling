@@ -58,19 +58,32 @@ class PagoController extends Controller
 	public function actionSolicitar()
 	{
 		$model=new Pago;
-
+                $user = User::model()->findByPk(Yii::app()->user->id);
+                
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Pago']))
 		{
-			$model->attributes=$_POST['Pago'];
-			if($model->save())
+			$model->attributes = $_POST['Pago'];
+                        $model->user_id = Yii::app()->user->id;
+                        $model->fecha_solicitud = date("Y-m-d H:i:s");
+                        
+                        //si metodo de pago es paypal
+                        if($model->tipo == 0){                            
+                            //poner el nombre del banco "PAYPAL"
+                            $model->entidad = "PayPal";
+                        }
+                        
+                        if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->render('create',array(
+                
+                
+		$this->render('solicitar',array(
 			'model'=>$model,
+			'user'=>$user,
 		));
 	}
 
@@ -79,7 +92,7 @@ class PagoController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionDetalle($id)
 	{
 		$model=$this->loadModel($id);
 
@@ -93,7 +106,7 @@ class PagoController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->render('update',array(
+		$this->render('detalle',array(
 			'model'=>$model,
 		));
 	}

@@ -51,6 +51,7 @@
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'estado', array(0 => 'Activo', 1 => 'Inactivo',)); ?> <?php echo $form->error($model,'estado'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'destacado', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'destacado'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'outlet', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'outlet'); ?> </div>
+                    <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'precio_especial', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'precio_especial'); ?> </div>
                     <div class="control-group">
                         <label for="" class="control-label required"> Calendario</label>
                         <div class="controls">

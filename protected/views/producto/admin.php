@@ -248,6 +248,7 @@ $template = '{summary}
         <option>Borrar</option>
         <option>Descuentos</option>
         <option>Outlet</option>
+        <option>Precio Especial</option>
       </select>
     </div>
 
@@ -310,13 +311,7 @@ $template = '{summary}
 						},0);
 				}
 
-				if(data.status==6)
-				{
-					$('#myModal').html(data.html);
-					$('#myModal').modal();
-				}
-
-				if(data.status==7)
+				if(data.status==6 || data.status==7 || data.status==8)
 				{
 					$('#myModal').html(data.html);
 					$('#myModal').modal();

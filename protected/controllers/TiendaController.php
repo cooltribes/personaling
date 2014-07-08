@@ -511,14 +511,14 @@ class TiendaController extends Controller
 		
 
 		$this->render('index_new',
-		array('index'=>$producto,
-		'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
-		'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
-		'pages'=>$pages,
-		'total'=>$total,
-		'seo' => $seo,
-		));	
-		}	
+			array('index'=>$producto,
+				'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
+				'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
+				'pages'=>$pages,
+				'total'=>$total,
+				'seo' => $seo,
+			));
+		}
 	}
 	 
 	
@@ -1431,11 +1431,12 @@ public function actionCategorias2(){
                     'todosLosLooks' => $todosLosLooks,
                     'gift'=>$gift,
                     'seo' => $seo,
+                    'user' => $userTmp,
                 ));
 				
 //$time_taken = microtime(true) - $start;
 //echo $time_taken."<br>"; 
-            }	
+            }
 			
 		
 	}

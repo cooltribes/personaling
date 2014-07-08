@@ -40,7 +40,7 @@ class ProductoController extends Controller
                                     'tallacolor','addtallacolor','varias','categorias',
                                     'recatprod','seo', 'historial','importar','descuentos',
                                     'reporte','reportexls', "createExcel", 'plantillaDescuentos',
-                                    'importarPrecios', 'exportarExcel', 'outlet'),
+                                    'importarPrecios', 'exportarExcel', 'outlet', 'precioEspecial'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -325,17 +325,18 @@ public function actionReportexls(){
 			if(isset($exist)) // si existe
 			{
 				 Producto::model()->updateByPk($exist->id, array(
-				 	'nombre' => $_POST['Producto']['nombre'],
-				 	'marca_id'=>$_POST['marcas'],
-				 	'descripcion'=>$_POST['Producto']['descripcion'],
-				 	'estado'=>$_POST['Producto']['estado'],
-				 	'fInicio'=>$_POST['Producto']['fInicio'],
-					'fFin'=>$_POST['Producto']['fFin'],
-					'destacado' => $_POST['Producto']['destacado'],
-					'peso' => $_POST['Producto']['peso'],
-					'almacen' => $_POST['Producto']['almacen'],
-					'temporada' => $_POST['Producto']['temporada'],
-					'outlet' => $_POST['Producto']['outlet']
+					 	'nombre' => $_POST['Producto']['nombre'],
+					 	'marca_id'=>$_POST['marcas'],
+					 	'descripcion'=>$_POST['Producto']['descripcion'],
+					 	'estado'=>$_POST['Producto']['estado'],
+					 	'fInicio'=>$_POST['Producto']['fInicio'],
+						'fFin'=>$_POST['Producto']['fFin'],
+						'destacado' => $_POST['Producto']['destacado'],
+						'peso' => $_POST['Producto']['peso'],
+						'almacen' => $_POST['Producto']['almacen'],
+						'temporada' => $_POST['Producto']['temporada'],
+						'outlet' => $_POST['Producto']['outlet'],
+						'precio_especial' => $_POST['Producto']['precio_especial']
 					));
 					
 					Yii::app()->user->updateSession();
@@ -379,6 +380,8 @@ public function actionReportexls(){
 						$this->redirect(array('create'));
 					
 					
+				}else{
+					Yii::trace('Crear producto, Error:'.print_r($model->getErrors(), true), 'admin');
 				}
 			}
 	
@@ -1315,6 +1318,37 @@ public function actionReportexls(){
 					$datos=$datos."</div>";	
 				$datos .= '</form>';
 				$result['html'] = $datos;
+			}else if($accion=="Precio Especial") {
+				$result['status'] = "8";
+				foreach($checks as $id){
+					if($id!='todos'){
+						$model = Producto::model()->findByPk($id);
+						$result['products'][$id] = array();
+						$result['products'][$id]['codigo'] = $model->codigo;
+						$result['products'][$id]['nombre'] = $model->nombre;
+					}
+				}
+				$datos="";
+				$datos=$datos."	<div class='modal-header'>"; 
+				$datos=$datos. "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>";
+				$datos=$datos."<h3 id='myModalLabel'>Precio Especial - ".sizeof($checks)." productos";
+				$datos=$datos."</h3></div>";
+				
+				// fin del header
+				$datos .= '<form method="post" action="'.Yii::app()->baseUrl.'/producto/precioEspecial" id="precio-especial-form" class="form-horizontal" enctype="multipart/form-data">';
+					$datos=$datos."<div class='modal-body'>";
+						$datos .= 'Se establecerá precio especial para estos productos. ¿Desea continuar?';
+	                          $datos .= CHtml::hiddenField('product_list', $_POST['check'], array());
+					$datos=$datos."</div>";
+					// fin del body
+					
+					$datos=$datos."<div class='modal-footer'>";
+						$datos .= CHtml::submitButton('Continuar', array('class'=>'btn btn-success', 'id'=>'procesar_descuento'));
+						$datos=$datos. "<button type='button' class='btn' data-dismiss='modal' aria-hidden='true'>Cancelar</button>";
+						//$datos=$datos."<in href='detalle/' title='Procesar' class='btn btn-success'><i class='icon-pencil'></i> Procesar</a> ";
+					$datos=$datos."</div>";	
+				$datos .= '</form>';
+				$result['html'] = $datos;
 			}
 
 		}
@@ -1402,6 +1436,44 @@ public function actionReportexls(){
 			}
 			if($cont_updated > 0){
 				Yii::app()->user->setFlash('success', $cont_updated.' productos enviados al outlet');
+			}
+			if($cont_error > 0){
+				Yii::app()->user->setFlash('error', $error_msg.'Ocurrió un error al procesar la solicitud');
+			}
+		}else{
+			Yii::app()->user->setFlash('error', 'Solicitud inválida');
+		}
+		$this->redirect(array('admin'));
+	}
+
+	public function actionPrecioEspecial(){
+		if(isset($_POST['product_list'])){
+			$products = explode(',',$_POST['product_list']);
+			$cont_updated = 0;
+			$cont_error = 0;
+			$error_msg = '';
+			foreach ($products as $id) {
+				if($id!='todos'){
+					$product = Producto::model()->findByPk($id);
+					$product->scenario = 'precio_especial';
+					//$price = Precio::model()->findByAttributes(array('tbl_producto_id'=>$id));
+					$product->precio_especial = 1;
+
+					
+
+					if($product->save()){
+						$cont_updated++;
+					}else{
+						$cont_error++;
+						$ar = $product->getErrors();
+						$error_msg .= 'Producto '.$id.' no actualizado<br/>';
+						//print_r($product->getErrors());
+						Yii::trace('Precio especial para prenda, Error:'.print_r($product->getErrors(), true), 'admin');
+					}
+				}
+			}
+			if($cont_updated > 0){
+				Yii::app()->user->setFlash('success', $cont_updated.' productos con precio especial');
 			}
 			if($cont_error > 0){
 				Yii::app()->user->setFlash('error', $error_msg.'Ocurrió un error al procesar la solicitud');

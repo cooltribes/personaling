@@ -125,6 +125,11 @@
                   //$iconoDescuento = '<div class="icono-descuento">%<span>Descuento</span></div>';
                 }
               }
+
+              if($iconoDescuento == '' && $producto->precio_especial == 1){
+                $iconoDescuento = '<div class="icono-descuento" style="height: 71px; padding-top: 30px;"><span style="font-size: 20px; line-height: 1em;">Precio especial</span></div>';
+              }
+
               $colorPredet="";
               
               echo "<div class='span6' style=' position: relative; '>{$iconoDescuento}<div class='imagen_principal'> 

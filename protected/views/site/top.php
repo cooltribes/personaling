@@ -1,7 +1,9 @@
-<?php
-$this->breadcrumbs=array(
-    'Top',
-);
+<?php 
+if(!Yii::app()->user->isGuest){
+	$this->breadcrumbs=array(
+	    'Top',
+	);
+}
 function str_lreplace($search, $replace, $subject)
 {
     $pos = strrpos($subject, $search);

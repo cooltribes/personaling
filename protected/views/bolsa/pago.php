@@ -549,7 +549,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 
                 <?php if(true || $balance > 0){ ?>  
                 <label class="radio<?php echo $class ?>" id="opt-balance">
-                      <input type="radio" name="opcionSaldo" id="radio-Saldo" value="1" onclick="usarBalance(<?php echo $total; ?>, <?php echo $balance; ?>)">
+                      <input type="radio" name="opcionSaldo" id="radio-Saldo" value="1" onclick="usarBalance(<?php echo $total; ?>)">
                       <?php
                         if($admin){
                             echo Yii::t('contentForm', 'Use Balance.'); ?><br>
@@ -563,7 +563,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     </label>
                 <?php } ?>
                 <label class="radio" id="opt-codigo">
-                  <input type="radio" name="opcionSaldo" id="radio-Cupon" value="2" onclick="usarCupon(<?php echo $total; ?>, <?php echo $balance; ?>)">
+                  <input type="radio" name="opcionSaldo" id="radio-Cupon" value="2" onclick="usarCupon()">
                     <?php
                         echo Yii::t('contentForm', 'Tengo un código de descuento!'); 
                     ?>
@@ -688,12 +688,14 @@ else
 
 <script>
 	
-	
+    var balanceUsuario = <?php echo $balance; ?>;
 	
         $("#aplicarGC").click(function(e){
             $("#aplicarAjax").val("1");
                         
             var datos = $("#giftCard").find("input").serialize();
+            //("#giftCard").find(".controls input").prop("disabled", true);
+            $("body").addClass("aplicacion-cargando");
            
             $.ajax({
                 type: 'POST',
@@ -727,9 +729,11 @@ else
                               opacity: 0,
                             }, {
                                 duration: 1000,
-                                complete: function(){
-                                  element.text("<?php  echo Yii::t('backEnd', 'currSym'); ?> " + data[0].amount);
-                                  showAlert(data[0].type, data[0].message);
+                                complete: function(){                                   
+                                    //Agregar el saldo por si selecciona usar saldo
+                                    balanceUsuario = data[0].amount;
+                                    element.text("<?php  echo Yii::t('backEnd', 'currSym'); ?> " + data[0].amount);
+                                    showAlert(data[0].type, data[0].message);
                                 }
                             } );                                
 
@@ -743,6 +747,8 @@ else
                         }
                         
                     }
+                    
+                    $("body").removeClass("aplicacion-cargando");                   
                     
                 }
             });    
@@ -928,8 +934,7 @@ $('#TarjetaCredito_year').change(function(){
 		
 	});
 	
-	
-
+        
 	function calcular_total(total, balance){
 		 
 		if($("#asegurado").is(':checked')){
@@ -974,9 +979,9 @@ $('#TarjetaCredito_year').change(function(){
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
 	}
         
-        /*NELSON*/
-	function usarCupon(total, balance){
-		
+        /*NELSON*/        
+	function usarCupon(){
+		var balance = balanceUsuario;
 		if(balance > 0){
                     
                      $('#usar_balance_hidden').val('0');
@@ -990,8 +995,9 @@ $('#TarjetaCredito_year').change(function(){
 		//$('#tabla_resumen').append('<tr><td>Balance usado: </td><td>0 Bs.</td></tr>');
 	}
 
-        function usarBalance(total, balance){
+        function usarBalance(total){
 		
+                var balance = balanceUsuario;
 		if(balance > 0){
                     
                     if(balance >= total){

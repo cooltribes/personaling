@@ -473,7 +473,7 @@ class Producto extends CActiveRecord
             if (isset($this->_precio->ahorro)){      
                 
                 $this->_precio->ahorro = $this->getPrecioImpuesto(false) - $this->getPrecioDescuento(false);
-                $this->_precio->save();
+                //$this->_precio->save();
                 
                 if ($format) {
                     return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->ahorro);

@@ -100,19 +100,45 @@ class PagoController extends Controller
 	public function actionDetalle($id)
 	{
 		$model=$this->loadModel($id);
-
+                $user = $model->user;
+                
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Pago']))
+		if(isset($_POST['aceptar']))
 		{
-			$model->attributes=$_POST['Pago'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+                    if($_POST['idTransaccion'] != ""){
+                        
+                        $model->fecha_respuesta = date("Y-m-d H:i:s");
+                        $model->id_transaccion = $_POST['idTransaccion'];
+                        $model->admin_id = Yii::app()->user->id;
+                        $model->estado = 1;
+                        
+                        if($model->save()){
+                            //Descontar saldo de la PS
+                            Yii::app()->user->setFlash("success", "Se ha registrado el pago exitosamente.");                           
+                        
+                        }else{
+                            Yii::trace('Aceptando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');
+                            Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                           
+
+                        }                     
+                        
+                    }else{
+                        Yii::app()->user->setFlash("error", "Debes ingresar un código de transacción.");
+                    }
+
+                }else if(isset($_POST['rechazar'])){                    
+                    
+                    if($_POST['observacion'] != ""){
+                        
+                    }
+                    
+                }
 
 		$this->render('detalle',array(
 			'model'=>$model,
+			'usuario'=>$user,
 		));
 	}
 

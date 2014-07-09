@@ -50,7 +50,11 @@ $this->breadcrumbs=array(
                         <?php echo Yii::t('contentForm', 'Pay through'); ?> <span class="required">*</span>
                     </label>
                     <div class="controls">                        
-                        <?php echo TbHtml::activeDropDownList($model, 'tipo',Pago::getTiposPago(), array('class' => 'span2')); ?>
+                        <?php echo TbHtml::activeDropDownList($model, 'tipo',Pago::getTiposPago(),
+                                array('class' => 'span2',
+                                      'prompt' => '-Seleccionar-',
+                                      'required' => true,
+                                    )); ?>
                     </div>
                 </div>
 

@@ -71,7 +71,8 @@ class Pago extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('user_id, tipo', 'required'),
+            array('user_id', 'required'),
+            array('tipo', 'required', 'message'=>'Debes seleccionar un método de pago'),
             array('entidad', 'required', 'message'=>'Debes indicar el nombre del banco'),
             array('cuenta', 'required', 'message'=>'Debes indicar tu cuenta'),
             array('monto', 'required', 'message'=>'Debes ingresar un monto'),

@@ -200,6 +200,7 @@ return array (
 	'Missing' => 'que faltan',
 	'Must select at least one item' => 'Debes seleccionar por lo menos una prenda',
 	'My Gift Cards' => 'Mis Gift Cards',
+	'My Payments' => 'Mis Pagos',
 
 
 	'Name' => 'Nombre',

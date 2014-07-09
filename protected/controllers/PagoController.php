@@ -28,11 +28,11 @@ class PagoController extends Controller
 	{
 		return array(			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('solicitar','update','index','view'),
-				'users'=>array('@'),
+				'actions'=>array('solicitar','index'),
+				'expression'=>"UserModule::isPersonalShopper()",
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','view', 'detalle'),
 				'expression'=>"UserModule::isAdmin()",
 			),
 			array('deny',  // deny all users
@@ -57,12 +57,9 @@ class PagoController extends Controller
 	 */
 	public function actionSolicitar()
 	{
-		$model=new Pago;
+		$model = new Pago;
                 $user = User::model()->findByPk(Yii::app()->user->id);
                 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
 		if(isset($_POST['Pago']))
 		{
 			$model->attributes = $_POST['Pago'];
@@ -72,11 +69,19 @@ class PagoController extends Controller
                         //si metodo de pago es paypal
                         if($model->tipo == 0){                            
                             //poner el nombre del banco "PAYPAL"
-                            $model->entidad = "PayPal";
+                            $model->entidad = "PayPal";                            
                         }
                         
-                        if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                        //Validar con el saldo disponible
+                        
+                        if($model->save()){
+//                            $this->redirect(array('view','id'=>$model->id));
+                            //Bloquear saldo
+                            //Notificar a operaciones
+                            $this->redirect(array('index'));
+                            
+                        }
+                            
 		}
 
                 
@@ -130,10 +135,15 @@ class PagoController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Pago');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+            $pago = new Pago();
+            //Buscar mis solicitudes y pagos
+            $pago->unsetAttributes();
+            $pago->user_id = Yii::app()->user->id;
+            $dataProvider = $pago->search();
+                
+            $this->render('index',array(
+                'dataProvider'=>$dataProvider,
+            ));
 	}
 
 	/**

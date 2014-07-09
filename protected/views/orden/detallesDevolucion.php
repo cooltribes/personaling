@@ -18,7 +18,9 @@ $this->breadcrumbs=array(
 	    <div class="alert in alert-block fade alert-error text_align_center">
 	        <?php echo Yii::app()->user->getFlash('error'); ?>
 	    </div>
-	<?php } ?>
+	<?php }echo "++++++++++++++++++++++++++++++++++++++++++++++++";
+	print_r($devolucion->return); 
+	echo "++++++++++++++++++++++++++++++++++++++++++++++++";?>
 
 <div class="container margin_top">
 	<h1> Devolucion #<?php echo $devolucion->id; ?> <small>(Orden #<?php echo $devolucion->orden_id; ?>)</small> </h1>  

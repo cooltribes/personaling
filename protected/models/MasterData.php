@@ -169,6 +169,11 @@ class MasterData extends CActiveRecord
                     $nombre = "Outbound_".$idSaved;
                     $rutaArchivo = Yii::getPathOfAlias('webroot').Outbound::RUTA_ARCHIVOS;                    
                 break;
+				
+				case 4:
+                    $nombre = "Return_".$idSaved;
+                    $rutaArchivo = Yii::getPathOfAlias('webroot').Devolucion::RUTA_RETURN;                    
+                break;
             
                 default:
                     return false;            

@@ -118,7 +118,7 @@ class Inbound extends CActiveRecord
         ));
     }
     
-    /*Retorna la fecha de carga como timestamp*/
+    /*Retorna el estado*/
     public function getEstado() {
         $status = "No Enviado";
         switch ($this->estado){

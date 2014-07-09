@@ -200,6 +200,7 @@ return array (
 	'Missing' => 'que faltan',
 	'Must select at least one item' => 'Debes seleccionar por lo menos una prenda',
 	'My Gift Cards' => 'Mis Gift Cards',
+	'My Payments' => 'Mis Pagos',
 
 
 	'Name' => 'Nombre',
@@ -246,6 +247,7 @@ return array (
 	'Paid' => 'Ya pagados',
 	'Parcial Returned' => 'Devolución Parcial',
 	'Pay MercadoPago' => 'Pagar con MercadoPago',
+	'Pay through' => 'Pagar mediante',
 	'Pay with credit card' => 'Pagar con tarjeta de crédito',
 	'Pay with PayPal' => 'Pagar con Paypal',
 	'Payment confirmet' => 'Pago confirmado',
@@ -558,7 +560,11 @@ return array (
             <p>Aceptamos Visa, Visa Electron, Visa Debit, Maestro, Mastercard de cualquier banco. El sistema te solicitará información indispensable para realizar una transacción regular y efectiva por Internet. Cualquier información adicional será solicitada bajo tu estricta autorización. Una vez confirmado el pago empezarán a correr los días hábiles para el envío de tu pedido.</p>
           </li><br />
           <li><strong>Pagos con Paypal:</strong><br />
-            <p>Aceptamos pagar con Paypal, el sistema de pago más seguro. Solo necesitas estar registrado en Paypal y conectar tu tarjeta de crédito o cuenta bancaria. A partir de allí el sistema solicitará la información necesaria para realizar una transacción regular. Al igual que con los demás sistemas de pago regulares, una vez confirmado el pago empezarán a correr los días hábiles para el envío de tu pedido.</p> <br />
+            <p>Aceptamos pagar con Paypal, el sistema de pago más seguro. Solo necesitas estar registrado en Paypal y conectar tu tarjeta de crédito o cuenta bancaria. A partir de allí el sistema solicitará la información necesaria para realizar una transacción regular. Al igual que con los demás sistemas de pago regulares, una vez confirmado el pago empezarán a correr los días hábiles para el envío de tu pedido.</p> 
+          </li><br />
+          <li><strong>Pagos con cupones/códigos de descuento:</strong><br />
+            <p>Nuestros cupones/códigos de descuento pueden ser utilizados una sola vez por usuario y compra. El uso indebido o fraudulento de los mismos conllevará a Personaling.es a desincorporar cualquier perfil que considere infrinja nuestras condiciones y cancelar las compras involucradas sin previa notificación al usuario.</p> 
+          </li><br />
         </ol>
         <p>Es importante que tengas presente que <a href="http://www.personaling.es" >Personaling.es</a> cuenta con un sistema de protección de datos y seguridad en red donde los datos introducidos están debidamente protegidos. Tu compra con esta forma de pago no implica cargo adicional.</p> ',
 	'Copy de Cookies' => '<div class="page-header">

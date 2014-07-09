@@ -41,7 +41,11 @@ class Pago extends CActiveRecord
                         "Cuenta Bancaria",        
                         );
     
-    /**
+    const MONTO_MIN = 1;
+    const MONTO_MAX = 1000;
+
+
+                        /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return Pago the static model class
@@ -67,14 +71,24 @@ class Pago extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('user_id, admin_id, tipo, entidad, cuenta', 'required'),
-            array('estado, user_id, admin_id, tipo, entidad, id_transaccion', 'numerical', 'integerOnly'=>true),
-            array('monto', 'numerical'),
+            array('user_id', 'required'),
+            array('tipo', 'required', 'message'=>'Debes seleccionar un método de pago'),
+            array('entidad', 'required', 'message'=>'Debes indicar el nombre del banco'),
+            array('cuenta', 'required', 'message'=>'Debes indicar tu cuenta'),
+            array('monto', 'required', 'message'=>'Debes ingresar un monto'),
+            array('estado, user_id, admin_id, tipo, id_transaccion', 'numerical', 'integerOnly'=>true),
+            array('monto', 'numerical', 'min' => self::MONTO_MIN, 'max' => self::MONTO_MAX,
+                    'tooSmall' => 'El pago debe ser de al menos <b>'.
+                        Yii::t('contentForm', 'currSym').' {min}</b>',
+                    'tooBig' => 'El monto máximo que puedes solicitar es de <b>'.
+                        Yii::t('contentForm', 'currSym').' {max}</b>'
+                ),
             array('cuenta', 'length', 'max'=>140),
             array('fecha_solicitud, fecha_respuesta', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, estado, monto, fecha_solicitud, fecha_respuesta, user_id, admin_id, tipo, entidad, cuenta, id_transaccion', 'safe', 'on'=>'search'),
+            array('id, estado, monto, fecha_solicitud, fecha_respuesta, user_id,
+                admin_id, tipo, entidad, cuenta, id_transaccion, observacion', 'safe', 'on'=>'search'),
         );
     }
 
@@ -86,8 +100,8 @@ class Pago extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
-            'admin' => array(self::BELONGS_TO, 'Users', 'admin_id'),
+            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+            'admin' => array(self::BELONGS_TO, 'User', 'admin_id'),
         );
     }
 
@@ -105,7 +119,7 @@ class Pago extends CActiveRecord
             'user_id' => 'User',
             'admin_id' => 'Admin',
             'tipo' => 'Tipo',
-            'entidad' => 'Entidad',
+            'entidad' => 'Entidad Bancaria',
             'cuenta' => 'Cuenta',
             'id_transaccion' => 'Id Transaccion',
         );
@@ -139,9 +153,45 @@ class Pago extends CActiveRecord
         ));
     }
     
-     public static function getTiposPago() {
+    public static function getTiposPago() {
             
         return self::$tiposPago; 
+    }    
+    
+    public function getTipoPago() {
+            
+        return self::$tiposPago[$this->tipo]; 
+    }    
+    
+    /*Retorna el estado*/
+    public function getEstado() {
+        $status = "ERROR";
+        switch ($this->estado){
+            case 0: $status = "En espera"; break;
+            case 1: $status = "Pagado"; break;
+            case 2: $status = "Rechazado"; break;
+        }
+        return $status;
+    }
+    
+    /*Retorna la fecha de carga como timestamp*/
+    public function getFechaSolicitud() {
+        return strtotime($this->fecha_solicitud);
+    }
+    /*Retorna la fecha de carga como timestamp*/
+    public function getFechaRespuesta() {
+        return strtotime($this->fecha_respuesta);
+    }
+    
+    /*retorna el monto con formato o no*/
+    public function getMonto($format = true) {
+        $res = Yii::t('contentForm', 'currSym')." ";
+        if ($format) {
+            $res .= Yii::app()->numberFormatter->format("#,##0.00",$this->monto);
+        } else {
+            $res .= $this->monto;
+        }
+        return $res;
     }
     
 }

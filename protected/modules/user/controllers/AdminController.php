@@ -32,7 +32,7 @@ class AdminController extends Controller
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
 
-                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento','balance','reporteXLS'),
+                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento','balance','reporteXLS','usuariosZoho'),
 
 
 								//'users'=>array('admin'),
@@ -495,7 +495,230 @@ class AdminController extends Controller
 		
 	}
 	
-	
+	public function actionUsuariosZoho(){
+        ini_set('memory_limit','2048M'); 
+
+        $criteria=Yii::app()->session['userCriteria'];
+        $criteria->select = array('t.id');
+        //$criteria->limit = '10';
+        $dataProvider = new CActiveDataProvider('User', array(
+                    'criteria' => $criteria,
+                    
+                ));
+                
+        $pages=new CPagination($dataProvider->totalItemCount);
+        $pages->pageSize=$dataProvider->totalItemCount;
+        $dataProvider->setPagination($pages);
+        
+        //print_r($pages);
+        
+        $title = array(
+            'font' => array(
+             
+                'size' => 14,
+                'bold' => true,
+                'color' => array(
+                    'rgb' => '000000'
+                ),
+        ));
+        Yii::import('ext.phpexcel.XPHPExcel');    
+    
+        $objPHPExcel = XPHPExcel::createPHPExcel();
+    
+        $objPHPExcel->getProperties()->setCreator("Personaling.com")
+                                 ->setLastModifiedBy("Personaling.com")
+                                 ->setTitle("Reporte-Usuarios")
+                                 ->setSubject("Reporte de Usuarios")
+                                 ->setDescription("Reporte de Usuarios")
+                                 ->setKeywords("personaling")
+                                 ->setCategory("personaling");
+        $objPHPExcel->setActiveSheetIndex(0)
+                                        ->setCellValue('A1', 'Email')
+                                        ->setCellValue('B1', 'Nombre')
+                                        ->setCellValue('C1', 'Apellido')
+                                        ->setCellValue('D1', 'Fecha de nacimiento')
+                                        ->setCellValue('E1', 'Descripción')
+                                        ->setCellValue('F1', 'Sitio web')
+                                        ->setCellValue('G1', 'Móvil')
+                                        ->setCellValue('H1', 'Teléfono')
+                                        ->setCellValue('I1', 'Facebook')
+                                        ->setCellValue('J1', 'Twitter')
+                                        ->setCellValue('K1', 'Pinterest');
+                
+                $objeto = $objPHPExcel->setActiveSheetIndex(0);
+                $objeto->setCellValue('L1', 'Altura')
+                        ->setCellValue('M1', 'Contextura')
+                        ->setCellValue('N1', 'Color de cabello')
+                        ->setCellValue('O1', 'Color de ojos')
+                        ->setCellValue('P1', 'Color de piel')
+                        ->setCellValue('Q1', 'Forma de cuerpo')
+                        ->setCellValue('R1', 'Estilo Diario')
+                        ->setCellValue('S1', 'Estilo Fiesta')
+                        ->setCellValue('T1', 'Estilo Vacaciones')
+                        ->setCellValue('U1', 'Estilo Deporte')
+                        ->setCellValue('V1', 'Estilo Oficina')
+                        ->setCellValue('W1', 'Género')
+                        ->setCellValue('X1', 'Status')
+                        ->setCellValue('Y1', 'Administrador')
+                        ->setCellValue('Z1', 'Personal Shopper')
+                        ->setCellValue('AA1', 'Calle')
+                        ->setCellValue('AB1', 'Ciudad')
+                        ->setCellValue('AC1', 'Estado')
+                        ->setCellValue('AD1', 'Código Postal')
+                        ->setCellValue('AE1', 'País')
+                        ;
+                
+                
+                
+        foreach(range('A','Z') as $columnID) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+            ->setAutoSize(true);
+        }  
+            /*$objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('C1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('E1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('G1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('H1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('I1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('J1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('K1')->applyFromArray($title);
+                        
+            $objPHPExcel->getActiveSheet()->getStyle('L1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('M1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('N1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('O1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('P1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('Q1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('R1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('S1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('T1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('U1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('V1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('W1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('X1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('Y1')->applyFromArray($title);
+            $objPHPExcel->getActiveSheet()->getStyle('Z1')->applyFromArray($title);*/
+                        
+        
+        $fila=2;
+        foreach($dataProvider->getData() as $data){
+            $user=User::model()->findByPk($data->id);
+            $saldo=Yii::app()->numberFormatter->formatDecimal(Profile::model()->getSaldo($data->id));
+            if ($user->getLastvisit()) 
+                $lastVisit=date("d/m/Y",$user->getLastvisit()); 
+            else 
+                $lastVisit= 'N/D'; 
+            if ($user->getCreatetime())
+                $createdAt=date("d/m/Y",$user->getCreatetime()); 
+            else 
+                $createdAt='N/D'; 
+
+            $time = strtotime($user->profile->birthday);
+
+            $admin = 'No';
+            $ps = 'No';
+
+            if($user->superuser == 1){
+                $admin = 'Si';
+            }
+            if($user->personal_shopper == 1){
+                $ps = 'Si';
+            }
+
+            $direccion = Direccion::model()->findByAttributes(array('user_id'=>$user->id));
+        
+            
+            $objPHPExcel->setActiveSheetIndex(0)
+                                        ->setCellValue('A'.$fila , $user->email) 
+                                        ->setCellValue('B'.$fila , $user->profile->first_name) 
+                                        ->setCellValue('C'.$fila , $user->profile->last_name) 
+                                        ->setCellValue('D'.$fila , date('d/m/Y', $time))
+                                        ->setCellValue('E'.$fila , $user->profile->bio)
+                                        ->setCellValue('F'.$fila , $user->profile->url) 
+                                        ->setCellValue('G'.$fila , $user->profile->tlf_celular) 
+                                        ->setCellValue('H'.$fila , $user->profile->tlf_casa) 
+                                        ->setCellValue('I'.$fila , $user->profile->facebook)                            
+                                        ->setCellValue('J'.$fila , $user->profile->twitter)
+                                        ->setCellValue('K'.$fila , $user->profile->pinterest);
+                        
+                        $objeto = $objPHPExcel->setActiveSheetIndex(0);
+//                        $columnID = "L";
+                        $rangos = array();
+                        
+                        $profileFields=$user->profile->getFields();
+                        if ($profileFields) {
+                            foreach($profileFields as $field) {
+                                if($field->id > 4 && $field->id < 16){
+                                    $rangos[] =  $field->range.";0==Ninguno";
+                                }
+                                if($field->id == 4){
+                                    $rangosSex = $field->range;
+                                }
+                                
+                            }
+                        }
+//                        
+//                        
+//                        $idProfile = 5;
+//                        foreach(range('L','U') as $columnID) {
+//                            $field = ProfileField::model()->findByPk($idProfile);                            
+//                        }
+        
+                       $objeto     
+                    ->setCellValue('L'.$fila , Profile::range($rangos[0],$user->profile->altura))
+                    ->setCellValue('M'.$fila , Profile::range($rangos[1],$user->profile->contextura))
+                    ->setCellValue('N'.$fila , Profile::range($rangos[2],$user->profile->pelo))
+                    ->setCellValue('O'.$fila , Profile::range($rangos[3],$user->profile->ojos))
+                    ->setCellValue('P'.$fila , Profile::range($rangos[10],$user->profile->piel))
+                    ->setCellValue('Q'.$fila , Profile::range($rangos[4],$user->profile->tipo_cuerpo))
+                    ->setCellValue('R'.$fila , Profile::range($rangos[5],$user->profile->coctel))
+                    ->setCellValue('S'.$fila , Profile::range($rangos[6],$user->profile->fiesta))
+                    ->setCellValue('T'.$fila , Profile::range($rangos[7],$user->profile->playa))
+                    ->setCellValue('U'.$fila , Profile::range($rangos[8],$user->profile->sport))
+                    ->setCellValue('V'.$fila , Profile::range($rangos[9],$user->profile->trabajo))
+                    ->setCellValue('W'.$fila , Profile::range($rangosSex,$user->profile->sex))
+                    ->setCellValue('X'.$fila , $user->getStatus($user->status))
+                    ->setCellValue('Y'.$fila , $admin)
+                    ->setCellValue('Z'.$fila , $ps)
+                    ;
+
+                    if($direccion){
+                        $objeto     
+                        ->setCellValue('AA'.$fila, $direccion->dirUno)
+                        ->setCellValue('AB'.$fila, $direccion->ciudad->nombre)
+                        ->setCellValue('AC'.$fila, $direccion->provincia->nombre)
+                        ->setCellValue('AD'.$fila, $direccion->codigopostal->codigo)
+                        ->setCellValue('AE'.$fila, $direccion->pais)
+                        ;
+                    }
+
+                    $fila++;
+    
+        }
+        $objPHPExcel->setActiveSheetIndex(0);
+
+            // Redirect output to a clientâ€™s web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="ReporteUsuarios.xls"');
+            header('Cache-Control: max-age=0');
+            // If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+         
+            // If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+         
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            ini_set('memory_limit','128M'); 
+            Yii::app()->end();
+        
+    }
 
 	/**
 	 * Displays a particular model.

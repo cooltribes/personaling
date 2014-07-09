@@ -86,7 +86,7 @@ $pagerParams = array(
         </div>
     </div>
 
-    <div class="row margin_top margin_bottom ">
+<!--    <div class="row margin_top margin_bottom ">
         <div class="span4">
             <div class="input-prepend">
                 <form class="no_margin_bottom form-search">
@@ -162,7 +162,7 @@ $pagerParams = array(
         <div class="span2">
 
         </div>
-    </div>
+    </div>-->
     <hr/>
 
     <?php //$this->renderPartial('_filters');    ?>

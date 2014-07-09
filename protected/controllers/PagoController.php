@@ -28,11 +28,11 @@ class PagoController extends Controller
 	{
 		return array(			
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('solicitar','update','index','view'),
-				'users'=>array('@'),
+				'actions'=>array('solicitar','index'),
+				'expression'=>"UserModule::isPersonalShopper()",
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','view', 'detalle'),
 				'expression'=>"UserModule::isAdmin()",
 			),
 			array('deny',  // deny all users
@@ -57,20 +57,38 @@ class PagoController extends Controller
 	 */
 	public function actionSolicitar()
 	{
-		$model=new Pago;
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
+		$model = new Pago;
+                $user = User::model()->findByPk(Yii::app()->user->id);
+                
 		if(isset($_POST['Pago']))
 		{
-			$model->attributes=$_POST['Pago'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $_POST['Pago'];
+                        $model->user_id = Yii::app()->user->id;
+                        $model->fecha_solicitud = date("Y-m-d H:i:s");
+                        
+                        //si metodo de pago es paypal
+                        if($model->tipo == 0){                            
+                            //poner el nombre del banco "PAYPAL"
+                            $model->entidad = "PayPal";                            
+                        }
+                        
+                        //Validar con el saldo disponible
+                        
+                        if($model->save()){
+//                            $this->redirect(array('view','id'=>$model->id));
+                            //Bloquear saldo
+                            //Notificar a operaciones
+                            $this->redirect(array('index'));
+                            
+                        }
+                            
 		}
 
-		$this->render('create',array(
+                
+                
+		$this->render('solicitar',array(
 			'model'=>$model,
+			'user'=>$user,
 		));
 	}
 
@@ -79,22 +97,48 @@ class PagoController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionDetalle($id)
 	{
 		$model=$this->loadModel($id);
-
+                $user = $model->user;
+                
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Pago']))
+		if(isset($_POST['aceptar']))
 		{
-			$model->attributes=$_POST['Pago'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+                    if($_POST['idTransaccion'] != ""){
+                        
+                        $model->fecha_respuesta = date("Y-m-d H:i:s");
+                        $model->id_transaccion = $_POST['idTransaccion'];
+                        $model->admin_id = Yii::app()->user->id;
+                        $model->estado = 1;
+                        
+                        if($model->save()){
+                            //Descontar saldo de la PS
+                            Yii::app()->user->setFlash("success", "Se ha registrado el pago exitosamente.");                           
+                        
+                        }else{
+                            Yii::trace('Aceptando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');
+                            Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                           
 
-		$this->render('update',array(
+                        }                     
+                        
+                    }else{
+                        Yii::app()->user->setFlash("error", "Debes ingresar un código de transacción.");
+                    }
+
+                }else if(isset($_POST['rechazar'])){                    
+                    
+                    if($_POST['observacion'] != ""){
+                        
+                    }
+                    
+                }
+
+		$this->render('detalle',array(
 			'model'=>$model,
+			'usuario'=>$user,
 		));
 	}
 
@@ -117,10 +161,15 @@ class PagoController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Pago');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+            $pago = new Pago();
+            //Buscar mis solicitudes y pagos
+            $pago->unsetAttributes();
+            $pago->user_id = Yii::app()->user->id;
+            $dataProvider = $pago->search();
+                
+            $this->render('index',array(
+                'dataProvider'=>$dataProvider,
+            ));
 	}
 
 	/**

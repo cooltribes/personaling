@@ -18,10 +18,14 @@ class ControlpanelController extends Controller
 				'actions'=>array('create','update'),
 				'users'=>array('@'),
 			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('misventas'),
+				'expression' => 'UserModule::isAdmin() || UserModule::isPersonalShopper()',
+			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','delete','ventas',
                                     'pedidos','usuarios', 'looks', 'productos','ingresos',
-                                    'remuneraciones', 'personalshoppers', 'misventas','seo','createSeo','deleteSeo'),
+                                    'remuneraciones', 'personalshoppers','seo','createSeo','deleteSeo'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -461,8 +465,10 @@ class ControlpanelController extends Controller
      */
     public function actionMisventas($id) {
         
-        $personalShopper = User::model()->findByPk($id);            
-        if($personalShopper===null)
+        $personalShopper = User::model()->findByPk($id); 
+        //Que solo puedan entrar los admin y el propietario PS
+        if($personalShopper===null || 
+                (UserModule::isPersonalShopper() && $id != Yii::app()->user->id))
                 throw new CHttpException(404,'The requested page does not exist.');
         
         $producto = new OrdenHasProductotallacolor;

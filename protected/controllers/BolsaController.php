@@ -3335,6 +3335,7 @@ class BolsaController extends Controller
             $outboundBD = new Outbound();
             $outboundBD->orden_id = $orden->id;
             //discrep, estado, cantBultos por defecto en 0
+            $outboundBD->save();
             
             
             //Enviar Outbound a LF y guardarlo en local para respaldo

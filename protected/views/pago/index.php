@@ -3,7 +3,7 @@
 /* @var $model Pago */
 
 $this->breadcrumbs=array(	
-	'Administrar',
+	Yii::t('contentForm' , 'My Payments'),
 );
 
 ?>
@@ -21,7 +21,7 @@ $this->breadcrumbs=array(
         )
     ); ?>	
     <!-- FLASH OFF --> 
-        <h1><?php echo Yii::t('contentForm' , 'Manage') . " Pagos"; ?></h1>
+        <h1><?php echo Yii::t('contentForm' , 'My Payments'); ?></h1>
     </div>
     
     <style>
@@ -46,8 +46,7 @@ $this->breadcrumbs=array(
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
             <tr>
                 <th scope="col"></th>
-                <th scope="col">'.Yii::t('contentForm' , 'ID').'</th>
-                <th scope="col">'.Yii::t('contentForm' , 'User').'</th>
+                <th scope="col">'.Yii::t('contentForm' , 'No.').'</th>                
                 <th scope="col">'.Yii::t('contentForm' , 'State').'</th>                
                 <th scope="col">'.Yii::t('contentForm' , 'Payment Type').'</th>
                 <th scope="col">'.Yii::t('contentForm' , 'Amount').' '.Yii::t('contentForm', 'currSym').'</th>
@@ -63,7 +62,7 @@ $this->breadcrumbs=array(
         $this->widget('zii.widgets.CListView', array(
             'id' => 'list-auth-items',
             'dataProvider' => $dataProvider,
-            'itemView' => '_view',
+            'itemView' => '_viewPs',
             'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
             'template' => $template,
             'afterAjaxUpdate' => " function(id, data) {						    	

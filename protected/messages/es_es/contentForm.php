@@ -200,6 +200,7 @@ return array (
 	'Missing' => 'que faltan',
 	'Must select at least one item' => 'Debes seleccionar por lo menos una prenda',
 	'My Gift Cards' => 'Mis Gift Cards',
+	'My Payments' => 'Mis Pagos',
 
 
 	'Name' => 'Nombre',
@@ -246,6 +247,7 @@ return array (
 	'Paid' => 'Ya pagados',
 	'Parcial Returned' => 'Devolución Parcial',
 	'Pay MercadoPago' => 'Pagar con MercadoPago',
+	'Pay through' => 'Pagar mediante',
 	'Pay with credit card' => 'Pagar con tarjeta de crédito',
 	'Pay with PayPal' => 'Pagar con Paypal',
 	'Payment confirmet' => 'Pago confirmado',

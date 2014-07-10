@@ -377,8 +377,21 @@ class ProfileController extends Controller
 			$model->pais=Pais::model()->getOficial($model->pais);
 			$model->user_id = $usuario->id;
 			
-			if($model->save())
+			if($model->save()){
+				// update potential at zoho
+                $zoho = new Zoho();
+                $zoho->email = $usuario->email;
+
+                $zoho->calle = $model->dirUno;
+                $zoho->ciudad = $model->ciudad->nombre;
+                $zoho->estado = $model->provincia->nombre;
+                $zoho->codigo_postal = $model->codigopostal->codigo;
+                $zoho->pais = $model->pais;
+                
+                $result = $zoho->save_potential();
+
 				$this->redirect(array('direcciones'));
+			}
 		}
 
 		$this->render('create_dir',array(
@@ -449,7 +462,36 @@ class ProfileController extends Controller
 					//$model->status_register = User::STATUS_REGISTER_ESTILO;
 					//if ($model->save()){
                			Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));						
+						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+
+						// update potential at zoho
+		                $zoho = new Zoho();
+		                $zoho->email = $model->email;
+
+		                $rangos = array();
+                        
+                        $profileFields=$profile->getFields();
+                        if ($profileFields) {
+                            foreach($profileFields as $field) {
+                                if($field->id > 4 && $field->id < 16){
+                                    $rangos[] =  $field->range.";0==Ninguno";
+                                }
+                                if($field->id == 4){
+                                    $rangosSex = $field->range;
+                                }
+                                
+                            }
+                        }
+                        //var_dump($rangos);
+
+		                $zoho->diario = Profile::range($rangos[0],$profile->coctel);
+		                $zoho->fiesta = Profile::range($rangos[1],$profile->fiesta);
+		                $zoho->vacaciones = Profile::range($rangos[2],$profile->playa);
+		                $zoho->deporte = Profile::range($rangos[3],$profile->sport);
+		                $zoho->oficina = Profile::range($rangos[4],$profile->trabajo);
+		                
+		                $result = $zoho->save_potential();
+
 						$this->render('tuestilo',array(
 					    	'model'=>$model,
 							'profile'=>$model->profile,
@@ -757,7 +799,36 @@ class ProfileController extends Controller
 					//$model->status_register = User::STATUS_REGISTER_TIPO;
 					//if ($model->save()){	
 						Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));						
+						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));	
+
+						// update potential at zoho
+		                $zoho = new Zoho();
+		                $zoho->email = $model->email;
+
+		                $rangos = array();
+                        
+                        $profileFields=$profile->getFields();
+                        if ($profileFields) {
+                            foreach($profileFields as $field) {
+                                if($field->id > 4 && $field->id < 16){
+                                    $rangos[] =  $field->range.";0==Ninguno";
+                                }
+                                if($field->id == 4){
+                                    $rangosSex = $field->range;
+                                }
+                                
+                            }
+                        }
+
+		                $zoho->altura = Profile::range($rangos[1],$profile->altura);
+		                $zoho->condicion_fisica = Profile::range($rangos[2],$profile->contextura);
+		                $zoho->color_piel = Profile::range($rangos[0],$profile->piel);
+		                $zoho->color_cabello = Profile::range($rangos[3],$profile->pelo);
+		                $zoho->color_ojos = Profile::range($rangos[4],$profile->ojos);
+		                $zoho->tipo_cuerpo = Profile::range($rangos[5],$profile->tipo_cuerpo);
+		                
+		                $result = $zoho->save_potential();
+
 						/*$this->render('tutipo',array(
 					    	'model'=>$model,
 							'profile'=>$model->profile,
@@ -812,6 +883,28 @@ class ProfileController extends Controller
 				if ($profile->save()){
                 Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+
+				// update potential at zoho
+                $zoho = new Zoho();
+                $zoho->email = $model->email;
+                $zoho->first_name = $profile->first_name;
+                $zoho->last_name = $profile->last_name;
+                $zoho->birthday = $profile->birthday;
+                if($profile->sex == 1)
+                    $zoho->sex = 'Mujer';
+                else if($profile->sex == 2)
+                    $zoho->sex = 'Hombre';
+                $zoho->bio = $profile->bio;
+                $zoho->dni = $profile->cedula;
+                $zoho->tlf_casa = $profile->tlf_casa;
+                $zoho->tlf_celular = $profile->tlf_celular;
+                $zoho->pinterest = $profile->pinterest;
+                $zoho->twitter = $profile->twitter;
+                $zoho->facebook = $profile->facebook;
+                $zoho->url = $profile->url;
+                $result = $zoho->save_potential();
+
+                //var_dump($result);
 
 				/*if(isset($_POST['Profile']['ciudad'])){
 					//API key para lista de Personaling en Mailchimp

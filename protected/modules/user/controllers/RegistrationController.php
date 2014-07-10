@@ -137,6 +137,30 @@ class RegistrationController extends Controller
                             }
                             $profile->user_id = $model->id;
                             $profile->save();
+
+                            // save user to zoho
+                            $zoho = new Zoho();
+                            $zoho->email = $model->email;
+                            $zoho->first_name = $profile->first_name;
+                            $zoho->last_name = $profile->last_name;
+                            $zoho->birthday = $profile->birthday;
+                            if($profile->sex == 1)
+                                $zoho->sex = 'Mujer';
+                            else if($profile->sex == 2)
+                                $zoho->sex = 'Hombre';
+
+                            $zoho->admin = 'No';
+                            $zoho->ps = 'No';
+
+                            if($model->superuser == 1){
+                                $zoho->admin = 'Si';
+                            }
+                            if($model->personal_shopper == 1){
+                                $zoho->ps = 'Si';
+                            }
+                            $zoho->save_potential();
+
+
                             //if (Yii::app()->controller->module->sendActivationMail) {
 
                             if ( isset($_POST['facebook_id']) && $_POST['facebook_id']!="" ) { // de facebook hay que enviar la clave
@@ -299,8 +323,22 @@ class RegistrationController extends Controller
                 	
                 $seo = SeoStatic::model()->findByAttributes(array('name'=>'Registro'));
 
+                
+
+
+
+
                 $this->render('/user/registration', array('model' => $model, 'profile' => $profile,'referencia'=>$referencia, 'seo'=>$seo));
             }//else
+    }
+
+    public function setParameter($key, $value, $parameter) {
+        if ($parameter === "" || strlen($parameter) == 0) {
+            $parameter = $key . '=' . $value;
+        } else {
+            $parameter .= '&' . $key . '=' . $value;
+        }
+        return $parameter;
     }
 
 // registration

@@ -97,4 +97,97 @@ class Retturn extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	function getConfirmation($id){
+            
+            $enProduccion = strpos(Yii::app()->baseUrl, "develop") == false 
+                && strpos(Yii::app()->baseUrl, "test") == false;
+            
+            $ftpServer = "localhost";
+            $userName = "personaling";
+            $userPwd = "P3rs0n4l1ng";            
+
+            if($enProduccion){
+                $ftpServer = "ftp.logisfashion.com";
+                $userName = "personaling@ftp.logisfashion.com";
+                $userPwd = "Personaling789"; 
+            }       
+            
+            $tipoArchivo = "ReturnStatus_";
+            $rutaArchivo = Yii::getPathOfAlias('webroot').Devolucion::RUTA_RETURN;        
+            
+            /* Directorio OUT donde estan los confirmation*/
+            $directorio = "html/develop/develop/protected/OUT/";
+            if($enProduccion){
+                $directorio = "OUT/"; // En LogisFashion
+            }
+            
+            //realizar la conexion ftp
+            $conexion = ftp_connect($ftpServer); 
+            $loginResult = ftp_login($conexion, $userName, $userPwd); 
+            
+            if ((!$conexion) || (!$loginResult)) {  
+                return false; 
+            }        
+            
+            //ubicarse en el directorio y obtener un listado
+            ftp_chdir($conexion, $directorio);  
+            $listado = ftp_nlist($conexion, "");
+            $nombreArchivo =  $tipoArchivo.$id."_";
+
+            $encontrado = false;
+            
+            foreach ($listado as $arch){
+                
+                //Si ya ha sido cargado el inbound                
+                if(strpos($arch, $nombreArchivo) !== false){                                       
+                    //Descargar el archivo
+                    if(ftp_get($conexion, $rutaArchivo.$arch, $arch, FTP_BINARY)){
+                       
+                    }            
+                    
+                    $xml = simplexml_load_file($rutaArchivo.$arch);   
+                    $conDiscrepancias = false;                    
+                    
+                    foreach ($xml as $elemento){
+                        
+                        if($elemento->getName() == "Item"){
+                            
+                            //Consultar en BD
+                            $item = ItemReturn::model()->with(array(
+                                        "producto" => array(
+                                            "condition" => "sku = '".$elemento->EAN."'",
+                                        )
+                                    ))->findByAttributes(array(
+                                        "return_id"=>$id,
+                                        ));
+                            //Guardar lo que viene en el XML
+                            $item->cantidadConfirmation = $elemento->Cantidad;
+                            
+                            if($item->cantidadConfirmation != $item->cant_enviada){
+                                $conDiscrepancias = true; //para marcar el inbound completo
+                                                       
+                            $item->save();   
+                        }                        
+                    }
+                    
+                    //Marcar inbound con estado
+                    $return= Retturn::model()->findByPk($id);
+                    if($conDiscrepancias){
+                        $return->estado = 3;
+                    }else{
+                        $return->estado = 2;                        
+                    }
+                    $return->save();
+                    
+                    $encontrado = true;
+                    break;
+                }
+            }
+            // cerrar la conexión ftp 
+            ftp_close($conexion);
+            
+        }
+}
+	
 }

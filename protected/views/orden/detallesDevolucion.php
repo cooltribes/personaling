@@ -18,9 +18,7 @@ $this->breadcrumbs=array(
 	    <div class="alert in alert-block fade alert-error text_align_center">
 	        <?php echo Yii::app()->user->getFlash('error'); ?>
 	    </div>
-	<?php }echo "++++++++++++++++++++++++++++++++++++++++++++++++";
-	print_r($devolucion->return); 
-	echo "++++++++++++++++++++++++++++++++++++++++++++++++";?>
+	<?php } ?>
 
 <div class="container margin_top">
 	<h1> Devolucion #<?php echo $devolucion->id; ?> <small>(Orden #<?php echo $devolucion->orden_id; ?>)</small> </h1>  
@@ -108,7 +106,7 @@ $this->breadcrumbs=array(
                 echo("<td>".$color->valor."</td>");                         
                
               
-               echo("<td>".$talla->valor." ".array_search($prod['motivoAdmin'],Devolucion::model()->reasons)."</td>");
+               echo("<td>".$talla->valor."</td>");
 			   echo("<td>".$prod['monto']."</td>");
 			   if($prod['cantidad']>1)
 			   		$dis="";

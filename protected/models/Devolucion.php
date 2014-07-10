@@ -143,10 +143,13 @@ class Devolucion extends CActiveRecord
 			return $cant;
 		
 	}
-	function getReturn(){
+	function sendXML(){
             
             $return = new SimpleXMLElement('<Return/>');
-            
+            $returnDB=new Retturn;
+			$returnDB->setAttributes(array('devolucion_id'=>$this->id,'motivo'=>'Ropa Fea'));
+			$returnDB->save();
+			
             //Codigo de Albaran
 
             $return->addChild('Albaran', $this->id);
@@ -154,13 +157,15 @@ class Devolucion extends CActiveRecord
             //Fecha de Albaran
             $fecha = date("Y-m-d", strtotime($this->fecha));
             $return->addChild("FechaAlbaran", "{$fecha}");
-			$return->addChild("MotivoDevolucion", "Ropa Fea");
+			$return->addChild("MotivoDevolucion", $this->motivosString);
 			$return->addChild("Outbound", $this->orden_id);             
             //Cliente - Usuario
 
             
             foreach ($this->dptcs as $dhptc) {
-                
+                $itemR=new ItemReturn;
+				$itemR->setAttributes(array('return_id'=>$returnDB->id,'devolucionhaspreciotallacolor_id'=>$dhptc->id,'cantidad'=>$dhptc->cantidad));
+                $itemR->save();
                 $item = $return->addChild("Item");                
                 //Agregar el SKU
                 $item->addChild("EAN", "{$dhptc->preciotallacolor->sku}");
@@ -177,8 +182,23 @@ class Devolucion extends CActiveRecord
             
             //Enviar return a LF y guardarlo en local para respaldo
             $subido = MasterData::subirArchivoFtp($return, 4, $this->id);
-           
-            
+           	if($subido){
+           		$returnDB->enviado=1;
+				$returnDB->save();
+				return true;
+           	}
+            return false;
         }
+		public function getMotivosString(){
+			$motivos="";	
+			foreach ($this->dptcs as $key=>$dhptc) {
+				$motivos=$motivos."[".$dhptc->preciotallacolor->sku."]=>".$dhptc->motivo;
+				if($key<count($this->dptcs)-1){
+					$motivos=$motivos.",";
+				}
+			}
+			return $motivos;
+			
+		}
 	
 }

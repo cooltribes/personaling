@@ -24,7 +24,7 @@
     
     <!--Monto-->
     <td>
-        <?php echo $data->monto; ?>
+        <?php echo $data->getMonto(); ?>
     </td>
     
     <!--Fecha de Solicitud-->

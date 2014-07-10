@@ -754,15 +754,16 @@ class User extends CActiveRecord {
 	} 
         
         /*Calcula el saldo que tiene una PS percibido por comisiones en ventas*/
-        function getSaldoPorComisiones() {
+        function getSaldoPorComisiones($format = true) {
             
             //Balance tipo 5 = por commisiones
             $saldo = Yii::app()->db->createCommand(
-                    "SELECT SUM(total) as total FROM tbl_balance WHERE tipo = 5
+                    "SELECT SUM(total) as total FROM tbl_balance WHERE tipo IN
+                     (5, 7, 8)
                      AND user_id=".$this->id)
                     ->queryScalar();
             
-            return Yii::app()->numberFormatter->formatDecimal($saldo);            
+            return $format ? Yii::app()->numberFormatter->formatDecimal("#,##0.00", $saldo) : $saldo;            
         }
         
         /*Todos los productos vendidos como parte de looks de una PS*/

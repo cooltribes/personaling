@@ -22,13 +22,31 @@ $this->breadcrumbs=array(
                  // 'class' => 'form-horizontal',
                 ),
                 'type' => 'horizontal',
-            )); ?>            
+            ));            
+                        
+            ?>            
     
 
             <fieldset>
-                <legend><h3>Tu balance actual: <strong><?php echo Yii::t('contentForm', 'currSym').
-                        " " . $user->getSaldoPorComisiones(); ?></strong></h3></legend>
+                <legend><h3>Tu balance actual en comisiones: <strong><?php echo Yii::t('contentForm', 'currSym').
+                        " " . $balance; ?></strong></h3></legend>
 
+                 <!-- FLASH ON --> 
+                <?php $this->widget('bootstrap.widgets.TbAlert', array(
+                        'block'=>true, // display a larger alert block?
+                        'fade'=>true, // use transitions?
+                        'closeText'=>'&times;', // close link text - if set to false, no close link is displayed
+                        'alerts'=>array( // configurations per alert type
+                            'success'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+                            'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
+                        ),
+                    )
+                ); ?>	
+                <!-- FLASH OFF --> 
+                
+                
+                <?php if($balance > 0){ ?>               
+                
                 <?php  echo $form->errorSummary($model, ""); ?>
                 <div class="control-group input-prepend<?php echo $model->hasErrors("monto") ? " error" : ""; ?>">
                     <label class="control-label required">
@@ -41,6 +59,7 @@ $this->breadcrumbs=array(
                             'step' => 'any',
                             'min' => Pago::MONTO_MIN,
                             'max' => Pago::MONTO_MAX,
+                            //'max' => $balance,
                             ));
                         ?>
                     </div>
@@ -74,26 +93,6 @@ $this->breadcrumbs=array(
                     'required' => true,
                 ));
                 ?>	
-                <?php
-                /*
-                echo $form->textFieldRow($model, 'inicio_vigencia', array(
-                    'append' => '<i class="icon-calendar"></i>',
-                    'class' => 'span2',
-                    'value' => $model->inicio_vigencia != null ?
-                            date("d-m-Y", strtotime($model->inicio_vigencia)) : ''
-                ));
-                ?>	
-                <?php
-                echo $form->textFieldRow($model, 'fin_vigencia', array(
-                    'append' => '<i class="icon-calendar"></i>',
-                    'class' => 'span2',
-                    'value' => $model->fin_vigencia != null ?
-                            date("d-m-Y", strtotime($model->fin_vigencia)) : ''
-                ));
-                 
-                 */
-                ?>	
-
                 <div class="control-group row">
                     <div class="controls pull-right">                          
                         <button type="submit" name="Enviar" class="btn btn-danger">
@@ -101,6 +100,8 @@ $this->breadcrumbs=array(
                         </button>
                     </div>
                 </div>
+                                
+                <?php } ?>
 
 
             </fieldset>

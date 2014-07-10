@@ -28,6 +28,7 @@
  * @property integer $entidad
  * @property string $cuenta
  * @property integer $id_transaccion
+ * @property integer $observacion
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -147,6 +148,8 @@ class Pago extends CActiveRecord
         $criteria->compare('entidad',$this->entidad);
         $criteria->compare('cuenta',$this->cuenta,true);
         $criteria->compare('id_transaccion',$this->id_transaccion);
+        
+        $criteria->order = "fecha_solicitud DESC";
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -192,6 +195,25 @@ class Pago extends CActiveRecord
             $res .= $this->monto;
         }
         return $res;
+    }
+    
+    /**
+     * This method is invoked before validation starts.
+     * @return boolean whether validation should be executed. Defaults to true.
+     */
+    protected function beforeValidate() {
+        
+        $balance = $this->user->getSaldoPorComisiones(false);
+        //Validar con el saldo disponible
+        if($this->monto > $balance){      
+            $this->addError("monto", "No tienes suficiente balance para
+                solicitar este pago");
+
+            return false;
+
+        }
+
+        return parent::beforeValidate();
     }
     
 }

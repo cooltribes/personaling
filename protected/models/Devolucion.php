@@ -18,6 +18,7 @@
  */
 class Devolucion extends CActiveRecord
 {
+	const RUTA_RETURN = '/docs/xlsReturn/';
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -147,7 +148,7 @@ class Devolucion extends CActiveRecord
             $return = new SimpleXMLElement('<Return/>');
             
             //Codigo de Albaran
-            $codigo = $orden->id;
+
             $return->addChild('Albaran', $this->id);
             
             //Fecha de Albaran
@@ -156,53 +157,27 @@ class Devolucion extends CActiveRecord
 			$return->addChild("MotivoDevolucion", "Ropa Fea");
 			$return->addChild("Outbound", $this->orden_id);             
             //Cliente - Usuario
-    
-            $item= $return->addChild("item");
-            $item->addChild("EAN", "{$ptc->SKU}");
-            $item->addChild("Nombre", "{$usuario->profile->getNombre()}");
-            
-            //Direccion
-            $direccionEnvio = DireccionEnvio::model()->findByPk($orden->direccionEnvio_id);
-            $dirString = $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos;
-            
-            $ciudadEnvio = Ciudad::model()->findByPk($direccionEnvio->ciudad_id);
-            
-            $codigoPostal = CodigoPostal::model()->findByPk($direccionEnvio->codigo_postal_id);
-            //ZIP
-            if($codigoPostal){
-                $codigoPostal = $codigoPostal->codigo;                
-            }else{
-               $codigoPostal = "No existe";                
-            }
-            
-            $cliente->addChild("Direccion", "{$dirString}");
-            $cliente->addChild("CP", "{$codigoPostal}");
-            $cliente->addChild("Poblacion", "{$ciudadEnvio->nombre}");
-            $cliente->addChild("Pais", "{$direccionEnvio->pais}");
-            
-            $cliente->addChild("Email", "{$usuario->email}");
 
-            //Listado de items vendidos   
-            $productos = $orden->ohptc;
-            foreach ($productos as $producto) {
+            
+            foreach ($this->dptcs as $dhptc) {
                 
                 $item = $return->addChild("Item");                
                 //Agregar el SKU
-                $item->addChild("EAN", "{$producto->preciotallacolor->sku}");
+                $item->addChild("EAN", "{$dhptc->preciotallacolor->sku}");
                 //Agregar la cantidad vendida.                
-                $item->addChild("Cantidad", "{$producto->cantidad}");                
+                $item->addChild("Cantidad", "{$dhptc->cantidad}");                
                 
             }            
 
             //Guardar return en la BD
-            $returnBD = new ReturnXSD();
-            $returnBD->orden_id = $orden->id;
+         //   $returnBD = new ReturnXSD();
+           // $returnBD->orden_id = $orden->id;
             //discrep, estado, cantBultos por defecto en 0
             
             
             //Enviar return a LF y guardarlo en local para respaldo
-            $subido = MasterData::subirArchivoFtp($return, 3, $orden->id);
-            
+            $subido = MasterData::subirArchivoFtp($return, 4, $this->id);
+           
             
         }
 	

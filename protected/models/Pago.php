@@ -178,5 +178,20 @@ class Pago extends CActiveRecord
     public function getFechaSolicitud() {
         return strtotime($this->fecha_solicitud);
     }
+    /*Retorna la fecha de carga como timestamp*/
+    public function getFechaRespuesta() {
+        return strtotime($this->fecha_respuesta);
+    }
+    
+    /*retorna el monto con formato o no*/
+    public function getMonto($format = true) {
+        $res = Yii::t('contentForm', 'currSym')." ";
+        if ($format) {
+            $res .= Yii::app()->numberFormatter->format("#,##0.00",$this->monto);
+        } else {
+            $res .= $this->monto;
+        }
+        return $res;
+    }
     
 }

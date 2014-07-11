@@ -185,6 +185,7 @@ class MovimientoController extends Controller
 		$movimiento->fecha=date('Y-m-d');
 		$movimiento->user_id=Yii::app()->user->id;
 		$movimiento->comentario=$_POST['comentario'];
+		$movimiento->motivo=$movimiento->getTypes($_POST['tipo']);
 		if($movimiento->save()){
 			foreach($ids as $key=>$id){
 				$mhptc=new Movimientohaspreciotallacolor;
@@ -193,7 +194,7 @@ class MovimientoController extends Controller
 				$mhptc->cantidad=$cantidades[$key];
 				$mhptc->movimiento_id=$movimiento->id;
 				$mhptc->costo=$ptc->producto->getCosto(false);
-				$mhptc->motivo=$movimiento->getTypes($_POST['tipo']);
+				
 				if($mhptc->save()){
 					$ptc->cantidad=$ptc->cantidad-$mhptc->cantidad;
 					$ptc->save();

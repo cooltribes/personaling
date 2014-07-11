@@ -106,6 +106,29 @@ class AdminController extends Controller
                         Yii::app()->user->updateSession();
                         Yii::app()->user->setFlash('success', UserModule::t("El usuario ha sido creado."));
 
+                        // save user to zoho
+                        $zoho = new Zoho();
+                        $zoho->email = $modelUser->email;
+                        $zoho->first_name = $profile->first_name;
+                        $zoho->last_name = $profile->last_name;
+                        $zoho->birthday = $profile->birthday;
+                        if($profile->sex == 1)
+                            $zoho->sex = 'Mujer';
+                        else if($profile->sex == 2)
+                            $zoho->sex = 'Hombre';
+
+                        $zoho->admin = 'No';
+                        $zoho->ps = 'No';
+
+                        if($modelUser->superuser == 1){
+                            $zoho->admin = 'Si';
+                        }
+                        if($modelUser->personal_shopper == 1){
+                            $zoho->ps = 'Si';
+                        }
+                        $zoho->save_potential();
+
+
                         //Enviar Correo
                         
                         $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $modelUser->activkey, "email" => $modelUser->email));
@@ -891,7 +914,7 @@ class AdminController extends Controller
 		$model=$this->loadModel();
 		$profile=$model->profile;
 		$profile->profile_type = 2;
-if(isset($_POST['Profile']))
+        if(isset($_POST['Profile']))
 		{
 			//$model->attributes=$_POST['User'];
 			$profile->attributes=$_POST['Profile'];
@@ -900,6 +923,35 @@ if(isset($_POST['Profile']))
 				
 				
 				$profile->save();
+
+                // update potential at zoho
+                $zoho = new Zoho();
+                $zoho->email = $model->email;
+
+                $rangos = array();
+                
+                $profileFields=$profile->getFields();
+                if ($profileFields) {
+                    foreach($profileFields as $field) {
+                        if($field->id > 4 && $field->id < 16){
+                            $rangos[] =  $field->range.";0==Ninguno";
+                        }
+                        if($field->id == 4){
+                            $rangosSex = $field->range;
+                        }
+                        
+                    }
+                }
+                //var_dump($rangos);
+
+                $zoho->diario = Profile::range($rangos[0],$profile->coctel);
+                $zoho->fiesta = Profile::range($rangos[1],$profile->fiesta);
+                $zoho->vacaciones = Profile::range($rangos[2],$profile->playa);
+                $zoho->deporte = Profile::range($rangos[3],$profile->sport);
+                $zoho->oficina = Profile::range($rangos[4],$profile->trabajo);
+                
+                $result = $zoho->save_potential();
+                        
 				//$this->redirect(array('view','id'=>$model->id));
 				Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
@@ -1086,7 +1138,7 @@ if(isset($_POST['Profile']))
 		$profile=$model->profile;
 		$profile->profile_type = 3;
 		$this->performAjaxValidation(array($profile));
-if(isset($_POST['Profile']))
+        
 		if(isset($_POST['Profile']))
 		{
 			//$model->attributes=$_POST['User'];
@@ -1096,10 +1148,37 @@ if(isset($_POST['Profile']))
 				
 				
 				if ($profile->save()){
-				//$this->redirect(array('view','id'=>$model->id));
-				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
-					} else {
+                    // update potential at zoho
+                    $zoho = new Zoho();
+                    $zoho->email = $model->email;
+
+                    $rangos = array();
+                    
+                    $profileFields=$profile->getFields();
+                    if ($profileFields) {
+                        foreach($profileFields as $field) {
+                            if($field->id > 4 && $field->id < 16){
+                                $rangos[] =  $field->range.";0==Ninguno";
+                            }
+                            if($field->id == 4){
+                                $rangosSex = $field->range;
+                            }
+                            
+                        }
+                    }
+
+                    $zoho->altura = Profile::range($rangos[1],$profile->altura);
+                    $zoho->condicion_fisica = Profile::range($rangos[2],$profile->contextura);
+                    $zoho->color_piel = Profile::range($rangos[0],$profile->piel);
+                    $zoho->color_cabello = Profile::range($rangos[3],$profile->pelo);
+                    $zoho->color_ojos = Profile::range($rangos[4],$profile->ojos);
+                    $zoho->tipo_cuerpo = Profile::range($rangos[5],$profile->tipo_cuerpo);
+                    
+                    $result = $zoho->save_potential();
+    				//$this->redirect(array('view','id'=>$model->id));
+    				Yii::app()->user->updateSession();
+    				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+				} else {
 					Yii::trace('username:'.$model->username.' Error:'.print_r($profile->getErrors(),true), 'registro');
 				}
 				
@@ -1141,6 +1220,26 @@ if(isset($_POST['Profile']))
 				}
 				$model->save();
 				$profile->save(); 
+
+                // update potential at zoho
+                $zoho = new Zoho();
+                $zoho->email = $model->email;
+                $zoho->first_name = $profile->first_name;
+                $zoho->last_name = $profile->last_name;
+                $zoho->birthday = $profile->birthday;
+                if($profile->sex == 1)
+                    $zoho->sex = 'Mujer';
+                else if($profile->sex == 2)
+                    $zoho->sex = 'Hombre';
+                $zoho->bio = $profile->bio;
+                $zoho->dni = $profile->cedula;
+                $zoho->tlf_casa = $profile->tlf_casa;
+                $zoho->tlf_celular = $profile->tlf_celular;
+                $zoho->pinterest = $profile->pinterest;
+                $zoho->twitter = $profile->twitter;
+                $zoho->facebook = $profile->facebook;
+                $zoho->url = $profile->url;
+                $result = $zoho->save_potential();
 				
 				//$this->redirect(array('view','id'=>$model->id));
 				

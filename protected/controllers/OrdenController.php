@@ -920,7 +920,7 @@ public function actionReportexls(){
 			 }
 			if($out=="ok"){
 				$user = User::model()->findByPk($devolucion->orden->user_id);
-					
+				$lf="";	
 					$comments="Disculpa las posibles molestias ocasionadas.<br/>Te recomendamos consultar nuestras politicas de devolución haciendo click <a href='http://www.personaling.es/develop/site/politicas_de_devoluciones'>aquí.</a>";
 									$message            = new YiiMailMessage;
 							           //this points to the file test.php inside the view path
@@ -933,8 +933,10 @@ public function actionReportexls(){
 									$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 							        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
 							        Yii::app()->mail->send($message);
+				if($devolucion->sendXML())
+					$lf="<br/>Devolución notificada a Logisfashion.";
 				
-				Yii::app()->user->setFlash('success', 'Devolucion Registrada exitosamente.');
+				Yii::app()->user->setFlash('success', 'Devolucion Registrada exitosamente.'.$lf);
 				if(UserModule::isAdmin())
 					$out="okadmin";
 				else

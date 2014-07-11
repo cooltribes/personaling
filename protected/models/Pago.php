@@ -28,6 +28,7 @@
  * @property integer $entidad
  * @property string $cuenta
  * @property integer $id_transaccion
+ * @property integer $observacion
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -43,6 +44,8 @@ class Pago extends CActiveRecord
     
     const MONTO_MIN = 1;
     const MONTO_MAX = 1000;
+    const MONTO_MIN_PAYPAL = 2;
+    const MONTO_MIN_BANCO = 5;
 
 
                         /**
@@ -119,7 +122,7 @@ class Pago extends CActiveRecord
             'user_id' => 'User',
             'admin_id' => 'Admin',
             'tipo' => 'Tipo',
-            'entidad' => 'Entidad Bancaria',
+            'entidad' => 'Nombre del Banco',
             'cuenta' => 'Cuenta',
             'id_transaccion' => 'Id Transaccion',
         );
@@ -147,6 +150,8 @@ class Pago extends CActiveRecord
         $criteria->compare('entidad',$this->entidad);
         $criteria->compare('cuenta',$this->cuenta,true);
         $criteria->compare('id_transaccion',$this->id_transaccion);
+        
+        $criteria->order = "fecha_solicitud DESC";
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -187,11 +192,58 @@ class Pago extends CActiveRecord
     public function getMonto($format = true) {
         $res = Yii::t('contentForm', 'currSym')." ";
         if ($format) {
-            $res .= Yii::app()->numberFormatter->format("#,##0.00",$this->monto);
+            $res .= Yii::app()->numberFormatter->formatCurrency($this->monto, "");            
         } else {
             $res .= $this->monto;
         }
         return $res;
+//        return $this->monto;
+    }
+    
+    /**
+     * This method is invoked before validation starts.
+     * @return boolean whether validation should be executed. Defaults to true.
+     */
+    protected function beforeValidate() {
+        
+        $balance = $this->user->getSaldoPorComisiones(false);        
+        $balance = round($balance, 2);
+        
+//        echo $balance. " " . $this->monto;
+//        Yii::app()->end();
+        
+        //Validar cuando esta haciendo la solicitud
+        if($this->isNewRecord){     
+            
+            if($this->monto > $balance){
+                
+                $this->addError("monto", "No tienes suficiente balance para
+                    solicitar este pago");
+
+                return false;
+            }
+            
+            if($this->tipo == 0 && $this->monto < self::MONTO_MIN_PAYPAL){ //si es paypal
+                
+                $this->addError("monto", "Debes alcanzar un monto igual o superior
+                    a ".Yii::t('contentForm', 'currSym')." ".self::MONTO_MIN_PAYPAL."
+                        en tus comisiones para poder solicitar el pago a través de Paypal.");
+
+                return false;
+            }
+            if($this->tipo == 1 && $this->monto < self::MONTO_MIN_BANCO){ //si es paypal
+                
+                $this->addError("monto", "Debes alcanzar un monto igual o superior
+                    a ".Yii::t('contentForm', 'currSym')." ".self::MONTO_MIN_BANCO."
+                        en tus comisiones para poder solicitar el pago a través de
+                        una Cuenta Bancaria.");
+
+                return false;
+            }
+
+        }
+
+        return parent::beforeValidate();
     }
     
 }

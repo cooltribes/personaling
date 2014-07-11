@@ -108,7 +108,14 @@ class PagoController extends Controller
                         
                         $this->redirect(array('index'));
 
-                    }
+                    }else{
+                        Yii::trace('Solicitando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');                        
+                        
+                        if($model->tipo == 0){                            
+                            $model->entidad = "";                                                    
+                        }
+                       
+                    } 
                             
 		}
                 
@@ -148,9 +155,9 @@ class PagoController extends Controller
 
                     }else{
                         Yii::trace('Aceptando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');
-                        Yii::app()->user->setFlash("error", "No se pudo registrar el pago.". print_r($model->getErrors(), true));                           
+                        Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                           
+                        
                         $model=$this->loadModel($id);
-
                     }                     
 
                 }else{
@@ -184,7 +191,7 @@ class PagoController extends Controller
 
                 }else{
                     Yii::trace('Rechazando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');
-                    Yii::app()->user->setFlash("error", "No se pudo rechazar el pago." . print_r($model->getErrors(), true));  
+                    Yii::app()->user->setFlash("error", "No se pudo rechazar el pago.");  
                     $model=$this->loadModel($id);
 //                    echo "<pre>";
 //                    print_r($model->getErrors());

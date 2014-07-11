@@ -40,11 +40,11 @@
     
     
     <td>
-        <div class="dropdown"> 
+<!--        <div class="dropdown"> 
             <a class="dropdown-toggle btn" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="" title="acciones">
                 <i class="icon-cog"></i> <b class='caret'></b>
             </a> 
-            <!-- Link or button to toggle dropdown -->
+             Link or button to toggle dropdown 
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
                 <li>
                     <?php echo CHtml::link('<i class="icon-eye-open">  </i>  Ver Detalles', "#", array(
@@ -67,6 +67,6 @@
                 
                     
             </ul>
-        </div>
+        </div>-->
     </td>
 </tr>

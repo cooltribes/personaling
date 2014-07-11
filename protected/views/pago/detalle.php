@@ -101,7 +101,7 @@ $this->breadcrumbs = array(
                                 <li><strong>Comisión actual: </strong>
                                     <?php echo $usuario->getComision(); ?>
                                 </li>
-                                <li><strong>Saldo en comisiones: </strong>
+                                <li><strong>Balance actual en comisiones (Disponible): </strong>
                                     <?php echo  $usuario->getSaldoPorComisiones() . " " . Yii::t('backEnd', 'currSym'); ?> 
                                 </li>
                             </ul>

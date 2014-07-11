@@ -57,7 +57,7 @@ $this->breadcrumbs=array(
                         <?php echo CHtml::activeNumberField($model, 'monto', array(
                             'class' => 'span1 text_align_right',
                             'step' => 'any',
-                            'min' => Pago::MONTO_MIN,
+                            'min' => $model->tipo == 1 ? Pago::MONTO_MIN_BANCO : Pago::MONTO_MIN_PAYPAL,
                             'max' => Pago::MONTO_MAX,
                             //'max' => $balance,
                             ));
@@ -109,4 +109,22 @@ $this->breadcrumbs=array(
             <?php $this->endWidget(); ?>
         </section>
 </div>
+
+<script type="text/javascript">
+    
+    var minP = "<?php echo Pago::MONTO_MIN_PAYPAL; ?>";
+    var minB = "<?php echo Pago::MONTO_MIN_BANCO; ?>";
+    var idTipo = <?php echo '"'.TbHtml::activeId($model, "tipo").'"'; ?>;
+    var idMonto = <?php echo '"'.TbHtml::activeId($model, "monto").'"'; ?>;
+    
+    $("#" + idTipo).change(function(e){
+        var tipo = $(this).val();
+        console.log(tipo);
+        $("#" + idMonto).attr("min", tipo == 0 ? minP : minB);
+        
+    });
+    
+    
+    
+</script>
 

@@ -42,10 +42,10 @@ class Pago extends CActiveRecord
                         "Cuenta Bancaria",        
                         );
     
-//    const MONTO_MIN = 1;
+    const MONTO_MIN = 1;
     const MONTO_MAX = 1000;
-    const MONTO_MIN_PAYPAL = 1000;
-    const MONTO_MIN_BANCO = 1000;
+    const MONTO_MIN_PAYPAL = 2;
+    const MONTO_MIN_BANCO = 5;
 
 
                         /**
@@ -122,7 +122,7 @@ class Pago extends CActiveRecord
             'user_id' => 'User',
             'admin_id' => 'Admin',
             'tipo' => 'Tipo',
-            'entidad' => 'Entidad Bancaria',
+            'entidad' => 'Nombre del Banco',
             'cuenta' => 'Cuenta',
             'id_transaccion' => 'Id Transaccion',
         );
@@ -212,7 +212,7 @@ class Pago extends CActiveRecord
 //        echo $balance. " " . $this->monto;
 //        Yii::app()->end();
         
-        //Validar con el saldo disponible
+        //Validar cuando esta haciendo la solicitud
         if($this->isNewRecord){     
             
             if($this->monto > $balance){
@@ -226,7 +226,17 @@ class Pago extends CActiveRecord
             if($this->tipo == 0 && $this->monto < self::MONTO_MIN_PAYPAL){ //si es paypal
                 
                 $this->addError("monto", "Debes alcanzar un monto igual o superior
-                    a ".Yii::t('contentForm', 'currSym')." ".self::MONTO_MIN_PAYPAL." en tus comisiones para poder solicitar el pago.");
+                    a ".Yii::t('contentForm', 'currSym')." ".self::MONTO_MIN_PAYPAL."
+                        en tus comisiones para poder solicitar el pago a través de Paypal.");
+
+                return false;
+            }
+            if($this->tipo == 1 && $this->monto < self::MONTO_MIN_BANCO){ //si es paypal
+                
+                $this->addError("monto", "Debes alcanzar un monto igual o superior
+                    a ".Yii::t('contentForm', 'currSym')." ".self::MONTO_MIN_BANCO."
+                        en tus comisiones para poder solicitar el pago a través de
+                        una Cuenta Bancaria.");
 
                 return false;
             }

@@ -8,6 +8,7 @@
  * @property integer $devolucion_id
  * @property string $estado
  * @property string $fechaEstado
+ * @property string $estadoConfirmation
  * @property string $motivo
  * @property integer $enviado
  */
@@ -40,12 +41,12 @@ class Retturn extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('devolucion_id, enviado', 'numerical', 'integerOnly'=>true),
-			array('estado', 'length', 'max'=>50),
+			array('estado, estadoConfirmation', 'length', 'max'=>50),
 			array('motivo', 'length', 'max'=>500),
 			array('fechaEstado', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, devolucion_id, estado, fechaEstado, motivo, enviado', 'safe', 'on'=>'search'),
+			array('id, devolucion_id, estado, fechaEstado, estadoConfirmation, motivo, enviado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,6 +58,8 @@ class Retturn extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'items' => array(self::HAS_MANY, 'ItemReturn','return_id'),
+			'devolucion' => array(self::BELONGS_TO, 'Devolucion','devolucion_id'),
 		);
 	}
 
@@ -70,6 +73,7 @@ class Retturn extends CActiveRecord
 			'devolucion_id' => 'Devolucion',
 			'estado' => 'Estado',
 			'fechaEstado' => 'Fecha Estado',
+			'estadoConfirmation' => 'Estado Confirmation',
 			'motivo' => 'Motivo',
 			'enviado' => 'Enviado',
 		);
@@ -90,6 +94,7 @@ class Retturn extends CActiveRecord
 		$criteria->compare('devolucion_id',$this->devolucion_id);
 		$criteria->compare('estado',$this->estado,true);
 		$criteria->compare('fechaEstado',$this->fechaEstado,true);
+		$criteria->compare('estadoConfirmation',$this->estadoConfirmation);
 		$criteria->compare('motivo',$this->motivo,true);
 		$criteria->compare('enviado',$this->enviado);
 
@@ -97,9 +102,8 @@ class Retturn extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-	
 	function getConfirmation($id){
-            
+       
             $enProduccion = strpos(Yii::app()->baseUrl, "develop") == false 
                 && strpos(Yii::app()->baseUrl, "test") == false;
             
@@ -129,65 +133,72 @@ class Retturn extends CActiveRecord
             if ((!$conexion) || (!$loginResult)) {  
                 return false; 
             }        
-            
+			
             //ubicarse en el directorio y obtener un listado
             ftp_chdir($conexion, $directorio);  
             $listado = ftp_nlist($conexion, "");
-            $nombreArchivo =  $tipoArchivo.$id."_";
+            $nombreArchivo =  $tipoArchivo.$id;
 
             $encontrado = false;
-            
             foreach ($listado as $arch){
                 
                 //Si ya ha sido cargado el inbound                
-                if(strpos($arch, $nombreArchivo) !== false){                                       
+                if(strpos($arch, $nombreArchivo) !== false){
+                	                                     
                     //Descargar el archivo
                     if(ftp_get($conexion, $rutaArchivo.$arch, $arch, FTP_BINARY)){
                        
                     }            
                     
+                    
                     $xml = simplexml_load_file($rutaArchivo.$arch);   
                     $conDiscrepancias = false;                    
-                    
+        
                     foreach ($xml as $elemento){
+                        if($elemento->getName() == "FechaEstado"){
+                        	$fecha=$elemento;
+                        }	
+						if($elemento->getName() == "Estado"){
+                        	$status=$elemento;
+                        }	
                         
                         if($elemento->getName() == "Item"){
-                            
+                       
+					
                             //Consultar en BD
-                            $item = ItemReturn::model()->with(array(
-                                        "producto" => array(
-                                            "condition" => "sku = '".$elemento->EAN."'",
-                                        )
-                                    ))->findByAttributes(array(
+                            $item = ItemReturn::model()->findByAttributes(array(
                                         "return_id"=>$id,
+                                        "sku"=>$elemento->EAN
                                         ));
                             //Guardar lo que viene en el XML
                             $item->cantidadConfirmation = $elemento->Cantidad;
-                            
-                            if($item->cantidadConfirmation != $item->cant_enviada){
+                            $item->save();
+                            if($item->cantidadConfirmation != $item->cantidad){
                                 $conDiscrepancias = true; //para marcar el inbound completo
-                                                       
-                            $item->save();   
-                        }                        
+                             }                        
                     }
                     
-                    //Marcar inbound con estado
-                    $return= Retturn::model()->findByPk($id);
-                    if($conDiscrepancias){
-                        $return->estado = 3;
-                    }else{
-                        $return->estado = 2;                        
-                    }
-                    $return->save();
+                    //Marcar return con estado
                     
-                    $encontrado = true;
-                    break;
                 }
             }
             // cerrar la conexión ftp 
-            ftp_close($conexion);
+            
             
         }
-}
+
+	$return= Retturn::model()->findByPk($id);
+			                    $return->fechaEstado=$fecha;
+								 $return->estadoConfirmation=$status;
+			                    if($conDiscrepancias){
+			                        $return->estado = 3;
+			                    }else{
+			                        $return->estado = 2;                        
+			                    }
+			                    $return->save();
+			                    
+	ftp_close($conexion);
+	return true;
 	
+} 
 }

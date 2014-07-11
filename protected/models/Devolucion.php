@@ -143,11 +143,11 @@ class Devolucion extends CActiveRecord
 			return $cant;
 		
 	}
-	function sendXML(){
+	public function sendXML(){
             
             $return = new SimpleXMLElement('<Return/>');
             $returnDB=new Retturn;
-			$returnDB->setAttributes(array('devolucion_id'=>$this->id,'motivo'=>'Ropa Fea'));
+			$returnDB->setAttributes(array('devolucion_id'=>$this->id,'motivo'=>$this->getMotivosString()));
 			$returnDB->save();
 			
             //Codigo de Albaran
@@ -164,11 +164,11 @@ class Devolucion extends CActiveRecord
             
             foreach ($this->dptcs as $dhptc) {
                 $itemR=new ItemReturn;
-				$itemR->setAttributes(array('return_id'=>$returnDB->id,'devolucionhaspreciotallacolor_id'=>$dhptc->id,'cantidad'=>$dhptc->cantidad));
+				$itemR->setAttributes(array('return_id'=>$returnDB->id,'devolucionhaspreciotallacolor_id'=>$dhptc->id,'cantidad'=>$dhptc->cantidad,'sku'=>$dhptc->preciotallacolor->sku));
                 $itemR->save();
                 $item = $return->addChild("Item");                
                 //Agregar el SKU
-                $item->addChild("EAN", "{$dhptc->preciotallacolor->sku}");
+                $item->addChild("EAN", $dhptc->preciotallacolor->sku);
                 //Agregar la cantidad vendida.                
                 $item->addChild("Cantidad", "{$dhptc->cantidad}");                
                 
@@ -187,7 +187,7 @@ class Devolucion extends CActiveRecord
 				$returnDB->save();
 				return true;
            	}
-            return false;
+            return $item;
         }
 		public function getMotivosString(){
 			$motivos="";	

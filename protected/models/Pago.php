@@ -42,8 +42,10 @@ class Pago extends CActiveRecord
                         "Cuenta Bancaria",        
                         );
     
-    const MONTO_MIN = 1;
+//    const MONTO_MIN = 1;
     const MONTO_MAX = 1000;
+    const MONTO_MIN_PAYPAL = 1000;
+    const MONTO_MIN_BANCO = 1000;
 
 
                         /**
@@ -190,11 +192,12 @@ class Pago extends CActiveRecord
     public function getMonto($format = true) {
         $res = Yii::t('contentForm', 'currSym')." ";
         if ($format) {
-            $res .= Yii::app()->numberFormatter->format("#,##0.00",$this->monto);
+            $res .= Yii::app()->numberFormatter->formatCurrency($this->monto, "");            
         } else {
             $res .= $this->monto;
         }
         return $res;
+//        return $this->monto;
     }
     
     /**
@@ -203,13 +206,30 @@ class Pago extends CActiveRecord
      */
     protected function beforeValidate() {
         
-        $balance = $this->user->getSaldoPorComisiones(false);
+        $balance = $this->user->getSaldoPorComisiones(false);        
+        $balance = round($balance, 2);
+        
+//        echo $balance. " " . $this->monto;
+//        Yii::app()->end();
+        
         //Validar con el saldo disponible
-        if($this->monto > $balance){      
-            $this->addError("monto", "No tienes suficiente balance para
-                solicitar este pago");
+        if($this->isNewRecord){     
+            
+            if($this->monto > $balance){
+                
+                $this->addError("monto", "No tienes suficiente balance para
+                    solicitar este pago");
 
-            return false;
+                return false;
+            }
+            
+            if($this->tipo == 0 && $this->monto < self::MONTO_MIN_PAYPAL){ //si es paypal
+                
+                $this->addError("monto", "Debes alcanzar un monto igual o superior
+                    a ".Yii::t('contentForm', 'currSym')." ".self::MONTO_MIN_PAYPAL." en tus comisiones para poder solicitar el pago.");
+
+                return false;
+            }
 
         }
 

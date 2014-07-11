@@ -760,10 +760,12 @@ class User extends CActiveRecord {
             $saldo = Yii::app()->db->createCommand(
                     "SELECT SUM(total) as total FROM tbl_balance WHERE tipo IN
                      (5, 7, 8)
-                     AND user_id=".$this->id)
+                     AND user_id = ".$this->id)
                     ->queryScalar();
             
-            return $format ? Yii::app()->numberFormatter->formatDecimal("#,##0.00", $saldo) : $saldo;            
+//            return $format ? Yii::app()->numberFormatter->formatCurrency($saldo, "") : $saldo;            
+            return $format ? Yii::app()->numberFormatter->format("#,##0.00",$saldo) : $saldo;            
+//            return $saldo;            
         }
         
         /*Todos los productos vendidos como parte de looks de una PS*/

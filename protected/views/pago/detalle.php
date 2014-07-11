@@ -7,7 +7,12 @@ $this->breadcrumbs = array(
     $model->id
 );
 ?>
-
+<!--Acciones del Pago-->
+<style>            
+    textarea {
+       resize: none;
+    }
+</style>
 <div class="container margin_top">
     <div class="page-header">
         <h1>Pago Nro. <?php echo $model->id; ?> - <small><?php echo $model->getEstado(); ?></small></h1>        
@@ -33,7 +38,6 @@ $this->breadcrumbs = array(
     </h2>  
     <div class="row">                       
         <div class="span8">
-
             <h3 class="braker_bottom"> Información del Pago</h3>                
             <div class="row-fluid">
                 <div class="span6">
@@ -116,17 +120,14 @@ $this->breadcrumbs = array(
                     </div>
                 </div>
             </div> 
+            
 
         </div>
 
-        <!--Acciones del Pago-->
-        <style>            
-            textarea {
-               resize: none;
-            }
-        </style>
+        
         <div class="span4">
             <div class="well well-small margin_top_small well_personaling_small">
+              
                 <h3 class="braker_bottom margin_top">Acciones</h3> 
                 <?php 
                 //Solo mostrar acciones si esta En Espera
@@ -138,7 +139,7 @@ $this->breadcrumbs = array(
                         'class' => 'margin_top_small',                        
                     ),
                 )); ?>
-                    <div class="row">
+                    <div class="row-fluid">
                         <div class="span12">
                             <h4>Ingresa el ID de Transacción:</h4>
                             <?php echo TbHtml::textField("idTransaccion", "", array(
@@ -187,7 +188,8 @@ $this->breadcrumbs = array(
                         No hay acciones disponibles...</h4>
                     
                     
-                <?php } ?>    
+                <?php } ?>  
+                  
             </div>
         </div>
 

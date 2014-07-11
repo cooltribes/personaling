@@ -34,7 +34,7 @@
     
     <!--Fecha de Respuesta-->
     <td>        
-        <?php echo $data->fecha_respuesta ? date("d/m/Y", $data->getFechaRespuesta())                
+       <?php echo $data->fecha_respuesta ? date("d/m/Y h:i:s a", $data->getFechaRespuesta())                
                 : "-"; ?>
     </td>  
     

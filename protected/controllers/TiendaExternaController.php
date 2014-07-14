@@ -69,13 +69,69 @@ class TiendaExternaController extends Controller
 
 		if(isset($_POST['Tienda']))
 		{
-			$model->attributes=$_POST['Tienda'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$tienda->attributes = $_POST['Tienda'];
+			$tienda->type=$_POST['multi'];
+			
+			//$tienda->urlImagen = $_POST['Tienda']['Urlimagen'];
+		
+			
+		
+			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/tienda/'))
+				{
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/tienda/',0777,true);
+	 			}
+			
+			$rnd = rand(0,9999);  
+			$images=CUploadedFile::getInstanceByName('logo');
+			
+	
+		
+			if (isset($images) && count($images) > 0) {
+				$tienda->urlImagen = "{$rnd}-{$images}";
+				
+				$tienda->save();
+					        
+		        $nombre = Yii::getPathOfAlias('webroot').'/images/tienda/'.$tienda->id;
+		        $extension_ori = ".jpg";
+				$extension = '.'.$images->extensionName;
+		       
+		       	if ($images->saveAs($nombre . $extension)) {
+		
+		       		$tienda->logo = $tienda->id .$extension;
+		            $tienda->save();
+									
+							
+					Yii::app()->user->setFlash('success',UserModule::t("Tienda guardada exitosamente."));
+
+					$image = Yii::app()->image->load($nombre.$extension);
+					$image->resize(150, 150);
+					$image->save($nombre.'_thumb'.$extension);
+					
+					if($extension == '.png'){
+						$image = Yii::app()->image->load($nombre.$extension);
+						$image->resize(150, 150);
+						$image->save($nombre.'_thumb.jpg');
+					}	
+					
+				}
+				else {
+		        	$tienda->delete();
+				}
+		        
+			}else{
+		    	if(!$tienda->save())
+		    		Yii::app()->user->setFlash('error',UserModule::t("Tienda no pudo ser guardada.").$adicional);
+		        
+			}// isset
+			
+		                
+		                
+		                
+		                $this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+			'tienda'=>$model,
 		));
 	}
 

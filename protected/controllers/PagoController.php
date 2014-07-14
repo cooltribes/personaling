@@ -59,36 +59,69 @@ class PagoController extends Controller
 	{
 		$model = new Pago;
                 $user = User::model()->findByPk(Yii::app()->user->id);
+                $balance = $user->getSaldoPorComisiones();
+            
+                if($balance <= 0){
+                    Yii::app()->user->setFlash("error", "No tienes suficiente balance
+                        en comisiones para poder hacer una solicitud de cobro.");
+                }
+                
                 
 		if(isset($_POST['Pago']))
 		{
-			$model->attributes = $_POST['Pago'];
-                        $model->user_id = Yii::app()->user->id;
-                        $model->fecha_solicitud = date("Y-m-d H:i:s");
+                    $model->attributes = $_POST['Pago'];
+                    $model->user_id = Yii::app()->user->id;
+                    $model->fecha_solicitud = date("Y-m-d H:i:s");
+
+                    //si metodo de pago es paypal
+                    if($model->tipo == 0){                            
+                        //poner el nombre del banco "PAYPAL"
+                        $model->entidad = "PayPal";                            
+                    }
+                    
+                    if($model->save()){
                         
-                        //si metodo de pago es paypal
+                        //Bloquear saldo
+                        $saldo = new Balance();
+                        $saldo->total = - $model->monto;
+                        $saldo->orden_id = $model->id;
+                        $saldo->user_id = $model->user_id;
+                        $saldo->admin_id = Yii::app()->user->id;
+                        $saldo->tipo = 7; //por retiro de dinero PS                        
+                        $saldo->save();
+                        
+                        Yii::app()->user->setFlash("success", "Se ha realizado tu solicitud con éxito,
+                            en breve Personaling te dará respuesta.");
+                        
+                        /*Enviar correo OPERACIONES (operaciones@personaling.com
+                         si no esta en develop                          
+                         */  
+                        if(strpos(Yii::app()->baseUrl, "develop") === false){
+
+                            $this->enviarEmailOperaciones($model);  
+
+                        }
+                        
+                        //Notificar por correo al Personal Shopper
+                        $this->enviarNotificacionPersonalShopper($model);
+                        
+                        
+                        $this->redirect(array('index'));
+
+                    }else{
+                        Yii::trace('Solicitando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');                        
+                        
                         if($model->tipo == 0){                            
-                            //poner el nombre del banco "PAYPAL"
-                            $model->entidad = "PayPal";                            
+                            $model->entidad = "";                                                    
                         }
-                        
-                        //Validar con el saldo disponible
-                        
-                        if($model->save()){
-//                            $this->redirect(array('view','id'=>$model->id));
-                            //Bloquear saldo
-                            //Notificar a operaciones
-                            $this->redirect(array('index'));
-                            
-                        }
+                       
+                    } 
                             
 		}
-
-                
                 
 		$this->render('solicitar',array(
 			'model'=>$model,
-			'user'=>$user,
+			'balance'=>$balance,
 		));
 	}
 
@@ -99,47 +132,80 @@ class PagoController extends Controller
 	 */
 	public function actionDetalle($id)
 	{
-		$model=$this->loadModel($id);
-                $user = $model->user;
-                
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+            /* @var $model Pago */
+            $model=$this->loadModel($id);
+            $user = $model->user;
 
-		if(isset($_POST['aceptar']))
-		{
-                    if($_POST['idTransaccion'] != ""){
-                        
-                        $model->fecha_respuesta = date("Y-m-d H:i:s");
-                        $model->id_transaccion = $_POST['idTransaccion'];
-                        $model->admin_id = Yii::app()->user->id;
-                        $model->estado = 1;
-                        
-                        if($model->save()){
-                            //Descontar saldo de la PS
-                            Yii::app()->user->setFlash("success", "Se ha registrado el pago exitosamente.");                           
-                        
-                        }else{
-                            Yii::trace('Aceptando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');
-                            Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                           
+            // Uncomment the following line if AJAX validation is needed
+            // $this->performAjaxValidation($model);
 
-                        }                     
-                        
+            if(isset($_POST['aceptar']))
+            {
+                if($_POST['idTransaccion'] != ""){
+
+                    $model->fecha_respuesta = date("Y-m-d H:i:s");
+                    $model->id_transaccion = $_POST['idTransaccion'];
+                    $model->admin_id = Yii::app()->user->id;
+                    $model->estado = 1;
+
+                    if($model->save()){
+                        //enviar email a PS
+                        $this->enviarRespuestaPersonalShopper($model, 1);                        
+                        Yii::app()->user->setFlash("success", "Se ha registrado el pago exitosamente.");                           
+
                     }else{
-                        Yii::app()->user->setFlash("error", "Debes ingresar un código de transacción.");
-                    }
-
-                }else if(isset($_POST['rechazar'])){                    
-                    
-                    if($_POST['observacion'] != ""){
+                        Yii::trace('Aceptando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');
+                        Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                           
                         
-                    }
-                    
+                        $model=$this->loadModel($id);
+                    }                     
+
+                }else{
+                    Yii::app()->user->setFlash("error", "Debes ingresar un código de transacción.");
                 }
 
-		$this->render('detalle',array(
-			'model'=>$model,
-			'usuario'=>$user,
-		));
+                
+            }else if(isset($_POST['rechazar'])){                    
+
+                if($_POST['observacion'] != ""){
+                   $model->observacion = $_POST['observacion'];
+                }
+                
+                $model->fecha_respuesta = date("Y-m-d H:i:s");
+                $model->admin_id = Yii::app()->user->id;
+                $model->estado = 2; //Rechazado
+                if($model->save()){
+
+                    //Reintegrar saldo
+                    $saldo = new Balance();
+                    $saldo->total = $model->monto;
+                    $saldo->orden_id = $model->id;
+                    $saldo->user_id = $model->user_id;
+                    $saldo->admin_id = Yii::app()->user->id;
+                    $saldo->tipo = 8; //por reintegro de dinero PS                        
+                    $saldo->save();
+                    
+                    //enviar email a la PS
+                    $this->enviarRespuestaPersonalShopper($model, 2);
+                    Yii::app()->user->setFlash("success", "Se ha rechazado el pago exitosamente.");                           
+
+                }else{
+                    Yii::trace('Rechazando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');
+                    Yii::app()->user->setFlash("error", "No se pudo rechazar el pago.");  
+                    $model=$this->loadModel($id);
+//                    echo "<pre>";
+//                    print_r($model->getErrors());
+//                    echo "</pre><br>";
+//                    Yii::app()->end();
+                
+                }  
+
+            }            
+
+            $this->render('detalle',array(
+                    'model'=>$model,
+                    'usuario'=>$user,
+            ));
 	}
 
 	/**
@@ -216,4 +282,162 @@ class PagoController extends Controller
 			Yii::app()->end();
 		}
 	}
+        
+        /*Enviar el correo para notificar a Operaciones*/
+        function enviarEmailOperaciones($pago) {
+            
+            $message = new YiiMailMessage;
+            //this points to the file test.php inside the view path
+            $message->view = "mail_template";
+            
+            $subject = 'Solicitud de pago';
+            $body = Yii::t('contentForm',
+                    'Se ha generado una solicitud de pago por parte de un Personal
+                     Shopper.
+                     <br>
+                     <b>Nombre:</b> '.$pago->user->profile->getNombre().'<br/>
+                     <b>Email:</b> '.$pago->user->email.'<br/>
+                     <br>
+                     <br>
+                     <a title="Ver solicitudes" 
+                     href="http://www.personaling.es'.Yii::app()->baseUrl.
+                    '/pago/admin" 
+                        style="text-align:center;text-decoration:none;color:#ffffff;
+                        word-wrap:break-word;background: #231f20; padding: 12px;" 
+                        target="_blank">Ver solicitudes</a><br><br/><br/>'
+                     ."Los datos de la solicitud generada son:<br/>
+                     <b>Nro. de Solicitud:</b> {$pago->id}<br/>
+                     <b>Fecha</b>: ".date("d/m/Y h:i:s a", $pago->getFechaSolicitud())."<br/>
+                     <br/>
+                         
+                     <br/>");
+                     
+                     
+            $destinatario = "operaciones@personaling.com";
+            //si esta en test, enviarlo a cristal
+            if(strpos(Yii::app()->baseUrl, "test") !== false){
+                
+                $destinatario = "cmontanez@upsidecorp.ch";               
+            }     
+                     
+            $params = array('subject'=>$subject, 'body'=>$body);
+            $message->subject = $subject;
+            $message->setBody($params, 'text/html');
+            $message->addTo($destinatario);
+            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            Yii::app()->mail->send($message);
+        }
+        
+        /*Enviar el correo para notificar al PS sobre su pago
+         * 
+         * @param $accion si fue aprobado o rechazado
+         * 1: aprobado
+         * 2: rechazado
+         */
+        function enviarRespuestaPersonalShopper($pago, $accion) {
+            
+            $message = new YiiMailMessage;
+            //this points to the file test.php inside the view path
+            $message->view = "mail_template";
+            
+            $subject = 'Solicitud de pago';
+            
+            //Aprobado
+            if($accion == 1){
+                
+                $body = Yii::t('contentForm',
+                    'Tu solicitud de pago <b>Nro.'.$pago->id.'</b> ha sido aprobada.
+                     Se ha hecho el pago a tu cuenta. (Paypal o Banco) por un monto
+                     de <b>'.$pago->getMonto().'</b>
+                     <br>                    
+                     <br>
+                     <br>
+                     <a title="Mis solicitudes" 
+                     href="http://www.personaling.es'.Yii::app()->baseUrl.
+                    '/pago/index" 
+                        style="text-align:center;text-decoration:none;color:#ffffff;
+                        word-wrap:break-word;background: #231f20; padding: 12px;" 
+                        target="_blank">
+                        
+                        Mis solicitudes
+                        
+                      </a><br><br/><br/>'
+                     ."<br/>");
+            }else{
+                
+                $body = Yii::t('contentForm',
+                    'Tu solicitud de pago <b>Nro.'.$pago->id.'</b> ha sido rechazada.
+                     <br>                    
+                     <br>
+                     <br>
+                     <a title="Mis solicitudes" 
+                     href="http://www.personaling.es'.Yii::app()->baseUrl.
+                    '/pago/index" 
+                        style="text-align:center;text-decoration:none;color:#ffffff;
+                        word-wrap:break-word;background: #231f20; padding: 12px;" 
+                        target="_blank">
+                        
+                        Mis solicitudes
+                        
+                      </a><br><br/><br/>'
+                     ."<br/>");
+            }        
+                     
+            $destinatario = $pago->user->email;
+            
+            if(strpos(Yii::app()->baseUrl, "develop") !== false){
+                
+                $destinatario = "nramirez@upsidecorp.ch";               
+            }     
+                     
+            $params = array('subject'=>$subject, 'body'=>$body);
+            $message->subject = $subject;
+            $message->setBody($params, 'text/html');
+            $message->addTo($destinatario);
+            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            Yii::app()->mail->send($message);
+        }
+        
+        function enviarNotificacionPersonalShopper($pago) {
+            
+            $message = new YiiMailMessage;
+            //this points to the file test.php inside the view path
+            $message->view = "mail_template";
+            
+            $subject = 'Solicitud de pago';            
+            
+            $body = Yii::t('contentForm',
+                'Se ha generado tu solicitud de pago <b>Nro.'.$pago->id.'</b> por un 
+                 monto de <b>'.$pago->getMonto().'</b>.
+                 En breve Personaling te dará respuesta.
+                 <br>                    
+                 <br>
+                 <br>
+                 <a title="Mis solicitudes" 
+                 href="http://www.personaling.es'.Yii::app()->baseUrl.
+                '/pago/index" 
+                    style="text-align:center;text-decoration:none;color:#ffffff;
+                    word-wrap:break-word;background: #231f20; padding: 12px;" 
+                    target="_blank">
+
+                    Mis solicitudes
+
+                  </a><br><br/><br/>'
+                 ."<br/>");
+                     
+            $destinatario = $pago->user->email;
+            
+            if(strpos(Yii::app()->baseUrl, "develop") !== false){
+                
+                $destinatario = "nramirez@upsidecorp.ch";               
+            }     
+                     
+            $params = array('subject'=>$subject, 'body'=>$body);
+            $message->subject = $subject;
+            $message->setBody($params, 'text/html');
+            $message->addTo($destinatario);
+            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            Yii::app()->mail->send($message);
+        }
+        
 }

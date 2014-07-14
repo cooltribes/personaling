@@ -14,6 +14,10 @@
  */
  
  //UN BALANCE CON ORDER_ID = 0; REPRESENTA UNA CARGA DE SALDO DESDE ADMIN
+
+ /* UN BALANCE CON TIPO = 7 o 8; REPRESENTA UN PAGO O DESCUENTO POR SOLICITUD
+  * DE PS, POR LO TANTO ORDER_ID REPRESENTA EL PAGO AL CUAL ESTA ASOCIADO (tbl_pago)
+  */
  
  /* TIPO:
   * 
@@ -24,6 +28,8 @@
   * 4: Saldo por devolución // DEVALUACION?
   * 5: Saldo por comision de ventas (Personal Shoppers)
   * 6: Regalo por registro completo
+  * 7: Retiro de dinero por pago a PS
+  * 8: Reintegro de dinero por pago rechazado a PS
   * 
   */
  

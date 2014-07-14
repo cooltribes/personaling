@@ -33,7 +33,7 @@ class OrdenController extends Controller
                                     'generarExcelOut','devolver','adminDevoluciones',
                                     'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
                                     'AnularDevuelto','cantidadDevuelto','activarDevuelto',
-                                    'resolverOutbound'),
+                                    'resolverOutbound','descargarReturnXML'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -920,7 +920,7 @@ public function actionReportexls(){
 			 }
 			if($out=="ok"){
 				$user = User::model()->findByPk($devolucion->orden->user_id);
-					
+				$lf="";	
 					$comments="Disculpa las posibles molestias ocasionadas.<br/>Te recomendamos consultar nuestras politicas de devolución haciendo click <a href='http://www.personaling.es/develop/site/politicas_de_devoluciones'>aquí.</a>";
 									$message            = new YiiMailMessage;
 							           //this points to the file test.php inside the view path
@@ -932,9 +932,11 @@ public function actionReportexls(){
 							        $message->addTo($user->email);
 									$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 							        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
-							        Yii::app()->mail->send($message);
+							        //Yii::app()->mail->send($message);
+				if($devolucion->sendXML())
+					$lf="<br/>Devolución notificada a Logisfashion.";
 				
-				Yii::app()->user->setFlash('success', 'Devolucion Registrada exitosamente.');
+				Yii::app()->user->setFlash('success', 'Devolucion Registrada exitosamente.'.$lf);
 				if(UserModule::isAdmin())
 					$out="okadmin";
 				else
@@ -2272,7 +2274,7 @@ public function actionValidar()
 	public function actionAdminDevoluciones(){
 		
 		$devolucion=new Devolucion;	
-		$dataProvider=new CActiveDataProvider($devolucion,array('pagination'=>array('pageSize'=>20,),));
+		$dataProvider=new CActiveDataProvider($devolucion,array('criteria'=>array('order'=>'id DESC'),'pagination'=>array('pageSize'=>20,),));
 		
 		$this->render('adminDevoluciones',array('dataProvider'=>$dataProvider));
 		
@@ -2407,5 +2409,30 @@ public function actionValidar()
         
     }
     
+	
+	public function actionDescargarReturnXml()
+	{
+            //Revisar la extension
+            $archivo = Yii::getPathOfAlias("webroot").Devolucion::RUTA_RETURN.
+                    $_GET["id"].".xml";
+            $existe = file_exists($archivo);
+            
+            //si no existe con extension xlsx, poner xls
+            if(!$existe){
+                throw new CHttpException(404,'The requested page does not exist.');
+            }
+            
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename=Return_'.basename($archivo));
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($archivo));
+            ob_clean();
+            flush();
+            readfile($archivo);
+            
+	}
         
 }

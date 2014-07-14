@@ -18,9 +18,7 @@ $this->breadcrumbs=array(
 	    <div class="alert in alert-block fade alert-error text_align_center">
 	        <?php echo Yii::app()->user->getFlash('error'); ?>
 	    </div>
-	<?php }echo "++++++++++++++++++++++++++++++++++++++++++++++++";
-	print_r($devolucion->return); 
-	echo "++++++++++++++++++++++++++++++++++++++++++++++++";?>
+	<?php } ?>
 
 <div class="container margin_top">
 	<h1> Devolucion #<?php echo $devolucion->id; ?> <small>(Orden #<?php echo $devolucion->orden_id; ?>)</small> </h1>  
@@ -67,7 +65,8 @@ $this->breadcrumbs=array(
         </tr>
 		
 		<?php
-		
+	
+			
 			//INDIVIDUALES
 			
 			
@@ -108,7 +107,7 @@ $this->breadcrumbs=array(
                 echo("<td>".$color->valor."</td>");                         
                
               
-               echo("<td>".$talla->valor." ".array_search($prod['motivoAdmin'],Devolucion::model()->reasons)."</td>");
+               echo("<td>".$talla->valor."</td>");
 			   echo("<td>".$prod['monto']."</td>");
 			   if($prod['cantidad']>1)
 			   		$dis="";
@@ -174,6 +173,52 @@ $this->breadcrumbs=array(
 	</div>
 
 </div> 
+<div class="row-fluid">
+	<div class="span6">
+		<h3>Return XML</h3><hr class="no_margin_top"></hr>
+		<?php 	
+			$return=Retturn::model()->findByAttributes(array('devolucion_id'=>$devolucion->id));
+			echo '<table id="myTable" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">';
+			echo '<tr><td colspan="2">Albaran: '.$return->devolucion_id.'</td></tr>';
+			echo '<tr><td colspan="2">Fecha Albaran: '.$return->devolucion->fecha.'</td></tr>';
+			echo '<tr><td colspan="2">Motivo: '.$return->motivo.'</td></tr>';
+			echo '<tr><td align="center" colspan="2">ITEMS</td></tr>';
+			echo '<tr><td>EAN</td><td>Cantidad</td></tr>';
+			foreach($return->items as $item){
+					
+				echo '<tr><td>'.$item->sku.'</td><td>'.$item->cantidad.'</td></tr>';
+			}
+			echo '</table>';
+			echo '<a class="btn btn-danger pull-right" href="../descargarreturnxml/id/'.$return->id.'">Descargar</a>';
+		?>
+		
+	</div>
+	<?php if(!is_null($return->estadoConfirmation))
+	{?>
+		
+	<div class="span6">
+		<h3>ReturnStatus XML</h3><hr class="no_margin_top"/>
+		<?php 	
+	
+			echo '<table id="myTable" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">';
+			echo '<tr><td colspan="2">Albaran: '.$return->devolucion_id.'</td></tr>';
+			echo '<tr><td colspan="2">Fecha Estado: '.$return->fechaEstado.'</td></tr>';
+			echo '<tr><td colspan="2">Estado: '.$return->estadoConfirmation.'</td></tr>';
+			echo '<tr><td colspan="2">ITEMS</td></tr>';
+			echo '<tr><td>EAN</td><td>Cantidad</td></tr>';
+			foreach($return->items as $item){
+				if($item->cantidadConfirmation!=$item->cantidad)	
+					echo '<tr><td class="alert-error">'.$item->sku.'</td><td class="alert-error">'.$item->cantidadConfirmation.'</td></tr>';
+				else
+					echo '<tr><td>'.$item->sku.'</td><td>'.$item->cantidadConfirmation.'</td></tr>';
+				
+			}
+			echo '</table>';
+	}
+		?>
+	</div>
+	
+</div>
 <!-- /container --> 
 
 <script type="text/javascript"> 

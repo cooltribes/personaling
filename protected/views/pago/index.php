@@ -23,7 +23,16 @@ $this->breadcrumbs=array(
     <!-- FLASH OFF --> 
         <h1><?php echo Yii::t('contentForm' , 'My Payments'); ?></h1>
     </div>
-    
+    <div class="row">
+        <div class="span2 pull-right">
+            <?php $this->widget("bootstrap.widgets.TbButton", array(
+                'label' => 'Nueva solicitud',
+                'type' => 'success',                                
+                'url' => $this->createUrl("solicitar"),
+            )) ?> 
+        </div>
+    </div>
+    <hr>
     <style>
         .table th{
             vertical-align: middle;
@@ -49,7 +58,7 @@ $this->breadcrumbs=array(
                 <th scope="col">'.Yii::t('contentForm' , 'No.').'</th>                
                 <th scope="col">'.Yii::t('contentForm' , 'State').'</th>                
                 <th scope="col">'.Yii::t('contentForm' , 'Payment Type').'</th>
-                <th scope="col">'.Yii::t('contentForm' , 'Amount').' '.Yii::t('contentForm', 'currSym').'</th>
+                <th scope="col">'.Yii::t('contentForm' , 'Amount').'</th>
                 <th scope="col">'.Yii::t('contentForm' , 'Request Date').'</th>
                 <th scope="col">'.Yii::t('contentForm' , 'Response Date').'</th>
                 <th scope="col">'.Yii::t('contentForm' , 'Actions').'</th>

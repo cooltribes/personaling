@@ -143,10 +143,13 @@ class Devolucion extends CActiveRecord
 			return $cant;
 		
 	}
-	function getReturn(){
+	public function sendXML(){
             
             $return = new SimpleXMLElement('<Return/>');
-            
+            $returnDB=new Retturn;
+			$returnDB->setAttributes(array('devolucion_id'=>$this->id,'motivo'=>$this->getMotivosString()));
+			$returnDB->save();
+			
             //Codigo de Albaran
 
             $return->addChild('Albaran', $this->id);
@@ -154,16 +157,18 @@ class Devolucion extends CActiveRecord
             //Fecha de Albaran
             $fecha = date("Y-m-d", strtotime($this->fecha));
             $return->addChild("FechaAlbaran", "{$fecha}");
-			$return->addChild("MotivoDevolucion", "Ropa Fea");
+			$return->addChild("MotivoDevolucion", $this->motivosString);
 			$return->addChild("Outbound", $this->orden_id);             
             //Cliente - Usuario
 
             
             foreach ($this->dptcs as $dhptc) {
-                
+                $itemR=new ItemReturn;
+				$itemR->setAttributes(array('return_id'=>$returnDB->id,'devolucionhaspreciotallacolor_id'=>$dhptc->id,'cantidad'=>$dhptc->cantidad,'sku'=>$dhptc->preciotallacolor->sku));
+                $itemR->save();
                 $item = $return->addChild("Item");                
                 //Agregar el SKU
-                $item->addChild("EAN", "{$dhptc->preciotallacolor->sku}");
+                $item->addChild("EAN", $dhptc->preciotallacolor->sku);
                 //Agregar la cantidad vendida.                
                 $item->addChild("Cantidad", "{$dhptc->cantidad}");                
                 
@@ -177,8 +182,23 @@ class Devolucion extends CActiveRecord
             
             //Enviar return a LF y guardarlo en local para respaldo
             $subido = MasterData::subirArchivoFtp($return, 4, $this->id);
-           
-            
+           	if($subido){
+           		$returnDB->enviado=1;
+				$returnDB->save();
+				return true;
+           	}
+            return $item;
         }
+		public function getMotivosString(){
+			$motivos="";	
+			foreach ($this->dptcs as $key=>$dhptc) {
+				$motivos=$motivos."[".$dhptc->preciotallacolor->sku."]=>".$dhptc->motivo;
+				if($key<count($this->dptcs)-1){
+					$motivos=$motivos.",";
+				}
+			}
+			return $motivos;
+			
+		}
 	
 }

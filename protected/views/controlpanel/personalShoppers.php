@@ -93,6 +93,7 @@ $this->widget('zii.widgets.CListView', array(
     'dataProvider' => $dataProvider,
     'itemView' => '_viewPs',
     'template' => $template,
+    'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',                
     'afterAjaxUpdate'=>" function(id, data) {
 
         actualizarNroUsuarios(id, data);

@@ -35,14 +35,13 @@ $this->breadcrumbs=array(
   </div>
 
     <?php
-
+//<th scope="col">Por Pagar (En '.Yii::t('contentForm', 'currSym').')</th>
 $template = '{summary}
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
     <tr>
       <th scope="col">Número de Orden</th>
       <th scope="col">Fecha</th>
-      <th scope="col">Monto (En '.Yii::t('contentForm', 'currSym').')</th>
-      <th scope="col">Por Pagar (En '.Yii::t('contentForm', 'currSym').')</th>
+      <th scope="col">Monto (En '.Yii::t('contentForm', 'currSym').')</th>      
       <th scope="col">Estado</th>
       <th scope="col">Acciones</th>
     </tr>
@@ -56,7 +55,7 @@ $template = '{summary}
         'dataProvider'=>$dataProvider,
         'itemView'=>'_datosUsuario',
         'template'=>$template,
-        'emptyText'=> '<p class="lead">No tienes pedidos </p>',
+        'emptyText'=> '<p class="lead">No tienes pedidos</p>',
         'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',            
         'enableSorting'=>'true',
         'afterAjaxUpdate'=>" function(id, data) {

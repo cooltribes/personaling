@@ -205,7 +205,7 @@ class InboundController extends Controller
 	/**
 	 * Analizar el confirmation de un inbound enviado.
 	 */
-	function getInboundConf($id){
+	function getInboundConfirmations($id){
             
             $enProduccion = strpos(Yii::app()->baseUrl, "develop") == false 
                 && strpos(Yii::app()->baseUrl, "test") == false;
@@ -220,7 +220,7 @@ class InboundController extends Controller
                 $userPwd = "Personaling789"; 
             }       
             
-            $tipoArchivo = "InboundConfirmation_";
+            $tipoArchivo = "InboundStatus_";
             $rutaArchivo = Yii::getPathOfAlias('webroot').Inbound::RUTA_ARCHIVOS;        
             
             /* Directorio OUT donde estan los confirmation*/
@@ -309,7 +309,7 @@ class InboundController extends Controller
             $userName = "personaling";
             $userPwd = "P3rs0n4l1ng";            
             
-            $tipoArchivo = "OutboundConfirmation"; /*CORREGIR*/
+            $tipoArchivo = "OutboundStatus"; /*CORREGIR*/
             $rutaArchivo = Yii::getPathOfAlias('webroot').Outbound::RUTA_ARCHIVOS;                    
             
             
@@ -420,14 +420,14 @@ class InboundController extends Controller
                             
                             if($discrepancias == 1){
                                 //notificar a Operaciones
-                                $this->enviarEmailOperaciones();
+                                $this->enviarEmailOperaciones($outB->orden);
                             }
                             
                             
-                        }//fin si estaba confirmado
+                        }//fin si estaba finalizado
                         else if($outB->estado == 4)
                         {
-                            
+                            //marcarlo enviado
                         }
                         
                         $outB->save();
@@ -464,7 +464,7 @@ class InboundController extends Controller
                         style="text-align:center;text-decoration:none;color:#ffffff;
                         word-wrap:break-word;background: #231f20; padding: 12px;" 
                         target="_blank">Ver órdenes</a><br><br/><br/><br/><br/>'
-                     ."Los datos de la orden generada son:<br/>
+                     ."Los datos de la orden son:<br/>
                      Codigo: {$orden->id}<br/>
                      Fecha: {$orden->fecha}<br/>
                      <br/>

@@ -3155,8 +3155,8 @@ public function actionReportexls(){
             foreach ($sheet_array as $row) {
 
                 //Transformar valores a string
-                $row['E'] = strval($row['E']);
-                $row['F'] = strval($row['F']);
+                $row['I'] = strval($row['I']);
+                $row['J'] = strval($row['J']);
                 
                 if ($row['A'] != "") {
 
@@ -3164,7 +3164,7 @@ public function actionReportexls(){
                         
                         if ($row['A'] != "Referencia")
                             $falla = "Referencia";
-                        else if ($row['E'] != "% Descuento")
+                        else if ($row['I'] != "% Descuento")
                             $falla = "% Descuento";                        
 
                         if ($falla != "") { // algo falló
@@ -3195,13 +3195,13 @@ public function actionReportexls(){
                             }
                         }                    
                         //Porcentajes
-                        if (isset($row['E'])) {
+                        if (isset($row['I'])) {
                             //si no esta vacia
-                            if($row['E'] != ""){
+                            if($row['I'] != ""){
                                 //si no es numerica ni entera ni en los rangos de porcentaje
-                                if (!ctype_digit($row['E']) || $row['E'] < 0 || $row['E'] > 100){
+                                if (!ctype_digit($row['I']) || $row['I'] < 0 || $row['I'] > 100){
                                     
-                                    $erroresPorcentaje .= "<li> <b>" . $row['E'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                                    $erroresPorcentaje .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
                                  
                                 // si esta bien escrita, revisar que coincida el calculo
                                 }else{
@@ -3210,14 +3210,14 @@ public function actionReportexls(){
                                     array("codigo" => $row["A"]));
                                 
                                     if(isset($producto)){
-                                        $precioFinal = $producto->calcularPrecioFinal(intval($row['E']));
+                                        $precioFinal = $producto->calcularPrecioFinal(intval($row['I']));
                                         
                                         //si la colummna F no es numerica 
-                                        if (!is_numeric($row['F']) || $row['F'] != $precioFinal)
+                                        if (!is_numeric($row['J']) || $row['J'] != $precioFinal)
                                         {
-                                            $row['F'] = $row['F'] == "" ? "Nada":$row['F'];
+                                            $row['J'] = $row['J'] == "" ? "Nada":$row['J'];
                                             
-                                            $erroresCalculo .= "<li> En el archivo: <b>" . $row['F'] . "</b>   -   
+                                            $erroresCalculo .= "<li> En el archivo: <b>" . $row['J'] . "</b>   -   
                                              Calculado: <b>" . $precioFinal . "</b>.   (Línea <b>" . $linea."</b>)</li>";
 
                                         }
@@ -3250,7 +3250,7 @@ public function actionReportexls(){
                                  </ul><br>";
             }
             if($erroresCalculo!= ""){
-                $erroresCalculo = "La columna <b>F</b> (Precio con descuento con IVA) no coincide con el precio calculado:<br><ul>
+                $erroresCalculo = "La columna <b>J</b> (Precio con IVA y Descuento) no coincide con el precio calculado:<br><ul>
                                  {$erroresCalculo}
                                  </ul><br>";
             }
@@ -3389,14 +3389,18 @@ public function actionReportexls(){
             // creando el encabezado
             $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A1', 'Referencia')
-                        ->setCellValue('B1', 'Costo')
-                        ->setCellValue('C1', 'Precio de venta sin IVA')
-                        ->setCellValue('D1', 'Precio de venta con IVA')
-                        ->setCellValue('E1', '% Descuento')
-                        ->setCellValue('F1', 'Precio con descuento con IVA');
+                        ->setCellValue('B1', 'Nombre')
+                        ->setCellValue('C1', 'Marca')
+                        ->setCellValue('D1', 'Categorías')
+                        ->setCellValue('E1', 'Descripción')                        
+                        ->setCellValue('F1', 'Costo')
+                        ->setCellValue('G1', 'Precio sin IVA')
+                        ->setCellValue('H1', 'Precio con IVA')
+                        ->setCellValue('I1', '% Descuento')
+                        ->setCellValue('J1', 'Precio con IVA y Descuento');
 
             $colI = 'A';
-            $colF = 'F';
+            $colF = 'J';
 
             //Poner autosize todas las columnas
             foreach(range($colI,$colF) as $columnID) {
@@ -3415,13 +3419,24 @@ public function actionReportexls(){
             foreach ($arrayProductos as $producto) {
                 //Agregar la fila al documento xls
                 $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('A'.($i), $producto->codigo) 
-                        ->setCellValue('B'.($i), $producto->precios[0]->costo)
-                        ->setCellValue('C'.($i), $producto->precios[0]->precioVenta)
-                        ->setCellValue('D'.($i), $producto->precios[0]->precioImpuesto);
-                        
-//                        ->setCellValue('D'.($i), $producto->user->profile->getNombre())
-//                        ->setCellValue('E'.($i), $producto->getPrecio());
+                    ->setCellValue('A'.($i), $producto->codigo) 
+                    ->setCellValue('B'.($i), $producto->nombre) 
+                    ->setCellValue('C'.($i), $producto->mymarca->nombre);
+                
+                $categorias = "";
+                foreach($producto->categorias as $categoria){
+                    $categorias .= "$categoria->nombre / ";
+                }
+                
+                $categorias = substr($categorias, 0, -3);
+                
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('D'.($i), $categorias) 
+                    ->setCellValue('E'.($i), $producto->descripcion) 
+                    ->setCellValue('F'.($i), $producto->precios[0]->costo)
+                    ->setCellValue('G'.($i), $producto->precios[0]->precioVenta)
+                    ->setCellValue('H'.($i), $producto->precios[0]->precioImpuesto);
+                
                 $i++;
             }
 
@@ -3435,7 +3450,9 @@ public function actionReportexls(){
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
             $objWriter->save('php://output');
             Yii::app()->end();
+            
 	}
+        
         
         public function actionExportarExcel(){
             ini_set('memory_limit','256M'); 

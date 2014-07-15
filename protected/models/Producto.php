@@ -91,6 +91,7 @@ class Producto extends CActiveRecord
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
 			array('url_externo', 'length', 'max'=>100),
+			array('url_externo', 'url', 'defaultScheme' => 'http', 'allowEmpty' => true, 'message' => 'Formato de url inválido'),
 			array('nombre, codigo, marca_id, descripcion, peso', 'required','message'=>'{attribute} '.Yii::t('contentForm','cannot be blank')),
 			//array('proveedor', 'length', 'max'=>45), 
 			array('imagenes', 'required', 'on'=>'multi'),

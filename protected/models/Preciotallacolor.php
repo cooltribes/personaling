@@ -45,6 +45,7 @@ class PrecioTallaColor extends CActiveRecord
 			array('sku','unique'),
 			array('cantidad, producto_id, talla_id, color_id', 'numerical', 'integerOnly'=>true),
 			array('cantidad', 'numerical','min'=>0), //,'tooSmall' => 'Debe seleccionar por lo menos un {attribute}','on'=>'update'
+			array('url_externo', 'url', 'defaultScheme' => 'http', 'allowEmpty' => true, 'message' => 'Formato de url inválido'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, cantidad, producto_id, talla_id, color_id,sku,url_externo', 'safe', 'on'=>'search'),

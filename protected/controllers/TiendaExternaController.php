@@ -28,20 +28,21 @@ class TiendaExternaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('index'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
+				'actions'=>array('admin','create','delete'),
+				//'users'=>array('admin'),
+				'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
-			),
+			), 
 		);
 	}
 
@@ -60,34 +61,32 @@ class TiendaExternaController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id=null)
 	{
-		$model=new Tienda;
+		if(is_null($id)){
+			$tienda=new Tienda; 
+			$logo=null;}
+		else {
+			$tienda=Tienda::model()->findByPk($id);
+			$logo=$tienda->logo;
+		}
+		
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Tienda']))
 		{
+			
 			$tienda->attributes = $_POST['Tienda'];
 			$tienda->type=$_POST['multi'];
-			
-			//$tienda->urlImagen = $_POST['Tienda']['Urlimagen'];
-		
-			
-		
-			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/tienda/'))
-				{
-	   				mkdir(Yii::getPathOfAlias('webroot').'/images/tienda/',0777,true);
-	 			}
-			
-			$rnd = rand(0,9999);  
 			$images=CUploadedFile::getInstanceByName('logo');
-			
-	
-		
-			if (isset($images) && count($images) > 0) {
-				$tienda->urlImagen = "{$rnd}-{$images}";
+			if(isset($images))
+			{
+				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/tienda/'))
+					mkdir(Yii::getPathOfAlias('webroot').'/images/tienda/',0777,true);
+				$rnd = rand(0,9999);  
+				$tienda->logo = "{$rnd}-{$images}";
 				
 				$tienda->save();
 					        
@@ -107,6 +106,7 @@ class TiendaExternaController extends Controller
 					$image->resize(150, 150);
 					$image->save($nombre.'_thumb'.$extension);
 					
+					
 					if($extension == '.png'){
 						$image = Yii::app()->image->load($nombre.$extension);
 						$image->resize(150, 150);
@@ -114,24 +114,20 @@ class TiendaExternaController extends Controller
 					}	
 					
 				}
-				else {
-		        	$tienda->delete();
-				}
-		        
-			}else{
-		    	if(!$tienda->save())
-		    		Yii::app()->user->setFlash('error',UserModule::t("Tienda no pudo ser guardada.").$adicional);
-		        
-			}// isset
+				
+				
+				
+			}
+			else{
+				$tienda->logo=$logo;
+				$tienda->save();				
+			}
+			$this->redirect(array('admin'));
 			
-		                
-		                
-		                
-		                $this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
-			'tienda'=>$model,
+			'tienda'=>$tienda,
 		));
 	}
 
@@ -189,14 +185,21 @@ class TiendaExternaController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Tienda('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Tienda']))
-			$model->attributes=$_GET['Tienda'];
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+		$tienda = new Tienda; 
+		$tienda->unsetAttributes();
+		if (isset($_POST['query']))
+		{
+			//echo($_POST['query']);	
+			$tienda->name = $_POST['query'];
+		}
+		
+		$dataProvider = $tienda->search();
+		$this->render('admin',
+			array('tienda'=>$tienda,
+			'dataProvider'=>$dataProvider,
+		));	
+		
+		
 	}
 
 	/**

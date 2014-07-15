@@ -147,9 +147,9 @@ $this->breadcrumbs=array(
   	
   	$('#multimarca').on('click', function() {
 		 if($('#multimarca').is(':checked'))
-		 	$('multi').val('1');
+		 	$('#multi').val('1');
 		 else
-		 	$('multi').val('0');
+		 	$('#multi').val('0');
 				        
   	});	
   	

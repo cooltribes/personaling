@@ -112,23 +112,23 @@ class Producto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_tbl_producto(tbl_categoria_id, tbl_producto_id)'),
-			'encantan' => array(self::MANY_MANY, 'UserEncantan', 'tbl_userEncantan(producto_id, user_id)'),
-			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
-			'mainimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','on' => 'orden=1'),
-			'colorimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','order'=>'k.orden ASC', 'alias' => 'k'),
-			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
-			'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
-			'preciotallacolor' => array(self::HAS_MANY,'Preciotallacolor','producto_id'),
-			'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
-                'select'=> 'SUM(cantidad)',
-                ),
-            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
-             'mymarca' => array(self::BELONGS_TO, 'Marca','marca_id'),  
-             'myclasificaciones' => array(self::HAS_MANY,'ClasificacionMarca','marca_id'),  
-             'mycolor' => array(self::MANY_MANY, 'Color', 'tbl_precioTallaColor(color_id, producto_id)'),                  
-            'seo' => array(self::HAS_ONE, 'Seo', 'tbl_producto_id'),
-		);
+                    'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_tbl_producto(tbl_categoria_id, tbl_producto_id)'),
+                    'encantan' => array(self::MANY_MANY, 'UserEncantan', 'tbl_userEncantan(producto_id, user_id)'),
+                    'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
+                    'mainimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','on' => 'orden=1'),
+                    'colorimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','order'=>'k.orden ASC', 'alias' => 'k'),
+                    'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
+                    'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
+                    'preciotallacolor' => array(self::HAS_MANY,'Preciotallacolor','producto_id'),
+                    'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
+                    'select'=> 'SUM(cantidad)',
+                    ),
+                    'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
+                    'mymarca' => array(self::BELONGS_TO, 'Marca','marca_id'),  
+                    'myclasificaciones' => array(self::HAS_MANY,'ClasificacionMarca','marca_id'),  
+                    'mycolor' => array(self::MANY_MANY, 'Color', 'tbl_precioTallaColor(color_id, producto_id)'),                  
+                    'seo' => array(self::HAS_ONE, 'Seo', 'tbl_producto_id'),
+                        );
 	}
  
 	/**

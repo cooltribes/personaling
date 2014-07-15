@@ -33,7 +33,7 @@ $this->breadcrumbs=array(
                             </label>
                             <div class="controls">
                                 <?php echo CHtml::activeTextField($model, 'codigo', 
-                                       array('class' => 'span3')); ?>
+                                       array('class' => 'span3', 'required' => 'required',)); ?>
                             </div>
                         </div>
                         
@@ -57,7 +57,7 @@ $this->breadcrumbs=array(
                                 <?php echo CHtml::activeNumberField($model, 'descuento', 
 //                                        Giftcard::getMontos(), 
                                         array('class' => 'span1', 'step' => '0.1',
-                                            'min' => '0')); ?>
+                                            'min' => '0', 'required' => 'required',)); ?>
                                 <span class="add-on">%</span>
                             </div>
                         </div>                        
@@ -74,6 +74,19 @@ $this->breadcrumbs=array(
                             'value' =>  $model->fin_vigencia != null ? 
                                 date("d-m-Y", strtotime($model->fin_vigencia)) : ''
                         )); ?>	
+                        
+                        <!--descuento-->
+			<div class="control-group input-append<?php echo $model->hasErrors("monto_minimo")?" error":""; ?>">
+                            <label class="control-label required" for="CodigoDescuento_monto_minimo">
+                                <?php echo Yii::t('contentForm','Monto mínimo aplicable'); ?> <span class="required">*</span>
+                            </label>
+                            <div class="controls">
+                                <?php echo CHtml::activeNumberField($model, 'monto_minimo', 
+                                        array('class' => 'span1', 'step' => 'any',
+                                            'min' => '0',  'required' => 'required',)); ?>
+                                <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>
+                            </div>
+                        </div>
                         
                         <!--Estado -->
 			<div class="control-group">

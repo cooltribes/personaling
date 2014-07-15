@@ -356,16 +356,27 @@ class BolsaController extends Controller
                                //si es correcto
                                if($codigo && $codigo->esValido()){
                                    
-                                   //si el cliente ya uso ese cupon
+                                   //si el cliente ya usó ese cupon
                                    if(CuponHasOrden::clienteUsoCupon($codigo->id)){
-                                       
+
                                        Yii::app()->user->setFlash('error',Yii::t("contentForm",
                                            "Ya has usado este cupón. Solo puedes usarlo una vez."));
                                        $errores = true;
-                                       
+
                                    }else{
                                        
-                                       Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+                                        //si la compra cumple con el minimo para usar el cupon                                                                             
+                                       if($codigo->cumpleMinimo()){
+                                           
+                                           Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+
+                                       }else{
+                                           
+                                           Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                               "Para aplicar este cupón tu compra debe
+                                               tener un monto mínimo de <b>".$codigo->getMinimo()."</b>"));
+                                           $errores = true;
+                                       }
                                    }
                                   
                                }else{

@@ -35,6 +35,12 @@
     <td>
         <?php echo $data->getDescuento(); ?>
     </td>
+    
+    <!--monto minimo-->
+    <td>
+        <?php echo $data->getMinimo(); ?>
+    </td>
+    
     <!--validez-->
     <td>
         <?php echo date("d/m/Y", $data->getInicioVigencia()); ?>

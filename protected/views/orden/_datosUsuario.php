@@ -4,12 +4,12 @@
     echo "<td>" . $data->id . "</td>"; // id
 
     if ($data->fecha != "")
-        echo "<td>" . date("d/m/Y", strtotime($data->fecha)) . "</td>";
+        echo "<td>" . date("d/m/Y h:i:s a", strtotime($data->fecha)) . "</td>";
     else
         echo "<td></td>";
 
     echo "<td>" . Yii::app()->numberFormatter->formatDecimal($data->total) . "</td>"; // precio
-    echo "<td>" . Yii::app()->numberFormatter->formatDecimal($data->getxPagar()) . "</td>"; // precio
+    //echo "<td>" . Yii::app()->numberFormatter->formatDecimal($data->getxPagar()) . "</td>"; // precio
     //----------------------Estado
     echo "<td>" . $data->textestado . "</td>";
 

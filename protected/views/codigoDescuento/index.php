@@ -60,6 +60,7 @@ $this->breadcrumbs = array(
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Code').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'State').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Descuento').'</th>
+            <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Monto mínimo<br>aplicable').'</th>
             <th colspan="2" scope="col">'.Yii::t('contentForm' , 'Validity').'</th>            
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Actions').'</th>
         </tr>

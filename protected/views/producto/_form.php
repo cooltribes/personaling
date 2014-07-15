@@ -32,12 +32,12 @@
                         <div class="controls controls-row">
                             <?php
                 
-                $models = Marca::model()->findAll(array('order' => 'id'));
-				$list = CHtml::listData($models,'id', 'nombre');
-				
-				echo CHtml::dropDownList('marcas', $model->marca_id, $list, array('empty' => 'Seleccione...'));
-                
-                //echo $form->dropDownList($model, 'proveedor', array('Seleccione...', Producto::aldo, Producto::desigual, Producto::accessorize, Producto::suite, Producto::mango, Producto::helly, Producto::secret, Producto::bimba ,'Otra')); ?>
+			                $models = Marca::model()->findAll(array('order' => 'id'));
+							$list = CHtml::listData($models,'id', 'nombre');
+							
+							echo CHtml::dropDownList('marcas', $model->marca_id, $list, array('empty' => 'Seleccione...'));
+			                
+			                //echo $form->dropDownList($model, 'proveedor', array('Seleccione...', Producto::aldo, Producto::desigual, Producto::accessorize, Producto::suite, Producto::mango, Producto::helly, Producto::secret, Producto::bimba ,'Otra')); ?>
                             <?php echo $form->error($model,'marca_id'); ?> </div>
                     </div>
                     <div class="control-group"> <?php echo $form->labelEx($model,'peso', array('class' => 'control-label')); ?>
@@ -52,6 +52,29 @@
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'destacado', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'destacado'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'outlet', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'outlet'); ?> </div>
                     <div class="control-group"> <?php echo $form->radioButtonListInlineRow($model, 'precio_especial', array(1 => 'Si', 0 => 'No',)); ?> <?php echo $form->error($model,'precio_especial'); ?> </div>
+                    <div class="control-group"> <?php echo $form->labelEx($model,'tipo', array('class' => 'control-label')); ?>
+                        <div class="controls controls-row">
+                            <?php
+							echo $form->dropDownList($model, 'tipo', array(0 => 'Catálogo propio', 1 => 'Catálogo de terceros'));
+                            echo $form->error($model,'tipo');
+                            ?> 
+                        </div>
+                    </div>
+                    <div id="campos_externos" style="<?php if($model->isNewRecord || $model->tipo == 0) echo 'display: none;'; ?>">
+                    	<div class="control-group"> <?php echo $form->labelEx($model,'tienda_id', array('class' => 'control-label')); ?>
+	                        <div class="controls controls-row">
+	                            <?php
+	                
+				                $tiendas = Tienda::model()->findAll(array('order' => 'id'));
+								$list_tiendas = CHtml::listData($tiendas,'id', 'name');
+								
+								echo CHtml::dropDownList('tienda_id', $model->tienda_id, $list_tiendas, array('empty' => 'Seleccione...'));
+	                            echo $form->error($model,'tienda_id'); ?> </div>
+	                    </div>
+	                    <div class="control-group"> <?php echo $form->labelEx($model,'url_externo', array('class' => 'control-label')); ?>
+	                        <div class="controls"> <?php echo $form->textField($model,'url_externo',array('class'=>'span5','maxlength'=>100, 'placeholder' => 'Enlace externo')); ?> <?php echo $form->error($model,'url_externo'); ?> </div>
+	                    </div>
+                    </div>
                     <div class="control-group">
                         <label for="" class="control-label required"> Calendario</label>
                         <div class="controls">
@@ -317,6 +340,24 @@
 	
 $("#abrirFechas").click(function () {
   $("#fechas").toggle("slow");
+});
+
+/*$("#Producto_tipo_0").click(function () {
+  $("#campos_externos").hide("slow");
+  $('#tienda_id').val('');
+  $('#Producto_url_externo').val('');
+});
+
+$("#Producto_tipo_1").click(function () {
+  $("#campos_externos").show("slow");
+});*/
+
+$('#Producto_tipo').change(function(){
+	if($(this).val() == '1'){
+		$("#campos_externos").show("slow");
+	}else{
+		$("#campos_externos").hide("slow");
+	}
 });
 
 </script>

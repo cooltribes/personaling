@@ -18,7 +18,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 <th scope="col">Talla</th>
                 <th scope="col">SKU/Código</th>
                 <th scope="col">Cantidad</th>
-                <!--<th scope="col">Imágenes</th>-->
+                <th scope="col">Url Externa</th>
                 <th scope="col">Acciones</th>
               </tr> 
  <?php foreach($tallacolor as $i=>$item): ?>          
@@ -41,6 +41,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 	
                 	<?php echo $form->textFieldRow($item, "[$i]cantidad", array('class'=>'input-small')); ?>
                 	<?php echo $form->error($item,"[$i]cantidad"); ?>
+                </td>
+                <td>
+                    
+                    <?php echo $form->textFieldRow($item, "[$i]url_externo", array('class'=>'input-small')); ?>
+                    <?php echo $form->error($item,"[$i]url_externo"); ?>
                 </td>
                 
                 <!--<td><img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <img src="http://placehold.it/30"/> <br/>

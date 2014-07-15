@@ -321,6 +321,7 @@ public function actionReportexls(){
 		if(isset($_POST['Producto']))
 		{
 			$exist = Producto::model()->findByAttributes(array('codigo'=>$_POST['Producto']['codigo']));
+			var_dump($_POST['Producto']['tipo']);
 			
 			if(isset($exist)) // si existe
 			{
@@ -336,8 +337,18 @@ public function actionReportexls(){
 						'almacen' => $_POST['Producto']['almacen'],
 						'temporada' => $_POST['Producto']['temporada'],
 						'outlet' => $_POST['Producto']['outlet'],
-						'precio_especial' => $_POST['Producto']['precio_especial']
+						'precio_especial' => $_POST['Producto']['precio_especial'],
+						'tipo' => $_POST['Producto']['tipo']
 					));
+
+				 	if($_POST['Producto']['tipo'] == 1){
+				 		if(isset($_POST['Producto']['url_externo'])){
+				 			Producto::model()->updateByPk($exist->id, array('url_externo' => $_POST['Producto']['url_externo']));
+						}
+						if(isset($_POST['tienda_id'])){
+							Producto::model()->updateByPk($exist->id, array('tienda_id' => $_POST['tienda_id']));
+						}
+				 	}
 					
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
@@ -365,6 +376,15 @@ public function actionReportexls(){
 				$model->almacen = $_POST['Producto']['almacen'];
 				$model->temporada = $_POST['Producto']['temporada'];
 				$model->outlet = $_POST['Producto']['outlet'];
+				$model->precio_especial = $_POST['Producto']['precio_especial'];
+				$model->tipo = $_POST['Producto']['tipo'];
+				if(isset($_POST['Producto']['url_externo'])){
+					$model->url_externo = $_POST['Producto']['url_externo'];
+				}
+				if(isset($_POST['tienda_id'])){
+					$model->tienda_id = $_POST['tienda_id'];
+				}
+
 				if($model->save())
 				{
 					Yii::app()->user->updateSession();
@@ -1573,12 +1593,15 @@ public function actionReportexls(){
                                 $preciotallacolor[$i] = new Preciotallacolor;                                
                             }
                             
-                            if ($tallacolor['sku']!='' && $tallacolor['cantidad']!=''){				
+                            if ($tallacolor['sku']!='' && $tallacolor['cantidad']!=''){
                                 
                                 $this->performAjaxValidation($preciotallacolor[$i]); 
                                 $cantAnterior = $preciotallacolor[$i]->cantidad;
                                 $preciotallacolor[$i]->attributes=$tallacolor; 
                                 $preciotallacolor[$i]->producto_id = $model->id;
+                                if(isset($tallacolor['url_externo']) && $tallacolor['url_externo'] != ''){
+                                	 $preciotallacolor[$i]->url_externo = $tallacolor['url_externo'];
+                                }
                                 $valid  = $valid  && $preciotallacolor[$i]->validate();
                                 
                                 //si esta actualizando una cantidad, guardar en el log

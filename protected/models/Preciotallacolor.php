@@ -47,7 +47,7 @@ class PrecioTallaColor extends CActiveRecord
 			array('cantidad', 'numerical','min'=>0), //,'tooSmall' => 'Debe seleccionar por lo menos un {attribute}','on'=>'update'
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, cantidad, producto_id, talla_id, color_id,sku', 'safe', 'on'=>'search'),
+			array('id, cantidad, producto_id, talla_id, color_id,sku,url_externo', 'safe', 'on'=>'search'),
 		);
 	}
  
@@ -151,6 +151,7 @@ class PrecioTallaColor extends CActiveRecord
 			'talla_id' => 'Tbl Talla',
 			'color_id' => 'Tbl Color',
 			'sku'=>'Codigo/Sku',
+			'ulr_externo' => 'Url Externo',
 		);
 	}
 	
@@ -190,6 +191,7 @@ class PrecioTallaColor extends CActiveRecord
 		$criteria->compare('producto_id',$this->producto_id);
 		$criteria->compare('talla_id',$this->talla_id);
 		$criteria->compare('color_id',$this->color_id);
+		$criteria->compare('url_externo',$this->url_externo);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

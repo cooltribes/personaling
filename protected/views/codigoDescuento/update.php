@@ -22,7 +22,7 @@ $this->breadcrumbs=array(
     
 
 		<fieldset>
-                    <legend>Editando Código de Descuento: <small><?php echo $model->id ?> - <?php echo $model->codigo; ?></small></legend>
+                    <legend>Editando Código de Descuento: <strong><?php echo $model->codigo; ?></strong></legend>
                         
                          <?php echo $form->errorSummary($model, "Por favor corrige los siguientes errores:"); ?>
                         
@@ -33,7 +33,7 @@ $this->breadcrumbs=array(
                             </label>
                             <div class="controls">
                                 <?php echo CHtml::activeTextField($model, 'codigo', 
-                                       array('class' => 'span3')); ?>
+                                       array('class' => 'span3', 'required' => 'required',)); ?>
                             </div>
                         </div>
                         
@@ -57,7 +57,7 @@ $this->breadcrumbs=array(
                                 <?php echo CHtml::activeNumberField($model, 'descuento', 
 //                                        Giftcard::getMontos(), 
                                         array('class' => 'span1', 'step' => '0.1',
-                                            'min' => '0')); ?>
+                                            'min' => '0', 'required' => 'required',)); ?>
                                 <span class="add-on"><?php echo $model->tipo_descuento == 1?
                                         Yii::t('backEnd', 'currSym'):"%"; ?></span>
                             </div>
@@ -75,6 +75,19 @@ $this->breadcrumbs=array(
                             'value' =>  $model->fin_vigencia != null ? 
                                 date("d-m-Y", strtotime($model->fin_vigencia)) : ''
                         )); ?>	
+                        
+                        <!--descuento-->
+			<div class="control-group input-append<?php echo $model->hasErrors("monto_minimo")?" error":""; ?>">
+                            <label class="control-label required" for="CodigoDescuento_monto_minimo">
+                                <?php echo Yii::t('contentForm','Monto mínimo aplicable'); ?> <span class="required">*</span>
+                            </label>
+                            <div class="controls">
+                                <?php echo CHtml::activeNumberField($model, 'monto_minimo', 
+                                        array('class' => 'span1', 'step' => 'any',
+                                            'min' => '0', 'required' => 'required', )); ?>
+                                <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>
+                            </div>
+                        </div>
                         
                         <!--Estado -->
 			<div class="control-group">

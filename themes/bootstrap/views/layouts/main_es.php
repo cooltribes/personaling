@@ -16,6 +16,9 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
     <?php  Yii::app()->clientScript->registerScriptFile( Yii::app()->theme->baseUrl."/js/jquery.hoverIntent.minified.js" ); ?>
     <noscript><img height='1' width='1' alt='' style='display:none' src='https://www.facebook.com/offsite_event.php?id=6016397659254&amp;value=0.01&amp;currency=EUR' /></noscript>
+<!-- start Mixpanel --><script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2.2.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+mixpanel.init("da3a06a70248326e132ae8c873390868");</script><!-- end Mixpanel -->
 </head>
  
 <body class="<?php echo $this->getBodyClasses(); ?>">
@@ -75,15 +78,21 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                                     array('label' => 'Egresos de Mercancía',
                                                         'url'=>array('/movimiento/adminEgresos'),),
                                                     array('label' => 'Reporte de Defectuosos',
-                                                        'url'=>array('/movimiento/defectuosos'),),
-                                                    array('label' => 'Importar Productos',
-                                                        'url'=>array('/producto/importar'),),
-                                                    array('label' => 'Importar Precios',
-                                                        'url'=>array('/producto/importarPrecios'),),
+                                                        'url'=>array('/movimiento/defectuosos'),),                                                   
                                                     array('label' => 'Ver MasterDatas',
                                                         'url'=>array('/masterData/admin'),),
                                                     array('label' => 'Ver Inbounds',
                                                         'url'=>array('/inbound/admin'),),                                                    
+                                                )),
+                                            array('label'=>'Importar','url'=>'#',                                                
+                                                'items' => array(
+                                                   
+                                                    array('label' => 'Productos Personaling',
+                                                        'url'=>array('/producto/importar'),),
+                                                    array('label' => 'Descuentos',
+                                                        'url'=>array('/producto/importarPrecios'),),                                                   
+                                                    array('label' => 'Productos Externos',
+                                                        'url'=>array('/producto/importarExternos'),),                                                   
                                                 )),
 					)
 				),

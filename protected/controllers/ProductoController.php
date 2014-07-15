@@ -40,7 +40,8 @@ class ProductoController extends Controller
                                     'tallacolor','addtallacolor','varias','categorias',
                                     'recatprod','seo', 'historial','importar','descuentos',
                                     'reporte','reportexls', "createExcel", 'plantillaDescuentos',
-                                    'importarPrecios', 'exportarExcel', 'outlet', 'precioEspecial'),
+                                    'importarPrecios', 'exportarExcel', 'outlet', 'precioEspecial',
+                                    'importarExternos'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -321,6 +322,7 @@ public function actionReportexls(){
 		if(isset($_POST['Producto']))
 		{
 			$exist = Producto::model()->findByAttributes(array('codigo'=>$_POST['Producto']['codigo']));
+			var_dump($_POST['Producto']['tipo']);
 			
 			if(isset($exist)) // si existe
 			{
@@ -336,8 +338,18 @@ public function actionReportexls(){
 						'almacen' => $_POST['Producto']['almacen'],
 						'temporada' => $_POST['Producto']['temporada'],
 						'outlet' => $_POST['Producto']['outlet'],
-						'precio_especial' => $_POST['Producto']['precio_especial']
+						'precio_especial' => $_POST['Producto']['precio_especial'],
+						'tipo' => $_POST['Producto']['tipo']
 					));
+
+				 	if($_POST['Producto']['tipo'] == 1){
+				 		if(isset($_POST['Producto']['url_externo'])){
+				 			Producto::model()->updateByPk($exist->id, array('url_externo' => $_POST['Producto']['url_externo']));
+						}
+						if(isset($_POST['tienda_id'])){
+							Producto::model()->updateByPk($exist->id, array('tienda_id' => $_POST['tienda_id']));
+						}
+				 	}
 					
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
@@ -365,6 +377,15 @@ public function actionReportexls(){
 				$model->almacen = $_POST['Producto']['almacen'];
 				$model->temporada = $_POST['Producto']['temporada'];
 				$model->outlet = $_POST['Producto']['outlet'];
+				$model->precio_especial = $_POST['Producto']['precio_especial'];
+				$model->tipo = $_POST['Producto']['tipo'];
+				if(isset($_POST['Producto']['url_externo'])){
+					$model->url_externo = $_POST['Producto']['url_externo'];
+				}
+				if(isset($_POST['tienda_id'])){
+					$model->tienda_id = $_POST['tienda_id'];
+				}
+
 				if($model->save())
 				{
 					Yii::app()->user->updateSession();
@@ -1573,12 +1594,15 @@ public function actionReportexls(){
                                 $preciotallacolor[$i] = new Preciotallacolor;                                
                             }
                             
-                            if ($tallacolor['sku']!='' && $tallacolor['cantidad']!=''){				
+                            if ($tallacolor['sku']!='' && $tallacolor['cantidad']!=''){
                                 
                                 $this->performAjaxValidation($preciotallacolor[$i]); 
                                 $cantAnterior = $preciotallacolor[$i]->cantidad;
                                 $preciotallacolor[$i]->attributes=$tallacolor; 
                                 $preciotallacolor[$i]->producto_id = $model->id;
+                                if(isset($tallacolor['url_externo']) && $tallacolor['url_externo'] != ''){
+                                	 $preciotallacolor[$i]->url_externo = $tallacolor['url_externo'];
+                                }
                                 $valid  = $valid  && $preciotallacolor[$i]->validate();
                                 
                                 //si esta actualizando una cantidad, guardar en el log
@@ -2025,8 +2049,9 @@ public function actionReportexls(){
             $totalInbound = 0;
             $actualizadosInbound = 0;
 
-            if (isset($_POST['valido'])) { // enviaron un archivo
 
+            if (isset($_POST['valido'])) { // enviaron un archivo
+               
                 /*Primer paso - Validar el archivo*/
                 if(isset($_POST["validar"])){
                     
@@ -2807,9 +2832,8 @@ public function actionReportexls(){
             $erroresPrecio = "";
             $erroresColumnasVacias = "";
             
-
             $linea = 1;
-            $lineaProducto = 0;
+            $lineaProducto = 0;            
 
             //Revisar cada fila de la hoja de excel.
             foreach ($sheet_array as $row) {
@@ -2852,17 +2876,17 @@ public function actionReportexls(){
                         else if ($row['P'] != "Almacén")
                             $falla = "Almacén";
 
-                        if ($falla != "") { // algo falló :O
+                        if ($falla != "") { // algo falló O:
                             Yii::app()->user->updateSession();
                             Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
-                                            $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita"));                                   
+                                            $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita.<br><br>"));                                   
 
                             return false;
                         }
                     }
 
-                    /*si pasa las columnas entonces que revise
-                    Marcas, categorias, tallas y colores.*/                          
+                    /*si pasa las columnas entonces revisar
+                    Marcas, categorias, tallas y colores.. y todo lo demas.*/                          
                     if($linea > 1){
                         
                         $categoriasRepetidas = array();
@@ -2883,8 +2907,7 @@ public function actionReportexls(){
                             if($col == "P"){
                                 break;
                             }
-                        }                        
-
+                        }       
 
                         //Peso
                         if(isset($row['K']) && $row['K'] != "" && !is_numeric($row['K'])){
@@ -2964,9 +2987,8 @@ public function actionReportexls(){
                             if (!isset($color)) {
                                 $erroresColores .= "<li> <b>" . $row['J'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }	
-                        }
-                        
-                                //Bisutería
+                        }                        
+                                
                         //la cantidad de categorias
                         if ($cantCategorias < 2){
                             $erroresCatVacias .= "<li> Línea <b>" . $linea."</b></li>";
@@ -3056,6 +3078,122 @@ public function actionReportexls(){
                 "nLineas"=>$linea-2,
                 );            
         }
+        
+        protected function validarImportacionExternos($archivo){
+            
+            //Validar las columnas normales primero
+            $response = $this->validarArchivo($archivo);
+            $errores = "";
+            if(is_array($response)){
+                //si son validas todas
+                
+            }else{
+                //si hubo errores, capturarlos.
+                $errores = Yii::app()->user->getFlash("error");
+            }
+            
+            //VALIDAR LAS COLUMNAS RESTANTES
+            $sheetArray = Yii::app()->yexcel->readActiveSheet($archivo);
+            
+            $erroresColumnasVacias = "";
+            $erroresTienda = "";
+            $erroresSku = "";
+
+            
+            $falla = "";
+            $linea = 1;
+            
+            foreach ($sheetArray as $row) {
+                
+                if ($row['A'] != ""){
+                    
+                    if ($linea == 1) { // revisar los nombres / encabezados de las columnas
+                        if ($row['Q'] != "Tienda")
+                            $falla = "Tienda";
+                        else if ($row['R'] != "URL")
+                            $falla = "URL";
+
+                        if ($falla != "") { // algo falló O:
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
+                                            $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita."));                                   
+
+                            return false;
+                        }
+                    }
+                    
+                    if($linea > 1){                       
+                      
+                        //Revisar celdas vacias
+                        if(!isset($row['Q']) || $row['Q'] == ""){                            
+                                $erroresColumnasVacias.= "<li> Columna: <b>" . "Q" .
+                                        "</b>, en la línea <b>" . $linea."</b></li>";                                
+                        }
+                        if(!isset($row['R']) || $row['R'] == ""){                            
+                                $erroresColumnasVacias.= "<li> Columna: <b>" . "R" .
+                                        "</b>, en la línea <b>" . $linea."</b></li>";                                
+                        }
+                        
+                        //Marcas
+                        if (isset($row['Q']) && $row['Q'] != "") {                        
+                            $tienda = Tienda::model()->findByAttributes(array("name" => $row["Q"]));
+
+                            if (!isset($tienda)) {
+                                $erroresTienda .= "<li> <b>" . $row['Q'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }
+                        
+                        //SKU existentes                        
+                        if (isset($row['A']) && $row['A'] != "") {                        
+                            $producto = Preciotallacolor::model()->findByAttributes(array("sku" => $row["A"]));
+
+                            //si existe y es de personaling
+                            if (isset($producto) && $producto->producto->tipo == 0) {
+                                $erroresSku .= "<li> <b>" .$row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }
+                        
+                        
+                    }                    
+                    
+                }
+                
+                $linea++;
+            }
+            
+            //si hubo celdas vacias
+            if($erroresColumnasVacias != ""){
+                $erroresColumnasVacias = "Las siguientes Columnas están vacías:<br><ul>
+                                 {$erroresColumnasVacias}
+                                 </ul><br>";
+            }            
+            if($erroresTienda != ""){
+                $erroresTienda = "Las siguientes Tiendas no existen en la plataforma o están mal escritas:<br><ul>
+                                 {$erroresTienda}
+                                 </ul><br>";
+            }
+            if($erroresSku != ""){
+                $erroresSku = "Los siguientes SKU ya existen en la plataforma para productos de Personaling:<br><ul>
+                                 {$erroresSku}
+                                 </ul><br>";
+            }
+            
+            $errores .= $erroresColumnasVacias . $erroresTienda;
+           
+            if($errores != ""){
+                
+                Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash('error', $errores);
+
+                return false;                
+            } 
+            
+            //No hubo errores.
+            return $response; 
+            
+            
+        }
+        
         
         protected function validarArchivoInbound($archivo){
             
@@ -3155,8 +3293,8 @@ public function actionReportexls(){
             foreach ($sheet_array as $row) {
 
                 //Transformar valores a string
-                $row['E'] = strval($row['E']);
-                $row['F'] = strval($row['F']);
+                $row['I'] = strval($row['I']);
+                $row['J'] = strval($row['J']);
                 
                 if ($row['A'] != "") {
 
@@ -3164,7 +3302,7 @@ public function actionReportexls(){
                         
                         if ($row['A'] != "Referencia")
                             $falla = "Referencia";
-                        else if ($row['E'] != "% Descuento")
+                        else if ($row['I'] != "% Descuento")
                             $falla = "% Descuento";                        
 
                         if ($falla != "") { // algo falló
@@ -3195,13 +3333,13 @@ public function actionReportexls(){
                             }
                         }                    
                         //Porcentajes
-                        if (isset($row['E'])) {
+                        if (isset($row['I'])) {
                             //si no esta vacia
-                            if($row['E'] != ""){
+                            if($row['I'] != ""){
                                 //si no es numerica ni entera ni en los rangos de porcentaje
-                                if (!ctype_digit($row['E']) || $row['E'] < 0 || $row['E'] > 100){
+                                if (!ctype_digit($row['I']) || $row['I'] < 0 || $row['I'] > 100){
                                     
-                                    $erroresPorcentaje .= "<li> <b>" . $row['E'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                                    $erroresPorcentaje .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
                                  
                                 // si esta bien escrita, revisar que coincida el calculo
                                 }else{
@@ -3210,14 +3348,14 @@ public function actionReportexls(){
                                     array("codigo" => $row["A"]));
                                 
                                     if(isset($producto)){
-                                        $precioFinal = $producto->calcularPrecioFinal(intval($row['E']));
+                                        $precioFinal = $producto->calcularPrecioFinal(intval($row['I']));
                                         
                                         //si la colummna F no es numerica 
-                                        if (!is_numeric($row['F']) || $row['F'] != $precioFinal)
+                                        if (!is_numeric($row['J']) || $row['J'] != $precioFinal)
                                         {
-                                            $row['F'] = $row['F'] == "" ? "Nada":$row['F'];
+                                            $row['J'] = $row['J'] == "" ? "Nada":$row['J'];
                                             
-                                            $erroresCalculo .= "<li> En el archivo: <b>" . $row['F'] . "</b>   -   
+                                            $erroresCalculo .= "<li> En el archivo: <b>" . $row['J'] . "</b>   -   
                                              Calculado: <b>" . $precioFinal . "</b>.   (Línea <b>" . $linea."</b>)</li>";
 
                                         }
@@ -3250,7 +3388,7 @@ public function actionReportexls(){
                                  </ul><br>";
             }
             if($erroresCalculo!= ""){
-                $erroresCalculo = "La columna <b>F</b> (Precio con descuento con IVA) no coincide con el precio calculado:<br><ul>
+                $erroresCalculo = "La columna <b>J</b> (Precio con IVA y Descuento) no coincide con el precio calculado:<br><ul>
                                  {$erroresCalculo}
                                  </ul><br>";
             }
@@ -3389,14 +3527,18 @@ public function actionReportexls(){
             // creando el encabezado
             $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A1', 'Referencia')
-                        ->setCellValue('B1', 'Costo')
-                        ->setCellValue('C1', 'Precio de venta sin IVA')
-                        ->setCellValue('D1', 'Precio de venta con IVA')
-                        ->setCellValue('E1', '% Descuento')
-                        ->setCellValue('F1', 'Precio con descuento con IVA');
+                        ->setCellValue('B1', 'Nombre')
+                        ->setCellValue('C1', 'Marca')
+                        ->setCellValue('D1', 'Categorías')
+                        ->setCellValue('E1', 'Descripción')                        
+                        ->setCellValue('F1', 'Costo')
+                        ->setCellValue('G1', 'Precio sin IVA')
+                        ->setCellValue('H1', 'Precio con IVA')
+                        ->setCellValue('I1', '% Descuento')
+                        ->setCellValue('J1', 'Precio con IVA y Descuento');
 
             $colI = 'A';
-            $colF = 'F';
+            $colF = 'J';
 
             //Poner autosize todas las columnas
             foreach(range($colI,$colF) as $columnID) {
@@ -3415,13 +3557,24 @@ public function actionReportexls(){
             foreach ($arrayProductos as $producto) {
                 //Agregar la fila al documento xls
                 $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('A'.($i), $producto->codigo) 
-                        ->setCellValue('B'.($i), $producto->precios[0]->costo)
-                        ->setCellValue('C'.($i), $producto->precios[0]->precioVenta)
-                        ->setCellValue('D'.($i), $producto->precios[0]->precioImpuesto);
-                        
-//                        ->setCellValue('D'.($i), $producto->user->profile->getNombre())
-//                        ->setCellValue('E'.($i), $producto->getPrecio());
+                    ->setCellValue('A'.($i), $producto->codigo) 
+                    ->setCellValue('B'.($i), $producto->nombre) 
+                    ->setCellValue('C'.($i), $producto->mymarca->nombre);
+                
+                $categorias = "";
+                foreach($producto->categorias as $categoria){
+                    $categorias .= "$categoria->nombre / ";
+                }
+                
+                $categorias = substr($categorias, 0, -3);
+                
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('D'.($i), $categorias) 
+                    ->setCellValue('E'.($i), $producto->descripcion) 
+                    ->setCellValue('F'.($i), $producto->precios[0]->costo)
+                    ->setCellValue('G'.($i), $producto->precios[0]->precioVenta)
+                    ->setCellValue('H'.($i), $producto->precios[0]->precioImpuesto);
+                
                 $i++;
             }
 
@@ -3435,7 +3588,9 @@ public function actionReportexls(){
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
             $objWriter->save('php://output');
             Yii::app()->end();
+            
 	}
+        
         
         public function actionExportarExcel(){
             ini_set('memory_limit','256M'); 
@@ -3524,5 +3679,292 @@ public function actionReportexls(){
             $objWriter->save('php://output');
             Yii::app()->end();
         }
+        
+        // importar desde excel
+	public function actionImportarExternos()
+	{
+            $nuevos = 0;
+            $actualizados = 0;
+            $error = false;            
+           
+            /*Primer paso - Validar el archivo*/
+            if(isset($_POST["validar"]))
+            {
+               
+                $archivo = CUploadedFile::getInstancesByName('archivoValidacion');
+
+                //Guardarlo en el servidor para luego abrirlo y revisar
+                if (isset($archivo) && count($archivo) > 0) {
+                    foreach ($archivo as $arc => $xls) {
+                        $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsMasterData/' . "Temporal";
+                        $extension = '.' . $xls->extensionName;                     
+
+                        if (!$xls->saveAs($nombre . $extension)){
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));                            
+                        }
+                    }
+                }else{
+                    Yii::app()->user->updateSession();
+                    Yii::app()->user->setFlash('error', UserModule::t("Debes seleccionar un archivo."));                            
+                    $error = true;
+                }              
+
+                //Si no hubo errores
+                if(!$error && is_array($resValidacion = $this->validarImportacionExternos($nombre . $extension))){
+
+                    Yii::app()->user->updateSession();
+                    Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
+                                Puede continuar con el siguiente paso.<br><br>
+                                Este archivo contiene <b>{$resValidacion['nProds']}
+                                </b> productos.");                    
+                }
+
+            //Segundo paso - Subir el Archivo
+            }
+            else if(isset($_POST["cargar"]) && isset($_POST["archivoCarga"]))
+            {
+
+                $archivo = CUploadedFile::getInstancesByName('archivoCarga');
+
+                if (isset($archivo) && count($archivo) > 0) {
+                    $nombreTemporal = "ImportacionE";
+                    $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsMasterData/';
+                    foreach ($archivo as $arc => $xls) {
+
+                        $nombre = $rutaArchivo.$nombreTemporal;
+                        $extension = '.' . $xls->extensionName;
+
+                        if ($xls->saveAs($nombre . $extension)) {
+
+                        } else {
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
+                        }
+                    }
+                }else{
+                    Yii::app()->user->updateSession();
+                    Yii::app()->user->setFlash('error', UserModule::t("Debes seleccionar un archivo."));                            
+                    $error = true;
+                } 
+
+                // ==============================================================================
+
+                // Validar (de nuevo)
+                if(!$error && !is_array($resValidacion = $this->validarImportacionExternos($nombre . $extension)) ){
+
+                   
+                    // Si pasa la validacion
+                    $sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
+
+                    //para cada fila del archivo
+                    foreach ($sheet_array as $row) {
+
+                        if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
+
+                            //Modificaciones a las columnas
+                            //antes de procesarlas                            
+                            //Transformar los datos numericos: Peso, costo y Precio
+                            $row['K'] = str_replace(",", ".", $row['K']);
+                            $row['L'] = str_replace(",", ".", $row['L']);
+                            $row['M'] = str_replace(",", ".", $row['M']); 
+
+                            $rSku = $row['A'];
+                            $rRef = $row['B'];
+                            $rMarca = $row['C'];
+                            $rNombre = $row['D'];
+                            $rDescrip = $row['E'];
+                            $rCatego1 = $row['F'];
+                            $rCatego2 = $row['G'];
+                            $rCatego3 = $row['H'];
+                            $rTalla = $row['I'];
+                            $rColor = $row['J'];
+                            $rPeso = $row['K'];
+                            $rCosto = $row['L'];
+                            $rPrecio = $row['M'];
+                            $rmDesc = $row['N'];
+                            $rmTags = $row['O'];
+                            $rAlmacen = $row['P'];
+
+                            $producto = Producto::model()->findByAttributes(array('codigo' => $rRef));
+                            
+                            // la referencia existe, hay que actualizar los campos
+                            $prodExiste = isset($producto);
+
+                            // Marca para actualizar
+                            $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));                                                        
+
+                            if($prodExiste){
+
+                                // actualiza el producto
+                                Producto::model()->updateByPk($producto->id, array(
+                                    'nombre' => $rNombre,
+                                    'marca_id' => $marca->id,
+                                    'descripcion' => $rDescrip,
+                                    'peso' => $rPeso,
+                                    'almacen' => $rAlmacen,
+                                    'status' => 1
+                                )); 
+                            } else
+                            { // no existe la referencia, es producto nuevo                           
+
+                                $producto = new Producto;
+                                $producto->nombre = $rNombre;
+                                $producto->codigo = $rRef;
+                                $producto->estado = 1; // inactivo
+                                $producto->descripcion = $rDescrip;
+                                $producto->fecha = date('Y-m-d H:i:s');
+                                $producto->peso = $rPeso;
+                                $producto->almacen = $rAlmacen;
+                                $producto->status = 1; // no está eliminado
+                                $producto->marca_id = $marca->id;
+                                $producto->save();  
+
+                            }
+                            // Si existe o no el producto, actualizar o insertar precio nuevo
+                            $precio = Precio::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
+
+                            if (!isset($precio)) {
+
+                                $precio = new Precio;
+                                $precio->tbl_producto_id = $producto->id;
+
+                            } 
+
+                            $precio->costo = $rCosto;
+                            $precio->impuesto = 1;
+
+                            //si es con iva
+                            if(MasterData::TIPO_PRECIO == 1){
+
+                                $precio->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+                                $precio->precioDescuento = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+                                $precio->precioImpuesto = $rPrecio; 
+
+                            }else{ //si es sin iva
+
+                                $precio->precioVenta = $rPrecio;
+                                $precio->precioDescuento = $rPrecio;
+                                $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                                
+                            }
+
+
+                            $precio->save();
+
+                            //Consultar las categorias
+                            $categorias = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id' => $producto->id));
+                            // borrar todas las categorias
+                            if (isset($categorias)) {
+                                foreach ($categorias as $categoria) {
+                                    $categoria->delete();
+                                }
+                            }
+
+                            $cat = new CategoriaHasProducto;
+                            $cat2 = new CategoriaHasProducto;
+                            $cat3 = new CategoriaHasProducto;
+
+                            //Agregar 3 categorias al producto
+                            if ($rCatego1 != "") {
+                                $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego1));
+                                $cat->tbl_producto_id = $producto->id;
+                                $cat->tbl_categoria_id = $x->id;
+
+                                $cat->save();
+                            }
+
+                            if ($rCatego2 != "") {
+                                $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego2));
+                                $cat2->tbl_producto_id = $producto->id;
+                                $cat2->tbl_categoria_id = $x->id;
+
+                                $cat2->save();
+                            }
+
+                            if ($rCatego3 != "") {
+                                $x = Categoria::model()->findByAttributes(array('nombre' => $rCatego3));
+                                $cat3->tbl_producto_id = $producto->id;
+                                $cat3->tbl_categoria_id = $x->id;
+
+                                $cat3->save();
+                            }
+
+                            //buscar talla y color
+                            $talla = Talla::model()->findByAttributes(array('valor' => $rTalla));
+                            $color = Color::model()->findByAttributes(array('valor' => $rColor));
+
+                            $ptc = Preciotallacolor::model()->findByAttributes(array(
+                                            'producto_id' => $producto->id,
+                                            'sku' => $rSku,
+                                            'talla_id' => $talla->id,
+                                            'color_id' => $color->id,
+                                        ));                                   
+
+                            // Si no existe crearlo
+                            if (!isset($ptc)) { 
+
+                                $nuevos++; // suma un producto nuevo
+
+                                $ptc = new Preciotallacolor;                                        
+                                $ptc->cantidad = 0; //Creando un producto nuevo, sin existencia
+                                $ptc->sku = $rSku;
+                                $ptc->producto_id = $producto->id;
+
+                                $ptc->talla_id = $talla->id;
+                                $ptc->color_id = $color->id;
+                                $ptc->save();
+
+                            }else{
+                                //Si ya existe
+                                $actualizados++; //suma un producto actualizado                                
+
+                                //Marcar item como actualizado
+                                
+                            }
+
+                            // seo
+                            $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
+
+                            if (isset($seo)) {
+
+                                $seo->mTitulo = $producto->nombre;
+                                $seo->mDescripcion = $rmDesc;
+                                $seo->pClave = $rmTags;
+                                $seo->save();
+
+                            } else {
+
+                                $seo = new Seo;
+                                $seo->mTitulo = $producto->nombre;
+                                $seo->mDescripcion = $rmDesc;
+                                $seo->pClave = $rmTags;
+                                $seo->tbl_producto_id = $producto->id;
+                                $seo->save();
+                            }
+                            
+                            
+                        } 
+                        else if ($row['A'] == "") 
+                        { // si está vacia la primera celda
+
+                        }
+                    }// foreach
+
+                    Yii::app()->user->setFlash("success", "Se ha cargado con éxito el archivo.
+                                Puede ver los detalles de la carga a continuación.<br>"); 
+                
+                }
+            
+            }
+
+            $this->render('importarExternos', array(                
+                'nuevos' => $nuevos,
+                'actualizados' => $actualizados,               
+            ));
+
+	}
+        
+        
+        
         
 }

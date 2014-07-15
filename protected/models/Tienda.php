@@ -48,8 +48,9 @@ class Tienda extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required', 'message'=>'No puedes dejar este campo en blanco'),
+			array('name, url', 'required', 'message'=>'No puedes dejar este campo en blanco'),
 			array('type, status', 'numerical', 'integerOnly'=>true),
+			array('url', 'url','defaultScheme'=>'http'),
 			array('name, logo, url', 'length', 'max'=>100),
 			array('description', 'safe'),
 			// The following rule is used by search().

@@ -56,27 +56,28 @@ class CodigoDescuento extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('codigo', 'required', "message" => "Debes ingresar el código de descuento"),
-			array('descuento', 'required', "message" => "Debes ingresar un monto o porcentaje"),
-			array('estado, tipo_descuento, creador', 'required'),
-                        array('inicio_vigencia', 'required', 'message' => '¿Desde cuándo es válido el código?'),
-                        array('fin_vigencia', 'required', 'message' => '¿Hasta cuándo es válido el código?'),
-                    
-                        array( 'inicio_vigencia','compare','compareValue' => date("Y-m-d"),'operator'=>'>=', 'allowEmpty'=>'false', 
-                            'message' => 'La fecha de inicio de vigencia debe ser mayor o igual a la fecha de hoy.', 'on' => 'insert'),
-			array( 'fin_vigencia','compare','compareAttribute' => 'inicio_vigencia', 'operator'=>'>=', 'allowEmpty'=>'false', 
-                            'message' => 'La fecha de fin de vigencia debe ser mayor o igual a la fecha de inicio.', 'on' => 'insert'),                    
-                    
-                        array('codigo', 'unique', 'message'=>'Código de Descuento ya registrado.'),
-			array('estado, tipo_descuento', 'numerical', 'integerOnly'=>true),			
-                        array('descuento', 'numerical'),
+                    array('codigo', 'required', "message" => "Debes ingresar el código de descuento"),
+                    array('descuento', 'required', "message" => "Debes ingresar un monto o porcentaje"),
+                    array('monto_minimo', 'required', "message" => "Debes ingresar un monto minimo para ser aplicado"),
+                    array('estado, tipo_descuento, creador', 'required'),
+                    array('inicio_vigencia', 'required', 'message' => '¿Desde cuándo es válido el código?'),
+                    array('fin_vigencia', 'required', 'message' => '¿Hasta cuándo es válido el código?'),
+
+                    array( 'inicio_vigencia','compare','compareValue' => date("Y-m-d"),'operator'=>'>=', 'allowEmpty'=>'false', 
+                        'message' => 'La fecha de inicio de vigencia debe ser mayor o igual a la fecha de hoy.', 'on' => 'insert'),
+                    array( 'fin_vigencia','compare','compareAttribute' => 'inicio_vigencia', 'operator'=>'>=', 'allowEmpty'=>'false', 
+                        'message' => 'La fecha de fin de vigencia debe ser mayor o igual a la fecha de inicio.', 'on' => 'insert'),                    
+
+                    array('codigo', 'unique', 'message'=>'Este Código ya existe.'),
+                    array('estado, tipo_descuento', 'numerical', 'integerOnly'=>true),			
+                    array('descuento', 'numerical'),
 //                        array('descuento', 'numerical', 'max' => self::getMontoMaximo()),
 
-			array('codigo', 'length', 'max'=>256),
-			array('plantilla_url', 'length', 'max'=>255),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, estado, codigo, descuento, tipo_descuento, creador, inicio_vigencia, fin_vigencia, plantilla_url', 'safe', 'on'=>'search'),
+                    array('codigo', 'length', 'max'=>256),
+                    array('plantilla_url', 'length', 'max'=>255),
+                    // The following rule is used by search().
+                    // Please remove those attributes that should not be searched.
+                    array('id, estado, codigo, descuento, tipo_descuento, creador, inicio_vigencia, fin_vigencia, monto_minimo, plantilla_url', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -158,6 +159,12 @@ class CodigoDescuento extends CActiveRecord
            return Yii::app()->numberFormatter->formatCurrency($this->descuento, ''). $array[$this->tipo_descuento];
            
         }
+        public function getMinimo() {
+           
+           return Yii::app()->numberFormatter->formatCurrency($this->monto_minimo, '').                     
+                   Yii::t('contentForm', 'currSym');
+           
+        }
         
         /*Retorna la fecha de inicio de vigencia como un timestamp*/
         public function getInicioVigencia() {
@@ -197,6 +204,21 @@ class CodigoDescuento extends CActiveRecord
             
                     
             return $this->estado == 1 && $validoFecha;
+        }
+        
+        //Revisa fechas y estado
+        public function cumpleMinimo(){
+            
+            //Sumar todo mas IVA
+            $totalConIVA = Yii::app()->getSession()->get('totalConIva');
+
+            /****OJO - recalcularlo para productos sin iva*****/
+            $totalDe = Yii::app()->getSession()->get('descuento');
+            
+            //Restarle los descuentos                        
+            $total = $totalConIVA - $totalDe;             
+                    
+            return $this->monto_minimo <= $total;
         }
                 
         

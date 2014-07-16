@@ -8,6 +8,8 @@
  * @property double $total
  * @property integer $orden_id 
  * @property integer $user_id
+ * @property integer $admin_id
+ * @property string $fecha
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -135,9 +137,11 @@ class Balance extends CActiveRecord
 		if($balance->tipo==4)
 			return "Saldo por devolución";
 		
-		return "Desconocido";
-
-  
-		
-	}
+		return "Desconocido";  		
+	}        
+        
+        public function getFecha(){
+            return date("d-m-Y h:i:s a", strtotime($this->fecha));
+        }
+        
 }

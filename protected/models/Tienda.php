@@ -14,6 +14,11 @@
  *
  * The followings are the available model relations:
  * @property Producto[] $productos
+ * 
+ * Type:
+ * 0: Monomarca
+ * 1: Multimarca
+ * 
  */
 class Tienda extends CActiveRecord
 {
@@ -43,8 +48,9 @@ class Tienda extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, type', 'required'),
+			array('name, url', 'required', 'message'=>'No puedes dejar este campo en blanco'),
 			array('type, status', 'numerical', 'integerOnly'=>true),
+			array('url', 'url','defaultScheme'=>'http'),
 			array('name, logo, url', 'length', 'max'=>100),
 			array('description', 'safe'),
 			// The following rule is used by search().
@@ -72,10 +78,10 @@ class Tienda extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'description' => 'Description',
-			'logo' => 'Logo',
-			'type' => 'Type',
+			'name' => 'Nombre',
+			'description' => 'Descripción',
+			'logo' => 'Logotipo',
+			'type' => 'Monomarca',
 			'status' => 'Status',
 			'url' => 'Url',
 		);

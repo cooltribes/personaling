@@ -16,8 +16,10 @@
 <?php
 
 foreach($prods as $data): 
-	if($data->tipo)
+	if($data->tipo){
 		$tienda=Tienda::model()->findByPk($data->tienda_id);
+	}
+		
 	else
 		$tienda=null;
 ?>
@@ -147,7 +149,7 @@ $b='';
 							}
 						}
 						if(!is_null($tienda))
-							$precio = "<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>&nbsp;&nbsp;&nbsp;<span>ENLACE</span>";
+							$precio = "<span class='precio' style='display:inline'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>&nbsp;&nbsp;&nbsp;<span><a href='".$data->getUrl()."' style='color:#3286A5; cursor:pointer'>".$tienda->urlVista."</a></span>";
 							
 
 						echo($encabezado."

@@ -238,7 +238,18 @@
                   "</span><span class='T_large'>|</span><span class='T_large pDescuento' >
                   ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span><br/><span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
                 }else{
-                  echo "<span class='T_large pDescuento' >".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span>';
+                  	?>
+                  	<div class="pDetalle">
+                  	
+                  			    			<?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto); ?>
+                  	
+                  			
+                  	
+                  	</div>
+                  	
+                  	<?php
+					
+                  //echo "<span class='T_large pDescuento' >".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span>';
                 }
               }
                

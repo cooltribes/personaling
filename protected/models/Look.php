@@ -1074,45 +1074,54 @@ class Look extends CActiveRecord
 		return false;
 	}
 	public function getRangosPrecios(){
-$start = microtime(true);
-		/*      Rangos de precios       */
-        $allLooks = Look::model()->findAll("status = 2");
-        $count = array(0, 0, 0, 0);
-        $rangosArray = array();              
-        
-        if($allLooks){
-//$time_taken = microtime(true) - $start;
-//echo $time_taken."x<br>";            
-            foreach ($allLooks as $look) {
-               // $allPrices[] = $look->getPrecio(false); //Precio sin descuento
-               $allPrices[] = $look->getPrecioDescuento(false); // Precio con descuento
-               
-                //$allPrices[] = $look->precioNf;
-//$time_taken = microtime(true) - $start;
-//echo $time_taken."x<br>";				
-            }
+		$start = microtime(true);
+				/*      Rangos de precios       */
+		        $allLooks = Look::model()->findAll("status = 2");
+		        $count = array(0, 0, 0, 0);
+		        $rangosArray = array();              
+		        
+		        if($allLooks){
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."x<br>";            
+		            foreach ($allLooks as $look) {
+		               // $allPrices[] = $look->getPrecio(false); //Precio sin descuento
+		               $allPrices[] = $look->getPrecioDescuento(false); // Precio con descuento
+		               
+		                //$allPrices[] = $look->precioNf;
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."x<br>";				
+		            }
 
-            $rangos = 4;
-            $mayorP = max($allPrices);
-            $menorP = min($allPrices);
-            $len = ($mayorP - $menorP) / $rangos;
-//$time_taken = microtime(true) - $start;
-//echo $time_taken."x<br>";
-            foreach ($allPrices as $price) {
-                for($i = 0; $i < $rangos; $i++)
-                    $count[$i] += $price >= $menorP + $i * $len && $price <= $menorP + (($i+1) * $len) ? 1 : 0;
-            }                
-//$time_taken = microtime(true) - $start;
-//echo $time_taken."x<br>";
-            for ($i = 0; $i < $rangos; $i++) {
-                $mayorP = $menorP + $len;
-                $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $count[$i]);
-                $menorP += $len;
-            }                                
-//$time_taken = microtime(true) - $start;
-//echo $time_taken."x<br>";        
-        }
-		return $rangosArray;
+		            $rangos = 4;
+		            $mayorP = max($allPrices);
+		            $menorP = min($allPrices);
+		            $len = ($mayorP - $menorP) / $rangos;
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."x<br>";
+		            foreach ($allPrices as $price) {
+		                for($i = 0; $i < $rangos; $i++)
+		                    $count[$i] += $price >= $menorP + $i * $len && $price <= $menorP + (($i+1) * $len) ? 1 : 0;
+		            }                
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."x<br>";
+		            for ($i = 0; $i < $rangos; $i++) {
+		                $mayorP = $menorP + $len;
+		                $rangosArray[] = array('start' => $menorP, 'end' => $mayorP, 'count' => $count[$i]);
+		                $menorP += $len;
+		            }                                
+		//$time_taken = microtime(true) - $start;
+		//echo $time_taken."x<br>";        
+		        }
+				return $rangosArray;
+	}
+
+	public function hasProductosExternos(){
+		foreach ($this->productos as $producto) {
+			if($producto->tipo == 1){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

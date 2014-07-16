@@ -2780,8 +2780,8 @@ class BolsaController extends Controller
             }
             
             
-            $orden = Orden::model()->findByPk(11);
-            $this->generarOutbound($orden);
+//            $orden = Orden::model()->findByPk(11);
+//            $this->generarOutbound($orden);
 //            Yii::app()->end();
             
 	}

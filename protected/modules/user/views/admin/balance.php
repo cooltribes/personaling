@@ -30,6 +30,7 @@ $this->breadcrumbs = array(
                                                     <th>Monto</th>
                                                     <th>Origen</th>
                                                     <th>Administrador</th>
+                                                    <th>Fecha de Transacción</th>
                                                     <th>Nro. Orden</th>
                                                 </tr>
                                             </thead>
@@ -45,12 +46,18 @@ $this->breadcrumbs = array(
                                                     echo "<td>" . $balance->origen . "</td>";
 
                                                     if ($balance->admin_id)
-                                                        echo "<td>[<strong>" . $balance->admin_id
+                                                        echo "<td>[<strong>ID: " . $balance->admin_id
                                                             ."</strong>] ". $balance->admin->profile->getNombre()                                                      
                                                             ." - <small>". $balance->admin->email
                                                             . "</small></td>";
                                                     else
                                                         echo "<td> N/A </td>";
+                                                    
+                                                    if ($balance->fecha)
+                                                        echo "<td >" . $balance->getFecha(). "</td>";
+                                                    else
+                                                        echo "<td> N/A </td>";
+                                                    
                                                     
                                                     if ($balance->orden_id > 0)
                                                         echo "<td >" . $balance->orden_id . "</td>";

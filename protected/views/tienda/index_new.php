@@ -592,6 +592,7 @@ function encantar(id)
    	}  
    
 function preRefresh(){
+	mixpanel.track("Filtros");
 	try{
 		 
 

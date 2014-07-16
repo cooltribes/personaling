@@ -332,6 +332,13 @@ class LookController extends Controller
 	public function actionDescuento($id){
 		$model = Look::model()->findByPk($id);
 		$model->scenario = 'descuento';
+
+		// si el look tiene prendas externas no se puede aplicar descuento
+		if($model->hasProductosExternos()){
+			Yii::app()->user->setFlash('error',UserModule::t("Este look no puede tener descuento"));
+			$this->redirect(array('mislooks'));
+		}
+
 		if(isset($_POST['Look'])){
 			if($_POST['Look']['valorDescuento'] != ''){
 				$model->tipoDescuento = $_POST['Look']['tipoDescuento'];
@@ -890,31 +897,39 @@ public function actionCategorias(){
 					 Yii::trace('create a look has producto, Error:'.print_r($lookhasproducto->getErrors(), true), 'registro');
 					
 					
-				/* adornos */ 
-				LookHasAdorno::model()->deleteAllByAttributes(array('look_id'=>$model->id));
-				foreach(explode(',',$_POST['adornos_id']) as $index => $adorno_id){
+					/* adornos */ 
+					LookHasAdorno::model()->deleteAllByAttributes(array('look_id'=>$model->id));
+					foreach(explode(',',$_POST['adornos_id']) as $index => $adorno_id){
+							
+						//$temporal = LookHasAdorno::model()->findByAttributes(array('look_id'=>$model->id,'adorno_id'=>$adorno_id));
 						
-					//$temporal = LookHasAdorno::model()->findByAttributes(array('look_id'=>$model->id,'adorno_id'=>$adorno_id));
-					
-					//if (!isset($temporal)){
-						$lookhasadorno = new LookHasAdorno;
-						$lookhasadorno->look_id = $model->id;
-						$lookhasadorno->adorno_id = $adorno_id;
-						$lookhasadorno->left = round($left_a[$index]);
-						$lookhasadorno->top = round($top_a[$index]);
-						$lookhasadorno->width = $width_a[$index];
-						$lookhasadorno->height = $height_a[$index];
-						$lookhasadorno->angle = $angle_a[$index];
-						$lookhasadorno->zindex = $zindex_a[$index];						
-					if (!$lookhasadorno->save())
-					 Yii::trace('create a look has producto, Error:'.print_r($lookhasadorno->getErrors(), true), 'registro');
-					 
-					//}
-				}
+						//if (!isset($temporal)){
+							$lookhasadorno = new LookHasAdorno;
+							$lookhasadorno->look_id = $model->id;
+							$lookhasadorno->adorno_id = $adorno_id;
+							$lookhasadorno->left = round($left_a[$index]);
+							$lookhasadorno->top = round($top_a[$index]);
+							$lookhasadorno->width = $width_a[$index];
+							$lookhasadorno->height = $height_a[$index];
+							$lookhasadorno->angle = $angle_a[$index];
+							$lookhasadorno->zindex = $zindex_a[$index];						
+						if (!$lookhasadorno->save())
+						 Yii::trace('create a look has producto, Error:'.print_r($lookhasadorno->getErrors(), true), 'registro');
+						 
+						//}
+					}
 					
 					 
 				}
 				$model->createImage();
+
+				// verificar si tiene productos externos para eliminar descuentos
+				if ($model->hasProductosExternos()){
+					$model->tipoDescuento = NULL;
+					$model->valorDescuento = NULL;
+					$model->save();
+				}
+
 				/*$model->modified_on = date('Y-m-d H:i:s');
 				$model->save();*/
 				if ($_POST['tipo']==1){ 

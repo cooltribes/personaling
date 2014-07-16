@@ -259,6 +259,8 @@
 	
 	$('#normal').on('click', function(event) {
 		event.preventDefault();
+
+		var pasa = false;
 		
 		// cambio el valor
 		$("#accion").attr("value", "normal");
@@ -266,11 +268,28 @@
 		//verificar peso
 		if($('#Producto_peso').val() > 0 && $('#Producto_peso').val().length != 0){
 			$('#Producto_peso_em_').hide();
-			// submit del form
-			$('#producto-form').submit();
+
+			// peso correcto, verificar url si es externo
+			if($('#Producto_tipo').val() == 1){
+				if($('#Producto_url_externo').val().length > 0){
+					pasa = true;
+				}else{
+					$('#Producto_url_externo_em_').html('Debes ingresar una url para un producto externo');
+					$('#Producto_url_externo_em_').show();
+				}
+			}else{
+				pasa = true;
+			}
+			
 		}else{
 			$('#Producto_peso_em_').html('Debes ingresar un peso mayor a 0');
 			$('#Producto_peso_em_').show();
+		}
+
+
+
+		if(pasa){
+			$('#producto-form').submit();
 		}
 	});
 	

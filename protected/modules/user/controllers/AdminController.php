@@ -1395,6 +1395,7 @@ class AdminController extends Controller
 				$balance->admin_id = Yii::app()->user->id; //guardar cual admin fue
 				$balance->user_id=$_POST['id'];
 				$balance->tipo=3;
+				$balance->fecha = date("Y-m-d H:m:i");
                                 
 				if($balance->save()){
 					
@@ -2203,18 +2204,19 @@ class AdminController extends Controller
 		
 		
     }
-	 public function actionBalance($id){
-			
-        
-		$model=$this->loadModel();
-		$balances=Balance::model()->findAllByAttributes(array('user_id'=>$id));
-		              		
-		$this->render('balance',array(
-			'model'=>$model,
-			'balances'=>$balances
-			
-		));
-		
+    public function actionBalance($id){
+
+
+            $model=$this->loadModel();
+            $balances=Balance::model()->findAllByAttributes(array('user_id'=>$id),
+                        array("order" => "fecha DESC"));   
+            
+
+            $this->render('balance',array(
+                    'model'=>$model,
+                    'balances'=>$balances
+
+            ));		
 		
     }
 	

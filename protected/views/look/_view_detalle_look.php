@@ -52,14 +52,20 @@
                     <th scope="row">Precio total de productos con IVA</th>
                     <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioProductosFull(); ?></td>
                 </tr>
-                <tr>
-                    <th scope="row">Precio total de productos con descuento (incluye IVA)</th>
-                    <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioProductosDescuento(); ?></td>
-                </tr>
-                <tr>
-                    <th scope="row">Precio total con descuento (incluye IVA)</th>
-                    <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento(); ?></td>
-                </tr>
+                <?php
+                if(!$model->hasProductosExternos()){
+                    ?>
+                    <tr>
+                        <th scope="row">Precio total de productos con descuento (incluye IVA)</th>
+                        <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioProductosDescuento(); ?></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Precio total con descuento (incluye IVA)</th>
+                        <td><?php echo Yii::t('contentForm', 'currSym').' '.$model->getPrecioDescuento(); ?></td>
+                    </tr>
+                    <?php
+                }
+                ?>
             </table>
             <hr/>
             <h4>Estadísticas</h4>
@@ -75,14 +81,16 @@
     <div class="modal-footer"> 
     
     <?php
-    if(UserModule::isAdmin() ){
-        $this->widget('bootstrap.widgets.TbButton', array(
-            'label'=>'Descuento',
-            'icon'=>'minus-sign',
-            'url' => CController::createUrl('look/descuento',array('id'=>$model->id)),
-            //'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-            //'size'=>'large', // null, 'large', 'small' or 'mini'
-        ));             
+    if(!$model->hasProductosExternos()){
+        if(UserModule::isAdmin() ){
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'label'=>'Descuento',
+                'icon'=>'minus-sign',
+                'url' => CController::createUrl('look/descuento',array('id'=>$model->id)),
+                //'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                //'size'=>'large', // null, 'large', 'small' or 'mini'
+            ));             
+        }
     }
     ?>
     	

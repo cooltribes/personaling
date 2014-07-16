@@ -322,6 +322,7 @@ public function actionReportexls(){
 		if(isset($_POST['Producto']))
 		{
 			$exist = Producto::model()->findByAttributes(array('codigo'=>$_POST['Producto']['codigo']));
+			var_dump($_POST['Producto']['tipo']);
 			
 			if(isset($exist)) // si existe
 			{
@@ -337,8 +338,18 @@ public function actionReportexls(){
 						'almacen' => $_POST['Producto']['almacen'],
 						'temporada' => $_POST['Producto']['temporada'],
 						'outlet' => $_POST['Producto']['outlet'],
-						'precio_especial' => $_POST['Producto']['precio_especial']
+						'precio_especial' => $_POST['Producto']['precio_especial'],
+						'tipo' => $_POST['Producto']['tipo']
 					));
+
+				 	if($_POST['Producto']['tipo'] == 1){
+				 		if(isset($_POST['Producto']['url_externo'])){
+				 			Producto::model()->updateByPk($exist->id, array('url_externo' => $_POST['Producto']['url_externo']));
+						}
+						if(isset($_POST['tienda_id'])){
+							Producto::model()->updateByPk($exist->id, array('tienda_id' => $_POST['tienda_id']));
+						}
+				 	}
 					
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
@@ -366,6 +377,15 @@ public function actionReportexls(){
 				$model->almacen = $_POST['Producto']['almacen'];
 				$model->temporada = $_POST['Producto']['temporada'];
 				$model->outlet = $_POST['Producto']['outlet'];
+				$model->precio_especial = $_POST['Producto']['precio_especial'];
+				$model->tipo = $_POST['Producto']['tipo'];
+				if(isset($_POST['Producto']['url_externo'])){
+					$model->url_externo = $_POST['Producto']['url_externo'];
+				}
+				if(isset($_POST['tienda_id'])){
+					$model->tienda_id = $_POST['tienda_id'];
+				}
+
 				if($model->save())
 				{
 					Yii::app()->user->updateSession();
@@ -1574,12 +1594,15 @@ public function actionReportexls(){
                                 $preciotallacolor[$i] = new Preciotallacolor;                                
                             }
                             
-                            if ($tallacolor['sku']!='' && $tallacolor['cantidad']!=''){				
+                            if ($tallacolor['sku']!='' && $tallacolor['cantidad']!=''){
                                 
                                 $this->performAjaxValidation($preciotallacolor[$i]); 
                                 $cantAnterior = $preciotallacolor[$i]->cantidad;
                                 $preciotallacolor[$i]->attributes=$tallacolor; 
                                 $preciotallacolor[$i]->producto_id = $model->id;
+                                if(isset($tallacolor['url_externo']) && $tallacolor['url_externo'] != ''){
+                                	 $preciotallacolor[$i]->url_externo = $tallacolor['url_externo'];
+                                }
                                 $valid  = $valid  && $preciotallacolor[$i]->validate();
                                 
                                 //si esta actualizando una cantidad, guardar en el log
@@ -2026,8 +2049,9 @@ public function actionReportexls(){
             $totalInbound = 0;
             $actualizadosInbound = 0;
 
-            if (isset($_POST['valido'])) { // enviaron un archivo
 
+            if (isset($_POST['valido'])) { // enviaron un archivo
+               
                 /*Primer paso - Validar el archivo*/
                 if(isset($_POST["validar"])){
                     
@@ -2808,9 +2832,8 @@ public function actionReportexls(){
             $erroresPrecio = "";
             $erroresColumnasVacias = "";
             
-
             $linea = 1;
-            $lineaProducto = 0;
+            $lineaProducto = 0;            
 
             //Revisar cada fila de la hoja de excel.
             foreach ($sheet_array as $row) {
@@ -2853,17 +2876,17 @@ public function actionReportexls(){
                         else if ($row['P'] != "Almacén")
                             $falla = "Almacén";
 
-                        if ($falla != "") { // algo falló :O
+                        if ($falla != "") { // algo falló O:
                             Yii::app()->user->updateSession();
                             Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
-                                            $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita"));                                   
+                                            $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita.<br><br>"));                                   
 
                             return false;
                         }
                     }
 
-                    /*si pasa las columnas entonces que revise
-                    Marcas, categorias, tallas y colores.*/                          
+                    /*si pasa las columnas entonces revisar
+                    Marcas, categorias, tallas y colores.. y todo lo demas.*/                          
                     if($linea > 1){
                         
                         $categoriasRepetidas = array();
@@ -2884,8 +2907,7 @@ public function actionReportexls(){
                             if($col == "P"){
                                 break;
                             }
-                        }                        
-
+                        }       
 
                         //Peso
                         if(isset($row['K']) && $row['K'] != "" && !is_numeric($row['K'])){
@@ -2965,9 +2987,8 @@ public function actionReportexls(){
                             if (!isset($color)) {
                                 $erroresColores .= "<li> <b>" . $row['J'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }	
-                        }
-                        
-                                //Bisutería
+                        }                        
+                                
                         //la cantidad de categorias
                         if ($cantCategorias < 2){
                             $erroresCatVacias .= "<li> Línea <b>" . $linea."</b></li>";
@@ -3057,6 +3078,122 @@ public function actionReportexls(){
                 "nLineas"=>$linea-2,
                 );            
         }
+        
+        protected function validarImportacionExternos($archivo){
+            
+            //Validar las columnas normales primero
+            $response = $this->validarArchivo($archivo);
+            $errores = "";
+            if(is_array($response)){
+                //si son validas todas
+                
+            }else{
+                //si hubo errores, capturarlos.
+                $errores = Yii::app()->user->getFlash("error");
+            }
+            
+            //VALIDAR LAS COLUMNAS RESTANTES
+            $sheetArray = Yii::app()->yexcel->readActiveSheet($archivo);
+            
+            $erroresColumnasVacias = "";
+            $erroresTienda = "";
+            $erroresSku = "";
+
+            
+            $falla = "";
+            $linea = 1;
+            
+            foreach ($sheetArray as $row) {
+                
+                if ($row['A'] != ""){
+                    
+                    if ($linea == 1) { // revisar los nombres / encabezados de las columnas
+                        if ($row['Q'] != "Tienda")
+                            $falla = "Tienda";
+                        else if ($row['R'] != "URL")
+                            $falla = "URL";
+
+                        if ($falla != "") { // algo falló O:
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
+                                            $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita."));                                   
+
+                            return false;
+                        }
+                    }
+                    
+                    if($linea > 1){                       
+                      
+                        //Revisar celdas vacias
+                        if(!isset($row['Q']) || $row['Q'] == ""){                            
+                                $erroresColumnasVacias.= "<li> Columna: <b>" . "Q" .
+                                        "</b>, en la línea <b>" . $linea."</b></li>";                                
+                        }
+                        if(!isset($row['R']) || $row['R'] == ""){                            
+                                $erroresColumnasVacias.= "<li> Columna: <b>" . "R" .
+                                        "</b>, en la línea <b>" . $linea."</b></li>";                                
+                        }
+                        
+                        //Marcas
+                        if (isset($row['Q']) && $row['Q'] != "") {                        
+                            $tienda = Tienda::model()->findByAttributes(array("name" => $row["Q"]));
+
+                            if (!isset($tienda)) {
+                                $erroresTienda .= "<li> <b>" . $row['Q'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }
+                        
+                        //SKU existentes                        
+                        if (isset($row['A']) && $row['A'] != "") {                        
+                            $producto = Preciotallacolor::model()->findByAttributes(array("sku" => $row["A"]));
+
+                            //si existe y es de personaling
+                            if (isset($producto) && $producto->producto->tipo == 0) {
+                                $erroresSku .= "<li> <b>" .$row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }
+                        
+                        
+                    }                    
+                    
+                }
+                
+                $linea++;
+            }
+            
+            //si hubo celdas vacias
+            if($erroresColumnasVacias != ""){
+                $erroresColumnasVacias = "Las siguientes Columnas están vacías:<br><ul>
+                                 {$erroresColumnasVacias}
+                                 </ul><br>";
+            }            
+            if($erroresTienda != ""){
+                $erroresTienda = "Las siguientes Tiendas no existen en la plataforma o están mal escritas:<br><ul>
+                                 {$erroresTienda}
+                                 </ul><br>";
+            }
+            if($erroresSku != ""){
+                $erroresSku = "Los siguientes SKU ya existen en la plataforma para productos de Personaling:<br><ul>
+                                 {$erroresSku}
+                                 </ul><br>";
+            }
+            
+            $errores .= $erroresColumnasVacias . $erroresTienda;
+           
+            if($errores != ""){
+                
+                Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash('error', $errores);
+
+                return false;                
+            } 
+            
+            //No hubo errores.
+            return $response; 
+            
+            
+        }
+        
         
         protected function validarArchivoInbound($archivo){
             
@@ -3548,12 +3685,12 @@ public function actionReportexls(){
 	{
             $nuevos = 0;
             $actualizados = 0;
-            $error = false;
-
+            $error = false;            
+           
             /*Primer paso - Validar el archivo*/
-            if(isset($_POST["validar"]) && isset($_POST["archivoValidacion"]))
+            if(isset($_POST["validar"]))
             {
-
+               
                 $archivo = CUploadedFile::getInstancesByName('archivoValidacion');
 
                 //Guardarlo en el servidor para luego abrirlo y revisar
@@ -3574,7 +3711,7 @@ public function actionReportexls(){
                 }              
 
                 //Si no hubo errores
-                if(!$error && is_array($resValidacion = $this->validarArchivo($nombre . $extension))){
+                if(!$error && is_array($resValidacion = $this->validarImportacionExternos($nombre . $extension))){
 
                     Yii::app()->user->updateSession();
                     Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
@@ -3614,7 +3751,7 @@ public function actionReportexls(){
                 // ==============================================================================
 
                 // Validar (de nuevo)
-                if(!$error && !is_array($resValidacion = $this->validarArchivo($nombre . $extension)) ){
+                if(!$error && !is_array($resValidacion = $this->validarImportacionExternos($nombre . $extension)) ){
 
                    
                     // Si pasa la validacion

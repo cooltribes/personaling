@@ -35,7 +35,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         <div class="bg_color3 margin_bottom_small padding_small box_1">
             <?php
             $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-                    'action' => CController::createUrl('importar'),
+                    //'action' => CController::createUrl('importar'),
                     'id' => 'form-validar',
                     'enableAjaxValidation' => false,
                     'type' => 'horizontal',

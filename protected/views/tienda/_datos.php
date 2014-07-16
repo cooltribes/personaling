@@ -15,8 +15,12 @@
       	
 <?php
 
-
-foreach($prods as $data): ?>
+foreach($prods as $data): 
+	if($data->tipo)
+		$tienda=Tienda::model()->findByPk($data->tienda_id);
+	else
+		$tienda=null;
+?>
 	<div class="div_productos">
 	<?php
 	
@@ -134,13 +138,17 @@ $b='';
 						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out bg_color3","style"=>"display:none","width" => "270", "height" => "270"));
 
 					//reviso si tiene descuento para mostrarlo
-					$precio = "<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>";
-					if($precio_producto){
-						if(!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0){
-							$precio_mostrar = $precio_producto->precioImpuesto;
-							$precio = "<span class='preciostrike strikethrough'><small>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</small></span> | ".Yii::t('contentForm', 'currSym')." ".$data->getPrecioDescuento();
+						
+						$precio = "<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>";
+						if($precio_producto){
+							if(!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0){
+								$precio_mostrar = $precio_producto->precioImpuesto;
+								$precio = "<span class='preciostrike strikethrough'><small>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</small></span> | ".Yii::t('contentForm', 'currSym')." ".$data->getPrecioDescuento();
+							}
 						}
-					}
+						if(!is_null($tienda))
+							$precio = "<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>&nbsp;&nbsp;&nbsp;<span>ENLACE</span>";
+							
 
 						echo($encabezado."
 						<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>

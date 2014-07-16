@@ -86,21 +86,23 @@ class Producto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('estado, marca_id, view_counter, outlet, precio_especial', 'numerical', 'integerOnly'=>true),
+			array('estado, marca_id, view_counter, outlet, precio_especial, tipo, tienda_id, visitas', 'numerical', 'integerOnly'=>true),
 			array('peso', 'numerical', 'min'=>0.1, 'tooSmall'=>'El peso debe ser mayor a 0'),
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
+			array('url_externo', 'length', 'max'=>100),
+			array('url_externo', 'url', 'defaultScheme' => 'http', 'allowEmpty' => true, 'message' => 'Formato de url inválido'),
 			array('nombre, codigo, marca_id, descripcion, peso', 'required','message'=>'{attribute} '.Yii::t('contentForm','cannot be blank')),
 			//array('proveedor', 'length', 'max'=>45), 
 			array('imagenes', 'required', 'on'=>'multi'),
 			array('codigo', 'unique', 'message'=>'Código de producto ya registrado.'),
-			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status, peso, outlet, precio_especial', 'safe'),
+			array('descripcion, fInicio, fFin,horaInicio, horaFin, minInicio, minFin, fecha, status, peso, outlet, precio_especial, tipo, tienda_id, visitas, url_externo', 'safe'),
 			//array('fInicio','compare','compareValue'=>date("Y-m-d"),'operator'=>'=>'),
 			array('fInicio','compare','compareValue'=>date("m/d/Y"),'operator'=>'>=','allowEmpty'=>true, 'message'=>'La fecha de inicio debe ser mayor al dia de hoy.', 'except' => 'outlet, precio_especial'),
 			array('fFin','compare','compareAttribute'=>'fInicio','operator'=>'>', 'allowEmpty'=>true , 'message'=>'La fecha de fin debe ser mayor a la fecha de inicio.', 'except' => 'outlet, precio_especial'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso, almacen, outlet, precio_especial', 'safe', 'on'=>'search'),
+			array('id, codigo, nombre, estado, descripcion, marca_id, destacado, fInicio, fFin,horaInicio,horaFin,minInicio,minFin,fecha, status, peso, almacen, outlet, precio_especial, tipo, tienda_id, visitas, url_externo', 'safe', 'on'=>'search'),
 		);
 	}
  
@@ -112,23 +114,24 @@ class Producto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-                    'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_tbl_producto(tbl_categoria_id, tbl_producto_id)'),
-                    'encantan' => array(self::MANY_MANY, 'UserEncantan', 'tbl_userEncantan(producto_id, user_id)'),
-                    'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
-                    'mainimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','on' => 'orden=1'),
-                    'colorimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','order'=>'k.orden ASC', 'alias' => 'k'),
-                    'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
-                    'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
-                    'preciotallacolor' => array(self::HAS_MANY,'Preciotallacolor','producto_id'),
-                    'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
-                    'select'=> 'SUM(cantidad)',
-                    ),
-                    'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
-                    'mymarca' => array(self::BELONGS_TO, 'Marca','marca_id'),  
-                    'myclasificaciones' => array(self::HAS_MANY,'ClasificacionMarca','marca_id'),  
-                    'mycolor' => array(self::MANY_MANY, 'Color', 'tbl_precioTallaColor(color_id, producto_id)'),                  
-                    'seo' => array(self::HAS_ONE, 'Seo', 'tbl_producto_id'),
-                        );
+			'categorias' => array(self::MANY_MANY, 'Categoria', 'tbl_categoria_has_tbl_producto(tbl_categoria_id, tbl_producto_id)'),
+			'encantan' => array(self::MANY_MANY, 'UserEncantan', 'tbl_userEncantan(producto_id, user_id)'),
+			'imagenes' => array(self::HAS_MANY, 'Imagen', 'tbl_producto_id','order' => 'k.orden ASC', 'alias' => 'k'),
+			'mainimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','on' => 'orden=1'),
+			'colorimage' => array(self::HAS_ONE, 'Imagen', 'tbl_producto_id','order'=>'k.orden ASC', 'alias' => 'k'),
+			'precios' => array(self::HAS_MANY, 'Precio', 'tbl_producto_id'),
+			'inventario' => array(self::HAS_ONE, 'Inventario', 'tbl_producto_id'),
+			'preciotallacolor' => array(self::HAS_MANY,'Preciotallacolor','producto_id'),
+			'preciotallacolorSum' => array(self::STAT, 'Preciotallacolor', 'producto_id',
+                'select'=> 'SUM(cantidad)',
+                ),
+            'lookhasproducto' => array(self::BELONGS_TO, 'LookHasProducto','id'),
+             'mymarca' => array(self::BELONGS_TO, 'Marca','marca_id'),  
+             'myclasificaciones' => array(self::HAS_MANY,'ClasificacionMarca','marca_id'),  
+             'mycolor' => array(self::MANY_MANY, 'Color', 'tbl_precioTallaColor(color_id, producto_id)'),                  
+            'seo' => array(self::HAS_ONE, 'Seo', 'tbl_producto_id'),
+            'tienda' => array(self::BELONGS_TO, 'Tienda','tienda_id'),  
+		);
 	}
  
 	/**
@@ -154,6 +157,10 @@ class Producto extends CActiveRecord
 			'temporada' => 'Temporada',
 			'outlet' => '¿Enviar al Outlet?',
 			'precio_especial' => 'Precio especial',
+			'tipo' => 'Tipo',
+			'tienda_id' => 'Tienda externa',
+			'visitas' => 'Visitas',
+			'url_externo' => 'Url tienda externa',
 		);
 	}
 
@@ -183,6 +190,10 @@ class Producto extends CActiveRecord
 		$criteria->compare('almacen',$this->almacen,true);
 		$criteria->compare('outlet',$this->outlet,true);
 		$criteria->compare('precio_especial',$this->precio_especial,true);
+		$criteria->compare('tipo',$this->tipo,true);
+		$criteria->compare('tienda_id',$this->tienda_id,true);
+		$criteria->compare('visitas',$this->visitas,true);
+		$criteria->compare('url_externo',$this->url_externo,true);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -168,7 +168,7 @@ $b='';
 						).$style."		 
 												
 						</a>
-						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+						<header><h3><a class='link_producto' href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 						<a href='".$data->getUrl()."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
 						".$precio.$gusta);
 						
@@ -224,6 +224,10 @@ $b='';
 endforeach;?>
 </div>
 <script>	
+mixpanel.track_links(".link_producto", "Clicked Productos",function(ele) { 
+    alert('asd');
+    return { type: $(ele).attr('href')}
+    });
 function over(id){
 		
 

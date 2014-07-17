@@ -25,7 +25,7 @@ class LoginController extends Controller
 				$identity = new UserIdentity($this->_model->username, '');
 		
 				Yii::app()->user->login($identity, 3600);
-		
+				
 				
 			}else{
 				
@@ -44,7 +44,7 @@ class LoginController extends Controller
 				// validate user input and redirect to previous page if valid
 				
 				if($model->validate()) {
-                                    
+                    ShoppingMetric::registro(ShoppingMetric::USER_INICIO);                
 					$this->lastViset();
 					$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
 					if (UserModule::isAdmin()){
@@ -94,6 +94,7 @@ class LoginController extends Controller
 		$lastVisit->lastvisit = time();
 		$lastVisit->visit = $lastVisit->visit+1;
 		$lastVisit->save();
+		
 	}
 		
 	public function actionLoginfb()

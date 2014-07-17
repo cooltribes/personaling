@@ -424,6 +424,7 @@ class TiendaController extends Controller
 				
 				$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 				$colores=Color::model()->findAll();
+				ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);//METRICAS
 				$this->render('index_new',
 						array('index'=>$producto,
 						'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
@@ -509,7 +510,7 @@ class TiendaController extends Controller
 		$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 		$colores=Color::model()->findAllByAttributes(array('padreID'=>'0'));
 		
-
+		ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);
 		$this->render('index_new',
 			array('index'=>$producto,
 				'dataProvider'=>$dataProvider,'categorias'=>$categorias, 

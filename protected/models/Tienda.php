@@ -122,6 +122,11 @@ class Tienda extends CActiveRecord
 		if(strpos($url,'WWW.')!==false){
 			$url=str_replace('WWW.', '', $url);
 		}
+		if(strpos($url,'/')!==false){
+			$url=explode('/',$url);
+			$url=$url[0];
+		}
+		
 		return $url;
 	}
 }

@@ -16,8 +16,10 @@
 <?php
 
 foreach($prods as $data): 
-	if($data->tipo)
+	if($data->tipo){
 		$tienda=Tienda::model()->findByPk($data->tienda_id);
+	}
+		
 	else
 		$tienda=null;
 ?>
@@ -147,7 +149,7 @@ $b='';
 							}
 						}
 						if(!is_null($tienda))
-							$precio = "<span class='precio'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>&nbsp;&nbsp;&nbsp;<span>ENLACE</span>";
+							$precio = "<span class='precio' style='display:inline'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>&nbsp;&nbsp;&nbsp;<span><a href='".$data->getUrl()."' style='color:#3286A5; cursor:pointer'>".$tienda->urlVista."</a></span>";
 							
 
 						echo($encabezado."
@@ -166,7 +168,7 @@ $b='';
 						).$style."		 
 												
 						</a>
-						<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
+						<header><h3><a class='link_producto' href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
 						<a href='".$data->getUrl()."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
 						".$precio.$gusta);
 						
@@ -222,6 +224,10 @@ $b='';
 endforeach;?>
 </div>
 <script>	
+mixpanel.track_links(".link_producto", "Clicked Productos",function(ele) { 
+    alert('asd');
+    return { type: $(ele).attr('href')}
+    });
 function over(id){
 		
 

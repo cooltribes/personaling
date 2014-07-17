@@ -25,8 +25,12 @@ class ShoppingMetric extends CActiveRecord
 	const STEP_DIRECCIONES = 2; 
 	const STEP_PAGO = 3;
 	const STEP_CONFIRMAR = 4; 
-	const STEP_PEDIDO = 5; 
-        
+	const STEP_PEDIDO = 5;
+	const STEP_PAGO_OK = 6;
+	const STEP_PAGO_FAIL = 7; 
+    const USER_INICIO = 100;
+	const USER_TIENDA = 101;
+	const USER_LOOK = 102;    
         /*TIPOS DE COMPRA*/
 	const TIPO_TIENDA = 0; 
 	const TIPO_GIFTCARD = 1; 
@@ -56,7 +60,7 @@ class ShoppingMetric extends CActiveRecord
 		array('created_on','default',
               'value'=>new CDbExpression('NOW()'),
               'setOnEmpty'=>false,'on'=>'insert'), 
-			array('user_id, step, created_on, tipo_compra', 'required'),
+			array('user_id, step, created_on, tipo_compra, HTTP_USER_AGENT, REMOTE_ADDR, HTTP_X_FORWARDED_FOR,HTTP_REFERER', 'required'),
 			array('user_id, step, tipo_compra', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -110,5 +114,23 @@ class ShoppingMetric extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	public function beforeValidate()
+	{
+		$ua = 	
+		$this->HTTP_USER_AGENT = $_SERVER['HTTP_USER_AGENT'];
+		//$this->platform;
+		//$this->browser;
+		//$this->version; 
+		$this->REMOTE_ADDR = $_SERVER['REMOTE_ADDR'];
+		$this->HTTP_X_FORWARDED_FOR = (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'];
+		$this->HTTP_REFERER = (!empty($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:'AJAX';
+		return parent::beforeValidate();
+	}
+	public function registro($step){
+			$metric = new ShoppingMetric();
+            $metric->user_id = Yii::app()->user->id;;
+            $metric->step = $step;
+            $metric->save();
 	}
 }

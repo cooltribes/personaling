@@ -2780,8 +2780,8 @@ class BolsaController extends Controller
             }
             
             
-            $orden = Orden::model()->findByPk(11);
-            $this->generarOutbound($orden);
+//            $orden = Orden::model()->findByPk(11);
+//            $this->generarOutbound($orden);
 //            Yii::app()->end();
             
 	}
@@ -2795,7 +2795,7 @@ class BolsaController extends Controller
             $op = new AzPay();
             
             if ($op->validateResponseData($_GET)) {                                                       
-
+				ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_OK);
                 $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
                 
                 $cData = CJSON::decode($cData);

@@ -399,6 +399,7 @@ class GiftcardController extends Controller
                                     $balance->total = $giftcard->monto;
                                     $balance->user_id = Yii::app()->user->id;
                                     $balance->orden_id = 0;
+                                    $balance->fecha = date("Y-m-d H:m:i");
                                     $balance->tipo = 2; //tipo GiftCard
                                     $balance->save();
                                     $currSym = Yii::t('contentForm','currSym');

@@ -104,10 +104,29 @@ class Tienda extends CActiveRecord
 		$criteria->compare('logo',$this->logo,true);
 		$criteria->compare('type',$this->type);
 		$criteria->compare('status',$this->status);
-		$criteria->compare('url',$this->url,true);
+		$criteria->compare('url',$this->url,true); 
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	public function getUrlVista(){
+		$url=strtoupper($this->url);	
+		if(strpos($url,'HTTP://')!==false){
+			$url=str_replace('HTTP://', '', $url);
+		}
+		if(strpos($url,'HTTPS://')!==false){
+			$url=str_replace('HTTPS://', '', $url);
+		}
+		if(strpos($url,'WWW.')!==false){
+			$url=str_replace('WWW.', '', $url);
+		}
+		if(strpos($url,'/')!==false){
+			$url=explode('/',$url);
+			$url=$url[0];
+		}
+		
+		return $url;
 	}
 }

@@ -143,7 +143,11 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 <?php 
 		$profileFields=$profile->getFields();
 		if ($profileFields) {
+			echo $form->hiddenField($profile,'ciudad');
+				
 			foreach($profileFields as $field) {
+				
+					
 				//echo $field->varname;
 			?>
 <div class="control-group">
@@ -181,6 +185,8 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 		} else {
 
 			//------------- condicion para mostar label en IE9 ON ----------------//
+			
+			
 			if( $field->varname == 'first_name' ){
 				?>
 				<!--[if IE 9]> 
@@ -281,16 +287,21 @@ function check_fb(){
                     
             FB.api('/me', function(response) {
                 //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
-                //console.log(response);
                 
                 
           	//	$("#registration-form").fadeOut(100,function(){
+ 					var ciudad=response.location.name;
+ 					ciudad=ciudad.split(",");
+ 					ciudad=ciudad[0];
  					
  					$('#facebook_id').val(response.id);
  					$('#RegistrationForm_password').val('1234');
  					$('#RegistrationForm_email').val(response.email); 
                     $('#Profile_first_name').val(response.first_name);
                     $('#Profile_last_name').val(response.last_name);
+                    $('#Profile_ciudad').val(ciudad);
+
+                    
                     
                     var fecha = response.birthday;
                     var n = fecha.split("/"); // 0 mes, 1 dia, 2 año
@@ -328,7 +339,11 @@ function check_fb(){
 						console.log(response.user_birthday);
 						
 						//$("#registration-form").fadeOut(100,function(){
-	     					
+	     					var ciudad=response.location.name;
+ 					ciudad=ciudad.split(",");
+ 					ciudad=ciudad[0];
+ 		
+                    		$('#Profile_ciudad').val(ciudad);
 	     					$('#facebook_id').val(response.id);
 	     					$('#RegistrationForm_password').val('1234');
 	     					$('#RegistrationForm_email').val(response.email); 

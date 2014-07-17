@@ -1,7 +1,4 @@
-<tr>    
-    <td>
-        <input name="check" type="checkbox" value="">
-    </td>
+<tr>       
     
     <td>
         <?php echo $data->id; ?>

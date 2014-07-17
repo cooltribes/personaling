@@ -6,6 +6,22 @@
   'Tienda'=>array('/tienda/index'),
   'Producto',
   );
+  	if($producto->tipo){
+		$tienda=Tienda::model()->findByPk($producto->tienda_id);
+		$left="span4";
+		$right="span8";
+		if(strlen($tienda->urlVista)>9)
+			$msj="Ir a ".$tienda->urlVista;
+		else
+			$msj="Comprar en ".$tienda->urlVista;
+	}
+		
+	else{
+		$tienda=null;
+		$left=$right="span6";
+	}
+		
+  
 ?>  
  <!-- FLASH ON --> 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
@@ -190,7 +206,44 @@
        * */
       
          
+          $valores = Array();
+                $cantcolor = Array();
+                $cont1 = 0;
+                
+        // revisando cuantos colores distintos hay
+        foreach ($producto->preciotallacolor as $talCol){ 
+          if($talCol->cantidad > 0)
+          {
+            $color = Color::model()->findByPk($talCol->color_id);
           
+            if(in_array($color->id, $cantcolor)){ // no hace nada para que no se repita el valor      
+            }
+            else {
+              array_push($cantcolor, $color->id);
+              $cont1++;
+            }
+            
+          }
+        }
+		$valores2 = Array();
+        $canttallas= Array();
+                $cont2 = 0;
+                
+        // revisando cuantas tallas distintas hay
+        foreach ($producto->preciotallacolor as $talCol){ 
+          if($talCol->cantidad > 0)
+          {
+            $talla = Talla::model()->findByPk($talCol->talla_id);
+          
+            if(in_array($talla->id, $canttallas)){  // no hace nada para que no se repita el valor      
+            }
+            else{
+              array_push($canttallas, $talla->id);
+              $cont2++;
+            }
+            
+          }
+        }
           
           ?>
             
@@ -204,20 +257,11 @@
         
         <!-- Columna Secundaria ON -->
         <div class="span4 columna_secundaria margin_bottom margin_top padding_top">
-          <div class="row call2action">
-            <div class="span2">
+          <div class="row-fluid call2action">
+            <div class="<?php echo $left;?>">
           
                 <?php   
-              /*foreach ($producto->precios as $precio) {
-                if($precio->precioDescuento < $precio->precioImpuesto){
-                  $porcentaje = 100 - (($precio->precioDescuento * 100) / $precio->precioImpuesto);
-                  //$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$data->precio."</del></span> | ".Yii::t('contentForm', 'currSym')." ".$data->precioDescuento;
-                  echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio->precioDescuento.' Con '.round($porcentaje).'% de descuento';
-                }else{
-                  echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'';
-                }
-                  //$datos=$datos.'<h4 class="precio"><span>Subtotal</span> '.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
-              }*/
+             
 
               $precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
               if($precio_producto){
@@ -241,7 +285,7 @@
                   	?>
                   	<div class="pDetalle">
                   	
-                  			    			<?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto); ?>
+                  			    			<?php echo "<span>".Yii::t('contentForm', 'currSym').'</span>'.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto); ?>
                   	
                   			
                   	
@@ -262,53 +306,10 @@
   
       ?>
             </div>
-            <?php
-            
-                $valores = Array();
-                $cantcolor = Array();
-                $cont1 = 0;
-                
-        // revisando cuantos colores distintos hay
-        foreach ($producto->preciotallacolor as $talCol){ 
-          if($talCol->cantidad > 0)
-          {
-            $color = Color::model()->findByPk($talCol->color_id);
-          
-            if(in_array($color->id, $cantcolor)){ // no hace nada para que no se repita el valor      
-            }
-            else {
-              array_push($cantcolor, $color->id);
-              $cont1++;
-            }
-            
-          }
-        }
-        
-        
-      $valores2 = Array();
-        $canttallas= Array();
-                $cont2 = 0;
-                
-        // revisando cuantas tallas distintas hay
-        foreach ($producto->preciotallacolor as $talCol){ 
-          if($talCol->cantidad > 0)
-          {
-            $talla = Talla::model()->findByPk($talCol->talla_id);
-          
-            if(in_array($talla->id, $canttallas)){  // no hace nada para que no se repita el valor      
-            }
-            else{
-              array_push($canttallas, $talla->id);
-              $cont2++;
-            }
-            
-          }
-        }
-        
-      
-          ?>
-            <div class="span2 hidden-phone">
-                <?php if($producto->estado == 1){ ?>
+            <div class="<?php echo $right;?> hidden-phone">
+         <?php 
+          	if(is_null($tienda)){     
+                if($producto->estado == 1){ ?>
                  <a title="Producto Inactivo" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> <?php echo Yii::t('contentForm','Inactive'); ?> </a>                
                 
               <?php
@@ -323,8 +324,23 @@
             <a title="Producto agotado" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> <?php echo Yii::t('contentForm','Sold out'); ?> </a>
             <?php
           }
+			}else{?>
+					 <a id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block" href="<?php echo $tienda->url;?>"><i class="icon-shopping-cart icon-white"></i> <?php echo $msj; ?> </a>
+					
+		<?php	}
                 ?>
             </div>
+            
+            <?php
+            
+                
+        
+        
+      
+        
+      
+          ?>
+            
           </div>
           
           <?php
@@ -335,9 +351,13 @@
 		  <?php
 		  }
 		  else
-		  	echo CHtml::hiddenField('chic',0);   
+		  	echo CHtml::hiddenField('chic',0); 
+		  
+		 if(!is_null($tienda)) {echo '<div class="urlDetalle">'.$tienda->urlVista.'</div>';}
+		    
           if($cont1 > 0 && $cont2 > 0){
           ?>
+          
           
           <p class="muted t_small CAPS"> <?php echo Yii::t('contentForm','Select color and size'); ?></p>
           
@@ -404,7 +424,8 @@
              }
              ?>
              
-             <div class="call2action visible-phone"><hr/>
+            
+            <div class="call2action visible-phone"><hr/>
                 <a onclick="comprar()" id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block"><i class="icon-shopping-cart icon-white"></i> <?php echo Yii::t('contentForm','Buy'); ?> </a>
             </div>
          

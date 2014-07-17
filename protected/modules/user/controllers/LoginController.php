@@ -99,13 +99,25 @@ class LoginController extends Controller
 		
 	public function actionLoginfb()
 	{
-	
 	$usuario = User::model()->findByAttributes(array('email'=>$_POST['email']));
 	
 			if($usuario){
 				$session = new CHttpSession;
 				$session->open();
 				$session['username'] = $usuario->username;
+				if(strlen($usuario->profile->ciudad)<3){
+					$profile=Profile::model()->findByPk($usuario->id);
+					$profile->profile_type=1;
+					$profile->ciudad=$_POST['ciudad'];
+					if($profile->pais==0){
+						if(Yii::app()->language=='es_es')
+							$profile->pais=1;
+						else
+							$profile->pais=2;
+					}
+					$profile->save();
+						
+				}
 				
 				Yii::app()->user->setState('username', $usuario->username);
 				Yii::app()->user->setState('id', $usuario->id);

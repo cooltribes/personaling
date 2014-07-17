@@ -131,7 +131,7 @@ $this->breadcrumbs = array(
     $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
-            <th rowspan="2" scope="col"></th>
+            
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'ID').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Buyer').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'State').'</th>
@@ -187,6 +187,24 @@ $this->breadcrumbs = array(
       <div class="span1"><a href="#" title="procesar" class="btn btn-danger">Procesar</a></div>
       <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
     </div>-->
+
+
+<h3>Acciones Masivas</h3>
+<hr/>
+<div class="row">
+    <div class="span3">       
+        <?php
+        echo CHtml::dropDownList("Acciones", "", array(
+            "1" => "Cambiar Validez",
+           ),
+            array('prompt' => '-- Seleccione una acción --', 'id' => 'listaAcciones'))
+        ?>
+    </div>
+    <div class="span1">
+        <a id="btnProcesar" title="Procesar" class="btn btn-danger">Procesar</a>
+    </div>
+</div>
+
 
 </div>
 <style>

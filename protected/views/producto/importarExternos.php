@@ -24,8 +24,8 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         <?php
         if ($nuevos > 0 || $actualizados > 0) {
             echo "<h3>Total de productos en el archivo: <b>" . ($nuevos + $actualizados). "</b></h3>";            
-            echo "<h4>Productos nuevos: <b>" . $nuevos . "</b></h4>";
-            echo "<h4>Productos actualizados: <b>" . $actualizados . "</b></h4><br><hr><br>";
+            echo "<h4>Productos (Combinación con SKU) nuevos: <b>" . $nuevos . "</b></h4>";
+            echo "<h4>Productos (Combinación con SKU) actualizados: <b>" . $actualizados . "</b></h4><br><hr><br>";
             
         }
         ?>        

@@ -217,7 +217,8 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     <div class="row-fluid">
         <div class="span12 ">
             <strong class="nroAfectados"><?php echo $dataProvider->getTotalItemCount(); ?></strong>
-            Personal Shoppers serán afectados <i class="icon-user"></i></div>
+            Personal Shoppers serán afectados <i class="icon-user"></i>
+        </div>
     </div>
 
 </div>

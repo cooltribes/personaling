@@ -39,7 +39,7 @@ class GiftcardController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('index','admin','delete','update', 'createMasivo', 'desactivar','seleccionarusuarios',
-                                    'envioMasivo', 'exportarExcel'),
+                                    'envioMasivo', 'exportarExcel', 'cambiarFechas'),
 				//'users'=>array('admin'),
                                 'expression' => 'UserModule::isAdmin()',
 			),
@@ -655,7 +655,8 @@ class GiftcardController extends Controller
                      }//fin si esta guardando
 
                 //si no hay filtros válidos    
-                }else if (isset($_POST['save'])){
+                }
+                else if (isset($_POST['save'])){
                     $response['status'] = 'error';
                     $response['message'] = 'No has seleccionado ningún criterio para filtrar'; 
                     echo CJSON::encode($response); 
@@ -673,6 +674,12 @@ class GiftcardController extends Controller
 //                    $dataProvider = $giftcard->search();
             }   
             
+            /*Guardar siempre el criteria en sesion para exportar*/            
+            Yii::app()->getSession()->add("GCCriteria", $dataProvider->getCriteria());
+
+            $dataProvider->setPagination(array(
+                "pageSize" => 3,
+            ));
                 
             $this->render('index',array(
                     'dataProvider'=>$dataProvider,
@@ -1137,6 +1144,24 @@ class GiftcardController extends Controller
 			'envio'=>$envio,
 		));
 	}
+        
+        
+        public function actionCambiarFechas() {
+            if(isset($_POST["btnFechas"])){
+                    
+                if($_POST["action"] == 1){
+
+                    $criteria = Yii::app()->getSession()->get("GCCriteria");
+                    
+                }
+                echo "<pre>";
+                print_r($_POST);
+                echo "</pre><br>";
+                
+                $this->redirect(array("giftcard/index"));
+
+            }
+        }
         
       
         

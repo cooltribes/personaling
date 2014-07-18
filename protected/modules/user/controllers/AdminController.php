@@ -322,7 +322,35 @@ class AdminController extends Controller
         
 	}
 	
-	 
+	 public function actionReporteCSV(){
+		ini_set('memory_limit','256M'); 
+
+		$criteria=Yii::app()->session['userCriteria'];
+		$criteria->select = array('t.id');
+		$dataProvider = new CActiveDataProvider('User', array(
+                    'criteria' => $criteria,
+                    
+                ));
+                
+		$pages=new CPagination($dataProvider->totalItemCount);
+		$pages->pageSize=$dataProvider->totalItemCount;
+		$dataProvider->setPagination($pages);
+			 $handle = fopen("file.txt", "w") or die("can't open file");;
+		    foreach($dataProvider->getData() as $data){
+		    	fwrite($handle, $data->profile->firstname.",".$data->profile->lastname.",".$data->username);
+			}
+		    fclose($handle);
+		
+		    header('Content-Type: application/octet-stream');
+		    header('Content-Disposition: attachment; filename='.basename('file.txt'));
+		    header('Expires: 0');
+		    header('Cache-Control: must-revalidate');
+		    header('Pragma: public');
+		    header('Content-Length: ' . filesize('file.txt'));
+		    readfile('file.txt');
+		    exit;
+	 }
+	
 	public function actionReporteXLS(){
 		ini_set('memory_limit','256M'); 
 
@@ -515,7 +543,6 @@ class AdminController extends Controller
 			$objWriter->save('php://output');
 			ini_set('memory_limit','128M'); 
 			Yii::app()->end();
-		
 	}
 	
 	public function actionUsuariosZoho(){

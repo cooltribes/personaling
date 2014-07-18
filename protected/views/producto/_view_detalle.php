@@ -227,7 +227,7 @@
         }
 		$valores2 = Array();
         $canttallas= Array();
-                $cont2 = 0;
+        $cont2 = 0;
                 
         // revisando cuantas tallas distintas hay
         foreach ($producto->preciotallacolor as $talCol){ 
@@ -283,12 +283,8 @@
                   ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span><br/><span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
                 }else{
                   	?>
-                  	<div class="pDetalle">
-                  	
+                  	<div class="pDetalle">                  	
                   			    			<?php echo "<span>".Yii::t('contentForm', 'currSym').'</span>'.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto); ?>
-                  	
-                  			
-                  	
                   	</div>
                   	
                   	<?php
@@ -353,7 +349,7 @@
 		  else
 		  	echo CHtml::hiddenField('chic',0); 
 		  
-		 if(!is_null($tienda)) {echo '<div class="urlDetalle">'.$tienda->urlVista.'</div>';}
+		// if(!is_null($tienda)) {echo '<div class="urlDetalle">'.$tienda->urlVista.'</div>';}
 		    
           if($cont1 > 0 && $cont2 > 0){
           ?>

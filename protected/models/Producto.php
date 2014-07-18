@@ -3,7 +3,10 @@
 /*
  * Estado = 0 activo / 1 Inactivo
  * status = 0 eliminado / 1 no eliminado
- */ 
+ * Tipo:
+ * 0: Monomarca
+ * 1: Multimarca
+ * */ 
 
 /**
  * This is the model class for table "{{producto}}".

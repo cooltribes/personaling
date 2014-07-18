@@ -34,6 +34,8 @@ class RegistrationController extends Controller
 			$referencia_tmp = isset($_POST['referencia'])?$_POST['referencia']:'';
             // ajax validator
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'registration-form') {
+            	
+				
                 //echo "rafa";	
                 //echo $_POST['Profile']['birthday'];	
                 //$_POST['Profile']['birthday'] = $_POST['Profile']['year'] .'-'. $_POST['Profile']['month'] .'-'. $_POST['Profile']['day'];
@@ -66,7 +68,8 @@ class RegistrationController extends Controller
     //                                        exit();
                     //$profile->birthday = $profile->year .'-'. $profile->month .'-'. $profile->day;
                     //echo 'lore'.$profile->birthday;
-
+					$profile->ciudad=$_POST['Profile']['ciudad'];
+					
 					
                     if ($model->validate() && $profile->validate()) {
                     	

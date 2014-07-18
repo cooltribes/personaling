@@ -214,34 +214,34 @@ class Bolsa extends CActiveRecord
 	public function addProducto($producto_id,$talla_id,$color_id,$look_id=0)
 	{
 		
-			$carrito = $this;
-			$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$producto_id,'talla_id'=>$talla_id,'color_id'=>$color_id));
-			
-			//revisar si está o no en el carrito
-			
-			$nuevo = BolsaHasProductotallacolor::model()->findByPk(array('bolsa_id'=>$this->id,'preciotallacolor_id'=>$ptcolor->id,'look_id'=>$look_id));
-			
-			if(isset($nuevo)) // existe
-			{
-				$cantidadnueva = $nuevo->cantidad + 1;
-				BolsaHasProductotallacolor::model()->updateByPk(array('bolsa_id'=>$this->id,'preciotallacolor_id'=>$nuevo->preciotallacolor_id,'look_id'=>$look_id), array('cantidad'=>$cantidadnueva));
+		$carrito = $this;
+		$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$producto_id,'talla_id'=>$talla_id,'color_id'=>$color_id));
+		
+		//revisar si está o no en el carrito
+		
+		$nuevo = BolsaHasProductotallacolor::model()->findByPk(array('bolsa_id'=>$this->id,'preciotallacolor_id'=>$ptcolor->id,'look_id'=>$look_id));
+		
+		if(isset($nuevo)) // existe
+		{
+			$cantidadnueva = $nuevo->cantidad + 1;
+			BolsaHasProductotallacolor::model()->updateByPk(array('bolsa_id'=>$this->id,'preciotallacolor_id'=>$nuevo->preciotallacolor_id,'look_id'=>$look_id), array('cantidad'=>$cantidadnueva));
+			return "ok";
+						 
+		}
+		else{ // si el producto es nuevo en la bolsa
+		
+			$pn = new BolsaHasProductotallacolor;
+			$pn->bolsa_id = $carrito->id;
+			$pn->preciotallacolor_id = $ptcolor->id;
+			$pn->cantidad = 1;
+			if ($look_id != 0)
+				$pn->look_id = $look_id;	
+			if($pn->save())
+			{// en bolsa tengo id de usuario e id de bolsa				
 				return "ok";
-							 
 			}
-			else{ // si el producto es nuevo en la bolsa
-			
-				$pn = new BolsaHasProductotallacolor;
-				$pn->bolsa_id = $carrito->id;
-				$pn->preciotallacolor_id = $ptcolor->id;
-				$pn->cantidad = 1;
-				if ($look_id != 0)
-					$pn->look_id = $look_id;	
-				if($pn->save())
-				{// en bolsa tengo id de usuario e id de bolsa				
-					return "ok";
-				}
-					
-			}  
+				
+		}  
 		return "fail";	
 	}
 }

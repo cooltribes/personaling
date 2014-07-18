@@ -24,7 +24,7 @@ $(document).ready(function(){
 function check_fb(){
     FB.getLoginStatus(function(response) {
     	
-        console.log("response: "+response.status);
+        console.log("response: "+response);
         
         if (response.status === 'connected') {
             // En Facebook y App con permisos aprobados.
@@ -32,9 +32,12 @@ function check_fb(){
             var datos = "facebook";
             
             FB.api('/me', function(response) {
+            	var ciudad=response.location.name;
+					ciudad=ciudad.split(",");
+					ciudad=ciudad[0];
                 $.ajax({
-                  url: "login/loginfb",
-                  data: {email : response.email, datos: datos},
+                  url: "user/login/loginfb",
+                  data: {email : response.email, datos: datos, ciudad:ciudad},
                   type: 'POST',
                   dataType: 'html',
                   success: function(data) {
@@ -52,7 +55,7 @@ function check_fb(){
                   } // success
                   
                 });
-            }, {scope: 'email,user_birthday'});            
+            }, {scope: 'email,user_birthday,location'});            
         }// else if(response.status === 'not_authorized'){
         	//alert("Ud. aún no se encuentra registrado.");
         //	window.location = "/site/user/registration";	
@@ -66,9 +69,12 @@ function check_fb(){
                     var datos = "facebook";
                     
                     FB.api('/me', function(response) {
-	                $.ajax({
-	                  url: "login/loginfb",
-	                  data: {email : response.email, datos: datos},
+                    	var ciudad=response.location.name;
+     					ciudad=ciudad.split(",");
+     					ciudad=ciudad[0];
+                    	$.ajax({
+	                  url: "user/login/loginfb",
+	                  data: {email : response.email, datos: datos, ciudad:ciudad},
 	                  type: 'POST',
 	                  dataType: 'html',
 	                  success: function(data) {
@@ -93,7 +99,7 @@ function check_fb(){
                 } else {
                     console.log('User cancelled login or did not fully authorize.');
                 }
-            }, {scope: 'email,user_birthday'});
+            }, {scope: 'email,user_birthday,location'});
         }
     });
 }

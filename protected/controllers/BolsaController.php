@@ -91,10 +91,7 @@ class BolsaController extends Controller
 
                 if(!$admin){
 
-                    $metric = new ShoppingMetric();
-                    $metric->user_id = $usuario;
-                    $metric->step = ShoppingMetric::STEP_BOLSA;
-                    $metric->save();
+					ShoppingMetric::registro(ShoppingMetric::STEP_BOLSA,array("bolsa_id"=>$bolsa->id)); 
 
                 }
 
@@ -440,11 +437,7 @@ class BolsaController extends Controller
                 /*Si es compra del usuario*/
                 if(!$admin){
 
-                    $metric = new ShoppingMetric();
-//                        $metric->user_id = Yii::app()->user->id;
-                    $metric->user_id = $usuario;
-                    $metric->step = ShoppingMetric::STEP_PAGO;
-                    $metric->save();
+					ShoppingMetric::registro(ShoppingMetric::STEP_PAGO); 
                 }
 
                 $aplicar = new AplicarGC;
@@ -641,14 +634,7 @@ class BolsaController extends Controller
                     $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                         : Yii::app()->user->id;
 			
-                    /*Si es compra normal del usuario*/
-                    if(!$admin){
-                        
-                        $metric = new ShoppingMetric();
-                        $metric->user_id = Yii::app()->user->id;
-                        $metric->step = ShoppingMetric::STEP_CONFIRMAR;
-                        $metric->save();
-                    }
+
 
                     $bolsa = Bolsa::model()->findByAttributes(array(
                             'user_id' => $usuario,
@@ -657,7 +643,11 @@ class BolsaController extends Controller
                              */
                             'admin' => $admin, 
                             ));
-                 
+
+                    /*Si es compra normal del usuario*/
+                    if(!$admin){
+						ShoppingMetric::registro(ShoppingMetric::STEP_CONFIRMAR,array("bolsa_id"=>$bolsa->id));   
+                    }                 
                     /*Revisar si actualizo la pagina para hacer la compra de nuevo
                      * en menos de un minuto
                      */
@@ -950,13 +940,7 @@ class BolsaController extends Controller
 			{
 				
                             if(!$admin){
-                                
-                                $metric = new ShoppingMetric();
-    //				$metric->user_id = Yii::app()->user->id;
-                                $metric->user_id = $usuario;
-                                $metric->step = ShoppingMetric::STEP_DIRECCIONES;
-                                $metric->save();
-                              
+								ShoppingMetric::registro(ShoppingMetric::STEP_DIRECCIONES);   
                             }
                             
                             $this->render('direcciones',array(
@@ -2000,10 +1984,7 @@ class BolsaController extends Controller
 			$orden->setActualizadas();
             //$pago = Pago::model()->findByPk($orden->pago_id);
             if(!$admin){                
-                $metric = new ShoppingMetric();
-                $metric->user_id = Yii::app()->user->id;
-                $metric->step = ShoppingMetric::STEP_PEDIDO;
-                $metric->save();		
+				ShoppingMetric::registro(ShoppingMetric::STEP_PEDIDO,array("orden_id"=>$orden->id));		
             }
             $this->render('pedido',array(
                  'orden'=>$orden,

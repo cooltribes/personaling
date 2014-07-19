@@ -149,11 +149,17 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                 <!--    <a href="bolsa_de_compras.php" title="agregar a la bolsa" class="btn btn-danger"> Añadir a la bolsa</a> -->
                 <?php
 
+                // verificar si el look tiene productos de terceros y cambiar el texto del boton de compra
+                $button_text = 'Buy';
+                if($model->hasProductosExternos()){
+                  $button_text = 'Load to shopping cart';
+                }
+
          $this->widget('bootstrap.widgets.TbButton', array(
                     'buttonType'=>'ajaxButton',
                     'id'=>'btn-compra', 
                     'type'=>'warning',
-                    'label'=>Yii::t('contentForm' , 'Buy'),
+                    'label'=>Yii::t('contentForm', $button_text),
                     'block'=>'true',
                        'size'=> 'large',
                    // 'url'=>array('producto/tallacolor'),
@@ -252,74 +258,84 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           <?php echo CHtml::hiddenField('look_id',$model->id); ?>
           <div class="productos_del_look">
             <div class="row-fluid">
-              <?php if($model->productos)
-                          foreach ($model->lookhasproducto as $lookhasproducto){
-                              // $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
-                              $image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('type'=>'thumb'));
-                            Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$image_url, null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook                              
-            ?>
-              <div class="span6"> <a href="pagina_producto.php" title="Nombre del Producto">
-                <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" />
-                      -->
-                <?php      
-                 $prod = Producto::model()->findByPk($lookhasproducto->producto_id);
-                ?>
-                 
-                <?php $image = CHtml::image($image_url, "Imagen ", array('class'=>'imagen_producto'));  ?>
-                <?php echo CHtml::link($image, $prod->getUrl() ); ?>
-                <?php //$color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$lookhasproducto->producto_id))->color_id ?>
-                <?php $color_id = $lookhasproducto->color_id; ?>
-                </a>
-                <?php if ( $lookhasproducto->producto->getCantidad(null,$color_id) > 0 && 
-                        $lookhasproducto->producto->estado == 0){ ?>
-                <?php echo CHtml::checkBox("producto[]",true,array('onclick'=>'js:updatePrice();','value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
-                <?php } else { ?>
-                 <?php echo CHtml::checkBox("producto[]",false,array('readonly'=>true,'disabled'=>true,'value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
-
-                <?php } ?>
-
-                <div class="metadata_top">
-                  <?php // echo Chtml::hiddenField("color[]",$color_id); ?>
-                  <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
-                  <?php 
-                    if($lookhasproducto->producto->estado == 0){
-                        echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
-                    }else{
-                        
-                        echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',array(),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
-                        
-                    }
-                  
+              <?php 
+              if($model->productos)
+                foreach ($model->lookhasproducto as $lookhasproducto){
+                  // $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$lookhasproducto->producto_id,'orden'=>'1'));
+                  $image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('type'=>'thumb'));
+                  Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$image_url, null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook                              
                   ?>
-                </div>
-                <div class="metadata_bottom">
-                  <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
-                  <div class="row-fluid">
-                    <div class="span7"><span> <?php echo Yii::t('contentForm', 'currSym'); ?>
+                  <div class="span6"> 
+                    <a href="pagina_producto.php" title="Nombre del Producto">
+                      <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" />
+                      -->
+                      <?php      
+                      $prod = Producto::model()->findByPk($lookhasproducto->producto_id);
+                      ?>
+
+                      <?php $image = CHtml::image($image_url, "Imagen ", array('class'=>'imagen_producto'));  ?>
+                      <?php echo CHtml::link($image, $prod->getUrl() ); ?>
+                      <?php //$color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$lookhasproducto->producto_id))->color_id ?>
+                      <?php $color_id = $lookhasproducto->color_id; ?>
+                    </a>
+                    <?php 
+                    if ( $lookhasproducto->producto->getCantidad(null,$color_id) > 0 && $lookhasproducto->producto->estado == 0){ 
+                      ?>
+                      <?php echo CHtml::checkBox("producto[]",true,array('onclick'=>'js:updatePrice();','value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
+                      <?php } else { ?>
+                      <?php echo CHtml::checkBox("producto[]",false,array('readonly'=>true,'disabled'=>true,'value'=>$lookhasproducto->producto_id.'_'.$color_id)); ?>
+
+                      <?php 
+                    } 
+                    ?>
+
+                    <div class="metadata_top">
+                      <?php // echo Chtml::hiddenField("color[]",$color_id); ?>
+                      <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
+                      <?php 
+                      //if($lookhasproducto->producto->tipo == 0){
+                        if($lookhasproducto->producto->estado == 0){
+                          echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
+                        }else{
+
+                          echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',array(),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
+
+                        }
+                      /*}else{
+                        echo $lookhasproducto->producto->tienda->name;
+                      }*/
+                      ?>
+                    </div>
+                    <div class="metadata_bottom">
+                      <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
+                      <div class="row-fluid">
+                        <div class="span7"><span> <?php echo Yii::t('contentForm', 'currSym'); ?>
                         <?php foreach ($lookhasproducto->producto->precios as $precio) {
-                       echo Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); // precio
-                       }
+                        echo Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); // precio
+                        }
 
-            ?>
+                        ?>
 
-                    </span></div>
-                    <div class="span5"> <span id="cantidad<?php echo $lookhasproducto->producto_id.'_'.$color_id; ?>">
+                        </span></div>
+                        <div class="span5"> <span id="cantidad<?php echo $lookhasproducto->producto_id.'_'.$color_id; ?>">
                         <?php 
                         if($lookhasproducto->producto->estado == 0){                        
-                           
-                            echo $lookhasproducto->producto->getCantidad(null,$color_id);
-                            
+
+                        echo $lookhasproducto->producto->getCantidad(null,$color_id);
+
                         }else{
-                            
-                            echo "0";
-                            
+
+                        echo "0";
+
                         }
-                            
+
                         ?> unds.</span></div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <?php } ?>
+                  <?php
+                }
+                ?>
             </div>
           </div>
           <?php $this->endWidget(); ?>
@@ -331,7 +347,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                     'buttonType'=>'ajaxButton',
                     'id'=>'btn-compra', 
                     'type'=>'warning',
-                    'label'=>Yii::t('contentForm' , 'Buy'),
+                    'label'=>Yii::t('contentForm', $button_text),
                     'block'=>'true',
                        'size'=> 'large',
                    // 'url'=>array('producto/tallacolor'),

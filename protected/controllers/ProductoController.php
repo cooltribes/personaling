@@ -1650,6 +1650,64 @@ public function actionReportexls(){
                                 //	$preciotallacolor->attributes=$tallacolor;  
                                 if ($tallacolor->save()) {
                                     
+									/* Todos los datos a Zoho */
+									$zoho = New ZohoProductos;
+									$zoho->nombre = $model->nombre." - ".$tallacolor['sku'];
+									$zoho->marca = $model->mymarca->nombre;
+									$zoho->referencia = $model->codigo;
+									if($model->estado==0)
+										$zoho->estado = "TRUE"; 
+									$zoho->peso = $model->peso;
+									$zoho->fecha = date("Y-m-d",strtotime($model->fecha));
+									
+									$i=0;
+									$categs = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$model->id));
+									foreach($categs as $each){
+										switch ($i) {
+											case 0:
+												$categoria = Categoria::model()->findByPk($each->tbl_categoria_id);
+												$zoho->categoria = $categoria->nombre;
+											break;
+											case 1:
+												$categoria1 = Categoria::model()->findByPk($each->tbl_categoria_id);
+												$zoho->subcategoria1 = $categoria1->nombre;
+											break;
+											case 2:
+												$categoria2 = Categoria::model()->findByPk($each->tbl_categoria_id);
+												$zoho->subcategoria2 = $categoria2->nombre;
+											break;
+										}
+										$i++;	
+									}
+									
+									if($model->tipo==0){
+										$zoho->tipo = "Interno";
+									}else{
+										$zoho->tipo = "Externa";
+										$zoho->tienda = $model->tienda->name;
+									 	$zoho->url = $model->url_externo;
+									}
+									$precios = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->id));
+								
+									$zoho->descripcion = $model->descripcion;
+									$zoho->costo = $precios->costo;
+									$zoho->precioVenta = $precios->precioVenta;
+									$zoho->precioDescuento = $precios->precioDescuento;
+									$zoho->descuento = $precios->ahorro;
+									$zoho->precioImpuesto = $precios->precioImpuesto;
+									if($precios->tipoDescuento==0)
+										$zoho->porcentaje = $precios->valorTipo;
+									$zoho->talla = $tallacolor['talla'];
+									$zoho->color = $tallacolor['color'];
+									$zoho->SKU = $tallacolor['sku'];
+									$zoho->cantidad = $tallacolor['cantidad'];
+									$zoho->titulo = $model->seo->mTitulo;
+									$zoho->metaDescripcion = $model->seo->mDescripcion;
+									$zoho->tags = $model->seo->pClave;
+									
+									$zoho->save_potential();
+									/* ========================================== */
+									
                                     //si este producto fue actualizado, guardar en el log
                                     if(array_key_exists($i, $logActualizar)){ 
                                         $logActualizar[$i]->save();                                        
@@ -3101,64 +3159,81 @@ public function actionReportexls(){
 
             
             $falla = "";
-            $linea = 1;
+            $linea = 0;
             
             foreach ($sheetArray as $row) {
                 
-                if ($row['A'] != ""){
-                    
-                    if ($linea == 1) { // revisar los nombres / encabezados de las columnas
-                        if ($row['Q'] != "Tienda")
-                            $falla = "Tienda";
-                        else if ($row['R'] != "URL")
-                            $falla = "URL";
-
-                        if ($falla != "") { // algo falló O:
-                            Yii::app()->user->updateSession();
-                            Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
-                                            $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita."));                                   
-
-                            return false;
-                        }
-                    }
-                    
-                    if($linea > 1){                       
-                      
-                        //Revisar celdas vacias
-                        if(!isset($row['Q']) || $row['Q'] == ""){                            
-                                $erroresColumnasVacias.= "<li> Columna: <b>" . "Q" .
-                                        "</b>, en la línea <b>" . $linea."</b></li>";                                
-                        }
-                        if(!isset($row['R']) || $row['R'] == ""){                            
-                                $erroresColumnasVacias.= "<li> Columna: <b>" . "R" .
-                                        "</b>, en la línea <b>" . $linea."</b></li>";                                
-                        }
-                        
-                        //Marcas
-                        if (isset($row['Q']) && $row['Q'] != "") {                        
-                            $tienda = Tienda::model()->findByAttributes(array("name" => $row["Q"]));
-
-                            if (!isset($tienda)) {
-                                $erroresTienda .= "<li> <b>" . $row['Q'] . "</b>, en la línea <b>" . $linea."</b></li>";
-                            }
-                        }
-                        
-                        //SKU existentes                        
-                        if (isset($row['A']) && $row['A'] != "") {                        
-                            $producto = Preciotallacolor::model()->findByAttributes(array("sku" => $row["A"]));
-
-                            //si existe y es de personaling
-                            if (isset($producto) && $producto->producto->tipo == 0) {
-                                $erroresSku .= "<li> <b>" .$row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
-                            }
-                        }
-                        
-                        
-                    }                    
-                    
+                $linea++;
+                
+                if(!isset($row['A']) || $row['A'] == ""){
+                    continue;
                 }
                 
-                $linea++;
+                if ($linea == 1) { // revisar los nombres / encabezados de las columnas
+                    if ($row['Q'] != "Tienda")
+                        $falla = "Tienda";
+                    else if ($row['R'] != "URL")
+                        $falla = "URL";
+
+                    if ($falla != "") { // algo falló O:
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash('error', UserModule::t("La columna <b>" .
+                                        $falla . "</b> no se encuentra en el lugar que debe ir o está mal escrita."));                                   
+
+                        return false;
+                    }
+                }
+
+                if($linea > 1){  
+                      
+                    //Revisar celdas vacias
+                    if(!isset($row['A']) || $row['A'] == ""){                            
+                            $erroresColumnasVacias.= "<li> Columna: <b>" . "A" .
+                                    "</b>, en la línea <b>" . $linea."</b></li>";                                
+                    }
+                    if(!isset($row['Q']) || $row['Q'] == ""){                            
+                            $erroresColumnasVacias.= "<li> Columna: <b>" . "Q" .
+                                    "</b>, en la línea <b>" . $linea."</b></li>";                                
+                    }
+                    if(!isset($row['R']) || $row['R'] == ""){                            
+                            $erroresColumnasVacias.= "<li> Columna: <b>" . "R" .
+                                    "</b>, en la línea <b>" . $linea."</b></li>";                                
+                    }
+
+                    //Tiendas
+                    if (isset($row['Q']) && $row['Q'] != "") {                        
+                        $tienda = Tienda::model()->findByAttributes(array("name" => $row["Q"]));
+
+                        if (!isset($tienda)) {
+                            $erroresTienda .= "<li> <b>" . $row['Q'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                        }
+                    }
+
+                    //Referencias existentes                        
+                    if (isset($row['B']) && $row['B'] != "") {                        
+                        
+                        $producto = Producto::model()->findByAttributes(array("codigo" => $row["B"]));
+                        
+                        //si existe y es de personaling
+                        if (isset($producto) && $producto->tipo == 0) {                             
+                            
+                            $erroresSku .= "<li> REFERENCIA - <b>" .$row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                        }
+                    }                        
+                    //SKU existentes                        
+                    if (isset($row['A']) && $row['A'] != "") {                        
+                        
+                        $combinacion = Preciotallacolor::model()->findByAttributes(array("sku" => $row["A"]));
+                        //si existe y es de personaling
+                        if (isset($combinacion) && $combinacion->producto->tipo == 0) {                             
+                            
+                            $erroresSku .= "<li> SKU - <b>" .$row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                        }
+                    }                        
+                        
+                }                                        
+                
+                
             }
             
             //si hubo celdas vacias
@@ -3173,12 +3248,12 @@ public function actionReportexls(){
                                  </ul><br>";
             }
             if($erroresSku != ""){
-                $erroresSku = "Los siguientes SKU ya existen en la plataforma para productos de Personaling:<br><ul>
+                $erroresSku = "Los siguientes productos ya existen en la plataforma:<br><ul>
                                  {$erroresSku}
                                  </ul><br>";
             }
             
-            $errores .= $erroresColumnasVacias . $erroresTienda;
+            $errores .= $erroresColumnasVacias . $erroresTienda . $erroresSku;
            
             if($errores != ""){
                 
@@ -3186,7 +3261,7 @@ public function actionReportexls(){
                 Yii::app()->user->setFlash('error', $errores);
 
                 return false;                
-            } 
+            }             
             
             //No hubo errores.
             return $response; 
@@ -3722,7 +3797,7 @@ public function actionReportexls(){
 
             //Segundo paso - Subir el Archivo
             }
-            else if(isset($_POST["cargar"]) && isset($_POST["archivoCarga"]))
+            else if(isset($_POST["cargar"]))
             {
 
                 $archivo = CUploadedFile::getInstancesByName('archivoCarga');
@@ -3747,18 +3822,15 @@ public function actionReportexls(){
                     Yii::app()->user->setFlash('error', UserModule::t("Debes seleccionar un archivo."));                            
                     $error = true;
                 } 
-
-                // ==============================================================================
-
+                              
                 // Validar (de nuevo)
-                if(!$error && !is_array($resValidacion = $this->validarImportacionExternos($nombre . $extension)) ){
+                if(!$error && is_array($resValidacion = $this->validarImportacionExternos($nombre . $extension)) ){
 
-                   
                     // Si pasa la validacion
-                    $sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
+                    $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
 
                     //para cada fila del archivo
-                    foreach ($sheet_array as $row) {
+                    foreach ($sheetArray as $row) {
 
                         if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
 
@@ -3785,6 +3857,8 @@ public function actionReportexls(){
                             $rmDesc = $row['N'];
                             $rmTags = $row['O'];
                             $rAlmacen = $row['P'];
+                            $rTienda = $row['Q'];
+                            $rURL = $row['R'];
 
                             $producto = Producto::model()->findByAttributes(array('codigo' => $rRef));
                             
@@ -3793,6 +3867,9 @@ public function actionReportexls(){
 
                             // Marca para actualizar
                             $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));                                                        
+                            
+                            // Tienda
+                            $tienda = Tienda::model()->findByAttributes(array('name' => $rTienda));                                                        
 
                             if($prodExiste){
 
@@ -3803,9 +3880,15 @@ public function actionReportexls(){
                                     'descripcion' => $rDescrip,
                                     'peso' => $rPeso,
                                     'almacen' => $rAlmacen,
-                                    'status' => 1
+                                    'status' => 1,
+                                    //para los externos
+                                    'tienda_id' => $tienda->id,
+                                    //no actualizar la url.
+                                    
                                 )); 
-                            } else
+                                
+                            }
+                            else
                             { // no existe la referencia, es producto nuevo                           
 
                                 $producto = new Producto;
@@ -3818,17 +3901,24 @@ public function actionReportexls(){
                                 $producto->almacen = $rAlmacen;
                                 $producto->status = 1; // no está eliminado
                                 $producto->marca_id = $marca->id;
+                                
+                                //producto externo
+                                $producto->tipo = 1;
+                                $producto->tienda_id = $tienda->id;                                
+                                //El url solo se inserta, por lo tanto se toma
+                                //el del primer sku para este pro. No se debe actualizar                                
+                                $producto->url_externo = $rURL;  
+                                
                                 $producto->save();  
 
                             }
                             // Si existe o no el producto, actualizar o insertar precio nuevo
                             $precio = Precio::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
 
+                            //si no existe insertar nuevo precio
                             if (!isset($precio)) {
-
                                 $precio = new Precio;
                                 $precio->tbl_producto_id = $producto->id;
-
                             } 
 
                             $precio->costo = $rCosto;
@@ -3894,11 +3984,14 @@ public function actionReportexls(){
                             $color = Color::model()->findByAttributes(array('valor' => $rColor));
 
                             $ptc = Preciotallacolor::model()->findByAttributes(array(
-                                            'producto_id' => $producto->id,
-                                            'sku' => $rSku,
-                                            'talla_id' => $talla->id,
-                                            'color_id' => $color->id,
-                                        ));                                   
+                                        'producto_id' => $producto->id,
+                                        'sku' => $rSku,
+                                        'talla_id' => $talla->id,
+                                        'color_id' => $color->id,
+                                        //productos externos
+                                        'url_externo' => $rURL,
+                                        
+                                    ));                                   
 
                             // Si no existe crearlo
                             if (!isset($ptc)) { 
@@ -3906,20 +3999,23 @@ public function actionReportexls(){
                                 $nuevos++; // suma un producto nuevo
 
                                 $ptc = new Preciotallacolor;                                        
-                                $ptc->cantidad = 0; //Creando un producto nuevo, sin existencia
+                                $ptc->cantidad = 1; //Todos los externos tienen cant = 1
                                 $ptc->sku = $rSku;
+                                
                                 $ptc->producto_id = $producto->id;
-
                                 $ptc->talla_id = $talla->id;
                                 $ptc->color_id = $color->id;
+                                
+                                //productos externos
+                                $ptc->url_externo = $rURL;  
+
+                                
                                 $ptc->save();
 
                             }else{
                                 //Si ya existe
                                 $actualizados++; //suma un producto actualizado                                
-
-                                //Marcar item como actualizado
-                                
+                                //Marcar item como actualizado                                
                             }
 
                             // seo

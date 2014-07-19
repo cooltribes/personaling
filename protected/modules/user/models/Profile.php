@@ -46,6 +46,7 @@ class Profile extends UActiveRecord
 			$decimal = array();
 			$rules = array();
 			array_push($rules,array('facebook, twitter, url, bio', 'type','type'=>'string','allowEmpty'=>true,'on'=>'notPS' ));	
+			
 		
 			$model=$this->getFields();
 			
@@ -123,6 +124,7 @@ class Profile extends UActiveRecord
 			}
 			
 			array_push($rules,array('month,day,year', 'safe'));
+			
 			array_push($rules,array(implode(',',$required), 'required', 'message'=>'{attribute}'));
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
 			array_push($rules,array(implode(',',$float), 'type', 'type'=>'float'));

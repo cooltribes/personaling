@@ -128,10 +128,12 @@ $this->breadcrumbs = array(
         'lastPageLabel'=> Yii::t('contentForm','Last'),
         'htmlOptions'=>array(
             'class'=>'pagination pagination-right'));    
+    
+    
     $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
-            <th rowspan="2" scope="col"></th>
+            
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'ID').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'Buyer').'</th>
             <th rowspan="2" scope="col">'.Yii::t('contentForm' , 'State').'</th>
@@ -167,6 +169,7 @@ $this->breadcrumbs = array(
                         });
                         
                         desactivarGC();
+                        actualizarNroGC(data);
 
                     } ",
         'pager'=>$pagerParams,  
@@ -188,6 +191,24 @@ $this->breadcrumbs = array(
       <div class="span2"><a href="#" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
     </div>-->
 
+
+<h3>Acciones Masivas</h3>
+<hr/>
+<div class="row">
+    <div class="span3">       
+        <?php
+        echo CHtml::dropDownList("Acciones", "", array(
+            "1" => "Cambiar Validez",
+           ),
+            array('prompt' => '-- Seleccione una acción --', 'id' => 'listaAcciones'))
+        ?>
+    </div>
+    <div class="span1">
+        <a id="btnProcesar" title="Procesar" class="btn btn-danger">Procesar</a>
+    </div>
+</div>
+
+
 </div>
 <style>
     #modalGiftCard .modal-body{
@@ -195,6 +216,124 @@ $this->breadcrumbs = array(
         max-height: 1000px;
     }
 </style>
+
+
+<!--MODAL CAMBIO FECHAS ON-->
+<?php
+$this->beginWidget('bootstrap.widgets.TbModal', array(
+    'id' => 'modalFechas',
+        ), array(
+    'class' => 'modal fade hide',
+    'tabindex' => "-1",
+    'role' => "dialog",
+    'aria-labelledby' => "myModalLabel",
+    'aria-hidden' => "true",
+        //'style' => "display: none;",
+))
+?>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3>Cambiar fecha de expiración</h3>
+</div>
+
+<div class="modal-body">
+    <?php
+    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+        'id' => 'formCambiarComision',
+        'action' => $this->createUrl("giftcard/cambiarFechas"),
+        'htmlOptions' => array('enctype' => 'multipart/form-data'),
+        'type' => 'horizontal',
+        'enableAjaxValidation' => true,
+        'clientOptions' => array(
+            'validateOnSubmit' => true,
+        ),
+    ));
+    ?>
+    <fieldset>       
+<!--        <div class="control-group">
+            <label class="control-label">Válida desde</label>
+            <div class="controls">
+                <div class="input-append"  data-date-format="dd-mm-yyyy">
+                    <input type="text" class="span2" id="fechaInicial" >
+                    <?php
+                    $this->widget("bootstrap.widgets.TbDatePicker", array(
+                        'name' => "fechaInicial",                    
+                        'htmlOptions' => array(
+                            'class' => "span2"
+                        ),
+                        'options' => array(
+                            'format' => 'dd-mm-yyyy',
+                            'language' => 'es',
+                        ),
+                    ));
+                    ?>
+                
+                    <span class="add-on"><icon class="icon-calendar"></icon></span>
+                </div>
+            </div>
+        </div>-->
+        <div class="control-group margin_top_medium">
+            <label class="control-label">Fecha de expiración:</label>
+            <div class="controls">
+                <div class="input-append" data-date-format="dd-mm-yyyy">
+                    <!--<input type="text" class="span2" value="" id="fechaFinal">-->
+                   <?php
+                    $this->widget("bootstrap.widgets.TbDatePicker", array(
+                        'name' => "fechaFinal",
+                        'htmlOptions' => array(
+                            'class' => "span2"
+                        ),
+                        'options' => array(
+                            'format' => 'dd-mm-yyyy',
+                            'language' => 'es',
+                            
+                        )
+                    ));
+                    ?>                     
+                    <span class="add-on"><icon class="icon-calendar"></icon></span>
+                </div>
+            </div>
+        </div> 
+        <div class="control-group">            
+            <div class="controls">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type' => 'danger',
+                    'buttonType' => 'submit',
+                    'label' => "Guardar cambios",
+                    'htmlOptions' => array(
+                        'id' => 'btnFechas',
+                        'name' => 'btnFechas',
+                    )
+                ));
+                ?>
+            </div>
+        </div>            
+        <?php echo CHtml::hiddenField("action", 1); ?>
+    </fieldset>
+
+<?php $this->endWidget(); ?>
+
+    <div class="row-fluid">
+        <div class="span12 ">
+            <strong class="nroAfectados"><?php echo $dataProvider->getTotalItemCount(); ?></strong>
+            Gift Cards serán cambiadas
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer text_align_left">
+    <h5 style="margin-top: 0">Descripción:</h5>
+    Cambiarás el tiempo de validez de todas las Gift Cards que se muestran en el listado.
+</div>                    
+
+<?php $this->endWidget() ?>
+<!--MODAL CAMBIO DE FECHAS OFF-->
+
+
+
+
 <!------------------- MODAL WINDOW ON ----------------->
 <?php $this->beginWidget("bootstrap.widgets.TbModal", array(
    'id' => "modalGiftCard", 
@@ -218,12 +357,43 @@ $this->breadcrumbs = array(
 
 
 <script type="text/javascript">
+ $('#modalFechas').modal();
+//Nro de GC q seran actualizadas despues de cada busqueda
+function actualizarNroGC(data){
+
+    $("strong.nroAfectados").text($("strong.nroAfectados", data).text());    
     
-function desactivarGC(){
+}
+
+/*Boton de acciones masivas, para cambiar comision y tiempo*/
+    $("#btnProcesar").click(function() {
+        var accion = $("#listaAcciones").val();
+
+        if (accion < 1) {
+            bootbox.alert("Debes seleccionar una acción para aplicar!");
+            return;
+        }
+
+        //Si es para cambiar validez
+        if (accion == 1) {
+
+            $('#modalFechas').modal();
+                
+        } 
+
+    });    
     
     
-/*Desactivar giftcard*/
-$("[id^='linkDesactivar']").click(function (e){
+/*Para la seleccion de fechas*/    
+  
+    
+    
+    
+    
+    
+function desactivarGC(){       
+    /*Desactivar giftcard*/
+    $("[id^='linkDesactivar']").click(function (e){
             e.preventDefault();
             //console.log("click");
             var idString = $(this).attr('id');    
@@ -310,35 +480,3 @@ function changeFilter(e){
 }
 
 </script>
-<?php 
-//if(isset(Yii::app()->session["documentoExcel"])){
-//        
-//        $document = Yii::app()->session["documentoExcel"];
-//        unset(Yii::app()->session["documentoExcel"]);
-//           
-//            Yii::import('ext.phpexcel.XPHPExcel');    
-//            // Redirect output to a clientâ€™s web browser (Excel5)
-//            header('Content-Type: application/vnd.ms-excel');
-//            header('Content-Disposition: attachment;filename="GiftCards.xls"');
-//            header('Cache-Control: max-age=0');
-//            // If you're serving to IE 9, then the following may be needed
-//            header('Cache-Control: max-age=1');
-//
-//            // If you're serving to IE over SSL, then the following may be needed
-//            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-//            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-//            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-//            header ('Pragma: public'); // HTTP/1.0
-//
-//            //$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-//            $objWriter = PHPExcel_IOFactory::createWriter($document, 'Excel5');
-//            $objWriter->save('php://output');
-//            Yii::app()->end();
-////            $objWriter->save(Yii::getPathOfAlias("webroot")."/docs/giftcards/GiftCards.xls");
-//            //$objWriter->save("GiftCards.xls");
-//               
-//             
-//        
-//        
-//    } 
-    ?>

@@ -1449,6 +1449,22 @@ public function actionCategorias2(){
 		$datos="";
 		
 		$producto = Producto::model()->findByPk($id);
+		if($producto->tipo){
+			$left="span4";
+			$right="span8";
+			$tienda=Tienda::model()->findByPk($producto->tienda_id);
+			if(strlen($tienda->urlVista)>9)
+				$msj="Ir a ".$tienda->urlVista;
+			else
+				$msj="Comprar en ".$tienda->urlVista;
+		}
+			
+		else{
+			$tienda=null;
+			$left="span7";
+			$right="span5";
+		}
+		
 		
 		//$datos=$datos."<div id='myModal' class='modal hide tienda_modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
     	$datos=$datos."<div class='modal-header'>";
@@ -1496,7 +1512,7 @@ public function actionCategorias2(){
         
         $datos=$datos.'<div class="span5">';
         $datos=$datos.'<div class="row-fluid call2action">';
-       	$datos=$datos.'<div class="span7">';
+       	$datos=$datos.'<div class="'.$left.'">';
 		
 		/*foreach ($producto->precios as $precio) {
 			if($precio->precioDescuento < $precio->precioImpuesto){
@@ -1528,14 +1544,17 @@ public function actionCategorias2(){
 	          $datos=$datos.'<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span><span class='T_large'>|</span><span class='pDescuento'>".''.Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span><br/> <span class="conDescuento">Con '.Yii::app()->numberFormatter->format("#",$porcentaje).'% de descuento</span>';
 	          //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
 	        }else{
-	        	$datos=$datos."<span class='pDescuento'>".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</span>';
-	        }
+	        	$datos=$datos.'<div class="pDetalle"><span>'.Yii::t('contentForm', 'currSym').'</span>'.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</div>';
+			}
 	    }
 
         $datos=$datos.'</div>';
         
-        $datos=$datos.'<div class="span5">';
-        $datos=$datos.'<a class="btn btn-warning btn-block" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>';
+        $datos=$datos.'<div class="'.$right.' margin_top_xsmall">';
+		if(is_null($tienda))
+       		$datos=$datos.'<a class="btn btn-warning btn-block" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>';
+		else
+			$datos=$datos.'<a class="btn btn-warning btn-block" href="'.$tienda->url.'" title="'.$msj.'" >'.$msj.'</a>';
         $datos=$datos.'</div></div>';
         
         $datos=$datos.'<p class="muted t_small CAPS">Selecciona Color y talla </p>';

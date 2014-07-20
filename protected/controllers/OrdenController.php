@@ -2436,11 +2436,12 @@ public function actionValidar()
 	}
         
         public function actionReporteRapido(){
-            ini_set('memory_limit','256M'); 
-
             
-            $arrayOrdenes = Orden::model()->findAllByAttributes(array(
-                "id" => 49
+            ini_set('memory_limit','256M'); 
+            
+            $arrayOrdenes = Orden::model()->findAll(array(
+                "order" => "id desc",
+                "condition" => "id > 53"
             ));
                       
             /*Formato del titulo*/

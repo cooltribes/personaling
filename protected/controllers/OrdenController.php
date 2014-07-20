@@ -33,7 +33,7 @@ class OrdenController extends Controller
                                     'generarExcelOut','devolver','adminDevoluciones',
                                     'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
                                     'AnularDevuelto','cantidadDevuelto','activarDevuelto',
-                                    'resolverOutbound','descargarReturnXML'),
+                                    'resolverOutbound','descargarReturnXML', 'reporteRapido'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -2434,5 +2434,147 @@ public function actionValidar()
             readfile($archivo);
             
 	}
+        
+        public function actionReporteRapido(){
+            ini_set('memory_limit','256M'); 
+
+            
+            $arrayOrdenes = Orden::model()->findAllByAttributes(array(
+                "id" => 49
+            ));
+                      
+            /*Formato del titulo*/
+            $title = array(
+                'font' => array(
+
+                    'size' => 12,
+                    'bold' => true,
+                    'color' => array(
+                        'rgb' => '000000'
+                    ),
+                ),
+                'background' => array(                    
+                    'color' => array(
+                        'rgb' => '246598'
+                    ),
+                ),
+            );
+
+            Yii::import('ext.phpexcel.XPHPExcel');    
+            $objPHPExcel = XPHPExcel::createPHPExcel();
+
+            $objPHPExcel->getProperties()->setCreator("Personaling.com")
+                                     ->setLastModifiedBy("Personaling.com")
+                                     ->setTitle("Reporte de Órdenes");
+
+            // creando el encabezado
+            $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A1', 'ID')
+                        ->setCellValue('B1', 'Subtotal sin IVA')
+                        ->setCellValue('C1', 'Total de IVA')
+                        ->setCellValue('D1', 'Total de Descuentos')
+                        ->setCellValue('E1', 'Subtotal (+Iva-Descuento)')
+                        ->setCellValue('F1', 'Envio')
+                        ->setCellValue('G1', 'Total')
+                        ->setCellValue('H1', 'Monto por Cupón €')
+                    
+                        ->setCellValue('I1', 'Tipos de Pago')
+                        ->setCellValue('J1', 'Monto Sabadell')
+                        ->setCellValue('K1', 'Monto Paypal')
+                        ->setCellValue('L1', 'Monto Balance')
+                    
+                        ->setCellValue('M1', 'Fecha')
+                        ->setCellValue('N1', 'Nombre y Apellido')
+                        ->setCellValue('O1', 'Direccion Envio')
+                        ->setCellValue('P1', 'Telefono')
+                        ->setCellValue('Q1', 'Codigo Postal')
+                        ->setCellValue('R1', 'Email')
+                        ->setCellValue('S1', 'Fecha Creación')
+                        ;
+
+            $colI = 'A';
+            $colF = 'S';
+
+            //Poner autosize todas las columnas
+            foreach(range($colI,$colF) as $columnID) {
+
+                $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+                    ->setAutoSize(true);
+
+//                if($columnID)//Poner color amarillo
+                    
+                $objPHPExcel->getActiveSheet()->getStyle($columnID.'1')->applyFromArray($title);
+
+            }
+            
+            //Agregar los productos
+            $i = 2;
+            foreach ($arrayOrdenes as $orden) {
+                
+                //Revisar el cupon
+                $cuponUsado = "";
+                if($orden->cupon){
+                    $cuponUsado = $orden->cupon->descuento;
+                }
+                $tiposPago = "";
+                $montoS = "";
+                $montoP = "";
+                $montoB = "";
+                
+                foreach ($orden->detalles as $detalle) {
+                    $tiposPago .= $detalle->getTipoPago();
+                    
+                    if($detalle->tipo_pago == Detalle::TDC_AZTIVE){
+                        $montoS = $detalle->monto;
+                    }else if($detalle->tipo_pago == Detalle::PAYPAL_AZTIVE){
+                        $montoP = $detalle->monto;                        
+                    }else if($detalle->tipo_pago == Detalle::USO_BALANCE){
+                        $montoB = $detalle->monto;
+                    }
+                        
+                }
+                
+                $user = $orden->user;
+                
+                //Agregar la fila al documento xls
+                $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A'.($i), $orden->id) 
+                        ->setCellValue('B'.($i), $orden->subtotal)
+                        ->setCellValue('C'.($i), $orden->iva)                        
+                        ->setCellValue('D'.($i), $orden->descuento)                        
+                        ->setCellValue('E'.($i), Yii::app()->numberFormatter->format(
+                                "#,##0.00",$orden->subtotal + $orden->iva - $orden->descuento) )  
+                        ->setCellValue('F'.($i), $orden->envio)                        
+                        ->setCellValue('G'.($i), $orden->total)
+                        ->setCellValue('H'.($i), $cuponUsado)
+                        
+                        ->setCellValue('I'.($i), $tiposPago)
+                        ->setCellValue('J'.($i), $montoS)
+                        ->setCellValue('K'.($i), $montoP)
+                        ->setCellValue('L'.($i), $montoB)
+                        
+                        ->setCellValue('M'.($i), date("d-m-Y h:i:s a", strtotime($orden->fecha)))
+                        ->setCellValue('N'.($i), $user->profile->getNombre())
+                        ->setCellValue('O'.($i), $orden->direccionEnvio->dirUno)
+                        ->setCellValue('P'.($i), $orden->direccionEnvio->telefono)
+                        ->setCellValue('Q'.($i), $orden->direccionEnvio->codigoPostal->codigo)
+                        ->setCellValue('R'.($i), $user->email)
+                        ->setCellValue('S'.($i), $user->create_at)
+                        ;
+
+                $i++;
+            }
+
+            $objPHPExcel->setActiveSheetIndex(0);          
+
+            // Redirect output to a client's web browser (Excel5)
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="Reporte de Órdenes.xls"');
+            header('Cache-Control: max-age=0');
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            Yii::app()->end();
+        }
         
 }

@@ -28,6 +28,11 @@ class ShoppingMetric extends CActiveRecord
 	const STEP_PEDIDO = 5;
 	const STEP_PAGO_OK = 6;
 	const STEP_PAGO_FAIL = 7; 
+	const STEP_PAGO_FAIL_RESPONSE = 8;
+	const STEP_PAGO_RESPONSE = 9;
+	const STEP_BOTON_PAGO = 10; 
+	
+		/*MOVIMIENTOS DEL USUARIO*/
     const USER_INICIO = 100;
 	const USER_TIENDA = 101;
 	const USER_LOOK = 102;    

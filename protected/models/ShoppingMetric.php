@@ -130,6 +130,11 @@ class ShoppingMetric extends CActiveRecord
 	public function registro($step,$data=array()){
 			$metric = new ShoppingMetric();
             $metric->user_id = Yii::app()->user->id;
+			
+			if (empty($data['tipo_compra']))
+				$metric->tipo_compra = ShoppingMetric::TIPO_TIENDA;
+			else
+				$metric->tipo_compra = $data['tipo_compra'];
 			$metric->data = json_encode($data);
             $metric->step = $step;
             $metric->save();

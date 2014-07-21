@@ -81,13 +81,13 @@ $this->breadcrumbs=array(
         //$.datepicker.setDefaults( $.datepicker.regional[ "" ] );
         
         
-        
         $('#<?php echo CHtml::activeId($model, 'inicio_vigencia') ?>').datepicker({
             dateFormat: "dd-mm-yy",
             minDate: 0,            
             onSelect: function(selected) {
                         $("#<?php echo CHtml::activeId($model, 'fin_vigencia') ?>").datepicker(
                                 "option","minDate", selected);
+                        console.log(selected);
                         }
         });
         

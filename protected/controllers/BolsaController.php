@@ -91,10 +91,7 @@ class BolsaController extends Controller
 
                 if(!$admin){
 
-                    $metric = new ShoppingMetric();
-                    $metric->user_id = $usuario;
-                    $metric->step = ShoppingMetric::STEP_BOLSA;
-                    $metric->save();
+					ShoppingMetric::registro(ShoppingMetric::STEP_BOLSA,array("bolsa_id"=>$bolsa->id)); 
 
                 }
 
@@ -440,11 +437,7 @@ class BolsaController extends Controller
                 /*Si es compra del usuario*/
                 if(!$admin){
 
-                    $metric = new ShoppingMetric();
-//                        $metric->user_id = Yii::app()->user->id;
-                    $metric->user_id = $usuario;
-                    $metric->step = ShoppingMetric::STEP_PAGO;
-                    $metric->save();
+					ShoppingMetric::registro(ShoppingMetric::STEP_PAGO); 
                 }
 
                 $aplicar = new AplicarGC;
@@ -641,14 +634,7 @@ class BolsaController extends Controller
                     $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                         : Yii::app()->user->id;
 			
-                    /*Si es compra normal del usuario*/
-                    if(!$admin){
-                        
-                        $metric = new ShoppingMetric();
-                        $metric->user_id = Yii::app()->user->id;
-                        $metric->step = ShoppingMetric::STEP_CONFIRMAR;
-                        $metric->save();
-                    }
+
 
                     $bolsa = Bolsa::model()->findByAttributes(array(
                             'user_id' => $usuario,
@@ -657,7 +643,11 @@ class BolsaController extends Controller
                              */
                             'admin' => $admin, 
                             ));
-                 
+
+                    /*Si es compra normal del usuario*/
+                    if(!$admin){
+						ShoppingMetric::registro(ShoppingMetric::STEP_CONFIRMAR,array("bolsa_id"=>$bolsa->id));   
+                    }                 
                     /*Revisar si actualizo la pagina para hacer la compra de nuevo
                      * en menos de un minuto
                      */
@@ -950,13 +940,7 @@ class BolsaController extends Controller
 			{
 				
                             if(!$admin){
-                                
-                                $metric = new ShoppingMetric();
-    //				$metric->user_id = Yii::app()->user->id;
-                                $metric->user_id = $usuario;
-                                $metric->step = ShoppingMetric::STEP_DIRECCIONES;
-                                $metric->save();
-                              
+								ShoppingMetric::registro(ShoppingMetric::STEP_DIRECCIONES);   
                             }
                             
                             $this->render('direcciones',array(
@@ -2000,10 +1984,37 @@ class BolsaController extends Controller
 			$orden->setActualizadas();
             //$pago = Pago::model()->findByPk($orden->pago_id);
             if(!$admin){                
-                $metric = new ShoppingMetric();
-                $metric->user_id = Yii::app()->user->id;
-                $metric->step = ShoppingMetric::STEP_PEDIDO;
-                $metric->save();		
+				ShoppingMetric::registro(ShoppingMetric::STEP_PEDIDO,array("orden_id"=>$orden->id));
+				Yii::app()->clientScript->registerScript('metrica_analytics',"
+				 var _gaq = _gaq || [];
+  				_gaq.push(['_setAccount', 'UA-XXXXX-X']);
+  				_gaq.push(['_trackPageview']);
+  				_gaq.push(['_addTrans',
+    			'".$orden->id."',           // transaction ID - required
+    			'Personaling',  // affiliation or store name
+    			'".$orden->total."',          // total - required
+    			'".$orden->iva."',           // tax
+    			'".$orden->envio."',              // shipping
+    			'San Jose',       // city
+    			'California',     // state or province
+    			'USA'             // country
+  				]);
+				 _gaq.push(['_addItem',
+				    '1234',           // transaction ID - required
+				    'DD44',           // SKU/code - required
+				    'T-Shirt',        // product name
+				    'Green Medium',   // category or variation
+				    '11.99',          // unit price - required
+				    '1'               // quantity - required
+				  ]);
+				  _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
+				
+				  (function() {
+				    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+				  })();  
+				");		
             }
             $this->render('pedido',array(
                  'orden'=>$orden,

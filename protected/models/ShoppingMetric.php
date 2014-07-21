@@ -60,7 +60,7 @@ class ShoppingMetric extends CActiveRecord
 		array('created_on','default',
               'value'=>new CDbExpression('NOW()'),
               'setOnEmpty'=>false,'on'=>'insert'), 
-			array('user_id, step, created_on, tipo_compra, HTTP_USER_AGENT, REMOTE_ADDR, HTTP_X_FORWARDED_FOR,HTTP_REFERER', 'required'),
+			array('user_id, step, created_on, tipo_compra, HTTP_USER_AGENT, REMOTE_ADDR, HTTP_X_FORWARDED_FOR,HTTP_REFERER,data', 'required'),
 			array('user_id, step, tipo_compra', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -127,9 +127,10 @@ class ShoppingMetric extends CActiveRecord
 		$this->HTTP_REFERER = (!empty($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:'AJAX';
 		return parent::beforeValidate();
 	}
-	public function registro($step){
+	public function registro($step,$data=array()){
 			$metric = new ShoppingMetric();
-            $metric->user_id = Yii::app()->user->id;;
+            $metric->user_id = Yii::app()->user->id;
+			$metric->data = json_encode($data);
             $metric->step = $step;
             $metric->save();
 	}

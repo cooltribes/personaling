@@ -1650,6 +1650,64 @@ public function actionReportexls(){
                                 //	$preciotallacolor->attributes=$tallacolor;  
                                 if ($tallacolor->save()) {
                                     
+									/* Todos los datos a Zoho */
+									$zoho = New ZohoProductos;
+									$zoho->nombre = $model->nombre." - ".$tallacolor['sku'];
+									$zoho->marca = $model->mymarca->nombre;
+									$zoho->referencia = $model->codigo;
+									if($model->estado==0)
+										$zoho->estado = "TRUE"; 
+									$zoho->peso = $model->peso;
+									$zoho->fecha = date("Y-m-d",strtotime($model->fecha));
+									
+									$i=0;
+									$categs = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$model->id));
+									foreach($categs as $each){
+										switch ($i) {
+											case 0:
+												$categoria = Categoria::model()->findByPk($each->tbl_categoria_id);
+												$zoho->categoria = $categoria->nombre;
+											break;
+											case 1:
+												$categoria1 = Categoria::model()->findByPk($each->tbl_categoria_id);
+												$zoho->subcategoria1 = $categoria1->nombre;
+											break;
+											case 2:
+												$categoria2 = Categoria::model()->findByPk($each->tbl_categoria_id);
+												$zoho->subcategoria2 = $categoria2->nombre;
+											break;
+										}
+										$i++;	
+									}
+									
+									if($model->tipo==0){
+										$zoho->tipo = "Interno";
+									}else{
+										$zoho->tipo = "Externa";
+										$zoho->tienda = $model->tienda->name;
+									 	$zoho->url = $model->url_externo;
+									}
+									$precios = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->id));
+								
+									$zoho->descripcion = $model->descripcion;
+									$zoho->costo = $precios->costo;
+									$zoho->precioVenta = $precios->precioVenta;
+									$zoho->precioDescuento = $precios->precioDescuento;
+									$zoho->descuento = $precios->ahorro;
+									$zoho->precioImpuesto = $precios->precioImpuesto;
+									if($precios->tipoDescuento==0)
+										$zoho->porcentaje = $precios->valorTipo;
+									$zoho->talla = $tallacolor['talla'];
+									$zoho->color = $tallacolor['color'];
+									$zoho->SKU = $tallacolor['sku'];
+									$zoho->cantidad = $tallacolor['cantidad'];
+									$zoho->titulo = $model->seo->mTitulo;
+									$zoho->metaDescripcion = $model->seo->mDescripcion;
+									$zoho->tags = $model->seo->pClave;
+									
+									$zoho->save_potential();
+									/* ========================================== */
+									
                                     //si este producto fue actualizado, guardar en el log
                                     if(array_key_exists($i, $logActualizar)){ 
                                         $logActualizar[$i]->save();                                        

@@ -1984,7 +1984,37 @@ class BolsaController extends Controller
 			$orden->setActualizadas();
             //$pago = Pago::model()->findByPk($orden->pago_id);
             if(!$admin){                
-				ShoppingMetric::registro(ShoppingMetric::STEP_PEDIDO,array("orden_id"=>$orden->id));		
+				ShoppingMetric::registro(ShoppingMetric::STEP_PEDIDO,array("orden_id"=>$orden->id));
+				Yii::app()->clientScript->registerScript('metrica_analytics',"
+				 var _gaq = _gaq || [];
+  				_gaq.push(['_setAccount', 'UA-XXXXX-X']);
+  				_gaq.push(['_trackPageview']);
+  				_gaq.push(['_addTrans',
+    			'".$orden->id."',           // transaction ID - required
+    			'Personaling',  // affiliation or store name
+    			'".$orden->total."',          // total - required
+    			'".$orden->iva."',           // tax
+    			'".$orden->envio."',              // shipping
+    			'San Jose',       // city
+    			'California',     // state or province
+    			'USA'             // country
+  				]);
+				 _gaq.push(['_addItem',
+				    '1234',           // transaction ID - required
+				    'DD44',           // SKU/code - required
+				    'T-Shirt',        // product name
+				    'Green Medium',   // category or variation
+				    '11.99',          // unit price - required
+				    '1'               // quantity - required
+				  ]);
+				  _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
+				
+				  (function() {
+				    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+				  })();  
+				");		
             }
             $this->render('pedido',array(
                  'orden'=>$orden,

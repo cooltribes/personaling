@@ -106,14 +106,14 @@ class FacebookInvite extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-	public function registrado(){
+	public function getRegistrado(){
 		$user=User::model()->findByAttributes(array('facebook_id'=>$this->fb_id_invitado));
 		if(is_null($user))
-			return "No Registrado";
+			return array('status'=>"No Registrado",'fecha'=>'No Disponible');
 		else{
 			$this->estado=1;
 			$this->save();
-			return "Registrado";
+			return array('status'=>"No Registrado",'fecha'=>$user->create_at);
 		}			
 	}
 }

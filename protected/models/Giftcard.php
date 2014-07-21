@@ -268,8 +268,8 @@ class Giftcard extends CActiveRecord
             $criteria = new CDbCriteria;
             
             $criteria->with = array();
-            $criteria->select = array();
-            $criteria->select[] = "t.*";
+//            $criteria->select = array();
+//            $criteria->select[] = "t.*";
             
             for ($i = 0; $i < count($filters['fields']); $i++) {
                 

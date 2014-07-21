@@ -14,20 +14,18 @@
     <div class="span9">
       <div class="">
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked personaling_form" enctype="multipart/form-data">
-          <fieldset class="bg_color3   margin_bottom_small padding_small box_1">
+          
             <legend >Direcciones de envio: </legend>
             
 			
           <?php
           		$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$model->id));
-          		$contador = 1;
-				
-				if(count($direcciones)>1)
-				{
-					foreach($direcciones as $dir)
+          		 
+					foreach($direcciones as $key=>$dir)
+					{
 					$ciudad = Ciudad::model()->findByPk($dir->ciudad_id);
 					$provincia = Provincia::model()->findByPk($dir->provincia_id);
-					{
+					
 						echo '<div class="well well-small clearfix">';
 						echo '<div class="pull-right">';
 				        echo '<a class="btn" href="#myModal" role="button" data-toggle="modal" >
@@ -35,7 +33,7 @@
 				          	<a href="#" title="borrar" class="btn btn-link">
 				          		<i class="icon-remove"></i></a>
 				          </div>';
-						echo '<h4 class="braker_bottom padding_bottom_xsmall"> Dirección '.$contador.'</h4>';
+						echo '<h4 class="braker_bottom padding_bottom_xsmall"> Dirección '.($key+1).'</h4>';
 				      
 				        echo '<div class="vcard">';
 				        echo '<div class="adr">';
@@ -49,80 +47,12 @@
 				        echo '</div>';
 						echo '</div>';
 						
-						$contador++;
+			
 						
 					}
-				}
-				else
-					{
-						echo '<div class="well well-small clearfix"> No existen direcciones de envío asociadas a este usuario. </div>';
-					}
+				
           	?>
-<!--
-	<div class="well well-small clearfix">
-                      <div class="pull-right"> <a class="btn" href="#myModal"  role="button" data-toggle="modal" ><i class="icon-edit"></i></a> <a href="#" title="borrar" class="btn btn-link"><i class="icon-remove"></i></a> </div> <h4 class="braker_bottom padding_bottom_xsmall">Dirección 2</h4>
-          <div class="vcard">
-            <div class="adr">
-              <div class="street-address"><i class="icon-map-marker"></i> Av. 5ta. Edificio Los Mirtos  Piso 3. Oficina 3-3</div>
-              <span class="locality">San Cristobal, Tachira 5001</span>
-              <div class="country-name">Venezuela</div>
-            </div>
-            <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span> 0276-341.47.12 </div>
-            <div class="tel"> <span class="type"><strong>Celular</strong>:</span> 0414-724.80.43 </div>
-            <div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>
-          </div>
-</div>
--->            
-   
-          </fieldset>
-   
-          <!--
-          <fieldset class="bg_color3   margin_bottom_small padding_small box_1">
-            <legend >Direcciones de Facturación: </legend>
-            
-            <div class="well well-small clearfix">
-                      <div class="pull-right"> <a class="btn" href="#myModal"  role="button" data-toggle="modal" ><i class="icon-edit"></i></a> <a href="#" title="borrar" class="btn btn-link"><i class="icon-remove"></i></a> </div> <h4 class="braker_bottom padding_bottom_xsmall">Dirección 4</h4>
-          <div class="vcard">
-            <div class="adr">
-              <div class="street-address"><i class="icon-map-marker"></i> Av. 5ta. Edificio Los Mirtos  Piso 3. Oficina 3-3</div>
-              <span class="locality">San Cristobal, Tachira 5001</span>
-              <div class="country-name">Venezuela</div>
-            </div>
-            <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span> 0276-341.47.12 </div>
-            <div class="tel"> <span class="type"><strong>Celular</strong>:</span> 0414-724.80.43 </div>
-            <div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>
-          </div>
-</div>
-<div class="well well-small clearfix">
-                      <div class="pull-right"> <a class="btn" href="#myModal"  role="button" data-toggle="modal" ><i class="icon-edit"></i></a> <a href="#" title="borrar" class="btn btn-link"><i class="icon-remove"></i></a> </div> <h4 class="braker_bottom padding_bottom_xsmall">Dirección 5</h4>
-          <div class="vcard">
-            <div class="adr">
-              <div class="street-address"><i class="icon-map-marker"></i> Av. 5ta. Edificio Los Mirtos  Piso 3. Oficina 3-3</div>
-              <span class="locality">San Cristobal, Tachira 5001</span>
-              <div class="country-name">Venezuela</div>
-            </div>
-            <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span> 0276-341.47.12 </div>
-            <div class="tel"> <span class="type"><strong>Celular</strong>:</span> 0414-724.80.43 </div>
-            <div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>
-          </div>
-</div>
-<div class="well well-small clearfix">
-                      <div class="pull-right"> <a class="btn" href="#myModal"  role="button" data-toggle="modal" ><i class="icon-edit"></i></a> <a href="#" title="borrar" class="btn btn-link"><i class="icon-remove"></i></a> </div> <h4 class="braker_bottom padding_bottom_xsmall">Dirección 6</h4>
-          <div class="vcard">
-            <div class="adr">
-              <div class="street-address"><i class="icon-map-marker"></i> Av. 5ta. Edificio Los Mirtos  Piso 3. Oficina 3-3</div>
-              <span class="locality">San Cristobal, Tachira 5001</span>
-              <div class="country-name">Venezuela</div>
-            </div>
-            <div class="tel margin_top_small"> <span class="type"><strong>Telefono</strong>:</span> 0276-341.47.12 </div>
-            <div class="tel"> <span class="type"><strong>Celular</strong>:</span> 0414-724.80.43 </div>
-            <div><strong>Email</strong>: <span class="email">info@commerce.net</span> </div>
-          </div>
-</div>
-            
-            
-          </fieldset>
-          -->
+
         </form>
       </div>
     </div>

@@ -28,6 +28,11 @@ class ShoppingMetric extends CActiveRecord
 	const STEP_PEDIDO = 5;
 	const STEP_PAGO_OK = 6;
 	const STEP_PAGO_FAIL = 7; 
+	const STEP_PAGO_FAIL_RESPONSE = 8;
+	const STEP_PAGO_RESPONSE = 9;
+	const STEP_BOTON_PAGO = 10; 
+	
+		/*MOVIMIENTOS DEL USUARIO*/
     const USER_INICIO = 100;
 	const USER_TIENDA = 101;
 	const USER_LOOK = 102;    
@@ -130,6 +135,11 @@ class ShoppingMetric extends CActiveRecord
 	public function registro($step,$data=array()){
 			$metric = new ShoppingMetric();
             $metric->user_id = Yii::app()->user->id;
+			
+			if (empty($data['tipo_compra']))
+				$metric->tipo_compra = ShoppingMetric::TIPO_TIENDA;
+			else
+				$metric->tipo_compra = $data['tipo_compra'];
 			$metric->data = json_encode($data);
             $metric->step = $step;
             $metric->save();

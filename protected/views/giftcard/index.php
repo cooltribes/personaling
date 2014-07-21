@@ -282,7 +282,8 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                     $this->widget("bootstrap.widgets.TbDatePicker", array(
                         'name' => "fechaFinal",
                         'htmlOptions' => array(
-                            'class' => "span2"
+                            'class' => "span2",
+                            "required" => "required"
                         ),
                         'options' => array(
                             'format' => 'dd-mm-yyyy',
@@ -357,7 +358,6 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 
 <script type="text/javascript">
- $('#modalFechas').modal();
 //Nro de GC q seran actualizadas despues de cada busqueda
 function actualizarNroGC(data){
 

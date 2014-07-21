@@ -744,8 +744,29 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			
 			if ($item->hasChildren()){
 				nodos($item->getChildren());
+				$texto = 'Todos';
+				switch ($item->nombre) {
+					case 'Ropa':
+						$texto = 'Toda la ropa';
+						break;
+					case 'Zapatos':
+						$texto = 'Todos los zapatos';
+						break;
+					case 'Complementos':
+						$texto = 'Todos los complementos';
+						break;
+					default:
+						# code...
+						break;
+				}
+				echo "<option value='".$item->nombre."' name='".$item->padreId."'> &nbsp;&nbsp;&nbsp;";
+				echo $texto;
+				echo "</option>";
 			}
-		}	
+		}
+
+		
+
 		return 1;
 	}
 ?>

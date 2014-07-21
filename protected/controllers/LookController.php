@@ -655,7 +655,26 @@ public function actionColores(){
 }
 public function actionCategorias(){
 	$categorias = false;
-	$categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
+	if(isset($_POST['padreId'])){
+		switch ($_POST['padreId']) {
+			case 'Complementos':
+				$categoria_padre = Categoria::model()->findByAttributes(array('nombre'=>$_POST['padreId']));
+				break;
+
+			case 'Ropa':
+				$categoria_padre = Categoria::model()->findByAttributes(array('nombre'=>$_POST['padreId']));
+				break;
+
+			case 'Zapatos':
+				$categoria_padre = Categoria::model()->findByAttributes(array('nombre'=>$_POST['padreId']));
+				break;
+			
+			default:
+				$categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
+				break;
+		}
+	}
+	//$categoria_padre = Categoria::model()->findByPk($_POST['padreId']);
 	$color = null;
 	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 	Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
@@ -666,16 +685,36 @@ public function actionCategorias(){
 	Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
 	Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 	Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
-	if ($_POST['padreId']!=0){ 
+	if ($_POST['padreId']!=0 && $_POST['padreId']!='Complementos' && $_POST['padreId']!='Ropa' && $_POST['padreId']!='Zapatos'){ 
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
 	}
 	if ($categorias){
 		echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
 	}else{
 		$with = array();
-		if(isset($_POST['padreId']))
-			if ($_POST['padreId']!=0)
-				$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
+		if(isset($_POST['padreId'])){
+			switch ($_POST['padreId']) {
+				case 'Complementos':
+					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id);
+					break;
+
+				case 'Ropa':
+					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id);
+					break;
+
+				case 'Zapatos':
+					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id);
+					break;
+				
+				default:
+					if ($_POST['padreId']!=0)
+						$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id);
+					break;
+			}
+			/*if ($_POST['padreId']!=0)
+				$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id);*/
+				//$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
+		}
 		if(isset($_POST['colores']))
 			if ($_POST['colores']!=''){
 				//condicion base, el color seleccionado

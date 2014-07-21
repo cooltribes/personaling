@@ -254,7 +254,7 @@ $pr = Yii::app()->db->createCommand($sql)->queryScalar();
                       	$totalDe=0;
 						$envio = 0;
 						if($pr!=0 || $num!=0){
-                      		$envio = 100;
+                      		$envio = 0;
 						}
 						$i=0;
 						

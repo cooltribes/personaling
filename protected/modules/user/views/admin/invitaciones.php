@@ -15,7 +15,7 @@
       <div class="bg_color3   margin_bottom_small padding_small box_1">
         <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
           <fieldset>
-            <legend>Invitaciones a Amigos <?php echo count($xEmail)." - ".count($xFB); ?></legend>
+            <legend>Invitaciones a Amigos <?php echo $xEmail->totalItemCount." - ".$xFB->totalItemCount; ?></legend>
             
             
                   <div class=" margin_top">
@@ -37,6 +37,7 @@
                     <th scope="col">Dirección</th>
                     <th scope="col">Fecha de Invitación</th>
                     <th scope="col">Status de Invitado</th>
+                    <th scope="col">Fecha de Registro</th>
                   
              
 			    </tr>
@@ -73,6 +74,8 @@
                     <th scope="col">Nombre y Apellido</th>                
                     <th scope="col">Fecha de Invitación</th>
                     <th scope="col">Status de Invitado</th>
+                    <th scope="col">Fecha de Registro</th>
+                    
             
 			    </tr>
 			    {items}

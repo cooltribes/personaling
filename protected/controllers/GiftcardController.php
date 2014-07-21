@@ -1150,13 +1150,27 @@ class GiftcardController extends Controller
             if(isset($_POST["btnFechas"])){
                     
                 if($_POST["action"] == 1){
-
-                    $criteria = Yii::app()->getSession()->get("GCCriteria");
                     
+                    if($_POST["fechaFinal"] != ""){
+
+                        $criteria = Yii::app()->getSession()->get("GCCriteria");
+                        $fecha = date("Y-m-d", strtotime($_POST["fechaFinal"]));
+                        $vector = Giftcard::model()->findAll($criteria);
+                        $actualizados = count($vector);
+                        foreach ($vector as $giftcard)
+                        {
+                            $giftcard->fin_vigencia = $fecha;
+                            $giftcard->save();
+                        }
+                            
+                        
+                        Yii::app()->user->setFlash("success", "Se actualizaron <b>{$actualizados}</b> GiftCards");
+
+                    }else{
+                        Yii::app()->user->setFlash("error", "Debes indicar la fecha de expiración.");
+                    }                    
+                     
                 }
-                echo "<pre>";
-                print_r($_POST);
-                echo "</pre><br>";
                 
                 $this->redirect(array("giftcard/index"));
 

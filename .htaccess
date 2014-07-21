@@ -18,7 +18,7 @@ RewriteCond %{REMOTE_ADDR} !190\.206\.151\.177
 RewriteCond %{REMOTE_ADDR} !174\.23\.154\.49
 RewriteCond %{REMOTE_ADDR} !205\.124\.145\.253
 #Oficina
-RewriteCond %{REMOTE_ADDR} !186\.89\.88\.90
+RewriteCond %{REMOTE_ADDR} !201\.243\.152\.187
 #Rafa
 RewriteCond %{REMOTE_ADDR} !186\.88\.71\.244
 #Johann

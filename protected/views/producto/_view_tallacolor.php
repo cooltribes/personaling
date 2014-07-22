@@ -40,6 +40,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 <td>
                 	
                 	<?php 
+                    if (isset($producto))
                         if($producto->tipo == 1){ // es externo, cantidad siempre en 1 
 	                        $item->cantidad = 1;
 	                    }

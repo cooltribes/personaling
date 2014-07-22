@@ -1557,7 +1557,7 @@ public function actionReportexls(){
 		}
 		if (count($model->preciotallacolor))
 			$tallacolor = CMap::mergeArray($tallacolor,$model->preciotallacolor);
-		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$tallacolor));	
+		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$tallacolor,'producto'=>$model));	
 		/*
 		$this->render('tallacolor',array(
 			'model'=>$model

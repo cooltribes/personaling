@@ -291,7 +291,7 @@ class ColorController extends Controller
 		$zoho->cantidad = 45;
 		$zoho->subcategoria2 = "Regalos";
 		$zoho->metaDescripcion = "Nueva descripcion de prueba para editar desde la aplicacion";
-		*/ 
+		
 		 
 		$zoho = New ZohoProductos;
 		$zoho->nombre = "Prueba desde Yii - 45787545M";
@@ -323,7 +323,10 @@ class ColorController extends Controller
 		
 		$respuesta = $zoho->save_potential();
 		
-		echo $respuesta;
+		echo $respuesta;*/ 
+		
+		
+		
 	}
 	
 }

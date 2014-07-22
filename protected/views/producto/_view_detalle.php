@@ -321,7 +321,7 @@
             <?php
           }
 			}else{?>
-					 <a id="agregar" title="agregar a la bolsa" class="btn btn-warning btn-block" href="<?php echo $tienda->url;?>"><i class="icon-shopping-cart icon-white"></i> <?php echo $msj; ?> </a>
+					 <a id="agregar" title="<?php echo $msj; ?> " target="_blank" class="btn btn-warning btn-block" href="<?php echo $producto->url_externo;?>"><i class="icon-shopping-cart icon-white"></i> <?php echo $msj; ?> </a>
 					
 		<?php	}
                 ?>

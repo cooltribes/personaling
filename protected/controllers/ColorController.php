@@ -325,7 +325,12 @@ class ColorController extends Controller
 		
 		echo $respuesta;*/ 
 		
+		$zoho = new ZohoSales;
+		$respuesta = $zoho->save_potential();
 		
+		echo $respuesta;
+		
+		echo htmlspecialchars($zoho->Products(8));
 		
 	}
 	

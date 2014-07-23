@@ -40,9 +40,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 <td>
                 	
                 	<?php 
-                    if($item->producto->tipo == 1){ // es externo, cantidad siempre en 1
-                        $item->cantidad = 1;
-                    }
+                    if (isset($producto))
+                        if($producto->tipo == 1){ // es externo, cantidad siempre en 1 
+	                        $item->cantidad = 1;
+	                    }
+	                   
                     echo $form->textFieldRow($item, "[$i]cantidad", array('class'=>'input-small')); 
                     ?>
                 	<?php echo $form->error($item,"[$i]cantidad"); ?>

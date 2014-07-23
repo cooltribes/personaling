@@ -351,34 +351,43 @@ class BolsaController extends Controller
                                $codigo = CodigoDescuento::model()->findByAttributes(array("codigo"=>$_POST['textoCodigo']));
                                
                                //si es correcto
-                               if($codigo && $codigo->esValido()){
+                               if($codigo){
                                    
-                                   //si el cliente ya usó ese cupon
-                                   if(CuponHasOrden::clienteUsoCupon($codigo->id)){
+                                   if($codigo->esValido()){
 
-                                       Yii::app()->user->setFlash('error',Yii::t("contentForm",
-                                           "Ya has usado este cupón. Solo puedes usarlo una vez."));
-                                       $errores = true;
+                                       //si el cliente ya usó ese cupon
+                                       if(CuponHasOrden::clienteUsoCupon($codigo->id)){
 
-                                   }else{
-                                       
-                                        //si la compra cumple con el minimo para usar el cupon                                                                             
-                                       if($codigo->cumpleMinimo()){
-                                           
-                                           Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+                                           Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                               "Ya has usado este cupón. Solo puedes usarlo una vez."));
+                                           $errores = true;
 
                                        }else{
-                                           
-                                           Yii::app()->user->setFlash('error',Yii::t("contentForm",
-                                               "Para aplicar este cupón tu compra debe
-                                               tener un monto mínimo de <b>".$codigo->getMinimo()."</b>"));
-                                           $errores = true;
+
+                                            //si la compra cumple con el minimo para usar el cupon                                                                             
+                                           if($codigo->cumpleMinimo()){
+
+                                               Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+
+                                           }else{
+
+                                               Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                                   "Para aplicar este cupón tu compra debe
+                                                   tener un monto mínimo de <b>".$codigo->getMinimo()."</b>"));
+                                               $errores = true;
+                                           }
                                        }
-                                   }
+
+                                   }else{
+
+                                       Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                               "Este cupón ha caducado, ya no puedes usarlo."));
+                                       $errores = true;
+                                   }                                  
                                   
                                }else{
                                    Yii::app()->user->setFlash('error',Yii::t("contentForm",
-                                           "Has ingresado un código de descuento inválido"));
+                                           "Has ingresado un código de descuento inválido."));
                                    $errores = true;
                                }
                                
@@ -1008,11 +1017,7 @@ class BolsaController extends Controller
                         Yii::app()->session['inactivos'] = 1;
                         $this->redirect(array('bolsa/index'));
                     } else {
-                        $metric = new ShoppingMetric();
-                        $metric->user_id = Yii::app()->user->id;
-                        $metric->step = ShoppingMetric::STEP_LOGIN;
-                        $metric->save();
-
+						ShoppingMetric::registro(ShoppingMetric::STEP_LOGIN,array("bolsa_id"=>$bolsa->id));
                         // si no viene del formulario. O bien viene de la pagina anterior
                         $this->render('login', array('model' => $model));
                     }
@@ -1985,36 +1990,47 @@ class BolsaController extends Controller
             //$pago = Pago::model()->findByPk($orden->pago_id);
             if(!$admin){                
 				ShoppingMetric::registro(ShoppingMetric::STEP_PEDIDO,array("orden_id"=>$orden->id));
+				$addItem = "";
+				foreach ($orden->ohptc as $producto){
+					
+		
+				  
+				  	$addItem .= "
+				  		ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+						  'id': '".$producto->preciotallacolor->sku."',                   // Product ID (string).
+						  'name': '".$producto->preciotallacolor->producto->nombre."', // Product name (string).
+						  'category': 'Apparel',            // Product category (string).
+						  'brand': '".$producto->preciotallacolor->producto->mymarca->nombre."',                // Product brand (string).
+						  'variant': '".$producto->preciotallacolor->mycolor->valor."',               // Product variant (string).
+						  'price': '".$producto->precio."',                 // Product price (currency).
+						 // 'coupon': 'APPARELSALE',          // Product coupon (string).
+						  'quantity': ".$producto->cantidad."                     // Product quantity (number).
+						});
+				  	";
+				  	
+				}
 				Yii::app()->clientScript->registerScript('metrica_analytics',"
-				 var _gaq = _gaq || [];
-  				_gaq.push(['_setAccount', 'UA-XXXXX-X']);
-  				_gaq.push(['_trackPageview']);
-  				_gaq.push(['_addTrans',
-    			'".$orden->id."',           // transaction ID - required
-    			'Personaling',  // affiliation or store name
-    			'".$orden->total."',          // total - required
-    			'".$orden->iva."',           // tax
-    			'".$orden->envio."',              // shipping
-    			'San Jose',       // city
-    			'California',     // state or province
-    			'USA'             // country
-  				]);
-				 _gaq.push(['_addItem',
-				    '1234',           // transaction ID - required
-				    'DD44',           // SKU/code - required
-				    'T-Shirt',        // product name
-				    'Green Medium',   // category or variation
-				    '11.99',          // unit price - required
-				    '1'               // quantity - required
-				  ]);
-				  _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
 				
-				  (function() {
-				    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-				  })();  
-				");		
+  				ga('ec:setAction', 'purchase', {
+				  'id': '".$orden->id."',
+				  'affiliation': 'Personaling',
+				  'revenue': '".$orden->total."',
+				  'tax': '".$orden->iva."',
+				  'shipping': '".$orden->envio."',
+				 // 'coupon': 'SUMMER2013'    // User added a coupon at checkout.
+				});
+  				
+  				
+ 
+				");	
+				// var _gaq = _gaq || [];
+				//_gaq.push(['_setAccount', 'UA-1015357-44']);
+  				//_gaq.push(['_trackPageview']);
+  				//(function() {
+				//    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				//    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				//    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+				//  })(); 	
             }
             $this->render('pedido',array(
                  'orden'=>$orden,
@@ -2365,11 +2381,7 @@ class BolsaController extends Controller
 					//Yii::app()->user->setFlash('error',UserModule::t("La contraseña es incorrecta")); 
 				}	
 			}else{
-                            $metric = new ShoppingMetric();
-                            $metric->user_id = Yii::app()->user->id;
-                            $metric->step = ShoppingMetric::STEP_LOGIN;
-                            $metric->tipo_compra = ShoppingMetric::TIPO_GIFTCARD;
-                            $metric->save();
+                            ShoppingMetric::registro(ShoppingMetric::STEP_LOGIN,array("tipo_compra"=>ShoppingMetric::TIPO_GIFTCARD));
                             // si no viene del formulario. O bien viene de la pagina anterior
                             $this->render('authGC',array('model'=>$model));
 			}
@@ -2781,7 +2793,7 @@ class BolsaController extends Controller
             $op = new AzPay ();
             
             if (isset($_GET['action']) && $_GET['action'] == "async") {
-
+				ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_RESPONSE,$_GET);
                 if ($op->validateResponseData ($_GET)) {
                     echo "ACK=true";                   
                 } else {
@@ -2806,7 +2818,7 @@ class BolsaController extends Controller
             $op = new AzPay();
             
             if ($op->validateResponseData($_GET)) {                                                       
-				ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_OK);
+				ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_OK,$_GET);
                 $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
                 
                 $cData = CJSON::decode($cData);
@@ -2826,7 +2838,7 @@ class BolsaController extends Controller
                 
                 $opResponse = "001";               
                 $mensaje = "Hubo un error con la plataforma de pago Aztive, intenta de nuevo";      
-                
+                ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_FAIL_RESPONSE,$_GET); 
                 $url = $this->createAbsoluteUrl('bolsa/error',
                         array(
                             'codigo'=>$opResponse,
@@ -2857,9 +2869,9 @@ class BolsaController extends Controller
             $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
             
             $op = new AzPay();
-
+			
             if ($op->validateResponseData($_GET)) {
-                
+            	ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_FAIL,$_GET);    
                 $mensaje = "Hubo un error realizando el pago, intenta de nuevo.";  
                 
                 $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
@@ -2886,6 +2898,7 @@ class BolsaController extends Controller
                 }else if($cData["src"] == 1) //si es de compra normal
                 {
                     
+                    ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_FAIL_RESPONSE,$_GET); 
                     $url = $this->createAbsoluteUrl('bolsa/error',
                         array(
                             'codigo'=>$opResponse,

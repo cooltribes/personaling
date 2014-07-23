@@ -174,7 +174,7 @@ $template = '{summary}
   <hr/>
    <div class="row">
    	<div class="margin_top pull-left">
-      <a href="<?php echo Yii::app()->baseUrl."/user/admin/reportexls" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a>
+      <a href="<?php echo Yii::app()->baseUrl."/user/admin/reportecsv" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a>
       <a href="<?php echo Yii::app()->baseUrl."/user/admin/usuariosZoho" ?>" title="Exportar Usuarios Zoho" class="btn btn-info">Exportar Usuarios Zoho</a>
     </div>
   <!--<div class="span3"><select class="span3">

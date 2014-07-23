@@ -32,7 +32,7 @@ class AdminController extends Controller
                                     'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
                                     'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
 
-                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento','balance','reporteXLS','usuariosZoho'),
+                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento','balance','reporteCSV','usuariosZoho'),
 
 
 								//'users'=>array('admin'),
@@ -323,32 +323,80 @@ class AdminController extends Controller
 	}
 	
 	 public function actionReporteCSV(){
-		ini_set('memory_limit','256M'); 
-
+		ini_set('memory_limit','256M');
 		$criteria=Yii::app()->session['userCriteria'];
 		$criteria->select = array('t.id');
 		$dataProvider = new CActiveDataProvider('User', array(
-                    'criteria' => $criteria,
-                    
-                ));
+                    'criteria' => $criteria, ));
                 
 		$pages=new CPagination($dataProvider->totalItemCount);
 		$pages->pageSize=$dataProvider->totalItemCount;
 		$dataProvider->setPagination($pages);
-			 $handle = fopen("file.txt", "w") or die("can't open file");;
-		    foreach($dataProvider->getData() as $data){
-		    	fwrite($handle, $data->profile->firstname.",".$data->profile->lastname.",".$data->username);
-			}
-		    fclose($handle);
 		
-		    header('Content-Type: application/octet-stream');
-		    header('Content-Disposition: attachment; filename='.basename('file.txt'));
-		    header('Expires: 0');
-		    header('Cache-Control: must-revalidate');
-		    header('Pragma: public');
-		    header('Content-Length: ' . filesize('file.txt'));
-		    readfile('file.txt');
-		    exit;
+		header( "Content-Type: text/csv;charset=utf-8" );
+		header('Content-Disposition: attachment; filename="Usuarios.csv"');
+		$fp = fopen('php://output', 'w');
+		
+		fputcsv($fp,array(' ID','Nombre', 'Apellido', 'Email', 'Ciudad', 'Ordenes Registradas',
+		 				'Direcciones Registradas', 'Saldo Disponible', 'Ingresos al portal', 
+		 				'Ultimo Ingreso', 'Fecha de Registro',
+		 				'Altura', 'Contextura', 'Color de cabello', 
+						'Color de ojos','Color de piel','Forma de cuerpo', 'Estilo Diario',
+						'Estilo Fiesta', 'Estilo Vacaciones', 'Estilo Deporte', 'Estilo Oficina'
+						, 'Género', 'Status', 'Perfil Corporal', 'Test Estilos'),";",'"');
+                        
+		foreach($dataProvider->getData() as $user){
+			$saldo=Yii::app()->numberFormatter->formatDecimal(Profile::model()->getSaldo($user->id));
+		 	if ($user->getLastvisit()) 
+		 		$lastVisit=date("d/m/Y",$user->getLastvisit()); 
+		 	else 
+		 		$lastVisit= 'N/D'; 
+    		if ($user->getCreatetime())
+    			$createdAt=date("d/m/Y",$user->getCreatetime()); 
+    		else 
+    			$createdAt='N/D'; 	
+				
+			//El utf8_decode sirve para imprimir correctamente los caracteres especiales com la Ñ y las tildes
+		        	
+			$vals=array($user->id,utf8_decode($user->profile->first_name), utf8_decode($user->profile->last_name), 
+						$user->email, utf8_decode($user->profile->ciudad), $user->ordenCount, $user->direccionCount, 
+						$saldo, $user->visit, $lastVisit, $createdAt);
+                   
+                        $rangos = array();
+                        
+                        $profileFields=$user->profile->getFields();
+                        if ($profileFields) {
+                            foreach($profileFields as $field) {
+                                if($field->id > 4 && $field->id < 16){
+                                    $rangos[] =  $field->range.";0==Ninguno";
+                                }
+                                if($field->id == 4){
+                                    $rangosSex = $field->range;
+                                }
+                                
+                            }
+                        }
+		        	array_push($vals,utf8_decode(Profile::range($rangos[0],$user->profile->altura)));
+                   	array_push($vals,utf8_decode(Profile::range($rangos[1],$user->profile->contextura)));
+                   	array_push($vals,utf8_decode(Profile::range($rangos[2],$user->profile->pelo)));
+                 	array_push($vals,utf8_decode(Profile::range($rangos[3],$user->profile->ojos)));
+                   	array_push($vals,utf8_decode(Profile::range($rangos[10],$user->profile->piel)));
+                   	array_push($vals,utf8_decode(Profile::range($rangos[4],$user->profile->tipo_cuerpo)));
+                 	array_push($vals,utf8_decode(Profile::range($rangos[5],$user->profile->coctel)));
+                   	array_push($vals,utf8_decode(Profile::range($rangos[6],$user->profile->fiesta)));
+                   	array_push($vals,utf8_decode(Profile::range($rangos[7],$user->profile->playa)));
+                   	array_push($vals,utf8_decode(Profile::range($rangos[8],$user->profile->sport)));
+                   	array_push($vals,utf8_decode(Profile::range($rangos[9],$user->profile->trabajo)));
+                   	array_push($vals,utf8_decode(Profile::range($rangosSex,$user->profile->sex)));
+					array_push($vals,utf8_decode($user->getStatus($user->status)));
+					array_push($vals,utf8_decode($user->profile->getCompletedProfile($user->id,false)));
+                   	array_push($vals,utf8_decode($user->profile->getStyleTest($user->id,false)));                    
+		    	 	fputcsv($fp,$vals,";",'"');
+		} 
+		
+		fclose($fp); 
+		ini_set('memory_limit','128M'); 
+		Yii::app()->end(); 
 	 }
 	
 	public function actionReporteXLS(){

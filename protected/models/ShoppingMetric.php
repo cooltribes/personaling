@@ -144,4 +144,44 @@ class ShoppingMetric extends CActiveRecord
             $metric->step = $step;
             $metric->save();
 	}
+	
+	public function getShow($field){
+		
+		switch ($field){
+            case 'REMOTE_ADDR':
+                return $this->REMOTE_ADDR; 
+                break;
+			case 'HTTP_X_FOWARDED_FOR':
+                return $this->HTTP_X_FOWARDED_FOR; 
+                break;
+			case 'HTTP_REFERER':
+                $http=trim($this->$field);
+                if(strpos($http, 'http://')!==false)
+                	$http=str_replace('http://', '',$http);
+				if(strpos($http, 'https://')!==false)
+                	$http=str_replace('https://', '',$http);
+				if(strpos($http, 'www.')!==false)
+                	$http=str_replace('www.', '',$http);
+				if(strpos($http, 'http://')!==false)
+                	$http=str_replace('http://', '',$http);
+				if(strpos($http, 'personaling.es')!==false)
+                	$http=str_replace('personaling.es', '..',$http);
+				if(strpos($http, '?')!==false){
+					$http=explode('?',$http);
+					$http=$http[0];
+				}
+				   
+				return $http; 
+	            break;
+			case 'HTTP_USER_AGENT':
+                $http=explode(' ',$this->$field);
+                                
+                return $http[0]; 
+                break;
+          
+            default: //5
+                return "No disponible";
+				break; 
+        }
+	}
 }

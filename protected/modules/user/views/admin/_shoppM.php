@@ -1,4 +1,4 @@
-<tr>	
+<tr style="display:table-row">	
     <td><?php 
     
         echo "<b>".$data->step.".-</b> ";
@@ -7,7 +7,7 @@
                 echo "Viendo el carrito"; 
                 break;
             case 1:
-                echo "Autenticación"; 
+                echo "Autenticación";  
                 break;
             case 2:
                 echo "Escogiendo dirección"; 
@@ -15,7 +15,7 @@
             case 3:
                 echo "Escogiendo método de pago"; 
                 break;
-            case 4:
+            case 4: 
                 echo "Confirmando la compra"; 
                 break;
             default: //5
@@ -25,5 +25,9 @@
     
     ?></td>
     <td><?php echo "<strong>".date("d/m/Y",strtotime($data->created_on)).
-            "    </strong> - ".date("H:i:s",strtotime($data->created_on))?></td>
+            "    </strong><br/>".date("H:i:s",strtotime($data->created_on))?></td>
+    <td title="<?php echo $data->REMOTE_ADDR;?>"><?php echo $data->getShow('REMOTE_ADDR'); ?></td>
+    <td title="<?php echo $data->HTTP_REFERER;?>" width="100"><?php echo $data->getShow('HTTP_REFERER'); ?></td>
+    <td title="<?php echo $data->HTTP_USER_AGENT;?>"><?php echo $data->getShow('HTTP_USER_AGENT'); ?></td>
+    <td><?php var_dump($data->data); ?></td>
 </tr>

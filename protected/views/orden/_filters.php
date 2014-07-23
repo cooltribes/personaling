@@ -10,8 +10,20 @@
     
 <?php
     //Métodos de pago
-    echo CHtml::dropDownList('metodosPago', '', array('1' => 'Depósito o Transferencia',
-    '2' => 'Tarjeta de Crédito', '4' => 'Mercado Pago'), array('style' => 'display:none'));
+    //España
+    if(Yii::app()->params["country"] == "España"){
+        
+        $tiposDePago = array(Detalle::TDC_AZTIVE => 'TDC Sabadell',
+        Detalle::USO_BALANCE => 'Uso de Balance', Detalle::PAYPAL_AZTIVE => 'PayPal',
+        Detalle::CUPON_DESCUENTO => 'Cupón de Descuento',
+            );
+        
+        
+    }else{
+        $tiposDePago = array('1' => 'Depósito o Transferencia',
+        '2' => 'Tarjeta de Crédito', '4' => 'Mercado Pago');
+    }
+    echo CHtml::dropDownList('metodosPago', '', $tiposDePago, array('style' => 'display:none'));
     
     echo Chtml::dropDownList('Operadores', '', array('>' => '>', '>=' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 

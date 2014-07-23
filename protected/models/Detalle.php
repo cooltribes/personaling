@@ -10,7 +10,8 @@
  * 4 - Banking Card (Aztive)
  * 5 - PayPal (Aztive)
  * 
- * -(En la pagina de selección de pago)-
+ 
+  -(En la pagina de selección de pago)-
      tipopago 1: transferencia
      tipopago 2: Tarjeta credito
      tipopago 3: puntos o tarjeta de regalo 

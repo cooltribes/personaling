@@ -1984,30 +1984,34 @@ class BolsaController extends Controller
 				$addItem = "";
 				foreach ($orden->ohptc as $producto){
 					
-					$addItem .= "_gaq.push(['_addItem',
-				    '".$orden->id."',           // transaction ID - required
-				    '".$producto->preciotallacolor->sku."',           // SKU/code - required
-				    '".$producto->preciotallacolor->producto->nombre."',        // product name
-				    'Green Medium',   // category or variation
-				    '".$producto->precio."',          // unit price - required
-				    '".$producto->cantidad."'               // quantity - required
-				  ]);";
+		
+				  
+				  	$addItem .= "
+				  		ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+						  'id': '".$producto->preciotallacolor->sku."',                   // Product ID (string).
+						  'name': '".$producto->preciotallacolor->producto->nombre."', // Product name (string).
+						  'category': 'Apparel',            // Product category (string).
+						  'brand': '".$producto->preciotallacolor->producto->mymarca->nombre."',                // Product brand (string).
+						  'variant': '".$producto->preciotallacolor->mycolor->valor."',               // Product variant (string).
+						  'price': '".$producto->precio."',                 // Product price (currency).
+						 // 'coupon': 'APPARELSALE',          // Product coupon (string).
+						  'quantity': ".$producto->cantidad."                     // Product quantity (number).
+						});
+				  	";
+				  	
 				}
 				Yii::app()->clientScript->registerScript('metrica_analytics',"
 				
+  				ga('ec:setAction', 'purchase', {
+				  'id': '".$orden->id."',
+				  'affiliation': 'Personaling',
+				  'revenue': '".$orden->total."',
+				  'tax': '".$orden->iva."',
+				  'shipping': '".$orden->envio."',
+				 // 'coupon': 'SUMMER2013'    // User added a coupon at checkout.
+				});
   				
-  				_gaq.push(['_addTrans',
-    			'".$orden->id."',           // transaction ID - required
-    			'Personaling',  // affiliation or store name
-    			'".$orden->total."',          // total - required
-    			'".$orden->iva."',           // tax
-    			'".$orden->direccionEnvio->dirUno."',              // shipping
-    			'".$orden->direccionEnvio->myciudad->nombre."',       // city
-    			'".$orden->direccionEnvio->provincia_id."',     // state or province
-    			'".$orden->direccionEnvio->pais."'             // country
-  				]);
-  				".$addItem."
-				  _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
+  				
  
 				");	
 				// var _gaq = _gaq || [];

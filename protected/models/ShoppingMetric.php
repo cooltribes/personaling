@@ -28,6 +28,11 @@ class ShoppingMetric extends CActiveRecord
 	const STEP_PEDIDO = 5;
 	const STEP_PAGO_OK = 6;
 	const STEP_PAGO_FAIL = 7; 
+	const STEP_PAGO_FAIL_RESPONSE = 8;
+	const STEP_PAGO_RESPONSE = 9;
+	const STEP_BOTON_PAGO = 10; 
+	
+		/*MOVIMIENTOS DEL USUARIO*/
     const USER_INICIO = 100;
 	const USER_TIENDA = 101;
 	const USER_LOOK = 102;    
@@ -130,8 +135,53 @@ class ShoppingMetric extends CActiveRecord
 	public function registro($step,$data=array()){
 			$metric = new ShoppingMetric();
             $metric->user_id = Yii::app()->user->id;
+			
+			if (empty($data['tipo_compra']))
+				$metric->tipo_compra = ShoppingMetric::TIPO_TIENDA;
+			else
+				$metric->tipo_compra = $data['tipo_compra'];
 			$metric->data = json_encode($data);
             $metric->step = $step;
             $metric->save();
+	}
+	
+	public function getShow($field){
+		
+		switch ($field){
+            case 'REMOTE_ADDR':
+                return $this->REMOTE_ADDR; 
+                break;
+			case 'HTTP_X_FOWARDED_FOR':
+                return $this->HTTP_X_FOWARDED_FOR; 
+                break;
+			case 'HTTP_REFERER':
+                $http=trim($this->$field);
+                if(strpos($http, 'http://')!==false)
+                	$http=str_replace('http://', '',$http);
+				if(strpos($http, 'https://')!==false)
+                	$http=str_replace('https://', '',$http);
+				if(strpos($http, 'www.')!==false)
+                	$http=str_replace('www.', '',$http);
+				if(strpos($http, 'http://')!==false)
+                	$http=str_replace('http://', '',$http);
+				if(strpos($http, 'personaling.es')!==false)
+                	$http=str_replace('personaling.es', '..',$http);
+				if(strpos($http, '?')!==false){
+					$http=explode('?',$http);
+					$http=$http[0];
+				}
+				   
+				return $http; 
+	            break;
+			case 'HTTP_USER_AGENT':
+                $http=explode(' ',$this->$field);
+                                
+                return $http[0]; 
+                break;
+          
+            default: //5
+                return "No disponible";
+				break; 
+        }
 	}
 }

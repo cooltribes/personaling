@@ -1557,7 +1557,7 @@ public function actionReportexls(){
 		}
 		if (count($model->preciotallacolor))
 			$tallacolor = CMap::mergeArray($tallacolor,$model->preciotallacolor);
-		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$tallacolor));	
+		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$tallacolor,'producto'=>$model));	
 		/*
 		$this->render('tallacolor',array(
 			'model'=>$model
@@ -1690,6 +1690,7 @@ public function actionReportexls(){
 									$precios = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->id));
 								
 									$zoho->descripcion = $model->descripcion;
+									if (isset($precios)){
 									$zoho->costo = $precios->costo;
 									$zoho->precioVenta = $precios->precioVenta;
 									$zoho->precioDescuento = $precios->precioDescuento;
@@ -1697,14 +1698,16 @@ public function actionReportexls(){
 									$zoho->precioImpuesto = $precios->precioImpuesto;
 									if($precios->tipoDescuento==0)
 										$zoho->porcentaje = $precios->valorTipo;
+									}
 									$zoho->talla = $tallacolor['talla'];
 									$zoho->color = $tallacolor['color'];
 									$zoho->SKU = $tallacolor['sku'];
 									$zoho->cantidad = $tallacolor['cantidad'];
-									$zoho->titulo = $model->seo->mTitulo;
-									$zoho->metaDescripcion = $model->seo->mDescripcion;
-									$zoho->tags = $model->seo->pClave;
-									
+									if (isset($model->seo)){
+										$zoho->titulo = $model->seo->mTitulo;
+										$zoho->metaDescripcion = $model->seo->mDescripcion;
+										$zoho->tags = $model->seo->pClave;
+									}
 									$zoho->save_potential();
 									/* ========================================== */
 									
@@ -2262,11 +2265,14 @@ public function actionReportexls(){
                             $rAlmacen = $row['P'];
                             
                             $anterior = $row;
-
+							
                             $producto = Producto::model()->findByAttributes(array('codigo' => $rRef));
                             //Crear detalle en la BD
                             $itemMasterdataRow = new ItemMasterdata();
                             
+                            // Para datos de Zoho
+							$zoho = New ZohoProductos;
+							
                             // la referencia existe, hay que actualizar los campos
                             $prodExiste = isset($producto);
                             
@@ -2284,7 +2290,18 @@ public function actionReportexls(){
                                     'almacen' => $rAlmacen,
                                     'status' => 1
                                 )); 
-                            } else
+								
+								/* DATOS PARA ZOHO */ 
+								$zoho->nombre = $rNombre." - ".$rSku;
+								$zoho->marca = $marca->nombre;
+								$zoho->referencia = $rRef;
+								if($producto->estado==0)
+									$zoho->estado = "TRUE";
+								$zoho->peso = $rPeso;
+								$zoho->fecha = date("Y-m-d",strtotime($producto->fecha));
+								$zoho->descripcion = $rDescrip;
+								
+                           	} else
                             { // no existe la referencia, es producto nuevo                           
                                 
                                 $producto = new Producto;
@@ -2298,7 +2315,16 @@ public function actionReportexls(){
                                 $producto->status = 1; // no está eliminado
                                 $producto->marca_id = $marca->id;
                                 $producto->save();  
-                                                                
+                                
+								/* DATOS PARA ZOHO */      
+								$zoho->nombre = $rNombre." - ".$rSku;
+								$zoho->marca = $marca->nombre;
+								$zoho->referencia = $rRef;
+								$zoho->estado = "FALSE";
+								$zoho->peso = $rPeso;
+								$zoho->fecha = date('Y-m-d H:i:s');
+								$zoho->descripcion = $rDescrip;
+									                            
                             }
                             // Si existe o no el producto, actualizar o insertar precio nuevo
                             $precio = Precio::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
@@ -2313,6 +2339,9 @@ public function actionReportexls(){
                             $precio->costo = $rCosto;
                             $precio->impuesto = 1;
                             
+							 /* DATOS PARA ZOHO */ 
+							$zoho->costo = $rCosto;
+							
                             //si es con iva
                             if(MasterData::TIPO_PRECIO == 1){
                                 
@@ -2320,16 +2349,25 @@ public function actionReportexls(){
                                 $precio->precioDescuento = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
                                 $precio->precioImpuesto = $rPrecio; 
                                 
+								/* DATOS PARA ZOHO */ 
+								$zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+								$zoho->precioDescuento = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+								$zoho->precioImpuesto = $rPrecio; 
+								
                             }else{ //si es sin iva
                                 
                                 $precio->precioVenta = $rPrecio;
                                 $precio->precioDescuento = $rPrecio;
-                                $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                                
+                                $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
+								
+								/* DATOS PARA ZOHO */ 
+								$zoho->precioVenta = $rPrecio;
+								$zoho->precioDescuento = $rPrecio;
+								$zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                          
                             }
-                            
-                            
+							
                             $precio->save();
-                            
+							
                             //Consultar las categorias
                             $categorias = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id' => $producto->id));
                             // borrar todas las categorias
@@ -2338,7 +2376,12 @@ public function actionReportexls(){
                                     $categoria->delete();
                                 }
                             }
-
+							/* DATOS PARA ZOHO */ 
+							$zoho->categoria = $rCatego1;
+							$zoho->subcategoria1 = $rCatego2;
+							$zoho->subcategoria2 = $rCatego3;
+							// Categorias para zoho
+				
                             $cat = new CategoriaHasProducto;
                             $cat2 = new CategoriaHasProducto;
                             $cat3 = new CategoriaHasProducto;
@@ -2372,6 +2415,13 @@ public function actionReportexls(){
                             $talla = Talla::model()->findByAttributes(array('valor' => $rTalla));
                             $color = Color::model()->findByAttributes(array('valor' => $rColor));
                             
+							/* DATOS PARA ZOHO */
+							$zoho->talla = $talla->valor;
+							$zoho->color = $color->valor;
+							$zoho->SKU = $rSku;
+							$zoho->cantidad = 0;
+							$zoho->tipo = "Interno";
+							
                             $ptc = Preciotallacolor::model()->findByAttributes(array(
                                             'producto_id' => $producto->id,
                                             'sku' => $rSku,
@@ -2424,7 +2474,15 @@ public function actionReportexls(){
                                 $seo->tbl_producto_id = $producto->id;
                                 $seo->save();
                             }
-                            
+                            /* DATOS PARA ZOHO */
+							$zoho->titulo = $seo->mTitulo;
+							$zoho->metaDescripcion = $seo->mDescripcion;
+							$zoho->tags = $seo->pClave;
+							/* SE GUARDAN LOS DATOS PARA ZOHO*/
+							$zoho->save_potential(); 
+							
+							/*  ========================================== */
+							
                             //Agregar el item al XML
                             $item = $masterData->addChild('Item');
                             
@@ -2669,10 +2727,19 @@ public function actionReportexls(){
                                 
                                 $actualizadosInbound++;
                                 
+								
+								/* ACTUALIZAR CANTIDADES EN ZOHO */
+								$rProducto = Producto::model()->findByPk($producto->producto_id);
+								
+								$zoho = New ZohoProductos;
+								$zoho->nombre = $rProducto->nombre." - ".$rSku;
+								$zoho->cantidad = $rCant;
+								$zoho->estado = "TRUE";
+								$zoho->save_potential();
                             }
                         }
                         $fila++;                        
-                    }
+                    } // foreach
                     
                     //Totales
                     $totalInbound = $fila - 2;

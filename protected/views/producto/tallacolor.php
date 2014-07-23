@@ -391,7 +391,7 @@ $this->breadcrumbs=array(
             <div id="fieldset_tallacolor">
 <?php 
 	if (count($model->preciotallacolor))
-		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$model->preciotallacolor)); 
+		$this->renderPartial('_view_tallacolor',array('tallacolor'=>$model->preciotallacolor,'producto'=>$model)); 
 ?></div>
           </fieldset>
         <!--

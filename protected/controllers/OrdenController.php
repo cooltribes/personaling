@@ -932,7 +932,7 @@ public function actionReportexls(){
 							        $message->addTo($user->email);
 									$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
 							        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
-							        //Yii::app()->mail->send($message);
+							        Yii::app()->mail->send($message);
 				if($devolucion->sendXML())
 					$lf="<br/>Devolución notificada a Logisfashion.";
 				
@@ -951,87 +951,7 @@ public function actionReportexls(){
     }
    
     public function actionDevoluciones(){
-    	
-		/*
-		if(isset($_POST['orden']) && isset($_POST['check']))
-		{
-			$checks = explode(',',$_POST['check']); // checks va a tener los id de preciotallacolor
-			$cont = 0; 
-			
-			foreach($checks as $uno)
-			{
-				$orden = Orden::model()->findByPk($_POST['orden']);
-				$ptcolor = Preciotallacolor::model()->findByAttributes(array('sku'=>$uno));
-				$ptc = OrdenHasProductotallacolor::model()->findByAttributes(array('tbl_orden_id'=>$_POST['orden'],'preciotallacolor_id'=>$ptcolor->id)); // para asignarle el id
-				
-				$devuelto = new Devolucion; 
-				
-				$devuelto->user_id = $orden->user_id;
-				$devuelto->orden_id = $orden->id;
-				$devuelto->preciotallacolor_id = $ptcolor->id;
-				$devuelto->motivo = $_POST['motivos'][$cont];
-				$devuelto->montodevuelto = $_POST['monto'];
-				$devuelto->montoenvio = $_POST['envio'];
-				
-				$devuelto->save();
-				
-				if($_POST['motivos'][$cont] != "Devolución por prenda dañada")
-				{
-					$ptcolor->cantidad ++; // devuelvo la prenda a inventario
-					$ptcolor->save();
-				}
-				
-				$ptc->devolucion_id = $devuelto->id;
-				$ptc->save();
-
-				$cont++;
-			}
-			
-			// devolviendo el saldo
-                        //tambien agregado el envio
-			
-			$balance = new Balance;
-			$balance->total = $_POST['monto'] + $_POST['envio'];
-			$balance->orden_id = $_POST['orden'];
-			$balance->user_id = $orden->user_id;
-			$balance->tipo = 4;
-			
-			$balance->save();
-			
-			// revisando si es una devolucion completa o parcial
-			$devueltos = count($_POST['motivos']);
-			$total = OrdenHasProductotallacolor::model()->countByAttributes(array('tbl_orden_id'=>$_POST['orden']));
-			
-			if($devueltos == $total){
-				$orden->estado = 9; // devuelto
-				
-				$estado = new Estado;
-				
-				$estado->estado = 9;
-				$estado->user_id = $orden->user_id;
-				$estado->fecha = date("Y-m-d");
-				$estado->orden_id = $orden->id;
-				
-				$estado->save();
-			}					
-			else if($devueltos < $total){
-				$orden->estado = 10; // parcialmente devuelto
-				
-				$estado = new Estado;
-				
-				$estado->estado = 10;
-				$estado->user_id = $orden->user_id;
-				$estado->fecha = date("Y-m-d");
-				$estado->orden_id = $orden->id;
-				
-				$estado->save();
-			}
-			
-			$orden->save();
-			
-			echo "ok";
-		}*/
-		
+    		
 		if(isset($_GET['id']))
 		{	
 			$orden = Orden::model()->findByPk($_GET['id']);

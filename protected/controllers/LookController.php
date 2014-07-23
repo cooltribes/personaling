@@ -116,7 +116,7 @@ class LookController extends Controller
 				'expression' => 'UserModule::isAdmin()',
 			),
 			array('allow', // acciones validas para el personal Shopper
-               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete'),
+               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete','listarLooks'),
                'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
@@ -1817,6 +1817,21 @@ public function actionCategorias(){
             ));
 
 	}
+
+	public function actionListarLooks(){
+		$criteria = new CDbCriteria;
+		$criteria->compare('user_id', Yii::app()->user->id, true);
+    	$looks = Look::model()->findAll($criteria); 
+    	$total = Look::model()->count($criteria);
+    	$pages = new CPagination($total);
+        $pages->pageSize = 9;
+        $pages->applyLimit($criteria);
+    	
+		$this->render('listar_looks', array(
+            'looks' => $looks,
+            'pages'=>$pages,
+        ));
+    }
 
 	protected function validarArchivo($archivo){
             

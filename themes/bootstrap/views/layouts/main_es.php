@@ -236,7 +236,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Looks', 'url'=>array('/tienda/look'),'visible'=>!UserModule::isPersonalShopper()),
                 // array('label'=>'Top', 'url'=>array('//site/top'),'visible'=>!Yii::app()->user->isGuest),
                 //array('label'=>'Tu personal Shopper', 'url'=>array('/site/personal'),'visible'=>Yii::app()->user->isGuest?false:!UserModule::isPersonalShopper()),
-                array('label'=>'Mis Looks', 'url'=>array('/look/mislooks'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
+                array('label'=>'Mis Looks', 'url'=>'#', 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper(), 'items'=>array(
+                    array('label'=>'Ver Looks', 'url'=>array('/look/listarLooks')),
+                    array('label'=>'Administrar Looks', 'url'=>array('/look/mislooks')),
+                )),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
                 //array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu')),

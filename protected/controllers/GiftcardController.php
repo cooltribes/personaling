@@ -1146,6 +1146,16 @@ class GiftcardController extends Controller
                 if($_POST["action"] == 1){
                     
                     if($_POST["fechaFinal"] != ""){
+                        
+                        if($_POST["idGC"] != ""){
+                            
+                            echo "<pre>";
+                            print_r($_POST);
+                            echo "</pre><br>";
+                            Yii::app()->end();
+
+                        }
+                        
 
                         $criteria = Yii::app()->getSession()->get("GCCriteria");
                         $fecha = date("Y-m-d", strtotime($_POST["fechaFinal"]));

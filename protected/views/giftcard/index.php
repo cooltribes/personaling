@@ -367,9 +367,9 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     ?>
     <fieldset>  
         <h4 class="datosGC hidden">
-            Editando tiempo de validez para la GiftCard
+            GiftCard
             <strong class="idG"></strong>
-            con monto 
+             - Monto:  
             <strong class="montoG"></strong>            
         </h4>
         <div class="control-group margin_top_medium">
@@ -414,15 +414,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     </fieldset>
 
 <?php $this->endWidget(); ?>
-
-    <div class="row-fluid">
-        <div class="span12 datosGC hidden">
-            Editando tiempo de validez para la GiftCard
-            <strong class="idG"></strong>
-            con monto 
-            <strong class="montoG"></strong>            
-        </div>
-    </div>
+    
 
 </div>
 <div class="modal-footer">
@@ -431,10 +423,6 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 <?php $this->endWidget() ?>
 <!--MODAL CAMBIO DE FECHAS OFF-->
-
-
-
-
 
 <!------------------- MODAL WINDOW ON ----------------->
 <?php $this->beginWidget("bootstrap.widgets.TbModal", array(
@@ -488,10 +476,12 @@ function actualizarNroGC(data){
 /*Para cambio de fecha individual*/    
   function editarFecha(id, monto){
       
-      
       $('.datosGC').removeClass("hidden")
-              .find(".idG").text("Nro " + id)
+              .find(".idG").text("Id " + id)
               .next().text(monto);
+      
+      $('input[name="idGC"]').val(id);
+      
 //      $('.datosGC .idG').text("Nro " + id);
       $('#modalFecha').modal();
   }

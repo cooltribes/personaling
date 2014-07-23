@@ -351,34 +351,43 @@ class BolsaController extends Controller
                                $codigo = CodigoDescuento::model()->findByAttributes(array("codigo"=>$_POST['textoCodigo']));
                                
                                //si es correcto
-                               if($codigo && $codigo->esValido()){
+                               if($codigo){
                                    
-                                   //si el cliente ya usó ese cupon
-                                   if(CuponHasOrden::clienteUsoCupon($codigo->id)){
+                                   if($codigo->esValido()){
 
-                                       Yii::app()->user->setFlash('error',Yii::t("contentForm",
-                                           "Ya has usado este cupón. Solo puedes usarlo una vez."));
-                                       $errores = true;
+                                       //si el cliente ya usó ese cupon
+                                       if(CuponHasOrden::clienteUsoCupon($codigo->id)){
 
-                                   }else{
-                                       
-                                        //si la compra cumple con el minimo para usar el cupon                                                                             
-                                       if($codigo->cumpleMinimo()){
-                                           
-                                           Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+                                           Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                               "Ya has usado este cupón. Solo puedes usarlo una vez."));
+                                           $errores = true;
 
                                        }else{
-                                           
-                                           Yii::app()->user->setFlash('error',Yii::t("contentForm",
-                                               "Para aplicar este cupón tu compra debe
-                                               tener un monto mínimo de <b>".$codigo->getMinimo()."</b>"));
-                                           $errores = true;
+
+                                            //si la compra cumple con el minimo para usar el cupon                                                                             
+                                           if($codigo->cumpleMinimo()){
+
+                                               Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+
+                                           }else{
+
+                                               Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                                   "Para aplicar este cupón tu compra debe
+                                                   tener un monto mínimo de <b>".$codigo->getMinimo()."</b>"));
+                                               $errores = true;
+                                           }
                                        }
-                                   }
+
+                                   }else{
+
+                                       Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                               "Este cupón ha caducado, ya no puedes usarlo."));
+                                       $errores = true;
+                                   }                                  
                                   
                                }else{
                                    Yii::app()->user->setFlash('error',Yii::t("contentForm",
-                                           "Has ingresado un código de descuento inválido"));
+                                           "Has ingresado un código de descuento inválido."));
                                    $errores = true;
                                }
                                

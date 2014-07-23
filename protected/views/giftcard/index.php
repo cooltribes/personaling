@@ -378,7 +378,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                 <div class="input-append" data-date-format="dd-mm-yyyy">
                    <?php
                     $this->widget("bootstrap.widgets.TbDatePicker", array(
-                        'name' => "fechaFinal",
+                        'name' => "fechaUnica",
                         'htmlOptions' => array(
                             'class' => "span2",
                             "required" => "required"

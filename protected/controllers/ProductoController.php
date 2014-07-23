@@ -1690,6 +1690,7 @@ public function actionReportexls(){
 									$precios = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->id));
 								
 									$zoho->descripcion = $model->descripcion;
+									if (isset($precios)){
 									$zoho->costo = $precios->costo;
 									$zoho->precioVenta = $precios->precioVenta;
 									$zoho->precioDescuento = $precios->precioDescuento;
@@ -1697,14 +1698,16 @@ public function actionReportexls(){
 									$zoho->precioImpuesto = $precios->precioImpuesto;
 									if($precios->tipoDescuento==0)
 										$zoho->porcentaje = $precios->valorTipo;
+									}
 									$zoho->talla = $tallacolor['talla'];
 									$zoho->color = $tallacolor['color'];
 									$zoho->SKU = $tallacolor['sku'];
 									$zoho->cantidad = $tallacolor['cantidad'];
-									$zoho->titulo = $model->seo->mTitulo;
-									$zoho->metaDescripcion = $model->seo->mDescripcion;
-									$zoho->tags = $model->seo->pClave;
-									
+									if (isset($model->seo)){
+										$zoho->titulo = $model->seo->mTitulo;
+										$zoho->metaDescripcion = $model->seo->mDescripcion;
+										$zoho->tags = $model->seo->pClave;
+									}
 									$zoho->save_potential();
 									/* ========================================== */
 									

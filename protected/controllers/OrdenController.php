@@ -33,7 +33,7 @@ class OrdenController extends Controller
                                     'generarExcelOut','devolver','adminDevoluciones',
                                     'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
                                     'AnularDevuelto','cantidadDevuelto','activarDevuelto',
-                                    'resolverOutbound','descargarReturnXML', 'eporteDetallado'),
+                                    'resolverOutbound','descargarReturnXML', 'reporteDetallado'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',

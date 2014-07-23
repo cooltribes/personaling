@@ -33,7 +33,7 @@ class OrdenController extends Controller
                                     'generarExcelOut','devolver','adminDevoluciones',
                                     'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
                                     'AnularDevuelto','cantidadDevuelto','activarDevuelto',
-                                    'resolverOutbound','descargarReturnXML', 'reporteRapido'),
+                                    'resolverOutbound','descargarReturnXML', 'reporteDetallado'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -2355,7 +2355,7 @@ public function actionValidar()
             
 	}
         
-        public function actionReporteRapido(){
+        public function actionReporteDetallado(){
             
             ini_set('memory_limit','256M'); 
             

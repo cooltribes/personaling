@@ -225,7 +225,7 @@ $template = '{summary}
 
   <hr/>
   <div class="row">
-    <div class="span3">
+<!--    <div class="span3">
       <select class="span3">
         <option>Acciones en lote</option>
         <option>Activar</option>
@@ -233,8 +233,13 @@ $template = '{summary}
         <option>Borrar usuarios</option>
       </select> 
     </div> 
-    <div class="span1"><a href="#" title="Procesar" class="btn btn-danger">Procesar</a></div>
-    <div class="span2"><a href="<?php echo Yii::app()->baseUrl."/orden/adminxls"?>" title="Exportar a excel" class="btn btn-block btn-info">Exportar a excel</a></div>
+    <div class="span1"><a href="#" title="Procesar" class="btn btn-danger">Procesar</a></div>-->
+    
+    
+    <div class="span2">
+        <a href="<?php echo Yii::app()->baseUrl."/orden/adminxls"?>" title="Exportar a excel"
+           class="btn btn-block btn-info">Exportar a excel</a>
+    </div>    
     
     <div class="span2"> 
 	<?php $this->widget('bootstrap.widgets.TbButton', array( 
@@ -247,7 +252,15 @@ $template = '{summary}
 	)); ?>    	
     </div>
     
-    <div class="span3"><a href="<?php echo Yii::app()->baseUrl."/orden/createexcel" ?>" title="Generar Guías Masivas para Zoom" class="btn btn-info">Generar Guías Masivas para Zoom</a></div>
+    <div class="span3">
+        <a href="<?php echo Yii::app()->baseUrl."/orden/createexcel" ?>" title="Generar Guías Masivas para Zoom" class="btn btn-info">Generar Guías Masivas para Zoom</a>
+    </div>
+    
+    <div class="span2">
+        <a href="<?php echo Yii::app()->baseUrl."/orden/reporteDetallado"?>" title="Exportar a excel" 
+           class="btn btn-danger">Reporte Detallado</a>
+    </div>
+
   </div>
 </div>
 <input id="hiddenMensaje" type="hidden">

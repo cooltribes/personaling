@@ -73,12 +73,6 @@ class GiftcardController extends Controller
 
 		if(isset($_POST['Giftcard']))
 		{                                        
-//                    echo "DAtos";
-//                    echo "<pre>";
-//                    print_r($_POST);
-//                    echo "</pre>";
-//
-//                    Yii::app()->end();  
                     
                     $model->attributes = $_POST['Giftcard'];
                     $model->estado = 1;
@@ -677,9 +671,9 @@ class GiftcardController extends Controller
             /*Guardar siempre el criteria en sesion para exportar*/            
             Yii::app()->getSession()->add("GCCriteria", $dataProvider->getCriteria());
 
-            $dataProvider->setPagination(array(
-                "pageSize" => 3,
-            ));
+//            $dataProvider->setPagination(array(
+//                "pageSize" => 3,
+//            ));
                 
             $this->render('index',array(
                     'dataProvider'=>$dataProvider,
@@ -1151,21 +1145,32 @@ class GiftcardController extends Controller
                     
                 if($_POST["action"] == 1){
                     
-                    if($_POST["fechaFinal"] != ""){
+                    if(isset($_POST["fechaFinal"]) && $_POST["fechaFinal"] != ""){
 
                         $criteria = Yii::app()->getSession()->get("GCCriteria");
                         $fecha = date("Y-m-d", strtotime($_POST["fechaFinal"]));
                         $vector = Giftcard::model()->findAll($criteria);
                         $actualizados = count($vector);
+                        
                         foreach ($vector as $giftcard)
                         {
                             $giftcard->fin_vigencia = $fecha;
                             $giftcard->save();
-                        }
-                            
+                        }                            
                         
                         Yii::app()->user->setFlash("success", "Se actualizaron <b>{$actualizados}</b> GiftCards");
 
+                    } else if(isset($_POST["fechaUnica"]) && $_POST["fechaUnica"] != ""){
+                        
+                        if(isset($_POST["idGC"]) && $_POST["idGC"] != ""){
+
+                            $fecha = date("Y-m-d", strtotime($_POST["fechaUnica"]));
+                            Giftcard::model()->updateByPk($_POST["idGC"], array(
+                                "fin_vigencia" => $fecha
+                            ));
+                            
+                        }
+                        
                     }else{
                         Yii::app()->user->setFlash("error", "Debes indicar la fecha de expiración.");
                     }                    

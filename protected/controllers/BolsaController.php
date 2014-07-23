@@ -351,34 +351,43 @@ class BolsaController extends Controller
                                $codigo = CodigoDescuento::model()->findByAttributes(array("codigo"=>$_POST['textoCodigo']));
                                
                                //si es correcto
-                               if($codigo && $codigo->esValido()){
+                               if($codigo){
                                    
-                                   //si el cliente ya usó ese cupon
-                                   if(CuponHasOrden::clienteUsoCupon($codigo->id)){
+                                   if($codigo->esValido()){
 
-                                       Yii::app()->user->setFlash('error',Yii::t("contentForm",
-                                           "Ya has usado este cupón. Solo puedes usarlo una vez."));
-                                       $errores = true;
+                                       //si el cliente ya usó ese cupon
+                                       if(CuponHasOrden::clienteUsoCupon($codigo->id)){
 
-                                   }else{
-                                       
-                                        //si la compra cumple con el minimo para usar el cupon                                                                             
-                                       if($codigo->cumpleMinimo()){
-                                           
-                                           Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+                                           Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                               "Ya has usado este cupón. Solo puedes usarlo una vez."));
+                                           $errores = true;
 
                                        }else{
-                                           
-                                           Yii::app()->user->setFlash('error',Yii::t("contentForm",
-                                               "Para aplicar este cupón tu compra debe
-                                               tener un monto mínimo de <b>".$codigo->getMinimo()."</b>"));
-                                           $errores = true;
+
+                                            //si la compra cumple con el minimo para usar el cupon                                                                             
+                                           if($codigo->cumpleMinimo()){
+
+                                               Yii::app()->getSession()->add('usarCupon', $codigo->id);                                   
+
+                                           }else{
+
+                                               Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                                   "Para aplicar este cupón tu compra debe
+                                                   tener un monto mínimo de <b>".$codigo->getMinimo()."</b>"));
+                                               $errores = true;
+                                           }
                                        }
-                                   }
+
+                                   }else{
+
+                                       Yii::app()->user->setFlash('error',Yii::t("contentForm",
+                                               "Este cupón ha caducado, ya no puedes usarlo."));
+                                       $errores = true;
+                                   }                                  
                                   
                                }else{
                                    Yii::app()->user->setFlash('error',Yii::t("contentForm",
-                                           "Has ingresado un código de descuento inválido"));
+                                           "Has ingresado un código de descuento inválido."));
                                    $errores = true;
                                }
                                
@@ -1984,30 +1993,34 @@ class BolsaController extends Controller
 				$addItem = "";
 				foreach ($orden->ohptc as $producto){
 					
-					$addItem .= "_gaq.push(['_addItem',
-				    '".$orden->id."',           // transaction ID - required
-				    '".$producto->preciotallacolor->sku."',           // SKU/code - required
-				    '".$producto->preciotallacolor->producto->nombre."',        // product name
-				    'Green Medium',   // category or variation
-				    '".$producto->precio."',          // unit price - required
-				    '".$producto->cantidad."'               // quantity - required
-				  ]);";
+		
+				  
+				  	$addItem .= "
+				  		ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+						  'id': '".$producto->preciotallacolor->sku."',                   // Product ID (string).
+						  'name': '".$producto->preciotallacolor->producto->nombre."', // Product name (string).
+						  'category': 'Apparel',            // Product category (string).
+						  'brand': '".$producto->preciotallacolor->producto->mymarca->nombre."',                // Product brand (string).
+						  'variant': '".$producto->preciotallacolor->mycolor->valor."',               // Product variant (string).
+						  'price': '".$producto->precio."',                 // Product price (currency).
+						 // 'coupon': 'APPARELSALE',          // Product coupon (string).
+						  'quantity': ".$producto->cantidad."                     // Product quantity (number).
+						});
+				  	";
+				  	
 				}
 				Yii::app()->clientScript->registerScript('metrica_analytics',"
 				
+  				ga('ec:setAction', 'purchase', {
+				  'id': '".$orden->id."',
+				  'affiliation': 'Personaling',
+				  'revenue': '".$orden->total."',
+				  'tax': '".$orden->iva."',
+				  'shipping': '".$orden->envio."',
+				 // 'coupon': 'SUMMER2013'    // User added a coupon at checkout.
+				});
   				
-  				_gaq.push(['_addTrans',
-    			'".$orden->id."',           // transaction ID - required
-    			'Personaling',  // affiliation or store name
-    			'".$orden->total."',          // total - required
-    			'".$orden->iva."',           // tax
-    			'".$orden->direccionEnvio->dirUno."',              // shipping
-    			'".$orden->direccionEnvio->myciudad->nombre."',       // city
-    			'".$orden->direccionEnvio->provincia_id."',     // state or province
-    			'".$orden->direccionEnvio->pais."'             // country
-  				]);
-  				".$addItem."
-				  _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
+  				
  
 				");	
 				// var _gaq = _gaq || [];

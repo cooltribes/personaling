@@ -240,7 +240,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 <div class="modal-body">
     <?php
     $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-        'id' => 'formCambiarComision',
+        'id' => 'formCambiarFecha',
         'action' => $this->createUrl("giftcard/cambiarFechas"),
         'htmlOptions' => array('enctype' => 'multipart/form-data'),
         'type' => 'horizontal',
@@ -333,6 +333,107 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 <!--MODAL CAMBIO DE FECHAS OFF-->
 
 
+<!--MODAL CAMBIO FECHA INDIVIDUAL-->
+<?php
+$this->beginWidget('bootstrap.widgets.TbModal', array(
+    'id' => 'modalFecha',
+        ), array(
+    'class' => 'modal fade hide',
+    'tabindex' => "-1",
+    'role' => "dialog",
+    'aria-labelledby' => "myModalLabel",
+    'aria-hidden' => "true",
+        
+))
+?>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3>Expiración de la GiftCard</h3>
+</div>
+
+<div class="modal-body">
+    <?php
+    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+        'id' => 'formFechaIndividual',
+        'action' => $this->createUrl("giftcard/cambiarFechas"),
+        'htmlOptions' => array('enctype' => 'multipart/form-data'),
+        'type' => 'horizontal',
+        'enableAjaxValidation' => true,
+        'clientOptions' => array(
+            'validateOnSubmit' => true,
+        ),
+    ));
+    ?>
+    <fieldset>  
+        <h4 class="datosGC hidden">
+            Editando tiempo de validez para la GiftCard
+            <strong class="idG"></strong>
+            con monto 
+            <strong class="montoG"></strong>            
+        </h4>
+        <div class="control-group margin_top_medium">
+            <label class="control-label">Fecha de expiración:</label>
+            <div class="controls">
+                <div class="input-append" data-date-format="dd-mm-yyyy">
+                   <?php
+                    $this->widget("bootstrap.widgets.TbDatePicker", array(
+                        'name' => "fechaFinal",
+                        'htmlOptions' => array(
+                            'class' => "span2",
+                            "required" => "required"
+                        ),
+                        'options' => array(
+                            'format' => 'dd-mm-yyyy',
+                            'language' => 'es',
+                            
+                        )
+                    ));
+                    ?>                     
+                    <span class="add-on"><icon class="icon-calendar"></icon></span>
+                </div>
+            </div>
+        </div> 
+        <div class="control-group">            
+            <div class="controls">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type' => 'danger',
+                    'buttonType' => 'submit',
+                    'label' => "Guardar cambios",
+                    'htmlOptions' => array(
+                        'id' => 'btnFechas',
+                        'name' => 'btnFechas',
+                    )
+                ));
+                ?>
+            </div>
+        </div>            
+        <?php echo CHtml::hiddenField("action", 1); ?>
+        <?php echo CHtml::hiddenField("idGC", ""); ?>
+    </fieldset>
+
+<?php $this->endWidget(); ?>
+
+    <div class="row-fluid">
+        <div class="span12 datosGC hidden">
+            Editando tiempo de validez para la GiftCard
+            <strong class="idG"></strong>
+            con monto 
+            <strong class="montoG"></strong>            
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    
+</div>                    
+
+<?php $this->endWidget() ?>
+<!--MODAL CAMBIO DE FECHAS OFF-->
+
+
+
 
 
 <!------------------- MODAL WINDOW ON ----------------->
@@ -384,8 +485,16 @@ function actualizarNroGC(data){
     });    
     
     
-/*Para la seleccion de fechas*/    
-  
+/*Para cambio de fecha individual*/    
+  function editarFecha(id, monto){
+      
+      
+      $('.datosGC').removeClass("hidden")
+              .find(".idG").text("Nro " + id)
+              .next().text(monto);
+//      $('.datosGC .idG').text("Nro " + id);
+      $('#modalFecha').modal();
+  }
     
     
     

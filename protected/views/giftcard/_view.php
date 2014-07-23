@@ -56,20 +56,26 @@
                         'onClick' => "ver({$data->id})",
                     )); ?>            
                 </li>
+                <li>
+                    <?php echo CHtml::link('<i class="icon-time">  </i>  Cambiar Validez', "#", array(
+//                        'data-toggle' => "modal",
+                        'onClick' => "editarFecha({$data->id}, \"{$data->monto} ".Yii::t('contentForm', 'currSym')."\")",
+                    )); ?>            
+                </li>
                 
-                    <?php if ($data->estado == 1) { ?>
-                        <li>
-                        <?php echo CHtml::link('<i class="icon-envelope">  </i>  Enviar', array("enviar", "id" => $data->id)); ?>
-                        </li>
-                    <?php }else if ($data->estado == 2) { ?>
-                        <li>
-                        <?php echo  CHtml::link("<i class='icon-ban-circle'></i> Desactivar",
-                                        $this->createUrl('index',array('id'=>$data->id)),
-                                        array(
-                                        'id'=>'linkDesactivar-'.$data->id)
-                                    ); ?>
-                        </li>
-                    <?php } ?>
+                <?php if ($data->estado == 1) { ?>
+                    <li>
+                    <?php echo CHtml::link('<i class="icon-envelope">  </i>  Enviar', array("enviar", "id" => $data->id)); ?>
+                    </li>
+                <?php }else if ($data->estado == 2) { ?>
+                    <li>
+                    <?php echo  CHtml::link("<i class='icon-ban-circle'></i> Desactivar",
+                                    $this->createUrl('index',array('id'=>$data->id)),
+                                    array(
+                                    'id'=>'linkDesactivar-'.$data->id)
+                                ); ?>
+                    </li>
+                <?php } ?>
                 
                 
                     

@@ -73,12 +73,6 @@ class GiftcardController extends Controller
 
 		if(isset($_POST['Giftcard']))
 		{                                        
-//                    echo "DAtos";
-//                    echo "<pre>";
-//                    print_r($_POST);
-//                    echo "</pre>";
-//
-//                    Yii::app()->end();  
                     
                     $model->attributes = $_POST['Giftcard'];
                     $model->estado = 1;
@@ -677,9 +671,9 @@ class GiftcardController extends Controller
             /*Guardar siempre el criteria en sesion para exportar*/            
             Yii::app()->getSession()->add("GCCriteria", $dataProvider->getCriteria());
 
-            $dataProvider->setPagination(array(
-                "pageSize" => 3,
-            ));
+//            $dataProvider->setPagination(array(
+//                "pageSize" => 3,
+//            ));
                 
             $this->render('index',array(
                     'dataProvider'=>$dataProvider,

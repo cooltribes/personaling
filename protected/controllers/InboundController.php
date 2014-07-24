@@ -181,6 +181,15 @@ class InboundController extends Controller
             foreach ($noConfirmados as $elemento){                
                 //$this->getInboundConf($elemento->id);            
             }
+			
+			
+			$returns = Retturn::model()->findAllByAttributes(array(),
+			array('cantidadConfirmation IS NULL'));
+            
+            //Revisar en el ftp por cada uno de ellos
+            foreach ($returns as $elemento){                
+                $elemento->getConfirmation($elemento->id);            
+            }
             
             
             //Buscar los outbounds que estan en espera de respuesta

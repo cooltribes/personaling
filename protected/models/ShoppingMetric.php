@@ -150,7 +150,7 @@ class ShoppingMetric extends CActiveRecord
 		switch ($field){
             case 'REMOTE_ADDR':
                 return $this->REMOTE_ADDR; 
-                break;
+                break; 
 			case 'HTTP_X_FOWARDED_FOR':
                 return $this->HTTP_X_FOWARDED_FOR; 
                 break;

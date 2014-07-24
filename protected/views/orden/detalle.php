@@ -636,6 +636,9 @@ $tracking=$orden->getTrackingInfo();
                                 echo("<td>".$prdlk->peso." Kg.</td>");	
                                 echo("<td>".$ptclk->cantidad."</td>"); // cantidad en existencia
                                 echo("<td>".$prodlook['cantidad']."</td>"); // cantidad en pedido
+                                echo("<td>".$prodlook['cantidadLF']."</td>"); // cantidad enviada por LF
+                                
+                                
                                 echo("<td>".$prdlk->almacen."</td>"); 
 
                                 echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td></tr>");

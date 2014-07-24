@@ -184,7 +184,7 @@ class InboundController extends Controller
 			
 			
 			$returns = Retturn::model()->findAllByAttributes(array(),
-			array('cantidadConfirmation IS NULL'));
+			array('condition'=>'estadoConfirmation IS NULL'));
             
             //Revisar en el ftp por cada uno de ellos
             foreach ($returns as $elemento){                

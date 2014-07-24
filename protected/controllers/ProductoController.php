@@ -26,7 +26,9 @@ class ProductoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle','tallas','tallaspreview','colorespreview','colores','imagenColor','updateCantidad','encantar'),
+				'actions'=>array('index','view','detalle','tallas','tallaspreview',
+                                    'colorespreview','colores','imagenColor','updateCantidad','encantar',
+                                    'contarClick'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1014,12 +1016,12 @@ public function actionReportexls(){
 			
 				if(($lk+$ord)>0)
 				{
-						Yii::app()->user->setFlash('error',UserModule::t("Combinación no puede ser eliminada ya que se encuentra en ".$ord." Ordenes y ".$lk." Looks."));				
+                                    Yii::app()->user->setFlash('error',UserModule::t("Combinación no puede ser eliminada ya que se encuentra en ".$ord." Ordenes y ".$lk." Looks."));				
 				}
 				else{
-					if($ptc->delete())
-						Yii::app()->user->setFlash('success',UserModule::t("Combinación de Talla y Color Eliminada"));
-				}
+                                    if($ptc->delete())
+                                        Yii::app()->user->setFlash('success',UserModule::t("Combinación de Talla y Color Eliminada"));
+                                }
 		}else{
 			Yii::app()->user->setFlash('error',UserModule::t("Combinación no pudo ser eliminada."));
 		}
@@ -1757,11 +1759,16 @@ public function actionReportexls(){
                 $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
             }
 
-            $contador = $producto->view_counter + 1;
+            //Sumar las vistas solo si no es admin
+            if(!UserModule::isAdmin()){
+                
+                $contador = $producto->view_counter + 1;
 
-            Producto::model()->updateByPk($producto->id, array(
-                'view_counter' => $contador
-            ));
+                Producto::model()->updateByPk($producto->id, array(
+                    'view_counter' => $contador
+                ));
+                
+            }
 
             if ($seo) {
                 $this->pageDesc = $seo->mDescripcion;
@@ -2956,6 +2963,7 @@ public function actionReportexls(){
             $erroresCosto = "";
             $erroresPrecio = "";
             $erroresColumnasVacias = "";
+            $erroresSku = "";
             
             $linea = 1;
             $lineaProducto = 0;            
@@ -3118,6 +3126,28 @@ public function actionReportexls(){
                         if ($cantCategorias < 2){
                             $erroresCatVacias .= "<li> Línea <b>" . $linea."</b></li>";
                         }
+                        
+                        //Referencias existentes                        
+                        if (isset($row['B']) && $row['B'] != "") {                        
+
+                            $producto = Producto::model()->findByAttributes(array("codigo" => $row["B"]));
+
+                            //si existe y es de personaling
+                            if (isset($producto) && $producto->tipo == 1) {                             
+
+                                $erroresSku .= "<li> REFERENCIA - <b>" .$row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }                        
+                        //SKU existentes                        
+                        if (isset($row['A']) && $row['A'] != "") {                        
+
+                            $combinacion = Preciotallacolor::model()->findByAttributes(array("sku" => $row["A"]));
+                            //si existe y es de personaling
+                            if (isset($combinacion) && $combinacion->producto->tipo == 1) {                             
+
+                                $erroresSku .= "<li> SKU - <b>" .$row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }
                     
                         //sumar solo si la linea tiene algo
                         //y si esta por encima de la fila 1 (header)
@@ -3183,11 +3213,18 @@ public function actionReportexls(){
                                  {$erroresPrecio}
                                  </ul><br>";
             }
+            
+            if($erroresSku != ""){
+                $erroresSku = "Los siguientes Productos ya existen en la plataforma como Catálogo Externo:<br><ul>
+                                 {$erroresSku}
+                                 </ul><br>";
+            }
 
                 
             $errores = $erroresTallas .$erroresColores . $erroresMarcas .
                     $erroresCatRepetidas. $erroresCategorias . $erroresCatVacias.
-                    $erroresPrecio . $erroresCosto . $erroresPeso . $erroresColumnasVacias;
+                    $erroresPrecio . $erroresCosto . $erroresPeso .
+                    $erroresColumnasVacias . $erroresSku;
             
             if($errores != ""){
                 
@@ -3315,7 +3352,8 @@ public function actionReportexls(){
                                  </ul><br>";
             }
             if($erroresSku != ""){
-                $erroresSku = "Los siguientes productos ya existen en la plataforma:<br><ul>
+                $erroresSku = "Los siguientes Productos ya existen en la plataforma
+                    como Catálogo Personaling:<br><ul>
                                  {$erroresSku}
                                  </ul><br>";
             }
@@ -4127,7 +4165,32 @@ public function actionReportexls(){
 
 	}
         
+        public function actionContarClick() {            
+            
+            //no contar nada si es admin
+            if(UserModule::isAdmin())
+                    return;
+            
+            $click = new ProductoClick();
+            $click->producto_id = $_POST["idProducto"];
+            
+            //si no esta logueado
+            if(Yii::app()->user->isGuest){                
+                $click->user_id = 1;      
+            }else{                
+                $click->user_id = Yii::app()->user->id;
+//                $click->user_id = 0;                
+            }
+            
+            $click->fecha = date("Y-m-d H:i:s");                
+            $click->save();  
+            
+            echo "<pre>";
+            print_r($click->getErrors());
+            echo "</pre><br>";
+
         
+        }
         
         
 }

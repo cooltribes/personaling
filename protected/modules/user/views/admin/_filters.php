@@ -175,6 +175,8 @@
                                 'sport' => 'Estilo Deporte', 
                                 'trabajo' => 'Estilo Oficina',                                 
                                 'sex' => 'Género',                                 
+                                'compras' => 'Compras hechas',                                 
+                                'prendas' => 'Prendas compradas',                                 
                                  );
                                  asort($opcionesFiltros);
                                  

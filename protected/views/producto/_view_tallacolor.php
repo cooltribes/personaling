@@ -91,15 +91,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	
 	function suprimir(id){
 		$.ajax({
-	        type: "post", 
+	        type: "POST", 
 	        url: "../suprimir", // action 
 	        data: { 'id':id}, 
 	        success: function (data) {
-				if(data=="ok")
-				{
-					alert(id);
-				}
-				location.reload();
+                    if(data=="ok")
+                    {
+                            //alert(id);
+                    }
+                    location.reload();
 	       	}//success
 	       })	
 	      

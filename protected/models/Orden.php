@@ -423,10 +423,6 @@ class Orden extends CActiveRecord
          * 
          */
         public function buscarPorFiltros($filters) {
-//            echo "<pre>";
-//            print_r($filters);
-//            echo "</pre>";
-            //Yii::app()->end();
 
             $criteria = new CDbCriteria;
             $joinPagos = '';
@@ -499,6 +495,53 @@ class Orden extends CActiveRecord
                     }  
                     
                     continue;
+                }
+                
+                //Para las finalizadas
+                if($column == 'estado'){
+                    
+                    if($value == 11){  
+                        if($comparator == "="){
+                            $criteria->addInCondition('t.'.$column, array(
+                                11, 12, 13
+                            ), $logicOp);                            
+                        }else{
+                            $criteria->addNotInCondition('t.'.$column, array(
+                                11, 12, 13
+                            ), $logicOp);                                                        
+                        }
+
+                        continue;
+                    }
+                    
+                    if($value == 9){  
+                        if($comparator == "="){
+                            $criteria->addInCondition('t.'.$column, array(
+                                9, 12
+                            ), $logicOp);                            
+                        }else{
+                            $criteria->addNotInCondition('t.'.$column, array(
+                                9, 12
+                            ), $logicOp);                                                        
+                        }
+                         
+                        continue;
+                    }
+                    
+                    if($value == 10){  
+                        if($comparator == "="){
+                            $criteria->addInCondition('t.'.$column, array(
+                                10, 13
+                            ), $logicOp);                            
+                        }else{
+                            $criteria->addNotInCondition('t.'.$column, array(
+                                10, 13
+                            ), $logicOp);                                                        
+                        }
+                         
+                        continue;
+                    }
+                   
                 }
                 
                 $criteria->compare('t.'.$column, $comparator." ".$value,

@@ -320,10 +320,14 @@
             <a title="Producto agotado" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> <?php echo Yii::t('contentForm','Sold out'); ?> </a>
             <?php
           }
-			}else{?>
-					 <a id="agregar" title="<?php echo $msj; ?> " target="_blank" class="btn btn-warning btn-block" href="<?php echo $producto->url_externo;?>"><i class="icon-shopping-cart icon-white"></i> <?php echo $msj; ?> </a>
-					
-		<?php	}
+            }else{?>                
+                <!--Comprar tienda externa-->
+                 <a id="comprarExterno" title="<?php echo $msj; ?> " target="_blank" 
+                    class="btn btn-warning btn-block" href="<?php echo $producto->url_externo;?>">
+                     <i class="icon-shopping-cart icon-white"></i> <?php echo $msj; ?>
+                 </a>
+
+        <?php	}
                 ?>
             </div>
             
@@ -1373,6 +1377,24 @@ $('.imagen_principal').zoom({url: imgZ});
       
       
     }
-   
+
+<?php if(!UserModule::isAdmin()){ ?>
+    //Guardar el click cuando sea para una tienda externa
+    $("#comprarExterno").click(function(e){
+        var url = "<?php echo $this->createUrl("producto/contarClick"); ?>";
+        var idProducto = <?php echo $producto->id ?>;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'JSON',
+            data: {idProducto: idProducto},
+            success: function(data){
+
+                console.log(data);
+            }
+        });
+
+    });
+<?php } ?>
    
 </script>

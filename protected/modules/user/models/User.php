@@ -25,8 +25,9 @@ class User extends CActiveRecord {
     
 
     //Vector de estados para dropdown
-    public static $statuses = array(self::STATUS_ACTIVE => 'Activo', self::STATUS_NOACTIVE => 'Inactivo', 
-        self::STATUS_BANNED => 'Bloqueado', self::STATUS_DELETED => 'Eliminado');
+    public static $statuses = array(self::STATUS_ACTIVE => 'Activo', 
+        self::STATUS_NOACTIVE => 'Inactivo', self::STATUS_BANNED => 'Bloqueado',
+        self::STATUS_DELETED => 'Eliminado');
 
     /**
      * The followings are the available columns in table 'users':

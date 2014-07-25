@@ -24,23 +24,24 @@ class AdminController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                    array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                        'actions'=>array('admin','delete','create','update',
+                            'view','corporal','estilos','pedidos','carrito',
+                            'direcciones','avatar', 'productos', 'looks','toggle_ps',
+                            'toggleDestacado', 'toggle_admin','resendvalidationemail',
+                            'toggle_banned','contrasena','saldo',
+                            'compra','compradir','comprapago','compraconfirm','modal',
+                            'credito','editardireccion',
+                            'eliminardireccion','comprafin','mensajes','displaymsj',
+                            'invitaciones','porcomprar','seguimiento','balance',
+                            'reporteCSV','usuariosZoho', 'suscritosNl'),                      
+                        
+                        'expression' => 'UserModule::isAdmin()',
 
-				'actions'=>array('admin','delete','create','update',
-                                    'view','corporal','estilos','pedidos','carrito',
-                                    'direcciones','avatar', 'productos', 'looks','toggle_ps',
-                                    'toggleDestacado', 'toggle_admin','resendvalidationemail','toggle_banned','contrasena','saldo',
-                                    'compra','compradir','comprapago','compraconfirm','modal','credito','editardireccion',
-
-                                    'eliminardireccion','comprafin','mensajes','displaymsj','invitaciones','porcomprar','seguimiento','balance','reporteCSV','usuariosZoho'),
-
-
-								//'users'=>array('admin'),
-				'expression' => 'UserModule::isAdmin()',
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
+                    ),
+                    array('deny',  // deny all users
+                            'users'=>array('*'),
+                    ),
 		);
 	}
 	/**
@@ -2389,6 +2390,84 @@ class AdminController extends Controller
 			
 		));
 	}
+        
+        public function actionSuscritosNl() {
+            
+            //Productos en el archivo
+            $total = 0;
+            //Productos modificados en precio
+            $modificados = 0;
+            
+            //si esta validando el archivo
+            if(isset($_POST["validar"]))
+            {   
+                
+            //si esta cargandolo ya
+            }
+            else if(isset($_POST["cargar"])){
+                
+                $archivo = CUploadedFile::getInstancesByName('carga');                    
+                $error = false;    
+                //Guardarlo en el servidor para luego abrirlo y revisar
+                if (isset($archivo) && count($archivo) > 0) {
+                    foreach ($archivo as $arc => $xls) {
+                        $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsPreciosProductos/' . "Archivo";
+                        $extension = '.' . $xls->extensionName;                     
+
+                        if (!$xls->saveAs($nombre . $extension)) {
+                         
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo. Intente de nuevo."));                            
+                            $error = true;
+                        }
+                    }
+                //si no subio nada    
+                }else{
+                    Yii::app()->user->updateSession();
+                    Yii::app()->user->setFlash('error', UserModule::t("Debe seleccionar un archivo."));                            
+                    $error = true;
+                }
+                
+                //si se pudo subir el archivo
+                if(!$error){
+                    
+                    $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre.$extension); 
+                    $inParams = array();
+                    foreach ($sheetArray as $row) {                        
+                        
+                        $inParams[] = $row["A"];  
+                        $total++;
+                    }
+
+                    $criteria = new CDbCriteria();
+                    $criteria->addInCondition("email", $inParams);
+                    
+//                    echo "<pre>";
+//                    print_r($criteria);
+//                    echo "</pre><br>";
+//                                        
+                    //actualizar la bd
+                    $modificados = User::model()->updateAll(array(
+                        "suscrito_nl" => 1,
+                    ),$criteria);
+
+                    Yii::app()->user->updateSession();
+                    Yii::app()->user->setFlash('success', 
+                    UserModule::t("Se ha cargado el archivo con éxito. Vea los detalles a continuación:"));                   
+                        
+                    echo "Totales: ".$total. "<br>";
+                    echo "Modificados: ".$modificados. "<br>";
+                    Yii::app()->end(); 
+                }
+            }
+            
+            
+            $this->render('suscritosNl', array(               
+                'total' => $total,
+                'modificados' => $modificados,                                
+            ));
+            
+        }
 
 
 

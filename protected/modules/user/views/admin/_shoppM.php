@@ -18,8 +18,14 @@
             case 4: 
                 echo "Confirmando la compra"; 
                 break;
-            default: //5 
+            case 5: 
                 echo "Viendo resumen del pedido"; 
+                break;
+            case 101: 
+                echo "Tienda de productos"; 
+                break;
+            default: //5 
+                echo "No definido"; 
         }
     
     

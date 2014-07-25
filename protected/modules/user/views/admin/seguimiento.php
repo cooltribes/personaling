@@ -47,26 +47,26 @@ $this->breadcrumbs = array(
 			    {pager}
 				';
                                             
-                                        $this->widget('zii.widgets.CListView', array(
-                                            'id' => 'email',
-                                            'dataProvider' => $movimientos,
-                                            'itemView' => '_shoppM',
-                                            'template' => $template,
-                                            'enableSorting' => 'true',
-                                            'afterAjaxUpdate' => " function(id, data) {
-										} ",
-                                            'pager' => array(
-                                                'header' => '',
-                                                'htmlOptions' => array(
-                                                    'class' => 'pagination pagination-right',
-                                                )
-                                            ),
-                                        ));
-                                        ?>
-                                    </div>
-                                    <div class="tab-pane" id="tab2">
-                                        <?php
-                                        $template = '{summary}
+                            $this->widget('zii.widgets.CListView', array(
+                                'id' => 'email',
+                                'dataProvider' => $movimientos,
+                                'itemView' => '_shoppM',
+                                'template' => $template,
+                                'enableSorting' => 'true',
+                                'afterAjaxUpdate' => " function(id, data) {
+                                                                    } ",
+                                'pager' => array(
+                                    'header' => '',
+                                    'htmlOptions' => array(
+                                        'class' => 'pagination pagination-right',
+                                    )
+                                ),
+                            ));
+                            ?>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <?php
+                            $template = '{summary}
 			  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="table table-bordered ta table-hover table-striped">
 			  <tbody>
 			    <tr>

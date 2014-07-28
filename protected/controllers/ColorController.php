@@ -27,7 +27,7 @@ class ColorController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','pruebazoho'),
+				'actions'=>array('index','view','pruebazoho','pruebazohoproducto'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -328,9 +328,96 @@ class ColorController extends Controller
 		$zoho = new ZohoSales;
 		$respuesta = $zoho->save_potential();
 		
-		var_dump($respuesta);
+	//	var_dump($respuesta);
 		 
 		//echo htmlspecialchars($zoho->Products(2));
+		
+	}
+	
+	public function actionPruebazohoproducto()
+	{
+		
+		$zoho = New ZohoProductos; 
+		
+		$tallacolor = Preciotallacolor::model()->findByPk(7);
+		$producto = Producto::model()->findByPk($tallacolor->producto_id);
+		$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+		
+		$zoho->nombre = $producto->nombre." - ".$tallacolor->sku;
+		$zoho->marca = $producto->mymarca->nombre;
+		$zoho->referencia = $producto->codigo;
+		
+		if($producto->estado==0)
+			$zoho->estado = "TRUE";
+		
+		$zoho->peso = $producto->peso;
+		$zoho->fecha = date("Y-m-d",strtotime($producto->fecha));
+		
+		$hascateg = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id));
+		$i=1;
+		foreach($hascateg as $each){
+			$cat = Categoria::model()->findByPk($each->tbl_categoria_id);	
+			
+			if($i==1)
+				$zoho->categoria = $cat->nombre;
+			if($i==2)
+				$zoho->subcategoria1 = $cat->nombre;
+			if($i==3)
+				$zoho->subcategoria2 = $cat->nombre;
+			
+			$i++;
+		}
+		
+		if($producto->tipo == 0)
+			$zoho->tipo = "Interno"; 
+		else{
+			$zoho->tienda = $producto->tienda->name;
+			$zoho->tipo = "Externo"; 
+			$zoho->url = $producto->url_externo;	
+		}	
+			
+		$zoho->descripcion = $producto->descripcion;
+		$zoho->costo = $precio->costo;
+		$zoho->precioVenta = $precio->precioVenta;
+		
+		if($precio->ahorro > 0){
+			$zoho->precioDescuento = $precio->precioDescuento;
+			$zoho->descuento = $precio->ahorro;
+		}
+		else{
+			$zoho->precioDescuento = $precio->precioImpuesto;
+			$zoho->descuento = 0;
+		}
+		$zoho->precioImpuesto = $precio->precioImpuesto;
+		
+		if($precio->tipoDescuento == 0) // descuento por porcentaje
+			$zoho->porcentaje = $precio->valorTipo;
+		else 	
+			$zoho->porcentaje = 0;
+		
+		$zoho->talla = $tallacolor->mytalla->valor;
+		$zoho->color = $tallacolor->mycolor->valor;
+		$zoho->SKU = $tallacolor->sku;
+		$zoho->cantidad = $tallacolor->cantidad;
+		
+		$zoho->titulo = $producto->seo->mTitulo;
+		$zoho->metaDescripcion = $producto->seo->mDescripcion;
+		$zoho->tags = $producto->seo->pClave;
+		
+		$respuesta = $zoho->save_potential();
+	
+		// var_dump($respuesta)."<br>";
+		echo htmlspecialchars($respuesta)."<p><p>";
+
+		$datos = simplexml_load_string($respuesta);
+		// var_dump($datos);
+
+		$id = $datos->result[0]->recorddetail->FL[0];
+		echo $id;	
+		
+		$tallacolor->zoho_id = $id;
+		if($tallacolor->save())
+			echo "<p>TODO BIEN GONORREA";
 		
 	}
 	

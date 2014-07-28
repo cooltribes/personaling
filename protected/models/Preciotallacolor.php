@@ -9,7 +9,7 @@
  * @property integer $producto_id
  * @property integer $talla_id
  * @property integer $color_id
- * 
+ * @property integer $zoho_id
  */
 class PrecioTallaColor extends CActiveRecord 
 {
@@ -48,7 +48,7 @@ class PrecioTallaColor extends CActiveRecord
 			array('url_externo', 'url', 'defaultScheme' => 'http', 'allowEmpty' => true, 'message' => 'Formato de url inválido'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, cantidad, producto_id, talla_id, color_id,sku,url_externo', 'safe', 'on'=>'search'),
+			array('id, cantidad, producto_id, talla_id, color_id, sku, url_externo, zoho_id', 'safe', 'on'=>'search'),
 		);
 	}
  
@@ -193,6 +193,7 @@ class PrecioTallaColor extends CActiveRecord
 		$criteria->compare('talla_id',$this->talla_id);
 		$criteria->compare('color_id',$this->color_id);
 		$criteria->compare('url_externo',$this->url_externo);
+		$criteria->compare('zoho_id',$this->zoho_id); 
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

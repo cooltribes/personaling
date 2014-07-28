@@ -121,7 +121,7 @@ class Orden extends CActiveRecord
 			// Please remove those attributes that should not be searched.
 			array('id, subtotal, descuento, fecha, envio, iva, descuentoRegalo,
                             total, estado, bolsa_id, user_id,   direccionEnvio_id, tracking,
-                            seguro, tipo_guia, peso, estadoLF', 'safe', 'on'=>'search'),
+                            seguro, tipo_guia, peso, estadoLF, zoho_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -181,7 +181,8 @@ class Orden extends CActiveRecord
 			'tracking' => 'Número de guía',
 			'seguro' => 'Seguro',
 			'tipo_guia' => 'Tipo de guía',
-			'peso' => 'Peso'
+			'peso' => 'Peso',
+			'zoho_id' => 'ID Zoho',
 		);
 	}
 
@@ -213,7 +214,8 @@ class Orden extends CActiveRecord
 		$criteria->compare('tracking',$this->tracking);
 		$criteria->compare('seguro',$this->seguro);
 		$criteria->compare('peso',$this->peso);
-		
+		$criteria->compare('zoho_id',$this->zoho_id);
+		 
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -243,6 +245,7 @@ class Orden extends CActiveRecord
 		$criteria->compare('direccionEnvio_id',$this->direccionEnvio_id);
 		$criteria->compare('tracking',$this->tracking);
 		$criteria->compare('seguro',$this->seguro);
+		$criteria->compare('zoho_id',$this->zoho_id);
 		
 		$criteria->addCondition('estado != 6');
                 $criteria->order = 'fecha DESC';

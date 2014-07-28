@@ -1583,7 +1583,7 @@ public function actionReportexls(){
 		//	$model = new Producto;
 		//}	
 		
-		if (isset($_POST['PrecioTallaColor'])){
+		if (isset($_POST['PrecioTallaColor'])){                    
 			$valid = true;
                         $logActualizar = array();
 			 foreach ( $_POST['PrecioTallaColor'] as $i => $tallacolor ) {

@@ -399,6 +399,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   				<?php echo $form->hiddenField($model,'piel'); ?>
   				<?php echo $form->error($model,'piel'); ?>
   				
+          <?php //echo CHtml::hiddenField('save_draft','0', array('id'=>'save_draft')); ?>
             </div>
           </div>
           </div>
@@ -407,16 +408,35 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <section class="well">
               <?php if ($model->status == Look::STATUS_CREADO || Yii::app()->user->isAdmin()){ ?>
               	<h4><strong>3.</strong> <?php echo Yii::t('contentForm','Finished, just press send');?>  </h4>
+                <div class="control-group">
+                  <?php echo CHtml::checkBox('save_draft',false,array('class'=>'select_todos', 'id'=>'save_draft'));  ?> Guardar borrador sin enviar
+                </div>
       
           <div class="row">
             <div class="pull-right"> 
             	<a href="#" title="Cancelar" data-dismiss="modal" class="btn btn-link"> <?php echo Yii::t('contentForm','Cancel');?> </a> 
+
+              <?php /*$this->widget('bootstrap.widgets.TbButton', array(
+                  'label'=>Yii::t('contentForm', 'Save draft'),
+                 // 'type'=>'danger',
+                  'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                    'size'=>'large', // null, 'large', 'small' or 'mini'
+                  'htmlOptions'=> array(
+                     // 'data-toggle'=>'modal',
+                  //  'data-target'=>'#dialogPublicar',
+                        'id'=>'button_save',
+                        //'onclick'=>"save_draft()"
+                       ),     
+              )); */?>
             	
             	<?php $this->widget('bootstrap.widgets.TbButton', array(
     				'buttonType'=>'submit',
     			    'label'=>Yii::app()->user->isAdmin()?Yii::t('contentForm','Approve'):Yii::t('contentForm','Send'),
     			    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
     			    'size'=>'large', // null, 'large', 'small' or 'mini'
+              'htmlOptions'=> array(
+                     'id'=>'button_send',
+              ),     
     			)); ?>
             </div> 
           </div>
@@ -429,7 +449,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
          <?php } ?>
         
      <?php $this->endWidget(); ?>
-      <!------------------- MODAL WINDOW OFF -----------------> 
+
       
     </section>
   </div>
@@ -512,8 +532,16 @@ $script = "
     		
 	 });
 	 
-	 
-	
+	 $('#save_draft').on('click', function(e) {
+    console.log('tal: '+$(this).is(':checked'));
+    if($(this).is(':checked')){
+      $('#button_send').html('Guardar borrador');
+    }else{
+      $('#button_send').html('Enviar');
+    }
+    
+    
+   });
 	 
 	 
 </script>

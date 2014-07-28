@@ -797,18 +797,28 @@ public function actionCategorias(){
 			if($model->url_amigable == "")
 				$model->url_amigable = NULL; 
 			
-			if (Yii::app()->user->isAdmin()){
-                            $model->status = Look::STATUS_APROBADO;
-                            $model->approved_on = date("Y-m-d H:i:s");
-                            
-                            if(!$model->sent_on){
-                                $model->sent_on = date("Y-m-d H:i:s");
-                            }
-                            
-                        }else{
-                            $model->status = Look::STATUS_ENVIADO;
-                            $model->sent_on = date("Y-m-d H:i:s");
-                        }	
+			if(isset($_POST['save_draft']) && $_POST['save_draft'] == 1){
+                        		$model->status = Look::STATUS_CREADO;
+                            	$model->sent_on = date("Y-m-d H:i:s");
+            }else{
+				if (Yii::app()->user->isAdmin()){
+	                $model->status = Look::STATUS_APROBADO;
+	                $model->approved_on = date("Y-m-d H:i:s");
+	                
+	                if(!$model->sent_on){
+	                    $model->sent_on = date("Y-m-d H:i:s");
+	                }
+	                
+
+	            }else{
+	            	$model->status = Look::STATUS_ENVIADO;
+	                $model->approved_on = date("Y-m-d H:i:s");
+	                
+	                if(!$model->sent_on){
+	                    $model->sent_on = date("Y-m-d H:i:s");
+	                }
+	            }
+            }
 			
 				
 			$model->edadMin=$_POST['Look']['edadMin'];
@@ -847,11 +857,16 @@ public function actionCategorias(){
                 else {
                     //$this->redirect(array('view','id'=>$model->id));
 				Yii::app()->user->updateSession();
-				if (Yii::app()->user->isAdmin())
-					Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha publicado."));
-				else 	
-					Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha enviado."));
-                }
+
+				if(isset($_POST['save_draft']) && $_POST['save_draft'] == 1){
+					Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha guardado."));
+				}else{
+					if (Yii::app()->user->isAdmin())
+						Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha publicado."));
+					else 	
+						Yii::app()->user->setFlash('success',UserModule::t("Tu look se ha enviado."));
+	                }
+	            }
             } 
 		}	
 		$model = Look::model()->findByPk($id);

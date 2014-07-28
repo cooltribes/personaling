@@ -15,7 +15,7 @@ $this->breadcrumbs = array(
             <div class="bg_color3   margin_bottom_small padding_small box_1">
                 <form method="post" action="" id="registration-form"   class="form-stacked form-horizontal" enctype="multipart/form-data">
                     <fieldset>
-                        <legend>Historial de movimientos en el proceso de compra</legend>
+                        <legend>Historial de movimientos</legend>
 
                         <div class=" margin_top">
                             <div class="">
@@ -82,24 +82,22 @@ $this->breadcrumbs = array(
 			    </table>
 			    {pager}
 				';
-                                            
-                                        $this->widget('zii.widgets.CListView', array(
-                                            'id' => 'email',
-                                            'dataProvider' => $movimientosGC,
-                                            'itemView' => '_shoppM',
-                                            'template' => $template,
-                                            'enableSorting' => 'true',
-                                            'afterAjaxUpdate' => " function(id, data) {
-										} ",
-                                            'pager' => array(
-                                                'header' => '',
-                                                'htmlOptions' => array(
-                                                    'class' => 'pagination pagination-right',
-                                                )
-                                            ),
-                                        ));
-                                        ?>
-
+                                $this->widget('zii.widgets.CListView', array(
+                                    'id' => 'email',
+                                    'dataProvider' => $movimientosGC,
+                                    'itemView' => '_shoppM',
+                                    'template' => $template,
+                                    'enableSorting' => 'true',
+                                    'afterAjaxUpdate' => " function(id, data) {
+                                                                        } ",
+                                    'pager' => array(
+                                        'header' => '',
+                                        'htmlOptions' => array(
+                                            'class' => 'pagination pagination-right',
+                                        )
+                                    ),
+                                ));
+                                ?>
                                     </div>
                                 </div>
                             </div>

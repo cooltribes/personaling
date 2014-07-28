@@ -15,10 +15,11 @@ echo"<tr>";
 		 $tal=explode('=',str_replace('"','',$tal[3]));
 		($tal[2]>25?$tal=$tal[2]-25:$tal=0);
 		 echo "<td>".$ima."</td>";
+		 
 	}
 	 		
 	else {
-		echo '<td><img src="http://placehold.it/100" align="Nombre de la marca"/> </td>';
+		echo '<td><img src="http://placehold.it/100" align="'.$data->name.'"/> </td>';
 		$tal=80;
 		
 	}

@@ -25,8 +25,9 @@ class User extends CActiveRecord {
     
 
     //Vector de estados para dropdown
-    public static $statuses = array(self::STATUS_ACTIVE => 'Activo', self::STATUS_NOACTIVE => 'Inactivo', 
-        self::STATUS_BANNED => 'Bloqueado', self::STATUS_DELETED => 'Eliminado');
+    public static $statuses = array(self::STATUS_ACTIVE => 'Activo', 
+        self::STATUS_NOACTIVE => 'Inactivo', self::STATUS_BANNED => 'Bloqueado',
+        self::STATUS_DELETED => 'Eliminado');
 
     /**
      * The followings are the available columns in table 'users':
@@ -333,10 +334,6 @@ class User extends CActiveRecord {
      * Buscar por todos los filtros dados en el array $filters
      */
     public function buscarPorFiltros($filters) {
-//        echo "<pre>";
-//        print_r($filters);
-//        echo "</pre>";
-//            Yii::app()->end();
 
         $criteria = new CDbCriteria;
 
@@ -586,7 +583,8 @@ class User extends CActiveRecord {
             }                       
 
             /*Looks vendidos por PS*/
-            if($column == 'looks_vendidos'){
+            if($column == 'looks_vendidos')
+            {
                 
             }
 
@@ -604,11 +602,45 @@ class User extends CActiveRecord {
                 continue;
             }
             
-            if ($column == 'lastvisit_at' || $column == 'create_at') {
+            if ($column == 'lastvisit_at' || $column == 'create_at')
+            {
                 $value = strtotime($value);
                 $value = date('Y-m-d H:i:s', $value);
             }
             
+            /*Compras realizadas*/
+            if($column == 'compras')
+            { 
+                
+                 $criteria->addCondition('(IFNULL(
+                     (
+                        (SELECT count(*) as total FROM tbl_orden WHERE user_id=user.id)                         
+                               
+                      ), 0))  '
+                     . $comparator . ' ' . $value . '', $logicOp);
+                        
+                continue;
+            }
+                    
+            /*Prendas compradas*/
+            if($column == 'prendas')
+            { 
+                
+                 $criteria->addCondition('(IFNULL(
+                     (
+                        (SELECT SUM(oh.cantidadActualizada)
+                         FROM tbl_orden_has_productotallacolor oh
+                         JOIN tbl_orden o ON o.id = oh.tbl_orden_id
+                         WHERE o.user_id=user.id)                         
+                               
+                      ), 0))  '
+                     . $comparator . ' ' . $value . '', $logicOp);
+                        
+                continue;
+            }
+            
+            
+            //Comparar normal
             $criteria->compare($column, $comparator . " " . $value, false, $logicOp);
         }
         

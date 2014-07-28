@@ -32,10 +32,11 @@ class ShoppingMetric extends CActiveRecord
 	const STEP_PAGO_RESPONSE = 9;
 	const STEP_BOTON_PAGO = 10; 
 	
-		/*MOVIMIENTOS DEL USUARIO*/
-    const USER_INICIO = 100;
+        /*MOVIMIENTOS DEL USUARIO*/
+        const USER_INICIO = 100;
 	const USER_TIENDA = 101;
 	const USER_LOOK = 102;    
+        
         /*TIPOS DE COMPRA*/
 	const TIPO_TIENDA = 0; 
 	const TIPO_GIFTCARD = 1; 
@@ -150,7 +151,7 @@ class ShoppingMetric extends CActiveRecord
 		switch ($field){
             case 'REMOTE_ADDR':
                 return $this->REMOTE_ADDR; 
-                break;
+                break; 
 			case 'HTTP_X_FOWARDED_FOR':
                 return $this->HTTP_X_FOWARDED_FOR; 
                 break;

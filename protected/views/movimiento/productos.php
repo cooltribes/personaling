@@ -189,7 +189,7 @@
 							'list-auth-items',
 							{
 							type: 'POST',	
-							url: '" . CController::createUrl('admin/compra/id/'.Yii::app()->session['usercompra']) . "',
+							url: 'productos',
 							data: ajaxRequest}
 							
 							)

@@ -2009,7 +2009,7 @@ class BolsaController extends Controller
 				  	";
 				  	
 				}
-				Yii::app()->clientScript->registerScript('metrica_analytics',"
+				Yii::app()->clientScript->registerScript('metrica_analytics',$addItem."
 				
   				ga('ec:setAction', 'purchase', {
 				  'id': '".$orden->id."',
@@ -2020,7 +2020,7 @@ class BolsaController extends Controller
 				 // 'coupon': 'SUMMER2013'    // User added a coupon at checkout.
 				});
   				
-  				
+  				ga('send', 'pageview'); 
  
 				");	
 				// var _gaq = _gaq || [];

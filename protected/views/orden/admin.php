@@ -170,14 +170,14 @@ $template = '{summary}
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
     <tr>
       <th scope="col"><input type="checkbox"></th>
-      <th scope="col">ID del pedido</th>
+      <th scope="col">ID</th>
       <th scope="col">Usuaria</th>
       <th scope="col">Fecha de Compra</th>
       <th scope="col">Looks</th>
       <th scope="col" title="Prendas Individuales">P. I.</th>
       <th scope="col" title="Prendas Totales">P. T.</th>
       <th scope="col">Monto ('.Yii::t('contentForm','currSym').')</th>
-      <th scope="col">Método de pago</th>
+      <th scope="col">Pagos ('.Yii::t('contentForm','currSym').')</th>
       <th scope="col">Estado</th>
       <th scope="col">Estado LF</th>
       <th scope="col">Acciones</th>
@@ -237,7 +237,7 @@ $template = '{summary}
     
     
     <div class="span2">
-        <a href="<?php echo Yii::app()->baseUrl."/orden/adminxls"?>" title="Exportar a excel"
+        <a href="<?php echo Yii::app()->baseUrl."/orden/admincsv"?>" title="Exportar a excel"
            class="btn btn-block btn-info">Exportar a excel</a>
     </div>    
     

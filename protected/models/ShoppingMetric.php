@@ -25,7 +25,10 @@ class ShoppingMetric extends CActiveRecord
 	const STEP_DIRECCIONES = 2; 
 	const STEP_PAGO = 3;
 	const STEP_CONFIRMAR = 4; 
-	const STEP_PEDIDO = 5;
+	const STEP_CONFIRMAR_BOTON = 41; 
+	
+        
+        const STEP_PEDIDO = 5;
 	const STEP_PAGO_OK = 6;
 	const STEP_PAGO_FAIL = 7; 
 	const STEP_PAGO_FAIL_RESPONSE = 8;
@@ -233,4 +236,22 @@ class ShoppingMetric extends CActiveRecord
             }
             
         }
+        
+        public function getData(){
+            
+            if(strlen($this->data) > 30){
+               return chunk_split($this->data, 30, "<br>"); 
+            }
+            
+            return $this->data;
+        }
+        public function getReferred(){
+            $ref = $this->getShow('HTTP_REFERER');
+            if(strlen($ref) > 30){
+               return chunk_split($ref, 30, "<br>"); 
+            }
+            
+            return $ref;
+        }
+        
 }

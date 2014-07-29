@@ -45,6 +45,7 @@ class User extends CActiveRecord {
      * @var timestamp $avatar_url
      * @var timestamp $banner_url
      * @var int $ps_destacado
+	 * @var integer $interno
      * */
 
     /**
@@ -156,6 +157,7 @@ class User extends CActiveRecord {
             'url' => "Alias",
             'zoho_id' => 'ID Zoho',
             'tipo_zoho' => 'Tipo Zoho',
+            'interno' => "Interno",
         );
     }
 
@@ -174,7 +176,7 @@ class User extends CActiveRecord {
                 'condition' => 'superuser=1',
             ),
             'notsafe' => array(
-                'select' => 'id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status, status_register,privacy,personal_shopper,twitter_id, facebook_id,avatar_url, banner_url, ps_destacado',
+                'select' => 'id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status, status_register,privacy,personal_shopper,twitter_id, facebook_id,avatar_url, banner_url, ps_destacado, interno',
             ),
         );
     }

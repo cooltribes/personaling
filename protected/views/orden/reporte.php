@@ -61,7 +61,8 @@
                     <th>Precio con IVA ('.Yii::t('contentForm','currSym').')</th>
                     <th><a class="color3 underline" href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Orden">Orden N°</a></th>
                     <th><a class="color3 underline" href="'.Yii::app()->baseUrl.'/orden/reporte?data_sort=Fecha">Vendido</a></th>
-                </tr>
+             
+                </tr> 
 			    </thead>
 			    <tbody>
 			    {items}

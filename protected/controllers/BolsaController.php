@@ -3077,6 +3077,12 @@ class BolsaController extends Controller
                     </script>
                     ";
             
+//            $this->renderPartial("pedido", array(
+//                 'orden'=>$orden,
+//                 'admin'=>"",
+//                 'user'=>$userId
+//            ));
+            
         }
         
         /**

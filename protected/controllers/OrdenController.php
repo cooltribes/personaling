@@ -29,7 +29,7 @@ class OrdenController extends Controller
 				'actions'=>array('index','cancel','admin','modalventas',
                                     'detalles','devoluciones','validar','enviar',
                                     'factura','calcularenvio','createexcel',
-                                    'importarmasivo','reporte','reportexls','adminxls',
+                                    'importarmasivo','reporte','reportexls','admincsv',
                                     'generarExcelOut','devolver','adminDevoluciones',
                                     'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
                                     'AnularDevuelto','cantidadDevuelto','activarDevuelto',
@@ -557,6 +557,63 @@ public function actionReportexls(){
 			Yii::app()->end();
 		
 	}
+
+
+
+
+
+	public function actionAdminCSV()
+	{  
+		ini_set('memory_limit','256M'); 
+
+		$criteria=Yii::app()->session['ordenCriteria'];
+		$criteria->select = array('t.id');
+		$dataProvider = new CActiveDataProvider('Orden', array(
+                    'criteria' => $criteria,
+                    
+        ));
+		$pages=new CPagination($dataProvider->totalItemCount);
+		$pages->pageSize=$dataProvider->totalItemCount;
+		$dataProvider->setPagination($pages);
+	
+		header( "Content-Type: text/csv;charset=utf-8" );
+		header('Content-Disposition: attachment; filename="Ordenes.csv"');
+		$fp = fopen('php://output', 'w');
+		
+		
+		fputcsv($fp,array(' ID', 'Usuaria', 'Fecha', 'Looks'
+		, 'Prendas Individuales', 'Total Prendas', utf8_decode('Monto ('.Yii::t('contentForm','currSym').')'), utf8_decode('Método de Pago'), 'Estado',
+		utf8_decode('Tarjeta de Crédito'),'Paypal','Balance',utf8_decode('Cupón de Descuento')),";",'"');
+						
+		
+		foreach($dataProvider->getData() as $data){
+				
+			$orden=Orden::model()->findByPk($data->id);
+			$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
+			$ohptc= new OrdenHasProductotallacolor;
+			$vals=array($data->id, $orden->user->username, date("d-m-Y H:i:s",strtotime($orden->fecha)) , $ohptc->countLooks($data->id)
+			, $ohptc->countIndividuales($data->id), $ohptc->countPrendasEnLooks($data->id), number_format($orden->total,2,',','.')
+			, utf8_decode($orden->getTiposPago('reporte')) , $orden->textestado,$orden->montoTipo(4),$orden->montoTipo(5),$orden->montoTipo(3),$orden->montoTipo(Detalle::CUPON_DESCUENTO));  
+			fputcsv($fp,$vals,";",'"');		
+		}
+		fclose($fp); 
+		ini_set('memory_limit','128M'); 
+		Yii::app()->end(); 
+	 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	   
         /**          
          * Obtiene el filtro con id $id          

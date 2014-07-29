@@ -42,7 +42,7 @@ class ProductoController extends Controller
                                     'tallacolor','addtallacolor','varias','categorias',
                                     'recatprod','seo', 'historial','importar','descuentos',
                                     'reporte','reportexls', "createExcel", 'plantillaDescuentos',
-                                    'importarPrecios', 'exportarExcel', 'outlet', 'precioEspecial',
+                                    'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
                                     'importarExternos'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -3859,7 +3859,29 @@ public function actionReportexls(){
             $objWriter->save('php://output');
             Yii::app()->end();
         }
-        
+
+	   public function actionExportarCSV(){
+            ini_set('memory_limit','256M'); 
+
+            $criteria = Yii::app()->getSession()->get("productosCriteria");
+            $arrayProductos = Producto::model()->findAll($criteria);
+            header( "Content-Type: text/csv;charset=utf-8" );
+			header('Content-Disposition: attachment; filename="Productos.csv"');
+			$fp = fopen('php://output', 'w');          
+       
+            fputcsv($fp,array('Producto', 'Referencia', 'Estado', 'URL'),";",'"');
+			
+			foreach ($arrayProductos as $producto) {
+                
+           		$vals=array( $producto->nombre, $producto->codigo, $producto->estado == 1 ? "Inactivo":"Activo" , CController::createAbsoluteUrl($producto->getUrlGeneral()));
+	            fputcsv($fp,$vals,";",'"');   
+            }
+
+            fclose($fp); 
+			ini_set('memory_limit','128M'); 
+			Yii::app()->end(); 
+        }
+  
         // importar desde excel
 	public function actionImportarExternos()
 	{

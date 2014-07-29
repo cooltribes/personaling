@@ -113,8 +113,14 @@ function getMonthsArray()
                               'class' => 'span2'));
                 //$form->textFieldRow($model,'status',array('class'=>'span5', 'value' => User::getStatus($model->status)));
                 //$form->dropDownListRow($model,'status', User::getStatus(),array('class'=>'span2')); 
-                                    ?> 
+                 	            ?> 
             </div></div>
+            <div class="control-group">
+            		
+            		 <?php  echo $form->dropDownListRow($model,'interno',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?>
+     
+            </div>
+            
           <legend >Datos básicos: </legend>
           <?php 
 		$profileFields=$profile->getFields();

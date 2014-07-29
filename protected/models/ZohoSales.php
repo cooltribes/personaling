@@ -27,7 +27,7 @@ class ZohoSales{
 	// Save user to potential clients list
 	function save_potential($orden){
 		
-		$orden = Orden::model()->findByPk($orden); 
+		//$orden = Orden::model()->findByPk($orden); 
 		
 		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= '<Invoices>';
@@ -146,6 +146,34 @@ $query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=1&id="
 		}
 		$xml2 .= '</FL>';
 		return $xml2;
+	}
+
+	function convertirLead($lead_id,$lead_mail){
+		
+		$xml = '
+			<Potentials>
+			<row no="1">
+			<option val="createPotential">false</option>
+			<option val="assignTo">'.$lead_mail.'</option>
+			<option val="notifyLeadOwner">false</option>
+			<option val="notifyNewEntityOwner">false</option>
+			</row>
+			</Potentials>';	
+			
+		$url ="https://crm.zoho.com/crm/private/xml/Leads/convertLead";
+		$query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&leadId=".$lead_id."&xmlData=".$xml;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+
+		//Execute cUrl session
+		$response = curl_exec($ch);
+		curl_close($ch);
+		return $response; 
 	}
 
 }

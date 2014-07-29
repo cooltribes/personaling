@@ -69,6 +69,11 @@ class RegistrationController extends Controller
                     //$profile->birthday = $profile->year .'-'. $profile->month .'-'. $profile->day;
                     //echo 'lore'.$profile->birthday;
 					$profile->ciudad=$_POST['Profile']['ciudad'];
+                    if(isset($_POST['Profile']['suscribir'])){
+                        if($_POST['Profile']['suscribir'] == 'suscribir'){
+                            $model->suscrito_nl = 1;
+                        }
+                    }
 					
 					
                     if ($model->validate() && $profile->validate()) {
@@ -161,7 +166,19 @@ class RegistrationController extends Controller
                             if($model->personal_shopper == 1){
                                 $zoho->ps = 'Si';
                             }
-                            $zoho->save_potential();
+                            //$zoho->save_potential();
+
+                            $result = $zoho->save_potential();
+
+                            $xml = simplexml_load_string($result);
+                            $id = (int)$xml->result[0]->recorddetail->FL[0];
+
+                            $model->zoho_id = $id;
+                            if($model->save()){
+                                //$success++;
+                            }else{
+                                //$error++;
+                            }
 
 
                             //if (Yii::app()->controller->module->sendActivationMail) {

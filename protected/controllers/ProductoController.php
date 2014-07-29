@@ -1697,7 +1697,7 @@ public function actionReportexls(){
 										$zoho->costo = $precios->costo;
 										$zoho->precioVenta = $precios->precioVenta;
 										
-										if($precios->ahorro > 0 != $precios->ahorro != NULL){
+										if($precios->ahorro > 0 || $precios->ahorro != NULL){
 											$zoho->precioDescuento = $precios->precioDescuento;
 											$zoho->descuento = $precios->ahorro;
 										}
@@ -1730,7 +1730,7 @@ public function actionReportexls(){
 									//echo $id;	
 									// guarda el id de zoho en el producto
 									$tallacolor->zoho_id = $id;
-									$tallacolor->save();
+									$tallacolor->save(); 
 									
 									/* ========================================== */
 									

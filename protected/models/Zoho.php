@@ -31,6 +31,8 @@ class Zoho{
 	public $estado;
 	public $codigo_postal;
 	public $pais;
+	public $status;
+	public $no_suscrito;
 	
 
 	// Save user to potential clients list
@@ -71,6 +73,9 @@ class Zoho{
 		if(isset($this->estado)) $xml .= '<FL val="State">'.$this->estado.'</FL>';
 		if(isset($this->codigo_postal)) $xml .= '<FL val="Zip Code">'.$this->codigo_postal.'</FL>';
 		if(isset($this->pais)) $xml .= '<FL val="Country">'.$this->pais.'</FL>';
+		if(isset($this->status)) $xml .= '<FL val="Lead Status">'.$this->status.'</FL>';
+		if(isset($this->no_suscrito)) $xml .= '<FL val="Email Opt-out">'.$this->no_suscrito.'</FL>';
+
 		$xml .= '</row>';
 		$xml .= '</Leads>';
 

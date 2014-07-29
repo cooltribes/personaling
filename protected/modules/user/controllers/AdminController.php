@@ -594,7 +594,7 @@ class AdminController extends Controller
 			Yii::app()->end();
 	}
 	
-	public function actionUsuariosZoho(){
+	/*public function actionUsuariosZoho(){
         ini_set('memory_limit','2048M'); 
 
         $criteria=Yii::app()->session['userCriteria'];
@@ -702,7 +702,7 @@ class AdminController extends Controller
             $objPHPExcel->getActiveSheet()->getStyle('Z1')->applyFromArray($title);*/
                         
         
-        $fila=2;
+        /*$fila=2;
         foreach($dataProvider->getData() as $data){
             $user=User::model()->findByPk($data->id);
             $saldo=Yii::app()->numberFormatter->formatDecimal(Profile::model()->getSaldo($data->id));
@@ -816,6 +816,126 @@ class AdminController extends Controller
             $objWriter->save('php://output');
             ini_set('memory_limit','128M'); 
             Yii::app()->end();
+        
+    }*/
+
+    public function actionUsuariosZoho(){
+
+        $criteria=Yii::app()->session['userCriteria'];
+        $criteria->select = array('t.id');
+        //$criteria->limit = '10';
+        $dataProvider = new CActiveDataProvider('User', array(
+                    'criteria' => $criteria,
+                    
+                ));
+                
+        $success = 0;
+        $error = 0;
+
+        foreach($dataProvider->getData() as $data){
+            $user=User::model()->findByPk($data->id);
+            $saldo=Yii::app()->numberFormatter->formatDecimal(Profile::model()->getSaldo($data->id));
+            if ($user->getLastvisit()) 
+                $lastVisit=date("d/m/Y",$user->getLastvisit()); 
+            else 
+                $lastVisit= 'N/D'; 
+            if ($user->getCreatetime())
+                $createdAt=date("d/m/Y",$user->getCreatetime()); 
+            else 
+                $createdAt='N/D'; 
+
+            $time = strtotime($user->profile->birthday);
+
+            $admin = 'No';
+            $ps = 'No';
+            $no_suscrito = true;
+
+            if($user->superuser == 1){
+                $admin = 'Si';
+            }
+            if($user->personal_shopper == 1){
+                $ps = 'Si';
+            }
+            if($user->suscrito_nl == 1){
+                $no_suscrito = false;
+            }
+
+            $direccion = Direccion::model()->findByAttributes(array('user_id'=>$user->id));
+
+            $rangos = array();
+            
+            $profileFields=$user->profile->getFields();
+            if ($profileFields) {
+                foreach($profileFields as $field) {
+                    if($field->id > 4 && $field->id < 16){
+                        $rangos[] =  $field->range.";0==Ninguno";
+                    }
+                    if($field->id == 4){
+                        $rangosSex = $field->range;
+                    }
+                    
+                }
+            }
+
+            $zoho = new Zoho();
+            $zoho->email = $user->email;
+            $zoho->first_name = $user->profile->first_name;
+            $zoho->last_name = $user->profile->last_name;
+            $zoho->birthday = date('d/m/Y', $time);
+            $zoho->sex = Profile::range($rangosSex,$user->profile->sex);
+            $zoho->bio = $user->profile->bio;
+            $zoho->dni = $user->profile->cedula;
+            $zoho->tlf_casa = $user->profile->tlf_casa;
+            $zoho->tlf_celular = $user->profile->tlf_celular;
+            $zoho->pinterest = $user->profile->pinterest;
+            $zoho->twitter = $user->profile->twitter;
+            $zoho->facebook = $user->profile->facebook;
+            $zoho->url = $user->profile->url;
+            $zoho->admin = $admin;
+            $zoho->ps = $ps;
+            $zoho->no_suscrito = $no_suscrito;
+            $zoho->altura = Profile::range($rangos[0],$user->profile->altura);
+            $zoho->condicion_fisica = Profile::range($rangos[1],$user->profile->contextura);
+            $zoho->color_piel = Profile::range($rangos[10],$user->profile->piel);
+            $zoho->color_cabello = Profile::range($rangos[2],$user->profile->pelo);
+            $zoho->color_ojos = Profile::range($rangos[3],$user->profile->ojos);
+            $zoho->tipo_cuerpo = Profile::range($rangos[4],$user->profile->tipo_cuerpo);
+            $zoho->diario = Profile::range($rangos[5],$user->profile->coctel);
+            $zoho->fiesta = Profile::range($rangos[6],$user->profile->fiesta);
+            $zoho->vacaciones = Profile::range($rangos[7],$user->profile->playa);
+            $zoho->deporte = Profile::range($rangos[8],$user->profile->sport);
+            $zoho->oficina = Profile::range($rangos[9],$user->profile->trabajo);
+            $zoho->status = $user->getStatus($user->status);
+            if($direccion){
+                $zoho->calle = $direccion->dirUno;
+                $zoho->ciudad = $direccion->ciudad->nombre;
+                $zoho->estado = $direccion->provincia->nombre;
+                $zoho->codigo_postal = $direccion->codigopostal->codigo;
+                $zoho->pais = $direccion->pais;
+            }
+
+            $result = $zoho->save_potential();
+
+            $xml = simplexml_load_string($result);
+            $id = (int)$xml->result[0]->recorddetail->FL[0];
+
+            $user->zoho_id = $id;
+            if($user->save()){
+                $success++;
+            }else{
+                $error++;
+            }
+    
+        }
+
+        $message = $success.' usuarios exportados';
+        if($error > 0){
+            $message .= '</br>'.$error.' usuarios NO exportados';
+        }
+
+        Yii::app()->user->updateSession();
+        Yii::app()->user->setFlash('success',$message);
+        $this->redirect(array('/user/admin'));
         
     }
 

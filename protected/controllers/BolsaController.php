@@ -2793,7 +2793,7 @@ class BolsaController extends Controller
             $op = new AzPay ();
             
             if (isset($_GET['action']) && $_GET['action'] == "async") {
-				ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_RESPONSE,$_GET);
+                ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_RESPONSE,$_GET);
                 if ($op->validateResponseData ($_GET)) {
                     echo "ACK=true";                   
                 } else {
@@ -2818,7 +2818,7 @@ class BolsaController extends Controller
             $op = new AzPay();
             
             if ($op->validateResponseData($_GET)) {                                                       
-				ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_OK,$_GET);
+                ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_OK,$_GET);
                 $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
                 
                 $cData = CJSON::decode($cData);
@@ -2834,7 +2834,8 @@ class BolsaController extends Controller
                 }
                   
 
-            } else {
+            } 
+            else {
                 
                 $opResponse = "001";               
                 $mensaje = "Hubo un error con la plataforma de pago Aztive, intenta de nuevo";      
@@ -2898,7 +2899,7 @@ class BolsaController extends Controller
                 }else if($cData["src"] == 1) //si es de compra normal
                 {
                     
-                    ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_FAIL_RESPONSE,$_GET); 
+                    
                     $url = $this->createAbsoluteUrl('bolsa/error',
                         array(
                             'codigo'=>$opResponse,
@@ -2914,7 +2915,7 @@ class BolsaController extends Controller
                               
 
             } else {
-                
+                ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_FAIL_RESPONSE,$_GET); 
                 $opResponse = "001";               
                 $mensaje = "Hubo un error con la plataforma de pago Aztive, intenta de nuevo";                
                 

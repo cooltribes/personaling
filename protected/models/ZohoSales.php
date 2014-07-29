@@ -22,13 +22,12 @@ class ZohoSales{
 	public $total;
 	public $Adjustments;
 	public $Discount;
-	public $TotalAfterDiscount;
+	public $TotalAfterDiscount; 
 	
 	// Save user to potential clients list
-	function save_potential(){
+	function save_potential($orden){
 		
-		$orden = Orden::model()->findByPk(66); 
-		$total = (double)$orden->total;
+		$orden = Orden::model()->findByPk($orden); 
 		
 		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= '<Invoices>';
@@ -53,15 +52,16 @@ class ZohoSales{
 		$xml .= '<FL val="Telefono Envio">'.$orden->direccionFacturacion->telefono.'</FL>';
 		$xml .= '<FL val="Sub Total">'.(double)$orden->subtotal.'</FL>';
 		$xml .= '<FL val="Tax">'.(double)$orden->iva.'</FL>';
-		if((double)$orden->descuento > 0)
+		if((double)$orden->descuento > 0) 
 			$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
 		
 			$xml .= $this->Products($orden->id); 
 		
-		$xml .= '<FL val="Grand Total"> 12.9 </FL>'; 
+		$xml .= '<FL val="Grand Total">'.(double)$orden->total.'</FL>'; 
 		$xml .= '</row>';
 		$xml .= '</Invoices>';
-		// echo htmlspecialchars($xml);
+		
+	//	echo htmlspecialchars($xml)."<p><p>";
 
 		$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 		$query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=1&duplicateCheck=2&xmlData=".$xml;
@@ -95,7 +95,7 @@ class ZohoSales{
 			
 			/*--------------*/
 			$url ="https://crm.zoho.com/crm/private/xml/Products/getRecordById";
-$query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=1&id=1135568000000100003&selectColumns=Products(Product Name,descuento,Precio Impuesto,Unit Price,Precio Descuento)";
+$query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=1&id=".$tallacolor->preciotallacolor->zoho_id."&selectColumns=Products(Product Name,descuento,Precio Impuesto,Unit Price,Precio Descuento)";
 			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
@@ -108,10 +108,10 @@ $query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=1&id=1
 			$response = curl_exec($ch);
 			curl_close($ch);
 		//	return $response; 
-			echo htmlspecialchars($response)."<p><p>";
+		//	echo htmlspecialchars($response)."<p><p>";
 			
 			$datos = simplexml_load_string($response);
-			var_dump($datos);
+		//	var_dump($datos);
 			
 			$id = $datos->result[0]->Products[0]->row->FL[0]; 
 			$nombre = $datos->result[0]->Products[0]->row->FL[1];
@@ -140,7 +140,6 @@ $query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=1&id=1
 			
 			$xml2 .= '<FL val="Tax">'.(double)$impt.'</FL>';
 			$xml2 .= '<FL val="Net Total">'.(double)$contax.'</FL>';
-			
 						
 			$i++;
 			$xml2 .= '</product>';

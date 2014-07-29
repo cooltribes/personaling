@@ -433,8 +433,21 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                 "height" => "100%",                        
                                 "width" => "65%",                        
                                 "autoScale" => false,                        
-                                "transitionIn" => "none",                        
-                                "transitionOut" => "none",                
+                                "transitionIn" => "none",
+                                "transitionOut" => "none",
+                                
+                                "titlePosition" => "outside",
+                                "titleFormat" => "NELSON",
+                                
+                                "hideOnOverlayClick" => false,
+                                "enableEscapeButton" => false,
+                                "showCloseButton" => true,
+                                "onCleanup" => 'js:function(){
+                                    var res = confirm("¿Esta seguro que desea cerrar?");
+                                    return res;
+                                }'
+                                
+                                //"modal" => true,
 
                                 ),
                             )

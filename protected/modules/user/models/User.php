@@ -83,7 +83,7 @@ class User extends CActiveRecord {
                     array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
                    array('username, email, superuser, status', 'required'),
                     array('superuser, status,status_register,privacy, twitter_id, facebook_id', 'numerical', 'integerOnly' => true),
-                    array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id, facebook_id, avatar_url, banner_url, ps_destacado', 'safe', 'on' => 'search'),
+                    array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id, facebook_id, avatar_url, banner_url, ps_destacado, zoho_id', 'safe', 'on' => 'search'),
                         ) : ((Yii::app()->user->id == $this->id) ? array(
                             array('username, email', 'required'),
                             array('password', 'length', 'max' => 128, 'min' => 4, 'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
@@ -155,7 +155,11 @@ class User extends CActiveRecord {
             'banner_url' => "Banner",
             'ps_destacado' => "Destacado",
             'url' => "Alias",
+
             'interno' => "Interno",
+
+            '<oho_id' => 'ID Zoho',
+
         );
     }
 
@@ -182,7 +186,7 @@ class User extends CActiveRecord {
     public function defaultScope() {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope, array(
                     'alias' => 'user',
-                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status,user.status_register, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, user.ps_destacado',
+                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status,user.status_register, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, user.ps_destacado, user.zoho_id',
         ));
     }
 
@@ -228,6 +232,7 @@ class User extends CActiveRecord {
         $criteria->compare('avatar_url', $this->avatar_url);
         $criteria->compare('banner_url', $this->banner_url);
         $criteria->compare('ps_destacado', $this->ps_destacado);
+		$criteria->compare('zoho_id', $this->zoho_id);		
 
         return new CActiveDataProvider(get_class($this), array(
             'criteria' => $criteria,

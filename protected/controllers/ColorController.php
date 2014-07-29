@@ -328,19 +328,23 @@ class ColorController extends Controller
 		$orden = Orden::model()->findByPk(66);
 		
 		$zoho = new ZohoSales;
-		$respuesta = $zoho->save_potential($orden);
+		$respuesta = $zoho->convertirLead(1135568000000166003, "cintasb25@gmail.com");
 
 		echo htmlspecialchars($respuesta)."<p><p>";
 
 		$datos = simplexml_load_string($respuesta);
-		// var_dump($datos);
-
+		var_dump($datos);
+		
+		$id = $datos->Contact;
+		echo $id;	
+		
+/*
 		$id = $datos->result[0]->recorddetail->FL[0];
 		echo $id;	
 		
 		$orden->zoho_id = $id;
 		if($orden->save())
-			echo "<p>TODO BIEN";
+			echo "<p>TOD BIEN";*/
 		
 	}
 	

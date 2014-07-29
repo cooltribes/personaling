@@ -23,8 +23,8 @@
                 </span>
             </td>
   <?php  }?>
-    <td title="<?php echo $data->HTTP_REFERER;?>" width="100"><?php echo $data->getShow('HTTP_REFERER'); ?></td>
+    <td title="<?php echo $data->HTTP_REFERER;?>" width="100"><?php echo $data->getReferred(); ?></td>
     
     <td title="<?php echo $data->HTTP_USER_AGENT;?>"><?php echo $data->getShow('HTTP_USER_AGENT'); ?></td>
-    <td><?php echo ($data->data); ?></td>
+    <td><?php echo $data->getData(); ?></td>
 </tr>

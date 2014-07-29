@@ -233,4 +233,22 @@ class ShoppingMetric extends CActiveRecord
             }
             
         }
+        
+        public function getData(){
+            
+            if(strlen($this->data) > 30){
+               return chunk_split($this->data, 30, "<br>"); 
+            }
+            
+            return $this->data;
+        }
+        public function getReferred(){
+            $ref = $this->getShow('HTTP_REFERER');
+            if(strlen($ref) > 30){
+               return chunk_split($ref, 30, "<br>"); 
+            }
+            
+            return $ref;
+        }
+        
 }

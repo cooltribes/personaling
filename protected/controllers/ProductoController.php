@@ -1583,7 +1583,7 @@ public function actionReportexls(){
 		//	$model = new Producto;
 		//}	
 		
-		if (isset($_POST['PrecioTallaColor'])){
+		if (isset($_POST['PrecioTallaColor'])){                    
 			$valid = true;
                         $logActualizar = array();
 			 foreach ( $_POST['PrecioTallaColor'] as $i => $tallacolor ) {
@@ -1685,22 +1685,34 @@ public function actionReportexls(){
 									if($model->tipo==0){
 										$zoho->tipo = "Interno";
 									}else{
-										$zoho->tipo = "Externa";
+										$zoho->tipo = "Externo";
 										$zoho->tienda = $model->tienda->name;
 									 	$zoho->url = $model->url_externo;
 									}
 									$precios = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->id));
-								
+									
 									$zoho->descripcion = $model->descripcion;
+									
 									if (isset($precios)){
-									$zoho->costo = $precios->costo;
-									$zoho->precioVenta = $precios->precioVenta;
-									$zoho->precioDescuento = $precios->precioDescuento;
-									$zoho->descuento = $precios->ahorro;
-									$zoho->precioImpuesto = $precios->precioImpuesto;
-									if($precios->tipoDescuento==0)
-										$zoho->porcentaje = $precios->valorTipo;
-									}
+										$zoho->costo = $precios->costo;
+										$zoho->precioVenta = $precios->precioVenta;
+										
+										if($precios->ahorro > 0 != $precios->ahorro != NULL){
+											$zoho->precioDescuento = $precios->precioDescuento;
+											$zoho->descuento = $precios->ahorro;
+										}
+										else{
+											$zoho->precioDescuento = $precios->precioImpuesto;
+											$zoho->descuento = 0;
+										}
+										$zoho->precioImpuesto = $precios->precioImpuesto;
+										
+										if($precios->tipoDescuento == 0) // descuento por porcentaje
+											$zoho->porcentaje = $precios->valorTipo;
+										else 	
+											$zoho->porcentaje = 0;
+									} 
+									
 									$zoho->talla = $tallacolor['talla'];
 									$zoho->color = $tallacolor['color'];
 									$zoho->SKU = $tallacolor['sku'];
@@ -1710,7 +1722,16 @@ public function actionReportexls(){
 										$zoho->metaDescripcion = $model->seo->mDescripcion;
 										$zoho->tags = $model->seo->pClave;
 									}
-									$zoho->save_potential();
+									$respuesta = $zoho->save_potential();
+									
+									$datos = simplexml_load_string($respuesta);
+																
+									$id = $datos->result[0]->recorddetail->FL[0];
+									//echo $id;	
+									// guarda el id de zoho en el producto
+									$tallacolor->zoho_id = $id;
+									$tallacolor->save();
+									
 									/* ========================================== */
 									
                                     //si este producto fue actualizado, guardar en el log

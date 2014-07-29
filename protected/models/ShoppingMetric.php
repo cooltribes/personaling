@@ -185,4 +185,52 @@ class ShoppingMetric extends CActiveRecord
 				break; 
         }
 	}
+        
+        public function getDescripcion(){
+            
+            switch ($this->step){
+                case 0:
+                    echo "[Compra] - Viendo el carrito"; 
+                    break;
+                case 1:
+                    echo "[Compra] - Autenticación";  
+                    break;
+                case 2:
+                    echo "[Compra] - Escogiendo dirección"; 
+                    break;
+                case 3:
+                    echo "[Compra] - Escogiendo método de pago"; 
+                    break;
+                case 4: 
+                    echo "[Compra] - Confirmando la compra"; 
+                    break;
+                case 5: 
+                    echo "[Compra] - Viendo resumen del pedido"; 
+                    break;
+                case 6: 
+                    echo "[Compra] - Respuesta OK de Aztive"; 
+                    break;
+                case 7: 
+                    echo "[Compra] - Respuesta K-O de Aztive (Hubo error)"; 
+                    break;
+                case 8: 
+                    echo "[Compra] - Respuesta Errada de Aztive"; 
+                    break;
+                case 9: 
+                    echo "[Compra] - Respuesta Notificación de Aztive"; 
+                    break;
+                case 100: 
+                    echo "Inició sesión"; 
+                    break;
+                case 101: 
+                    echo "Tienda de productos"; 
+                    break;
+                case 102: 
+                    echo "Tienda de Looks"; 
+                    break;
+                default: //5 
+                    echo "Acción no definida"; 
+            }
+            
+        }
 }

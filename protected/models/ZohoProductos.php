@@ -48,7 +48,7 @@ class ZohoProductos{
 		if(isset($this->descripcion)) $xml .= '<FL val="Description">'.$this->descripcion.'</FL>';
 		if(isset($this->costo)) $xml .= '<FL val="Costo">'.$this->costo.'</FL>'; 
 		if(isset($this->precioVenta)) $xml .= '<FL val="Unit Price">'.$this->precioVenta.'</FL>';
-		if(isset($this->precioDescuento)) $xml .= '<FL val="PrecioDescuento">'.$this->precioDescuento.'</FL>';
+		if(isset($this->precioDescuento)) $xml .= '<FL val="Precio Descuento">'.$this->precioDescuento.'</FL>';
 		if(isset($this->descuento)) $xml .= '<FL val="descuento">'.$this->descuento.'</FL>';
 		if(isset($this->precioImpuesto)) $xml .= '<FL val="Precio Impuesto">'.$this->precioImpuesto.'</FL>';
 		if(isset($this->ValorEnLook)) $xml .= '<FL val="Valor Venta en Look">'.$this->ValorEnLook.'</FL>';

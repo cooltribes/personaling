@@ -36,4 +36,5 @@ if($data['look']!=0){
     <td>".$data['Orden']."</td>
     <td>".date("d/m/Y",strtotime($data['Fecha']))."</td></tr>";
 
+
 ?>

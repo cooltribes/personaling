@@ -324,7 +324,7 @@ class AdminController extends Controller
 	}
 	
 	 public function actionReporteCSV(){
-		ini_set('memory_limit','256M');
+		ini_set('memory_limit','1024M');
 		$criteria=Yii::app()->session['userCriteria'];
 		$criteria->select = array('t.id');
 		$dataProvider = new CActiveDataProvider('User', array(
@@ -340,7 +340,7 @@ class AdminController extends Controller
 		
 		fputcsv($fp,array(' ID','Nombre', 'Apellido', 'Email', 'Ciudad', 'Ordenes Registradas',
 		 				'Direcciones Registradas', 'Saldo Disponible', 'Ingresos al portal', 
-		 				'Ultimo Ingreso', 'Fecha de Registro',
+		 				'Ultimo Ingreso', 'Fecha de Registro', 'Fecha de Nacimiento', 
 		 				'Altura', 'Contextura', 'Color de cabello', 
 						'Color de ojos','Color de piel','Forma de cuerpo', 'Estilo Diario',
 						'Estilo Fiesta', 'Estilo Vacaciones', 'Estilo Deporte', 'Estilo Oficina'
@@ -361,9 +361,9 @@ class AdminController extends Controller
 		        	
 			$vals=array($user->id,utf8_decode($user->profile->first_name), utf8_decode($user->profile->last_name), 
 						$user->email, utf8_decode($user->profile->ciudad), $user->ordenCount, $user->direccionCount, 
-						$saldo, $user->visit, $lastVisit, $createdAt);
+						$saldo, $user->visit, $lastVisit, $createdAt,date("d/m/Y",strtotime($user->profile->birthday)));
                    
-                        $rangos = array();
+                        $rangos = array(); 
                         
                         $profileFields=$user->profile->getFields();
                         if ($profileFields) {
@@ -1394,9 +1394,9 @@ class AdminController extends Controller
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionUpdate()
+	public function actionUpdate($id)
 	{
-		$model=$this->loadModel();
+		$model=User::model()->findByPk($id);
 		
 	
 			$profile=$model->profile;
@@ -1406,8 +1406,11 @@ class AdminController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
+			$model->interno=$_POST['User']['interno'];
 			$profile->attributes=$_POST['Profile'];
-			
+			$profile->ciudad=$_POST['Profile']['ciudad'];
+		
+		
 			if($model->validate()&&$profile->validate()) {
 				$old_password = User::model()->notsafe()->findByPk($model->id);
 				if ($old_password->password!=$model->password) {
@@ -1415,6 +1418,8 @@ class AdminController extends Controller
 					$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
 				}
 				$model->save();
+				
+					
 				$profile->save(); 
 
                 // update potential at zoho
@@ -1441,7 +1446,7 @@ class AdminController extends Controller
 				
 				Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
-			} else $profile->validate();
+			} else $profile->save();
 		}
                 
                 

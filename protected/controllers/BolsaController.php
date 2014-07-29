@@ -1575,7 +1575,36 @@ class BolsaController extends Controller
                                 
                                 $this->hacerCompra($bolsa->id,$orden->id);
                                 
-                                break;
+								/*===========================================*/
+								
+								$zoho = new ZohoSales;
+								
+								//transformando Lead a posible cliente.
+								if($user->tipo_zoho == 0){ 
+									$conv = $zoho->convertirLead($user->zoho_id, $user->email);
+									$datos = simplexml_load_string($respuesta);
+									
+									$id = $datos->Contact;
+									$user->zoho_id = $id;
+									$user->tipo_zoho = 1;
+									
+									$user->save(); 
+								}
+								
+								if($user->tipo_zoho == 1) // es ahora un contact
+								{
+									$respuesta = $zoho->save_potential($orden);
+								
+									$datos = simplexml_load_string($respuesta);
+								
+									$id = $datos->result[0]->recorddetail->FL[0];
+									//echo $id;	
+								
+									$orden->zoho_id = $id;
+									$orden->save(); 
+								}
+													
+                               break;
 			} //FIN SWITCH
 				// Generar factura
 			$factura = new Factura;
@@ -2997,6 +3026,35 @@ class BolsaController extends Controller
             $this->enviarEmail($orden, $usuario);  
             
             
+			/*===========================================*/
+								
+			$zoho = new ZohoSales;
+								
+			//transformando Lead a posible cliente.
+			if($usuario->tipo_zoho == 0){ 
+				$conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email);
+				$datos = simplexml_load_string($conv);
+									
+				$id = $datos->Contact;
+				$usuario->zoho_id = $id;
+				$usuario->tipo_zoho = 1;
+									
+				$usuario->save(); 
+			}
+								
+			if($usuario->tipo_zoho == 1) // es ahora un contact
+			{
+				$respuesta = $zoho->save_potential($orden);
+								
+				$datos = simplexml_load_string($respuesta);
+								
+				$id = $datos->result[0]->recorddetail->FL[0];
+				//echo $id;	 
+								
+				$orden->zoho_id = $id;
+				$orden->save(); 
+			}
+			
             /*Enviar correo OPERACIONES (operaciones@personaling.com*/
             /*Solo enviar correos cuando este en producccion o en test*/
             if(strpos(Yii::app()->baseUrl, "develop") === false){
@@ -3018,6 +3076,12 @@ class BolsaController extends Controller
                     window.top.location.href = '".$url."';
                     </script>
                     ";
+            
+//            $this->renderPartial("pedido", array(
+//                 'orden'=>$orden,
+//                 'admin'=>"",
+//                 'user'=>$userId
+//            ));
             
         }
         

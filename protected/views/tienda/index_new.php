@@ -17,9 +17,11 @@
     });
  
     </script>
+    
+    
+    
 
-
-
+ 
 
 <?php
 if(isset($seo)){
@@ -50,7 +52,7 @@ if(isset($seo)){
     </div>
   </div>   -->
 <!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  OFF-->
-
+<div id="deskfilters">
 <div id="banner100chic" style=" display:none; " class="margin_top ">
 	<div class="margin_bottom">
 		<img src="<?php echo Yii::app()->baseUrl; ?>/images/080banner.jpg" alt="Titina Penzini">
@@ -72,6 +74,7 @@ if(isset($seo)){
            	
            </div>
 </div><?php }?>
+
 <section class="bard_tienda">
 
 	 	<ul class="nav unstyled">
@@ -311,6 +314,13 @@ if(isset($seo)){
 		<a href="" class="btn btn-block" id="reset"><?php echo Yii::t('contentForm','Clean Filters');?></a>
 	</div>
 </div>
+</div>
+
+
+<div></div>
+
+
+
 <!-- BAR OFF -->
 <!-- PRODUCTOS ON -->
 

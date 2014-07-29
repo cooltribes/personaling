@@ -27,7 +27,7 @@
 	//--------------------
 	echo "<td>";
         
-          echo $data->getTiposPago();  
+          echo $data->getPagoMonto();  
        
 	echo "</td>";
 	

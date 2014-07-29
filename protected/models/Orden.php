@@ -827,6 +827,57 @@ class Orden extends CActiveRecord
         }
 		return $text;
 	}
+
+	public function getPagoMonto($continuo = null){
+		$text="";
+		$i=0;
+		if(count($this->detalles)){
+            foreach ($this->detalles as $detallePago){
+            	if($i>0){
+            		if(is_null($continuo)) 
+	            		$text.="<br/>";
+					else 
+	            		$text.=" / ";
+            	}
+            
+	            if($detallePago->tipo_pago==1)
+				 	$text.= "<b>Dep. o Transfer:</b> ".Yii::app()->numberFormatter->format("#,##0.00",$detallePago->monto); // metodo de pago
+	            else if($detallePago->tipo_pago==2)
+	                    $text.="<b>Tarjeta de Crédito:</b> ".Yii::app()->numberFormatter->format("#,##0.00",$detallePago->monto);
+	            else if($detallePago->tipo_pago==3)
+	                    $text.="<b>Uso de Balance:</b> ".Yii::app()->numberFormatter->format("#,##0.00",$detallePago->monto);	            
+	            else if($detallePago->tipo_pago==4)
+	                    $text.="<b>TPV Banco Sabadell:</b> ".Yii::app()->numberFormatter->format("#,##0.00",$detallePago->monto);
+	            else if($detallePago->tipo_pago==5)
+	                    $text.="<b>PayPal:</b> ".Yii::app()->numberFormatter->format("#,##0.00",$detallePago->monto);
+	            else if($detallePago->tipo_pago== Detalle::CUPON_DESCUENTO)
+	                    $text.="<b>Cupón de Descuento:</b> ".Yii::app()->numberFormatter->format("#,##0.00",$detallePago->monto);
+                    else if ($detallePago->tipo_pago == Detalle::PRUEBAS)
+                            $text.= "<b>Pago para pruebas:</b> ".Yii::app()->numberFormatter->format("#,##0.00",$detallePago->monto);
+	            else
+	                    $text.="ERROR EN EL PAGO";
+				$i++;
+            
+        }
+        }else{
+            $text.="Dep. o Transfer"; 
+        }
+		return $text;
+	}
+	
+	public function montoTipo($tipo){
+		
+           foreach ($this->detalles as $detallePago){
+            	           
+	            if($detallePago->tipo_pago==$tipo)
+					return Yii::app()->numberFormatter->format("#,##0.00",$detallePago->monto); // metodo de pago
+	                     
+        	}
+        
+		return Yii::app()->numberFormatter->format("#,##0.00",0);;
+	}
+	
+
 	
 	public function getShipCarrier($id=null){
 		if(is_null($id))

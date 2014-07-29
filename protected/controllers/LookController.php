@@ -111,7 +111,7 @@ class LookController extends Controller
 				'actions'=>array('admin','delete','create','categorias',
                                     'publicar','admin','detalle','edit','update','create',
                                     'publicar','marcas','mislooks','softdelete','descuento',
-                                    'calcularPrecioDescuento', 'exportarExcel', 'plantillaDescuentos', 'importarDescuentos'),
+                                    'calcularPrecioDescuento', 'exportarCSV', 'plantillaDescuentos', 'importarDescuentos'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -1591,6 +1591,34 @@ public function actionCategorias(){
         $objWriter->save('php://output');
         Yii::app()->end();
 	}
+
+	public function actionExportarCSV(){
+        
+        ini_set('memory_limit','256M'); 
+
+        $criteria = Yii::app()->getSession()->get("looksCriteria");
+        $arrayLooks = Look::model()->findAll($criteria);
+		header( "Content-Type: text/csv;charset=utf-8" );
+		header('Content-Disposition: attachment; filename="Looks.csv"');
+		$fp = fopen('php://output', 'w');
+        // creando el encabezado
+        fputcsv($fp,array(' ID', 'TITULO', 'NRO. ITEMS', 'PERSONAL SHOPPER', utf8_decode('PRECIO ('.Yii::t('contentForm', 'currSym').')')
+                , 'VENDIDOS', utf8_decode('VENTAS '.Yii::t('contentForm', 'currSym')), 'ESTADO', 'URL'),";",'"');
+ 
+        foreach ($arrayLooks as $look) {
+            //AGregar la fila al documento xls
+            $vals=array($look->id, utf8_decode($look->title), $look->countItems(), utf8_decode($look->user->profile->getNombre())
+			, $look->getPrecio(), $look->getLookxStatus(3), $look->getMontoVentas(), $look->getStatus()
+			, $this->createAbsoluteUrl('look/detalle',array('id'=>$look->id))) ;
+			fputcsv($fp,$vals,";",'"');
+           
+        }
+        
+       	fclose($fp); 
+		ini_set('memory_limit','128M'); 
+		Yii::app()->end();
+	}
+
         
    	public function actionPlantillaDescuentos(){
         
@@ -1666,6 +1694,14 @@ public function actionCategorias(){
         $objWriter->save('php://output');
         Yii::app()->end();
 	}
+
+
+
+
+	
+
+
+
 
 	// importar descuentos masivos desde excel
 	public function actionImportarDescuentos()

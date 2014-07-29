@@ -27,7 +27,7 @@ class ZohoSales{
 	// Save user to potential clients list
 	function save_potential($orden){
 		
-		$orden = Orden::model()->findByPk($orden); 
+		//$orden = Orden::model()->findByPk($orden); 
 		
 		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= '<Invoices>';

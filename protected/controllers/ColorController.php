@@ -323,14 +323,24 @@ class ColorController extends Controller
 		
 		$respuesta = $zoho->save_potential();
 		
-		echo $respuesta;*/ 
+		echo $respuesta;*/  
+		
+		$orden = Orden::model()->findByPk(66);
 		
 		$zoho = new ZohoSales;
-		$respuesta = $zoho->save_potential();
+		$respuesta = $zoho->save_potential($orden);
+
+		echo htmlspecialchars($respuesta)."<p><p>";
+
+		$datos = simplexml_load_string($respuesta);
+		// var_dump($datos);
+
+		$id = $datos->result[0]->recorddetail->FL[0];
+		echo $id;	
 		
-	//	var_dump($respuesta);
-		 
-		//echo htmlspecialchars($zoho->Products(2));
+		$orden->zoho_id = $id;
+		if($orden->save())
+			echo "<p>TODO BIEN";
 		
 	}
 	
@@ -417,7 +427,7 @@ class ColorController extends Controller
 		
 		$tallacolor->zoho_id = $id;
 		if($tallacolor->save())
-			echo "<p>TODO BIEN GONORREA";
+			echo "<p>TODO BIEN";
 		
 	}
 	

@@ -179,7 +179,7 @@ $this->breadcrumbs=array(
 		<?php 	
 			$return=Retturn::model()->findByAttributes(array('devolucion_id'=>$devolucion->id));
 			echo '<table id="myTable" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">';
-			echo '<tr><td colspan="2">Albaran: '.$return->devolucion_id.'</td></tr>';
+			echo '<tr><td>Albaran: '.$return->devolucion_id.'</td><td>ID: '.$return->id.'</td></tr>';
 			echo '<tr><td colspan="2">Fecha Albaran: '.$return->devolucion->fecha.'</td></tr>';
 			echo '<tr><td colspan="2">Motivo: '.$return->motivo.'</td></tr>';
 			echo '<tr><td align="center" colspan="2">ITEMS</td></tr>';

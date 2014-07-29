@@ -102,8 +102,9 @@ class Retturn extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-	function getConfirmation($id){
-       
+	function getConfirmation(){
+       		$id=$this->devolucion_id;
+			$return=$this;
             $enProduccion = strpos(Yii::app()->baseUrl, "develop") == false 
                 && strpos(Yii::app()->baseUrl, "test") == false;
             
@@ -137,29 +138,27 @@ class Retturn extends CActiveRecord
             //ubicarse en el directorio y obtener un listado
             ftp_chdir($conexion, $directorio);  
             $listado = ftp_nlist($conexion, "");
-            $nombreArchivo =  $tipoArchivo.$id;
+            $nombreArchivo =  $tipoArchivo.$id.'.xml';
 
             $encontrado = false;
+
             foreach ($listado as $arch){
-                
-                //Si ya ha sido cargado el inbound                
+            	
+             	
                 if(strpos($arch, $nombreArchivo) !== false){
-                	                                     
-                    //Descargar el archivo
-                    if(ftp_get($conexion, $rutaArchivo.$arch, $arch, FTP_BINARY)){
-                       
-                    }            
-                    
-                    
+                	
+                     
                     $xml = simplexml_load_file($rutaArchivo.$arch);   
                     $conDiscrepancias = false;                    
-        
+        			
+					
+					
                     foreach ($xml as $elemento){
                         if($elemento->getName() == "FechaEstado"){
-                        	$fecha=$elemento;
-                        }	
+                        	$return->fechaEstado=$elemento;
+						}						
 						if($elemento->getName() == "Estado"){
-                        	$status=$elemento;
+                        	$return->estadoConfirmation=$elemento;
                         }	
                         
                         if($elemento->getName() == "Item"){
@@ -167,38 +166,45 @@ class Retturn extends CActiveRecord
 					
                             //Consultar en BD
                             $item = ItemReturn::model()->findByAttributes(array(
-                                        "return_id"=>$id,
+                                        "return_id"=>$return->id,
                                         "sku"=>$elemento->EAN
                                         ));
                             //Guardar lo que viene en el XML
+                            if($item){
                             $item->cantidadConfirmation = $elemento->Cantidad;
                             $item->save();
                             if($item->cantidadConfirmation != $item->cantidad){
                                 $conDiscrepancias = true; //para marcar el inbound completo
-                             }                        
+                             }
+							}
+							                        
                     }
                     
                     //Marcar return con estado
                     
                 }
-            }
-            // cerrar la conexión ftp 
-            
-            
-        }
-
-	$return= Retturn::model()->findByPk($id);
-			                    $return->fechaEstado=$fecha;
-								 $return->estadoConfirmation=$status;
-			                    if($conDiscrepancias){
+				
+				if($conDiscrepancias){
 			                        $return->estado = 3;
 			                    }else{
 			                        $return->estado = 2;                        
 			                    }
 			                    $return->save();
+
+
+            }
+			
+            // cerrar la conexión ftp 
+            
+            
+        }
+	
+			             
+							
+			                    
 			                    
 	ftp_close($conexion);
-	return true;
+
 	
 } 
 }

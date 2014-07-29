@@ -436,16 +436,16 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                 "transitionIn" => "none",
                                 "transitionOut" => "none",
                                 
-                                "titlePosition" => "outside",
-                                "titleFormat" => "NELSON",
+//                                "titlePosition" => "outside",
+//                                "titleFormat" => "NELSON",
                                 
                                 "hideOnOverlayClick" => false,
                                 "enableEscapeButton" => false,
-                                "showCloseButton" => true,
-                                "onCleanup" => 'js:function(){
-                                    var res = confirm("¿Esta seguro que desea cerrar?");
-                                    return res;
-                                }'
+                                "showCloseButton" => false,
+//                                "onCleanup" => 'js:function(){
+//                                    var res = confirm("¿Esta seguro que desea cerrar?");
+//                                    return res;
+//                                }'
                                 
                                 //"modal" => true,
 
@@ -840,6 +840,25 @@ $(document).ready(function(){
  			
 	}
 	
+        
+//Guardar el click en "COMPRAR", para 
+//    $("#comprarExterno").click(function(e){
+//        var url = "<?php echo $this->createUrl("producto/contarClick"); ?>";
+//        var idProducto = <?php echo $producto->id ?>;
+//        $.ajax({
+//            type: 'POST',
+//            url: url,
+//            dataType: 'JSON',
+//            data: {idProducto: idProducto},
+//            success: function(data){
+//
+//                console.log(data);
+//            }
+//        });
+//
+//    });        
+        
+        
 </script> 
 <script type="text/javascript">
 	(function(){function $MPBR_load(){window.$MPBR_loaded !== true && (function(){var s = document.createElement("script");s.type = "text/javascript";s.async = true;

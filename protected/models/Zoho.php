@@ -33,7 +33,7 @@ class Zoho{
 	public $pais;
 	public $status;
 	public $no_suscrito;
-	
+	public $tipo;
 
 	// Save user to potential clients list
 	function save_potential(){
@@ -75,6 +75,7 @@ class Zoho{
 		if(isset($this->pais)) $xml .= '<FL val="Country">'.$this->pais.'</FL>';
 		if(isset($this->status)) $xml .= '<FL val="Lead Status">'.$this->status.'</FL>';
 		if(isset($this->no_suscrito)) $xml .= '<FL val="Email Opt-out">'.$this->no_suscrito.'</FL>';
+		if(isset($this->tipo)) $xml .= '<FL val="Tipo">'.$this->tipo.'</FL>';
 
 		$xml .= '</row>';
 		$xml .= '</Leads>';

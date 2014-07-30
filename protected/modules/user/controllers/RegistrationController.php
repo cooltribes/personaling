@@ -159,7 +159,8 @@ class RegistrationController extends Controller
 
                             $zoho->admin = 'No';
                             $zoho->ps = 'No';
-
+							$zoho->tipo = "Externo";
+							
                             if($model->superuser == 1){
                                 $zoho->admin = 'Si';
                             }

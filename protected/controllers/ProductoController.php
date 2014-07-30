@@ -2507,7 +2507,14 @@ public function actionReportexls(){
 							$zoho->metaDescripcion = $seo->mDescripcion;
 							$zoho->tags = $seo->pClave;
 							/* SE GUARDAN LOS DATOS PARA ZOHO*/
-							$zoho->save_potential(); 
+							$respuesta = $zoho->save_potential(); 
+							$datos = simplexml_load_string($respuesta);
+																
+							$id = $datos->result[0]->recorddetail->FL[0];
+							// guarda el id de zoho en el producto
+							
+							$ptc->zoho_id = $id;
+							$ptc->save(); 
 							
 							/*  ========================================== */
 							
@@ -4012,7 +4019,10 @@ public function actionReportexls(){
                             
                             // la referencia existe, hay que actualizar los campos
                             $prodExiste = isset($producto);
-
+							
+							// Para datos de Zoho
+							$zoho = New ZohoProductos;
+							
                             // Marca para actualizar
                             $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));                                                        
                             
@@ -4035,7 +4045,18 @@ public function actionReportexls(){
                                     
                                 )); 
                                 
-                            }
+								/* DATOS PARA ZOHO */      
+								$zoho->nombre = $rNombre." - ".$rSku;
+								$zoho->marca = $marca->nombre;
+								$zoho->referencia = $rRef;
+								if($producto->estado==0)
+									$zoho->estado = "TRUE";
+								$zoho->peso = $rPeso;
+								$zoho->fecha = date('Y-m-d H:i:s');
+								$zoho->descripcion = $rDescrip;
+								$zoho->tienda = $tienda->name;
+								$zoho->url = $rURL;
+                     		}
                             else
                             { // no existe la referencia, es producto nuevo                           
 
@@ -4057,7 +4078,18 @@ public function actionReportexls(){
                                 //el del primer sku para este pro. No se debe actualizar                                
                                 $producto->url_externo = $rURL;  
                                 
-                                $producto->save();  
+                                $producto->save(); 
+								
+								/* DATOS PARA ZOHO */      
+								$zoho->nombre = $rNombre." - ".$rSku;
+								$zoho->marca = $marca->nombre;
+								$zoho->referencia = $rRef;
+								$zoho->estado = "FALSE";
+								$zoho->peso = $rPeso;
+								$zoho->fecha = date('Y-m-d H:i:s');
+								$zoho->descripcion = $rDescrip;
+								$zoho->tienda = $tienda->name;
+								$zoho->url = $rURL;
 
                             }
                             // Si existe o no el producto, actualizar o insertar precio nuevo
@@ -4071,21 +4103,34 @@ public function actionReportexls(){
 
                             $precio->costo = $rCosto;
                             $precio->impuesto = 1;
-
+							
+							/* DATOS PARA ZOHO */ 
+							$zoho->costo = $rCosto;
+							
                             //si es con iva
                             if(MasterData::TIPO_PRECIO == 1){
 
                                 $precio->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
                                 $precio->precioDescuento = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
                                 $precio->precioImpuesto = $rPrecio; 
+								
+								/* DATOS PARA ZOHO */ 
+								$zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+								$zoho->precioDescuento = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+								$zoho->precioImpuesto = $rPrecio; 
+								
 
                             }else{ //si es sin iva
 
                                 $precio->precioVenta = $rPrecio;
                                 $precio->precioDescuento = $rPrecio;
-                                $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                                
+                                $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);      
+								
+								/* DATOS PARA ZOHO */ 
+								$zoho->precioVenta = $rPrecio;
+								$zoho->precioDescuento = $rPrecio;
+								$zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                        
                             }
-
 
                             $precio->save();
 
@@ -4097,6 +4142,12 @@ public function actionReportexls(){
                                     $categoria->delete();
                                 }
                             }
+							
+							/* DATOS PARA ZOHO */ 
+							$zoho->categoria = $rCatego1;
+							$zoho->subcategoria1 = $rCatego2;
+							$zoho->subcategoria2 = $rCatego3;
+							// Categorias para zoho
 
                             $cat = new CategoriaHasProducto;
                             $cat2 = new CategoriaHasProducto;
@@ -4130,7 +4181,14 @@ public function actionReportexls(){
                             //buscar talla y color
                             $talla = Talla::model()->findByAttributes(array('valor' => $rTalla));
                             $color = Color::model()->findByAttributes(array('valor' => $rColor));
-
+							
+							/* DATOS PARA ZOHO */
+							$zoho->talla = $talla->valor;
+							$zoho->color = $color->valor;
+							$zoho->SKU = $rSku;
+							$zoho->cantidad = 1; //Todos los externos tienen cant = 1
+							$zoho->tipo = "Externo";
+							
                             $ptc = Preciotallacolor::model()->findByAttributes(array(
                                         'producto_id' => $producto->id,
                                         'sku' => $rSku,
@@ -4186,7 +4244,22 @@ public function actionReportexls(){
                                 $seo->save();
                             }
                             
-                            
+							/* DATOS PARA ZOHO */
+							$zoho->titulo = $seo->mTitulo;
+							$zoho->metaDescripcion = $seo->mDescripcion;
+							$zoho->tags = $seo->pClave;
+							/* SE GUARDAN LOS DATOS PARA ZOHO*/
+							
+							$respuesta = $zoho->save_potential(); 
+							
+							$datos = simplexml_load_string($respuesta);
+																
+							$id = $datos->result[0]->recorddetail->FL[0];
+							// guarda el id de zoho en el producto
+							
+							$ptc->zoho_id = $id;
+							$ptc->save(); 
+						
                         } 
                         else if ($row['A'] == "") 
                         { // si está vacia la primera celda
@@ -4199,7 +4272,7 @@ public function actionReportexls(){
                 
                 }
             
-            }
+            } // Cargar productos externos
 
             $this->render('importarExternos', array(                
                 'nuevos' => $nuevos,

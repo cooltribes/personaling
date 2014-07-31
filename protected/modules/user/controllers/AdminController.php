@@ -1440,6 +1440,12 @@ class AdminController extends Controller
                 $zoho->twitter = $profile->twitter;
                 $zoho->facebook = $profile->facebook;
                 $zoho->url = $profile->url;
+				
+				if($_POST['User']['interno'] == 1)
+					$zoho->tipo = "Interno";
+				else if($_POST['User']['interno'] == 0)
+					$zoho->tipo = "Externo";
+						
                 $result = $zoho->save_potential();
 				
 				//$this->redirect(array('view','id'=>$model->id));

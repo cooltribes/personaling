@@ -14,8 +14,34 @@
    
       	
 <?php
+$cont = 1;
 
 foreach($prods as $data): 
+
+	//echo 'producto';
+
+	$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
+    $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+
+	// registrar impresión en google analytics
+	Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
+		ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
+		  'id': '".$data->id."',                   // Product ID (string).
+		  'name': '".$data->nombre."', // Product name (string).
+		  'category': '".$category->nombre."',   // Product category (string).
+		  'brand': '".$data->mymarca->nombre."',                // Product brand (string).
+		  //'variant': 'Black',               // Product variant (string).
+		  'list': 'Product impression',         // Product list (string).
+		  'position': ".$cont.",                    // Product position (number).
+		  //'dimension1': 'Member'            // Custom dimension (string).
+		});
+		
+		ga('send', 'pageview');              // Send product impressions with initial pageview.
+
+	");	
+
+	$cont++;
+
 	if($data->tipo){
 		$tienda=Tienda::model()->findByPk($data->tienda_id);
 	}

@@ -1554,7 +1554,7 @@ public function actionCategorias2(){
 		if(is_null($tienda))
        		$datos=$datos.'<a class="btn btn-warning btn-block" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>';
 		else
-			$datos=$datos.'<a class="btn btn-warning btn-block" target="_blank" href="'.$producto->url_externa.'" title="'.$msj.'" >'.$msj.'</a>';
+			$datos=$datos.'<a class="btn btn-warning btn-block" target="_blank" href="'.$producto->url_externo.'" title="'.$msj.'" >'.$msj.'</a>';
         $datos=$datos.'</div></div>';
         
         $datos=$datos.'<p class="muted t_small CAPS">Selecciona Color y talla </p>';

@@ -91,7 +91,7 @@ class BolsaController extends Controller
 
                 if(!$admin){
 
-					ShoppingMetric::registro(ShoppingMetric::STEP_BOLSA,array("bolsa_id"=>$bolsa->id)); 
+                    ShoppingMetric::registro(ShoppingMetric::STEP_BOLSA,array("bolsa_id"=>$bolsa->id)); 
 
                 }
 
@@ -2017,7 +2017,7 @@ class BolsaController extends Controller
             $orden = Orden::model()->findByPk($id);
 			$orden->setActualizadas();
             //$pago = Pago::model()->findByPk($orden->pago_id);
-            if(!$admin){                
+            if(!$admin){
 				ShoppingMetric::registro(ShoppingMetric::STEP_PEDIDO,array("orden_id"=>$orden->id));
 				$addItem = "";
 				foreach ($orden->ohptc as $producto){
@@ -2808,6 +2808,8 @@ class BolsaController extends Controller
          */
         public function actionNotificacionAzt(){
             
+            error_log("[Notification develop]" . print_r($_GET, true));
+
             $sCustomerID      = isset($_GET['onepay_customer_code']) ? $_GET['onepay_customer_code'] : "-1";
             $sCustomerTerminal = isset($_GET['onepay_customer_terminal']) ? $_GET['onepay_customer_terminal'] : '';
             $sOrderID           = isset($_GET['onepay_customer_order'])? $_GET['onepay_customer_order']    : '';
@@ -2821,15 +2823,29 @@ class BolsaController extends Controller
             
             $op = new AzPay ();
             
-            if (isset($_GET['action']) && $_GET['action'] == "async") {
-                ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_RESPONSE,$_GET);
-                if ($op->validateResponseData ($_GET)) {
-                    echo "ACK=true";                   
-                } else {
-                    echo "ACK=false";
-                }                
-                exit;
-            }
+//            if (isset($_GET['action']) && $_GET['action'] == "async") {
+            $ack = true;
+            if ($op->validateResponseData ($_GET)) {
+                echo "ACK=true";   
+                
+                //Error en la compra - KO
+                if ( $opResponse != "0000" ) {
+                
+                } else if ($opResponse == "0000") {
+                //Compra exitosa en la compra - KO
+                    
+
+                    
+                }
+                
+            } else {
+                echo "ACK=false";
+                $ack = false;
+            }                
+            $_GET["ACK"] = $ack;
+            ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_RESPONSE,$_GET);
+            exit;
+//            }
             
             
 //            $orden = Orden::model()->findByPk(11);
@@ -2844,8 +2860,8 @@ class BolsaController extends Controller
         public function actionOkAzt(){
                        
             $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
-            $op = new AzPay();
-            
+            $op = new AzPay();            
+
             if ($op->validateResponseData($_GET)) {                                                       
                 ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_OK,$_GET);
                 $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
@@ -2875,17 +2891,10 @@ class BolsaController extends Controller
                             'mensaje'=>$mensaje,
                         ),
                         'http');
-                echo "<script>
-                    window.top.location.href = '".$url."';
-                    </script>
-                    ";
+                //Mostrar info en el modal de pago y redirigir de una vez
+                //a la pagina de error
+                $this->renderPartial("_redirectAztive", array("url" => $url));
                 
-//                $this->redirect($this->createAbsoluteUrl('bolsa/error',
-//                        array(
-//                            'codigo'=>$opResponse,
-//                            'mensaje'=>$mensaje,
-//                        ),
-//                        'http'));
             }  
             
 	}
@@ -2918,10 +2927,8 @@ class BolsaController extends Controller
                             'mensaje'=>$mensaje,
                         ),
                         'http');
-                    echo "<script>
-                        window.top.location.href = '".$url."';
-                        </script>
-                        ";
+
+                    $this->renderPartial("_redirectAztive", array("url" => $url));
                     
             
                     
@@ -2935,10 +2942,12 @@ class BolsaController extends Controller
                             'mensaje'=>$mensaje,
                         ),
                         'http');
-                    echo "<script>
-                        window.top.location.href = '".$url."';
-                        </script>
-                        ";
+//                    echo "<script>
+//                        window.top.location.href = '".$url."';
+//                        </script>
+//                        ";
+                    $this->renderPartial("_redirectAztive", array("url" => $url));
+
                 }
                 
                               
@@ -3026,37 +3035,39 @@ class BolsaController extends Controller
             $this->enviarEmail($orden, $usuario);  
             
             
-			/*===========================================*/
-								
-			$zoho = new ZohoSales;
-								
-			//transformando Lead a posible cliente.
-			if($usuario->tipo_zoho == 0){ 
-				$conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email);
-				$datos = simplexml_load_string($conv);
-									
-				$id = $datos->Contact;
-				$usuario->zoho_id = $id;
-				$usuario->tipo_zoho = 1;
-									
-				$usuario->save(); 
-			}
-								
-			if($usuario->tipo_zoho == 1) // es ahora un contact
-			{
-				$respuesta = $zoho->save_potential($orden);
-								
-				$datos = simplexml_load_string($respuesta);
-								
-				$id = $datos->result[0]->recorddetail->FL[0];
-				//echo $id;	 
-								
-				$orden->zoho_id = $id;
-				$orden->save(); 
-			}
+            /*===========================================*/
+
+            $zoho = new ZohoSales;
+
+            //transformando Lead a posible cliente.
+            if($usuario->tipo_zoho == 0){ 
+                    $conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email);
+                    $datos = simplexml_load_string($conv);
+
+                    $id = $datos->Contact;
+                    $usuario->zoho_id = $id;
+                    $usuario->tipo_zoho = 1;
+
+                    $usuario->save(); 
+            }
+
+            if($usuario->tipo_zoho == 1) // es ahora un contact
+            {
+                    $respuesta = $zoho->save_potential($orden);
+
+                    $datos = simplexml_load_string($respuesta);
+
+                    $id = $datos->result[0]->recorddetail->FL[0];
+                    //echo $id;	 
+
+                    $orden->zoho_id = $id;
+                    $orden->save(); 
+            }
+            /*===========================================*/
+            
 			
             /*Enviar correo OPERACIONES (operaciones@personaling.com*/
-            /*Solo enviar correos cuando este en producccion o en test*/
+            /*Solo enviar correos cuando no este en develop*/
             if(strpos(Yii::app()->baseUrl, "develop") === false){
                 
                 $this->enviarEmailOperaciones($orden);  
@@ -3072,16 +3083,9 @@ class BolsaController extends Controller
                         'user' => $userId,
                             ),'http');
             
-                echo "<script>
-                    window.top.location.href = '".$url."';
-                    </script>
-                    ";
-            
-//            $this->renderPartial("pedido", array(
-//                 'orden'=>$orden,
-//                 'admin'=>"",
-//                 'user'=>$userId
-//            ));
+           //Mostrar info en el modal de pago y redirigir de una vez
+            //a la pagina de error
+            $this->renderPartial("_redirectAztive", array("url" => $url));
             
         }
         

@@ -1388,10 +1388,10 @@ $('.imagen_principal').zoom({url: imgZ});
             url: url,
             dataType: 'JSON',
             data: {idProducto: idProducto},
-            success: function(data){
-
-                console.log(data);
-            }
+//            success: function(data){
+//
+//                console.log(data);
+//            }
         });
 
     });

@@ -205,7 +205,7 @@ $tracking=$orden->getTrackingInfo();
             <tr>
             <th scope='col'>Fecha</th>
             <th scope='col'>Método de pago</th>
-            <th scope='col'>ID de Transaccion</th>
+            <th scope='col'>ID de Transaccion /<br>Authcode de Aztive</th>
             <th scope='col'>Monto</th>
             <th scope='col'></th>
             </tr> 

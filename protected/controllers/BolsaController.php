@@ -2017,7 +2017,7 @@ class BolsaController extends Controller
             $orden = Orden::model()->findByPk($id);
 			$orden->setActualizadas();
             //$pago = Pago::model()->findByPk($orden->pago_id);
-            if(!$admin){                
+            if(!$admin){
 				ShoppingMetric::registro(ShoppingMetric::STEP_PEDIDO,array("orden_id"=>$orden->id));
 				$addItem = "";
 				foreach ($orden->ohptc as $producto){

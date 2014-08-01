@@ -415,16 +415,15 @@ class TiendaController extends Controller
 			$pages->pageSize = 12;
 			
 			$pages->applyLimit($criteria);
-	
-			
-			
 			 
 			$dataProvider = Producto::model()->findAll($criteria);
+
 			if ((isset($_GET['page']))){
 				
 				$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 				$colores=Color::model()->findAll();
 				ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);//METRICAS
+
 				$this->render('index_new',
 						array('index'=>$producto,
 						'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
@@ -511,6 +510,7 @@ class TiendaController extends Controller
 		$colores=Color::model()->findAllByAttributes(array('padreID'=>'0'));
 		
 		ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);
+
 		$this->render('index_new',
 			array('index'=>$producto,
 				'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
@@ -1554,7 +1554,7 @@ public function actionCategorias2(){
 		if(is_null($tienda))
        		$datos=$datos.'<a class="btn btn-warning btn-block" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>';
 		else
-			$datos=$datos.'<a class="btn btn-warning btn-block" target="_blank" href="'.$producto->url_externa.'" title="'.$msj.'" >'.$msj.'</a>';
+			$datos=$datos.'<a class="btn btn-warning btn-block" target="_blank" href="'.$producto->url_externo.'" title="'.$msj.'" >'.$msj.'</a>';
         $datos=$datos.'</div></div>';
         
         $datos=$datos.'<p class="muted t_small CAPS">Selecciona Color y talla </p>';

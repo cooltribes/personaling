@@ -12,6 +12,7 @@
 
    + Documentation: http://infinite-scroll.com/
 */
+var cont = 13;
 
 (function (window, $, undefined) {
 	"use strict";
@@ -173,6 +174,8 @@
 
                 if (callback) {
                     callback.call($(opts.contentSelector)[0], data, opts, url);
+                }else{
+                    console.log('no existe');
                 }
 
 				if (opts.prefill) {
@@ -327,6 +330,14 @@
 
         // Load Callback
         _loadcallback: function infscr_loadcallback(box, data, url) {
+            //var temp = $('<div>').html(data);
+            //console.log(temp);
+            /*for (var i = cont; i < cont+12; i++) {
+                //console.log('Texto json: '+i);
+                console.log('Texto json: '+$('#json_product_'+i, data).html());
+                //nelson(i);
+            };*/
+            cont += 12;
             var opts = this.options,
             callback = this.options.callback, // GLOBAL OBJECT FOR CALLBACK
             result = (opts.state.isDone) ? 'done' : (!opts.appendCallback) ? 'no-append' : 'append',
@@ -394,6 +405,20 @@
 			if (opts.prefill) {
 				this._prefill();
 			}
+
+            // send data from infinite scroll to google analytics
+            $.each(data, function(k, v){
+                var json = JSON.parse($('.json_product', v).text());
+                ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
+                  'id': json.id,                   // Product ID (string).
+                  'name': json.name, // Product name (string).
+                  'category': json.category,   // Product category (string).
+                  'brand': json.brand,                // Product brand (string).
+                  'list': json.list,         // Product list (string).
+                });
+                
+                ga('send', 'pageview');              // Send product impressions with initial pageview.
+            });
 		},
 
         _nearbottom: function infscr_nearbottom() {

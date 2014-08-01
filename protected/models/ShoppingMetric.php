@@ -207,6 +207,9 @@ class ShoppingMetric extends CActiveRecord
                 case 4: 
                     echo "[Compra] - Confirmando la compra"; 
                     break;
+                case self::STEP_CONFIRMAR_BOTON: 
+                    echo "[Compra] - Presionó botón de Pagar"; 
+                    break;
                 case 5: 
                     echo "[Compra] - Viendo resumen del pedido"; 
                     break;

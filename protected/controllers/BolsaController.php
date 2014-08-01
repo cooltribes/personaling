@@ -23,26 +23,27 @@ class BolsaController extends Controller
 	 
 	public function accessRules()
 	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('modal','credito','index','limpiar',
-                                    'eliminardireccion','editar','editardireccion','agregar','actualizar',
-                                    'pagos','compra','eliminar','direcciones','confirmar','comprar','cpago',
-                                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 'comprarGC'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index'),
-				//'users'=>array('admin'),
-				'expression' => 'UserModule::isAdmin()',
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
+            return array(
+                array('allow',  // allow all users to perform 'index' and 'view' actions
+                        'users'=>array('*'),
+                ),
+                array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                    'actions'=>array('modal','credito','index','limpiar',
+                    'eliminardireccion','editar','editardireccion','agregar','actualizar',
+                    'pagos','compra','eliminar','direcciones','confirmar','comprar','cpago',
+                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 'comprarGC',
+                    'clickBotonConfirmar'),
+                    'users'=>array('@'),
+                ),
+                array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                        'actions'=>array('index'),
+                        //'users'=>array('admin'),
+                        'expression' => 'UserModule::isAdmin()',
+                ),
+                array('deny',  // deny all users
+                        'users'=>array('*'),
+                ),
+            );
 	}
 	
 	public function actionIndex()
@@ -91,7 +92,7 @@ class BolsaController extends Controller
 
                 if(!$admin){
 
-					ShoppingMetric::registro(ShoppingMetric::STEP_BOLSA,array("bolsa_id"=>$bolsa->id)); 
+                    ShoppingMetric::registro(ShoppingMetric::STEP_BOLSA,array("bolsa_id"=>$bolsa->id)); 
 
                 }
 
@@ -655,7 +656,8 @@ class BolsaController extends Controller
 
                     /*Si es compra normal del usuario*/
                     if(!$admin){
-						ShoppingMetric::registro(ShoppingMetric::STEP_CONFIRMAR,array("bolsa_id"=>$bolsa->id));   
+                        ShoppingMetric::registro(ShoppingMetric::STEP_CONFIRMAR,
+                                array("bolsa_id"=>$bolsa->id));   
                     }                 
                     /*Revisar si actualizo la pagina para hacer la compra de nuevo
                      * en menos de un minuto
@@ -778,8 +780,13 @@ class BolsaController extends Controller
                     //Para cuando hay recurrencias
 //                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
 //                            $idPagoAztive==8?"I":null, $optional, $cData);    
+                    //Como no se tiene en este momento un ID de la orden,
+                    //Poner un orderid mientras tanto en base al usuario
+                    //y a la fecha del pago.
+                    $orderID = "U" . Yii::app()->user->id."L".$bolsa->getLooks().
+                            "P".$bolsa->getProductos();                    
                     
-                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
+                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, $orderID,
                             $idPagoAztive==8?NULL:NULL, $optional, $cData);  
                     
                     
@@ -1271,6 +1278,17 @@ class BolsaController extends Controller
                             ));
 			if (!$bolsa->checkInventario())
 				$this->redirect($this->createAbsoluteUrl('bolsa/index',array('mensaje'=>"Hola"),'http'));
+                        
+                        /*Revisar si actualizo la pagina para hacer la compra de nuevo
+                         * en menos de un minuto
+                         */
+                        if(User::hasRecentOrder()){                       
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash("warning", "Al parecer estás intentando
+                                hacer otra compra.<br>Revisa tu lista de pedidos, acabamos de registrar uno nuevo.");                
+
+                            $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+                        }
                         
 			$tipoPago = Yii::app()->getSession()->get('tipoPago');	
                         
@@ -2017,7 +2035,7 @@ class BolsaController extends Controller
             $orden = Orden::model()->findByPk($id);
 			$orden->setActualizadas();
             //$pago = Pago::model()->findByPk($orden->pago_id);
-            if(!$admin){                
+            if(!$admin){
 				ShoppingMetric::registro(ShoppingMetric::STEP_PEDIDO,array("orden_id"=>$orden->id));
 				$addItem = "";
 				foreach ($orden->ohptc as $producto){
@@ -2808,6 +2826,9 @@ class BolsaController extends Controller
          */
         public function actionNotificacionAzt(){
             
+            error_log("Notification Develop: " . print_r("Se registro una notificacion desde Aztive", true));
+            
+
             $sCustomerID      = isset($_GET['onepay_customer_code']) ? $_GET['onepay_customer_code'] : "-1";
             $sCustomerTerminal = isset($_GET['onepay_customer_terminal']) ? $_GET['onepay_customer_terminal'] : '';
             $sOrderID           = isset($_GET['onepay_customer_order'])? $_GET['onepay_customer_order']    : '';
@@ -2821,20 +2842,30 @@ class BolsaController extends Controller
             
             $op = new AzPay ();
             
-            if (isset($_GET['action']) && $_GET['action'] == "async") {
-                ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_RESPONSE,$_GET);
-                if ($op->validateResponseData ($_GET)) {
-                    echo "ACK=true";                   
-                } else {
-                    echo "ACK=false";
-                }                
-                exit;
-            }
+//            if (isset($_GET['action']) && $_GET['action'] == "async") {
+            $ack = true;
+            if ($op->validateResponseData ($_GET)) {
+                echo "ACK=true";   
+                
+                //Error en la compra - KO
+                if ( $opResponse != "0000" ) {
+                
+                } else if ($opResponse == "0000") {
+                //Compra exitosa en la compra - KO
+                    
+
+                    
+                }
+                
+            } else {
+                echo "ACK=false";
+                $ack = false;
+            }                
+            $_GET["ACK"] = $ack;
+            ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_RESPONSE,$_GET);
+            exit;
+//            }
             
-            
-//            $orden = Orden::model()->findByPk(11);
-//            $this->generarOutbound($orden);
-//            Yii::app()->end();
             
 	}
         /**
@@ -2844,8 +2875,8 @@ class BolsaController extends Controller
         public function actionOkAzt(){
                        
             $opResponse = isset($_GET['onepay_response'])? $_GET['onepay_response'] : '';           
-            $op = new AzPay();
-            
+            $op = new AzPay();            
+
             if ($op->validateResponseData($_GET)) {                                                       
                 ShoppingMetric::registro(ShoppingMetric::STEP_PAGO_OK,$_GET);
                 $cData = isset($_GET['onepay_cData']) ? $_GET['onepay_cData'] : '';
@@ -2875,17 +2906,10 @@ class BolsaController extends Controller
                             'mensaje'=>$mensaje,
                         ),
                         'http');
-                echo "<script>
-                    window.top.location.href = '".$url."';
-                    </script>
-                    ";
+                //Mostrar info en el modal de pago y redirigir de una vez
+                //a la pagina de error
+                $this->renderPartial("_redirectAztive", array("url" => $url));
                 
-//                $this->redirect($this->createAbsoluteUrl('bolsa/error',
-//                        array(
-//                            'codigo'=>$opResponse,
-//                            'mensaje'=>$mensaje,
-//                        ),
-//                        'http'));
             }  
             
 	}
@@ -2918,10 +2942,8 @@ class BolsaController extends Controller
                             'mensaje'=>$mensaje,
                         ),
                         'http');
-                    echo "<script>
-                        window.top.location.href = '".$url."';
-                        </script>
-                        ";
+
+                    $this->renderPartial("_redirectAztive", array("url" => $url));
                     
             
                     
@@ -2935,10 +2957,12 @@ class BolsaController extends Controller
                             'mensaje'=>$mensaje,
                         ),
                         'http');
-                    echo "<script>
-                        window.top.location.href = '".$url."';
-                        </script>
-                        ";
+//                    echo "<script>
+//                        window.top.location.href = '".$url."';
+//                        </script>
+//                        ";
+                    $this->renderPartial("_redirectAztive", array("url" => $url));
+
                 }
                 
                               
@@ -2963,10 +2987,10 @@ class BolsaController extends Controller
                 
              
             /*ID del usuario propietario de la bolsa*/
-            $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
+            $userId = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                 : Yii::app()->user->id;
 
-            $userId = $usuario;
+             
             $usuario = User::model()->findByPk($userId);
             $bolsa = Bolsa::model()->findByAttributes(array(
                             'user_id' => $userId,
@@ -3026,37 +3050,39 @@ class BolsaController extends Controller
             $this->enviarEmail($orden, $usuario);  
             
             
-			/*===========================================*/
-								
-			$zoho = new ZohoSales;
-								
-			//transformando Lead a posible cliente.
-			if($usuario->tipo_zoho == 0){ 
-				$conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email);
-				$datos = simplexml_load_string($conv);
-									
-				$id = $datos->Contact;
-				$usuario->zoho_id = $id;
-				$usuario->tipo_zoho = 1;
-									
-				$usuario->save(); 
-			}
-								
-			if($usuario->tipo_zoho == 1) // es ahora un contact
-			{
-				$respuesta = $zoho->save_potential($orden);
-								
-				$datos = simplexml_load_string($respuesta);
-								
-				$id = $datos->result[0]->recorddetail->FL[0];
-				//echo $id;	 
-								
-				$orden->zoho_id = $id;
-				$orden->save(); 
-			}
+            /*===========================================*/
+
+            $zoho = new ZohoSales;
+
+            //transformando Lead a posible cliente.
+            if($usuario->tipo_zoho == 0){ 
+                    $conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email);
+                    $datos = simplexml_load_string($conv);
+
+                    $id = $datos->Contact;
+                    $usuario->zoho_id = $id;
+                    $usuario->tipo_zoho = 1;
+
+                    $usuario->save(); 
+            }
+
+            if($usuario->tipo_zoho == 1) // es ahora un contact
+            {
+                    $respuesta = $zoho->save_potential($orden);
+
+                    $datos = simplexml_load_string($respuesta);
+
+                    $id = $datos->result[0]->recorddetail->FL[0];
+                    //echo $id;	 
+
+                    $orden->zoho_id = $id;
+                    $orden->save(); 
+            }
+            /*===========================================*/
+            
 			
             /*Enviar correo OPERACIONES (operaciones@personaling.com*/
-            /*Solo enviar correos cuando este en producccion o en test*/
+            /*Solo enviar correos cuando no este en develop*/
             if(strpos(Yii::app()->baseUrl, "develop") === false){
                 
                 $this->enviarEmailOperaciones($orden);  
@@ -3072,16 +3098,9 @@ class BolsaController extends Controller
                         'user' => $userId,
                             ),'http');
             
-                echo "<script>
-                    window.top.location.href = '".$url."';
-                    </script>
-                    ";
-            
-//            $this->renderPartial("pedido", array(
-//                 'orden'=>$orden,
-//                 'admin'=>"",
-//                 'user'=>$userId
-//            ));
+           //Mostrar info en el modal de pago y redirigir de una vez
+            //a la pagina de error
+            $this->renderPartial("_redirectAztive", array("url" => $url));
             
         }
         
@@ -3440,6 +3459,35 @@ class BolsaController extends Controller
             
             //Enviar Outbound a LF y guardarlo en local para respaldo
             $subido = MasterData::subirArchivoFtp($outbound, 3, $orden->id);
+            
+            
+        }
+        
+        public function actionClickBotonConfirmar() {
+            
+            if(isset($_POST["tipoPago"])){
+                $data = array("Tipo de Pago" => "");
+                if($_POST["tipoPago"] == 5){
+                    $data["Tipo de Pago"] = "TPV Sabadell";
+                    
+                }elseif($_POST["tipoPago"] == 6){
+                    $data["Tipo de Pago"] = "PayPal";
+                    
+                }elseif($_POST["tipoPago"] == 7){
+                    $data["Tipo de Pago"] = "Con saldo o Cupon de descuento";                    
+                    
+                }elseif($_POST["tipoPago"] == 8){
+                    $data["Tipo de Pago"] = "Pago para pruebas";
+                    
+                }else{
+                    $data["Tipo de Pago"] = "Tipo de pago desconocido ({$_POST['tipoPago']})";
+                    
+                }                
+                
+
+                ShoppingMetric::registro(ShoppingMetric::STEP_CONFIRMAR_BOTON, $data);
+            
+            }
             
             
         }

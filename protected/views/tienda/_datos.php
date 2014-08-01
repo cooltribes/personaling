@@ -14,8 +14,43 @@
    
       	
 <?php
+$cont = 1;
 
 foreach($prods as $data): 
+
+	//echo 'producto';
+
+	$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
+    $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+
+    
+    ?>
+
+    <?php
+
+	// registrar impresión en google analytics
+	Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
+		console.log('tales');
+
+		ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
+		  'id': '".$data->id."',                   // Product ID (string).
+		  'name': '".$data->nombre."', // Product name (string).
+		  'category': '".$category->nombre."',   // Product category (string).
+		  'brand': '".$data->mymarca->nombre."',                // Product brand (string).
+		  //'variant': 'Black',               // Product variant (string).
+		  'list': 'Product impression',         // Product list (string).
+		  'position': ".$cont.",                    // Product position (number).
+		  //'dimension1': 'Member'            // Custom dimension (string).
+		});
+		
+		ga('send', 'pageview');              // Send product impressions with initial pageview.
+
+		
+
+	", CClientScript::POS_END);	
+
+	$cont++;
+
 	if($data->tipo){
 		$tienda=Tienda::model()->findByPk($data->tienda_id);
 	}
@@ -24,6 +59,19 @@ foreach($prods as $data):
 		$tienda=null;
 ?>
 	<div class="div_productos">
+		<div class="json_product" style="display:none;">
+    	<?php
+    	// hidden div con json para la función que se ejecuta con el scroll infinito
+    	echo json_encode(array(
+    		'id' => $data->id,
+    		'name' => $data->nombre,
+    		'category' => $category->nombre,
+    		'brand' => $data->mymarca->nombre,
+    		'list' => 'Product impression',
+    		'position' => $cont
+    	));
+    	?>
+    </div>
 	<?php
 	
 $id=0;
@@ -258,7 +306,7 @@ $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'loadingText' => 'Consultando Productos',
 	    'donetext' => 'No more',
 
-	  //  'afterAjaxUpdate' => 'alert("hola");',
+	    //'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
 	)); 
 			

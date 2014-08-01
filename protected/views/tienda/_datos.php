@@ -30,7 +30,7 @@ foreach($prods as $data):
 
 	// registrar impresión en google analytics
 	Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
-		console.log('tales');
+		//console.log('tales');
 
 		ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
 		  'id': '".$data->id."',                   // Product ID (string).
@@ -273,7 +273,7 @@ endforeach;?>
 </div>
 <script>	
 mixpanel.track_links(".link_producto", "Clicked Productos",function(ele) { 
-    alert('asd');
+    //alert('asd');
     return { type: $(ele).attr('href')}
     });
 function over(id){

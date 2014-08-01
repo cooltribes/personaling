@@ -30,7 +30,7 @@ class OrdenController extends Controller
                                     'detalles','devoluciones','validar','enviar',
                                     'factura','calcularenvio','createexcel',
                                     'importarmasivo','reporte','reportexls','admincsv',
-                                    'generarExcelOut','devolver','adminDevoluciones',
+                                    'adminXLS','generarExcelOut','devolver','adminDevoluciones',
                                     'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
                                     'AnularDevuelto','cantidadDevuelto','activarDevuelto',
                                     'resolverOutbound','descargarReturnXML', 'reporteDetallado'),
@@ -439,7 +439,7 @@ public function actionReportexls(){
             
             //Ordenar por fecha descendiente
             $criteria = $dataProvider->getCriteria();
-            $criteria->order = 'fecha DESC';
+            $criteria->order = 't.fecha DESC';
             $dataProvider->setCriteria($criteria);       
 			Yii::app()->session['ordenCriteria']=$dataProvider->getCriteria();
             $this->render('admin', array('orden' => $orden,
@@ -570,30 +570,42 @@ public function actionReportexls(){
 		$criteria->select = array('t.id');
 		$dataProvider = new CActiveDataProvider('Orden', array(
                     'criteria' => $criteria,
-                    
-        ));
-		$pages=new CPagination($dataProvider->totalItemCount);
+
+                ));
+                
+                
+                $pages=new CPagination($dataProvider->totalItemCount);
 		$pages->pageSize=$dataProvider->totalItemCount;
-		$dataProvider->setPagination($pages);
-	
+		$dataProvider->setPagination($pages);	
+			
+                $elementos = $dataProvider->getData();
+		
 		header( "Content-Type: text/csv;charset=utf-8" );
 		header('Content-Disposition: attachment; filename="Ordenes.csv"');
 		$fp = fopen('php://output', 'w');
 		
 		
-		fputcsv($fp,array(' ID', 'Usuaria', 'Fecha', 'Looks'
-		, 'Prendas Individuales', 'Total Prendas', utf8_decode('Monto ('.Yii::t('contentForm','currSym').')'), utf8_decode('Método de Pago'), 'Estado',
-		utf8_decode('Tarjeta de Crédito'),'Paypal','Balance',utf8_decode('Cupón de Descuento')),";",'"');
-						
-		
-		foreach($dataProvider->getData() as $data){
+		fputcsv($fp,array(' ID', 'Usuaria', 'Fecha', 'Looks',
+                    'Prendas Individuales', 'Total Prendas',
+                    utf8_decode('Monto ('.Yii::t('contentForm','currSym').')'),
+                    utf8_decode('Método de Pago'), 'Estado', 
+                    utf8_decode('Tarjeta de Crédito'),'Paypal','Balance',
+                    utf8_decode('Cupón de Descuento')),";",'"');
+                
+                
+		foreach($elementos as $data){
 				
 			$orden=Orden::model()->findByPk($data->id);
 			$compra = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$data->id));
 			$ohptc= new OrdenHasProductotallacolor;
-			$vals=array($data->id, $orden->user->username, date("d-m-Y H:i:s",strtotime($orden->fecha)) , $ohptc->countLooks($data->id)
-			, $ohptc->countIndividuales($data->id), $ohptc->countPrendasEnLooks($data->id), number_format($orden->total,2,',','.')
-			, utf8_decode($orden->getTiposPago('reporte')) , $orden->textestado,$orden->montoTipo(4),$orden->montoTipo(5),$orden->montoTipo(3),$orden->montoTipo(Detalle::CUPON_DESCUENTO));  
+			$vals=array($data->id, $orden->user->username,
+                            date("d-m-Y H:i:s",strtotime($orden->fecha)) , $ohptc->countLooks($data->id)
+			, $ohptc->countIndividuales($data->id), 
+                            $ohptc->countPrendasEnLooks($data->id), number_format($orden->total,2,',','.')
+    			, $orden->getTiposPago('reporte') ,
+                            $orden->textestado,$orden->montoTipo(4),
+                            $orden->montoTipo(5),$orden->montoTipo(3),
+                            $orden->montoTipo(Detalle::CUPON_DESCUENTO));  
 			fputcsv($fp,$vals,";",'"');		
 		}
 		fclose($fp); 

@@ -7,33 +7,33 @@ if(isset($seo)){
 	Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
 }
 ?>
-<div class="wrapper-landingpage">
-	<div class="wrapper-inside-landingpage">
-		<section class="content-landingpage">
-			<figure class="logo-personaling ">
-		    	<img src="<?php echo Yii::app()->theme->baseUrl.'/images/logocompleto.png' ?>" alt="Personaling - Tu Personal Shopper Online " width="320" height="325">
-		    	<p class="lead margin_top_xsmall text_align_center slongan">Tu Personal Shopper Online</p>   
+
 	
-		    	<div class="dropdown width320 landingdrop">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-decoration: none">
-						<div class="dropinput">
-								<span id="precio_titulo">Elige tu País</span>
-							<small> 
-								<b class="caret"></b>
-							</small>
-						</div>
-					</a>
-					<ul class="dropdown-menu width320">
-						
-					<li><a class="precio" href="http://www.personaling.es" >España<span class="color12"></span></a></li>
-					<li><a class="precio" href="http://www.personaling.com.ve">Venezuela<span class="color12"></span></a></li>
-						 
-					</ul>
-				</div>
+	
+	
+<div class="wrapper-landingpage">
+	<div class="wrapper-inside-landingpage" align="center">
+
+		
+		    	<img class="margin_top_medium" src="<?php echo Yii::app()->theme->baseUrl.'/images/logocompleto.png' ?>" alt="Personaling - Tu Personal Shopper Online " width="320" height="325">
+		    	<p class="lead margin_top_xsmall text_align_center slongan">Tu Personal Shopper Online</p>
+		    	<div id="excuses" class="hide text_center_align margin_medium" style:"width:80%">
+		    		Discúlpanos, nuestro website en <b>Venezuela</b> está temporalmente fuera de servicio. <br/> Te invitamos a visitar nuestro portal de <b>España</b>
+		    	</div>
+	
+		
+			<div align="center">
+					<a class="btn btn-danger margin_bottom_medium margin_top_medium" style="width:90px" href="http://www.personaling.es" value="http://www.personaling.es" >España<span class="color12"></span></a>
+					<a class="btn btn-danger disabled margin_bottom_medium margin_top_medium" style="width:90px" value="http://www.personaling.com.ve"  onclick="$('#excuses').show()">Venezuela<span class="color12"></span></a>
+			</div>
+					
+			 
+					
+				
 		  	
 		      
-			</figure>
-		</section>
+	
+	
 	</div>
 </div>
 <style>
@@ -45,15 +45,26 @@ if(isset($seo)){
 <script>
 	$(document).ready(function(){
 		var country = readCookie('country_value');
-		if(country){
+		/*if(country){
 			window.location.replace(country);
-		}
+		}*/
 	});
+	$('#cookies_notification').css('margin-top','0px');
+	$('#cookies_notification').css('position','absolute');
+	$('#cookies_notification').css('z-index','45');
+	$('#cookies_notification').css('left','0');
+	$('#cookies_notification').css('opacity','0.7');
+	$("#cookies_notification").mouseenter(function() {
+    $(this).css("opacity", "1");
+}).mouseleave(function() {
+     $(this).css("opacity", "0.6");
+});
 
-	$('#paisselect').on('change', function(e){
-		createCookie('country_value', this.options[this.selectedIndex].value, 7);
-		window.location.replace(this.options[this.selectedIndex].value);
-	});
+
+	$('.pais').on('click', function(e){
+		createCookie('country_value', $(this).attr('value'), 7);
+		//window.location.replace(this.options[this.selectedIndex].value);
+	}); 
 
 	/*$('.arrow').on('change', function(e){
 		createCookie('country_value', this.options[this.selectedIndex].value, 7);

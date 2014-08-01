@@ -183,8 +183,8 @@ class InboundController extends Controller
             }
 			
 			
-			$returns = Retturn::model()->findAllByAttributes(array(),
-			array('condition'=>'estadoConfirmation IS NULL'));
+            $returns = Retturn::model()->findAllByAttributes(array(),
+            array('condition'=>'estadoConfirmation IS NULL'));
     
             //Revisar en el ftp por cada uno de ellos
             foreach ($returns as $elemento){
@@ -196,14 +196,6 @@ class InboundController extends Controller
             $outbounds = Outbound::model()->findAllByAttributes(array(
                 "estado" => array(0,1,4)
             ));        
-            
-//            foreach ($ordenes as $orden){
-//                
-//            echo "<pre>";
-//            print_r($orden->attributes);
-//            echo "</pre><br>";
-//            }
-//            Yii::app()->end();
 
 
             //Revisar en el ftp con todas las ordenes
@@ -387,20 +379,25 @@ class InboundController extends Controller
                                         ))->findByAttributes(array(
                                             "tbl_orden_id"=>$outB->orden_id,
                                         ));
+                                    
+                                    
+                                    if($productoOrden){
+                                        
+                                        //cantidad recibida de LF
+                                        $productoOrden->cantidadLF = $item->Cantidad;
+                                        //si hay discrepancias en las cant enviadas
+                                        if($productoOrden->cantidadLF != $productoOrden->cantidad){
 
-                                    //cantidad recibida de LF
-                                    $productoOrden->cantidadLF = $item->Cantidad;
-                                    //si hay discrepancias en las cant enviadas
-                                    if($productoOrden->cantidadLF != $productoOrden->cantidad){
+                                            $productoOrden->estadoLF = 2; //con discrep
+                                            $discrepancias = 1;
 
-                                        $productoOrden->estadoLF = 2; //con discrep
-                                        $discrepancias = 1;
+                                        }else{                                            
+                                            $productoOrden->estadoLF = 1; //confirmado                                            
+                                        }
 
-                                    }else{                                            
-                                        $productoOrden->estadoLF = 1; //confirmado                                            
+                                        $productoOrden->save();                                        
+                                        
                                     }
-
-                                    $productoOrden->save();                                        
                                 }                                    
 
                             } //Fin recorrer los bultos

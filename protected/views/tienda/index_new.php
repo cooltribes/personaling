@@ -15,9 +15,18 @@
         });
 
     });
- 
+ 	 $(function() {
+    	$( "#accordion" ).accordion({
+    		collapsible:true,
+    		active:false,
+    		icons: { "header": "ui-icon-carat-1-e", "activeHeader": "ui-icon-carat-1-n" },
+    		autoHeight: false,
+   			navigation: true
+    	});
+  	});
+
     </script>
-    
+
     
     
 
@@ -52,6 +61,110 @@ if(isset($seo)){
     </div>
   </div>   -->
 <!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  OFF-->
+<div class="navbar navbar-fixed-top" style="background-color:black; padding:0 20px 0 20px" id="mobilefilters">
+
+		<div class="container">
+			<!--<a class="btn btn-navbar" data-toggle="collapse" data-target="#collapse_0"></a>
+				<a href="/develop/" class="brand">Personaling</a>
+				<div class="nav-collapse" id="collapse_0">
+					<ul class="pull-right nav" id="yw0">
+						<li><a href="/develop/looks-personalizados">Looks</a></li>
+						<li id="tienda_menu" class="active"><a href="/develop/tienda-ropa-personalizada">Tienda</a></li>
+						<li id="magazine"><a target="_blank" href="http://personaling.com/magazine">Magazine</a></li>
+						<li id="ingresa"><a href="/develop/inicio-personaling">Accede</a></li>
+						<li><a class=" btn-danger btn" href="/develop/registro-personaling">Regístrate</a></li>
+					</ul>
+				</div>-->
+				<div style="width:100%; height:40px; background-color:black; line-height: 40px; vertical-align: middle">
+					<!--<div style="width:18%; float:left">
+						<div style="background-color: white; width:50px; height: 30px; margin-top: 10px">
+							db
+						</div> 
+					</div>-->
+					<div style="width:50%; float:left">
+						<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search" maxlength="50" >
+					</div>
+					<div style="width:50%; float:left; text-align: right; ">
+						<div id="mobFiltrar" style="border: solid #FFF 1px; width: 90%; float: right; height: 28px; margin: 10px 0 10px 0; line-height: 30px; color: white; text-align: center; ">
+							Filtrar ››
+						</div>	
+							
+					</div>
+				</div>
+			
+			</div>
+
+	</div>
+<div class="navbar navbar-fixed-top hide" id="mobilefilters-expanded">
+
+	<div class="container">
+		<div id="accordion">
+		<?php foreach($categorias as $padre){
+				echo "<h3>".$padre->nombre."<span id='summ".$padre->nombre."' class='summ summCat'></span><h3/><div class='paraFiltrar'>";
+				foreach($padre->subcategorias as $hijo){
+					echo "<a class='hijo' name='".$padre->nombre."' value='".$hijo->id."'>".$hijo->nombre."</a><br/>";
+				}
+				echo "</div>";
+		}?>
+			  
+		<?php echo "<h3>".Yii::t('contentForm','Color')."<span id='summColor' class='summ'></span></h3><div class='paraFiltrar'>"; 
+		
+			foreach($colores as $color){ 
+				echo '<a value="'.$color->id.'" title="'.$color->valor.'" class="scolor">'.$color->valor.'</a></br>'; 
+			}
+							
+				echo "</div>";		?>
+				
+		<?php echo "<h3>".Yii::t('contentForm','By price')." <span id='summPrecio' class='summ'></span></h3> <div class='paraFiltrar'>"; 
+		
+			echo'<a class="precio"  id="0">Hasta '.number_format($rangos[0]["max"],0,",",".").' '.Yii::t('contentForm', 'currSym').' <span class="color4">('.$rangos[0]['count'].')</span></a></br>';
+			echo'<a class="precio"  id="1">De '.number_format($rangos[1]["min"],0,",",".").' a '
+				.number_format($rangos[1]["max"],0,",",".").' '.Yii::t('contentForm', 'currSym').' <span class="color4">('.$rangos[1]['count'].')</span></a></br>';
+			echo'<a class="precio"  id="2">De '.number_format($rangos[2]["min"],0,",",".").' a '
+				.number_format($rangos[2]["max"],0,",",".").' '.Yii::t('contentForm', 'currSym').' <span class="color4">('.$rangos[2]['count'].')</span></a></br>';
+			echo'<a class="precio"  id="3">Más de '.number_format($rangos[3]["min"],0,",",".").' '.Yii::t('contentForm', 'currSym').' <span class="color4">('.$rangos[3]['count'].')</span></a></br>';
+			echo'<a class="precio"  id="5">'.Yii::t('contentForm','All price').'</a>';
+							
+				echo "</div>";		?>
+		
+		
+
+			<h3><?php echo Yii::t('contentForm','By brand')."<span id='summMarca' class='summ'></span>";?></h3>
+
+			  <?php
+			  echo "<div class='paraFiltrar'>";
+			  foreach($marcas as $marca){
+								$cien="not_cien";
+								if($marca->is_100chic){
+									$cien="cien";
+								}
+								
+								echo'<a class="marca '.$cien.'" value='.$marca->id.' >'.$marca->nombre.'</a><br/>';
+								 
+							}
+				echo "</div>"
+			  
+			  ?>
+			   
+		</div>
+	</div>
+</div>     
+	 
+<div class="navbar navbar-fixed-top register-mob-bar"  >
+	<div>
+		<div class="rmb-title">Bienvenido a Personaling</div>
+		<a class="rmb-white" href="<?php echo Yii::app()->baseUrl; ?>/inicio-personaling">Accede</a>
+		 
+		<a class="rmb-black" href="<?php echo Yii::app()->baseUrl; ?>/registro-personaling">¡Registrate!</a>			
+	
+			
+	</div>
+	
+</div>
+
+
+
+
 <div id="deskfilters">
 <div id="banner100chic" style=" display:none; " class="margin_top ">
 	<div class="margin_bottom">
@@ -356,7 +469,13 @@ if(isset($seo)){
 		$(".precio").click(function() { 
             	
             	$('#precio_titulo').html($(this).html());
+            	
             	$('#preciohid').val($(this).attr('id'));
+            	if($('#preciohid').val()!='0'){
+            		$('#summPrecio').html($(this).html());
+            	}else{
+            		$('#summPrecio').html('');
+            	}
             	//$('#catalogo').remove(); 
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
@@ -375,8 +494,14 @@ if(isset($seo)){
             		titulo=titulo+'...';
             	}
             	$('#marca_titulo').html(titulo);
+            
             	
             	$('#marcahid').val($(this).attr('value'));
+            	if($('#preciohid').val()!='0'){
+            			$('#summMarca').html(titulo);
+            	}else{
+            		$('#summMarca').html('');
+            	}
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
@@ -417,15 +542,21 @@ if(isset($seo)){
 		$(".scolor").click(function() { 
             	
             	
-            	$('#colorhid').val($(this).attr('value'));
-            	//$('#catalogo').remove();
-            	//$('#tienda_productos').html(''); 
-            	if($('#colorhid').val()==0)
-            		$('#color_titulo').html('<img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>');
-            	else
-            	  $('#color_titulo').html($(this).html());
-            	$('#text_search').val(''); 
-            	preRefresh();
+            	 $('#colorhid').val($(this).attr('value'));
+                //$('#catalogo').remove();
+                //$('#tienda_productos').html('');
+                if($('#colorhid').val()==0){
+                	$('#color_titulo').html('<img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>');
+                	$('#summColor').html('');
+                }
+                    
+                else{
+                	$('#color_titulo').html($(this).html());
+                	$('#summColor').html($(this).attr('title'));
+                }
+                  
+                $('#text_search').val('');
+                preRefresh()
 
 		});  
 		
@@ -455,6 +586,12 @@ if(isset($seo)){
             	$('.padre').css('outline','none');
             	$('#'+$(this).attr('name')).css('outline','solid 2px #ffd660');
             	$('#cathid').val($(this).attr('value'));
+            	$('.summCat').html('');
+            	if($('#cathid').val()!='0')
+            		$('#summ'+$(this).attr('name')).html($(this).html());
+            	else
+            		$('#summ'+$(this).attr('name')).html('');
+            	
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
             	$('#text_search').val(''); 
@@ -603,6 +740,7 @@ function encantar(id)
    
 function preRefresh(){
 	mixpanel.track("Filtros");
+	$('#accordion').addClass('hide');
 	try{
 		 
 
@@ -652,7 +790,10 @@ function refresh(reset)
                     }',
             'success'=>"function(data)
             {
-           
+           		/*console.log(data.div);	
+           		alert(data.status);*/
+           		
+           		
                 if (data.status == 'failure')
                 {
                     $('#dialogColor div.divForForm').html(data.div);
@@ -660,14 +801,15 @@ function refresh(reset)
                     $('#dialogColor div.divForForm form').submit(addColor);
                     
 
-                }
-                else
+                } else
                 {
-           
+                   		
+       
                    	$('#tienda_productos').html(data.div);
              		
 		
                 }
+               
                 
                 
  
@@ -680,6 +822,15 @@ function refresh(reset)
  
 <script>
 		$(document).ready(function() {
+			$("#mobFiltrar").click(function() { 
+            	if($('#mobilefilters-expanded').hasClass('hide')){
+            		$('#mobilefilters-expanded').removeClass('hide');
+            	}else{
+            		$('#mobilefilters-expanded').addClass('hide');
+            	}
+
+			});
+			//$('#accordion').addClass('hide');
 			$('.handle').show();
 			$('.slide-out-div').show();
 			<?php

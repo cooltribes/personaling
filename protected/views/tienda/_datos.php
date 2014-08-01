@@ -23,8 +23,15 @@ foreach($prods as $data):
 	$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
     $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
 
+    
+    ?>
+
+    <?php
+
 	// registrar impresión en google analytics
 	Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
+		//console.log('tales');
+
 		ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
 		  'id': '".$data->id."',                   // Product ID (string).
 		  'name': '".$data->nombre."', // Product name (string).
@@ -38,7 +45,9 @@ foreach($prods as $data):
 		
 		ga('send', 'pageview');              // Send product impressions with initial pageview.
 
-	");	
+		
+
+	", CClientScript::POS_END);	
 
 	$cont++;
 
@@ -50,6 +59,19 @@ foreach($prods as $data):
 		$tienda=null;
 ?>
 	<div class="div_productos">
+		<div class="json_product" style="display:none;">
+    	<?php
+    	// hidden div con json para la función que se ejecuta con el scroll infinito
+    	echo json_encode(array(
+    		'id' => $data->id,
+    		'name' => $data->nombre,
+    		'category' => $category->nombre,
+    		'brand' => $data->mymarca->nombre,
+    		'list' => 'Product impression',
+    		'position' => $cont
+    	));
+    	?>
+    </div>
 	<?php
 	
 $id=0;
@@ -251,7 +273,7 @@ endforeach;?>
 </div>
 <script>	
 mixpanel.track_links(".link_producto", "Clicked Productos",function(ele) { 
-    alert('asd');
+    //alert('asd');
     return { type: $(ele).attr('href')}
     });
 function over(id){
@@ -284,7 +306,7 @@ $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'loadingText' => 'Consultando Productos',
 	    'donetext' => 'No more',
 
-	  //  'afterAjaxUpdate' => 'alert("hola");',
+	    //'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
 	)); 
 			

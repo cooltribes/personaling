@@ -123,8 +123,6 @@ class TiendaController extends Controller
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
 
-		//var_dump(Yii::app()->session);
-		//var_dump($_POST);
 		if(isset($_POST['outlet'])){
 			if($_POST['outlet'] == 'true'){
 				$producto->outlet = 1; // productos en el outlet
@@ -143,38 +141,7 @@ class TiendaController extends Controller
 		}
 
 		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
-		/*
-		if(isset(Yii::app()->session['f_color'])){
-			unset(Yii::app()->session['f_color']);
-			
-		}
 		
-		if(isset(Yii::app()->session['f_marca'])){
-			unset(Yii::app()->session['f_marca']);
-			
-		}
-		if(isset(Yii::app()->session['f_cat'])){
-			unset(Yii::app()->session['f_cat']);
-			
-		}
-		if(isset(Yii::app()->session['f_text'])){
-			unset(Yii::app()->session['f_text']);
-			
-		}
-		
-		if(isset(Yii::app()->session['max'])){
-			unset(Yii::app()->session['max']);
-			
-		}
-		if(isset(Yii::app()->session['min'])){
-			unset(Yii::app()->session['min']);
-			
-		}
-		if(isset(Yii::app()->session['p_index'])){
-			unset(Yii::app()->session['p_index']);
-			
-		}
-		*/
 		$a ="a"; 
 	
 		$lims=Precio::model()->getLimites();
@@ -221,8 +188,7 @@ class TiendaController extends Controller
 		
 		  
     	if( isset($_POST['colorhid']) ||  (isset($_GET['page']) && isset(Yii::app()->session['bandera']) ) ){
-    		//echo 'if gigante';
-    	//	if(isset($_POST['colorhid'])){
+    
     		Yii::app()->session['bandera'] = true;
 		
     		
@@ -243,20 +209,7 @@ class TiendaController extends Controller
 			if(strlen($_POST['texthid'])>0){
 				Yii::app()->session['f_text'] = $_POST['texthid'];
 
-				/*if(isset($_POST['outlet'])){
-					if($_POST['outlet'] == 'true'){
-						//$producto->outlet = 1; // productos en el outlet
-						Yii::app()->session['outlet'] = $_POST['outlet'];
-					}else{
-						Yii::app()->session['outlet'] = 'false';
-					}
-				}else{
-					if(isset(Yii::app()->session['outlet'])){
-							unset(Yii::app()->session['outlet']);
-						}
-				}*/
-
-				//var_dump(Yii::app()->session['outlet']);
+				
 				
 			} else {
 				if (isset($_POST['colorhid'])){	 
@@ -273,7 +226,7 @@ class TiendaController extends Controller
 
 				if(isset($_POST['outlet'])){
 					if($_POST['outlet'] == 'true'){
-						//$producto->outlet = 1; // productos en el outlet
+
 						Yii::app()->session['outlet'] = $_POST['outlet'];
 					}else{
 						Yii::app()->session['outlet'] = 'false';
@@ -415,16 +368,15 @@ class TiendaController extends Controller
 			$pages->pageSize = 12;
 			
 			$pages->applyLimit($criteria);
-	
-			
-			
 			 
 			$dataProvider = Producto::model()->findAll($criteria);
+
 			if ((isset($_GET['page']))){
 				
 				$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 				$colores=Color::model()->findAll();
 				ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);//METRICAS
+
 				$this->render('index_new',
 						array('index'=>$producto,
 						'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
@@ -438,7 +390,7 @@ class TiendaController extends Controller
 				   
 				    echo CJSON::encode(array(  
                     'status' => 'success',
-                    //'condicion' => $total,
+         
                     'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
                         'pages' => $pages, 'total'=>$total), true,true)));
 			}			 
@@ -447,13 +399,13 @@ class TiendaController extends Controller
 					
 				echo CJSON::encode(array(  
                     'status' => 'success',
-                    //'condicion' => $total,
+            
                     'div' => "<span class='empty'>No se encontraron resultados para esta búsqueda.  </span>")); 
 				 
 			}
 		}
 		else{
-			//echo 'else';
+
 			unset(Yii::app()->session['bandera']);
 		if(isset(Yii::app()->session['f_color'])){
 			unset(Yii::app()->session['f_color']);
@@ -511,6 +463,7 @@ class TiendaController extends Controller
 		$colores=Color::model()->findAllByAttributes(array('padreID'=>'0'));
 		
 		ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);
+
 		$this->render('index_new',
 			array('index'=>$producto,
 				'dataProvider'=>$dataProvider,'categorias'=>$categorias, 

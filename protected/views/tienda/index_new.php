@@ -711,5 +711,8 @@ function refresh(reset)
 			})
 		});
 		
+		function nelson(pos, json_text){
+			console.log(json_text);
+		}
 		
 	</script>

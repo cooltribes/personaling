@@ -415,16 +415,15 @@ class TiendaController extends Controller
 			$pages->pageSize = 12;
 			
 			$pages->applyLimit($criteria);
-	
-			
-			
 			 
 			$dataProvider = Producto::model()->findAll($criteria);
+
 			if ((isset($_GET['page']))){
 				
 				$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 				$colores=Color::model()->findAll();
 				ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);//METRICAS
+
 				$this->render('index_new',
 						array('index'=>$producto,
 						'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
@@ -511,6 +510,7 @@ class TiendaController extends Controller
 		$colores=Color::model()->findAllByAttributes(array('padreID'=>'0'));
 		
 		ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);
+
 		$this->render('index_new',
 			array('index'=>$producto,
 				'dataProvider'=>$dataProvider,'categorias'=>$categorias, 

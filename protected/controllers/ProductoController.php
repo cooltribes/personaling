@@ -27,8 +27,7 @@ class ProductoController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view','detalle','tallas','tallaspreview',
-                                    'colorespreview','colores','imagenColor','updateCantidad','encantar',
-                                    'contarClick'),
+                                    'colorespreview','colores','imagenColor','updateCantidad','encantar','productoszoho','contarClick'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1655,7 +1654,18 @@ public function actionReportexls(){
 									/* Todos los datos a Zoho */
 									$zoho = New ZohoProductos;
 									$zoho->nombre = $model->nombre." - ".$tallacolor['sku'];
-									$zoho->marca = $model->mymarca->nombre;
+									
+									if(strpos($producto->mymarca->nombre, "&") === false )
+										$zoho->marca = $producto->mymarca->nombre;
+									else{
+										$marca_cambiar = $producto->mymarca->nombre;
+										
+										$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+										$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+										
+										$zoho->marca = $marcacorregida;
+									}
+
 									$zoho->referencia = $model->codigo;
 									if($model->estado==0)
 										$zoho->estado = "TRUE"; 
@@ -1691,7 +1701,30 @@ public function actionReportexls(){
 									}
 									$precios = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->id));
 									
-									$zoho->descripcion = $model->descripcion;
+									if(strpos($producto->descripcion, "&nbsp;") === false)
+										$zoho->descripcion = $producto->descripcion;
+									else{
+										$cambiar = $producto->descripcion;
+										$primera = str_replace("&nbsp;",' ' ,$cambiar);
+										
+										$zoho->descripcion = $primera; 
+									}
+									
+									if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)
+										$zoho->descripcion = $producto->descripcion;
+									else{
+										$cambiar = $producto->descripcion;
+										$primera = str_replace("<",'%3C' ,$cambiar);
+										$segunda = str_replace(">",'%3E' ,$primera);
+										
+										$descripcion_nueva = "<![CDATA[".$segunda."]]>";
+										//echo htmlspecialchars($marcacorregida);
+										
+										//echo $marcacorregida;
+										//Yii::app()->end();
+										
+										$zoho->descripcion = $descripcion_nueva;
+									}
 									
 									if (isset($precios)){
 										$zoho->costo = $precios->costo;
@@ -1723,9 +1756,10 @@ public function actionReportexls(){
 										$zoho->tags = $model->seo->pClave;
 									}
 									$respuesta = $zoho->save_potential();
-									
+									//var_dump($respuesta);
+									//Yii::app()->end();
 									$datos = simplexml_load_string($respuesta);
-																
+									
 									$id = $datos->result[0]->recorddetail->FL[0];
 									//echo $id;	
 									// guarda el id de zoho en el producto
@@ -4338,6 +4372,155 @@ public function actionReportexls(){
 
         
         }
-        
+		
+		public function actionProductosZoho(){ 
+			
+			$criteria = new CDbCriteria(array('order'=>'id'));
+			$criteria->addBetweenCondition('id', 700, 750); 
+			//$rows = user::model()->findAllByAttributes($user, $criteria);
+			
+			$todos_preciotallacolor = Preciotallacolor::model()->findAll($criteria);
+			$y=0; 
+			
+			foreach($todos_preciotallacolor as $ptc){ // para cada combinacion crear un nuevo producto en zoho
+			//	if($y<50){
+				$producto = Producto::model()->findByPk($ptc->producto_id);
+				$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+				
+				$zoho = new ZohoProductos;
+				
+				$zoho->nombre = $producto->nombre." - ".$ptc->sku;
+				
+				if(strpos($producto->mymarca->nombre, "&") === false )
+					$zoho->marca = $producto->mymarca->nombre;
+				else{
+					$marca_cambiar = $producto->mymarca->nombre;
+					$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+					
+					$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+					//echo htmlspecialchars($marcacorregida);
+					
+					//echo $marcacorregida;
+					//Yii::app()->end();
+					
+					$zoho->marca = $marcacorregida;
+				}
+				
+				$zoho->referencia = $producto->codigo;
+				
+				if($producto->estado==0)
+					$zoho->estado = "TRUE";
+				
+				$zoho->peso = $producto->peso;
+				$zoho->fecha = date("Y-m-d",strtotime($producto->fecha));
+				
+				$hascateg = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id));
+				$i=1;
+				foreach($hascateg as $each){
+					$cat = Categoria::model()->findByPk($each->tbl_categoria_id);	
+					
+					if($i==1)
+						$zoho->categoria = $cat->nombre;
+					if($i==2)
+						$zoho->subcategoria1 = $cat->nombre;
+					if($i==3)
+						$zoho->subcategoria2 = $cat->nombre;
+					
+					$i++;
+				}
+				
+				if($producto->tipo == 0)
+					$zoho->tipo = "Interno"; 
+				else{
+					$zoho->tienda = $producto->tienda->name;
+					$zoho->tipo = "Externo"; 
+					$zoho->url = $producto->url_externo;	
+				}
+				
+				if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)
+					$zoho->descripcion = $producto->descripcion;
+				else{
+					$cambiar = $producto->descripcion;
+					$primera = str_replace("<",'%3C' ,$cambiar);
+					$segunda = str_replace(">",'%3E' ,$primera);
+					
+					$descripcion_nueva = "<![CDATA[".$segunda."]]>";
+					//echo htmlspecialchars($marcacorregida);
+					
+					//echo $marcacorregida;
+					//Yii::app()->end();
+					
+					$zoho->descripcion = $descripcion_nueva;
+				}
+				
+				
+				if(strpos($producto->descripcion, "&nbsp;") === false)
+					$zoho->descripcion = $producto->descripcion;
+				else{
+					$cambiar = $producto->descripcion;
+					$primera = str_replace("&nbsp;",' ' ,$cambiar);
+					
+					$zoho->descripcion = $primera; 
+				}
+				
+				if(isset($precio))
+				{
+					$zoho->costo = $precio->costo;
+					
+					$zoho->precioVenta = $precio->precioVenta;
+					
+					if($precio->ahorro > 0){
+						$zoho->precioDescuento = $precio->precioDescuento;
+						$zoho->descuento = $precio->ahorro;
+					}
+					else{
+						$zoho->precioDescuento = $precio->precioImpuesto;
+						$zoho->descuento = 0; 
+					}
+					
+					$zoho->precioImpuesto = $precio->precioImpuesto;
+			
+					if($precio->tipoDescuento == 0) // descuento por porcentaje
+						$zoho->porcentaje = $precio->valorTipo;
+					else 	 
+						$zoho->porcentaje = 0;
+				}
+				
+				$zoho->talla = $ptc->mytalla->valor;
+				$zoho->color = $ptc->mycolor->valor;
+				$zoho->SKU = $ptc->sku;
+				$zoho->cantidad = $ptc->cantidad;
+				
+				if(isset($producto->seo))
+				{
+					$zoho->titulo = $producto->seo->mTitulo;
+					$zoho->metaDescripcion = $producto->seo->mDescripcion;
+					$zoho->tags = $producto->seo->pClave;
+				}
+				//var_dump($zoho);
+				//echo "<br><br>";
+				
+				$respuesta = $zoho->save_potential();
+	
+				//var_dump($respuesta)."<br>";
+				echo htmlspecialchars($respuesta)."<p><p>";
+		
+				$datos = simplexml_load_string($respuesta);
+				// var_dump($datos);
+		
+				$id = $datos->result[0]->recorddetail->FL[0];
+				echo $id;	
+				
+				$ptc->zoho_id = $id;
+				$ptc->save();
+				/*
+				$y++;
+				}
+				else {
+					break;
+				}*/
+			}
+			
+		}
         
 }

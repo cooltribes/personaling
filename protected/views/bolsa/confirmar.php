@@ -396,7 +396,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 				?>
           <a href="<?php echo $preferenceResult['response']['sandbox_init_point']; ?>" name="MP-Checkout" id="boton_mp" class="blue-L-Rn-VeAll" mp-mode="modal"><?php echo Yii::t('contentForm','Pay MercadoPago') ?></a>
           <?php 
-          } else if($tipo_pago == 1  || $tipo_pago == 2){
+          } 
+          else if($tipo_pago == 1  || $tipo_pago == 2 || $tipo_pago == 7){
           	
                   $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                         'id' => 'verticalForm',
@@ -410,7 +411,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             //                    'buttonType'=>'submit',
                         'buttonType' => 'button',
                         'size' => 'large',
-                        'label' => $tipo_pago == 2 ? Yii::t('contentForm', 'Pay with credit card') : Yii::t('contentForm', 'Complete purchase'),
+                        'label' => $tipo_pago == 2 ? Yii::t('contentForm', 'Pay with credit card')
+                        : Yii::t('contentForm', 'Complete purchase'),
                         //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
                         'icon' => 'lock white',
                         'htmlOptions' => array(
@@ -422,82 +424,84 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     $this->endWidget();
                     
                   /*Si es en españa bankCard (5) o Paypal (6) o prueba para develop y test (8)*/  
-		  }else if($tipo_pago == 5  || $tipo_pago == 6 || $tipo_pago == 8){ 
+		  }
+          
+          else if($tipo_pago == 5  || $tipo_pago == 6 || $tipo_pago == 8)
+              { 
           	
-                      if($tipo_pago == 5){
-                          
-                        $this->widget('ext.fancybox.EFancyBox', array(
-                            'target'=>'#btn-ComprarEsp',
-                            'config'=>array(
-                                "type" => "iframe",                        
-                                "height" => "100%",                        
-                                "width" => "65%",                        
-                                "autoScale" => false,                        
-                                "transitionIn" => "none",
-                                "transitionOut" => "none",
-                                
-//                                "titlePosition" => "outside",
-//                                "titleFormat" => "NELSON",
-                                
-                                "hideOnOverlayClick" => false,
-                                "enableEscapeButton" => false,
-                                "showCloseButton" => false,
+              if($tipo_pago == 5){
+
+                $this->widget('ext.fancybox.EFancyBox', array(
+                    'target'=>'#btn-ComprarEsp',
+                    'config'=>array(
+                        "type" => "iframe",                        
+                        "height" => "100%",                        
+                        "width" => "65%",                        
+                        "autoScale" => false,                        
+                        "transitionIn" => "none",
+                        "transitionOut" => "none",                                
+
+                        "hideOnOverlayClick" => false,
+                        "enableEscapeButton" => false,
+                        "showCloseButton" => false,
 //                                "onCleanup" => 'js:function(){
 //                                    var res = confirm("¿Esta seguro que desea cerrar?");
 //                                    return res;
 //                                }'
-                                
-                                //"modal" => true,
 
-                                ),
-                            )
-                        );
-                      }                        
-                        echo "<div class='well text_align_center'>";
-                        $this->widget('bootstrap.widgets.TbButton', array(
-                            'type'=>'warning',        
-                            //'buttonType'=>'button',
-                            'size'=>'large',
-                            'label'=>$tipo_pago==8 ? Yii::t('contentForm','CONFIRMAR COMPRA'):
-                            ($tipo_pago==5 ? Yii::t('contentForm','Pay with credit card'):
-                                Yii::t('contentForm','Pay with PayPal')),
-                            'url'=> $urlAztive, // action
-                            'icon'=>'lock white',
-                            'htmlOptions'=>array(
-        //                        'onclick'=>'js:enviar_pago();'
-                                'id' => 'btn-ComprarEsp',
-//                                'data-toggle' => "modal",
-//                                'data-target' => "#modalPrueba",
-                                )
-                        )); 
+                        //"modal" => true,
+
+                        ),
+                    )
+                );
+              }                        
+
+                echo "<div class='well text_align_center'>";
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type'=>'warning',        
+                    //'buttonType'=>'button',
+                    'size'=>'large',
+                    'label'=>$tipo_pago==8 ? Yii::t('contentForm','CONFIRMAR COMPRA'):
+                    ($tipo_pago==5 ? Yii::t('contentForm','Pay with credit card'):
+                        Yii::t('contentForm','Pay with PayPal')),
+                    'url'=> $urlAztive, // action
+                    'icon'=>'lock white',
+                    'htmlOptions'=>array(
+    //                        'onclick'=>'js:enviar_pago();'
+                        'id' => 'btn-ComprarEsp',
+    //                                'data-toggle' => "modal",
+    //                                'data-target' => "#modalPrueba",
+                        )
+                ));
+                
+            echo "</div>";
                         
-                        echo "</div>";
-                        
-		  }else if($tipo_pago == 7){
-                      
-                      $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-                            'id' => 'verticalForm',
-                            'action' => Yii::app()->createUrl('bolsa/comprar'),
-                            'htmlOptions' => array('class' => 'text_align_center'),
-                        ));
-
-                        echo CHtml::hiddenField('codigo_randon', rand());
-                        $this->widget('bootstrap.widgets.TbButton', array(
-                            'type' => 'warning',
-                            'buttonType'=>'submit',
-//                            'buttonType' => 'button',
-                            'size' => 'large',
-                            'label' => Yii::t('contentForm', 'Complete purchase'),
-                            //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
-                            'icon' => 'lock white',
-                            'htmlOptions' => array(
-                //                        'onclick'=>'js:enviar_pago();'
-                                'id' => 'btn-ComprarSaldo',
-                            )
-                        ));
-
-                        $this->endWidget();
-                  }
+          }
+//          else if($tipo_pago == 7){
+//                      
+//                      $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+//                            'id' => 'verticalForm',
+//                            'action' => Yii::app()->createUrl('bolsa/comprar'),
+//                            'htmlOptions' => array('class' => 'text_align_center'),
+//                        ));
+//
+//                        echo CHtml::hiddenField('codigo_randon', rand());
+//                        $this->widget('bootstrap.widgets.TbButton', array(
+//                            'type' => 'warning',
+//                            'buttonType'=>'submit',
+////                            'buttonType' => 'button',
+//                            'size' => 'large',
+//                            'label' => Yii::t('contentForm', 'Complete purchase'),
+//                            //'url'=>Yii::app()->createUrl('bolsa/comprar'), // action
+//                            'icon' => 'lock white',
+//                            'htmlOptions' => array(
+//                //                        'onclick'=>'js:enviar_pago();'
+//                                'id' => 'btn-ComprarSaldo',
+//                            )
+//                        ));
+//
+//                        $this->endWidget();
+//                  }
 		  ?>
           
         </div>
@@ -520,7 +524,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
 <div class="wrapper_home hide">
             
-    <div class="box_20130928 margin_bottom_small">
+    <div class="box_20130928 margin_bottom_small" style="position: fixed;">
             <h1>
                 <span><?php echo Yii::t('contentForm', 'Your payment is being processed'); ?></span>
                 <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
@@ -550,23 +554,39 @@ else
 
 
 <script>
-    
+
+function registrarClick(){
+    var url = "<?php echo $this->createUrl("bolsa/clickBotonConfirmar"); ?>";
+        var tipoPago = <?php echo $tipo_pago ?>;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'JSON',
+            data: {tipoPago: tipoPago},
+//            success: function(data){
+//
+//                console.log(data);
+//            }
+        });
+}
+
 $(document).ready(function(){
     $("#btn-Comprar").click(function(e){
 	$(this).attr("disabled", true);
         $(this).html('<i class="icon-lock icon-white"></i> Procesando pago...');
         $("body").addClass("aplicacion-cargando");
         $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
+        
         $("#verticalForm").submit();
-    });
+        registrarClick();
+    });    
     
-//    $("#btn-ComprarEsp").click(function(e){
-//	$(this).attr("disabled", true);
-//        $(this).html('<i class="icon-lock icon-white"></i> Procesando pago...');
-//        $("body").addClass("aplicacion-cargando");
-//        $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
-//        
-//    });
+    $("#btn-ComprarEsp").click(function(e){
+	$(this).attr("disabled", true);
+        $(this).html('<i class="icon-lock icon-white"></i> Procesando pago...');
+        
+        registrarClick();
+    });
 
     
 });
@@ -841,22 +861,7 @@ $(document).ready(function(){
 	}
 	
         
-//Guardar el click en "COMPRAR", para 
-//    $("#comprarExterno").click(function(e){
-//        var url = "<?php echo $this->createUrl("producto/contarClick"); ?>";
-//        var idProducto = <?php echo $producto->id ?>;
-//        $.ajax({
-//            type: 'POST',
-//            url: url,
-//            dataType: 'JSON',
-//            data: {idProducto: idProducto},
-//            success: function(data){
-//
-//                console.log(data);
-//            }
-//        });
-//
-//    });        
+       
         
         
 </script> 

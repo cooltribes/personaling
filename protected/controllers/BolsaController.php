@@ -23,26 +23,27 @@ class BolsaController extends Controller
 	 
 	public function accessRules()
 	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('modal','credito','index','limpiar',
-                                    'eliminardireccion','editar','editardireccion','agregar','actualizar',
-                                    'pagos','compra','eliminar','direcciones','confirmar','comprar','cpago',
-                                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 'comprarGC'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index'),
-				//'users'=>array('admin'),
-				'expression' => 'UserModule::isAdmin()',
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
+            return array(
+                array('allow',  // allow all users to perform 'index' and 'view' actions
+                        'users'=>array('*'),
+                ),
+                array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                    'actions'=>array('modal','credito','index','limpiar',
+                    'eliminardireccion','editar','editardireccion','agregar','actualizar',
+                    'pagos','compra','eliminar','direcciones','confirmar','comprar','cpago',
+                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 'comprarGC',
+                    'clickBotonConfirmar'),
+                    'users'=>array('@'),
+                ),
+                array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                        'actions'=>array('index'),
+                        //'users'=>array('admin'),
+                        'expression' => 'UserModule::isAdmin()',
+                ),
+                array('deny',  // deny all users
+                        'users'=>array('*'),
+                ),
+            );
 	}
 	
 	public function actionIndex()
@@ -655,7 +656,8 @@ class BolsaController extends Controller
 
                     /*Si es compra normal del usuario*/
                     if(!$admin){
-						ShoppingMetric::registro(ShoppingMetric::STEP_CONFIRMAR,array("bolsa_id"=>$bolsa->id));   
+                        ShoppingMetric::registro(ShoppingMetric::STEP_CONFIRMAR,
+                                array("bolsa_id"=>$bolsa->id));   
                     }                 
                     /*Revisar si actualizo la pagina para hacer la compra de nuevo
                      * en menos de un minuto
@@ -778,8 +780,13 @@ class BolsaController extends Controller
                     //Para cuando hay recurrencias
 //                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
 //                            $idPagoAztive==8?"I":null, $optional, $cData);    
+                    //Como no se tiene en este momento un ID de la orden,
+                    //Poner un orderid mientras tanto en base al usuario
+                    //y a la fecha del pago.
+                    $orderID = "U" . Yii::app()->user->id."L".$bolsa->getLooks().
+                            "P".$bolsa->getProductos();                    
                     
-                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
+                    $urlAztive = $pago->AztivePay($monto, $idPagoAztive, $orderID,
                             $idPagoAztive==8?NULL:NULL, $optional, $cData);  
                     
                     
@@ -1271,6 +1278,17 @@ class BolsaController extends Controller
                             ));
 			if (!$bolsa->checkInventario())
 				$this->redirect($this->createAbsoluteUrl('bolsa/index',array('mensaje'=>"Hola"),'http'));
+                        
+                        /*Revisar si actualizo la pagina para hacer la compra de nuevo
+                         * en menos de un minuto
+                         */
+                        if(User::hasRecentOrder()){                       
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash("warning", "Al parecer estás intentando
+                                hacer otra compra.<br>Revisa tu lista de pedidos, acabamos de registrar uno nuevo.");                
+
+                            $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+                        }
                         
 			$tipoPago = Yii::app()->getSession()->get('tipoPago');	
                         
@@ -2808,7 +2826,8 @@ class BolsaController extends Controller
          */
         public function actionNotificacionAzt(){
             
-            error_log("[Notification develop]" . print_r($_GET, true));
+            error_log("Notification Develop: " . print_r("Se registro una notificacion desde Aztive", true));
+            
 
             $sCustomerID      = isset($_GET['onepay_customer_code']) ? $_GET['onepay_customer_code'] : "-1";
             $sCustomerTerminal = isset($_GET['onepay_customer_terminal']) ? $_GET['onepay_customer_terminal'] : '';
@@ -2847,10 +2866,6 @@ class BolsaController extends Controller
             exit;
 //            }
             
-            
-//            $orden = Orden::model()->findByPk(11);
-//            $this->generarOutbound($orden);
-//            Yii::app()->end();
             
 	}
         /**
@@ -2972,10 +2987,10 @@ class BolsaController extends Controller
                 
              
             /*ID del usuario propietario de la bolsa*/
-            $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
+            $userId = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                 : Yii::app()->user->id;
 
-            $userId = $usuario;
+             
             $usuario = User::model()->findByPk($userId);
             $bolsa = Bolsa::model()->findByAttributes(array(
                             'user_id' => $userId,
@@ -3444,6 +3459,35 @@ class BolsaController extends Controller
             
             //Enviar Outbound a LF y guardarlo en local para respaldo
             $subido = MasterData::subirArchivoFtp($outbound, 3, $orden->id);
+            
+            
+        }
+        
+        public function actionClickBotonConfirmar() {
+            
+            if(isset($_POST["tipoPago"])){
+                $data = array("Tipo de Pago" => "");
+                if($_POST["tipoPago"] == 5){
+                    $data["Tipo de Pago"] = "TPV Sabadell";
+                    
+                }elseif($_POST["tipoPago"] == 6){
+                    $data["Tipo de Pago"] = "PayPal";
+                    
+                }elseif($_POST["tipoPago"] == 7){
+                    $data["Tipo de Pago"] = "Con saldo o Cupon de descuento";                    
+                    
+                }elseif($_POST["tipoPago"] == 8){
+                    $data["Tipo de Pago"] = "Pago para pruebas";
+                    
+                }else{
+                    $data["Tipo de Pago"] = "Tipo de pago desconocido ({$_POST['tipoPago']})";
+                    
+                }                
+                
+
+                ShoppingMetric::registro(ShoppingMetric::STEP_CONFIRMAR_BOTON, $data);
+            
+            }
             
             
         }

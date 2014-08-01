@@ -64,8 +64,8 @@ class ZohoProductos{
 		$xml .= '</Products>';
 	//	var_dump($xml);
 
-		$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords";
-		$query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=1&duplicateCheck=2&xmlData=".$xml;
+		$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
+		$query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=2&duplicateCheck=2&xmlData=".$xml;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);

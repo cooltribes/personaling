@@ -1828,30 +1828,15 @@ public function actionReportexls(){
 
                 // registrar impresión en google analytics
 				Yii::app()->clientScript->registerScript('metrica_analytics',"
-					ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
-					  'id': '".$producto->id."',                   // Product ID (string).
-					  'name': '".$producto->nombre."', // Product name (string).
-					  'category': '".$category->nombre."',   // Product category (string).
-					  'brand': '".$producto->mymarca->nombre."',                // Product brand (string).
-					  //'variant': 'Black',               // Product variant (string).
-					  'list': 'Product detail',         // Product list (string).
-					  //'position': 1,                    // Product position (number).
-					  //'dimension1': 'Member'            // Custom dimension (string).
-					});
-
 					ga('ec:addProduct', {               // Provide product details in an productFieldObject.
 					  'id': '".$producto->id."',                   // Product ID (string).
 					  'name': '".$producto->nombre."', // Product name (string).
 					  'category': '".$category->nombre."',   // Product category (string).
 					  'brand': '".$producto->mymarca->nombre."',                // Product brand (string).
-					  //'variant': '',               // Product variant (string).
-					  //'price': '',                 // Product price (currency).
-					 	// 'coupon': 'APPARELSALE',          // Product coupon (string).
-					  //'quantity':                      // Product quantity (number).
 					});
 					
   					ga('ec:setAction', 'detail');       // Detail action.
- 
+ 					ga('send', 'pageview');       // Send product details view with the initial pageview.
 				");	
                 
             }

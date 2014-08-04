@@ -93,7 +93,7 @@ class Producto extends CActiveRecord
 			array('peso', 'numerical', 'min'=>0.1, 'tooSmall'=>'El peso debe ser mayor a 0'),
 			array('codigo', 'length', 'max'=>25),
 			array('nombre', 'length', 'max'=>70),
-			array('url_externo', 'length', 'max'=>100),
+			array('url_externo', 'length', 'max'=>256),
 			array('url_externo', 'url', 'defaultScheme' => 'http', 'allowEmpty' => true, 'message' => 'Formato de url inválido'),
 			array('nombre, codigo, marca_id, descripcion, peso', 'required','message'=>'{attribute} '.Yii::t('contentForm','cannot be blank')),
 			//array('proveedor', 'length', 'max'=>45), 

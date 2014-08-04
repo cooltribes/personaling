@@ -662,81 +662,75 @@ class ProfileController extends Controller
  */
 	public function actionTutipo()
 	{
-		$model = $this->loadUser();
-		$profile=$model->profile;
-		$profile->profile_type = 3;
-		$errorValidando = false;
-		//$profile=new Profile;
-		if(isset($_POST['ajax']) && $_POST['ajax']==='tutipo-form')
-		{
-			echo CActiveForm::validate($profile);
-			Yii::app()->end();
-		}	
-		if(isset($_POST['Profile'])) {
-			$profile->attributes=$_POST['Profile'];
-			if($profile->validate())
-			{
-					
-					
-					
-				if ($profile->save())
-				{
-					$model->status_register = User::STATUS_REGISTER_TIPO;
-                                        
-                                        /*Crear el filtro de perfil propio*/
-                                        
-                                        $filter = Filter::model()->findByAttributes(
-                                                array('name' => "Mi Perfil", 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
-                                        );
+            $model = $this->loadUser();
+            $profile = $model->profile;
+            $profile->profile_type = 3;
+            $errorValidando = false;
+            //$profile=new Profile;
+            if (isset($_POST['ajax']) && $_POST['ajax'] === 'tutipo-form') {
+                echo CActiveForm::validate($profile);
+                Yii::app()->end();
+            }
+            if (isset($_POST['Profile'])) 
+            {
+                $profile->attributes = $_POST['Profile'];
+                
+                if ($profile->validate()) {
+                    
+                    if ($profile->save()) {
+                        
+                        $model->status_register = User::STATUS_REGISTER_TIPO;
+                        
+                        /* Crear el filtro de perfil propio */
+                        $filter = Filter::model()->findByAttributes(
+                                array('name' => "Mi Perfil", 'type' => '0', 'user_id' => Yii::app()->user->id) //Comprobar que no exista el nombre
+                        );
 
-                                        //si existe ya un filtro, borrarlo.
-                                        if ($filter) {                                            
-                                           $filter->delete(); 
-                                        }
-                                        
-                                        $filter = new Filter;
-                                        $filter->name = "Mi Perfil";
-                                        $filter->type = 0;
-                                        $filter->user_id = Yii::app()->user->id;
-
-                                        if ($filter->save()) {
-                                            $filterProfile = new FilterProfile;
-                                            $filterProfile->attributes = $_POST['Profile'];
-                                            $filterProfile->id_filter = $filter->id_filter;
-
-                                            if($filterProfile->validate()){
-                                                $filterProfile->save();                                                                  
-                                            }
-                                        }
-                                         
-                                        
-					if ($model->save())	{
-						if(isset(Yii::app()->session['registerStep'])){
-                                    	if(Yii::app()->session['registerStep']==1)
-											Yii::app()->session['registerStep']=2;
-										else
-											unset(Yii::app()->session['registerStep']);
-                                    		
+                        //si existe ya un filtro, borrarlo.
+                        if ($filter) {
+                            $filter->delete();
                         }
-						$this->redirect(array('/user/profile/tuestilo'));
-					}
-					
-						
-					else 
-						Yii::trace('username:'.$model->username.' Error:'.implode('|',$model->getErrors()), 'registro');
-					
-				} else {
-					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
-				}
-			} else {
-				$errorValidando = true;
-			}
-		}	
-	    $this->render('tutipo',array(
-	    	'model'=>$model,
-			'profile'=>$model->profile, 
-			'errorValidando'=>$errorValidando,
-	    ));
+
+                        $filter = new Filter;
+                        $filter->name = "Mi Perfil";
+                        $filter->type = 0;
+                        $filter->user_id = Yii::app()->user->id;
+
+                        if ($filter->save()) {
+                            $filterProfile = new FilterProfile;
+                            $filterProfile->attributes = $_POST['Profile'];
+                            $filterProfile->id_filter = $filter->id_filter;
+
+                            if ($filterProfile->validate()) {
+                                $filterProfile->save();
+                            }
+                        }
+
+                        if ($model->save()) {
+                            if (isset(Yii::app()->session['registerStep'])) {
+                                if (Yii::app()->session['registerStep'] == 1)
+                                    Yii::app()->session['registerStep'] = 2;
+                                else
+                                    unset(Yii::app()->session['registerStep']);
+                            }
+                            $this->redirect(array('/user/profile/tuestilo'));
+                        }
+                        else
+                            Yii::trace('username:' . $model->username . ' Error:' . implode('|', $model->getErrors()), 'registro');
+                    } else {
+                        Yii::trace('username:' . $model->username . ' Error:' . implode('|', $profile->getErrors()), 'registro');
+                    }
+                } else {
+                    $errorValidando = true;
+                }
+            }
+            
+            $this->render('tutipo', array(
+                'model' => $model,
+                'profile' => $model->profile,
+                'errorValidando' => $errorValidando,
+            ));
+            
 	}
 /**
  * Editar tu tipo  

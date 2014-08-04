@@ -297,7 +297,7 @@ if(!Yii::app()->user->isGuest){
 			);
 			?>
 		</div>
-    <div style="height: 48px"></div>
+                <div style="height: 48px"></div>
 		<?php
 	}
 }

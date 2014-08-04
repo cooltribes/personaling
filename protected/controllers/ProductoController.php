@@ -27,7 +27,8 @@ class ProductoController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view','detalle','tallas','tallaspreview',
-                                    'colorespreview','colores','imagenColor','updateCantidad','encantar','productoszoho','contarClick'),
+                                    'colorespreview','colores','imagenColor','updateCantidad','encantar',
+                                    'productoszoho','contarClick'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1697,7 +1698,7 @@ public function actionReportexls(){
 									}else{
 										$zoho->tipo = "Externo";
 										$zoho->tienda = $model->tienda->name;
-									 	$zoho->url = $model->url_externo;
+									 	$zoho->url = "http://personaling.es/producto/detalle/".$model->id; 
 									}
 									$precios = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->id));
 									
@@ -1707,7 +1708,9 @@ public function actionReportexls(){
 										$cambiar = $model->descripcion;
 										$primera = str_replace("&nbsp;",' ' ,$cambiar);
 										
-										$zoho->descripcion = $primera; 
+										$zoho->descripcion = $primera;
+										$model->descripcion = $primera; 
+										$model->save();
 									}
 									
 									if(strpos($model->descripcion, "<") === false && strpos($model->descripcion, ">") === false)
@@ -2371,13 +2374,46 @@ public function actionReportexls(){
 								
 								/* DATOS PARA ZOHO */ 
 								$zoho->nombre = $rNombre." - ".$rSku;
-								$zoho->marca = $marca->nombre;
+								
+								if(strpos($producto->mymarca->nombre, "&") === false )
+									$zoho->marca = $producto->mymarca->nombre;
+								else{
+									$marca_cambiar = $producto->mymarca->nombre;
+										
+									$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+									$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+									
+									$zoho->marca = $marcacorregida;
+								}
+								
 								$zoho->referencia = $rRef;
 								if($producto->estado==0)
 									$zoho->estado = "TRUE";
 								$zoho->peso = $rPeso;
 								$zoho->fecha = date("Y-m-d",strtotime($producto->fecha));
-								$zoho->descripcion = $rDescrip;
+								//$zoho->descripcion = $rDescrip;
+								
+								if(strpos($producto->descripcion, "&nbsp;") === false)
+									$zoho->descripcion = $producto->descripcion;
+								else{
+									$cambiar = $producto->descripcion;
+									$primera = str_replace("&nbsp;",' ' ,$cambiar);
+										
+									$zoho->descripcion = $primera;
+									$producto->descripcion = $primera;
+									$producto->save();
+								}
+									
+								if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)
+									$zoho->descripcion = $producto->descripcion;
+								else{
+									$cambiar = $producto->descripcion;
+									$primera = str_replace("<",'%3C' ,$cambiar);
+									$segunda = str_replace(">",'%3E' ,$primera);
+										
+									$descripcion_nueva = "<![CDATA[".$segunda."]]>";
+									$zoho->descripcion = $descripcion_nueva;
+								}
 								
                            	} else
                             { // no existe la referencia, es producto nuevo                           
@@ -2396,12 +2432,45 @@ public function actionReportexls(){
                                 
 								/* DATOS PARA ZOHO */      
 								$zoho->nombre = $rNombre." - ".$rSku;
-								$zoho->marca = $marca->nombre;
+								
+								if(strpos($marca->nombre, "&") === false )
+									$zoho->marca = $marca->nombre;
+								else{
+									$marca_cambiar = $marca->nombre;
+										
+									$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+									$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+									
+									$zoho->marca = $marcacorregida;
+								}
+								
 								$zoho->referencia = $rRef;
 								$zoho->estado = "FALSE";
 								$zoho->peso = $rPeso;
 								$zoho->fecha = date('Y-m-d H:i:s');
-								$zoho->descripcion = $rDescrip;
+								//$zoho->descripcion = $rDescrip;
+								
+								if(strpos($producto->descripcion, "&nbsp;") === false)
+									$zoho->descripcion = $producto->descripcion;
+								else{
+									$cambiar = $producto->descripcion;
+									$primera = str_replace("&nbsp;",' ' ,$cambiar);
+										
+									$zoho->descripcion = $primera;
+									$producto->descripcion = $primera;
+									$producto->save();
+								}
+									
+								if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)
+									$zoho->descripcion = $producto->descripcion;
+								else{
+									$cambiar = $producto->descripcion;
+									$primera = str_replace("<",'%3C' ,$cambiar);
+									$segunda = str_replace(">",'%3E' ,$primera);
+										
+									$descripcion_nueva = "<![CDATA[".$segunda."]]>";
+									$zoho->descripcion = $descripcion_nueva;
+								}
 									                            
                             }
                             // Si existe o no el producto, actualizar o insertar precio nuevo
@@ -2564,7 +2633,7 @@ public function actionReportexls(){
 							// guarda el id de zoho en el producto
 							
 							$ptc->zoho_id = $id;
-							$ptc->save(); 
+							$ptc->save();
 							
 							/*  ========================================== */
 							
@@ -4070,8 +4139,8 @@ public function actionReportexls(){
                             // la referencia existe, hay que actualizar los campos
                             $prodExiste = isset($producto);
 							
-							// Para datos de Zoho
-							$zoho = New ZohoProductos;
+                            // Para datos de Zoho
+                            $zoho = New ZohoProductos;
 							
                             // Marca para actualizar
                             $marca = Marca::model()->findByAttributes(array('nombre' => $rMarca));                                                        
@@ -4082,30 +4151,66 @@ public function actionReportexls(){
                             if($prodExiste){
 
                                 // actualiza el producto
-                                Producto::model()->updateByPk($producto->id, array(
-                                    'nombre' => $rNombre,
-                                    'marca_id' => $marca->id,
-                                    'descripcion' => $rDescrip,
-                                    'peso' => $rPeso,
-                                    'almacen' => $rAlmacen,
-                                    'status' => 1,
-                                    //para los externos
-                                    'tienda_id' => $tienda->id,
-                                    //no actualizar la url.
-                                    
-                                )); 
-                                
-								/* DATOS PARA ZOHO */      
-								$zoho->nombre = $rNombre." - ".$rSku;
-								$zoho->marca = $marca->nombre;
-								$zoho->referencia = $rRef;
-								if($producto->estado==0)
-									$zoho->estado = "TRUE";
-								$zoho->peso = $rPeso;
-								$zoho->fecha = date('Y-m-d H:i:s');
-								$zoho->descripcion = $rDescrip;
-								$zoho->tienda = $tienda->name;
-								$zoho->url = $rURL;
+                                    Producto::model()->updateByPk($producto->id, array(
+                                        'nombre' => $rNombre,
+
+                                        'marca_id' => $marca->id,
+                                        'descripcion' => $rDescrip,
+                                        'peso' => $rPeso,
+                                        'almacen' => $rAlmacen,
+                                        'status' => 1,
+                                        //para los externos
+                                        'tienda_id' => $tienda->id,
+                                        //no actualizar la url.
+
+                                    )); 
+
+                                    /* DATOS PARA ZOHO */      
+                                    $zoho->nombre = $rNombre." - ".$rSku;
+
+                                    if(strpos($producto->mymarca->nombre, "&") === false )
+                                            $zoho->marca = $producto->mymarca->nombre;
+                                    else{
+                                            $marca_cambiar = $producto->mymarca->nombre;
+
+                                            $marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+                                            $marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+
+                                            $zoho->marca = $marcacorregida;
+                                    }
+
+                                    $zoho->referencia = $rRef;
+                                    if($producto->estado==0)
+                                            $zoho->estado = "TRUE";
+                                    $zoho->peso = $rPeso;
+                                    $zoho->fecha = date('Y-m-d H:i:s');
+
+                                    if(strpos($producto->descripcion, "&nbsp;") === false)
+                                            $zoho->descripcion = $producto->descripcion;
+                                    else{
+                                            $cambiar = $producto->descripcion;
+                                            $primera = str_replace("&nbsp;",' ' ,$cambiar);
+
+                                            $zoho->descripcion = $primera;
+                                            $producto->descripcion = $primera;
+                                            $producto->save();
+                                    }
+
+                                    if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)
+                                            $zoho->descripcion = $producto->descripcion;
+                                    else{
+                                            $cambiar = $producto->descripcion;
+                                            $primera = str_replace("<",'%3C' ,$cambiar);
+                                            $segunda = str_replace(">",'%3E' ,$primera);
+
+                                            $descripcion_nueva = "<![CDATA[".$segunda."]]>";
+                                            $zoho->descripcion = $descripcion_nueva;
+                                    }
+
+                                    $zoho->descripcion = $rDescrip;
+
+                                    $zoho->tienda = $tienda->name;
+                                    $zoho->url = "http://personaling.es/producto/detalle/".$producto->id; 
                      		}
                             else
                             { // no existe la referencia, es producto nuevo                           
@@ -4130,17 +4235,53 @@ public function actionReportexls(){
                                 
                                 $producto->save(); 
 								
-								/* DATOS PARA ZOHO */      
-								$zoho->nombre = $rNombre." - ".$rSku;
-								$zoho->marca = $marca->nombre;
-								$zoho->referencia = $rRef;
-								$zoho->estado = "FALSE";
-								$zoho->peso = $rPeso;
-								$zoho->fecha = date('Y-m-d H:i:s');
-								$zoho->descripcion = $rDescrip;
-								$zoho->tienda = $tienda->name;
-								$zoho->url = $rURL;
+                                /* DATOS PARA ZOHO */      
+                                $zoho->nombre = $rNombre." - ".$rSku;
 
+                                if(strpos($marca->nombre, "&") === false )
+                                        $zoho->marca = $marca->nombre;
+                                else{
+                                        $marca_cambiar = $marca->nombre;
+
+                                        $marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+                                        $marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+
+                                        $zoho->marca = $marcacorregida;
+                                }
+
+                                $zoho->referencia = $rRef;
+                                $zoho->estado = "FALSE";
+                                $zoho->peso = $rPeso;
+                                $zoho->fecha = date('Y-m-d H:i:s');
+
+                                if(strpos($producto->descripcion, "&nbsp;") === false)
+                                        $zoho->descripcion = $producto->descripcion;
+                                else{
+                                        $cambiar = $producto->descripcion;
+                                        $primera = str_replace("&nbsp;",' ' ,$cambiar);
+
+                                        $zoho->descripcion = $primera;
+                                        $producto->descripcion = $primera;
+                                        $producto->save();
+                                }
+
+                                if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)
+                                        $zoho->descripcion = $producto->descripcion;
+                                else{
+                                        $cambiar = $producto->descripcion;
+                                        $primera = str_replace("<",'%3C' ,$cambiar);
+                                        $segunda = str_replace(">",'%3E' ,$primera);
+
+                                        $descripcion_nueva = "<![CDATA[".$segunda."]]>";
+                                        $zoho->descripcion = $descripcion_nueva;
+                                }
+
+                                //$zoho->descripcion = $rDescrip;
+
+                                $zoho->tienda = $tienda->name;
+                                $zoho->url = "http://personaling.es/producto/detalle/".$producto->id; 
+								
+								
                             }
                             // Si existe o no el producto, actualizar o insertar precio nuevo
                             $precio = Precio::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
@@ -4419,7 +4560,7 @@ public function actionReportexls(){
 				else{
 					$zoho->tienda = $producto->tienda->name;
 					$zoho->tipo = "Externo"; 
-					$zoho->url = $producto->url_externo;	
+					$zoho->url = "http://personaling.es/producto/detalle/".$producto->id; 
 				}
 				
 				if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)

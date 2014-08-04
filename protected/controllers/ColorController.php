@@ -27,7 +27,7 @@ class ColorController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','pruebazoho','pruebazohoproducto'),
+				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -350,7 +350,7 @@ class ColorController extends Controller
 	
 	public function actionPruebazohoproducto()
 	{
-		
+		/*
 		$zoho = New ZohoProductos; 
 		
 		$tallacolor = Preciotallacolor::model()->findByPk(7);
@@ -431,8 +431,8 @@ class ColorController extends Controller
 		
 		$tallacolor->zoho_id = $id;
 		if($tallacolor->save())
-			echo "<p>TODO BIEN";
-		
+			echo "<p>T BIEN";
+		*/
 	}
 	
 }

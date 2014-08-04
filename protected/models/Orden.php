@@ -466,7 +466,8 @@ class Orden extends CActiveRecord
                 if($column == 'prendas'){
                    
                    if (!strpos($joinLooks, 'tbl_orden_has_productotallacolor')) {
-                        $joinLooks .= ' JOIN tbl_orden_has_productotallacolor as oprod ON oprod.tbl_orden_id = t.id AND oprod.look_id = 0';
+                        $joinLooks .= ' JOIN tbl_orden_has_productotallacolor as oprod 
+                            ON oprod.tbl_orden_id = t.id AND oprod.look_id = 0';
                         $criteria->group = 't.id';
                         $havingLooks .= 'count(oprod.tbl_orden_id) '.$comparator.' '.$value.'';
                    }else{
@@ -479,7 +480,8 @@ class Orden extends CActiveRecord
                 if($column == 'pago_id'){                
                    
                     if (!strpos($joinPagos, 'tbl_detalle')) {
-                        $joinPagos .= ' JOIN tbl_detalle on tbl_detalle.orden_id = t.id AND ( tbl_detalle.tipo_pago '.$comparator.' '.$value.' )';
+                        $joinPagos .= ' JOIN tbl_detalle on tbl_detalle.orden_id = t.id AND
+                            ( tbl_detalle.tipo_pago '.$comparator.' '.$value.' )';
                     }else{
                         $joinPagos = str_replace(")", $logicOp.' tbl_detalle.tipo_pago '.$comparator.' '.$value.' )', $joinPagos) ; 
                     }           
@@ -867,14 +869,13 @@ class Orden extends CActiveRecord
 	
 	public function montoTipo($tipo){
 		
-           foreach ($this->detalles as $detallePago){
-            	           
-	            if($detallePago->tipo_pago==$tipo)
-					return Yii::app()->numberFormatter->format("#,##0.00",$detallePago->monto); // metodo de pago
-	                     
-        	}
-        
-		return Yii::app()->numberFormatter->format("#,##0.00",0);;
+           foreach ($this->detalles as $detallePago) {
+
+                if ($detallePago->tipo_pago == $tipo)
+                    return Yii::app()->numberFormatter->format("#,##0.00", $detallePago->monto); // metodo de pago
+            }
+
+            return Yii::app()->numberFormatter->format("#,##0.00",0);
 	}
 	
 

@@ -22,10 +22,6 @@ if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
     })();
     ", CClientScript::POS_HEAD, 1);
 } 
-
-$this->breadcrumbs = array(
-    'Looks',
-);
 $user = User::model()->findByPk(Yii::app()->user->id);
 $status_register = -1;
 $perfil_propio = 1;
@@ -37,6 +33,113 @@ if (isset($user)){
 	$perfil_propio = 0; 
 }	
  $model = new RegistrationForm;
+
+
+
+?>
+<style>
+	#mobFiltrar{
+                  border: solid #FFF 1px; 
+                  width: 100%; float: right; 
+                  height: 28px; 
+                  margin: 10px 0 10px 0; 
+                  line-height: 30px; 
+                  color: white; 
+                  text-align: center; 
+                  }
+
+                  
+               
+</style>
+<script>
+	$(function() {
+    	$( "#accordion" ).accordion({
+    		collapsible:true,
+    		active:false,
+    		icons: { "header": "ui-icon-carat-1-e", "activeHeader": "ui-icon-carat-1-n" },
+    		autoHeight: false,
+   			navigation: true
+    	});
+  	});
+	
+</script>
+<div class="navbar navbar-fixed-top mobilefilters" id="mobilefilters" align="center">
+
+		<div class="container">
+			
+				<div class="mobileOptions">
+					<div style="width:30%; float:left;">
+						<?php
+                    //var_dump(Yii::app()->getRequest()->getUrlReferrer());
+	                    $this->widget('bootstrap.widgets.TbButton', array(
+	                        'label' => 'Todos los looks',
+	                        'buttonType' => 'button',
+	                 
+
+	                        //'disabled' => true,
+	                        'htmlOptions' => array(
+	                            'id' => 'btnTodos',
+	                            'onclick' => 'js:clickTodos()',
+	                            'role' => 'button',
+	                            'class' => $todosLosLooks?'':'lighted',
+	                            'data-toggle' => 'modal',
+	                            
+	                        ),
+	                    ));
+                    ?>
+						
+					</div>
+					<div style="width:30%; float:left; margin: 0 5% 0 5%">
+						
+						<?php
+						
+						$this->widget('bootstrap.widgets.TbButton', array(
+                        'label' => 'Looks para ti',
+                        'buttonType' => 'button',
+                        'htmlOptions' => array(
+                            'id' => 'btnMatch', 
+                            'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
+                         'class' => $todosLosLooks?'lighted':'',   
+                        ),
+                    ));
+						
+						?>
+						
+					
+					</div>
+					<div style="width:30%; float:left;">
+						<div id="mobFiltrar">
+							Filtrar ››
+						</div>
+					</div>
+					
+				</div>
+			
+		</div>
+
+</div>
+
+<div class="navbar navbar-fixed-top" id="mobilefilters-expanded">
+
+	<div class="container">
+		<div id="accordion">
+			
+		</div>
+	</div>
+</div>
+
+
+
+
+<?php
+
+
+
+
+$this->breadcrumbs = array(
+    'Looks',
+);
+
 ?>
 <?php if(!Yii::app()->user->isGuest){ ?>
 <img 
@@ -60,6 +163,8 @@ width="1" height="1" border="0" alt="" />
 });
 	
 </script>
+
+<div id="deskfilters">
 <div class="container" id="scroller-anchor">
 	
 	
@@ -155,7 +260,7 @@ width="1" height="1" border="0" alt="" />
 
                                         <li> 
                                             <?php
-                                            echo CHtml::ajaxLink($categoria->nombre, Yii::app()->createUrl('tienda/ocasiones'), array(// ajaxOptions
+                                  echo CHtml::ajaxLink($categoria->nombre, Yii::app()->createUrl('tienda/ocasiones'), array(// ajaxOptions
                                                 'type' => 'POST',
                                                 'dataType' => 'json',
                                                 'beforeSend' => "function( request, opts )
@@ -349,7 +454,7 @@ foreach ($personal_shopper as $shopper) {
     </div>
 </div>
 
-
+</div>
 
 <!-- SUBMENU OFF -->
 <div class="container" id="tienda_looks">

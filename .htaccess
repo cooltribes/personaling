@@ -18,6 +18,7 @@ RewriteCond %{REMOTE_ADDR} !186\.93\.252\.120
 RewriteCond %{REMOTE_ADDR} !190\.206\.151\.177
 RewriteCond %{REMOTE_ADDR} !174\.23\.154\.49
 RewriteCond %{REMOTE_ADDR} !205\.124\.145\.253
+
 #Oficina
 RewriteCond %{REMOTE_ADDR} !190\.39\.240\.85
 #RewriteCond %{REMOTE_HOST} !\.cooltribes\.no-ip\.info$

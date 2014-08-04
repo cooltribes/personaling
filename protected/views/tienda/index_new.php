@@ -61,31 +61,17 @@ if(isset($seo)){
     </div>
   </div>   -->
 <!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  OFF-->
-<div class="navbar navbar-fixed-top" style="background-color:black; padding:0 20px 0 20px" id="mobilefilters">
+<div class="navbar navbar-fixed-top mobilefilters" id="mobilefilters">
 
 		<div class="container">
-			<!--<a class="btn btn-navbar" data-toggle="collapse" data-target="#collapse_0"></a>
-				<a href="/develop/" class="brand">Personaling</a>
-				<div class="nav-collapse" id="collapse_0">
-					<ul class="pull-right nav" id="yw0">
-						<li><a href="/develop/looks-personalizados">Looks</a></li>
-						<li id="tienda_menu" class="active"><a href="/develop/tienda-ropa-personalizada">Tienda</a></li>
-						<li id="magazine"><a target="_blank" href="http://personaling.com/magazine">Magazine</a></li>
-						<li id="ingresa"><a href="/develop/inicio-personaling">Accede</a></li>
-						<li><a class=" btn-danger btn" href="/develop/registro-personaling">Regístrate</a></li>
-					</ul>
-				</div>-->
-				<div style="width:100%; height:40px; background-color:black; line-height: 40px; vertical-align: middle">
-					<!--<div style="width:18%; float:left">
-						<div style="background-color: white; width:50px; height: 30px; margin-top: 10px">
-							db
-						</div> 
-					</div>-->
-					<div style="width:50%; float:left">
+			
+				<div class="mobileOptions">
+					
+					<div class="moLeft">
 						<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search" maxlength="50" >
 					</div>
-					<div style="width:50%; float:left; text-align: right; ">
-						<div id="mobFiltrar" style="border: solid #FFF 1px; width: 90%; float: right; height: 28px; margin: 10px 0 10px 0; line-height: 30px; color: white; text-align: center; ">
+					<div class="moRight">
+						<div id="mobFiltrar">
 							Filtrar ››
 						</div>	
 							
@@ -95,7 +81,7 @@ if(isset($seo)){
 			</div>
 
 	</div>
-<div class="navbar navbar-fixed-top hide" id="mobilefilters-expanded">
+<div class="navbar navbar-fixed-top" id="mobilefilters-expanded">
 
 	<div class="container">
 		<div id="accordion">
@@ -104,7 +90,17 @@ if(isset($seo)){
 				foreach($padre->subcategorias as $hijo){
 					echo "<a class='hijo' name='".$padre->nombre."' value='".$hijo->id."'>".$hijo->nombre."</a><br/>";
 				}
-				echo "</div>";
+				echo '<a name="'.$padre->nombre.'" href="#" class="todos allhijos" value="'.strtoupper($padre->id).'">&nbsp';
+						switch (strtoupper($padre->nombre)) {
+							case 'ROPA':
+								echo Yii::t('contentForm','All the')." ".$padre->nombre;
+								break;
+							
+							default:
+								echo Yii::t('contentForm','All the1')." ".$padre->nombre;							
+								break;
+						}
+						echo '</a></div>';
 		}?>
 			  
 		<?php echo "<h3>".Yii::t('contentForm','Color')."<span id='summColor' class='summ'></span></h3><div class='paraFiltrar'>"; 
@@ -113,7 +109,7 @@ if(isset($seo)){
 				echo '<a value="'.$color->id.'" title="'.$color->valor.'" class="scolor">'.$color->valor.'</a></br>'; 
 			}
 							
-				echo "</div>";		?>
+				echo '<a href="#" value="0" class="todos scolor" >'.Yii::t('contentForm','All colors').'</a></div>';		?>
 				
 		<?php echo "<h3>".Yii::t('contentForm','By price')." <span id='summPrecio' class='summ'></span></h3> <div class='paraFiltrar'>"; 
 		
@@ -142,10 +138,10 @@ if(isset($seo)){
 								echo'<a class="marca '.$cien.'" value='.$marca->id.' >'.$marca->nombre.'</a><br/>';
 								 
 							}
-				echo "</div>"
+				echo '<a class="marca" value="0" href="#">'.Yii::t('contentForm','All Brands').'</a></div>';
 			  
 			  ?>
-			   
+			   <h3 class="mobReset" id="reset"><?php echo Yii::t('contentForm','Clean Filters');?></h3>
 		</div>
 	</div>
 </div>     
@@ -823,14 +819,14 @@ function refresh(reset)
 <script>
 		$(document).ready(function() {
 			$("#mobFiltrar").click(function() { 
-            	if($('#mobilefilters-expanded').hasClass('hide')){
-            		$('#mobilefilters-expanded').removeClass('hide');
+            	if($('#accordion').hasClass('hide')){
+            		$('#accordion').removeClass('hide');
             	}else{
-            		$('#mobilefilters-expanded').addClass('hide');
+            		$('#accordion').addClass('hide');
             	}
 
 			});
-			//$('#accordion').addClass('hide');
+			$('#accordion').addClass('hide');
 			$('.handle').show();
 			$('.slide-out-div').show();
 			<?php

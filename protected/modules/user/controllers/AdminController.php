@@ -849,6 +849,7 @@ class AdminController extends Controller
             $admin = 'No';
             $ps = 'No';
             $no_suscrito = true;
+            $interno = 'Externo';
 
             if($user->superuser == 1){
                 $admin = 'Si';
@@ -858,6 +859,9 @@ class AdminController extends Controller
             }
             if($user->suscrito_nl == 1){
                 $no_suscrito = false;
+            }
+            if($user->interno == 1){
+                $interno = 'Interno';
             }
 
             $direccion = Direccion::model()->findByAttributes(array('user_id'=>$user->id));
@@ -894,6 +898,7 @@ class AdminController extends Controller
             $zoho->admin = $admin;
             $zoho->ps = $ps;
             $zoho->no_suscrito = $no_suscrito;
+            $zoho->tipo = $interno;
             $zoho->altura = Profile::range($rangos[0],$user->profile->altura);
             $zoho->condicion_fisica = Profile::range($rangos[1],$user->profile->contextura);
             $zoho->color_piel = Profile::range($rangos[10],$user->profile->piel);

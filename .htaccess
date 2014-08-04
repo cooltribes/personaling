@@ -7,6 +7,7 @@ RewriteRule ^(.*)\?*$ index.php/$1 [L,QSA]
 #RewriteCond %{REQUEST_URI} ^/develop/
 #RewriteRule (.*) / [R=301,L]
 #RewriteRule ^develop/(.*)$ http://www.personaling.com [R=301,L]
+RewriteCond %{REMOTE_ADDR} !99\.198\.108\.116
 RewriteCond %{REMOTE_ADDR} !201\.210\.221\.244 
 RewriteCond %{REMOTE_ADDR} !190\.36\.173\.103
 RewriteCond %{REMOTE_ADDR} !190\.78\.40\.224
@@ -18,7 +19,8 @@ RewriteCond %{REMOTE_ADDR} !190\.206\.151\.177
 RewriteCond %{REMOTE_ADDR} !174\.23\.154\.49
 RewriteCond %{REMOTE_ADDR} !205\.124\.145\.253
 #Oficina
-RewriteCond %{REMOTE_ADDR} !201\.243\.144\.218
+RewriteCond %{REMOTE_ADDR} !190\.39\.240\.85
+#RewriteCond %{REMOTE_HOST} !\.cooltribes\.no-ip\.info$
 #Rafa
 RewriteCond %{REMOTE_ADDR} !186\.88\.71\.244
 #Johann

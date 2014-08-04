@@ -1655,10 +1655,10 @@ public function actionReportexls(){
 									$zoho = New ZohoProductos;
 									$zoho->nombre = $model->nombre." - ".$tallacolor['sku'];
 									
-									if(strpos($producto->mymarca->nombre, "&") === false )
-										$zoho->marca = $producto->mymarca->nombre;
+									if(strpos($model->mymarca->nombre, "&") === false )
+										$zoho->marca = $model->mymarca->nombre;
 									else{
-										$marca_cambiar = $producto->mymarca->nombre;
+										$marca_cambiar = $model->mymarca->nombre;
 										
 										$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
 										$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
@@ -1701,19 +1701,19 @@ public function actionReportexls(){
 									}
 									$precios = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->id));
 									
-									if(strpos($producto->descripcion, "&nbsp;") === false)
-										$zoho->descripcion = $producto->descripcion;
+									if(strpos($model->descripcion, "&nbsp;") === false)
+										$zoho->descripcion = $model->descripcion;
 									else{
-										$cambiar = $producto->descripcion;
+										$cambiar = $model->descripcion;
 										$primera = str_replace("&nbsp;",' ' ,$cambiar);
 										
 										$zoho->descripcion = $primera; 
 									}
 									
-									if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)
-										$zoho->descripcion = $producto->descripcion;
+									if(strpos($model->descripcion, "<") === false && strpos($model->descripcion, ">") === false)
+										$zoho->descripcion = $model->descripcion;
 									else{
-										$cambiar = $producto->descripcion;
+										$cambiar = $model->descripcion;
 										$primera = str_replace("<",'%3C' ,$cambiar);
 										$segunda = str_replace(">",'%3E' ,$primera);
 										

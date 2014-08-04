@@ -54,6 +54,8 @@ $total_productos_look = 0;
           if($num!=0) // si hay looks 
 		  {
 		  	//imprima looks
+        $cont_propios = 0;
+        $cont_externos = 0;
 		  	foreach ($bolsa->looks() as $look_id){
 		  		$bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
 				$look = Look::model()->findByPk($look_id);
@@ -76,8 +78,7 @@ $total_productos_look = 0;
               <tbody>
                 <?php 
                 $productos_externos = array();
-                $cont_propios = 0;
-                $cont_externos = 0;
+                
                 foreach($bolsahasproductotallacolor as $productotallacolor){ 
                   ?>
                 <?php 

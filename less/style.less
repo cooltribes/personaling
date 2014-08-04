@@ -4658,11 +4658,49 @@ img[alt="Loading"]{
 
   }
  
-
+  .mobilefilters{
+      background-color:black; 
+      padding:0 20px 0 20px;
+      .container
+      {
+          .mobileOptions{
+            width:100%;
+            height:40px; 
+            background-color:black; 
+            line-height: 40px; 
+            vertical-align: middle;
+            .moLeft{
+              width:50%; 
+              float:left
+            }
+            .moRight{
+              width:50%; 
+              float:left; 
+              text-align: right; 
+                #mobFiltrar{
+                  border: solid #FFF 1px; 
+                  width: 90%; float: right; 
+                  height: 28px; 
+                  margin: 10px 0 10px 0; 
+                  line-height: 30px; 
+                  color: white; 
+                  text-align: center; 
+                  }
+              }
+            
+          }
+          
+     }
+      
+    
+    
+  }
   
   .ui-accordion {
      font-family:'Open Sans', sans-serif;
      color:#000;
+     
+     
      
     .ui-accordion-header{
         margin-top:-1px;
@@ -4673,8 +4711,7 @@ img[alt="Loading"]{
         font-weight:500;
         padding:0 0 0 12px;
         .ui-icon{
-          left: 93%;
-         
+          left: 93%;         
         }
     }
    
@@ -4687,8 +4724,10 @@ img[alt="Loading"]{
          line-height: 25px;
          vertical-align: middle;
        }
+       
      } 
    }
+   
    
    .ui-corner-all, .ui-corner-bottom, .ui-corner-top{
      .border_radius (@radius: 0);
@@ -4703,10 +4742,18 @@ img[alt="Loading"]{
    }
    
    .ui-state-active{
-
      .ui-icon{
        background:url(../images/jqueryicons_BLACK.png);
      }
+   }
+   .mobReset{
+             background-color:#FFF; 
+             border:none; 
+             text-align:center;
+             .ui-icon{
+               display:none;
+             
+          }
    }
 
    

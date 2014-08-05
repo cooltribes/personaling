@@ -1293,33 +1293,74 @@ $('.imagen_principal').zoom({url: imgZ});
 //      {
 //        bootbox.alert("Seleccione la talla para poder añadir a la bolsa.");
 //      }   
+      
+      var isGuest = <?php echo Yii::app()->user->isGuest?"true":"false"; ?>;
+        
          //LLamada ajax
       if(talla!=undefined && color!=undefined)
       {
-        //$('#agregar').click(false);
+        
         $('#agregar').attr("disabled", true);
         comprando = false;
-        $.ajax({
-            type: "post",
-            url: "<?php echo Yii::app()->createUrl('bolsa/agregar'); ?>", // action Tallas de Producto
-            data: { 'producto':producto, 'talla':talla, 'color':color}, 
-            success: function (data) {
-              comprando = true;
-          
-              if(data=="ok")
-              {
-                //alert("redireccionar mañana");
-                window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
-              }
+        
+        if(isGuest)
+        {
+            $.ajax({
+                type: "POST",
+                dataType: "JSON",
+                url: "<?php echo Yii::app()->createUrl('producto/agregarBolsaGuest'); ?>", // action Tallas de Producto
+                data: { 'producto':producto, 'talla':talla, 'color':color}, 
+                success: function (data) {
+                  comprando = true;
+                  console.log(data);
+                  
+                  if(data.status == "success"){
+                      
+                  }
+                      
+//                  if(data=="ok")
+//                  {
 
-              if(data=="no es usuario")
-              {
-                $('#alertRegister').show();
-                //bootbox.alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
-              }
+////                    window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
+//                  }
+//
+//                  if(data=="no es usuario")
+//                  {
+//                    $('#alertRegister').show();
 
-            }//success
-         })
+//                  }
+
+                }//success
+             });
+        }
+        else
+        {
+            //si no es guest, agregar a la bolsa normal del usuario logueado
+            $.ajax({
+                type: "post",
+                url: "<?php echo Yii::app()->createUrl('bolsa/agregar'); ?>", // action Tallas de Producto
+                data: { 'producto':producto, 'talla':talla, 'color':color}, 
+                success: function (data) {
+                  comprando = true;
+
+                  if(data=="ok")
+                  {
+                    //alert("redireccionar mañana");
+                    window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
+                  }
+
+                  if(data=="no es usuario")
+                  {
+                    $('#alertRegister').show();
+                    //bootbox.alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
+                  }
+
+                }//success
+             });
+             
+        }//fin si no es invitado
+            
+        
         
         
       }// cerro   

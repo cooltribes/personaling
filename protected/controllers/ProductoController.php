@@ -4656,13 +4656,34 @@ public function actionReportexls(){
                 public function actionAgregarBolsaGuest() {
                     if(Yii::app()->user->isGuest && isset($_POST["producto"]))
                     {
-                        $response = array();
+                        $response = array();                        
+                                                
+                        Yii::app()->getSession()->remove("Bolsa");    
+//                        Yii::app()->end();
                         
+                        //Si no existe la bolsa anonima
+                        if(!Yii::app()->getSession()->contains("Bolsa"))
+                        {
+                                Yii::app()->getSession()->add("Bolsa", array());
+                        }
                         
+                        //si fue agregado desde un look
+                        if (isset($_POST['look_id'])){
+//                                foreach($_POST['producto'] as $key => $value){ 
+//                                        list($producto_id,$color_id) = explode("_",$value);
+//                                        echo $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
+//                                }
+                        //Si fue agregado por un producto individual    
+                        } else {
+                                Bolsa::addProductoGuest($_POST['producto'],$_POST['talla'],$_POST['color']);
+                        }
                         
-                        
+            
+                        $cantProductosGuest = count(Yii::app()->getSession()->get("Bolsa"));        
                         
                         $response["status"] = "success";
+                        $response["bolsa"] = Bolsa::textoBolsaGuest($cantProductosGuest);
+                        $response["cantidad"] = $cantProductosGuest;
                         
                         echo CJSON::encode($response);
                     }

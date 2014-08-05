@@ -7,15 +7,48 @@
 
   <div class="row" id="looks">
   	
-	<?php foreach($looks as $look): 
-			
-                if(!$look->getIsVisible()){
-                    continue;
-                }
+	<?php 
+  $cont = 1;
+  foreach($looks as $look): 
+			// registrar impresión en google analytics
+      Yii::app()->clientScript->registerScript('metrica_analytics_looks_'.$cont,"
+        ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
+          'id': '".$look->id."',                   // Product ID (string).
+          'name': '".$look->title."', // Product name (string).
+          'category': 'Looks',   // Product category (string).
+          'brand': 'Personaling',                // Product brand (string).
+          'list': 'Look impression',         // Product list (string).
+          'position': ".$cont.",                    // Product position (number).
+        });
+        
+        ga('send', 'pageview');              // Send product impressions with initial pageview.
+      ", CClientScript::POS_END); 
+
+
+      if(!$look->getIsVisible()){
+          continue;
+      }
+
+                
+
+
 		?>
 		
 		<?php  //echo $this->renderPartial('_look',array('look'=>$look),true,true); ?>
 <div class="span4 look">
+  <div class="json_product" style="display:none;">
+    <?php
+    // hidden div con json para la función que se ejecuta con el scroll infinito
+    echo json_encode(array(
+      'id' => $look->id,
+      'name' => $look->title,
+      'category' => 'Looks',
+      'brand' => 'Personaling',
+      'list' => 'Look impression',
+      'position' => $cont
+    ));
+    ?>
+  </div>
       <article > 
       	<?php
         $mod_time = '';
@@ -33,7 +66,15 @@
         <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')).$mod_time, "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
         <?php } ?>
         	         
-                  	<?php echo CHtml::link($image,$look->getUrl()); ?>
+                  	<?php echo CHtml::link($image,'#', array('onclick'=>'detalle_look('.json_encode(array(
+                                                                'id' => $look->id,
+                                                                'name' => $look->title,
+                                                                'category' => 'Looks',
+                                                                'brand' => 'Personaling',
+                                                                'list' => 'Look clicks',
+                                                                'position' => $cont,
+                                                                'url' => $look->getUrl()
+                                                              )).')')); ?>
                   	
                   	<?php
                     /*
@@ -137,7 +178,10 @@
         <span class="label label-important"><?php echo Yii::t('contentForm','Promotion'); ?></span> 
         </article>
     </div>		
-	<?php endforeach; ?>
+	<?php 
+    $cont++;
+  endforeach; 
+  ?>
 	<script>
 	$('.imglook').on("load",function(){
 		//console.log('clicking');
@@ -148,6 +192,26 @@
     console.log('clicking');
    // FB.Canvas.scrollTo(0,0);        
 	});
+
+  function detalle_look(look){
+    ga('ec:addProduct', {
+        'id': look.id,
+        'name': look.name,
+        'category': look.category,
+        'brand': look.brand,
+        'position': look.position
+    });
+    ga('ec:setAction', 'click', {list: 'Looks tienda'});
+
+      // Send click with an event, then send user to product page.
+    ga('send', 'event', 'UX', 'click', 'Looks Results', {
+          'hitCallback': function() {
+            //console.log('redirect');
+            //document.location = product.url;
+          }
+    });
+    document.location = look.url;
+  }
 </script>
 
 	<?php $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(

@@ -60,18 +60,18 @@ foreach($prods as $data):
 ?>
 	<div class="div_productos">
 		<div class="json_product" style="display:none;">
-    	<?php
-    	// hidden div con json para la función que se ejecuta con el scroll infinito
-    	echo json_encode(array(
-    		'id' => $data->id,
-    		'name' => $data->nombre,
-    		'category' => $category->nombre,
-    		'brand' => $data->mymarca->nombre,
-    		'list' => 'Product impression',
-    		'position' => $cont
-    	));
-    	?>
-    </div>
+	    	<?php
+	    	// hidden div con json para la función que se ejecuta con el scroll infinito
+	    	echo json_encode(array(
+	    		'id' => $data->id,
+	    		'name' => $data->nombre,
+	    		'category' => $category->nombre,
+	    		'brand' => $data->mymarca->nombre,
+	    		'list' => 'Product impression',
+	    		'position' => $cont
+	    	));
+	    	?>
+	    </div>
 	<?php
 	
 $id=0;

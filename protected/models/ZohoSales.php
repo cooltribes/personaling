@@ -64,7 +64,7 @@ class ZohoSales{
 	//	echo htmlspecialchars($xml)."<p><p>";
 
 		$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
-		$query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=1&duplicateCheck=2&xmlData=".$xml;
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&xmlData=".$xml;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -95,7 +95,7 @@ class ZohoSales{
 			
 			/*--------------*/
 			$url ="https://crm.zoho.com/crm/private/xml/Products/getRecordById";
-$query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=1&id=".$tallacolor->preciotallacolor->zoho_id."&selectColumns=Products(Product Name,descuento,Precio Impuesto,Unit Price,Precio Descuento)";
+$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&id=".$tallacolor->preciotallacolor->zoho_id."&selectColumns=Products(Product Name,descuento,Precio Impuesto,Unit Price,Precio Descuento)";
 			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
@@ -161,7 +161,7 @@ $query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&newFormat=1&id="
 			</Potentials>';	
 			
 		$url ="https://crm.zoho.com/crm/private/xml/Leads/convertLead";
-		$query="authtoken=81ad9c824bfa232084f4b1a825797588&scope=crmapi&leadId=".$lead_id."&xmlData=".$xml;
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&leadId=".$lead_id."&xmlData=".$xml;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);

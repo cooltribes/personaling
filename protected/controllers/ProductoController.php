@@ -4502,7 +4502,7 @@ public function actionReportexls(){
 		public function actionProductosZoho(){ 
 			
 			$criteria = new CDbCriteria(array('order'=>'id'));
-			$criteria->addBetweenCondition('id', 700, 750); 
+			$criteria->addBetweenCondition('id', 630, 780); 
 			//$rows = user::model()->findAllByAttributes($user, $criteria);
 			
 			$todos_preciotallacolor = Preciotallacolor::model()->findAll($criteria);

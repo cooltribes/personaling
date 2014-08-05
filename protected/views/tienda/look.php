@@ -72,7 +72,8 @@ if (isset($user)){
 						<?php
                     //var_dump(Yii::app()->getRequest()->getUrlReferrer());
 	                    $this->widget('bootstrap.widgets.TbButton', array(
-	                        'label' => 'Todos los looks',
+	                        
+	                        //'label' => 'Todos <span class="to_cut">los looks</span>',
 	                        'buttonType' => 'button',
 	                 
 
@@ -83,6 +84,7 @@ if (isset($user)){
 	                            'role' => 'button',
 	                            'class' => $todosLosLooks?'':'lighted',
 	                            'data-toggle' => 'modal',
+	                            'value'=>'Todos <span class="to_cut">los looks</span>'
 	                            
 	                        ),
 	                    ));
@@ -94,7 +96,8 @@ if (isset($user)){
 						<?php
 						
 						$this->widget('bootstrap.widgets.TbButton', array(
-                        'label' => 'Looks para ti',
+                        'label' =>'Looks para ti',
+                        //'label' => '<span class="to_cut">Looks</span><span class="toupper"> para ti</span>',
                         'buttonType' => 'button',
                         'htmlOptions' => array(
                             'id' => 'btnMatch', 
@@ -122,8 +125,81 @@ if (isset($user)){
 <div class="navbar navbar-fixed-top" id="mobilefilters-expanded">
 
 	<div class="container">
-		<div id="accordion">
-			
+		<div id="accordion" class="hide">
+			<?php  $categorias = Categoria::model()->findAllByAttributes(array('padreId' => '2'));
+					if (count($categorias))
+                                foreach ($categorias as $categoria) {
+                                	echo '<h3>'.$categoria->nombre.'</h3><div>';
+                                    foreach($categoria->subcategorias as $child){
+                                   ?> <label>
+							              <input type="checkbox" name="check_ocasiones[]" value="<?php echo $child->id; ?>" id="check_ocasion<?php echo $child->id;?>" onclick="js:refresh()" class="check_ocasiones">
+							              <?php echo $child->nombre; ?>
+							              </label><?php
+                                    }	
+									
+                                	
+									
+                                	
+									 echo "</div>";
+                                        
+                                }
+						$rangos= Look::model()->getRangosPrecios();
+						echo '<h3>Precios</h3><div>';
+						
+						 foreach ($rangos as $key => $rango) { ?>
+                                <a class="btn-link price-mobile" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
+                                        <?php
+                                        if (!$key) {
+                                            echo "Hasta ".Yii::app()->numberFormatter->format("#,##0.00",$rango['end'])." "
+                                            .Yii::t('contentForm', 'currSym');
+                                        } else {
+                                            if ($key < 3) {
+                                                echo "De ".Yii::app()->numberFormatter->format("#,##0.00",$rango['start'])." 
+                                                    a ".Yii::app()->numberFormatter->format("#,##0.00",$rango['end'])." "
+                                                        .Yii::t('contentForm', 'currSym');
+                                            } else {
+                                                echo "Más de ".Yii::app()->numberFormatter->format("#,##0.00",$rango['start']).
+                                                        " ".Yii::t('contentForm', 'currSym');
+                                            }
+                                        }
+                                        ?>
+                                        <span class="color12">
+                                <?php echo "({$rango['count']})"; ?>
+                                        </span>
+                                    </a><br/>
+							<?php } ?>
+                        <?php if(!empty($rangos)){ ?>
+                            <a class="btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a>
+                        <?php } 
+                        echo "</div>"; ?>  
+						
+						
+						
+						
+				<h3>Personal Shoppers</h3>	
+				<div>
+						
+					<form id="form_shopper">
+	                    <nav class="  ">
+	                        
+							<?php $personal_shopper = User::model()->findAll(array('condition' => 'personal_shopper=1')); ?>
+							<?php
+							foreach ($personal_shopper as $shopper) {
+							    if (count($shopper->looks)) {
+							        ?>
+							<label>
+							        <input type="checkbox" name="check_shopper[]" value="<?php echo $shopper->id; ?>" id="check_ocasion<?php echo $shopper->id; ?>" onclick="js:refresh()" class="check_shopper"><?php echo $shopper->profile->first_name . ' ' . $shopper->profile->last_name; ?>
+							</label>
+							                                  
+							        <?php
+							    }
+							}
+							?>
+	                       
+	                    </nav>
+	                </form>
+	           </div> 
+        	
 		</div>
 	</div>
 </div>
@@ -155,12 +231,28 @@ width="1" height="1" border="0" alt="" />
     }
 </style>
 <script>
+
+$("#mobFiltrar").click(function() { 
+            	if($('#accordion').hasClass('hide')){
+            		$('#accordion').removeClass('hide');
+            	}else{
+            		$('#accordion').addClass('hide');
+            	}
+
+			});
+
+	$('#btnTodos').html('Todos <span class="to_cut">los looks</span>');
+	$('#btnMatch').html('<span class="to_cut">Looks</span><span class="to_upper"> p</span>ara <span class="to_upper">t</span>i');
+
+
 	$('#btn-gift').tooltip({
     title:"Hemos abonado<br/><?php echo Yii::app()->params['registerGift']." ".Yii::t('contentForm','currSym');?><br/>a tu balance para comprar YA",
     trigger:"manual",
     placement:"bottom"
     
 });
+
+
 	
 </script>
 
@@ -173,14 +265,14 @@ width="1" height="1" border="0" alt="" />
     
   
     <div class="container">
-    <div class="span12">
+
         <!--    <h1>Todos los looks</h1>-->
         <?php
         // este bloque no se debe mostrar si el usuario es hombre
         if((isset($user) && $user->profile->sex == 1) || !isset($user)){
             ?>
-            <div class="row-fluid margin_bottom_medium">
-                <div class="span2 offset4 text_align_right botones">
+            <div class="margin_top_medium botones" style="width:100%">
+                <div style="float:left; margin-left:35%; width:15%;margin-right:5%">
                     <?php
                     //var_dump(Yii::app()->getRequest()->getUrlReferrer());
                     $this->widget('bootstrap.widgets.TbButton', array(
@@ -193,13 +285,13 @@ width="1" height="1" border="0" alt="" />
                             'id' => 'btnTodos',
                             'onclick' => 'js:clickTodos()',
                             'role' => 'button',
-                            'class' => $todosLosLooks?'':'btn-rectangle',
+                            'class' => $todosLosLooks?'':'',
                             'data-toggle' => 'modal',
                         ),
                     ));
                     ?>
                 </div>
-                <div class="span6 botones2">
+                <div  style="float:left; width:15%">
                     <?php
                     $this->widget('bootstrap.widgets.TbButton', array(
                         'label' => 'Looks para ti',
@@ -210,7 +302,7 @@ width="1" height="1" border="0" alt="" />
                         'htmlOptions' => array(
                             'id' => 'btnMatch', 
                             'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
-                            'class' => $todosLosLooks?'btn-rectangle':'',
+                            'class' => $todosLosLooks?'lighted':'',
                         ),
                     ));
                     ?>
@@ -222,7 +314,7 @@ width="1" height="1" border="0" alt="" />
         ?>
 
 
-    </div>
+  
     <div class="alert in" id="alert-msg" style="display: none">
         <button type="button" class="close" >&times;</button> 
         <!--data-dismiss="alert"-->
@@ -329,6 +421,14 @@ width="1" height="1" border="0" alt="" />
 							            refresh();
 							        }
 							    });
+							    $('.price-mobile').click(function(e){
+							        var id = $(this).attr('id');
+							        if($('#rango_actual').val() !== id){
+							            $('#rango_actual').val(id); 
+							            refresh();
+							        }
+							    });
+							    
 						})
 						"); ?>
 

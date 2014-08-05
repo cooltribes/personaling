@@ -641,6 +641,34 @@ class ProfileController extends Controller
 											unset(Yii::app()->session['registerStep']);
                                     		
                                     }
+
+                        // update potential at zoho
+		                $zoho = new Zoho();
+		                $zoho->email = $model->email;
+
+		                $rangos = array();
+                        
+                        $profileFields=$profile->getFields();
+                        if ($profileFields) {
+                            foreach($profileFields as $field) {
+                                if($field->id > 4 && $field->id < 16){
+                                    $rangos[] =  $field->range.";0==Ninguno";
+                                }
+                                if($field->id == 4){
+                                    $rangosSex = $field->range;
+                                }
+                                
+                            }
+                        }
+
+		                $zoho->diario = Profile::range($rangos[0],$profile->coctel);
+		                $zoho->fiesta = Profile::range($rangos[1],$profile->fiesta);
+		                $zoho->vacaciones = Profile::range($rangos[2],$profile->playa);
+		                $zoho->deporte = Profile::range($rangos[3],$profile->sport);
+		                $zoho->oficina = Profile::range($rangos[4],$profile->trabajo);
+		                
+		                $result = $zoho->save_potential();
+
 						$this->redirect(array('/tienda/look'));
 					}
 						
@@ -713,6 +741,35 @@ class ProfileController extends Controller
                                 else
                                     unset(Yii::app()->session['registerStep']);
                             }
+
+                            //save data to Zoho
+                            $zoho = new Zoho();
+			                $zoho->email = $model->email;
+
+			                $rangos = array();
+	                        
+	                        $profileFields=$profile->getFields();
+	                        if ($profileFields) {
+	                            foreach($profileFields as $field) {
+	                                if($field->id > 4 && $field->id < 16){
+	                                    $rangos[] =  $field->range.";0==Ninguno";
+	                                }
+	                                if($field->id == 4){
+	                                    $rangosSex = $field->range;
+	                                }
+	                                
+	                            }
+	                        }
+
+			                $zoho->altura = Profile::range($rangos[1],$profile->altura);
+			                $zoho->condicion_fisica = Profile::range($rangos[2],$profile->contextura);
+			                $zoho->color_piel = Profile::range($rangos[0],$profile->piel);
+			                $zoho->color_cabello = Profile::range($rangos[3],$profile->pelo);
+			                $zoho->color_ojos = Profile::range($rangos[4],$profile->ojos);
+			                $zoho->tipo_cuerpo = Profile::range($rangos[5],$profile->tipo_cuerpo);
+			                
+			                $result = $zoho->save_potential();
+
                             $this->redirect(array('/user/profile/tuestilo'));
                         }
                         else

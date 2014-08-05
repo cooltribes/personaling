@@ -383,6 +383,19 @@ class LookController extends Controller
 		
 		$looks = new Look;
 		$user = User::model()->findByPk(Yii::app()->user->id);
+
+		// registrar impresión en google analytics
+		Yii::app()->clientScript->registerScript('metrica_analytics',"
+			ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+			  'id': '".$model->id."',                   // Product ID (string).
+			  'name': '".$model->title."', // Product name (string).
+			  'category': 'Looks',   // Product category (string).
+			  'brand': 'Personaling',                // Product brand (string).
+			});
+			
+				ga('ec:setAction', 'detail');       // Detail action.
+				ga('send', 'pageview');       // Send product details view with the initial pageview.
+		");	
 		
 		$this->render('view',array(
 						'model'=>$model,

@@ -49,7 +49,7 @@ foreach($prods as $data):
 
 	", CClientScript::POS_END);	
 
-	$cont++;
+	
 
 	if($data->tipo){
 		$tienda=Tienda::model()->findByPk($data->tienda_id);
@@ -197,27 +197,59 @@ $b='';
 							}
 						}
 						if(!is_null($tienda))
-							$precio = "<span class='precio' style='display:inline'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>&nbsp;&nbsp;&nbsp;<span><a href='".$data->getUrl()."' style='color:#3286A5; cursor:pointer'>".$tienda->urlVista."</a></span>";
+							$precio = "<span class='precio' style='display:inline'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>&nbsp;&nbsp;&nbsp;<span><a class='detalle_producto' href='#' style='color:#3286A5; cursor:pointer' onclick='detalle_producto(".json_encode(array(
+																												    		'id' => $data->id,
+																												    		'name' => $data->nombre,
+																												    		'category' => $category->nombre,
+																												    		'brand' => $data->mymarca->nombre,
+																												    		'list' => 'Product clicks',
+																												    		'position' => $cont,
+																												    		'url' => $data->getUrl()
+																												    	)).")'>".$tienda->urlVista."</a></span>";
 							
 
 						echo($encabezado."
-						<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
+						<input id='idprod' value='".$data->id."' type='hidden' ><a class='detalle_producto' href='#' onclick='detalle_producto(".json_encode(array(
+																												    		'id' => $data->id,
+																												    		'name' => $data->nombre,
+																												    		'category' => $category->nombre,
+																												    		'brand' => $data->mymarca->nombre,
+																												    		'list' => 'Product clicks',
+																												    		'position' => $cont,
+																												    		'url' => $data->getUrl()
+																												    	)).")'>
 						".$a.$b.
 						CHtml::link("Vista Rápida",
 						    $this->createUrl('modal',array('id'=>$data->id)),
 						    array(// for htmlOptions
-						      'onclick'=>' {'.CHtml::ajax( array(
+						      'onclick'=>' '.CHtml::ajax( array(
 						      'url'=>CController::createUrl('modal',array('id'=>$data->id)),
 						           'success'=>"js:function(data){ $('#myModal').html(data);
 											$('#myModal').modal(); }")).
-						         'return false;}',
+						         'return false;',
 						    'class'=>'btn btn-block btn-small vista_rapida hidden-phone',
 						    'id'=>'prodencanta')
 						).$style."		 
 												
 						</a>
-						<header><h3><a class='link_producto' href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
-						<a href='".$data->getUrl()."' class='ver_detalle icon_lupa' title='Ver detalle'></a></header>
+						<header><h3><a class='link_producto detalle_producto' href='#' title='".$data->nombre."' onclick='detalle_producto(".json_encode(array(
+																												    		'id' => $data->id,
+																												    		'name' => $data->nombre,
+																												    		'category' => $category->nombre,
+																												    		'brand' => $data->mymarca->nombre,
+																												    		'list' => 'Product clicks',
+																												    		'position' => $cont,
+																												    		'url' => $data->getUrl()
+																												    	)).")'>".$data->nombre."</a></h3>
+						<a href='#' class='ver_detalle icon_lupa detalle_producto' title='Ver detalle' onclick='detalle_producto(".json_encode(array(
+																												    		'id' => $data->id,
+																												    		'name' => $data->nombre,
+																												    		'category' => $category->nombre,
+																												    		'brand' => $data->mymarca->nombre,
+																												    		'list' => 'Product clicks',
+																												    		'position' => $cont,
+																												    		'url' => $data->getUrl()
+																												    	)).")'></a></header>
 						".$precio.$gusta);
 						
 						
@@ -268,14 +300,15 @@ $b='';
 </div>
 
 <?php
+$cont++;
 
 endforeach;?>
 </div>
 <script>	
-mixpanel.track_links(".link_producto", "Clicked Productos",function(ele) { 
+//mixpanel.track_links(".link_producto", "Clicked Productos",function(ele) { 
     //alert('asd');
-    return { type: $(ele).attr('href')}
-    });
+    //return { type: $(ele).attr('href')}
+    //});
 function over(id){
 		
 
@@ -293,6 +326,48 @@ function out(id){
 		
 		$("#prod"+id.toString()).find("img").eq(0).next().hide();
 		}
+}
+
+/*$('.detalle_producto').on('click', function(e){
+	e.preventDefault();
+	//console.log(e);
+	ga('ec:addProduct', {
+	    'id': 'P12345',
+	    'name': 'Android Warhol T-Shirt',
+	    'category': 'Apparel',
+	    'brand': 'Google',
+	    'variant': 'black',
+	    'position': 1
+	  });
+	 ga('ec:setAction', 'click', {list: 'Search Results'});
+
+	  // Send click with an event, then send user to product page.
+	  ga('send', 'event', 'UX', 'click', 'Results', {
+	      'hitCallback': function() {
+	        document.location = '/product_details?id=P12345';
+	      }
+	  });
+	window.location.href = e.currentTarget.href;
+});*/
+
+function detalle_producto(product){
+	ga('ec:addProduct', {
+	    'id': product.id,
+	    'name': product.name,
+	    'category': product.category,
+	    'brand': product.brand,
+	    'position': product.position
+	});
+	ga('ec:setAction', 'click', {list: 'Productos tienda'});
+
+	  // Send click with an event, then send user to product page.
+	ga('send', 'event', 'UX', 'click', 'Results', {
+	      'hitCallback': function() {
+	      	//console.log('redirect');
+	        //document.location = product.url;
+	      }
+	});
+	document.location = product.url;
 }
 	
 

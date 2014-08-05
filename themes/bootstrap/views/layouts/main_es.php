@@ -247,7 +247,12 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('id'=>'btn-gift','class'=>'hidden-phone to-white-icon', 'data-html'=>"true"), 'visible'=>!Yii::app()->user->isGuest,),                 
 				array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
-                	array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>array('id'=>'btn-shoppingcart','class'=>'hidden-phone to-white-icon') ,'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>
+                    array('id'=>'btn-shoppingcart','class'=>'hidden-phone to-white-icon') ,
+                    'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>
+                    array('id'=>'btn-shoppingBag','class'=>'hidden-phone to-white-icon') ,
+                    'url'=>array('#') ,'visible'=>Yii::app()->user->isGuest),
                 array('label'=>'Accede', 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'htmlOptions'=>array('class'=>'btn btn-rectangle'),'visible'=>Yii::app()->user->isGuest),
@@ -297,7 +302,7 @@ if(!Yii::app()->user->isGuest){
 			);
 			?>
 		</div>
-    <div style="height: 48px"></div>
+                <div style="height: 48px"></div>
 		<?php
 	}
 }
@@ -627,6 +632,7 @@ if(!Yii::app()->user->isGuest){
       trigger: 'manual',
       offset: 10
     });
+    
 
 
     $('#btn-shoppingcart').hoverIntent(
@@ -645,7 +651,38 @@ if(!Yii::app()->user->isGuest){
         });        
 
       });
+    
 
+      var textShoppingBag = '<p class="padding_small"><strong>\n\
+    Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas \n\
+    increíbles esperan por ti.</p>';;
+    /*Para la bolsa de Guest*/
+    $('#btn-shoppingBag').popover(
+    {
+      html: true,
+      title: '<strong>Tu Carrito</strong>',
+      content: textShoppingBag,
+      placement: 'bottom',
+      trigger: 'manual',
+      offset: 10
+    });
+
+//    $('#btn-shoppingBag').hoverIntent(
+//      function(){
+//
+//        $(this).popover('show');
+//             
+//
+//      },
+//      function(){
+//
+//        $('#btn-shoppingcart').popover('hide');       
+//
+//      });      
+   /*Shopping bag guest OFF*/   
+   
+   
+   
     $('#dropdownUser, #btn-notifications,#magazine').hover(function(){
       $('#btn-shoppingcart').popover('hide');      
       $('#btn-shoppingcart').removeClass('bg_color10');      

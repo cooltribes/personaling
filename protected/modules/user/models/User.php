@@ -387,7 +387,7 @@ class User extends CActiveRecord {
 
             if ($column == 'zoho_id')
             {
-                $criteria->addCondition('(zoho_id = ""'.')', $logicOp);
+                $criteria->addCondition('(zoho_id = "" OR zoho_id IS NULL'.')', $logicOp);
 
                 continue;
             }

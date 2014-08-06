@@ -244,4 +244,203 @@ class Bolsa extends CActiveRecord
 		}  
 		return "fail";	
 	}
+        
+        
+        /**
+         * 
+         * Agrega un producto a la bolsa del Guest
+         */
+	public static function addProductoGuest($producto_id,$talla_id,$color_id,$look_id=0)
+	{   
+            
+            $carrito = Yii::app()->getSession()->get("Bolsa");
+
+            $ptcolor = Preciotallacolor::model()->findByAttributes(array(
+                'producto_id'=>$producto_id,
+                'talla_id'=>$talla_id,
+                'color_id'=>$color_id
+                ));
+
+            //revisar si está o no en el carrito
+            $esta = false;
+            foreach ($carrito as $producto){
+                if($producto->preciotallacolor_id == $ptcolor->id 
+                        && $producto->look_id == $look_id){
+
+                    $producto->cantidad++;
+                    $esta = true;
+                }
+            }
+
+            if(!$esta){
+
+                $nuevoProducto = new BolsaHasProductotallacolor();
+
+                $nuevoProducto->bolsa_id = 0;
+                $nuevoProducto->preciotallacolor_id = $ptcolor->id;
+                $nuevoProducto->cantidad = 1;
+                $nuevoProducto->look_id = $look_id;	                    
+                $nuevoProducto->added_on = date("Y-m-d H:i:s");	                    
+
+
+                $carrito[] = $nuevoProducto;
+
+            }
+
+
+            Yii::app()->getSession()->add("Bolsa", $carrito);
+
+	}
+        
+        /**
+         * 
+         * @param type $cantProductosGuest cantidad de productos que hay
+         * en la bolsa del usuario Guest
+         * @return string el texto / contenido del popover que se muestra
+         * para la bolsa
+         */
+        public static function textoBolsaGuest($cantProductosGuest){
+            
+            /*
+             * Esto es texto para javaScript, debe llevar los \n\ para que no
+             * tome los saltos como parte de la cadena
+             */
+            $botonComprar = '<div class="padding_right_xsmall padding_left_xsmall \n\
+            padding_bottom_xsmall"><a href="'.Yii::app()->baseUrl.'/bolsa/index" \n\
+            class="btn btn-block btn-small btn-warning">Comprar</a></div>';
+            
+            //si no hay productos
+            if($cantProductosGuest == 0){      
+       
+                $textShoppingBag = '<p class="padding_small"><strong> \n\
+                Tu carrito todavía está vacío</strong>, ¿Qué esperas? Looks y prendas \n\
+                increíbles esperan por ti.</p>';
+
+            //si hay productos, construir el contenido    
+            }else{
+                
+                $carrito = Yii::app()->getSession()->get("Bolsa");                
+                $textShoppingBag = '<ul class="unstyled clearfix" >';
+                //Extraer los id de looks existentes
+                $looksIds = array();
+                foreach($carrito as $producto){
+                    if($producto->look_id != 0){
+                        $looksIds[$producto] = 1;                        
+                    }
+                }                
+                $hayLooks = count($looksIds);
+                $textoLooks = '';
+                
+                //Extraer los productos individuales
+                $prodsIndividuales = array();
+                foreach($carrito as $producto){
+                    if($producto->look_id == 0){
+                        $prodsIndividuales[] = $producto;                        
+                    }
+                }                
+                $hayProdsIndiv = count($prodsIndividuales);                
+                $textoProds = '';
+                
+                $contadorItems = 0; //contar items dentro del popover
+                //
+                //Si hay looks en la bolsa
+                if($hayLooks){
+                    //invertir el array de ids de looks para mostrar primero al que se 
+                    //agrego de ultimo a la bolsa
+                    $looksIds = array_reverse(array_keys($looksIds));
+
+                    //Armar el listado de looks dentro de la bolsa
+                    foreach ($looksIds as $look_id) {
+
+                        if ($contadorItems > 5) {
+                            break;
+                        }
+
+                        $look = Look::model()->findByPk($look_id);
+
+                        if (isset($look)) {
+
+                            $textoLooks += '<li>
+                                    <a class="btn-link" href="' . $look->getUrl() .
+                                    '" >'. $look->title . '</a>
+                                    <div class="row-fluid">';                       
+
+                            //invertir array para mostrar en orden cronológico de compras
+                            foreach ($carrito as $elementoCarrito) {
+
+                                // buscar solo los productos dentro del carrito
+                                // que le pertenezcan a el look $look_id                            
+                                if($elementoCarrito->look_id != $look_id){
+                                    continue;
+                                }
+
+                                //buscar al producto
+                                $productoTallaColor = PrecioTallaColor::model()->findByPk(
+                                        $elementoCarrito->preciotallacolor_id);
+
+                                $color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
+                                $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
+                                $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+                                $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id' => $producto->id, 'orden' => '1'));
+                                if ($imagen) {
+                                    $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".", "_x30.", $imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
+                                    echo '<div class="span2">' . $htmlimage . '</div>';
+                                }
+                            }
+
+                            $textoLooks += "</div> </li>";
+
+                            $contadorItems++;
+                        }
+
+                    }
+                    
+                    
+                } 
+                
+                //Si hay productos individuales
+                if($hayProdsIndiv){
+//                    echo "nn";
+//                    echo $textShoppingBag;
+//                    Yii::app()->end();
+                    foreach ($prodsIndividuales as $elementoCarrito){
+                        
+                        if($contadorItems >= 5){
+                            break;
+                        }
+                        
+                        $productoTallaColor = PrecioTallaColor::model()->findByPk(
+                                        $elementoCarrito->preciotallacolor_id);
+                        $producto = Producto::model()->findByPk($productoTallaColor->producto_id);
+                        
+                        $imagen = Imagen::model()->findByAttributes(array(
+                            'tbl_producto_id'=>$producto->id,'orden'=>'1'));
+                        
+                        $textoProds += '<li>
+                            <a class="btn-link" href="'.$producto->getUrl().
+                                '" >'.$producto->nombre.'</a>
+                                    <div class="row-fluid">';
+
+                        if($imagen){
+                            $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
+                            $textoProds += '<div class="span2">'.$htmlimage.'</div>';
+                        }  
+                        
+                        $textoProds += '</div> </li>';  
+                    }
+                    
+                    
+                }
+                
+                //Cerrar el listado de prods y agregar el boton
+                $textShoppingBag += $textoProds + '</ul>' + $botonComprar;
+            }
+
+//            echo $textShoppingBag;
+//            Yii::app()->end();
+            
+            return $textShoppingBag;
+            
+        }
+        
 }

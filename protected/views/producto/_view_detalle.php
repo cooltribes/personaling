@@ -1263,6 +1263,55 @@ $('.imagen_principal').zoom({url: imgZ});
 
    }
    
+   function agregarBolsaGuest(producto, talla, color){
+       
+       $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: "<?php echo Yii::app()->createUrl('producto/agregarBolsaGuest'); ?>", // action Tallas de Producto
+            data: { 'producto':producto, 'talla':talla, 'color':color}, 
+            success: function (data) {
+              comprando = true;
+              console.log(data);
+
+              if(data.status == "success"){
+                  
+                  console.log(data.bolsa);
+                  $('#btn-shoppingBag').popover('destroy');
+                  $('#btn-shoppingBag').popover(
+                    {
+                      content: data.bolsa,                      
+                      html: true,
+                      title: '<strong>Tu Carrito</strong>',
+                      placement: 'bottom',
+                      trigger: 'manual',
+                      offset: 10
+                    });
+                    
+                  //cambiar el numero de items en la bolsa
+                  var icono = $('#btn-shoppingBag a i');
+                  $('#btn-shoppingBag a').html(icono).append(" " + data.cantidad);
+                
+                  //mostrar el popover del carrito
+                  $('#btn-shoppingBag').popover("show");
+              }
+
+//                  if(data=="ok")
+//                  {
+
+////                    window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
+//                  }
+//
+//                  if(data=="no es usuario")
+//                  {
+//                    $('#alertRegister').show();
+
+//                  }
+
+            }//success
+         });
+   }
+   
    function comprar(){ // comprobar quienes están seleccionados
       
       if (comprando == true){
@@ -1278,21 +1327,7 @@ $('.imagen_principal').zoom({url: imgZ});
       if(talla==undefined) // falta color
       {
           $('#tooltipTalla').tooltip('show');  
-      }   
-        
-//      if(talla==undefined && color==undefined) // ninguno
-//      {
-//        bootbox.alert("Seleccione talla y color para poder añadir.");
-//      }
-//      if(talla==undefined && color==undefined) // ninguno
-//      {
-//        bootbox.alert("Seleccione talla y color para poder añadir.");
-//      }
-//      
-//      if(talla==undefined && color!=undefined) // falta talla
-//      {
-//        bootbox.alert("Seleccione la talla para poder añadir a la bolsa.");
-//      }   
+      }    
       
       var isGuest = <?php echo Yii::app()->user->isGuest?"true":"false"; ?>;
         
@@ -1305,33 +1340,7 @@ $('.imagen_principal').zoom({url: imgZ});
         
         if(isGuest)
         {
-            $.ajax({
-                type: "POST",
-                dataType: "JSON",
-                url: "<?php echo Yii::app()->createUrl('producto/agregarBolsaGuest'); ?>", // action Tallas de Producto
-                data: { 'producto':producto, 'talla':talla, 'color':color}, 
-                success: function (data) {
-                  comprando = true;
-                  console.log(data);
-                  
-                  if(data.status == "success"){
-                      
-                  }
-                      
-//                  if(data=="ok")
-//                  {
-
-////                    window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
-//                  }
-//
-//                  if(data=="no es usuario")
-//                  {
-//                    $('#alertRegister').show();
-
-//                  }
-
-                }//success
-             });
+            agregarBolsaGuest(producto, talla, color);
         }
         else
         {

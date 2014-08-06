@@ -84,7 +84,7 @@ if(isset($seo)){
 <div class="navbar navbar-fixed-top" id="mobilefilters-expanded">
 
 	<div class="container">
-		<div id="accordion">
+		<div id="accordion" class="hide">
 		<?php foreach($categorias as $padre){
 				echo "<h3>".$padre->nombre."<span id='summ".$padre->nombre."' class='summ summCat'></span><h3/><div class='paraFiltrar'>";
 				foreach($padre->subcategorias as $hijo){
@@ -826,7 +826,7 @@ function refresh(reset)
             	}
 
 			});
-			$('#accordion').addClass('hide');
+	
 			$('.handle').show();
 			$('.slide-out-div').show();
 			<?php

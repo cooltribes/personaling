@@ -126,6 +126,14 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 )); 
 } else {
 	$cont_productos = 0;
+        $cantProductosGuest = 0;
+        
+        if(Yii::app()->getSession()->contains("Bolsa")){
+            
+            $cantProductosGuest = count(Yii::app()->getSession()->get("Bolsa"));
+        }
+        
+        
 	
 		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and estado < 5";
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
@@ -250,7 +258,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>
                     array('id'=>'btn-shoppingcart','class'=>'hidden-phone to-white-icon') ,
                     'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>
+                array('label'=>$cantProductosGuest,'icon'=>'icon-shopping-cart', 'itemOptions'=>
                     array('id'=>'btn-shoppingBag','class'=>'hidden-phone to-white-icon') ,
                     'url'=>array('#') ,'visible'=>Yii::app()->user->isGuest),
                 array('label'=>'Accede', 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
@@ -613,7 +621,8 @@ if(!Yii::app()->user->isGuest){
 
     //------------Generar html para poner en Popover OFF---------------//
 
-    textShoppingCart = '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-danger">Ver carrito</a></div>';
+    textShoppingCart = '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php
+    echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-danger">Ver carrito</a></div>';
 
     if( listaCarrito != "" ){
         textShoppingCart = listaCarrito + textShoppingCart;
@@ -652,11 +661,11 @@ if(!Yii::app()->user->isGuest){
 
       });
     
+    /********Para la bolsa de Guest******/
+    var textShoppingBag = '<?php echo Yii::app()->user->isGuest?
+            Bolsa::textoBolsaGuest($cantProductosGuest):""; ?>';    
 
-      var textShoppingBag = '<p class="padding_small"><strong>\n\
-    Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas \n\
-    increíbles esperan por ti.</p>';;
-    /*Para la bolsa de Guest*/
+
     $('#btn-shoppingBag').popover(
     {
       html: true,
@@ -667,18 +676,25 @@ if(!Yii::app()->user->isGuest){
       offset: 10
     });
 
-//    $('#btn-shoppingBag').hoverIntent(
-//      function(){
-//
-//        $(this).popover('show');
-//             
-//
-//      },
-//      function(){
-//
-//        $('#btn-shoppingcart').popover('hide');       
-//
-//      });      
+    $('#btn-shoppingBag').hoverIntent(
+      function(){
+
+          $(this).popover('show');
+          $('.popover').addClass('active_one'); 
+          $(this).addClass('bg_color4');
+
+
+      },
+      function(){
+
+//          $('#btn-shoppingBag').popover('hide');    
+          
+          $('.active_one').hover(function(){},function(){
+              $('#btn-shoppingBag').popover('hide');
+              $('#btn-shoppingBag').removeClass('bg_color4');
+        });
+
+      });      
    /*Shopping bag guest OFF*/   
    
    

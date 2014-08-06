@@ -24,33 +24,33 @@ class ProductoController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detalle','tallas','tallaspreview',
-                                    'colorespreview','colores','imagenColor','updateCantidad','encantar',
-                                    'productoszoho','contarClick', 'agregarBolsaGuest'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('getImage'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','suprimir','admin',
-                                    'delete','precios','producto','imagenes','multi',
-                                    'orden','eliminar','inventario','detalles',
-                                    'tallacolor','addtallacolor','varias','categorias',
-                                    'recatprod','seo', 'historial','importar','descuentos',
-                                    'reporte','reportexls', "createExcel", 'plantillaDescuentos',
-                                    'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
-                                    'importarExternos'),
-				//'users'=>array('admin'),
-				'expression' => 'UserModule::isAdmin()',
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		); 
+            return array(
+                array('allow',  // allow all users to perform 'index' and 'view' actions
+                    'actions'=>array('index','view','detalle','tallas','tallaspreview',
+                        'colorespreview','colores','imagenColor','updateCantidad','encantar',
+                        'productoszoho','contarClick', 'agregarBolsaGuest',),
+                    'users'=>array('*'),
+                ),
+                array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                    'actions'=>array('getImage'),
+                    'users'=>array('@'),
+                ),
+                array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                    'actions'=>array('create','update','suprimir','admin',
+                        'delete','precios','producto','imagenes','multi',
+                        'orden','eliminar','inventario','detalles',
+                        'tallacolor','addtallacolor','varias','categorias',
+                        'recatprod','seo', 'historial','importar','descuentos',
+                        'reporte','reportexls', "createExcel", 'plantillaDescuentos',
+                        'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
+                        'importarExternos'),
+                    //'users'=>array('admin'),
+                    'expression' => 'UserModule::isAdmin()',
+                ),
+                array('deny',  // deny all users
+                    'users'=>array('*'),
+                ),
+            ); 
 	}
 
 	/**
@@ -4654,11 +4654,12 @@ public function actionReportexls(){
                  * bolsa del usuario Guest.
                  */
                 public function actionAgregarBolsaGuest() {
+                       
                     if(Yii::app()->user->isGuest && isset($_POST["producto"]))
                     {
                         $response = array();                        
                                                 
-                        Yii::app()->getSession()->remove("Bolsa");    
+//                        Yii::app()->getSession()->remove("Bolsa");    
 //                        Yii::app()->end();
                         
                         //Si no existe la bolsa anonima
@@ -4669,15 +4670,14 @@ public function actionReportexls(){
                         
                         //si fue agregado desde un look
                         if (isset($_POST['look_id'])){
-//                                foreach($_POST['producto'] as $key => $value){ 
-//                                        list($producto_id,$color_id) = explode("_",$value);
-//                                        echo $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
-//                                }
+                            foreach($_POST['producto'] as $value){ 
+                                list($producto_id,$color_id) = explode("_",$value);
+                                Bolsa::addProductoGuest($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
+                            }
                         //Si fue agregado por un producto individual    
                         } else {
                                 Bolsa::addProductoGuest($_POST['producto'],$_POST['talla'],$_POST['color']);
-                        }
-                        
+                        }                        
             
                         $cantProductosGuest = count(Yii::app()->getSession()->get("Bolsa"));        
                         
@@ -4688,5 +4688,8 @@ public function actionReportexls(){
                         echo CJSON::encode($response);
                     }
                 }
+                
+                
+                
         
 }

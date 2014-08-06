@@ -162,8 +162,12 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                     'label'=>Yii::t('contentForm', $button_text),
                     'block'=>'true',
                        'size'=> 'large',
-                   // 'url'=>array('producto/tallacolor'),
-                   'url'=> CController::createUrl('bolsa/agregar') ,
+                       
+                     //Si es invitado enviar los productos a una
+                     //URL distinta por ajax
+                   'url'=> Yii::app()->user->isGuest ? CController::createUrl('producto/agregarBolsaGuest'):
+                         CController::createUrl('bolsa/agregar'),
+             
                     'htmlOptions'=>array('id'=>'buttonGuardar'),
                     'ajaxOptions'=>array(
                             'type' => 'POST',
@@ -195,19 +199,25 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                                    		if ($('#buttonGuardar').attr('disabled')==true)
                                    			return false;
                                    		$('#buttonGuardar').attr('disabled', true);
-								   }
+								   }else{
+                                        return false;
+                                    }
                                    
                                  }",
 
 
                              'success' => "function( data )
                                   {
-
-                                     if(data.indexOf('ok')>=0)
-                                    {
-                                        window.location='".$this->createUrl('bolsa/index')."';
+                                    var invitado = ".(Yii::app()->user->isGuest ? "true":"false")."
+                                     if(invitado){
+                                        agregarBolsaGuest(data);
+                                     }else{
+                                     
+                                         if(data.indexOf('ok')>=0)
+                                        {
+                                            window.location='".$this->createUrl('bolsa/index')."';
+                                        }                                     
                                     }
-
 
                                  //alert(data);
                                   /*
@@ -350,18 +360,20 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                     'label'=>Yii::t('contentForm', $button_text),
                     'block'=>'true',
                        'size'=> 'large',
-                   // 'url'=>array('producto/tallacolor'),
-                   'url'=> CController::createUrl('bolsa/agregar') ,
+                  //Si es invitado enviar los productos a una
+                     //URL distinta por ajax
+                   'url'=> Yii::app()->user->isGuest ? CController::createUrl('producto/agregarBolsaGuest'):
+                         CController::createUrl('bolsa/agregar'),
+             
                     'htmlOptions'=>array('id'=>'buttonGuardar','class'=>'span4'),
                     'ajaxOptions'=>array(
                             'type' => 'POST',
                             'data'=> "js:$('#producto-form').serialize()",
 
                             'beforeSend' => "function( request )
-                                 {
+                                 {                                  
                                    
-                                   
-                                                                      var entro = true; 
+                                  var entro = true; 
                                    if ( $(\"input[name='producto[]']:checked\").length <= 0 ){
                                       entro = false;
                                         alert('".Yii::t('contentForm' , 'Must select at least one item')."');
@@ -380,10 +392,13 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                                    });
                                    if (entro){
+                                     
                                       if ($('#buttonGuardar').attr('disabled')==true)
                                         return false;
                                       $('#buttonGuardar').attr('disabled', true);
-                   }
+                                   }else{
+                                        return false;
+                                    }
                                    
                                  }",
 
@@ -391,11 +406,16 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                              'success' => "function( data )
                                   {
 
-                                     if(data.indexOf('ok')>=0)
-                                    {
-                                        window.location='".$this->createUrl('bolsa/index')."';
+                                    var invitado = ".(Yii::app()->user->isGuest ? "true":"false")."
+                                     if(invitado){
+                                        agregarBolsaGuest(data);
+                                     }else{
+                                     
+                                         if(data.indexOf('ok')>=0)
+                                        {
+                                            window.location='".$this->createUrl('bolsa/index')."';
+                                        }                                     
                                     }
-
 
                                  //alert(data);
                                   /*
@@ -751,5 +771,31 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
 
        }
+
+/**/
+function agregarBolsaGuest(data){ 
+     
+    if(data.status == "success"){ 
+
+        $('#btn-shoppingBag').popover('destroy');
+        $('#btn-shoppingBag').popover(
+        {
+          content: data.bolsa,                      
+          html: true,
+          title: '<strong>Tu Carrito</strong>',
+          placement: 'bottom',
+          trigger: 'manual',
+          offset: 10
+        });
+
+        //cambiar el numero de items en la bolsa
+        var icono = $('#btn-shoppingBag a i');
+        $('#btn-shoppingBag a').html(icono).append(" " + data.cantidad);
+
+        //mostrar el popover del carrito
+        $('#btn-shoppingBag').popover("show");
+    }
+       
+}
 
 </script>

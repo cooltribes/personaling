@@ -615,7 +615,7 @@ class User extends CActiveRecord {
                 continue;
             }
             
-            if ($column == 'lastvisit_at' || $column == 'create_at')
+            if ($column == 'lastvisit_at' || $column == 'create_at' || $column == 'birthday')
             {
                 $value = strtotime($value);
                 $value = date('Y-m-d H:i:s', $value);

@@ -15,7 +15,6 @@ if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
     ", CClientScript::POS_HEAD, 1);
 }
 
-Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/joyride-2.1.css',null);
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 if((isset($editar) && $editar)){
   $this->breadcrumbs=array(
@@ -28,6 +27,13 @@ if((isset($editar) && $editar)){
 src="<?php echo $this->createUrl("/site/conversion"); ?>?campaignID=15920&productID=23773
 &conversionType=lead&https=0&transactionID=<?php echo Yii::app()->user->id; ?>"
 width="1" height="1" border="0" alt="" />
+    <style>
+        .user-profile-tutipo #notificacion_validar + div {
+            display: none;
+        }
+    </style>
+    
+<div style="height: 48px"></div>
 
 <div class="container tu_perfil margin_top_medLarge_minus">
   <div class="row">
@@ -58,7 +64,15 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
     <?php } ?>      
 
-      <h1>Tu tipo<small> - Escoge las opciones que más se parezcan a ti:</small></h1>
+      <h1>Tu tipo<small> - Escoge las opciones que más se parezcan a ti:</small>
+      <?php $this->widget('bootstrap.widgets.TbButton', array(            
+            'label'=>  Yii::t('contentForm', '¡Saltar este paso!'),
+            'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+            'size'=>'large', // null, 'large', 'small' or 'mini'
+            'htmlOptions' => array('class'=>'pull-right span3'), 
+
+        )); ?>
+      </h1>
       <article class="margin_top  margin_bottom_small ">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'tutipo-form',
@@ -220,13 +234,20 @@ $script = "
   </li>
 </ol>
 </div>
+<script type="text/javascript">
+function joyRidePerfil(){
+    
+}
+</script>
 <?php if ($errorValidando): ?>
-<?php Yii::app()->clientScript->registerScriptFile('/js/jquery.joyride-2.1.js',null,null); ?>
-<!--<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.joyride-2.1.js"></script>-->
-    <script>
-      $(window).load(function() {
-      	$('#div_aviso').show();
-        $('#joyRideTipContent').joyride({      
+<?php 
+Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/joyride-2.1.css',null);
+Yii::app()->clientScript->registerScriptFile('/js/jquery.joyride-2.1.js',null,null); 
+?>
+<script type="text/javascript">
+function joyRidePerfil(){
+    $('#div_aviso').show();
+    $('#joyRideTipContent').joyride({      
           autoStart : <?php echo !((isset($editar) && $editar)) ? 'true' : 'false' ?>,
           modal: true,
           expose: true,
@@ -245,8 +266,20 @@ $script = "
         // 'cookieDomain': false,           // set to false or yoursite.com
 
       });
-  });
+  }
 </script>
 
 <?php endif; ?>
+<script type="text/javascript">
+    
+$(document).ready(function() {
+//    joyRidePerfil(); 
+});
+$(window).load(function() {
+       
+//    $(".tu_perfil").css("margin-top", "+=58");     
+    joyRidePerfil(); 
+//    $(".tu_perfil").before('<div style="height: 48px"></div>');     
+});
 
+</script>

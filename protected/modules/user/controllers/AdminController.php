@@ -826,23 +826,15 @@ class AdminController extends Controller
         //$criteria->limit = '10';
         $dataProvider = new CActiveDataProvider('User', array(
                     'criteria' => $criteria,
-                    
+                    'pagination' => false,
                 ));
                 
         $success = 0;
         $error = 0;
+        $message = '';
 
         foreach($dataProvider->getData() as $data){
             $user=User::model()->findByPk($data->id);
-            $saldo=Yii::app()->numberFormatter->formatDecimal(Profile::model()->getSaldo($data->id));
-            if ($user->getLastvisit()) 
-                $lastVisit=date("d/m/Y",$user->getLastvisit()); 
-            else 
-                $lastVisit= 'N/D'; 
-            if ($user->getCreatetime())
-                $createdAt=date("d/m/Y",$user->getCreatetime()); 
-            else 
-                $createdAt='N/D'; 
 
             $time = strtotime($user->profile->birthday);
 
@@ -929,11 +921,16 @@ class AdminController extends Controller
                 $success++;
             }else{
                 $error++;
+                /*foreach ($user->getErrors() as $key => $value) {
+                    foreach ($value as $k => $v) {
+                        $message .= 'Error: '.$v.'</br>';
+                    }
+                }*/
             }
     
         }
 
-        $message = $success.' usuarios exportados';
+        $message .= $success.' usuarios exportados';
         if($error > 0){
             $message .= '</br>'.$error.' usuarios NO exportados';
         }

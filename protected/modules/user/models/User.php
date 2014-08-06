@@ -384,6 +384,13 @@ class User extends CActiveRecord {
 
                 continue;
             }
+
+            if ($column == 'zoho_id')
+            {
+                $criteria->addCondition('(zoho_id = ""'.')', $logicOp);
+
+                continue;
+            }
             
             if ($column == 'telefono')
             {                

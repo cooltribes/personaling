@@ -4502,7 +4502,7 @@ public function actionReportexls(){
 		public function actionProductosZoho(){ 
 			
 			$criteria = new CDbCriteria(array('order'=>'id'));
-			$criteria->addBetweenCondition('id', 630, 780); 
+		//	$criteria->addBetweenCondition('id', 630, 640); 
 			//$rows = user::model()->findAllByAttributes($user, $criteria);
 			
 			$todos_preciotallacolor = Preciotallacolor::model()->findAll($criteria);
@@ -4563,12 +4563,23 @@ public function actionReportexls(){
 					$zoho->url = "http://personaling.es/producto/detalle/".$producto->id; 
 				}
 				
+				if(strpos($producto->descripcion, "&nbsp;") === false)
+					$zoho->descripcion = $producto->descripcion;
+				else{
+					$cambiar = $producto->descripcion;
+					$primera = str_replace("&nbsp;",' ' ,$cambiar);
+					
+					$zoho->descripcion = $primera;
+					$producto->descripcion = $primera;
+					$producto->save();
+				}
+				
 				if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)
 					$zoho->descripcion = $producto->descripcion;
 				else{
 					$cambiar = $producto->descripcion;
 					$primera = str_replace("<",'%3C' ,$cambiar);
-					$segunda = str_replace(">",'%3E' ,$primera);
+					$segunda = str_replace(">",'%3E' ,$primera); 
 					
 					$descripcion_nueva = "<![CDATA[".$segunda."]]>";
 					//echo htmlspecialchars($marcacorregida);
@@ -4579,15 +4590,6 @@ public function actionReportexls(){
 					$zoho->descripcion = $descripcion_nueva;
 				}
 				
-				
-				if(strpos($producto->descripcion, "&nbsp;") === false)
-					$zoho->descripcion = $producto->descripcion;
-				else{
-					$cambiar = $producto->descripcion;
-					$primera = str_replace("&nbsp;",' ' ,$cambiar);
-					
-					$zoho->descripcion = $primera; 
-				}
 				
 				if(isset($precio))
 				{

@@ -7,7 +7,7 @@
 function changeFilter(e){
    var column = $(this);
    
-   var fecha = ['lastvisit_at', 'lastorder_at', 'create_at', 'create_at_2'];
+   var fecha = ['lastvisit_at', 'lastorder_at', 'create_at', 'create_at_2', 'birthday'];
    var opciones = ['status', 'tipoUsuario', 'fuenteR' , 'looks_marca',
                    'looks_ps'  , 'prods_marca', 'tipo_comision_2', 'altura',
                    'contextura', 

@@ -3494,6 +3494,7 @@ class BolsaController extends Controller
             
         }
         
+        /*Para vaciar la bolsa del usuario GUEST*/
         public function actionVaciarGuest() {
             //si existe la bolsa de invitado
             $response = array();

@@ -47,6 +47,9 @@ class LoginController extends Controller
                     ShoppingMetric::registro(ShoppingMetric::USER_INICIO);                
 					$this->lastViset();
 					$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
+                                        
+                                        $this->revisarBolsaGuest();
+                                        
 					if (UserModule::isAdmin()){
 						if (Yii::app()->user->returnUrl=='/index.php')
 							$this->redirect(Yii::app()->controller->module->returnUrl);
@@ -138,5 +141,21 @@ class LoginController extends Controller
 	
 		
 	}//loginfb
+    
+        //Para revisar si sirve  
+        private function revisarBolsaGuest() {
+            
+            if(!Yii::app()->getSession()->contains("Bolsa")){
+                return;
+            }
+            
+            //si es admin eliminar la bolsa
+            if(UserModule::isAdmin()){
+                Yii::app()->getSession()->remove("Bolsa");
+            }else{
+                
+            }
+        }
+        
 
 }

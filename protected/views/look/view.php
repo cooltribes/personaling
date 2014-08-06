@@ -774,7 +774,8 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
 /**/
 function agregarBolsaGuest(data){ 
-     
+    
+    data = JSON.parse(data);
     if(data.status == "success"){ 
 
         $('#btn-shoppingBag').popover('destroy');

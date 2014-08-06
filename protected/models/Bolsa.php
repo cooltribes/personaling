@@ -409,7 +409,7 @@ class Bolsa extends CActiveRecord
                             break;
                         }
                         
-                        $productoTallaColor = PrecioTallaColor::model()->findByPk(
+                        $productoTallaColor = Preciotallacolor::model()->findByPk(
                                         $elementoCarrito->preciotallacolor_id);
                         $producto = Producto::model()->findByPk($productoTallaColor->producto_id);
                         
@@ -445,6 +445,15 @@ class Bolsa extends CActiveRecord
 //            Yii::app()->end();
             
             return $textShoppingBag;
+            
+        }
+        
+        
+        /* Para pasar los productos de la bolsa GUEST a la bolsa del usuario
+         * que inicia sesion
+         */
+        
+        public function pasarBolsaGuest(){
             
         }
         

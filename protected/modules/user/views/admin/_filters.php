@@ -176,7 +176,9 @@
                                 'trabajo' => 'Estilo Oficina',                                 
                                 'sex' => 'Género',                                 
                                 'compras' => 'Compras hechas',                                 
-                                'prendas' => 'Prendas compradas',                                 
+                                'prendas' => 'Prendas compradas',  
+                                'zoho_id' => 'Zoho ID',
+                                'birthday' => 'Fecha de nacimiento',
                                  );
                                  asort($opcionesFiltros);
                                  

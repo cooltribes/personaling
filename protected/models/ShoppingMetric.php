@@ -178,9 +178,26 @@ class ShoppingMetric extends CActiveRecord
 				return $http; 
 	            break;
 			case 'HTTP_USER_AGENT':
-                $http=explode(' ',$this->$field);
+				$browser = 'Desconocido';
+				if(strstr($this->$field, 'MSIE'))
+					$browser = 'Internet explorer';
+				elseif(strstr($this->$field, 'Trident'))
+					$browser = 'Internet explorer';
+				elseif(strstr($this->$field, 'Firefox'))
+					$browser = 'Mozilla Firefox';
+				elseif(strstr($this->$field, 'Chrome'))
+					$browser = 'Google Chrome';
+				elseif(strstr($this->$field, 'Opera'))
+					$browser = "Opera";
+				elseif(strstr($this->$field, 'Safari'))
+					$browser = "Safari";
+				elseif(strstr($this->$field, 'Firefox')){
+					$browser = "Mozilla Firefox";
+				}
+                //$http=explode(' ',$this->$field);
                                 
-                return $http[0]; 
+                //return $http[0]; 
+                return $browser; 
                 break;
           
             default: //5

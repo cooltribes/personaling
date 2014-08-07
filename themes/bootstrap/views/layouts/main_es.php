@@ -126,6 +126,14 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 )); 
 } else {
 	$cont_productos = 0;
+        $cantProductosGuest = 0;
+        
+        if(Yii::app()->getSession()->contains("Bolsa")){
+            
+            $cantProductosGuest = count(Yii::app()->getSession()->get("Bolsa"));
+        }
+        
+        
 	
 		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and estado < 5";
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
@@ -250,7 +258,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>
                     array('id'=>'btn-shoppingcart','class'=>'hidden-phone to-white-icon') ,
                     'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>
+                array('label'=>$cantProductosGuest,'icon'=>'icon-shopping-cart', 'itemOptions'=>
                     array('id'=>'btn-shoppingBag','class'=>'hidden-phone to-white-icon') ,
                     'url'=>array('#') ,'visible'=>Yii::app()->user->isGuest),
                 array('label'=>'Accede', 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
@@ -273,6 +281,20 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 ?>
 </div>
 
+<?php
+//si es invitado agregar el estilo del link de vaciar bolsa
+if(Yii::app()->user->isGuest){
+?>
+  <style>
+      .popover .link-vaciar{
+          font-size: 11px;
+      }
+  </style>  
+<?php
+}
+?>
+  
+  
 <!-- Mensaje Cookies ON -->
 <div class="header_notification" id="cookies_notification" style="margin-top: 88px; display: none;">
     Esta web utiliza <strong>cookies</strong> para mejorar tu experiencia de usuario y para recopilar información estadística sobre tu navegación. Si continúas navegando, consideramos que aceptas su uso. <a href="<?php echo Yii::app()->baseUrl; ?>/site/politicas_de_cookies" style="color: #0000FF">Más información</a> | <a id="accept_cookies" href="#" style="color: #0000FF">No mostrar de nuevo</a>
@@ -613,7 +635,8 @@ if(!Yii::app()->user->isGuest){
 
     //------------Generar html para poner en Popover OFF---------------//
 
-    textShoppingCart = '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-danger">Ver carrito</a></div>';
+    textShoppingCart = '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php
+    echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-danger">Ver carrito</a></div>';
 
     if( listaCarrito != "" ){
         textShoppingCart = listaCarrito + textShoppingCart;
@@ -639,7 +662,7 @@ if(!Yii::app()->user->isGuest){
       function(){
 
         $(this).popover('show');
-        $(this).addClass('bg_color10');
+        $(this).addClass('bg_color10 color3');
         $('.popover').addClass('active_one');        
 
       },
@@ -647,16 +670,41 @@ if(!Yii::app()->user->isGuest){
 
         $('.active_one').hover(function(){},function(){
           $('#btn-shoppingcart').popover('hide');
-          $('#btn-shoppingcart').removeClass('bg_color10');
+          $('#btn-shoppingcart').removeClass('bg_color10 color3');
         });        
 
       });
-    
 
-      var textShoppingBag = '<p class="padding_small"><strong>\n\
-    Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas \n\
-    increíbles esperan por ti.</p>';;
-    /*Para la bolsa de Guest*/
+<?php if(Yii::app()->user->isGuest){ ?>
+
+    /********Para la bolsa de Guest******/
+    function clickVaciar(){
+        
+        $('.popover #link-vaciar a').click(function(e){
+            $("body").addClass("aplicacion-cargando");
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo Yii::app()->createUrl('bolsa/vaciarGuest'); ?>',
+                dataType: 'JSON',
+                data: {},
+                success: function(data){
+                    
+                    if(data.status == 'success'){
+                        location.reload();
+                    }else if(data.status == 'error'){
+                        location.reload();                        
+                    }
+                }
+            }); 
+        });
+
+    }    
+    
+    var textShoppingBag = '<?php echo Yii::app()->user->isGuest?
+            Bolsa::textoBolsaGuest($cantProductosGuest):""; ?>';    
+
+
     $('#btn-shoppingBag').popover(
     {
       html: true,
@@ -667,18 +715,40 @@ if(!Yii::app()->user->isGuest){
       offset: 10
     });
 
-//    $('#btn-shoppingBag').hoverIntent(
-//      function(){
-//
-//        $(this).popover('show');
-//             
-//
-//      },
-//      function(){
-//
-//        $('#btn-shoppingcart').popover('hide');       
-//
-//      });      
+    $('#btn-shoppingBag').hoverIntent(
+      function(e){
+
+          $(this).popover('show');
+          $('.popover').addClass('active_one'); 
+          $(this).addClass('bg_color5');
+          
+          clickVaciar();
+
+
+      },
+      function(e){
+//            console.log(e.offsetX + " : " + e.offsetY);
+//            var x = e.offsetX;
+//            var y = e.offsetY;
+//            
+//            if(x > -2){
+////                console.log("vale");
+//            }
+          //revisar si no ubicó el cursor dentro de la bolsa            
+//          if(!$('.active_one').is(":hover")){
+//              $('#btn-shoppingBag').popover('hide'); 
+//              $('#btn-shoppingBag').removeClass('bg_color5');
+//          }
+          
+          $('.active_one').hover(function(){},function(){
+              $('#btn-shoppingBag').popover('hide');
+              $('#btn-shoppingBag').removeClass('bg_color5');
+        });
+
+      });      
+      
+<?php } ?>
+
    /*Shopping bag guest OFF*/   
    
    

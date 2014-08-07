@@ -27,7 +27,7 @@ class ColorController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','pruebazoho'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -282,54 +282,21 @@ class ColorController extends Controller
 	
 	public function actionPruebazoho()
 	{
-		/*
-		$zoho = New ZohoProductos; 
-		$tallacolor = Preciotallacolor::model()->findByPk(1);
-		$producto = Producto::model()->findByPk($tallacolor->producto_id);
 		
-		$zoho->nombre = $producto->nombre." - ".$tallacolor->sku;
-		$zoho->cantidad = 45;
-		$zoho->subcategoria2 = "Regalos";
-		$zoho->metaDescripcion = "Nueva descripcion de prueba para editar desde la aplicacion";
-		
-		 
-		$zoho = New ZohoProductos;
-		$zoho->nombre = "Prueba desde Yii - 45787545M";
-		$zoho->marca = "Fashion Prueba";
-		$zoho->referencia = "POL0976GD";
-		$zoho->estado = "TRUE";
-		$zoho->peso = 0.6;
-		$zoho->fecha = date("Y-m-d",strtotime("22-06-2014"));
-		$zoho->categoria = "Mujer";
-		$zoho->subcategoria1 = "Hombre";
-		$zoho->subcategoria2 = "Complemento";
-		$zoho->tienda = "Tienda de prueba";
-		$zoho->tipo = "Externa"; 
-		$zoho->url = "http://prueba.com/producto-de-prueba";
-		$zoho->descripcion = "Un producto de prueba desde la app php";
-		$zoho->costo = 15.3;
-		$zoho->precioVenta = 26.3;
-		$zoho->precioDescuento = 23;
-		$zoho->descuento = 3.3;
-		$zoho->precioImpuesto = 29;
-		$zoho->porcentaje = 40; 
-		$zoho->talla = "M";
-		$zoho->color = "Azul";
-		$zoho->SKU = "45787545M";
-		$zoho->cantidad = 42;
-		$zoho->titulo = "Prueba nueva desde Yii";
-		$zoho->metaDescripcion = "Un producto de prueba desde la app php, Meta";
-		$zoho->tags = "Prueba, Yii, desde, mujer, hombre, accesorios";
-		
-		$respuesta = $zoho->save_potential();
-		
-		echo $respuesta;*/  
-		
-		$orden = Orden::model()->findByPk(66);
-		
+		$orden = Orden::model()->findByPk(93);
 		$zoho = new ZohoSales;
-		$respuesta = $zoho->convertirLead(1135568000000166003, "cintasb25@gmail.com");
+		$usuario = User::model()->findByPk($orden->user->id);
+		
+		$conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email); 
+        $datos = simplexml_load_string($conv);
 
+        $id = $datos->Contact;
+        $usuario->zoho_id = $id;
+        $usuario->tipo_zoho = 1;
+
+        $usuario->save(); 
+		
+		$respuesta = $zoho->save_potential($orden);
 		echo htmlspecialchars($respuesta)."<p><p>";
 
 		$datos = simplexml_load_string($respuesta);

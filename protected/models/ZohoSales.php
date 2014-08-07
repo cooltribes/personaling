@@ -36,10 +36,11 @@ class ZohoSales{
         $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
 		$xml .= '<FL val="Status">Created</FL>';
 		$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';
-		$xml .= '<FL val="Contact Id">1135568000000151007</FL>';
+		$xml .= '<FL val="Contact Id">'.$orden->user->zoho_id.'</FL>';
 		$xml .= '<FL val="Contact Name">'.$orden->user->profile->first_name.' '.$orden->user->profile->last_name.'</FL>';
 		$xml .= '<FL val="Email">'.$orden->user->email.'</FL>';
 		$xml .= '<FL val="Peso">'.$orden->peso.'</FL>';
+		$xml .= '<FL val="Envio">'.$orden->envio.'</FL>';
 		$xml .= '<FL val="Billing Street">'.$orden->direccionFacturacion->dirUno.' '.$orden->direccionFacturacion->dirDos.'</FL>';
 		$xml .= '<FL val="Billing State">'.$orden->direccionFacturacion->provincia->nombre.'</FL>';
 		$xml .= '<FL val="Billing City">'.$orden->direccionFacturacion->ciudad->nombre.'</FL>';
@@ -61,8 +62,9 @@ class ZohoSales{
 		$xml .= '</row>';
 		$xml .= '</Invoices>';
 		
-	//	echo htmlspecialchars($xml)."<p><p>";
-
+		//echo htmlspecialchars($xml)."<p><p>";
+		//Yii::app()->end();
+		
 		$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&xmlData=".$xml;
 		$ch = curl_init();

@@ -1268,15 +1268,13 @@ $('.imagen_principal').zoom({url: imgZ});
        $.ajax({
             type: "POST",
             dataType: "JSON",
-            url: "<?php echo Yii::app()->createUrl('producto/agregarBolsaGuest'); ?>", // action Tallas de Producto
+            url: "<?php echo Yii::app()->createUrl('/producto/agregarBolsaGuest'); ?>", // action Tallas de Producto
             data: { 'producto':producto, 'talla':talla, 'color':color}, 
             success: function (data) {
-              comprando = true;
-              console.log(data);
-
-              if(data.status == "success"){
-                  
-                  console.log(data.bolsa);
+              
+                comprando = true;
+              if(data.status == "success"){                  
+              
                   $('#btn-shoppingBag').popover('destroy');
                   $('#btn-shoppingBag').popover(
                     {
@@ -1295,19 +1293,6 @@ $('.imagen_principal').zoom({url: imgZ});
                   //mostrar el popover del carrito
                   $('#btn-shoppingBag').popover("show");
               }
-
-//                  if(data=="ok")
-//                  {
-
-////                    window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
-//                  }
-//
-//                  if(data=="no es usuario")
-//                  {
-//                    $('#alertRegister').show();
-
-//                  }
-
             }//success
          });
    }

@@ -32,7 +32,9 @@ class BolsaController extends Controller
                     'eliminardireccion','editar','editardireccion','agregar','actualizar',
                     'pagos','compra','eliminar','direcciones','confirmar','comprar','cpago',
                     'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 'comprarGC',
-                    'clickBotonConfirmar'),
+                    'clickBotonConfirmar', 
+                        'vaciarGuest',//Debe estar en la regla de *
+                        ),
                     'users'=>array('@'),
                 ),
                 array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -3489,6 +3491,21 @@ class BolsaController extends Controller
             
             }
             
+            
+        }
+        
+        /*Para vaciar la bolsa del usuario GUEST*/
+        public function actionVaciarGuest() {
+            //si existe la bolsa de invitado
+            $response = array();
+            $response["status"] = "error";
+            
+            if(Yii::app()->getSession()->contains("Bolsa")){
+                Yii::app()->getSession()->remove("Bolsa");
+                $response["status"] = "success";
+            }
+            
+            echo CJSON::encode($response);
             
         }
         

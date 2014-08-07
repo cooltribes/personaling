@@ -1,6 +1,9 @@
 <?php
 
 /**
+ * 
+ *ESTADO: 2=> FINALIZADO; 3=> FINALIZADO CON DISCREPANCIAS; 4=> DISCREPANCIAS RESUELTAS  
+ *
  * This is the model class for table "{{return}}".
  *
  * The followings are the available columns in table '{{return}}':
@@ -179,7 +182,8 @@ class Retturn extends CActiveRecord
                             //Guardar lo que viene en el XML
                             $item->cantidadConfirmation = (int)$elemento->Cantidad[0];
                             if($item->cantidadConfirmation != $item->cantidad){
-                                $conDiscrepancias = true; //para marcar el inbound completo
+                                $conDiscrepancias = true; //para marcar el return completo
+                                $item->resuelto=0;
                              }
                     }
 					
@@ -212,4 +216,22 @@ class Retturn extends CActiveRecord
     return true;
 
 	}
+
+	public function actualizarDiscrepancias(){
+		$resuelto=true;	
+		foreach($this->items as $item){
+			if(!is_null($item->resuelto))
+				if($item->resuelto==0){
+					$resuelto=false;
+					break;
+				}
+		}
+		if($resuelto){
+			$this->estado=4;
+			return $this->save();
+		}
+		return $resuelto;
+	}
+
+
 }

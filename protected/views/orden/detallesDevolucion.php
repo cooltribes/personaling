@@ -189,7 +189,7 @@ $this->breadcrumbs=array(
 				echo '<tr><td>'.$item->sku.'</td><td>'.$item->cantidad.'</td></tr>';
 			}
 			echo '</table>';
-			echo '<a class="btn btn-danger pull-right" href="../descargarreturnxml/id/'.$return->id.'">Descargar</a>';
+			echo '<a class="btn btn-danger pull-right" href="../descargarreturnxml/id/'.$return->devolucion_id.'">Descargar</a>';
 		?>
 		
 	</div>
@@ -207,11 +207,14 @@ $this->breadcrumbs=array(
 			echo '<tr><td colspan="2">ITEMS</td></tr>';
 			echo '<tr><td>EAN</td><td>Cantidad</td></tr>';
 			foreach($return->items as $item){
-				if($item->cantidadConfirmation!=$item->cantidad)	
-					echo '<tr><td class="alert-error">'.$item->sku.'</td><td class="alert-error">'.$item->cantidadConfirmation.'</td></tr>';
-				else
+				if(is_null($item->resuelto))	
 					echo '<tr><td>'.$item->sku.'</td><td>'.$item->cantidadConfirmation.'</td></tr>';
-				
+				else{	if($item->resuelto==0)
+							echo '<tr><td class="alert-error">'.$item->sku.'</td><td class="alert-error">'.$item->cantidadConfirmation.'<span class="pull-right"><input style="margin-top:-2px" onclick="resolver('.$item->id.')" type="checkbox" id="'.$item->id.'"/><b>Resolver</b></span></td></tr>';
+						else
+							echo '<tr><td class="alert-success">'.$item->sku.'</td><td class="alert-success">'.$item->cantidadConfirmation.'<span class="pull-right"> <b>Resuelto</b></span></tr></td>';
+					}
+				 
 			}
 			echo '</table>';
 	}
@@ -228,6 +231,18 @@ $this->breadcrumbs=array(
   			guardar(id ,false);
 		});
  	
+ 	function resolver(id){
+ 			$.ajax({
+                        type: "post", 
+                        url: "../resolverItemReturn", // action 
+                        data: { 'id':id}, 
+                        success: function (data) {
+
+                           location.reload();
+                                 
+                         }
+                    });
+ 	}
  	function aceptar(id){
  		
  		$.ajax({

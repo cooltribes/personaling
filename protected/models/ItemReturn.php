@@ -57,6 +57,8 @@ class ItemReturn extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'dhptc' => array(self::BELONGS_TO, 'Devolucionhaspreciotallacolor', 'devolucionhaspreciotallacolor_id'),
+			'myreturn' => array(self::BELONGS_TO, 'Retturn', 'return_id'),
+		
 		);
 	}
 

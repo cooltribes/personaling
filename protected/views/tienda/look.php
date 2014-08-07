@@ -272,37 +272,38 @@ $("#mobFiltrar").click(function() {
         if((isset($user) && $user->profile->sex == 1) || !isset($user)){
             ?>
             <div class="margin_top_medium botones" style="width:100%">
-                <div style="float:left; margin-left:35%; width:15%;margin-right:5%">
+                <div class="bt1_looks">
                     <?php
                     //var_dump(Yii::app()->getRequest()->getUrlReferrer());
                     $this->widget('bootstrap.widgets.TbButton', array(
                         'label' => 'Todos los looks',
                         'buttonType' => 'button',
-                        'type' => $todosLosLooks?'danger':'',
-                        'size' => 'large',
+                        //'type' => $todosLosLooks?'danger':'',
+                        //'size' => 'large',
                         //'disabled' => true,
                         'htmlOptions' => array(
                             'id' => 'btnTodos',
                             'onclick' => 'js:clickTodos()',
                             'role' => 'button',
-                            'class' => $todosLosLooks?'':'',
+                            'class' => $todosLosLooks?'btn-large btn-danger':'btn-large lighted',
                             'data-toggle' => 'modal',
+                            
                         ),
                     ));
                     ?>
                 </div>
-                <div  style="float:left; width:15%">
+                <div  style="float:left; width:20%">
                     <?php
                     $this->widget('bootstrap.widgets.TbButton', array(
                         'label' => 'Looks para ti',
                         'buttonType' => 'button',
                         
-                        'type' => $todosLosLooks?'':'danger',
-                        'size' => 'large',
+                        //'type' => $todosLosLooks?'':'danger',
+                        //'size' => 'large',
                         'htmlOptions' => array(
                             'id' => 'btnMatch', 
                             'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
-                            'class' => $todosLosLooks?'lighted':'',
+                            'class' => $todosLosLooks?'btn-large lighted':'btn-large btn-danger',
                         ),
                     ));
                     ?>
@@ -324,7 +325,7 @@ $("#mobFiltrar").click(function() {
 
 <!-- SUBMENU ON -->
 
-    <div class="container">
+    <div class="container margin_top_medium">
     <div class="navbar  nav-inverse barra-margen">
         <div class="navbar-inner" id="barraFiltros">
             <nav class="  ">
@@ -946,12 +947,14 @@ echo CHtml::ajax(array(
                 });
                 btnTodos.css({
                     position: "absolute",
-                    top: "29px",
+                    top: "8px",
                     "z-index": 1
                 });
                 barra.css({
                     "padding-top": "7px",
-                    "padding-bottom": "8px"
+                    "padding-bottom": "8px",
+             
+                    
                 });
                 margen.css({
                     "margin-bottom": "0px"
@@ -972,8 +975,10 @@ echo CHtml::ajax(array(
                 });
                 barra.css({
                     "padding-top": "0px",
-                    "padding-bottom": "0px"
+                    "padding-bottom": "0px",
+                    
                 });
+                $('#looks').css('margin-top','20px');
                 margen.css({
                     "margin-bottom": "20px"
                 });

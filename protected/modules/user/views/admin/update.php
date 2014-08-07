@@ -117,7 +117,9 @@ function getMonthsArray()
             </div></div>
             <div class="control-group">
             		
-            		 <?php  echo $form->dropDownListRow($model,'interno',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?>
+            <?php  
+ 
+            		 echo $form->dropDownListRow($model,'interno',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?>
      
             </div>
             

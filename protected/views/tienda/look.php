@@ -272,7 +272,7 @@ $("#mobFiltrar").click(function() {
         if((isset($user) && $user->profile->sex == 1) || !isset($user)){
             ?>
             <div class="margin_top_medium botones" style="width:100%">
-                <div class="bt1_looks">
+                <div class="btlooks">
                     <?php
                     //var_dump(Yii::app()->getRequest()->getUrlReferrer());
                     $this->widget('bootstrap.widgets.TbButton', array(
@@ -945,6 +945,22 @@ echo CHtml::ajax(array(
                     position: "fixed",
                     top: "49px",
                 });
+                $(".botones").css({
+                	"width":"auto",
+                	"right":"3%",
+                });
+                $("#btnTodos,#btnMatch").css({
+                	"width":"165px",
+                	
+                });
+                 $(".btlooks").css({
+                	"width":"auto",
+                	"margin-left":"0",
+                	"margin-right": "4%",
+                	
+                	
+                });
+                
                 btnTodos.css({
                     position: "absolute",
                     top: "8px",
@@ -960,10 +976,26 @@ echo CHtml::ajax(array(
                     "margin-bottom": "0px"
                 });
                 
+                
+                
+                
                 btn2.addClass("offset6");                
                 filtros.hide();
                 
             } else if (st <= ot) {
+            	 $(".botones").css({
+                	"width":"100%",
+                	"position":"relative"
+                });
+                
+                $(".btlooks").css({
+                	"width":"20%",
+                	"margin-left":"36%",
+                	"margin-right": "1%",
+                	
+                	
+                });
+            	
                 s.css({
                     position: "relative",
                     top: ""

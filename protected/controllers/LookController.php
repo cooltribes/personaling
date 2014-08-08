@@ -1620,9 +1620,13 @@ public function actionCategorias(){
  
         foreach ($arrayLooks as $look) {
             //AGregar la fila al documento xls
-            $vals=array($look->id, utf8_decode($look->title), $look->countItems(), utf8_decode($look->user->profile->getNombre())
-			, $look->getPrecio(), $look->getLookxStatus(3), $look->getMontoVentas(), $look->getStatus()
-			, $this->createAbsoluteUrl('look/detalle',array('id'=>$look->id))) ;
+            $vals=array(	$look->id,
+            				utf8_decode($look->title),
+            				$look->countItems(),
+            				utf8_decode($look->user->profile->getNombre()),
+            				$look->getPrecio(), $look->getLookxStatus(3),
+            				$look->getMontoVentas(), $look->getStatus(),
+            				$this->createAbsoluteUrl('look/detalle',array('id'=>$look->id))) ;
 			fputcsv($fp,$vals,";",'"');
            
         }

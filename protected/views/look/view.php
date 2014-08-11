@@ -166,11 +166,12 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                      //Si es invitado enviar los productos a una
                      //URL distinta por ajax
                    'url'=> Yii::app()->user->isGuest ? CController::createUrl('producto/agregarBolsaGuest'):
-                         CController::createUrl('bolsa/agregar'),
+                         CController::createUrl('bolsa/agregar2'),
              
                     'htmlOptions'=>array('id'=>'buttonGuardar'),
                     'ajaxOptions'=>array(
                             'type' => 'POST',
+                            'dataType' => 'json',
                             'data'=> "js:$('#producto-form').serialize()",
 
                             'beforeSend' => "function( request )n
@@ -212,43 +213,24 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                                      if(invitado){
                                         agregarBolsaGuest(data);
                                      }else{
-                                     
-                                         if(data.indexOf('ok')>=0)
+                                        console.log(data);
+                                         if(data.status == 'ok')
                                         {
-                                            window.location='".$this->createUrl('bolsa/index')."';
+                                          ga('ec:addProduct', {
+                                            'id': data.id,
+                                            'name': data.name,
+                                            'category': data.category,
+                                            'brand': data.brand,
+                                            'variant': data.variant,
+                                            'price': data.price,
+                                            'quantity': data.quantity,
+                                          });
+                                          ga('ec:setAction', 'add');
+                                          ga('send', 'event', 'UX', 'click', 'add to cart');     // Send data using an event.
+                                          window.location='".$this->createUrl('bolsa/index')."';
                                         }                                     
                                     }
-
-                                 //alert(data);
-                                  /*
-                                    // handle return data
-                                   // alert( data );
-                                   // $('#table_tallacolor').append(data);
-                                   data = JSON.parse( data );
-                                    if(data.status=='success'){
-                                        // $('#formResult').html('form submitted successfully.');
-                                        //alert('si');
-                                        // $('#Tallacolor-Form')[0].reset();
-                                        $('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
-                                    }
-                                         else{
-                                             id = data.id;
-                                             delete data['id'];
-
-                                        $.each(data, function(key, val) {
-                                            key_tmp = key.split('_');
-                                            key_tmp.splice(1,0,id);
-                                            key = key_tmp.join('_');
-
-                                            //alert('#Tallacolor-Form #'+key+'_em_');
-
-                                        $('#Tallacolor-Form #'+key+'_em_').text(val);
-                                        $('#Tallacolor-Form #'+key+'_em_').show();
-                                        });
-                                        }
-                                         */
                                   }",
-                                //  'data'=>array('id'=>$model->id),
                     ),
                 ));
 
@@ -363,13 +345,13 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                   //Si es invitado enviar los productos a una
                      //URL distinta por ajax
                    'url'=> Yii::app()->user->isGuest ? CController::createUrl('producto/agregarBolsaGuest'):
-                         CController::createUrl('bolsa/agregar'),
+                         CController::createUrl('bolsa/agregar2'),
              
                     'htmlOptions'=>array('id'=>'buttonGuardar','class'=>'span4'),
                     'ajaxOptions'=>array(
                             'type' => 'POST',
                             'data'=> "js:$('#producto-form').serialize()",
-
+                            'dataType' => 'json',
                             'beforeSend' => "function( request )
                                  {                                  
                                    
@@ -410,41 +392,22 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                                      if(invitado){
                                         agregarBolsaGuest(data);
                                      }else{
-                                     
-                                         if(data.indexOf('ok')>=0)
+                                         if(data.status == 'ok')
                                         {
-                                            window.location='".$this->createUrl('bolsa/index')."';
+                                          ga('ec:addProduct', {
+                                            'id': data.id,
+                                            'name': data.name,
+                                            'category': data.category,
+                                            'brand': data.brand,
+                                            'variant': data.variant,
+                                            'price': data.price,
+                                            'quantity': data.quantity,
+                                          });
+                                          ga('ec:setAction', 'add');
+                                          ga('send', 'event', 'UX', 'click', 'add to cart');     // Send data using an event.
+                                          window.location='".$this->createUrl('bolsa/index')."';
                                         }                                     
                                     }
-
-                                 //alert(data);
-                                  /*
-                                    // handle return data
-                                   // alert( data );
-                                   // $('#table_tallacolor').append(data);
-                                   data = JSON.parse( data );
-                                    if(data.status=='success'){
-                                        // $('#formResult').html('form submitted successfully.');
-                                        //alert('si');
-                                        // $('#Tallacolor-Form')[0].reset();
-                                        $('#yw0').html('<div class=\"alert in alert-block fade alert-success\">Se guardaron las cantidades</div>');
-                                    }
-                                         else{
-                                             id = data.id;
-                                             delete data['id'];
-
-                                        $.each(data, function(key, val) {
-                                            key_tmp = key.split('_');
-                                            key_tmp.splice(1,0,id);
-                                            key = key_tmp.join('_');
-
-                                            //alert('#Tallacolor-Form #'+key+'_em_');
-
-                                        $('#Tallacolor-Form #'+key+'_em_').text(val);
-                                        $('#Tallacolor-Form #'+key+'_em_').show();
-                                        });
-                                        }
-                                         */
                                   }",
                                 //  'data'=>array('id'=>$model->id),
                     ),

@@ -54,9 +54,6 @@
 
   //Metas de Twitter CARD OFF
 
-
-
-
 ?>
 <!-- FLASH OFF -->
 
@@ -1332,18 +1329,33 @@ $('.imagen_principal').zoom({url: imgZ});
             //si no es guest, agregar a la bolsa normal del usuario logueado
             $.ajax({
                 type: "post",
-                url: "<?php echo Yii::app()->createUrl('bolsa/agregar'); ?>", // action Tallas de Producto
+                url: "<?php echo Yii::app()->createUrl('bolsa/agregar2'); ?>", // action Tallas de Producto
                 data: { 'producto':producto, 'talla':talla, 'color':color}, 
+                dataType: 'json',
                 success: function (data) {
                   comprando = true;
+                  console.log(data);
 
-                  if(data=="ok")
-                  {
+                  if(data.status=="ok"){
+                    // registrar impresión en google analytics
+                    
+                      ga('ec:addProduct', {
+                        'id': data.id,
+                        'name': data.name,
+                        'category': data.category,
+                        'brand': data.brand,
+                        'variant': data.variant,
+                        'price': data.price,
+                        'quantity': data.quantity,
+                      });
+                      ga('ec:setAction', 'add');
+                      ga('send', 'event', 'UX', 'click', 'add to cart');     // Send data using an event.
+                    
                     //alert("redireccionar mañana");
                     window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
                   }
 
-                  if(data=="no es usuario")
+                  if(data.status=="no es usuario")
                   {
                     $('#alertRegister').show();
                     //bootbox.alert("Debes primero ingresar con tu cuenta de usuario o registrarte");

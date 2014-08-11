@@ -362,6 +362,7 @@ else
                 				this.reset();   //Here form fields will be cleared.
            					 });
 							$("#Direccion_ciudad_id option[value='']").attr('selected', true);
+							$("#Direccion_codigo_postal_id option[value='']").attr('selected', true);
 		                    $('html, body').animate({
 		                        scrollTop: ($('#scrollNueva').offset().top - 150)
 		                    }, 500);
@@ -450,6 +451,8 @@ else
 			      type: "post",
 			      data: { ciudad_id : $(this).val() },
 			      success: function(data){
+			      	if(data=='')
+			      		alert("DONDE?");
 			           $('#Direccion_codigo_postal_id').html(data);
 			           
 			      },
@@ -465,6 +468,7 @@ else
 			      type: "post",
 			      data: { pais_id : $(this).val() },
 			      success: function(data){
+			      	
 			           $('#Direccion_provincia_id').html(data);
 			           $("#Direccion_ciudad_id").html('');
 			           $("#Direccion_codigo_postal_id").html('');

@@ -156,9 +156,21 @@
             	
             	
             	
-            </div>
+            </div> 
             
           </div>
+        </div>
+        <div class="row-fluid lookMobile" >
+        	<div class="half line-height-20">
+        		<small class="muted"><?php echo Yii::t('contentForm','Look created by'); ?>:<br/></small>
+        		<?php echo CHtml::link('<span class="fn pscompleto"><b>'.$look->user->profile->getNombre().'</b></span>',$look->user->profile->getUrl()); ?>
+        		<?php echo CHtml::link('<span class="fn psprimero"><b>'.$look->user->profile->first_name.'</b></span>',$look->user->profile->getUrl()); ?>
+        	</div>
+        	<div class="half line-height-40">
+        		<span class="pUnico">
+            			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecioDescuento(); ?>
+            		</span>
+        	</div>
         </div>
         <div class="share_like">
          <?php if(!Yii::app()->user->isGuest){?>

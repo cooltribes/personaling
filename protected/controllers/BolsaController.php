@@ -2747,6 +2747,9 @@ class BolsaController extends Controller
                             $detalle->orden_id = $orden->id;
                             $detalle->tipo_pago = 2;
                             $detalle->save();
+                            	
+								
+                            
                             
                         } else { 
                             $this->redirect($this->createAbsoluteUrl('bolsa/errorGC',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
@@ -2779,7 +2782,7 @@ class BolsaController extends Controller
         public function crearGC($userId, $ordenId){
             
             $giftcards = BolsaGC::model()->findAllByAttributes(array("user_id" => $userId));		
-            
+            $resumen="";
             foreach($giftcards as $gift){
                 
                 $model = new Giftcard;
@@ -2803,10 +2806,13 @@ class BolsaController extends Controller
                 
                 $model->save();
                 $gift->delete();
-                
+              
+				
+				
                 //Enviar la giftcard por correo solo si se selecciono email al comprar
                 if(Yii::app()->getSession()->get('entrega') == 2){
-                
+                	
+                	$via="E-mail";
                     $envio = new EnvioGiftcard();
                     $envio->attributes = Yii::app()->getSession()->get('envio');
                     
@@ -2840,10 +2846,39 @@ class BolsaController extends Controller
                 
                     
                 }
+				else
+					$via="Impresa";
                 
+				$resumen.="<tr><td>{$model->Userbeneficiario->first_name} {$model->Userbeneficiario->last_name}</td>
+							<td>{$model->monto}</td><td>{$via}</td><tr>";
                 
             }
+            
+			$this->sendSummary($resumen,$ordenId,$userId);               
+                    
+            
+            
 
+	}
+	
+	
+	public function actionSendSummary($resumen,$ordenId,$userId){
+		$message = new YiiMailMessage;
+                    $message->view = "mail_giftcard_summary";
+                    $subject = 'Tu compra de Gift Card de Personaling';
+                    $body = "¡Hola <strong>{$user->first_name}</strong>!<br><br>
+    	                    Hemos procesado satisfactoriamente tu compra de Gift Card.";
+                            
+                    
+                    $params = array('subject' => $subject, 'body' => $body,'resumen' => $resumen, 'orden'=> $ordenId);
+                    $message->subject = $subject;
+                    $message->setBody($params, 'text/html');
+
+                    $message->addTo("cruiz@upsidecorp.ch");
+
+                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    return Yii::app()->mail->send($message);
+            
 	}
         
         /**

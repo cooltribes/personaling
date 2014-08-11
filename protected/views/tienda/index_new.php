@@ -68,7 +68,7 @@ if(isset($seo)){
 				<div class="mobileOptions">
 					
 					<div class="moLeft">
-						<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search" maxlength="50" >
+						<input type="text" class="input-medium text_search" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search" maxlength="50" >
 					</div>
 					<div class="moRight">
 						<div id="mobFiltrar">
@@ -145,18 +145,19 @@ if(isset($seo)){
 		</div>
 	</div>
 </div>     
-	 
-<div class="navbar navbar-fixed-top register-mob-bar"  >
-	<div>
-		<div class="rmb-title">Bienvenido a Personaling</div>
-		<a class="rmb-white" href="<?php echo Yii::app()->baseUrl; ?>/inicio-personaling">Accede</a>
-		 
-		<a class="rmb-black" href="<?php echo Yii::app()->baseUrl; ?>/registro-personaling">¡Registrate!</a>			
-	
-			
+<?php if(Yii::app()->user->isGuest){	 ?> 
+	<div class="navbar navbar-fixed-top register-mob-bar"  >
+		<div>
+			<div class="rmb-title">Bienvenido a Personaling</div>
+			<a class="rmb-white" href="<?php echo Yii::app()->baseUrl; ?>/inicio-personaling">Accede</a>
+			 
+			<a class="rmb-black" href="<?php echo Yii::app()->baseUrl; ?>/registro-personaling">¡Registrate!</a>			
+		
+				
+		</div>
+		
 	</div>
-	
-</div>
+<?php }?>
 
 
 
@@ -409,7 +410,7 @@ if(isset($seo)){
 			</li> -->
 			<li class="item itemInput">
 				<div class="contenedorInput">
-					<input type="text" class="input-medium" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="text_search" maxlength="50" > 
+					<input type="text" class="input-medium text_search" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="deskText" maxlength="50" > 
 					<button class="btn btn-danger btn-buscar" id="btn_search" type="button"><i class="icon-search"></i></button>	
 				</div>
 			</li>	
@@ -474,7 +475,7 @@ if(isset($seo)){
             	}
             	//$('#catalogo').remove(); 
             	//$('#tienda_productos').html(''); 
-            	$('#text_search').val(''); 
+            	$('.text_search').val(''); 
             	preRefresh();
            
             	 
@@ -500,7 +501,7 @@ if(isset($seo)){
             	}
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
-            	$('#text_search').val(''); 
+            	$('.text_search').val(''); 
             	$('#chic_hid').val('0');
             	preRefresh();
             
@@ -513,7 +514,7 @@ if(isset($seo)){
             	$('#chic_hid').val('1');
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
-            	$('#text_search').val('');  
+            	$('.text_search').val('');  
 
             	$('#banner100chic').fadeIn(3000);
             	preRefresh();
@@ -551,7 +552,7 @@ if(isset($seo)){
                 	$('#summColor').html($(this).attr('title'));
                 }
                   
-                $('#text_search').val('');
+                $('.text_search').val('');
                 preRefresh()
 
 		});  
@@ -590,7 +591,7 @@ if(isset($seo)){
             	
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
-            	$('#text_search').val(''); 
+            	$('.text_search').val(''); 
             	preRefresh();
             	
 
@@ -605,7 +606,7 @@ if(isset($seo)){
             	$('#cathid').val('0');
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
-            	$('#text_search').val(''); 
+            	$('.text_search').val(''); 
             	preRefresh();
  
 		});
@@ -619,7 +620,7 @@ if(isset($seo)){
             	$('#'+$(this).attr('name')).css('outline','solid 2px #ffd660');
             	//$('#catalogo').remove();
             	//$('#tienda_productos').html(''); 
-            	$('#text_search').val(''); 
+            	$('.text_search').val(''); 
             	preRefresh();
 
 		});
@@ -638,13 +639,14 @@ if(isset($seo)){
 		
 		$("#btn_search").click(function() { 
             	
-			if($('#text_search').val().length>2){
+			
+			if($('#deskText').val().length>2){
                	$('#catalogo').remove();
                	$('#cathid').val('0');
                	$('#colorhid').val('0');
                	$('#marcahid').val('0');
                	$('#preciohid').val('5');
-               	$('#texthid').val($('#text_search').val()   );
+               	$('#texthid').val($('#deskText').val()   );
             	$('#tienda_productos').html(''); 
             	preRefresh();
            }
@@ -662,7 +664,7 @@ if(isset($seo)){
 		});
 		
 		
-		$('#text_search').keyup(function(e){
+		$('.text_search').keyup(function(e){
 		    if(e.keyCode == 13)
 		    {
 		        if($(this).val().length>2){
@@ -671,7 +673,9 @@ if(isset($seo)){
 	               	$('#colorhid').val('0');
 	               	$('#marcahid').val('0');
 	               	$('#preciohid').val('5');
-	               	$('#texthid').val($('#text_search').val()   );
+	               	$('#texthid').val($(this).val());
+	               	if($(this).attr('id')!='deskTest')
+	               			$('#deskTest').val('');
 	            	$('#tienda_productos').html(''); 
 	            	preRefresh();
 		    		

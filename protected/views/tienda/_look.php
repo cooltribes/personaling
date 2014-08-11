@@ -115,7 +115,7 @@
             	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
           	</a>
           	</div>
-          <div class="span4"> <span class="muted"><?php echo Yii::t('contentForm','Look created by'); ?>: </span>
+          <div class="span4 namePs"> <span class="muted pseparadas"><?php echo Yii::t('contentForm','Look created by'); ?>: </span>
             <h5>
 			<?php 
 			
@@ -129,13 +129,13 @@
             	 <?php
               if(!is_null($look->tipoDescuento) && $look->valorDescuento > 0){
                 ?>
-            	<div class="span6 color9" >
-            		<div class="tPrecioLight">Piezas Separadas</div>
+            	<div class="pseparadas span6 color9" >
+            		<div class="tPrecioLight ">Piezas Separadas</div>
             		<div class="pDoble">
             			<?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecioProductosDescuento(); ?>
             		</div>
             	</div>
-            	<div class="span6">
+            	<div class="span6 pcompleto">
             		<div  class="tPrecio">Look Completo</div>
             		<div class="pDoble">
             			<?php echo Yii::t('contentForm', 'currSym'); ?><?php echo $look->getPrecioDescuento(); ?>

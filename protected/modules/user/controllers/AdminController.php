@@ -1407,18 +1407,22 @@ class AdminController extends Controller
 		$this->performAjaxValidation(array($model,$profile));
 		if(isset($_POST['User']))
 		{
+	
 			$model->attributes=$_POST['User'];
-			$model->interno=$_POST['User']['interno'];
+			
 			$profile->attributes=$_POST['Profile'];
 			$profile->ciudad=$_POST['Profile']['ciudad'];
 		
 		
 			if($model->validate()&&$profile->validate()) {
-				$old_password = User::model()->notsafe()->findByPk($model->id);
-				if ($old_password->password!=$model->password) {
+				/*$old_password = User::model()->notsafe()->findByPk($model->id);
+				 if ($old_password->password!=$model->password) {
 					$model->password=Yii::app()->controller->module->encrypting($model->password);
 					$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
-				}
+				}*/ 
+				$model->save();
+				$model->interno=$_POST['User']['interno'];
+	
 				$model->save();
 				
 					

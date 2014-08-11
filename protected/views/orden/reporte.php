@@ -171,7 +171,7 @@
 	
 
 ?>
-<div class="margin_top pull-left"><a href="<?php echo Yii::app()->baseUrl."/orden/reportexls" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a></div>
+<div class="margin_top pull-left"><a href="<?php echo Yii::app()->baseUrl."/orden/reportecsv" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a></div>
 </div>
 </div>
 

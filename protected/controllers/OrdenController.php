@@ -29,7 +29,7 @@ class OrdenController extends Controller
 				'actions'=>array('index','cancel','admin','modalventas',
                                     'detalles','devoluciones','validar','enviar',
                                     'factura','calcularenvio','createexcel',
-                                    'importarmasivo','reporte','reportexls','admincsv',
+                                    'importarmasivo','reporte','reportecsv','admincsv',
                                     'adminXLS','generarExcelOut','devolver','adminDevoluciones',
                                     'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
                                     'AnularDevuelto','cantidadDevuelto','activarDevuelto',
@@ -259,6 +259,80 @@ public function actionReportexls(){
 			Yii::app()->end();
 				  
 	}
+
+
+	public function actionReporteCSV(){
+		$orden=new Orden;
+		$ordenes = $orden->vendidas(false); 
+		header( "Content-Type: text/csv;charset=utf-8" );
+		header('Content-Disposition: attachment; filename="Vendidos.csv"');
+		$fp = fopen('php://output', 'w');
+        // creando el encabezado
+        fputcsv($fp,
+          		array(	'SKU', 
+          				'Referencia', 
+          				'Marca',
+          				'Nombre',
+          				'Color',
+          				'Talla',
+          				'Cantidad',
+          				'Costo ('.Yii::t('contentForm','currSym').')',
+          				'Precio de Venta sin IVA ('.Yii::t('contentForm','currSym').')',
+          				'Precio de Venta con IVA ('.Yii::t('contentForm','currSym').')',
+          				'Orden N°',
+          				'Vendido en'),";",'"');
+		
+		
+		
+		foreach($ordenes->getData() as $data)
+			{
+
+				$precio = $data['Precio'];
+				$precio_iva = $data['pIVA'];
+				if($data['look']!=0){
+				    $look = Look::model()->findByPk($data['look']);
+				    $orden = Orden::model()->findByPk($data['Orden']);
+				    if($look && $orden){
+				        if(!is_null($look->tipoDescuento) && $look->valorDescuento > 0){
+				            if($orden->getLookProducts($look->id) == $look->countItems()){
+				                //echo 'Precio: '.$look->getPrecio(false).' - Precio desc: '.$look->getPrecioDescuento(false);
+				                $descuento_look = $look->getPrecio(false) - $look->getPrecioDescuento(false);
+				                $porcentaje = ($descuento_look * 100) / $look->getPrecio(false);
+				                //////echo $descuento_look.' - '.$porcentaje;
+
+				                $precio -= $data['Precio'] * ($porcentaje / 100);
+				                $precio_iva -= $data['pIVA'] * ($porcentaje / 100);
+				            }
+				        }
+				    }
+				}
+					//Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
+             
+                    $I=number_format($precio,2,',','.'); 
+                    $J=number_format($precio_iva,2,',','.');
+
+
+					 $vals=array( 	$data['SKU'],
+					 				$data['Referencia'], 
+					 				utf8_decode($data['Marca']), 
+									utf8_decode($data['Nombre']), 
+									utf8_decode($data['Color']), 
+									$data['Talla'], 
+									$data['Cantidad'], 
+									number_format($data['Costo'],2,',','.'), 
+									trim($I), 
+									trim($J), 
+									$data['Orden'],
+									date("d/m/Y",strtotime($data['Fecha'])));
+					fputcsv($fp,$vals,";",'"');
+				}
+			fclose($fp); 
+			ini_set('memory_limit','128M'); 
+			Yii::app()->end(); 
+		
+		
+	}
+
 
 
 	public function actionHistorial()

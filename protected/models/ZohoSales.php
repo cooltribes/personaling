@@ -53,6 +53,55 @@ class ZohoSales{
 		$xml .= '<FL val="Telefono Envio">'.$orden->direccionFacturacion->telefono.'</FL>';
 		$xml .= '<FL val="Sub Total">'.(double)$orden->subtotal.'</FL>';
 		$xml .= '<FL val="Tax">'.(double)$orden->iva.'</FL>';
+		
+		$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
+		$envio_pago = 0;
+		$ajuste=0;
+		$forma="";
+		$cupon=0;
+		
+		foreach($detalles as $detalle)
+		{
+			if($envio_pago == 0){		
+				if($orden->envio > 0){
+					$ajuste = $ajuste + $orden->envio;
+					$envio_pago = 1;
+				}
+			}
+			
+			if($detalle->tipo_pago == 3){ 
+				$ajuste -= $detalle->monto; 
+				$xml .= '<FL val="Balance">'.(double)$detalle->monto.'</FL>';
+				$forma .= " Balance, ";
+			}
+			
+			if($detalle->tipo_pago == 4 || $detalle->tipo_pago == 5){
+				$xml .= '<FL val="Paypal_Sabadell">'.(double)$detalle->monto.'</FL>';
+				
+				if($detalle->tipo_pago == 4)
+					$forma .= " Sabadell, ";
+				if($detalle->tipo_pago == 5)
+					$forma .= " Paypal, ";
+				if($detalle->tipo_pago == 7)
+					$forma .= " Paypal prueba, ";
+				
+			}
+			
+			if(isset($orden->cupon)){
+				if($cupon == 0){
+					$ajuste -= $orden->cupon->descuento;
+					$xml .= '<FL val="Cupon">'.(double)$orden->cupon->descuento.'</FL>';
+					$forma .= " Cupón de descuento, ";
+					$cupon++;
+				}	
+			} 
+		} 
+			
+		$xml .= '<FL val="Adjustment">'.(double)$ajuste.'</FL>';	
+		$xml .= '<FL val="Forma de Pago">'.$forma.'</FL>';
+		// echo $ajuste;
+		//Yii::app()->end();
+			
 		if((double)$orden->descuento > 0) 
 			$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
 		

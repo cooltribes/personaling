@@ -80,9 +80,13 @@
 .text_light{text-shadow:0 1px #fff}
 .text_shadow{text-shadow:1px 1px #000}
 .non_visible{text-indent:-9999px;font-size:0;height:0;padding:0}
+
 .text_align_right{text-align:right}
 .text_align_left{text-align:left}
 .text_align_center{text-align:center}
+.vertical_align_middle{vertical-align:middle}
+.line-height-20{ line-height:20px;}
+.line-height-40{ line-height:40px;}
 .gradient_1{background:linear-gradient(top,#eba97d0%,#ffcdb13%,#ffb1856%,#ff8f4999%)}
 .CAPS{text-transform:uppercase}
 .modulo1 h4{color:#e46c0a;font-size:12px}
@@ -2922,7 +2926,7 @@ ul.yiiPager .last
 .pUnico{
   height:65%; width: 90%; text-align: right; float: left; font-size: 27px; margin-top: 15px; font-weight: 300;
 } 
- 
+
 .pDoble{
   height:65%; width: 90%; text-align: right; float: left; font-size: 23px; margin-top: -5px; font-weight: 300;
 }
@@ -2933,6 +2937,11 @@ ul.yiiPager .last
       font-size: 20px;
     }
 }
+
+.psprimero{
+    display:none;    
+  }
+
 .urlDetalle{
   height: 40px;
   font-size: 25px; 
@@ -4362,17 +4371,20 @@ img[alt="Loading"]{
 
  
  }
- @media (max-width: 977px) {
+ @media (min-width: 769px) and (max-width: 977px) {
  .btlooks{
           margin-left:43%;
           margin-right:1%;
           width:32%;
           float:left;
         }
-   #btnMatch{
+   .btlooks #btnTodos{
+     width:165px;
+   }
+   .btnmatch #btnMatch{
           
-          width:170px;
-          margin-left: -20px
+          width:165px;
+          margin-left: 25px
           
         }
    .pseparadas, .tPrecio{
@@ -4745,8 +4757,17 @@ img[alt="Loading"]{
     display:none;
   }
   
+  .lookMobile{
+    display:none;
+  }
+  
+  
+  
 }
 @media  (max-width: 768px) {
+  #btnTodos{
+    height:auto;
+  }
   #deskfilters{
     display:none;
   }
@@ -4943,7 +4964,19 @@ img[alt="Loading"]{
     
   
   }
-  
+    
+  .lookMobile{
+    border-top:solid 1px #DDD; 
+    vertical-align: middle;
+   } 
+   .lookMobile .half{
+      width:50%; 
+      float:left;
+   }
+   .lookMobile .half .pUnico{
+       margin-top:0px;
+   }
+   
   
   
 }
@@ -4952,11 +4985,20 @@ img[alt="Loading"]{
   .to_cut{
     display:none;    
   }
+  
   .to_upper{
     .CAPS;
   }
+  
 }
-
+@media  (max-width: 265px) {
+  .pscompleto{
+    display:none;    
+  }
+  .psprimero{
+    display:block;
+  }
+}
 
 
 

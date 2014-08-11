@@ -1427,15 +1427,24 @@ public function actionCategorias2(){
    
    		$datos=$datos."<div class='row-fluid'>";
    		$datos=$datos."<div class='span7'><div class='carousel slide' id='myCarousel'>";
-		$datos=$datos."<ol class='carousel-indicators'>";
-		$datos=$datos."<li class='' data-slide-to='0' data-target='#myCarousel'></li>";
-		$datos=$datos.'<li data-slide-to="1" data-target="#myCarousel" class="active"></li>';
-        $datos=$datos.'<li data-slide-to="2" data-target="#myCarousel" class=""></li>';
-       	$datos=$datos.'</ol>';
+			$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
+		if(count($ima)>1)
+		{
+			$datos=$datos."<ol class='carousel-indicators'>";
+			foreach ($ima as $key=>$img){
+				if($key==0)
+				$datos=$datos."<li class='active' data-slide-to='".$key."' data-target='#myCarousel'></li>";
+				else
+					$datos=$datos."<li class='' data-slide-to='".$key."' data-target='#myCarousel'></li>";
+				if($key==2)
+					break;
+		    }
+		       	$datos=$datos.'</ol>';
+	    }
         $datos=$datos.'<div class="carousel-inner" id="carruselImag">';
        // $datos=$datos.'<div class="item">';
 		
-		$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
+	
 		
 		foreach ($ima as $img){
 					

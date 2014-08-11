@@ -17,7 +17,11 @@ function str_lreplace($search, $replace, $subject)
 }
 ?>
 <?php  
-	$this->pageTitle=Yii::app()->name . ' - Lo más Top';  
+	
+	if(!isset($seo))
+		$this->pageTitle=Yii::app()->name . ' - Lo más Top';  
+	
+	
 	$baseUrl = Yii::app()->baseUrl; 
   //$cs = Yii::app()->getClientScript();
   //$cs->registerScriptFile($baseUrl.'/js/slider.js');

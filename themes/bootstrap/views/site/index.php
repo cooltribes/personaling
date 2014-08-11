@@ -130,7 +130,8 @@ if(isset($seo)){
 					'dataProvider_productos' => $productos->masvendidos(6),
 					'dataProvider_destacados' => $looks->lookDestacados(3),
 					'user'=>$user,
-                                        'psDestacados' => $psDestacados,//->getPsDestacados(4),
+                                        'psDestacados' => $psDestacados,
+                                        'seo'=>$seo//->getPsDestacados(4),
 				));	
 		
 		

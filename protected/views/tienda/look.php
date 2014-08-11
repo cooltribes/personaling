@@ -292,7 +292,7 @@ $("#mobFiltrar").click(function() {
                     ));
                     ?>
                 </div>
-                <div  style="float:left; width:20%">
+                <div  class="btmatch" style="float:left; width:20%">
                     <?php
                     $this->widget('bootstrap.widgets.TbButton', array(
                         'label' => 'Looks para ti',
@@ -949,7 +949,7 @@ echo CHtml::ajax(array(
                 	"width":"auto",
                 	"right":"3%",
                 });
-                $("#btnTodos,#btnMatch").css({
+                $(".btlooks #btnTodos,.btmatch #btnMatch").css({
                 	"width":"165px",
                 	
                 });

@@ -23,7 +23,7 @@ class ZohoSales{
 	public $Adjustments;
 	public $Discount;
 	public $TotalAfterDiscount; 
-	
+	 
 	// Save user to potential clients list
 	function save_potential($orden){
 		
@@ -57,6 +57,8 @@ class ZohoSales{
 			$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
 		
 			$xml .= $this->Products($orden->id); 
+		
+			$this->actualizarCantidades($orden->id);	
 		
 		$xml .= '<FL val="Grand Total">'.(double)$orden->total.'</FL>'; 
 		$xml .= '</row>';
@@ -109,11 +111,9 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 	
 			$response = curl_exec($ch);
 			curl_close($ch);
-		//	return $response; 
 		//	echo htmlspecialchars($response)."<p><p>";
 			
 			$datos = simplexml_load_string($response);
-		//	var_dump($datos);
 			
 			$id = $datos->result[0]->Products[0]->row->FL[0]; 
 			$nombre = $datos->result[0]->Products[0]->row->FL[1];
@@ -177,5 +177,48 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 		curl_close($ch);
 		return $response; 
 	}
+
+	function actualizarCantidades($id){
+		
+		$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$id));
+		
+		$xml;
+		$xml = '<Products>';
+		$i=1;
+		
+		foreach($productos as $tallacolor){ 
+			
+			$prod = Producto::model()->findByPk($tallacolor->preciotallacolor->producto_id);
+			
+			$xml .= '<row no="'.$i.'">';
+			$xml .= '<FL val="Product Name">'.$prod->nombre.' - '.$tallacolor->preciotallacolor->sku.'</FL>';
+			$xml .= '<FL val="Id">'.$tallacolor->preciotallacolor->zoho_id.'</FL>';
+			$xml .= '<FL val="Qty in Stock">'.$tallacolor->preciotallacolor->cantidad.'</FL>';
+			$xml .= '</row>';
+			
+			$i++;
+			
+		} // foreach
+				
+		$xml .= '</Products>';
+		
+		/*--------------*/
+		$url ="https://crm.zoho.com/crm/private/xml/Products/updateRecords";
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&version=4&xmlData=".$xml;
+				
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
+				
+		// $datos = simplexml_load_string($response);
+	}
+
 
 }

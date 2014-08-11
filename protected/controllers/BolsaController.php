@@ -32,7 +32,7 @@ class BolsaController extends Controller
                     'eliminardireccion','editar','editardireccion','agregar','actualizar',
                     'pagos','compra','eliminar','direcciones','confirmar','comprar','cpago',
                     'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 'comprarGC',
-                    'clickBotonConfirmar', 
+                    'clickBotonConfirmar', 'agregar2',
                         'vaciarGuest',//Debe estar en la regla de *
                         ),
                     'users'=>array('@'),
@@ -107,6 +107,69 @@ class BolsaController extends Controller
 	
 	}
 
+	// nueva funcion para agregar productos a la bolsa y devolver un json con los datos necesarios para analytics, mas el status que ya existía
+	public function actionAgregar2(){
+		//si no tiene una bolsa aun asociada se crea
+			
+			
+		if(Yii::app()->user->isGuest==false) {
+			
+			$usuario = Yii::app()->user->id;
+			$bolsa = Bolsa::model()->findByAttributes(array(
+	                    'user_id'=>$usuario, 'admin' => 0));
+			
+			if(!isset($bolsa)) // si no tiene aun un carrito asociado se crea y se añade el producto
+			{
+				$bolsa = new Bolsa;
+				$bolsa->user_id = $usuario;
+				$bolsa->created_on = date("Y-m-d H:i:s");
+				$bolsa->save();
+			}
+			if (isset($_POST['look_id'])){
+				$todos = true;
+				foreach($_POST['producto'] as $key => $value){ 
+					list($producto_id,$color_id) = explode("_",$value);
+					$response = $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
+					if($response == 'fail'){
+						$todos = false;
+					}
+				}
+				if($todos){
+					$look = Look::model()->findByPk($_POST['look_id']);
+					echo json_encode(array(
+						'status' => 'ok',
+						'id' => $look->id,
+						'name' => $look->title,
+						'category' => 'Looks',
+						'brand' => 'Personaling',
+						'variant' => 'Look',
+						'price' => $look->getPrecioDescuento(),
+						'quantity' => 1
+					));
+				}
+			} else {
+				$response = $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+				$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$_POST['producto'],'talla_id'=>$_POST['talla'],'color_id'=>$_POST['color']));
+				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$_POST['producto']));
+                $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$_POST['producto']));
+				echo json_encode(array(
+					'status' => $response,
+					'id' => $ptcolor->producto->id,
+					'name' => $ptcolor->producto->nombre,
+					'category' => $category->nombre,
+					'brand' => $ptcolor->producto->mymarca->nombre,
+					'variant' => $ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor,
+					'price' => $precio->precioImpuesto,
+					'quantity' => 1
+				));
+			}
+			
+		}else{
+			echo json_encode(array('status'=>'no es usuario'));
+		}
+
+	}
 
 	public function actionAgregar(){
 		//si no tiene una bolsa aun asociada se crea

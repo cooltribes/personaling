@@ -190,7 +190,8 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                                                if ($(this).parent().prev('input').prop('checked')){
                                                		entro = false;
-                                                   bootbox.alert('".Yii::t('contentForm' , 'You must select all sizes')."');
+                                                		
+                                                   $('#alertSizes').show();
                                                    return false;
                                                }
                                            }
@@ -367,7 +368,8 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                                                if ($(this).parent().prev('input').prop('checked')){
                                                   entro = false;
-                                                   bootbox.alert('".Yii::t('contentForm' , 'You must select all sizes')."');
+                                                 
+                                                   $('#alertSizes').show();
                                                    return false;
                                                }
                                            }
@@ -616,8 +618,26 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
   <div class="modal-footer"> <a href="#" class="btn btn-warning">Añadir al Look</a> </div>
 </div>
 
+<div id="alertSizes" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+ <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+     <h3 ><?php echo Yii::t('contentForm','Remember');?></h3>
+ 
+  </div>
+  <div class="modal-body">
+ 		 <h4><?php echo Yii::t('contentForm','You should set the sizes for the items.');?></h4>
+ 		 
+  </div>
+  <!--<div class="modal-footer">   
+ 		<button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
+  </div>-->
+</div>
+
 <!-- // Modal Window -->
 <script>
+	$('.closeModal').click(function(event) {
+			$('#alertSizes').hide();
+		});
     function updateCantidad(object){
         //alert(object.id.substring(5));
         //alert(object.value);

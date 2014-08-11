@@ -281,14 +281,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
  		 <h4><?php echo Yii::t('contentForm','You should select a Billing Address.');?></h4>
  		 
   </div>
-  <div class="modal-footer">  
-
- 
+  <!--<div class="modal-footer">   
  		<button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
- 	
-
-  	
-  </div>
+  </div>-->
 </div>
 <!-- /container -->
 

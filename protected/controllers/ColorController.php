@@ -283,19 +283,19 @@ class ColorController extends Controller
 	public function actionPruebazoho()
 	{
 		
-		$orden = Orden::model()->findByPk(93);
+		$orden = Orden::model()->findByPk(103);
 		$zoho = new ZohoSales;
 		$usuario = User::model()->findByPk($orden->user->id);
-		
+		/*
 		$conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email); 
         $datos = simplexml_load_string($conv);
 
         $id = $datos->Contact;
         $usuario->zoho_id = $id;
         $usuario->tipo_zoho = 1;
-
+ 
         $usuario->save(); 
-		
+		*/
 		$respuesta = $zoho->save_potential($orden);
 		echo htmlspecialchars($respuesta)."<p><p>";
 

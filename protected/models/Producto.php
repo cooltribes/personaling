@@ -709,7 +709,17 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 	
 			
 	
-	
+	public function eliminarDescuentoLooks(){
+		$looks_producto = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$this->id));
+		foreach ($looks_producto as $lp) {
+			//echo $lp->look_id.'</br>';
+			$look = Look::model()->findByPk($lp->look_id);
+			$look->scenario = 'draft';
+			$look->tipoDescuento = NULL;
+			$look->valorDescuento = NULL;
+			$look->save();
+		}
+	}
 	
 		
 	public function ProductosLook($personal)

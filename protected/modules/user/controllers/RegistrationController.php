@@ -519,6 +519,72 @@ class RegistrationController extends Controller
 //                                else if ($profile->sex == 2) // hombre
 //                                    $this->redirect(array('/tienda/look'));
                                 
+                                 /* REGISTRAR PERSONAL SHOPPER EN ZOHO */
+            					
+	            					$user=User::model()->findByPk($model->id);
+									
+									$rangos = array();
+	            
+						            $profileFields=$user->profile->getFields();
+						            if ($profileFields) {
+						                foreach($profileFields as $field) {
+						                    if($field->id > 4 && $field->id < 16){
+						                        $rangos[] =  $field->range.";0==Ninguno";
+						                    }
+						                    if($field->id == 4){
+						                        $rangosSex = $field->range;
+						                    }
+						                    
+						                }
+						            }
+						
+						            $time = strtotime($user->profile->birthday);
+						
+						            $admin = 'No';
+						            $ps = 'Aplicante';
+						            $no_suscrito = true;
+						            $interno = 'Externo'; 
+						
+						            $zoho = new Zoho();
+						            $zoho->email = $user->email;
+						            $zoho->first_name = $user->profile->first_name;
+						            $zoho->last_name = $user->profile->last_name;
+						            $zoho->birthday = date('d/m/Y', $time);
+						            $zoho->sex = Profile::range($rangosSex,$user->profile->sex); 
+						            $zoho->bio = $user->profile->bio;
+						            $zoho->dni = $user->profile->cedula;
+						            $zoho->tlf_casa = $user->profile->tlf_casa;
+						            $zoho->tlf_celular = $user->profile->tlf_celular;
+						            $zoho->pinterest = $user->profile->pinterest;
+						            $zoho->twitter = $user->profile->twitter;
+						            $zoho->facebook = $user->profile->facebook;
+						            $zoho->url = $user->profile->url;
+						            $zoho->admin = $admin;
+						            $zoho->ps = $ps;
+						            $zoho->no_suscrito = $no_suscrito;
+						            $zoho->tipo = $interno;
+					
+						            $zoho->status = $user->getStatus($user->status);
+									
+						            $result = $zoho->save_potential();
+						
+						            $xml = simplexml_load_string($result);
+						            $id = (int)$xml->result[0]->recorddetail->FL[0];
+						
+						            $user->zoho_id = $id;
+						            $user->save();
+									
+								/* Creando el caso */ 
+									
+									$zohoCase = new ZohoCases;
+									$zohoCase->Subject = "Aplicación PS - ".$user->email;
+									$zohoCase->Priority = "High";
+									$zohoCase->Email = $user->email;
+					            	$zohoCase->Description = "Aplicación de ".$user->profile->first_name." ".$user->profile->last_name." (".$user->email.") para personal Shopper.";
+									$zohoCase->internal = "Sin revisar";
+									
+									$respuesta = $zohoCase->save_potential(); 
+                                
                                 /** Redireccionar a la p{agina de información **/
                                      $this->redirect(array('/site/afterApply'));
                                 
@@ -547,11 +613,12 @@ class RegistrationController extends Controller
                                 $this->refresh();
                             }
                         }
+						
                     }
                     else
                         $profile->validate();
                 }
-            
+            	
             $this->render('/user/registration_ps', array('model' => $model, 'profile' => $profile));
 
         }

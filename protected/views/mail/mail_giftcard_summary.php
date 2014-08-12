@@ -99,19 +99,19 @@
                                       <multiline label="Description" width="580">
                                       <?php echo $body; ?>
                                       </multiline>
-                                        <td style=" background-color:#dff0d8; padding:6px;  color:#468847; margin-bottom:5px"><p class="well well-small"><strong>Número de confirmación:</strong> <?php echo $ordenId; ?></p></td>
-                                      
-                                      <table>
+                                       <p class="well well-small"><strong>Número de confirmación:</strong> <?php echo $orden->id; ?></p>
+                                     
+                                       
+                                      <table border="0" cellspacing="3" cellpadding="5" class="table table-bordered table-hover table-striped" width="100%">
                                       	<thead>
-	                                      	<th>Beneficiario</th>
-	                                      	<th>Monto</th>
-	                                      	<th>Entregada vía</th>
-                                      	</thead>
+	                                      	<th style="border:solid 1px #FFF; background-color:#000; color:#FFF; text-transform:uppercase; vertical-align: middle; text-align: center" scope="col">Via</th>
+	                                      	<th style="border:solid 1px #FFF; background-color:#000; color:#FFF; text-transform:uppercase; vertical-align: middle; text-align: center" scope="col">Destinatario</th>
+	                                      	<th style="border:solid 1px #FFF; background-color:#000; color:#FFF; text-transform:uppercase; vertical-align: middle; text-align: center" scope="col">Monto</th>
+	                                       	</thead>
                                       	<tbody>
                                       		<?php echo $resumen ?>
                                       	</tbody>
                                       </table>
-                                      
                                       
                                       
                                       
@@ -130,12 +130,6 @@
                                 <tr>
                                   <td class="w580" width="580" height="10"></td>
                                 </tr>                                                                
-                                <tr>
-                                  <td class="w580" width="580" height="10" style="text-align:center;">
-                                    <a title="¡Aplica tu gift card aquí!" href="http://www.personaling.com<?php echo Yii::app()->baseUrl ?>/giftcard/aplicar" style="text-align:center;text-decoration:none;color:#ffffff;word-wrap:break-word;background: #231f20; padding: 12px;" target="_blank">¡Aplica tu gift card aquí!
-                                    </a>
-                                  </td>
-                                </tr>
                                 <tr>
                                   <td class="w580" width="580" height="10"></td>
                                 </tr>

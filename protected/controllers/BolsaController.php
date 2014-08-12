@@ -2843,18 +2843,20 @@ class BolsaController extends Controller
 
                     $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                     Yii::app()->mail->send($message); 
-                
+                	$resumen.="<tr><td>Email</td><td>{$envio->email}</td><td>{$model->monto}</td><tr>";
                     
                 }
-				else
-					$via="Impresa";
+				else{
+					$resumen.="<tr><td colspan='2' align='center' style='text-align:center'>Impresa</td><td>".Yii::t('contentForm','currSym')." {$model->monto}</td><tr>";
+				}
+					
                 
-				$resumen.="<tr><td>{$model->Userbeneficiario->first_name} {$model->Userbeneficiario->last_name}</td>
-							<td>{$model->monto}</td><td>{$via}</td><tr>";
+				
                 
             }
             
-			$this->sendSummary($resumen,$ordenId,$userId);               
+			$this->actionSendSummary($resumen,$ordenId,$userId);
+				         
                     
             
             
@@ -2863,18 +2865,20 @@ class BolsaController extends Controller
 	
 	
 	public function actionSendSummary($resumen,$ordenId,$userId){
+		$comprador=User::model()->findByPk($userId);
+		$user=$comprador->profile;
 		$message = new YiiMailMessage;
                     $message->view = "mail_giftcard_summary";
                     $subject = 'Tu compra de Gift Card de Personaling';
-                    $body = "¡Hola <strong>{$user->first_name}</strong>!<br><br>
+                    $body = "¡Hola <strong>{$user->first_name}</strong>!<br/><br/>
     	                    Hemos procesado satisfactoriamente tu compra de Gift Card.";
                             
                     
-                    $params = array('subject' => $subject, 'body' => $body,'resumen' => $resumen, 'orden'=> $ordenId);
+                    $params = array('subject' => $subject, 'body' => $body,'resumen' => $resumen, 'orden'=> OrdenGC::model()->findByPk($ordenId));
                     $message->subject = $subject;
                     $message->setBody($params, 'text/html');
 
-                    $message->addTo("cruiz@upsidecorp.ch");
+                    $message->addTo($comprador->email);
 
                     $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                     return Yii::app()->mail->send($message);

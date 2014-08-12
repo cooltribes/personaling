@@ -710,12 +710,24 @@ $total_productos_look = 0;
 	        type: "post",
 	        url: "eliminar", // action de actualizar
 	        data: { 'prtc':id }, 
+          dataType: 'json',
 	        success: function (data) {
-				
-				if(data=="ok")
-				{
-					window.location.reload()
-				}
+				    console.log(data);
+    				if(data.status=="ok")
+    				{
+              ga('ec:addProduct', {
+                'id': data.id,
+                'name': data.name,
+                'category': data.category,
+                'brand': data.brand,
+                'variant': data.variant,
+                'price': data.price,
+                'quantity': data.quantity
+              });
+              ga('ec:setAction', 'remove');
+              ga('send', 'event', 'UX', 'click', 'remove from cart');     // Send data using an event.
+    					window.location.reload()
+    				}
 					
 	       	}//success
 	       })

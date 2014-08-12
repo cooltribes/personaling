@@ -118,7 +118,7 @@
                                                              <h3 style="color:#999999;">DETALLES DE LA SOLICITUD</h3>
                                                                 
                                                                 <!-- Look ON -->
-                                                                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
         	<th style=" background-color:#000; color:#FFF; text-transform:uppercase; vertical-align: middle; text-align: center" scope="col"></th>
        

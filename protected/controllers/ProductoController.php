@@ -4684,7 +4684,7 @@ public function actionReportexls(){
                         $cantProductosGuest = count(Yii::app()->getSession()->get("Bolsa"));        
                         
                         $response["status"] = "success";
-                        $response["bolsa"] = Bolsa::textoBolsaGuest($cantProductosGuest);
+                        $response["contenido"] = Bolsa::textoBolsaGuest($cantProductosGuest);
                         $response["cantidad"] = $cantProductosGuest;
                         
                         echo CJSON::encode($response);

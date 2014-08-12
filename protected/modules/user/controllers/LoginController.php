@@ -153,7 +153,15 @@ class LoginController extends Controller
             if(UserModule::isAdmin()){
                 Yii::app()->getSession()->remove("Bolsa");
             }else{
+                $bolsaGuest = Yii::app()->getSession()->get("Bolsa");
+                Yii::app()->getSession()->remove("Bolsa");  
                 
+                //llena la bolsa del usuario que inicia sesion con los produtos
+                //que habian en la bolsa de Guest y borra la variable de sesion
+                Bolsa::pasarBolsaGuest($bolsaGuest);
+                
+                //redirigir a la bolsa para que compre de una vez
+                $this->redirect(array("/bolsa/index"));
             }
         }
         

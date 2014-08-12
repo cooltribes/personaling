@@ -260,7 +260,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     'url'=>array('/bolsa/index') ,'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cantProductosGuest,'icon'=>'icon-shopping-cart', 'itemOptions'=>
                     array('id'=>'btn-shoppingBag','class'=>'hidden-phone to-white-icon') ,
-                    'url'=>array('#') ,'visible'=>Yii::app()->user->isGuest),
+                    'url'=>array('/user/login') ,'visible'=>Yii::app()->user->isGuest),
                 array('label'=>'Accede', 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
                 array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'htmlOptions'=>array('class'=>'btn btn-rectangle'),'visible'=>Yii::app()->user->isGuest),
@@ -675,9 +675,11 @@ if(!Yii::app()->user->isGuest){
 
       });
 
+
+
+    /********Para la bolsa de Guest ON******/
 <?php if(Yii::app()->user->isGuest){ ?>
 
-    /********Para la bolsa de Guest******/
     function clickVaciar(){
         
         $('.popover #link-vaciar a').click(function(e){
@@ -700,7 +702,6 @@ if(!Yii::app()->user->isGuest){
         });
 
     }    
-    
     var textShoppingBag = '<?php echo Yii::app()->user->isGuest?
             Bolsa::textoBolsaGuest($cantProductosGuest):""; ?>';    
 
@@ -748,8 +749,7 @@ if(!Yii::app()->user->isGuest){
       });      
       
 <?php } ?>
-
-   /*Shopping bag guest OFF*/   
+/*Shopping bag guest OFF*/   
    
    
    
@@ -962,6 +962,35 @@ if(!Yii::app()->user->isGuest){
     function eraseCookie(name) {
         createCookie(name,"",-1);
     }
+    
+    /********Para la bolsa de Guest ON******/
+<?php if(Yii::app()->user->isGuest){ ?>
+    
+    function desplegarBolsaGuest(data){
+        console.log(data);
+    
+    
+        $('#btn-shoppingBag').popover('destroy');
+        $('#btn-shoppingBag').popover(
+        {
+          content: data.contenido,                      
+          html: true,
+          title: '<strong>Tu Carrito</strong>',
+          placement: 'bottom',
+          trigger: 'manual',
+          offset: 10
+        });
+
+        //cambiar el numero de items en la bolsa
+        var icono = $('#btn-shoppingBag a i');
+        $('#btn-shoppingBag a').html(icono).append(" " + data.cantidad);
+
+        //mostrar el popover del carrito
+        $('#btn-shoppingBag').popover("show");
+    }
+    
+<?php } ?>
+
 </script>
 
 

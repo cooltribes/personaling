@@ -354,7 +354,20 @@ class BolsaController extends Controller
 			           
             if ($model) {
                 $model->delete();
-            	echo "ok";
+            	
+				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$model->preciotallacolor->producto->id));
+                $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->preciotallacolor->producto->id));
+				echo json_encode(array(
+					'status' => 'ok',
+					'id' => $model->preciotallacolor->producto->id,
+					'name' => $model->preciotallacolor->producto->nombre,
+					'category' => $category->nombre,
+					'brand' => $model->preciotallacolor->producto->mymarca->nombre,
+					'variant' => $model->preciotallacolor->mycolor->valor." ".$model->preciotallacolor->mytalla->valor,
+					'price' => $precio->precioImpuesto,
+					'quantity' => $model->cantidad
+				));
 			}   
         }
         else

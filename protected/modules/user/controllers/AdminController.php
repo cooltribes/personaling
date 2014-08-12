@@ -1035,6 +1035,17 @@ class AdminController extends Controller
                 }
 		
 		if ($model->save()){
+			
+			/* Creando el caso */ 
+									
+				$zohoCase = new ZohoCases;
+				$zohoCase->Subject = "Aplicación PS - ".$model->email;
+				$zohoCase->internal = "Aprobado";
+				$zohoCase->Comment = "Aprobado por administrador";
+				$zohoCase->Solution = "Aprobado por administrador";
+									
+				$respuesta = $zohoCase->save_potential(); 
+			
 		echo CJSON::encode(array(
 	            'status'=>'success',
 	            'personal_shopper'=>$model->personal_shopper,

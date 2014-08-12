@@ -324,7 +324,7 @@ public function actionReportexls(){
 		if(isset($_POST['Producto']))
 		{
 			$exist = Producto::model()->findByAttributes(array('codigo'=>$_POST['Producto']['codigo']));
-			var_dump($_POST['Producto']['tipo']);
+			//var_dump($_POST['Producto']['tipo']);
 			
 			if(isset($exist)) // si existe
 			{
@@ -351,13 +351,26 @@ public function actionReportexls(){
 						if(isset($_POST['tienda_id'])){
 							Producto::model()->updateByPk($exist->id, array('tienda_id' => $_POST['tienda_id']));
 						}
+						$exist->eliminarDescuentoLooks();
+						
+						/*$looks_producto = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$exist->id));
+						foreach ($looks_producto as $lp) {
+							//echo $lp->look_id.'</br>';
+							$look = Look::model()->findByPk($lp->look_id);
+							$look->scenario = 'draft';
+							$look->tipoDescuento = NULL;
+							$look->valorDescuento = NULL;
+							if(!$look->save()){
+								var_dump($look->getErrors());
+							}
+						}*/
 				 	}
 					
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 					
 					if($_POST['accion'] == "normal") // si es el boton principal
-						$this->redirect(array('create','id'=>$exist->id));
+						//$this->redirect(array('create','id'=>$exist->id));
 					
 					if($_POST['accion'] == "avanzar") // guardar y avanzar
 						$this->redirect(array('precios','id'=>$exist->id));

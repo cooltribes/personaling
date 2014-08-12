@@ -1849,19 +1849,21 @@ public function actionCategorias(){
                             
                             $look = Look::model()->findByPK($row['A']);
                             if($look){
-                            	$look->scenario = 'descuentosMasivos';
-                            	if($row['D'] > 0){
-	                            	$look->tipoDescuento = 0;
-	                            	$look->valorDescuento = $row['D'];
-	                            }else{
-	                            	$look->tipoDescuento = NULL;
-	                            	$look->valorDescuento = NULL;
-	                            }
-                            	//$look->save();
-                            	if(!$look->save()){
-                            		foreach ($look->getErrors() as $key => $value) {
-                            			$errores .= $value;
-                            		}
+                            	if(!$look->hasProductosExternos()){
+	                            	$look->scenario = 'descuentosMasivos';
+	                            	if($row['D'] > 0){
+		                            	$look->tipoDescuento = 0;
+		                            	$look->valorDescuento = $row['D'];
+		                            }else{
+		                            	$look->tipoDescuento = NULL;
+		                            	$look->valorDescuento = NULL;
+		                            }
+	                            	//$look->save();
+	                            	if(!$look->save()){
+	                            		foreach ($look->getErrors() as $key => $value) {
+	                            			$errores .= $value;
+	                            		}
+	                            	}
                             	}
                             }
                             
@@ -1913,6 +1915,7 @@ public function actionCategorias(){
         $erroresPrecioDescuento = "";
         $erroresColumnasVacias = "";
         $erroresPrecioProcentaje = "";
+        $erroresDescuentosExternos = "";
         
 
         $linea = 1;
@@ -1971,8 +1974,12 @@ public function actionCategorias(){
                     if (isset($row['A']) && $row['A'] != "") {                        
                         $look = Look::model()->findByPk($row["A"]);
 
-                        if (!isset($look)) {
-                            $erroresCodigos .= "<li> <b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                        if (isset($look)) { // valido que el look no contenga productos de catálogo de terceros
+                            if($look->hasProductosExternos()){
+                            	$erroresDescuentosExternos .= "<li> <b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+                            }
+                        }else{
+                        	$erroresCodigos .= "<li> <b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
                         }
                     }                    
                     
@@ -2067,10 +2074,15 @@ public function actionCategorias(){
                              {$erroresPrecioProcentaje}
                              </ul><br>";
         }
+        if($erroresDescuentosExternos != ""){
+            $erroresDescuentosExternos = "Los siguientes Looks no pueden tener descuento porque contienen productos de catálogo de terceros:<br><ul>
+                             {$erroresDescuentosExternos}
+                             </ul><br>";
+        }
 
             
         $errores = $erroresColumnasVacias .$erroresCodigos . $erroresPrecioFullIva .
-                $erroresPrecioDescuentoIva. $erroresPorcentaje . $erroresPrecioDescuento. $erroresPrecioProcentaje;
+                $erroresPrecioDescuentoIva. $erroresPorcentaje . $erroresPrecioDescuento. $erroresPrecioProcentaje . $erroresDescuentosExternos;
         
         if($errores != ""){
             

@@ -1,3 +1,4 @@
+
 <?php
 
 class ProductoController extends Controller
@@ -28,7 +29,7 @@ class ProductoController extends Controller
                 array('allow',  // allow all users to perform 'index' and 'view' actions
                     'actions'=>array('index','view','detalle','tallas','tallaspreview',
                         'colorespreview','colores','imagenColor','updateCantidad','encantar',
-                        'productoszoho','contarClick', 'agregarBolsaGuest',),
+                        'contarClick', 'agregarBolsaGuest',"productoszoho"),
                     'users'=>array('*'),
                 ),
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions

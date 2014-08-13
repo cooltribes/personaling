@@ -64,7 +64,16 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
     <?php } ?>      
 
-      <h1>Tu tipo<small> - Escoge las opciones que más se parezcan a ti:</small>
+    <?php $mensajeH1 = $ref ? "¡Tu perfil es tu ADN Personaling!"
+            :"Escoge las opciones que más se parezcan a ti:"; ?>  
+        
+    <h1>Tu tipo<small> - <?php echo $mensajeH1; ?></small>
+    <?php if ($ref){
+        echo TbHtml::tag("h2", array(),
+            "Al llenar los datos de tu perfil disfrutaras de un maravilloso
+                mundo de looks adaptados para ti.");
+    } ?>    
+        
       <?php $this->widget('bootstrap.widgets.TbButton', array(            
             'label'=>  Yii::t('contentForm', '¡Saltar este paso!'),
             'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'

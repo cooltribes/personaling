@@ -840,7 +840,7 @@ class AdminController extends Controller
 
             $admin = 'No';
             $ps = 'No';
-            $no_suscrito = true;
+            $no_suscrito = "";
             $interno = 'Externo';
 
             if($user->superuser == 1){
@@ -850,7 +850,7 @@ class AdminController extends Controller
                 $ps = 'Si';
             }
             if($user->suscrito_nl == 1){
-                $no_suscrito = false;
+                $no_suscrito = "TRUE";
             }
             if($user->interno == 1){
                 $interno = 'Interno';
@@ -914,6 +914,7 @@ class AdminController extends Controller
             $result = $zoho->save_potential();
 
             $xml = simplexml_load_string($result);
+            //var_dump($xml);
             $id = (int)$xml->result[0]->recorddetail->FL[0];
 
             $user->zoho_id = $id;
@@ -1035,6 +1036,25 @@ class AdminController extends Controller
                 }
 		
 		if ($model->save()){
+			
+			/* Creando el caso */
+			
+				$ps = 'Si';
+				
+				$zoho = new Zoho();
+				$zoho->email = $model->email;
+				$zoho->ps = $ps;
+				
+				$result = $zoho->save_potential();
+									
+				$zohoCase = new ZohoCases;
+				$zohoCase->Subject = "Aplicación PS - ".$model->email;
+				$zohoCase->internal = "Aprobado";
+				$zohoCase->Comment = "Aprobado por administrador";
+				$zohoCase->Solution = "Aprobado por administrador";
+									
+				$respuesta = $zohoCase->save_potential(); 
+			
 		echo CJSON::encode(array(
 	            'status'=>'success',
 	            'personal_shopper'=>$model->personal_shopper,

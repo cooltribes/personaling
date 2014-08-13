@@ -27,7 +27,7 @@ class ColorController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','pruebazoho'),
+				'actions'=>array('index','view','pruebazohoproducto'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -316,7 +316,7 @@ class ColorController extends Controller
 	}
 	
 	public function actionPruebazohoproducto()
-	{
+	{ 
 		/*
 		$zoho = New ZohoProductos; 
 		
@@ -400,6 +400,120 @@ class ColorController extends Controller
 		if($tallacolor->save())
 			echo "<p>T BIEN";
 		*/
+
+		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml .= '<Products>';
+			$xml .= '<row no="1">';
+			$xml .= '<FL val="Product Name">Prueba 1</FL>';
+			$xml .= '<FL val="Marca">Cherry Coco</FL>';
+			$xml .= '<FL val="Referencia">4455667788</FL>';
+			$xml .= '<FL val="Product Active">TRUE</FL>';
+			$xml .= '<FL val="Peso">0.5</FL>';
+			$xml .= '<FL val="Sales Start Date">2014-09-01</FL>';
+			$xml .= '<FL val="Categoria">Mujer</FL>';
+			$xml .= '<FL val="Subcategoría1">Accesorios</FL>';
+			$xml .= '<FL val="Subcategoria2"></FL>';
+			$xml .= '<FL val="Tipo">Externo</FL>';
+			$xml .= '<FL val="Tienda">Multimarca</FL>';
+			$xml .= '<FL val="url">http://personaling.es/producto/detalle/50</FL>';
+			$xml .= '<FL val="Description">Descripción de prueba</FL>';
+			$xml .= '<FL val="Costo">5.8</FL>'; 
+			$xml .= '<FL val="Unit Price">12</FL>';
+			$xml .= '<FL val="Precio Descuento">19</FL>';
+			$xml .= '<FL val="descuento">0</FL>';
+			$xml .= '<FL val="Precio Impuesto">19</FL>';
+			$xml .= '<FL val="Valor Venta en Look"></FL>';
+			$xml .= '<FL val="PorcentajeDescuento"></FL>';
+			$xml .= '<FL val="Talla">M</FL>';
+			$xml .= '<FL val="Color">Azul</FL>';
+			$xml .= '<FL val="SKU">44556677AM</FL>';
+			$xml .= '<FL val="Qty in Stock">1</FL>';
+			$xml .= '<FL val="Titulo">Prueba 1</FL>';
+			$xml .= '<FL val="Meta Descripcion">Descripcion de prueba</FL>';
+			$xml .= '<FL val="Tags">Prueba, descripcion</FL>';
+			$xml .= '</row>';
+			$xml .= '<row no="2">';
+			$xml .= '<FL val="Product Name">Prueba 2</FL>';
+			$xml .= '<FL val="Marca">Cherry Coco</FL>';
+			$xml .= '<FL val="Referencia">4455667788</FL>';
+			$xml .= '<FL val="Product Active">TRUE</FL>';
+			$xml .= '<FL val="Peso">0.5</FL>';
+			$xml .= '<FL val="Sales Start Date">2014-09-01</FL>';
+			$xml .= '<FL val="Categoria">Mujer</FL>';
+			$xml .= '<FL val="Subcategoría1">Accesorios</FL>';
+			$xml .= '<FL val="Subcategoria2"></FL>';
+			$xml .= '<FL val="Tipo">Externo</FL>';
+			$xml .= '<FL val="Tienda">Multimarca</FL>';
+			$xml .= '<FL val="url">http://personaling.es/producto/detalle/50</FL>';
+			$xml .= '<FL val="Description">Descripción de prueba</FL>';
+			$xml .= '<FL val="Costo">5.8</FL>'; 
+			$xml .= '<FL val="Unit Price">12</FL>';
+			$xml .= '<FL val="Precio Descuento">19</FL>';
+			$xml .= '<FL val="descuento">0</FL>';
+			$xml .= '<FL val="Precio Impuesto">19</FL>';
+			$xml .= '<FL val="Valor Venta en Look"></FL>';
+			$xml .= '<FL val="PorcentajeDescuento"></FL>';
+			$xml .= '<FL val="Talla">M</FL>';
+			$xml .= '<FL val="Color">Azul</FL>';
+			$xml .= '<FL val="SKU">44556677EE</FL>';
+			$xml .= '<FL val="Qty in Stock">1</FL>';
+			$xml .= '<FL val="Titulo">Prueba 1</FL>';
+			$xml .= '<FL val="Meta Descripcion">Descripcion de prueba</FL>';
+			$xml .= '<FL val="Tags">Prueba, descripcion</FL>';
+			$xml .= '</row>';
+			$xml .= '<row no="3">';
+			$xml .= '<FL val="Product Name">Prueba 3</FL>';
+			$xml .= '<FL val="Marca">Cherry Coco</FL>';
+			$xml .= '<FL val="Referencia">4455667788</FL>';
+			$xml .= '<FL val="Product Active">TRUE</FL>';
+			$xml .= '<FL val="Peso">0.5</FL>';
+			$xml .= '<FL val="Sales Start Date">2014-09-01</FL>';
+			$xml .= '<FL val="Categoria">Mujer</FL>';
+			$xml .= '<FL val="Subcategoría1">Accesorios</FL>';
+			$xml .= '<FL val="Subcategoria2"></FL>';
+			$xml .= '<FL val="Tipo">Externo</FL>';
+			$xml .= '<FL val="Tienda">Multimarca</FL>';
+			$xml .= '<FL val="url">http://personaling.es/producto/detalle/50</FL>';
+			$xml .= '<FL val="Description">Descripción de prueba</FL>';
+			$xml .= '<FL val="Costo">5.8</FL>'; 
+			$xml .= '<FL val="Unit Price">12</FL>';
+			$xml .= '<FL val="Precio Descuento">19</FL>';
+			$xml .= '<FL val="descuento">0</FL>';
+			$xml .= '<FL val="Precio Impuesto">19</FL>';
+			$xml .= '<FL val="Valor Venta en Look"></FL>';
+			$xml .= '<FL val="PorcentajeDescuento"></FL>';
+			$xml .= '<FL val="Talla">M</FL>';
+			$xml .= '<FL val="Color">Azul</FL>';
+			$xml .= '<FL val="SKU">44556677DD</FL>';
+			$xml .= '<FL val="Qty in Stock">1</FL>';
+			$xml .= '<FL val="Titulo">Prueba 1</FL>';
+			$xml .= '<FL val="Meta Descripcion">Descripcion de prueba</FL>';
+			$xml .= '<FL val="Tags">Prueba, descripcion</FL>';
+			$xml .= '</row>';
+		$xml .= '</Products>';
+	//	var_dump($xml);
+
+		$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=2&duplicateCheck=2&xmlData=".$xml;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+
+		//Execute cUrl session 
+		$response = curl_exec($ch);
+		curl_close($ch);
+	//	return $response;
+		var_dump( $response );
+
+		echo htmlspecialchars($response)."<p><p>";
+
+		$datos = simplexml_load_string($response);
+		var_dump($datos);
+		
 	}
 	
 }

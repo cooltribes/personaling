@@ -755,29 +755,13 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
        }
 
-/**/
-function agregarBolsaGuest(data){ 
+/*Agregar el look completo a la bolsa*/
+function agregarBolsaGuest(data){     
     
-    data = JSON.parse(data);
     if(data.status == "success"){ 
 
-        $('#btn-shoppingBag').popover('destroy');
-        $('#btn-shoppingBag').popover(
-        {
-          content: data.bolsa,                      
-          html: true,
-          title: '<strong>Tu Carrito</strong>',
-          placement: 'bottom',
-          trigger: 'manual',
-          offset: 10
-        });
-
-        //cambiar el numero de items en la bolsa
-        var icono = $('#btn-shoppingBag a i');
-        $('#btn-shoppingBag a').html(icono).append(" " + data.cantidad);
-
-        //mostrar el popover del carrito
-        $('#btn-shoppingBag').popover("show");
+        //mostrar el popover de nuevo.
+        desplegarBolsaGuest(data);
     }
        
 }

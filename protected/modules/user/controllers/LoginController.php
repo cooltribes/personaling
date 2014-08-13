@@ -142,18 +142,24 @@ class LoginController extends Controller
 		
 	}//loginfb
     
-        //Para revisar si sirve  
+        //Revisar si tenia algo en la bolsa
         private function revisarBolsaGuest() {
             
             if(!Yii::app()->getSession()->contains("Bolsa")){
                 return;
             }
             
+            $bolsaGuest = Yii::app()->getSession()->get("Bolsa");
+            Yii::app()->getSession()->remove("Bolsa");  
+            
             //si es admin eliminar la bolsa
-            if(UserModule::isAdmin()){
-                Yii::app()->getSession()->remove("Bolsa");
-            }else{
+            if(!UserModule::isAdmin()){
+                //llena la bolsa del usuario que inicia sesion con los produtos
+                //que habian en la bolsa de Guest y borra la variable de sesion
+                Bolsa::pasarBolsaGuest($bolsaGuest);
                 
+                //redirigir a la bolsa para que compre de una vez
+                $this->redirect(array("/bolsa/index"));
             }
         }
         

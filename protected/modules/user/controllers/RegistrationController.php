@@ -264,7 +264,10 @@ class RegistrationController extends Controller
                             if ((Yii::app()->controller->module->loginNotActiv || (Yii::app()->controller->module->activeAfterRegister && Yii::app()->controller->module->sendActivationMail == false)) && Yii::app()->controller->module->autoLogin) {
                                 $identity = new UserIdentity($model->username, $soucePassword);
                                 $identity->authenticate();
-                                Yii::app()->user->login($identity, 0);
+                                Yii::app()->user->login($identity, 0);                                
+                                
+                                $this->revisarBolsaGuest();                                
+                                
                                 //se vale comentar aqui para entender
                                 if (Yii::app()->params['registro'] || $referencia_tmp == 'look') {
                                     if ($profile->sex == 1) { // mujer
@@ -519,6 +522,72 @@ class RegistrationController extends Controller
 //                                else if ($profile->sex == 2) // hombre
 //                                    $this->redirect(array('/tienda/look'));
                                 
+                                 /* REGISTRAR PERSONAL SHOPPER EN ZOHO */
+            					
+	            					$user=User::model()->findByPk($model->id);
+									
+									$rangos = array();
+	            
+						            $profileFields=$user->profile->getFields();
+						            if ($profileFields) {
+						                foreach($profileFields as $field) {
+						                    if($field->id > 4 && $field->id < 16){
+						                        $rangos[] =  $field->range.";0==Ninguno";
+						                    }
+						                    if($field->id == 4){
+						                        $rangosSex = $field->range;
+						                    }
+						                    
+						                }
+						            }
+						
+						            $time = strtotime($user->profile->birthday);
+						
+						            $admin = 'No';
+						            $ps = 'Aplicante';
+						            $no_suscrito = "TRUE";
+						            $interno = 'Externo'; 
+						 
+						            $zoho = new Zoho();
+						            $zoho->email = $user->email;
+						            $zoho->first_name = $user->profile->first_name;
+						            $zoho->last_name = $user->profile->last_name;
+						            $zoho->birthday = date('d/m/Y', $time);
+						            $zoho->sex = Profile::range($rangosSex,$user->profile->sex); 
+						            $zoho->bio = $user->profile->bio;
+						            $zoho->dni = $user->profile->cedula;
+						            $zoho->tlf_casa = $user->profile->tlf_casa;
+						            $zoho->tlf_celular = $user->profile->tlf_celular;
+						            $zoho->pinterest = $user->profile->pinterest;
+						            $zoho->twitter = $user->profile->twitter;
+						            $zoho->facebook = $user->profile->facebook;
+						            $zoho->url = $user->profile->url;
+						            $zoho->admin = $admin;
+						            $zoho->ps = $ps;
+						            $zoho->no_suscrito = $no_suscrito;
+						            $zoho->tipo = $interno;
+					
+						            $zoho->status = $user->getStatus($user->status);
+									
+						            $result = $zoho->save_potential();
+						
+						            $xml = simplexml_load_string($result);
+						            $id = (int)$xml->result[0]->recorddetail->FL[0];
+						
+						            $user->zoho_id = $id;
+						            $user->save();
+									
+								/* Creando el caso */ 
+									
+									$zohoCase = new ZohoCases;
+									$zohoCase->Subject = "Aplicación PS - ".$user->email;
+									$zohoCase->Priority = "High";
+									$zohoCase->Email = $user->email;
+					            	$zohoCase->Description = "Aplicación de ".$user->profile->first_name." ".$user->profile->last_name." (".$user->email.") para personal Shopper.";
+									$zohoCase->internal = "Sin revisar";
+									
+									$respuesta = $zohoCase->save_potential(); 
+                                
                                 /** Redireccionar a la p{agina de información **/
                                      $this->redirect(array('/site/afterApply'));
                                 
@@ -547,11 +616,12 @@ class RegistrationController extends Controller
                                 $this->refresh();
                             }
                         }
+						
                     }
                     else
                         $profile->validate();
                 }
-            
+            	
             $this->render('/user/registration_ps', array('model' => $model, 'profile' => $profile));
 
         }
@@ -687,7 +757,27 @@ class RegistrationController extends Controller
         return $result;
     } 
 
-        
+    //Revisar si tenia algo en la bolsa
+    private function revisarBolsaGuest() {
+            
+            if(!Yii::app()->getSession()->contains("Bolsa")){
+                return;
+            }
+            
+            $bolsaGuest = Yii::app()->getSession()->get("Bolsa");
+            Yii::app()->getSession()->remove("Bolsa");  
+            
+            //si es admin eliminar la bolsa
+            if(!UserModule::isAdmin()){
+                //llena la bolsa del usuario que inicia sesion con los produtos
+                //que habian en la bolsa de Guest y borra la variable de sesion
+                Bolsa::pasarBolsaGuest($bolsaGuest);
+                
+                //redirigir a la bolsa para que compre de una vez
+                $this->redirect(array("/bolsa/index"));
+            }
+        }
+    
     
 	
 }

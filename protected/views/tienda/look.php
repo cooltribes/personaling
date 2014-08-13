@@ -90,18 +90,23 @@ if (isset($user)){
 	                    ));
                     ?>
 						
-					</div>
-					<div style="width:30%; float:left; margin: 0 5% 0 5%">
+                        </div>
+                        <div style="width:30%; float:left; margin: 0 5% 0 5%">
 						
-						<?php
-						
-						$this->widget('bootstrap.widgets.TbButton', array(
+                        <?php
+                        //parametros para saber de donde se origina la peticion
+                        $params = array(
+                            "ref" => "looks",
+                        );
+                        $this->widget('bootstrap.widgets.TbButton', array(
                         'label' =>'Looks para ti',
-                        //'label' => '<span class="to_cut">Looks</span><span class="toupper"> para ti</span>',
+                        
                         'buttonType' => 'button',
                         'htmlOptions' => array(
                             'id' => 'btnMatch', 
-                            'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
+                            'onclick' => 'js:clickPersonal('.$status_register.',"'.
+                            Yii::app()->createUrl("/user/profile/tuestilo", $params).'","'.
+                            Yii::app()->createUrl("/user/profile/tutipo", $params).'")',
                          'class' => $todosLosLooks?'lighted':'',   
                         ),
                     ));
@@ -294,6 +299,7 @@ $("#mobFiltrar").click(function() {
                 </div>
                 <div  class="btmatch" style="float:left; width:20%">
                     <?php
+                    
                     $this->widget('bootstrap.widgets.TbButton', array(
                         'label' => 'Looks para ti',
                         'buttonType' => 'button',
@@ -302,7 +308,9 @@ $("#mobFiltrar").click(function() {
                         //'size' => 'large',
                         'htmlOptions' => array(
                             'id' => 'btnMatch', 
-                            'onclick' => 'js:clickPersonal('.$status_register.',"'.Yii::app()->createUrl("/user/profile/tuestilo").'","'.Yii::app()->createUrl("/user/profile/tutipo").'")',
+                            'onclick' => 'js:clickPersonal('.$status_register.',"'.
+                            Yii::app()->createUrl("/user/profile/tuestilo", $params).'","'.
+                            Yii::app()->createUrl("/user/profile/tutipo", $params).'")',
                             'class' => $todosLosLooks?'btn-large lighted':'btn-large btn-danger',
                         ),
                     ));

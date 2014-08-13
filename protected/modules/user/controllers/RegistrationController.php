@@ -264,7 +264,10 @@ class RegistrationController extends Controller
                             if ((Yii::app()->controller->module->loginNotActiv || (Yii::app()->controller->module->activeAfterRegister && Yii::app()->controller->module->sendActivationMail == false)) && Yii::app()->controller->module->autoLogin) {
                                 $identity = new UserIdentity($model->username, $soucePassword);
                                 $identity->authenticate();
-                                Yii::app()->user->login($identity, 0);
+                                Yii::app()->user->login($identity, 0);                                
+                                
+                                $this->revisarBolsaGuest();                                
+                                
                                 //se vale comentar aqui para entender
                                 if (Yii::app()->params['registro'] || $referencia_tmp == 'look') {
                                     if ($profile->sex == 1) { // mujer
@@ -754,7 +757,27 @@ class RegistrationController extends Controller
         return $result;
     } 
 
-        
+    //Revisar si tenia algo en la bolsa
+    private function revisarBolsaGuest() {
+            
+            if(!Yii::app()->getSession()->contains("Bolsa")){
+                return;
+            }
+            
+            $bolsaGuest = Yii::app()->getSession()->get("Bolsa");
+            Yii::app()->getSession()->remove("Bolsa");  
+            
+            //si es admin eliminar la bolsa
+            if(!UserModule::isAdmin()){
+                //llena la bolsa del usuario que inicia sesion con los produtos
+                //que habian en la bolsa de Guest y borra la variable de sesion
+                Bolsa::pasarBolsaGuest($bolsaGuest);
+                
+                //redirigir a la bolsa para que compre de una vez
+                $this->redirect(array("/bolsa/index"));
+            }
+        }
+    
     
 	
 }

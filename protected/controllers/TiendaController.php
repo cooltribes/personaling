@@ -1653,6 +1653,33 @@ public function actionCategorias2(){
 		</div>';
     
     	$datos=$datos."<script>";
+		
+        $datos .= 'function agregarBolsaGuest(producto, talla, color){
+                    
+                    '; 
+        $datos .= CHtml::ajax(array(
+	            	'url'=>array('/producto/agregarBolsaGuest'),
+			        'data'=>array('producto'=>'js:producto',
+                                            'talla'=>'js:talla',
+                                            'color'=>'js:color'),
+                        'dataType'=>'JSON',
+                        'type'=>'POST',
+                        'success'=>"function(data)
+                        {
+                            if(data.status == 'success'){                  
+                                
+                                $('#myModal').on('hidden', function () {
+                                  
+                                    desplegarBolsaGuest(data);
+                                });
+                                $('#myModal').modal('hide');
+
+                            }
+
+                        } ",
+                        ));
+        $datos.='}'; //Cerrar funcion agregarBolsaGuest();
+                
 		$datos.='$("body").removeClass("aplicacion-cargando");var bandera=false;';
 		$datos=$datos."$(document).ready(function() {";
 		$datos=$datos."$('.closeModal').click(function(event){";
@@ -1784,9 +1811,18 @@ public function actionCategorias2(){
  			$datos=$datos.'}';
 			
 			$datos=$datos.'if(talla!=undefined && color!=undefined){';
-			 $datos.= 'if(bandera==true) return false; bandera = true;';
+			 $datos.= 'if(bandera==true) return false; bandera = true; ';
 			$datos=$datos.'$("#agregar").click(function(e){e.preventDefault();});$("#agregar").addClass("disabled"); ';
-				$datos=$datos. CHtml::ajax(array(
+//			 $datos.= ' \n' ;
+                        $datos.= 'var isGuest = '.(Yii::app()->user->isGuest?"true":"false").'; ';
+                        $datos.= 'if(isGuest)
+                                {                                   
+                                
+                                    agregarBolsaGuest('.$id.', talla, color);
+                                    
+                                }else{ ';
+				
+                         $datos=$datos. CHtml::ajax(array(
 	            	'url'=>array('bolsa/agregar'),
 			        'data'=>array('producto'=>$id,'talla'=>'js:$("#vTa").find(".tallass.active").attr("id")','color'=>'js:$("#vCo").find(".coloress.active").attr("id")'),
 			        'type'=>'post',
@@ -1803,6 +1839,9 @@ public function actionCategorias2(){
 						
 			        } ",
 		   		));
+                         
+                        $datos.= "} ";     //cerrar else para usuarios logueados
+                         
 				$datos=$datos." return false; ";     
  			$datos=$datos.'}'; // cerro   
 			

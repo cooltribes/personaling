@@ -90,8 +90,8 @@ if (isset($user)){
 	                    ));
                     ?>
 						
-					</div>
-					<div style="width:30%; float:left; margin: 0 5% 0 5%">
+                        </div>
+                        <div style="width:30%; float:left; margin: 0 5% 0 5%">
 						
                         <?php
                         //parametros para saber de donde se origina la peticion
@@ -100,7 +100,7 @@ if (isset($user)){
                         );
                         $this->widget('bootstrap.widgets.TbButton', array(
                         'label' =>'Looks para ti',
-                        //'label' => '<span class="to_cut">Looks</span><span class="toupper"> para ti</span>',
+                        
                         'buttonType' => 'button',
                         'htmlOptions' => array(
                             'id' => 'btnMatch', 

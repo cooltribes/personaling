@@ -310,9 +310,10 @@ class Bolsa extends CActiveRecord
             class="btn btn-block btn-small btn-warning">Comprar</a></div>';
             
 //            text_align_center link-vaciar"><a href="'.Yii::app()->baseUrl.'/bolsa/vaciarGuest" \n\
+            //agregar link de vaciar
             $botonComprar .= '<div class="padding_right_xsmall padding_left_xsmall \n\
             text_align_center link-vaciar" id="link-vaciar"><a href="#" \n\
-            class="">Vaciar bolsa</a></div>';            
+            >Vaciar bolsa</a></div>';            
             
             //si no hay productos
             if($cantProductosGuest == 0){      
@@ -383,9 +384,12 @@ class Bolsa extends CActiveRecord
                                        $elementoCarrito->preciotallacolor_id);
 
                                 $producto = Producto::model()->findByPk($productoTallaColor->producto_id);
-                                $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id' => $producto->id, 'orden' => '1'));
+                                $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id' =>
+                                    $producto->id, 'orden' => '1'));
                                 if ($imagen) {
-                                    $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".", "_x30.", $imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
+                                    $htmlimage = CHtml::image(Yii::app()->baseUrl . 
+                                    str_replace(".", "_x30.", $imagen->url), "Imagen ",
+                                            array("width" => "30", "height" => "30"));
                                     $textoLooks .= '<div class="span2">' . $htmlimage . '</div>';
                                 }
                             }
@@ -394,10 +398,7 @@ class Bolsa extends CActiveRecord
 
                             $contadorItems++;
                         }
-
                     }
-                    
-                    
                 } 
                 
                 //Si hay productos individuales
@@ -433,10 +434,6 @@ class Bolsa extends CActiveRecord
                                    
                 }
                 
-//                echo "nn";
-//                    echo $textShoppingBag;
-//                    Yii::app()->end(); 
-                
                 //Cerrar el listado de prods y agregar el boton
                 $textShoppingBag .= $textoLooks . $textoProds . '</ul>' . $botonComprar;
             }
@@ -453,7 +450,35 @@ class Bolsa extends CActiveRecord
          * que inicia sesion
          */
         
-        public function pasarBolsaGuest(){
+        public function pasarBolsaGuest($bolsaGuest){
+            
+            $userId = Yii::app()->user->id;
+            
+            //bolsa del usuario que inica sesion o se acaba de registrar
+            $bolsa = Bolsa::model()->findByAttributes(array(
+	                    'user_id'=> $userId, 'admin' => 0));
+			
+            if(!isset($bolsa)) 
+            {
+                    $bolsa = new Bolsa;
+                    $bolsa->user_id = $userId;
+                    $bolsa->created_on = date("Y-m-d H:i:s");
+                    $bolsa->save();
+            }
+            
+            //agregar cada producto a la bolsa
+            foreach($bolsaGuest as $itemBolsa){
+                $producto = Preciotallacolor::model()->findByPk(
+                                        $itemBolsa->preciotallacolor_id);
+                
+                //agregarlos en la misma cantidad que estaban
+                for($i=0; $i<$itemBolsa->cantidad;$i++){
+                    $bolsa->addProducto($producto->producto_id, $producto->talla_id,
+                            $producto->color_id, $itemBolsa->look_id);                    
+                }
+                                                
+            }           
+            
             
         }
         

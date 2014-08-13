@@ -1036,7 +1036,15 @@ class AdminController extends Controller
 		
 		if ($model->save()){
 			
-			/* Creando el caso */ 
+			/* Creando el caso */
+			
+				$ps = 'Si';
+				
+				$zoho = new Zoho();
+				$zoho->email = $model->email;
+				$zoho->ps = $ps;
+				
+				$result = $zoho->save_potential();
 									
 				$zohoCase = new ZohoCases;
 				$zohoCase->Subject = "Aplicación PS - ".$model->email;

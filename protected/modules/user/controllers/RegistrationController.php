@@ -542,9 +542,9 @@ class RegistrationController extends Controller
 						
 						            $admin = 'No';
 						            $ps = 'Aplicante';
-						            $no_suscrito = true;
+						            $no_suscrito = "TRUE";
 						            $interno = 'Externo'; 
-						
+						 
 						            $zoho = new Zoho();
 						            $zoho->email = $user->email;
 						            $zoho->first_name = $user->profile->first_name;

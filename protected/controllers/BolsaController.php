@@ -1678,7 +1678,7 @@ class BolsaController extends Controller
 								//transformando Lead a posible cliente.
 								if($user->tipo_zoho == 0){ 
 									$conv = $zoho->convertirLead($user->zoho_id, $user->email);
-									$datos = simplexml_load_string($respuesta);
+									$datos = simplexml_load_string($conv);
 									
 									$id = $datos->Contact;
 									$user->zoho_id = $id;

@@ -21,7 +21,8 @@ class OrdenController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('detallepedido','entregar','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter','historial','mensajes','devolver','devoluciones'),
+				'actions'=>array('detallepedido','entregar','listado','modals','cancelar','recibo','imprimir', 'getFilter','removeFilter','historial',
+				'mensajes','devolver','devoluciones'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions			
@@ -33,7 +34,7 @@ class OrdenController extends Controller
                                     'adminXLS','generarExcelOut','devolver','adminDevoluciones',
                                     'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
                                     'AnularDevuelto','cantidadDevuelto','activarDevuelto',
-                                    'resolverOutbound','descargarReturnXML', 'reporteDetallado','ResolverItemReturn'),
+                                    'resolverOutbound','descargarReturnXML', 'reporteDetallado','ResolverItemReturn','ordeneszoho'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -2656,8 +2657,50 @@ public function actionValidar()
 			{	Yii::app()->user->setFlash('success', 'Discrepancia no resuelta');
 				echo "no";}
 	}
-
-
-
+	
+	
+	public function actionOrdenesZoho(){
+		
+		$criteria = new CDbCriteria(array('order'=>'id'));
+		$criteria->addBetweenCondition('id', 1, 10);  
+			
+		$todas = Orden::model()->findAll($criteria);
+		
+		foreach($todas as $orden){ // para cada orden nuevo invoice en zoho
+			
+			$user = User::model()->findByPk($orden->user->id);
+			
+			$zoho = new ZohoSales;
+								
+			if($user->tipo_zoho == 0){ 
+				$conv = $zoho->convertirLead($user->zoho_id, $user->email);
+				$datos = simplexml_load_string($conv);
+				
+				var_dump($datos);
+									
+				$id = $datos->Contact;
+				$user->zoho_id = $id;
+				$user->tipo_zoho = 1;
+									
+				$user->save(); 
+			}
+								
+			if($user->tipo_zoho == 1) // es ahora un contact
+			{
+				$respuesta = $zoho->save_potential($orden);
+									
+				$datos = simplexml_load_string($respuesta);
+				
+				var_dump($datos);
+									
+				$id = $datos->result[0]->recorddetail->FL[0];
+									
+				$orden->zoho_id = $id;
+				$orden->save();  
+			}	
+			
+		}
+		
+	}
         
 }

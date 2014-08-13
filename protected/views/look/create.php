@@ -1033,6 +1033,21 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   </div>
 </div>
 
+<div id="alertLook" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+ <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+     <h3><?php echo Yii::t('contentForm','Remember');?></h3>
+ 
+  </div>
+  <div class="modal-body">
+ 		 <h4 id="alertText"></h4>
+ 		 
+  </div>
+  <!--<div class="modal-footer">   
+ 		<button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
+  </div>-->
+</div>
+
 <!-- /container --> 
 
 
@@ -1234,7 +1249,8 @@ function addPublicar(tipo)
 		}
 
 		if(repeated){
-			bootbox.alert("No puedes incluir prendas repetidas");
+			$('#alertText').html('<?php echo Yii::t('contentForm','You should not add repeated items.')?>');
+			$('#alertLook').show();
 			return false;
 		}
 
@@ -1269,7 +1285,8 @@ function addPublicar(tipo)
 		if (count >= 6){
 			$("#form_productos").submit();
 		} else {
-			bootbox.alert("Debes tener al menos seis productos");
+			$('#alertText').html('<?php echo Yii::t('contentForm','You should add six items at least.')?>');
+			$('#alertLook').show();
 		}
 	
 	    return false; 
@@ -1278,5 +1295,9 @@ function addPublicar(tipo)
     	$('#campana_id_error').show('slow');
     }
 }
+
+$('.closeModal').click(function(event) {
+			$('#alertLook').hide();
+		});
  
 </script> 

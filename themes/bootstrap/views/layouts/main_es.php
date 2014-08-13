@@ -967,8 +967,6 @@ if(!Yii::app()->user->isGuest){
 <?php if(Yii::app()->user->isGuest){ ?>
     
     function desplegarBolsaGuest(data){
-        console.log(data);
-    
     
         $('#btn-shoppingBag').popover('destroy');
         $('#btn-shoppingBag').popover(
@@ -987,6 +985,10 @@ if(!Yii::app()->user->isGuest){
 
         //mostrar el popover del carrito
         $('#btn-shoppingBag').popover("show");
+//        $('#btn-shoppingBag').trigger('mouseenter');
+//        $('#btn-shoppingBag a').trigger('mouseenter');
+        
+        
     }
     
 <?php } ?>

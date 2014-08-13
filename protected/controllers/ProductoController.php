@@ -4670,9 +4670,11 @@ public function actionReportexls(){
                  */
                 public function actionAgregarBolsaGuest() {
                        
+                    $response = array();   
+                    $response["status"] = "error";
+
                     if(Yii::app()->user->isGuest && isset($_POST["producto"]))
                     {
-                        $response = array();                        
                                                 
 //                        Yii::app()->getSession()->remove("Bolsa");    
 //                        Yii::app()->end();

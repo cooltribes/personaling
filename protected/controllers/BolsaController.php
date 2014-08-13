@@ -395,6 +395,45 @@ class BolsaController extends Controller
             $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                 : Yii::app()->user->id;
 
+            $bolsa = Bolsa::model()->findByAttributes(array('user_id' => $usuario));
+            // busco todos los productos en la bolsa del usuario para cargarlos en el script de google analytics
+        	if($bolsa){
+        		$bolsa_productos = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));
+        		$cont = 0;
+        		foreach ($bolsa_productos as $bp) {
+        			$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$bp->preciotallacolor->producto->id));
+					$category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+					$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$bp->preciotallacolor->producto_id,'talla_id'=>$bp->preciotallacolor->talla_id,'color_id'=>$bp->preciotallacolor->color_id));
+	                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$bp->preciotallacolor->producto_id));
+
+	                //echo $bp->preciotallacolor->producto->nombre.'</br>';
+        			Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
+						ga('ec:addProduct', {
+						  'id': '".$bp->preciotallacolor->producto->id."',
+						  'name': '".$bp->preciotallacolor->producto->nombre."',
+						  'category': '".$category->nombre."',
+						  'brand': '".$bp->preciotallacolor->producto->mymarca->nombre."',
+						  'variant': '".$ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor."',
+						  'price': '".$precio->precioImpuesto."',
+						  'quantity': '".$bp->cantidad."',
+						});
+						
+	  					ga('ec:setAction', 'detail');       // Detail action.
+	 					ga('send', 'pageview');       // Send product details view with the initial pageview.
+					");	
+        			$cont++;
+        		}
+
+        		// envio datos de inicio del checkout a google analytics
+            	Yii::app()->clientScript->registerScript('metrica_analytics_checkcout_step1',"
+					ga('ec:setAction','checkout', {
+					    'step': 3,            // A value of 1 indicates this action is first checkout step.
+					    'option': 'Payment'      // Used to specify additional info about a checkout stage, e.g. payment method.
+					});
+					ga('send', 'pageview');   // Pageview for payment.html
+				");	
+        	}
+
             $tarjeta = new TarjetaCredito;  
 
             if(isset($_POST['tipo_pago']) && $_POST['tipo_pago']!=1){
@@ -732,6 +771,44 @@ class BolsaController extends Controller
                             'admin' => $admin, 
                             ));
 
+		            // busco todos los productos en la bolsa del usuario para cargarlos en el script de google analytics
+		        	if($bolsa){
+		        		$bolsa_productos = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));
+		        		$cont = 0;
+		        		foreach ($bolsa_productos as $bp) {
+		        			$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$bp->preciotallacolor->producto->id));
+							$category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+							$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$bp->preciotallacolor->producto_id,'talla_id'=>$bp->preciotallacolor->talla_id,'color_id'=>$bp->preciotallacolor->color_id));
+			                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$bp->preciotallacolor->producto_id));
+
+			                //echo $bp->preciotallacolor->producto->nombre.'</br>';
+		        			Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
+								ga('ec:addProduct', {
+								  'id': '".$bp->preciotallacolor->producto->id."',
+								  'name': '".$bp->preciotallacolor->producto->nombre."',
+								  'category': '".$category->nombre."',
+								  'brand': '".$bp->preciotallacolor->producto->mymarca->nombre."',
+								  'variant': '".$ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor."',
+								  'price': '".$precio->precioImpuesto."',
+								  'quantity': '".$bp->cantidad."',
+								});
+								
+			  					ga('ec:setAction', 'detail');       // Detail action.
+			 					ga('send', 'pageview');       // Send product details view with the initial pageview.
+							");	
+		        			$cont++;
+		        		}
+
+		        		// envio datos de inicio del checkout a google analytics
+		            	Yii::app()->clientScript->registerScript('metrica_analytics_checkcout_step1',"
+							ga('ec:setAction','checkout', {
+							    'step': 4,            // A value of 1 indicates this action is first checkout step.
+							    'option': 'Confirmation'      // Used to specify additional info about a checkout stage, e.g. payment method.
+							});
+							ga('send', 'pageview');   // Pageview for payment.html
+						");	
+		        	}
+
                     /*Si es compra normal del usuario*/
                     if(!$admin){
                         ShoppingMetric::registro(ShoppingMetric::STEP_CONFIRMAR,
@@ -953,25 +1030,61 @@ class BolsaController extends Controller
 		public function actionDirecciones()
 		{
 		
-                    if (Yii::app()->user->isGuest){
-                        //Redirigir a login
-                        Yii::app()->user->setReturnUrl($this->createUrl('bolsa/compra'));
-                        Yii::app()->user->setFlash('error',Yii::t("contentForm", "¡La sesión ha expirado, intenta tu compra nuevamente!"));                              
-                        $this->redirect(array('/user/login'));                        
-                    }
-                    if(!isset(Yii::app()->session['login'])&&!UserModule::isAdmin())
-						 $this->redirect(array('/bolsa/compra'));
-					
-					
-                    
-                    $admin = Yii::app()->getSession()->contains("bolsaUser");                    
-                
-                    /*ID del usuario propietario de la bolsa*/
-                    $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
-                                        : Yii::app()->user->id;
-                    
-                    
-                    $dir = new Direccion;
+	        if (Yii::app()->user->isGuest){
+	            //Redirigir a login
+	            Yii::app()->user->setReturnUrl($this->createUrl('bolsa/compra'));
+	            Yii::app()->user->setFlash('error',Yii::t("contentForm", "¡La sesión ha expirado, intenta tu compra nuevamente!"));                              
+	            $this->redirect(array('/user/login'));                        
+	        }
+	        if(!isset(Yii::app()->session['login'])&&!UserModule::isAdmin())
+				 $this->redirect(array('/bolsa/compra'));
+			
+	        $admin = Yii::app()->getSession()->contains("bolsaUser");                    
+	    
+	        /*ID del usuario propietario de la bolsa*/
+	        $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
+	                            : Yii::app()->user->id;
+	        
+	        $dir = new Direccion;
+
+	        $bolsa = Bolsa::model()->findByAttributes(array('user_id' => $usuario));
+            // busco todos los productos en la bolsa del usuario para cargarlos en el script de google analytics
+        	if($bolsa){
+        		$bolsa_productos = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));
+        		$cont = 0;
+        		foreach ($bolsa_productos as $bp) {
+        			$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$bp->preciotallacolor->producto->id));
+					$category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+					$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$bp->preciotallacolor->producto_id,'talla_id'=>$bp->preciotallacolor->talla_id,'color_id'=>$bp->preciotallacolor->color_id));
+	                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$bp->preciotallacolor->producto_id));
+
+	                //echo $bp->preciotallacolor->producto->nombre.'</br>';
+        			Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
+						ga('ec:addProduct', {
+						  'id': '".$bp->preciotallacolor->producto->id."',
+						  'name': '".$bp->preciotallacolor->producto->nombre."',
+						  'category': '".$category->nombre."',
+						  'brand': '".$bp->preciotallacolor->producto->mymarca->nombre."',
+						  'variant': '".$ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor."',
+						  'price': '".$precio->precioImpuesto."',
+						  'quantity': '".$bp->cantidad."',
+						});
+						
+	  					ga('ec:setAction', 'detail');       // Detail action.
+	 					ga('send', 'pageview');       // Send product details view with the initial pageview.
+					");	
+        			$cont++;
+        		}
+
+        		// envio datos de inicio del checkout a google analytics
+            	Yii::app()->clientScript->registerScript('metrica_analytics_checkcout_step1',"
+					ga('ec:setAction','checkout', {
+					    'step': 2,            // A value of 1 indicates this action is first checkout step.
+					    'option': 'Addresses'      // Used to specify additional info about a checkout stage, e.g. payment method.
+					});
+					ga('send', 'pageview');   // Pageview for payment.html
+				");	
+        	}
 			
 			if(isset($_POST['tipo']) && $_POST['tipo']=='direccionVieja')
 			{
@@ -988,8 +1101,7 @@ class BolsaController extends Controller
                                     unset(Yii::app()->session['login']);
                             $this->redirect($this->createUrl('bolsa/pagos'));
 			}
-			else
-			if(isset($_POST['Direccion'])) // nuevo registro
+			else if(isset($_POST['Direccion'])) // nuevo registro
 			{
                             //if($_POST['Direccion']['nombre']!="")
                     //	{
@@ -1030,7 +1142,8 @@ class BolsaController extends Controller
                                     //$this->render('direcciones',array('dir'=>$dir)); // regresa
                             //}
 				
-			}else // si está viniendo de la pagina anterior que muestre todo 
+			}
+			else // si está viniendo de la pagina anterior que muestre todo 
 			{
 				
                             if(!$admin){
@@ -1072,7 +1185,7 @@ class BolsaController extends Controller
                     // validate user input and redirect to previous page if valid
 
                     if ($model->validate()) {
-                        echo 'Status: ' . $user->status;
+                        //echo 'Status: ' . $user->status;
                         if ($user->status == 1) {
                             Yii::app()->session['login'] = 1;
                             $this->redirect(array('bolsa/direcciones'));
@@ -1098,6 +1211,44 @@ class BolsaController extends Controller
                     }
                 } else {
                     $bolsa = Bolsa::model()->findByAttributes(array('user_id' => $user->id));
+                    // busco todos los productos en la bolsa del usuario para cargarlos en el script de google analytics
+                	//$bolsa = Bolsa::model()->findByAttributes(array('user_id' => $user->id));
+                	if($bolsa){
+                		$bolsa_productos = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));
+                		$cont = 0;
+                		foreach ($bolsa_productos as $bp) {
+                			$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$bp->preciotallacolor->producto->id));
+        					$category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+        					$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$bp->preciotallacolor->producto_id,'talla_id'=>$bp->preciotallacolor->talla_id,'color_id'=>$bp->preciotallacolor->color_id));
+			                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$bp->preciotallacolor->producto_id));
+
+			                //echo $bp->preciotallacolor->producto->nombre.'</br>';
+                			Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
+								ga('ec:addProduct', {
+								  'id': '".$bp->preciotallacolor->producto->id."',
+								  'name': '".$bp->preciotallacolor->producto->nombre."',
+								  'category': '".$category->nombre."',
+								  'brand': '".$bp->preciotallacolor->producto->mymarca->nombre."',
+								  'variant': '".$ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor."',
+								  'price': '".$precio->precioImpuesto."',
+								  'quantity': '".$bp->cantidad."',
+								});
+								
+			  					ga('ec:setAction', 'detail');       // Detail action.
+			 					ga('send', 'pageview');       // Send product details view with the initial pageview.
+							");	
+                			$cont++;
+                		}
+
+                		// envio datos de inicio del checkout a google analytics
+                    	Yii::app()->clientScript->registerScript('metrica_analytics_checkcout_step1',"
+							ga('ec:setAction','checkout', {
+							    'step': 1,            // A value of 1 indicates this action is first checkout step.
+							    'option': 'Authentication'      // Used to specify additional info about a checkout stage, e.g. payment method.
+							});
+							ga('send', 'pageview');   // Pageview for payment.html
+						");	
+                	}
                     if ($bolsa->deleteInactivos()) {
                         Yii::app()->session['inactivos'] = 1;
                         $this->redirect(array('bolsa/index'));
@@ -2118,17 +2269,18 @@ class BolsaController extends Controller
 				$addItem = "";
 				foreach ($orden->ohptc as $producto){
 					
-		
+					$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$producto->preciotallacolor->producto->id));
+					$category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+	                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->preciotallacolor->producto_id));
 				  
 				  	$addItem .= "
 				  		ga('ec:addProduct', {               // Provide product details in an productFieldObject.
 						  'id': '".$producto->preciotallacolor->sku."',                   // Product ID (string).
 						  'name': '".$producto->preciotallacolor->producto->nombre."', // Product name (string).
-						  'category': 'Apparel',            // Product category (string).
+						  'category': '".$category->nombre."',            // Product category (string).
 						  'brand': '".$producto->preciotallacolor->producto->mymarca->nombre."',                // Product brand (string).
 						  'variant': '".$producto->preciotallacolor->mycolor->valor."',               // Product variant (string).
 						  'price': '".$producto->precio."',                 // Product price (currency).
-						 // 'coupon': 'APPARELSALE',          // Product coupon (string).
 						  'quantity': ".$producto->cantidad."                     // Product quantity (number).
 						});
 				  	";

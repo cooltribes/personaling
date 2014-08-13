@@ -456,9 +456,88 @@ if(isset($seo)){
 <a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
 
 
+<?php 
+//Modal si no ha completado el perfil
+$completarPerfil = false;
+if (!Yii::app()->user->isGuest){
+    
+$user = User::model()->findByPk(Yii::app()->user->id);
+$completarPerfil = $user->status_register == User::STATUS_REGISTER_NEW || 
+            $user->status_register == User::STATUS_REGISTER_TIPO;
+
+
+    if ($completarPerfil){
+       if($user->status_register == User::STATUS_REGISTER_NEW) 
+       {
+           $url =  Yii::app()->createUrl("/user/profile/tutipo");
+           
+       }elseif($user->status_register == User::STATUS_REGISTER_TIPO) 
+       {
+           $url =  Yii::app()->createUrl("/user/profile/tuestilo");
+       }
+           
+?>
+
+    <?php
+    $this->beginWidget('bootstrap.widgets.TbModal', array(
+        'id' => 'modalCompletarPerfil',
+            ), array(
+        'class' => 'modal fade hide',
+        'tabindex' => "-1",
+        'role' => "dialog",
+        'aria-labelledby' => "myModalLabel",
+        'aria-hidden' => "true", 
+    ))
+    ?>
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>¡Tu perfil es tu ADN Personaling!</h3>
+        </div>
+
+        <div class="modal-body">
+            <div class="row-fluid">
+                <div class="span10 offset1">
+                    <h4>                 
+                        Recuerda rellenar los datos de tu perfil y
+                        disfruta de un maravilloso mundo de looks adaptados para ti.
+                    </h4>                
+                </div>
+                
+            </div>
+            <div class="row-fluid margin_top_medium margin_bottom_medium">
+                <div class="span12 text_align_center">
+                    <?php echo TbHtml::link("Rellenar Perfil", $url,
+                        array(
+                        "class" => "btn btn-danger",
+                        )); ?>                    
+                </div>
+<!--                <div class="span6">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+                </div>-->
+            </div>
+            
+            
+        </div>
+
+                         
+
+    <?php $this->endWidget(); ?>
+
+
+<?php }
+}
+?>
+
+
 <!-- PRODUCTOS OFF -->
 <script>
 
+<?php /*Mostrar el Modal*/
+if (!Yii::app()->user->isGuest && $completarPerfil){
+ ?>
+   $('#modalCompletarPerfil').modal('show')  
+     
+<?php } ?>
 		  
 
 		

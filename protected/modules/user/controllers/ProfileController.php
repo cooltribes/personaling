@@ -782,10 +782,15 @@ class ProfileController extends Controller
                 }
             }
             
+            //para saber si viene de la tienda de looks y mostrar un mensaje
+            //explicativo
+            $ref = isset($_GET['ref']) && $_GET['ref'] == "looks";
+            
             $this->render('tutipo', array(
                 'model' => $model,
                 'profile' => $model->profile,
                 'errorValidando' => $errorValidando,
+                'ref' => $ref,
             ));
             
 	}

@@ -173,7 +173,7 @@
                                 </tr>                                                                
                                 <tr>
                                   <td class="w580" width="580" height="10" style="text-align:center;">
-                                    <a title="¡Aplica tu gift card aquí!" href="http://www.personaling.com<?php echo Yii::app()->baseUrl ?>/giftcard/aplicar" style="text-align:center;text-decoration:none;color:#ffffff;word-wrap:break-word;background: #231f20; padding: 12px;" target="_blank">¡Aplica tu gift card aquí!
+                                    <a title="¡Aplica tu gift card aquí!" href="http://<?php echo $_SERVER['HTTP_HOST'].Yii::app()->baseUrl ?>/giftcard/aplicar" style="text-align:center;text-decoration:none;color:#ffffff;word-wrap:break-word;background: #231f20; padding: 12px;" target="_blank">¡Aplica tu gift card aquí!
                                     </a>
                                   </td>
                                 </tr>

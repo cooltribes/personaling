@@ -428,6 +428,10 @@ return array (
     'Your body is inverted triangle if you are proportionally broad shoulders and tiny hips' => 'Tu cuerpo tiene forma triangular invertida si tus hombros son anchos y tienes una cintura muy estrecha',	
     '<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com' => '<h2>Has solicitado cambiar tu contraseña.</h2> Para recibir una nueva contraseña clica en el siguiente link: <br/><br/> <a href="{url}">Clica aquí</a><br/><br/> Si no has sido tú quien ha pedido el cambio, comunícate con nosotros a través de info@personaling.com',
 	'You should set the sizes for the items.'=>'Debes seleccionar las tallas de los productos.',
+	'You should not add repeated items.'=>'No es posible incluir prendas repetidas.',
+	'You should add six items at least.'=>'Debes incluir al menos seis prendas',
+	
+	
 	'Watch all the looks created by the best Personal Shoppers from *country*'=>
 		'Mira todos los looks creados por las mejores Personal Shoppers de España',
 	'Weight' => 'Peso',

@@ -968,6 +968,8 @@ if(!Yii::app()->user->isGuest){
     
     function desplegarBolsaGuest(data){
     
+        console.log(data);
+        console.log(data.contenido);
         $('#btn-shoppingBag').popover('destroy');
         $('#btn-shoppingBag').popover(
         {

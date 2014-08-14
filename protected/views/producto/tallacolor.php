@@ -204,7 +204,25 @@ $this->breadcrumbs=array(
 				)); ?>
                
               </div>
-            </div>            
+            </div>
+
+            <div class="control-group">
+              <label class="control-label required">Otras:</label>
+              <div class="controls">
+                <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+				    'type' => 'primary',
+				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
+				    'buttons' => array(
+				        array('label'=>'1','url'=>'#58'),
+				        array('label'=>'2','url'=>'#59'),
+				        array('label'=>'3','url'=>'#60'),
+				        array('label'=>'4','url'=>'#61'),
+				    ),
+				)); ?>
+               
+              </div>
+            </div> 
+
             </div>
           </fieldset>
           <fieldset class="margin_top">

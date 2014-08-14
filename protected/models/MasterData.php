@@ -17,6 +17,8 @@ class MasterData extends CActiveRecord
 {
     
     const RUTA_ARCHIVOS = '/docs/xlsMasterData/';
+    
+    //para definir si los archivos que se suben vienen con el precio Con iva o SIN
     const TIPO_PRECIO = 1; // 0-sin iva, 1-con inva
     
 	/**

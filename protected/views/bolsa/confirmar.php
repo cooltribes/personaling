@@ -91,61 +91,63 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               <tbody>
                 <?php      
                             
-		$bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));		  
-	          foreach($bptcolor as $productoBolsa) // cada producto en la bolsa
-                    {
-                        $todo = Preciotallacolor::model()->findByPk($productoBolsa->preciotallacolor_id);
+                $bptcolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id));		  
+                foreach($bptcolor as $productoBolsa) // cada producto en la bolsa
+                {
+                  $todo = Preciotallacolor::model()->findByPk($productoBolsa->preciotallacolor_id);
 
-                        $producto = Producto::model()->findByPk($todo->producto_id);
-                        $talla = Talla::model()->findByPk($todo->talla_id);
-                        $color = Color::model()->findByPk($todo->color_id);
+                  $producto = Producto::model()->findByPk($todo->producto_id);
+                  $talla = Talla::model()->findByPk($todo->talla_id);
+                  $color = Color::model()->findByPk($todo->color_id);
 
-                        // $imagen = CHtml::image($producto->getImageUrl($todo->color_id), "Imagen", array("width" => "70", "height" => "70"));
+                  // $imagen = CHtml::image($producto->getImageUrl($todo->color_id), "Imagen", array("width" => "70", "height" => "70"));
+                  if($producto->tipo == 0){
+                    echo "<tr>";
+                      //                        $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
+                      //                        if($imagen){
+                      //
+                      //                            $con = 0;
+                      //
+                      //                            foreach($imagen as $ima){
+                      //                                    if($con == 0){	
+                      //                                            $con++;						  	
+                      //                                            $aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x180.",$ima->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+                      //                                            echo "<td>".$aaa."</td>";
+                      //                                    }
+                      //                            }
+                      //                        }else
+                      //                            echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
 
-                        echo "<tr>";
-//                        $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id,'color_id'=>$color->id));
-//                        if($imagen){
-//
-//                            $con = 0;
-//
-//                            foreach($imagen as $ima){
-//                                    if($con == 0){	
-//                                            $con++;						  	
-//                                            $aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x180.",$ima->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-//                                            echo "<td>".$aaa."</td>";
-//                                    }
-//                            }
-//                        }else
-//                            echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
-
-                        echo "
+                      echo "
                         <td>"
                         .$producto->nombre." ".$producto->id."<br/>
                         <strong>Color</strong>: ".$color->valor."<br/>
                         <strong>Talla</strong>: ".$talla->valor."</td>
-                        ";	
+                      ";	
 
-                        $pre="";
-                        foreach ($producto->precios as $precio) {
-                        $pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
-
-
-                        }
+                      $pre="";
+                      foreach ($producto->precios as $precio) {
+                        //$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
+                        $pre = $producto->getPrecioVenta2();
 
 
+                      }
 
-                        echo "<td style='width:26%'>".Yii::t('contentForm','currSym')." ".$pre."</td>";
-                    ?>
 
-              <td width='8%' style="text-align: center">
-                      <?php echo $productoBolsa->cantidad; ?>              
-                    </td>
-            
-            </tr>
 
-            <?php
+                      echo "<td style='width:26%'>".Yii::t('contentForm','currSym')." ".$pre."</td>";
+                      ?>
+
+                      <td width='8%' style="text-align: center">
+                        <?php echo $productoBolsa->cantidad; ?>              
+                      </td>
+
+                    </tr>
+
+                    <?php
+                  } // if tipo == 0 (mostrar solo si es interno)
                 }// foreach							  
-            ?>
+                ?>
               </tbody>
             </table>
           </div>

@@ -966,7 +966,7 @@ if(!Yii::app()->user->isGuest){
     /********Para la bolsa de Guest ON******/
 <?php if(Yii::app()->user->isGuest){ ?>
     
-    function desplegarBolsaGuest(data){
+    function desplegarBolsaGuest(data){    
     
         $('#btn-shoppingBag').popover('destroy');
         $('#btn-shoppingBag').popover(

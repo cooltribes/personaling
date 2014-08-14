@@ -58,12 +58,12 @@ $total_productos_look = 0;
         $cont_externos = 0;
 		  	foreach ($bolsa->looks() as $look_id){
 		  		$bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
-				$look = Look::model()->findByPk($look_id);
-				if(isset($look)){
-				$total_look++;
-				
-				 
-		  	?>
+  				$look = Look::model()->findByPk($look_id);
+  				if(isset($look)){
+  				$total_look++;
+  				
+  				 
+  		  	?>
           <!-- Look ON -->
           <h3 class="braker_bottom margin_top"><?php echo $look->title; ?></h3>
           <div class="padding_left">
@@ -80,8 +80,6 @@ $total_productos_look = 0;
                 $productos_externos = array();
                 
                 foreach($bolsahasproductotallacolor as $productotallacolor){ 
-                  ?>
-                <?php 
                 	$total_productos_look++;
                 	$color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
                         $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
@@ -184,12 +182,12 @@ $total_productos_look = 0;
                           array_push($cantidades,$productotallacolor->cantidad);
 
 
-                          $precioSumar = $producto->getPrecioVenta2(false);
+                          //$precioSumar = $producto->getPrecioVenta2(false);
                           $precioMostrar = $producto->getPrecioImpuesto();
                           $precio_descuento = $producto->getPrecioDescuento();
-                          array_push($precios,floatval($precioSumar));  
+                          //array_push($precios,floatval($precioSumar));  
                           //array_push($precios,floatval($pre));  
-                          array_push($descuentos,$producto->getAhorro(false));
+                          //array_push($descuentos,$producto->getAhorro(false));
                                           
                               
                             ?>

@@ -2280,7 +2280,7 @@ class BolsaController extends Controller
 						  'category': '".$category->nombre."',            // Product category (string).
 						  'brand': '".$producto->preciotallacolor->producto->mymarca->nombre."',                // Product brand (string).
 						  'variant': '".$producto->preciotallacolor->mycolor->valor."',               // Product variant (string).
-						  'price': '".$producto->precio."',                 // Product price (currency).
+						  'price': '".$precio->precioImpuesto."',                 // Product price (currency).
 						  'quantity': ".$producto->cantidad."                     // Product quantity (number).
 						});
 				  	";
@@ -2288,16 +2288,16 @@ class BolsaController extends Controller
 				}
 				Yii::app()->clientScript->registerScript('metrica_analytics',$addItem."
 				
-  				ga('ec:setAction', 'purchase', {
-				  'id': '".$orden->id."',
-				  'affiliation': 'Personaling',
-				  'revenue': '".$orden->total."',
-				  'tax': '".$orden->iva."',
-				  'shipping': '".$orden->envio."',
-				 // 'coupon': 'SUMMER2013'    // User added a coupon at checkout.
-				});
-  				
-  				ga('send', 'pageview'); 
+	  				ga('ec:setAction', 'purchase', {
+					  'id': '".$orden->id."',
+					  'affiliation': 'Personaling',
+					  'revenue': '".$orden->total."',
+					  'tax': '".$orden->iva."',
+					  'shipping': '".$orden->envio."',
+					 // 'coupon': 'SUMMER2013'    // User added a coupon at checkout.
+					});
+	  				
+	  				ga('send', 'pageview'); 
  
 				");	
 				// var _gaq = _gaq || [];

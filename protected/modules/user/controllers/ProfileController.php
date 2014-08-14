@@ -679,10 +679,13 @@ class ProfileController extends Controller
 					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
 				}
 			}
-		}	
+		}
+                
+                $ref = isset($_GET['ref']) && $_GET['ref'] == "looks";
 	    $this->render('tuestilo_registro',array(
+	    	'ref'=>$ref,
 	    	'model'=>$model,
-			'profile'=>$model->profile,
+                'profile'=>$model->profile,
 	    ));
 	}	
  /**

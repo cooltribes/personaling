@@ -1052,6 +1052,7 @@ class AdminController extends Controller
 				$zohoCase->internal = "Aprobado";
 				$zohoCase->Comment = "Aprobado por administrador";
 				$zohoCase->Solution = "Aprobado por administrador";
+				$zohoCase->Status = "Closed"; 
 									
 				$respuesta = $zohoCase->save_potential(); 
 			

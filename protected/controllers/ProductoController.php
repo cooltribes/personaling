@@ -3112,7 +3112,14 @@ public function actionReportexls(){
 		}
 	}
         
-        protected function validarArchivo($archivo){
+        /**
+         * 
+         * @param type $archivo Archivo que se valida
+         * @param type $tipoProductos 1: si el archivo es de productos externos
+         *                            0: si el archivo contiene productos personaling
+         * @return boolean Si el archivo es valido o no
+         */
+        protected function validarArchivo($archivo, $tipoProductos = 0){
             
             $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
 
@@ -3291,19 +3298,19 @@ public function actionReportexls(){
                             $erroresCatVacias .= "<li> Línea <b>" . $linea."</b></li>";
                         }
                         
-                        //Referencias existentes                        
-                        if (isset($row['B']) && $row['B'] != "") {                        
+                        //Referencias existentes de TERCEROS                       
+                        if ($tipoProductos == 0 && isset($row['B']) && $row['B'] != "") {                        
 
                             $producto = Producto::model()->findByAttributes(array("codigo" => $row["B"]));
 
-                            //si existe y es de personaling
+                            //si existe y es de terceros
                             if (isset($producto) && $producto->tipo == 1) {                             
 
                                 $erroresSku .= "<li> REFERENCIA - <b>" .$row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
                             }
                         }                        
-                        //SKU existentes                        
-                        if (isset($row['A']) && $row['A'] != "") {                        
+                        //SKU existentes de TERCEROS                    
+                        if ($tipoProductos == 0 && isset($row['A']) && $row['A'] != "") {                        
 
                             $combinacion = Preciotallacolor::model()->findByAttributes(array("sku" => $row["A"]));
                             //si existe y es de personaling
@@ -3408,7 +3415,7 @@ public function actionReportexls(){
         protected function validarImportacionExternos($archivo){
             
             //Validar las columnas normales primero
-            $response = $this->validarArchivo($archivo);
+            $response = $this->validarArchivo($archivo, 1);
             $errores = "";
             if(is_array($response)){
                 //si son validas todas
@@ -4312,32 +4319,39 @@ public function actionReportexls(){
                             $precio->costo = $rCosto;
                             $precio->impuesto = 1;
 							
-							/* DATOS PARA ZOHO */ 
-							$zoho->costo = $rCosto;
+                            /* DATOS PARA ZOHO */ 
+                            $zoho->costo = $rCosto;
 							
                             //si es con iva
                             if(MasterData::TIPO_PRECIO == 1){
 
+                                /*Como no hay columna descuento, se asume que es 0*/
+                                
+                                //precio con IVA
+                                $precio->precioImpuesto = $rPrecio;
+                                //precio final - igual al precio con impuesto
+                                $precio->precioDescuento = $rPrecio;
+                                //precio sin IVA (calculado)
                                 $precio->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
-                                $precio->precioDescuento = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
-                                $precio->precioImpuesto = $rPrecio; 
+                                
 								
-								/* DATOS PARA ZOHO */ 
-								$zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
-								$zoho->precioDescuento = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
-								$zoho->precioImpuesto = $rPrecio; 
+                                /* DATOS PARA ZOHO */ 
+                                $zoho->precioImpuesto = $rPrecio; 
+                                $zoho->precioDescuento = $rPrecio;
+                                $zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
 								
 
                             }else{ //si es sin iva
 
+                                //precio de venta SIN IVA
                                 $precio->precioVenta = $rPrecio;
-                                $precio->precioDescuento = $rPrecio;
                                 $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);      
+                                $precio->precioDescuento = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
 								
-								/* DATOS PARA ZOHO */ 
-								$zoho->precioVenta = $rPrecio;
-								$zoho->precioDescuento = $rPrecio;
-								$zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                        
+                                /* DATOS PARA ZOHO */ 
+                                $zoho->precioVenta = $rPrecio;
+                                $zoho->precioDescuento = $rPrecio;
+                                $zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                        
                             }
 
                             $precio->save();
@@ -4390,12 +4404,12 @@ public function actionReportexls(){
                             $talla = Talla::model()->findByAttributes(array('valor' => $rTalla));
                             $color = Color::model()->findByAttributes(array('valor' => $rColor));
 							
-							/* DATOS PARA ZOHO */
-							$zoho->talla = $talla->valor;
-							$zoho->color = $color->valor;
-							$zoho->SKU = $rSku;
-							$zoho->cantidad = 1; //Todos los externos tienen cant = 1
-							$zoho->tipo = "Externo";
+                            /* DATOS PARA ZOHO */
+                            $zoho->talla = $talla->valor;
+                            $zoho->color = $color->valor;
+                            $zoho->SKU = $rSku;
+                            $zoho->cantidad = 1; //Todos los externos tienen cant = 1
+                            $zoho->tipo = "Externo";
 							
                             $ptc = Preciotallacolor::model()->findByAttributes(array(
                                         'producto_id' => $producto->id,
@@ -4403,10 +4417,11 @@ public function actionReportexls(){
                                         'talla_id' => $talla->id,
                                         'color_id' => $color->id,
                                         //productos externos
-                                        'url_externo' => $rURL,
+                                        //'url_externo' => $rURL,
                                         
                                     ));                                   
 
+                            
                             // Si no existe crearlo
                             if (!isset($ptc)) { 
 
@@ -4420,18 +4435,18 @@ public function actionReportexls(){
                                 $ptc->talla_id = $talla->id;
                                 $ptc->color_id = $color->id;
                                 
-                                //productos externos
-                                $ptc->url_externo = $rURL;  
-
                                 
                                 $ptc->save();
 
                             }else{
                                 //Si ya existe
-                                $actualizados++; //suma un producto actualizado                                
-                                //Marcar item como actualizado                                
+                                $actualizados++; //suma un producto actualizado  
                             }
-
+                            
+                            //Actualizar la URL
+                            $ptc->url_externo = $rURL; 
+                            $ptc->save();                           
+                                
                             // seo
                             $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
 
@@ -4701,7 +4716,7 @@ public function actionReportexls(){
                         $cantProductosGuest = count(Yii::app()->getSession()->get("Bolsa"));        
                         
                         $response["status"] = "success";
-                        $response["bolsa"] = Bolsa::textoBolsaGuest($cantProductosGuest);
+                        $response["contenido"] = Bolsa::textoBolsaGuest($cantProductosGuest);
                         $response["cantidad"] = $cantProductosGuest;
                         
                         echo CJSON::encode($response);

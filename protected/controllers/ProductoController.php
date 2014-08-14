@@ -1874,8 +1874,11 @@ public function actionReportexls(){
 
             if (!$view->save())
                 Yii::trace('ProductoController.php:946, Error:' . print_r($view->getErrors(), true), 'registro');
-
-            $this->render('_view_detalle', array('producto' => $producto));
+			$detect = new Mobile_Detect;
+			if(!$detect->isMobile())
+            	$this->render('_detalle_mobile', array('producto' => $producto));
+			else
+				$this->render('_view_detalle', array('producto' => $producto));
         }
 	
 	/**

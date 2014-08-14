@@ -1,10 +1,22 @@
 <?php
+$seo = SeoStatic::model()->findByAttributes(array('name'=>'Look'));
 if(isset($seo)){
     $this->pageTitle = $seo->title;
     Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
     Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
     Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
+	
+	Yii::app()->clientScript->registerMetaTag($seo->title, null, null, array('property' => 'og:title'), null); 
+	Yii::app()->clientScript->registerMetaTag($seo->description, null, null, array('property' => 'og:description'), null);
 }
+else{
+	Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST']."/develop/looks-personalizados", null, null, array('property' => 'og:title'), null); 
+	Yii::app()->clientScript->registerMetaTag('Looks personalizados por expertos en moda: celebrities, fashion bloggers y personal shoppers.', null, null, array('property' => 'og:description'), null);
+}
+Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
+Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST'], null, null, array('property' => 'og:site_name'), null); 
+Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url .'images/icono_preview.jpg', null, null, array('property' => 'og:image'), null);
+
 ?>
 <?php 
 if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
@@ -61,11 +73,11 @@ if (isset($user)){
    			navigation: true
     	});
   	});
-	
+	 
 </script>
 <div class="navbar navbar-fixed-top mobilefilters" id="mobilefilters" align="center">
 
-		<div class="container">
+		<div class="container"> 
 			
 				<div class="mobileOptions">
 					<div style="width:30%; float:left;">

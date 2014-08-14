@@ -46,7 +46,21 @@ $this->breadcrumbs=array(
     <?php echo $form->textFieldRow($model,'name'); ?>
 
     <?php echo $form->textFieldRow($model,'email'); ?>
-
+	
+	
+		<?php echo $form->dropDownListRow($model, 'motivo', array(
+			    'Solicitud de información'=>'Solicitud de información',
+			    'Seguimiento del envío'=>'Seguimiento del envío',
+			    'Información de pagos'=>'Información de pagos',
+			    'Problemas con la mercancía'=>'Problemas con la mercancía',
+			    'Devoluciones'=>'Devoluciones',
+			    'Falla Técnica'=>'Falla Técnica',
+			    'Otro'=>'Otro',
+			), array(
+			    'empty' => 'Seleccione' 
+			));
+		?>
+	
     <?php echo $form->textFieldRow($model,'subject',array('size'=>60,'maxlength'=>128)); ?>
 
     <?php echo $form->textAreaRow($model,'body',array('rows'=>4, 'class'=>'span3')); ?>

@@ -48,7 +48,7 @@ Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por 
 		<div class="controls"><?php echo $form->textField($model,'email'); ?>
 		<?php echo $form->error($model,'email'); ?></div>
 	</div>
-
+	
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'Asunto'); ?>
 		<div class="controls"><?php echo $form->textField($model,'subject',array('size'=>60,'maxlength'=>128)); ?>
@@ -59,7 +59,8 @@ Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por 
 		<?php echo $form->labelEx($model,'Mensaje'); ?>
 	<div class="controls">	<?php echo $form->textArea($model,'body',array('rows'=>4, 'cols'=>40)); ?>
 		<?php echo $form->error($model,'body'); ?></div>
-	</div>
+	</div>	
+	
 
 	<?php if(CCaptcha::checkRequirements()): ?>
 	<div class="control-group">

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <div class="container margin_top" id="carrito_compras">
   <div class="row detalle_producto">
     <div class="span12">
@@ -97,7 +98,7 @@
 	              break;
 	          }
 	          $precio_mostrar = $precio_producto->precioImpuesto;
-	          echo '<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span><span class='T_large'>|</span><span class='pDescuento'>".''.Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span><br/> <span class="conDescuento">Con '.Yii::app()->numberFormatter->format("#",$porcentaje).'% de descuento</span>';
+	          echo '<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span><span class='T_large'>|</span><span class='pDescuento'>".''.Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span> <span class="conDescuento">Con '.Yii::app()->numberFormatter->format("#",$porcentaje).'% de descuento</span>';
 	          //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
 	        }else{
 	        	echo '<div class="pDetalle"><span>'.Yii::t('contentForm', 'currSym').'</span>'.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</div>';
@@ -112,11 +113,11 @@
 
         
        
-        if($producto->mymarca->is_100chic)
+      /*  if($producto->mymarca->is_100chic)
         	echo '<div class="row-fluid"><div class="span12"><img src="'.Yii::app()->baseUrl.'/images/080bannerprevia.jpg'.'"</div><div class="row-fluid">';
-		else
+		else*/
 			echo '<div class="row-fluid"><div class="row-fluid">';
-        echo '<div class="span6">';
+        echo '<div style="width:50%; float:left">';
         echo '<h5>Colores</h5>';
         echo '<div class="clearfix colores" id="vCo">';
         
@@ -163,7 +164,7 @@
 		?>
 	</div></div>
 		
-   <div>
+   <div style="width:50%; float:left">
 		<h5>Tallas</h5>
 		<div class="clearfix tallas" id="vTa">
 		<?php
@@ -217,14 +218,64 @@
        ?>
        <div class="row-fluid"> 
 		<?php $marca = Marca::model()->findByPk($producto->marca_id); ?>
-   		<h5>Marca</h5>
-  <div class="thumbnails">
-   <img width="66px" height="66px" src="<?php echo Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen)?>"/>
-    			</div>
-  			</div></div></div>
- 		</div>   
-  	</div>
+   		
+  		<div class="thumbnails">
+   			<div style="width:80%; float:left">
+   				<strong><?php echo Yii::t('contentForm','Description'); ?></strong>: <?php echo $producto->descripcion; ?><br/>
+   				<strong><?php echo Yii::t('contentForm','Weight'); ?></strong> <?php echo  $producto->peso; ?>
+    		</div>
+   			<div style="width:20%; float:left">
+   				<img width="66px" height="66px" src="<?php echo Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen)?>"/>
+    		</div> 
+    	 
+    	</div>
+    	
+    	<div class="addthis">
+    		<?php if(!Yii::app()->user->isGuest){
+              $entro = 0;
+        
+        $like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$producto->id));
+              
+              if(isset($like)) // le ha dado like
+        {
+          //echo "p:".$like->producto_id." us:".$like->user_id;
+          $entro=1;
+          ?>
+            <a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> <?php echo Yii::t('contentForm','Like'); ?></a>
+                  <?php 
+          
+        }
+          
+          if($entro==0)
+          {?>
+             <a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium"> 
+      
+      		&nbsp; </span> <?php echo Yii::t('contentForm','Like'); ?></a>
+        <?php  }
 
+              }  ?>
+    		
+    		
+    		
+    		
+    		
+    		<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+	            <a class="addthis_button_facebook"></a>
+	            <a class="addthis_button_twitter" tw:via="personaling"></a>
+	            <a class="addthis_button_pinterest_share"></a>
+            </div>
+    	</div>
+    	<script type="text/javascript">       
+              var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
+              var addthis_share = {
+                  templates : {
+                      twitter : "{{title}} {{url}} #MiPersonaling via @personaling "
+                  }
+              }
+            </script> 
+  	
+  		</div>
+  	</div>
     	
     	<div id="alertRegister" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
 		 <div class="modal-header">
@@ -461,3 +512,186 @@
     </div>
   </div>
 </div>
+
+<script>
+	
+	function agregarBolsaGuest(producto, talla, color){
+       
+       $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: "<?php echo Yii::app()->createUrl('/producto/agregarBolsaGuest'); ?>", // action Tallas de Producto
+            data: { 'producto':producto, 'talla':talla, 'color':color}, 
+            success: function (data) {
+              
+                comprando = true;
+              if(data.status == "success"){                  
+              
+                  desplegarBolsaGuest(data);
+
+              }
+            }//success
+         });
+   }
+   
+   function comprar(){ // comprobar quienes están seleccionados
+      
+      if (comprando == true){
+        var talla = $("#vTa").find(".tallass.active").attr("id");
+        var color = $("#vCo").find(".coloress.active").attr("id");
+        var producto = $("#producto").attr("value");
+        
+        
+      if(color==undefined) // falta color
+      {
+          $('#tooltipColor').tooltip('show');  
+      }   
+      if(talla==undefined) // falta color
+      {
+          $('#tooltipTalla').tooltip('show');  
+      }    
+      
+      var isGuest = <?php echo Yii::app()->user->isGuest?"true":"false"; ?>;
+        
+         //LLamada ajax
+      if(talla!=undefined && color!=undefined)
+      {
+        
+        $('#agregar').attr("disabled", true);
+        comprando = false;
+        
+        if(isGuest)
+        {
+            agregarBolsaGuest(producto, talla, color);
+        }
+        else
+        {
+            //si no es guest, agregar a la bolsa normal del usuario logueado
+            $.ajax({
+                type: "post",
+                url: "<?php echo Yii::app()->createUrl('bolsa/agregar2'); ?>", // action Tallas de Producto
+                data: { 'producto':producto, 'talla':talla, 'color':color}, 
+                dataType: 'json',
+                success: function (data) {
+                  comprando = true;
+                  console.log(data);
+
+                  if(data.status=="ok"){
+                    // registrar impresión en google analytics
+                    
+                      ga('ec:addProduct', {
+                        'id': data.id,
+                        'name': data.name,
+                        'category': data.category,
+                        'brand': data.brand,
+                        'variant': data.variant,
+                        'price': data.price,
+                        'quantity': data.quantity,
+                      });
+                      ga('ec:setAction', 'add');
+                      ga('send', 'event', 'UX', 'click', 'add to cart');     // Send data using an event.
+                    
+                    //alert("redireccionar mañana");
+                    window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
+                  }
+
+                  if(data.status=="no es usuario")
+                  {
+                    $('#alertRegister').show();
+                    //bootbox.alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
+                  }
+
+                }//success
+             });
+             
+        }//fin si no es invitado
+            
+        
+        
+        
+      }// cerro   
+    }
+
+
+   }
+   
+    function encantar()
+    {
+      var idProd = <?php echo $id?>;
+     // alert("id:"+idProd);    
+      
+      $.ajax({
+          type: "post",
+          dataType:"json",
+          url: "<?php echo Yii::app()->baseUrl;?>/producto/encantar", // action Tallas de Producto
+          data: { 'idProd':idProd}, 
+          success: function (data) {
+            
+          //  alert(data); 
+        
+        if(data.mensaje=="ok") 
+        {         
+          var a = "♥";
+          
+          //$("#meEncanta").removeClass("btn-link");
+          $("#meEncanta").addClass("btn-link-active");
+          $("span#like").text(a);
+          
+          $("#total-likes").text(data.total); 
+          $("#btn-encanta").addClass("btn-danger_modificado");
+        }
+        
+        if(data.mensaje=="no")
+        {
+          bootbox.alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar 'Me Encanta' a un producto");
+          //window.location="../../user/login";
+        }
+        
+        if(data.mensaje=="borrado")
+        {
+          var a = "♡";
+          
+          //alert("borrando");
+          $("#btn-encanta").removeClass("btn-danger_modificado");
+          $("#meEncanta").removeClass("btn-link-active");
+          $("span#like").text(a);
+          
+          $("#total-likes").text(data.total);         
+        }
+          
+          }//success
+         })
+      
+      
+    }
+
+<?php if(!UserModule::isAdmin()){ ?>
+    //Guardar el click cuando sea para una tienda externa
+    $("#comprarExterno").click(function(e){
+        var url = "<?php echo $this->createUrl("producto/contarClick"); ?>";
+        var idProducto = <?php echo $producto->id ?>;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'JSON',
+            data: {idProducto: idProducto},
+//            success: function(data){
+//
+//                console.log(data);
+//            }
+        });
+
+    });
+<?php } ?>
+   
+</script>
+	
+	
+	
+</script>
+
+
+
+
+
+

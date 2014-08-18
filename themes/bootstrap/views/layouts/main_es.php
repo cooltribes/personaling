@@ -820,9 +820,10 @@ if(!Yii::app()->user->isGuest){
         var urlActual = "<?php echo CController::createUrl(""); ?>";
         var tiendaLooks = "<?php echo CController::createUrl("/tienda/look"); ?>";        
         var redirect = "<?php echo CController::createUrl("/tienda/redirect"); ?>";        
+        var tiendaGetfilter = "<?php echo CController::createUrl("/tienda/getFilter"); ?>";        
         //si esta en tienda de looks
         if(urlActual === tiendaLooks){
-            clickPerfil($(this).prop("id"));
+            clickPerfil($(this).prop("id"), tiendaGetfilter);
         }else{
         
         //Llevar a tienda de looks

@@ -3,6 +3,11 @@
 $this->breadcrumbs=array(
 	Yii::t('contentForm','Bag'),
 );
+
+$this->setPageTitle(Yii::app()->name." - ".Yii::t('contentForm','Your bag'));
+
+
+
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 //$usuario = Yii::app()->user->id;

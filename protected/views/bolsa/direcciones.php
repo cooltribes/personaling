@@ -1,5 +1,8 @@
 <?php
 Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
+
+$this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Tu Dirección'));
+
 if (!Yii::app()->user->isGuest) { // que este logueado
     $userObject = User::model()->findByPk($user);
     

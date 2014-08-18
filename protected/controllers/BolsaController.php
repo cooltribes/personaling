@@ -25,23 +25,18 @@ class BolsaController extends Controller
 	{
             return array(
                 array('allow',  // allow all users to perform 'index' and 'view' actions
-                        'users'=>array('*'),
-                ),
+                    'actions'=>array('vaciarGuest', 'koAzt', 'okAzt', 'notificacionAzt',),
+                    'users'=>array('*'),
+                ),                
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
                     'actions'=>array('modal','credito','index','limpiar',
                     'eliminardireccion','editar','editardireccion','agregar','actualizar',
-                    'pagos','compra','eliminar','direcciones','confirmar','comprar','cpago',
-                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 'comprarGC',
-                    'clickBotonConfirmar', 'agregar2',
-                        'vaciarGuest',//Debe estar en la regla de *
-                        ),
+                    'pagos','eliminar','compra', 'direcciones','confirmar','comprar',
+                    'pedido','cpago', 'pedidoGC','comprarGC','clickBotonConfirmar', 
+                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 
+                    'agregar2',),
                     'users'=>array('@'),
-                ),
-                array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                        'actions'=>array('index'),
-                        //'users'=>array('admin'),
-                        'expression' => 'UserModule::isAdmin()',
-                ),
+                ),                
                 array('deny',  // deny all users
                         'users'=>array('*'),
                 ),
@@ -381,6 +376,9 @@ class BolsaController extends Controller
 	
         public function actionPagos()
         {   
+            if(Bolsa::isEmpty()){
+                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+            }
 
             if (Yii::app()->user->isGuest){
                 //Redirigir a login si no esta logueado
@@ -563,8 +561,7 @@ class BolsaController extends Controller
                 //$tarjeta = new TarjetaCredito;
                 /*Si es compra del usuario*/
                 if(!$admin){
-
-					ShoppingMetric::registro(ShoppingMetric::STEP_PAGO); 
+                    ShoppingMetric::registro(ShoppingMetric::STEP_PAGO); 
                 }
 
                 $aplicar = new AplicarGC;
@@ -747,6 +744,9 @@ class BolsaController extends Controller
 		public function actionConfirmar()
 		{
                     
+                    if(Bolsa::isEmpty()){
+                        $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+                    }
                     
                     if (Yii::app()->user->isGuest){
                         //Redirigir a login
@@ -1029,6 +1029,9 @@ class BolsaController extends Controller
 		
 		public function actionDirecciones()
 		{
+                    if(Bolsa::isEmpty()){
+                        $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+                    }
 		
 	        if (Yii::app()->user->isGuest){
 	            //Redirigir a login
@@ -1168,6 +1171,9 @@ class BolsaController extends Controller
              if(isset($_SESSION['idFacturacion']))
 				unset($_SESSION['idFacturacion']);	
 				
+            if(Bolsa::isEmpty()){
+                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+            }
             if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
 
                 /* Si es compra de admin para usuario */
@@ -1266,6 +1272,7 @@ class BolsaController extends Controller
                 //Redirigir a login
                 Yii::app()->user->setReturnUrl($this->createUrl('bolsa/compra'));
                 Yii::app()->user->setFlash('error',Yii::t("contentForm", "¡La sesión ha expirado, intenta tu compra nuevamente!"));                              
+                
                 $this->redirect(array('/user/login'));
             }
 	}//fin
@@ -2256,58 +2263,59 @@ class BolsaController extends Controller
 	 * */
 	public function actionPedido($id)
 	{  
-            /*Si es compra de admin para usuario*/
-            $admin = isset($_GET["admin"]) && $_GET["admin"] == 1;
+            $admin = Yii::app()->getSession()->contains("bolsaUser");                    
+                
             /*ID del usuario propietario de la bolsa*/
-            $usuario = $admin ? $_GET["user"] : Yii::app()->user->id;
+            $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
+                                : Yii::app()->user->id;
             
             $orden = Orden::model()->findByPk($id);
 			$orden->setActualizadas();
             //$pago = Pago::model()->findByPk($orden->pago_id);
             if(!$admin){
-				ShoppingMetric::registro(ShoppingMetric::STEP_PEDIDO,array("orden_id"=>$orden->id));
-				$addItem = "";
-				foreach ($orden->ohptc as $producto){
-					
-					$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$producto->preciotallacolor->producto->id));
-					$category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
-	                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->preciotallacolor->producto_id));
-				  
-				  	$addItem .= "
-				  		ga('ec:addProduct', {               // Provide product details in an productFieldObject.
-						  'id': '".$producto->preciotallacolor->sku."',                   // Product ID (string).
-						  'name': '".$producto->preciotallacolor->producto->nombre."', // Product name (string).
-						  'category': '".$category->nombre."',            // Product category (string).
-						  'brand': '".$producto->preciotallacolor->producto->mymarca->nombre."',                // Product brand (string).
-						  'variant': '".$producto->preciotallacolor->mycolor->valor."',               // Product variant (string).
-						  'price': '".$producto->precio."',                 // Product price (currency).
-						  'quantity': ".$producto->cantidad."                     // Product quantity (number).
-						});
-				  	";
-				  	
-				}
-				Yii::app()->clientScript->registerScript('metrica_analytics',$addItem."
-				
-  				ga('ec:setAction', 'purchase', {
-				  'id': '".$orden->id."',
-				  'affiliation': 'Personaling',
-				  'revenue': '".$orden->total."',
-				  'tax': '".$orden->iva."',
-				  'shipping': '".$orden->envio."',
-				 // 'coupon': 'SUMMER2013'    // User added a coupon at checkout.
-				});
-  				
-  				ga('send', 'pageview'); 
- 
-				");	
-				// var _gaq = _gaq || [];
-				//_gaq.push(['_setAccount', 'UA-1015357-44']);
-  				//_gaq.push(['_trackPageview']);
-  				//(function() {
-				//    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				//    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				//    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-				//  })(); 	
+                ShoppingMetric::registro(ShoppingMetric::STEP_PEDIDO,array("orden_id"=>$orden->id));
+                $addItem = "";
+                foreach ($orden->ohptc as $producto){
+
+                        $category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$producto->preciotallacolor->producto->id));
+                        $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+                        $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->preciotallacolor->producto_id));
+
+                        $addItem .= "
+                                ga('ec:addProduct', {               // Provide product details in an productFieldObject.
+                                  'id': '".$producto->preciotallacolor->sku."',                   // Product ID (string).
+                                  'name': '".$producto->preciotallacolor->producto->nombre."', // Product name (string).
+                                  'category': '".$category->nombre."',            // Product category (string).
+                                  'brand': '".$producto->preciotallacolor->producto->mymarca->nombre."',                // Product brand (string).
+                                  'variant': '".$producto->preciotallacolor->mycolor->valor."',               // Product variant (string).
+                                  'price': '".$producto->precio."',                 // Product price (currency).
+                                  'quantity': ".$producto->cantidad."                     // Product quantity (number).
+                                });
+                        ";
+
+                }
+                Yii::app()->clientScript->registerScript('metrica_analytics',$addItem."
+
+                ga('ec:setAction', 'purchase', {
+                  'id': '".$orden->id."',
+                  'affiliation': 'Personaling',
+                  'revenue': '".$orden->total."',
+                  'tax': '".$orden->iva."',
+                  'shipping': '".$orden->envio."',
+                 // 'coupon': 'SUMMER2013'    // User added a coupon at checkout.
+                });
+
+                ga('send', 'pageview'); 
+
+                ");	
+                // var _gaq = _gaq || [];
+                //_gaq.push(['_setAccount', 'UA-1015357-44']);
+                //_gaq.push(['_trackPageview']);
+                //(function() {
+                //    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                //    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                //    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                //  })(); 	
             }
             $this->render('pedido',array(
                  'orden'=>$orden,
@@ -3363,8 +3371,6 @@ class BolsaController extends Controller
             
             $url = $this->createAbsoluteUrl('bolsa/pedido',array(
                         'id'=>$orden->id,
-                        'admin' => '',
-                        'user' => $userId,
                             ),'http');
             
            //Mostrar info en el modal de pago y redirigir de una vez

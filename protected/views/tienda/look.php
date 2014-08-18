@@ -5,6 +5,9 @@ if(isset($seo)){
     Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
     Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
 }
+
+$this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Looks Personalizados'));
+
 ?>
 <?php 
 if(isset($_GET['fb']) && $_GET['fb'] == 'true'){

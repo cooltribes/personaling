@@ -370,7 +370,7 @@ public function actionReportexls(){
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 					
-					if($_POST['accion'] == "normal") // si es el boton principal
+					//if($_POST['accion'] == "normal") // si es el boton principal
 						//$this->redirect(array('create','id'=>$exist->id));
 					
 					if($_POST['accion'] == "avanzar") // guardar y avanzar
@@ -1874,10 +1874,11 @@ public function actionReportexls(){
 
             if (!$view->save())
                 Yii::trace('ProductoController.php:946, Error:' . print_r($view->getErrors(), true), 'registro');
-			/*$detect = new Mobile_Detect;
-			if(!$detect->isMobile()) 
+
+			$detect = new Mobile_Detect;
+			if($detect->isMobile()) 
             	$this->render('_detalle_mobile', array('producto' => $producto));
-			else*/
+			else
 				$this->render('_view_detalle', array('producto' => $producto));
         }
 	
@@ -2509,25 +2510,25 @@ public function actionReportexls(){
                             //si es con iva
                             if(MasterData::TIPO_PRECIO == 1){
                                 
-                                $precio->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
-                                $precio->precioDescuento = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+                                $precio->precioDescuento = $rPrecio;
                                 $precio->precioImpuesto = $rPrecio; 
+                                $precio->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
                                 
-								/* DATOS PARA ZOHO */ 
-								$zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
-								$zoho->precioDescuento = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
-								$zoho->precioImpuesto = $rPrecio; 
+                                /* DATOS PARA ZOHO */ 
+                                $zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+                                $zoho->precioDescuento = $rPrecio;
+                                $zoho->precioImpuesto = $rPrecio; 
 								
                             }else{ //si es sin iva
                                 
                                 $precio->precioVenta = $rPrecio;
-                                $precio->precioDescuento = $rPrecio;
+                                $precio->precioDescuento = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
                                 $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
 								
-								/* DATOS PARA ZOHO */ 
-								$zoho->precioVenta = $rPrecio;
-								$zoho->precioDescuento = $rPrecio;
-								$zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                          
+                                /* DATOS PARA ZOHO */ 
+                                $zoho->precioVenta = $rPrecio;
+                                $zoho->precioDescuento = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
+                                $zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                          
                             }
 							
                             $precio->save();

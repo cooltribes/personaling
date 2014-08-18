@@ -67,6 +67,7 @@ if(isset($seo)){
 	$this->breadcrumbs=array(
 	'Tienda',
 	);
+        $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Tienda Personalizada'));
 ?>
 
 <!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  ON-->

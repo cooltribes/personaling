@@ -415,8 +415,12 @@ function showAlert(type, message){
    $('#alert-msg').removeClass('alert-success alert-error') ;
    $('#alert-msg').addClass("alert-"+type);
    $('#alert-msg').children(".msg").html(message);
+   //permitir ocultar con el boton cerrar
+//   $('#alert-msg').click(function(e));
+   
    $('#alert-msg').show();
    $("html, body").animate({ scrollTop: 0 }, "slow");
+   
 }
 
 //al hacer click en "agregar perfil + "

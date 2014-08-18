@@ -1,21 +1,12 @@
 <?php
-$seo = SeoStatic::model()->findByAttributes(array('name'=>'Look'));
 if(isset($seo)){
     $this->pageTitle = $seo->title;
     Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
     Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
     Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
-	
-	Yii::app()->clientScript->registerMetaTag($seo->title, null, null, array('property' => 'og:title'), null); 
-	Yii::app()->clientScript->registerMetaTag($seo->description, null, null, array('property' => 'og:description'), null);
 }
-else{
-	Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST']."/develop/looks-personalizados", null, null, array('property' => 'og:title'), null); 
-	Yii::app()->clientScript->registerMetaTag('Looks personalizados por expertos en moda: celebrities, fashion bloggers y personal shoppers.', null, null, array('property' => 'og:description'), null);
-}
-Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url , null, null, array('property' => 'og:url'), null);
-Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST'], null, null, array('property' => 'og:site_name'), null); 
-Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url .'images/icono_preview.jpg', null, null, array('property' => 'og:image'), null);
+
+$this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Looks Personalizados'));
 
 ?>
 <?php 
@@ -73,11 +64,11 @@ if (isset($user)){
    			navigation: true
     	});
   	});
-	 
+	
 </script>
 <div class="navbar navbar-fixed-top mobilefilters" id="mobilefilters" align="center">
 
-		<div class="container"> 
+		<div class="container">
 			
 				<div class="mobileOptions">
 					<div style="width:30%; float:left;">
@@ -282,8 +273,12 @@ $("#mobFiltrar").click(function() {
     
   
     <div class="container">
-
-        <!--    <h1>Todos los looks</h1>-->
+        <div class="alert in" id="alert-msg" style="display: none">
+            <button type="button" class="close">&times;</button> 
+            
+            <div class="msg"></div>
+        </div>
+        
         <?php
         // este bloque no se debe mostrar si el usuario es hombre
         if((isset($user) && $user->profile->sex == 1) || !isset($user)){
@@ -336,11 +331,7 @@ $("#mobFiltrar").click(function() {
 
 
   
-    <div class="alert in" id="alert-msg" style="display: none">
-        <button type="button" class="close" >&times;</button> 
-        <!--data-dismiss="alert"-->
-        <div class="msg"></div>
-    </div>
+    
 </div>
 
 <!-- SUBMENU ON -->
@@ -462,37 +453,7 @@ $("#mobFiltrar").click(function() {
 
                     <!-- ******   Filtrar por perfil  *****    -->
 
-                        <?php if (Yii::app()->user->id && false) { ?>  
-                        <li>
-    <?php
-    echo CHtml::dropDownList("Filtros", "", CHtml::listData(Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id)), "id_filter", "name"), array('empty' => '-- Tus Perfiles --', 'id' => 'all_filters', 'class' => 'input-medium',
-        'style' => 'margin-bottom: 0;margin-top: 5px;'))
-    ?>          	
-                        </li>
-
-
-                        <li>
-                            <div class="margin_left_small"><a href="#modalFiltroPerfil" class="btn btn-danger crear-filtro" data-toggle="modal"><i class="icon-plus icon-white"></i>Nuevo perfil</a></div>
-
-                        </li>
-                        <li>
-                            <div class="margin_left_small hide"><a href="#" class="btn  editar-filtro"><i class="icon-edit"></i>Editar Perfil</a></div>          	
-                        </li>
-<?php } ?>
-
-
-                    <!--
-                    <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Perfil <b class="caret"></b></a>
-                      <ul class="dropdown-menu ">
-                        <li><a href="#" title="Para Mama">Para Mamá</a> </li>
-                          <li><a ref="#" title="Para Tia Alberta">Para Tía Alberta </a></li>
-                        <li><a href="#" title="Para Maria">Para Maria</a> </li>
-                                      <li class="divider"> </li>
-          
-                        <li><a href="Crear_Perfil_Secundario_Usuaria_Mi_Tipo.php" title="Crear nuevo perfil secundario"><i class="icon-plus"></i> Crear un nuevo perfil</a> </li>
-                      </ul>
-                    </li>
-                    -->
+                     
                 </ul>
 
                 <?php /** @var BootActiveForm $form */
@@ -630,11 +591,20 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     }
 
     #modalFiltroPerfil ul .thumbnail{
+       /*height: 225px;*/
+    }
+    #modalFiltroPerfil ul .thumbnail img{
        height: 225px;
     }
     
     #modalFiltroPerfil.in {
         top: 45%;
+    }
+    #modalFiltroPerfil{
+        width: 820px
+    }
+    #modalFiltroPerfil .caption p{
+        font-size: 13px;
     }
     
 </style>
@@ -668,15 +638,18 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
     ?>
     <?php // echo $form->errorSummary(array($modelUser,$profile));  ?>
     <fieldset>    
-        <legend>
+        
+<!--        <legend>
             ¿Cuáles son sus características?
-        </legend>  
+        </legend>  -->
 
 <!--        CARACTERISTICAS-->
         <div class="control-group" >
             <div class="controls row-fluid" id="caracteristicas">
                     <?php $clase = (isset($editar) && $editar) ? 'control-group span2' : 'span2'; ?>
+                    <?php $claseLong = (isset($editar) && $editar) ? 'control-group span3' : 'span3'; ?>
                     <?php $clase2 = (isset($editar) && $editar) ? 'span10' : 'span8'; ?>
+                
                 <div class="<?php echo $clase; ?>">
                     <?php
                     $field = ProfileField::model()->findByAttributes(array('varname' => 'altura'));
@@ -684,14 +657,14 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                             Profile::range($field->range), array('class' => $clase2, 'prompt' => 'Ninguno'));
                     ?>
                 </div>
-                <div class="<?php echo $clase; ?>">
+                <div class="<?php echo $claseLong; ?>">
                     <?php
                     $field = ProfileField::model()->findByAttributes(array('varname' => 'contextura'));
                     echo $form->dropDownListRow($profile, $field->varname, 
                             Profile::range($field->range), array('class' => $clase2, 'prompt' => 'Ninguno'));
                     ?>
                 </div>
-                <div class="<?php echo $clase; ?>">
+                <div class="<?php echo $claseLong; ?>">
                     <?php
                     $field = ProfileField::model()->findByAttributes(array('varname' => 'pelo'));
                     echo $form->dropDownListRow($profile, $field->varname, 
@@ -730,7 +703,14 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
                         <li class="span3 margin_bottom_zero <?php if ($tipoActivo == $key) echo 'active'; ?>" id="tipo_<?php echo $key; ?>">
                             <a href="#" title="Elegir este tipo de cuerpo">
                                 <div class="thumbnail"> 
-                    <?php echo CHtml::image(Yii::app()->baseUrl . '/images/' . replace_accents($tipo) . '.jpg', "Imagen " . $tipo, array("width" => "270", "height" => "400")); ?>
+                                    <?php echo CHtml::image(Yii::app()->baseUrl .
+                                            '/images/' . replace_accents($tipo) . 
+                                            '.jpg', "Imagen " . $tipo,
+                                            array(
+//                                                "width" => "270", "height" => "400"
+                                                )
+                                            ); 
+                                    ?>
                                     <div class="caption text_align_center CAPS">
                                         <p ><?php echo $tipo; ?></p>
                                     </div>
@@ -1088,9 +1068,11 @@ echo CHtml::ajax(array(
 
     }
 
-    $(document).ready(function() {
+$(document).ready(function() {
 
-        //Si venia de otro lugar para crear un perfil
+
+//Si venia de otro lugar para crear un perfil
+
 <?php
 if (isset(Yii::app()->session["modalOn"])) {
     unset(Yii::app()->session["modalOn"]);
@@ -1100,9 +1082,10 @@ if (isset(Yii::app()->session["modalOn"])) {
 
 <?php if (isset(Yii::app()->session["profileOn"])) { ?>
             var idElem = "<?php echo Yii::app()->session["profileOn"] ?>";
+            var tiendaGetfilter = "<?php echo CController::createUrl("/tienda/getFilter"); ?>";        
 
             //$("#dropdownUser a.sub_perfil_item#"+idElem).click();        
-            clickPerfil(idElem);
+            clickPerfil(idElem, tiendaGetfilter);
             //console.log("ready");
 
     <?php unset(Yii::app()->session["profileOn"]);
@@ -1144,17 +1127,7 @@ if (isset(Yii::app()->session["modalOn"])) {
  
     });
 
-
-</script>
-
-<script type="text/javascript">
-
-    $(function() {
+$(function() {
         moveScroller();
     });
 </script>
-
-
-
-
-

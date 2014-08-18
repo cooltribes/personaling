@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
  <?php
+
+ 
   /* @var $this TiendaController */
   $this->breadcrumbs=array(
   'Tienda'=>array('/tienda/index'),
@@ -1430,3 +1432,4 @@ $('.imagen_principal').zoom({url: imgZ});
 <?php } ?>
    
 </script>
+

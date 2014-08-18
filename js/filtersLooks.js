@@ -174,9 +174,8 @@ function getFilter(){
 
 
 /*Obtiene los campos pertenecientes a un filtro ID, los carga y luego realiza la búsqueda*/
-function getFilterByClick(idPerfil){
+function getFilterByClick(idPerfil, URL){
 
-    URL = 'getFilter';
     ID = idPerfil;
     $("body").addClass("aplicacion-cargando");  
     if(ID && ID.trim() !== ''){  
@@ -199,7 +198,7 @@ function getFilterByClick(idPerfil){
                         if(data.status === 'success'){                           
 //                            //Poner titulo
 //                            $('#form_filtros h4').html("Filtro: <strong>"+$('#all_filters').find(":selected").text()+"</strong>");
-                                                       
+                           console.log("dataNelson");    
                             //Cargar los valores en las variables locales
                             //console.log(data.filter);                            
                             valores[0] = data.filter.altura;
@@ -213,13 +212,14 @@ function getFilterByClick(idPerfil){
                             //cargarLocal();
                             //activar para perfil cargado
                             activarModalNuevo(false);
+                           
                             //Mostrar el boton de editar
                             $('a.editar-filtro').parent('div').show(); 
                             
                             //Cambiar label del boton looks para mi
-                            $("#btnMatch").html("Looks para <b>" + data.name + "</b>");
-                            $("#btnMatch").addClass("btn-danger");
-                            $("#btnTodos").removeClass("btn-danger");
+                            $("#deskfilters #btnMatch").html("Looks para <b>" + data.name + "</b>");
+                            $("#deskfilters #btnMatch").addClass("btn-danger");
+                            $("#deskfilters #btnTodos").removeClass("btn-danger");
                             
                             //poner el nombre en el navbar
                             //var children = $("li#dropdownUser").children();
@@ -425,13 +425,13 @@ function clickAgregar(){
 }
 
 //Al hacer click en un perfil creado
-function clickPerfil(idPerfil){
+function clickPerfil(idPerfil, URL){
     
     //e.preventDefault();
     //getFilterByClick($(this).prop("id"));  
     $("#perfil_propio").val("0");
     perfilActivo = true;
-    getFilterByClick(idPerfil);  
+    getFilterByClick(idPerfil, URL);  
     $(".alert").fadeOut('slow');
     
     

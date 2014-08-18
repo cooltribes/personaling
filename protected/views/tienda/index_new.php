@@ -1,3 +1,25 @@
+<?php 
+$seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
+if(isset($seo)){
+    $this->pageTitle = $seo->title;
+    Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
+    Yii::app()->clientScript->registerMetaTag($seo->description, 'description', null, null, null);
+    Yii::app()->clientScript->registerMetaTag($seo->keywords, 'keywords', null, null, null);
+	
+	Yii::app()->clientScript->registerMetaTag($seo->title, null, null, array('property' => 'og:title'), null); 
+	Yii::app()->clientScript->registerMetaTag($seo->description, null, null, array('property' => 'og:description'), null);
+}
+else{
+	Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST']."/tienda-ropa-personalizada", null, null, array('property' => 'og:title'), null); 
+	Yii::app()->clientScript->registerMetaTag('La primera shopping experience con las mejores marcas de ropa y complementos.', null, null, array('property' => 'og:description'), null);
+}
+Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST'], null, null, array('property' => 'og:url'), null);
+Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST'], null, null, array('property' => 'og:site_name'), null); 
+Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url .'images/icono_preview.jpg', null, null, array('property' => 'og:image'), null);
+
+
+?>
+
 <script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.tabSlideOut.v1.3.js" type="text/javascript"></script>
  <script type="text/javascript">
     $(function(){
@@ -45,6 +67,7 @@ if(isset($seo)){
 	$this->breadcrumbs=array(
 	'Tienda',
 	);
+        $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Tienda Personalizada'));
 ?>
 
 <!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  ON-->
@@ -740,6 +763,13 @@ if (!Yii::app()->user->isGuest && $completarPerfil){
             	$('#tienda_productos').html(''); 
             	preRefresh();
 
+		});
+		
+		$(".mobReset").click(function() { 
+            	
+
+               	$('.summ').html('');
+               	
 		});
 		
 		

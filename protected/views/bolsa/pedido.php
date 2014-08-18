@@ -259,23 +259,26 @@ $tipo_pago = $orden->getTipoPago();
 					   			$pre = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
 							}
 							
-							echo('<tr>');
-							
-							if($imagen){					  	
-								$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-								echo "<td>".$aaa."</td>";
-							}else{
-								echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
-							}
-	
-							echo('<td><strong>'.$producto->nombre.'</strong> <br/>
-		                  		<strong>'.Yii::t('contentForm', 'Color').'</strong>: '.$color->valor.'<br/>
-		                  		<strong>'.Yii::t('contentForm', 'Size').'</strong>: '.$talla->valor.'</td>
-		                  		</td>
-		                <td>'.Yii::t('contentForm', 'currSym').' '.$pre.'</td>
-		                <td>'.$cadauno->cantidad.'</td>
-		              </tr>');		
-						}
+              // mostrar solo productos internos
+              if($producto->tipo == 0){
+  							echo('<tr>');
+  							
+  							if($imagen){					  	
+  								$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+  								echo "<td>".$aaa."</td>";
+  							}else{
+  								echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+  							}
+  	
+  							echo('<td><strong>'.$producto->nombre.'</strong> <br/>
+  		                  		<strong>'.Yii::t('contentForm', 'Color').'</strong>: '.$color->valor.'<br/>
+  		                  		<strong>'.Yii::t('contentForm', 'Size').'</strong>: '.$talla->valor.'</td>
+  		                  		</td>
+  		                <td>'.Yii::t('contentForm', 'currSym').' '.$pre.'</td>
+  		                <td>'.$cadauno->cantidad.'</td>
+  		              </tr>');		
+  						}
+            }
 					}
 				}
 

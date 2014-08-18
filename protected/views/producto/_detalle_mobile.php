@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<div class="container margin_top" id="carrito_compras">
+  <div class="row detalle_producto">
+    <div class="span12">
+      <div class="row"> 
+      	
+      	
+      	
+      	<article>
+         
+          
+           
+          
+          <?php 
+          
+
+		$id=$producto->id;
+		$producto = Producto::model()->findByPk($id);
+		$tienda=null;
+		if($producto->tipo){
+			
+			$tienda=Tienda::model()->findByPk($producto->tienda_id);
+			
+				$msj="Comprar en ".$tienda->urlVista;
+		}
+			
+	
+	?>
+ 
+
+		<h3><?php $producto->nombre ?></h3>
+		<div>   
+   			<div class='row-fluid'>
+   		 		<div class='span7'>
+   		 			<div class='carousel slide' id='myCarousel'>
+   		 <?php 
+			$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
+		/*if(count($ima)>1)
+		{
+			echo "<ol class='carousel-indicators'>";
+			foreach ($ima as $key=>$img){
+				if($key==0)
+				echo "<li class='active' data-slide-to='".$key."' data-target='#myCarousel'></li>";
+				else
+					echo "<li class='' data-slide-to='".$key."' data-target='#myCarousel'></li>";
+				if($key==2)
+					break;
+		    }
+		       	echo '</ol>';
+	    } */ ?>
+        <div class="carousel-inner" id="carruselImag">
+    
+		
+	
+		
+	<?php    foreach ($ima as $img){
+					
+			if($img->orden==1)
+			{ 
+				$colorPredet = $img->color_id;
+				
+				echo '<div class="item active">';	
+				echo  CHtml::image($img->getUrl(array('ext'=>'jpg')), $producto->nombre, array("width" => "450", "height" => "450"));
+				echo '</div>';
+			}
+				
+			if($img->orden!=1){
+				if($colorPredet == $img->color_id)
+				{
+					echo '<div class="item">';
+					echo CHtml::image($img->getUrl(array('ext'=>'jpg')), $producto->nombre, array("width" => "450", "height" => "450"));
+					echo '</div>';
+				}
+			}// que no es la primera en el orden
+		} ?>
+		
+       </div>
+      <a data-slide="prev" href="#myCarousel" class="left carousel-control">&lsaquo;</a>
+      <a data-slide="next" href="#myCarousel" class="right carousel-control">&rsaquo;</a>
+      </div></div>
+        
+	  <div class="span5">
+	   <div class="row-fluid call2action">
+	    <div>
+	<?php
+   		$precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+	    if($precio_producto){
+	        if(!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0){
+	          switch ($precio_producto->tipoDescuento) {
+	            case 0:
+	              $porcentaje = $precio_producto->valorTipo;
+	              break;
+	            case 1:
+	              $porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioImpuesto;
+	              break;
+	            default:
+	              # code...
+	              break;
+	          }
+	          $precio_mostrar = $precio_producto->precioImpuesto;
+	          echo '<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span><span class='T_large'>|</span><span class='pDescuento'>".''.Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span> <span class="conDescuento">Con '.Yii::app()->numberFormatter->format("#",$porcentaje).'% de descuento</span>';
+	          //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
+	        }else{
+	        	echo '<div class="pDetalle"><span>'.Yii::t('contentForm', 'currSym').'</span>'.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</div>';
+			}
+	    }?>
+
+        </div>
+        
+      <div class="margin_top_xsmall">
+	<?php
+	
+
+        
+       
+      /*  if($producto->mymarca->is_100chic)
+        	echo '<div class="row-fluid"><div class="span12"><img src="'.Yii::app()->baseUrl.'/images/080bannerprevia.jpg'.'"</div><div class="row-fluid">';
+		else*/
+			echo '<div class="row-fluid"><div class="row-fluid">';
+        echo '<div style="width:50%; float:left">';
+        echo '<h5>Colores</h5>';
+        echo '<div class="clearfix colores" id="vCo">';
+        
+        	$valores = Array();
+            $cantcolor = Array();
+            $cont1 = 0;
+              	
+
+			// revisando cuantos colores distintos hay 
+			foreach ($producto->preciotallacolor as $talCol){ 
+
+
+				if($talCol->cantidad > 0){
+					$color = Color::model()->findByPk($talCol->color_id);
+					
+					if(in_array($color->id, $cantcolor)){	// no hace nada para que no se repita el valor			
+					}
+					else {
+						array_push($cantcolor, $color->id);
+						$cont1++;
+					}	
+				}
+			}
+				
+			if( $cont1 == 1){ // Si solo hay un color seleccionelo
+				$color = Color::model()->findByPk($cantcolor[0]);							
+				echo  "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 		
+			}
+			else{
+				foreach ($producto->preciotallacolor as $talCol) {
+		        	if($talCol->cantidad > 0){ // que haya disp
+						$color = Color::model()->findByPk($talCol->color_id);		
+								
+						if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
+						}
+						else{
+							echo  "<div id=".$color->id." style='cursor: pointer' class='coloress' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+							array_push($valores, $color->id);
+						}
+					}
+		   		}
+				
+			}  
+		?>
+	</div></div>
+		
+   <div style="width:50%; float:left">
+		<h5>Tallas</h5>
+		<div class="clearfix tallas" id="vTa">
+		<?php
+		$valores = Array();
+		$canttallas= Array();
+        $cont2 = 0;
+              	
+		// revisando cuantas tallas distintas hay
+		foreach ($producto->preciotallacolor as $talCol){ 
+			if($talCol->cantidad > 0){
+				$talla = Talla::model()->findByPk($talCol->talla_id);
+						
+				if(in_array($talla->id, $canttallas)){	// no hace nada para que no se repita el valor			
+				}
+				else{
+					array_push($canttallas, $talla->id);
+					$cont2++;
+				}
+							
+			}
+		}
+
+		if( $cont2 == 1){ // Si solo hay un color seleccionelo
+			$talla = Talla::model()->findByPk($canttallas[0]);
+			echo  "<div value='solo' id=".$talla->id." style='cursor: pointer' class='tallass active' title='talla'>".$talla->valor."</div>"; 
+		}
+		else{            	
+			foreach ($producto->preciotallacolor as $talCol) {
+	        	if($talCol->cantidad > 0){ // que haya disp
+					$talla = Talla::model()->findByPk($talCol->talla_id);
+		
+					if(in_array($talla->id, $valores)){	// no hace nada para que no se repita el valor			
+					}
+					else{
+						echo  "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
+						array_push($valores, $talla->id);
+					}
+				}
+	   		}	
+	   	}// else
+		?>
+      
+       </div></div></div> 
+       <?php
+       
+       if(is_null($tienda))
+       		echo '<a class="btn btn-warning btn-block" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>';
+		else
+			echo '<a class="btn btn-warning btn-block" target="_blank" href="'.$producto->url_externo.'" title="'.$msj.'" >'.$msj.'</a>';
+        	
+       ?>
+       <div class="row-fluid"> 
+		<?php $marca = Marca::model()->findByPk($producto->marca_id); ?>
+   		
+  		<div class="thumbnails">
+   			<div style="width:80%; float:left">
+   				<strong><?php echo Yii::t('contentForm','Description'); ?></strong>: <?php echo $producto->descripcion; ?><br/>
+   				<strong><?php echo Yii::t('contentForm','Weight'); ?></strong> <?php echo  $producto->peso; ?>
+    		</div>
+   			<div style="width:20%; float:left">
+   				<img width="66px" height="66px" src="<?php echo Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen)?>"/>
+    		</div> 
+    	 
+    	</div>
+    	
+    	<div class="addthis">
+    		<?php if(!Yii::app()->user->isGuest){
+              $entro = 0;
+        
+        $like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$producto->id));
+              
+              if(isset($like)) // le ha dado like
+        {
+          //echo "p:".$like->producto_id." us:".$like->user_id;
+          $entro=1;
+          ?>
+            <a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> <?php echo Yii::t('contentForm','Like'); ?></a>
+                  <?php 
+          
+        }
+          
+          if($entro==0)
+          {?>
+             <a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium"> 
+      
+      		&nbsp; </span> <?php echo Yii::t('contentForm','Like'); ?></a>
+        <?php  }
+
+              }  ?>
+    		
+    		
+    		
+    		
+    		
+    		<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+	            <a class="addthis_button_facebook"></a>
+	            <a class="addthis_button_twitter" tw:via="personaling"></a>
+	            <a class="addthis_button_pinterest_share"></a>
+            </div>
+    	</div>
+    	<script type="text/javascript">       
+              var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
+              var addthis_share = {
+                  templates : {
+                      twitter : "{{title}} {{url}} #MiPersonaling via @personaling "
+                  }
+              }
+            </script> 
+  	
+  		</div>
+  	</div>
+    	
+    	<div id="alertRegister" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+		 <div class="modal-header">
+		    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+		     <h3 ><?php echo Yii::t('contentForm','Important')?></h3>
+		 
+		  </div>
+		  <div class="modal-body">
+		 		 <h4><?php echo  Yii::t('contentForm','Please complete your registration to make a purchase on Personaling.')?></h4>
+		 		 
+		  </div>  
+		  <div class="modal-footer">  
+		  	<div class="row-fluid">
+		  		<a class="btn btn-danger span3" href="<?php echo Yii::app()->baseUrl;?>/registro-personaling">'.Yii::t('contentForm','Complete Registration').'</a>
+		 		<div class="span6"></div>
+		 		<button class="btn closeModal span3" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+		 	
+		  	</div>
+		  	
+		  	
+		  </div>
+		</div>
+    
+    	<script>
+		
+      function agregarBolsaGuest(producto, talla, color){
+                    
+                   
+ 
+       <?php echo CHtml::ajax(array(
+	            	'url'=>array('/producto/agregarBolsaGuest'),
+			        'data'=>array('producto'=>'js:producto',
+                                            'talla'=>'js:talla',
+                                            'color'=>'js:color'),
+                        'dataType'=>'JSON',
+                        'type'=>'POST',
+                        'success'=>"function(data)
+                        {
+                            if(data.status == 'success'){                  
+                                
+                                $('#myModal').on('hidden', function () {
+                                  
+                                    desplegarBolsaGuest(data);
+                                });
+                                $('#myModal').modal('hide');
+
+                            }
+
+                        } ",
+                        ));?>
+      } //Cerrar funcion agregarBolsaGuest();
+   		$("body").removeClass("aplicacion-cargando");var bandera=false;
+		$(document).ready(function() {
+		$('.closeModal').click(function(event){
+		$('#alertRegister').hide();});
+		$('.coloress').click(function(ev){ // Click en alguno de los colores -> cambia las tallas disponibles para el color
+			ev.preventDefault();
+			
+				
+		var prueba = $("#vTa div.tallass.active").attr("value");
+			if(prueba == 'solo'){
+   				$(this).addClass('coloress active'); // aÃ±ado la clase active al seleccionado
+   				$('#vTa div.tallass.active').attr('value','0');
+			}
+   			else{
+			$("#vCo").find("div").siblings().removeClass("active"); // para quitar el active en caso de que ya alguno estuviera seleccionado
+   				var dataString = $(this).attr("id");
+     			var prod = $("#producto").attr("value");
+     			$(this).removeClass('coloress');
+  				$(this).addClass('coloress active'); // aÃ±ado la clase active al seleccionado
+				
+  			<?php echo CHtml::ajax(array(
+            		'url'=>array('producto/tallaspreview'),
+		            'data'=>array('idTalla'=>"js:$(this).attr('id')",'idProd'=>$id),
+		            'type'=>'post',
+		            'dataType'=>'json',
+		            'success'=>"function(data)
+		            {
+						//alert(data.datos);
+						
+						$('#vTa').fadeOut(100,function(){
+			     			$('#vTa').html(data.datos); // cambiando el div
+			     		});
+			
+			      		$('#vTa').fadeIn(20,function(){});
+						
+						$('#carruselImag').fadeOut(100,function(){
+			     			$('#carruselImag').html(data.imagenes); 
+			     		});
+			
+			      		$('#carruselImag').fadeIn(20,function(){});
+						
+						//$('#carruselImag').html(data.imagenes);
+						
+		 				
+		            } ",
+		            ));?>
+		    	return false; 
+
+				
+			}// else
+				
+			});// coloress click
+			
+			
+			$(".tallass").click(function(ev){ // click en tallas -> recarga los colores para esa talla
+			ev.preventDefault();
+
+		
+			var prueba = $("#vCo div.coloress.active").attr("value");
+
+   			if(prueba == 'solo'){
+   				$(this).addClass('tallass active'); // aÃ±ado la clase active al seleccionado
+   				$("#vCo div.coloress.active").attr("value","0");
+   			}
+   			else{
+		   		$("#vTa").find("div").siblings().removeClass("active"); // para quitar el active en caso de que ya alguno estuviera seleccionado
+		   			var dataString = $(this).attr("id");
+     				var prod = $("#producto").attr("value");
+     
+     			$(this).removeClass('tallass');
+  				$(this).addClass('tallass active'); // aÃ±ado la clase active al seleccionado
+     
+     			<?php echo  CHtml::ajax(array(
+            		'url'=>array('producto/colorespreview'),
+		            'data'=>array('idColor'=>"js:$(this).attr('id')",'idProd'=>$id),
+		            'type'=>'post',
+		            'dataType'=>'json',
+		            'success'=>"function(data)
+		            {
+						//alert(data.datos);
+						
+						$('#vCo').fadeOut(100,function(){
+			     			$('#vCo').html(data.datos); // cambiando el div
+			     		});
+			
+				      	$('#vCo').fadeIn(20,function(){});				
+
+		            } ",
+		            ));?>
+		    		return false;     
+     
+				}
+			});
+			
+		}); // ready
+		
+		// fuera del ready
+		
+		function a(id){// seleccion de talla
+			$("#vTa").find("div").siblings().removeClass("active");
+			$("#vTa").find("div#"+id+".tallass").removeClass("tallass");
+			$("#vTa").find("div#"+id).addClass("tallass active");
+   		}
+   
+   		function b(id){ // seleccion de color
+   			$("#vCo").find("div").siblings().removeClass("active");
+   			$("#vCo").find("div#"+id+".coloress").removeClass("coloress");
+			$("#vCo").find("div#"+id).addClass("coloress active");		
+   		}
+   		
+		function c(){// comprobar quienes estÃ¡n seleccionados
+   		
+   			var talla = $("#vTa").find(".tallass.active").attr("id");
+   			var color = $("#vCo").find(".coloress.active").attr("id");
+   			var producto = $("#producto").attr("value");
+   		
+   			// llamada ajax para el controlador de bolsa
+ 		  
+ 			if(talla==undefined && color==undefined){ // ninguno
+ 				alert("Seleccione talla y color para poder aÃ±adir.");
+ 			}
+ 		
+ 		if(talla==undefined && color!=undefined){// falta talla 
+ 				alert("Seleccione la talla para poder aÃ±adir a la bolsa.");
+ 			}
+ 			
+ 			
+ 		if(talla!=undefined && color==undefined){ // falta color
+ 				alert("Seleccione el color para poder aÃ±adir a la bolsa.");
+ 			}
+			
+			if(talla!=undefined && color!=undefined){
+			if(bandera==true) return false; bandera = true; 
+			$("#agregar").click(function(e){e.preventDefault();});$("#agregar").addClass("disabled"); 
+
+                       var isGuest = '<?php echo (Yii::app()->user->isGuest?"true":"false")?>'; 
+                       if(isGuest)
+                                {                                   
+                                
+                                    agregarBolsaGuest('<?php $id ?>', talla, color);
+                                    
+                                }else{ 
+				<?php 
+                         echo  CHtml::ajax(array(
+	            	'url'=>array('bolsa/agregar'),
+			        'data'=>array('producto'=>$id,'talla'=>'js:$("#vTa").find(".tallass.active").attr("id")','color'=>'js:$("#vCo").find(".coloress.active").attr("id")'),
+			        'type'=>'post',
+			        'success'=>"function(data)
+			        {
+						if(data=='ok'){
+							//alert('redireccionar maÃ±ana');
+							window.location='../bolsa/index';
+						}
+						
+						if(data=='no es usuario'){
+							$('#alertRegister').show();
+						}
+						
+			        } ",
+		   		)); ?>
+                         
+                        }     //cerrar else para usuarios logueados
+                         
+			 return false;   
+ 			}// cerro   
+			
+		}// c
+			
+</script>
+		
+
+          
+
+           
+              
+           
+    
+        </article>
+      	
+      	
+      	
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	
+	function agregarBolsaGuest(producto, talla, color){
+       
+       $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: "<?php echo Yii::app()->createUrl('/producto/agregarBolsaGuest'); ?>", // action Tallas de Producto
+            data: { 'producto':producto, 'talla':talla, 'color':color}, 
+            success: function (data) {
+              
+                comprando = true;
+              if(data.status == "success"){                  
+              
+                  desplegarBolsaGuest(data);
+
+              }
+            }//success
+         });
+   }
+   
+   function comprar(){ // comprobar quienes están seleccionados
+      
+      if (comprando == true){
+        var talla = $("#vTa").find(".tallass.active").attr("id");
+        var color = $("#vCo").find(".coloress.active").attr("id");
+        var producto = $("#producto").attr("value");
+        
+        
+      if(color==undefined) // falta color
+      {
+          $('#tooltipColor').tooltip('show');  
+      }   
+      if(talla==undefined) // falta color
+      {
+          $('#tooltipTalla').tooltip('show');  
+      }    
+      
+      var isGuest = <?php echo Yii::app()->user->isGuest?"true":"false"; ?>;
+        
+         //LLamada ajax
+      if(talla!=undefined && color!=undefined)
+      {
+        
+        $('#agregar').attr("disabled", true);
+        comprando = false;
+        
+        if(isGuest)
+        {
+            agregarBolsaGuest(producto, talla, color);
+        }
+        else
+        {
+            //si no es guest, agregar a la bolsa normal del usuario logueado
+            $.ajax({
+                type: "post",
+                url: "<?php echo Yii::app()->createUrl('bolsa/agregar2'); ?>", // action Tallas de Producto
+                data: { 'producto':producto, 'talla':talla, 'color':color}, 
+                dataType: 'json',
+                success: function (data) {
+                  comprando = true;
+                  console.log(data);
+
+                  if(data.status=="ok"){
+                    // registrar impresión en google analytics
+                    
+                      ga('ec:addProduct', {
+                        'id': data.id,
+                        'name': data.name,
+                        'category': data.category,
+                        'brand': data.brand,
+                        'variant': data.variant,
+                        'price': data.price,
+                        'quantity': data.quantity,
+                      });
+                      ga('ec:setAction', 'add');
+                      ga('send', 'event', 'UX', 'click', 'add to cart');     // Send data using an event.
+                    
+                    //alert("redireccionar mañana");
+                    window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
+                  }
+
+                  if(data.status=="no es usuario")
+                  {
+                    $('#alertRegister').show();
+                    //bootbox.alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
+                  }
+
+                }//success
+             });
+             
+        }//fin si no es invitado
+            
+        
+        
+        
+      }// cerro   
+    }
+
+
+   }
+   
+    function encantar()
+    {
+      var idProd = <?php echo $id?>;
+     // alert("id:"+idProd);    
+      
+      $.ajax({
+          type: "post",
+          dataType:"json",
+          url: "<?php echo Yii::app()->baseUrl;?>/producto/encantar", // action Tallas de Producto
+          data: { 'idProd':idProd}, 
+          success: function (data) {
+            
+          //  alert(data); 
+        
+        if(data.mensaje=="ok") 
+        {         
+          var a = "♥";
+          
+          //$("#meEncanta").removeClass("btn-link");
+          $("#meEncanta").addClass("btn-link-active");
+          $("span#like").text(a);
+          
+          $("#total-likes").text(data.total); 
+          $("#btn-encanta").addClass("btn-danger_modificado");
+        }
+        
+        if(data.mensaje=="no")
+        {
+          bootbox.alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar 'Me Encanta' a un producto");
+          //window.location="../../user/login";
+        }
+        
+        if(data.mensaje=="borrado")
+        {
+          var a = "♡";
+          
+          //alert("borrando");
+          $("#btn-encanta").removeClass("btn-danger_modificado");
+          $("#meEncanta").removeClass("btn-link-active");
+          $("span#like").text(a);
+          
+          $("#total-likes").text(data.total);         
+        }
+          
+          }//success
+         })
+      
+      
+    }
+
+<?php if(!UserModule::isAdmin()){ ?>
+    //Guardar el click cuando sea para una tienda externa
+    $("#comprarExterno").click(function(e){
+        var url = "<?php echo $this->createUrl("producto/contarClick"); ?>";
+        var idProducto = <?php echo $producto->id ?>;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'JSON',
+            data: {idProducto: idProducto},
+//            success: function(data){
+//
+//                console.log(data);
+//            }
+        });
+
+    });
+<?php } ?>
+   
+</script>
+	
+	
+	
+</script>
+
+
+
+
+
+

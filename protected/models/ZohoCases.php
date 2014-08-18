@@ -10,6 +10,8 @@ class ZohoCases{
 	public $Comment;
 	public $Solution;
 	public $internal;
+	public $reason;
+	public $type; 
 	  
 	// Save case
 	function save_potential(){
@@ -21,11 +23,12 @@ class ZohoCases{
 		$xml .= '<row no="1">';
 		if(isset($this->Subject)) $xml .= '<FL val="Subject">'.$this->Subject.'</FL>';
 		if(isset($this->Priority)) $xml .= '<FL val="Priority">'.$this->Priority.'</FL>';
-		$xml .= '<FL val="Status">New</FL>';
-		$xml .= '<FL val="Case Origin">Email</FL>'; 
-		$xml .= '<FL val="Type">Feature Request</FL>'; 
+		if(isset($this->Status)) $xml .= '<FL val="Status">'.$this->Status.'</FL>'; 
+		if(isset($this->Origin)) $xml .= '<FL val="Case Origin">'.$this->Origin.'</FL>'; 
+		if(isset($this->type)) $xml .= '<FL val="Type">'.$this->type.'</FL>'; 
         if(isset($this->Email)) $xml .= '<FL val="Email">'.$this->Email.'</FL>';
 		if(isset($this->Phone)) $xml .= '<FL val="Phone">'.$this->Phone.'</FL>';
+		if(isset($this->reason)) $xml .= '<FL val="Case Reason">'.$this->reason.'</FL>';
 		if(isset($this->Description)) $xml .= '<FL val="Description">'.$this->Description.'</FL>';
 		if(isset($this->Comment)) $xml .= '<FL val="Add Comment">'.$this->Comment.'</FL>';
 		if(isset($this->Solution)) $xml .= '<FL val="Solution">'.$this->Solution.'</FL>';

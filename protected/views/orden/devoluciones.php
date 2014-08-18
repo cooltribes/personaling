@@ -341,18 +341,32 @@ function devolver()
                     
                     $.ajax({
                         type: "post", 
+                        dataType: 'json',
                         url: "../devolver", // action 
                         data: { 'orden':id, 'monto':monto,'indices':inds, 'montos':monts, 'motivos':mots, 'ptcs':prtcs, 'looks':lks,'cantidades':cants}, 
                         success: function (data) {
+                        	//console.log(data.productos);
+                        	// agregar pdoductos devueltos
+                        	for (var i = data.productos.length - 1; i >= 0; i--) {
+                        		//console.log('ID: '+data.productos[i].id);
+                        		ga('ec:addProduct', {
+								  'id': data.productos[i].id,       // Product ID is required for partial refund.
+								  'quantity': data.productos[i].quantity         // Quantity is required for partial refund.
+								});
+                        	};
+                        	// enviar devolución a analytics
+                        	ga('ec:setAction', 'refund', {
+							  'id': id,       // Transaction ID is required for partial refund.
+							});
 
-                            if(data=="okuser")
+                            if(data.status=="okuser")
                                     window.location.replace("<?php echo Yii::app()->baseUrl;?>/orden/detallePedido/"+id);
-                            if(data=="okadmin")
+                            if(data.status=="okadmin")
                                     window.location.replace("<?php echo Yii::app()->baseUrl;?>/orden/detalles/"+id);
                             
-                            if(data=="error")
+                            if(data.status=="error")
                                     location.reload();
-                            if(data=='no')
+                            if(data.status=='no')
                             	location.reload();       
                          }
                     });		

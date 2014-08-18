@@ -286,7 +286,22 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 				mail('info@personaling.com',$subject,"Este mensaje ha sido enviado desde el formulario de contacto de personaling: ".$model->body,$headers);
 				Yii::app()->user->setFlash('contact','Gracias por contactarnos. Te estaremos respondiendo a la brevedad.');
 				
-				$model=new ContactForm;
+				/* Creando el caso */ 
+									
+				$zohoCase = new ZohoCases;
+				$zohoCase->Subject = "Formulario Contáctanos - ".$_POST['ContactForm']['email'];
+				$zohoCase->Priority = "High";
+				$zohoCase->Email = $_POST['ContactForm']['email'];
+				$zohoCase->Description = "A través del formulario. Asunto: ".$_POST['ContactForm']['subject'].". Mensaje: ".$_POST['ContactForm']['body'];
+				$zohoCase->internal = "Sin revisar";
+				$zohoCase->Origin = "Web";
+				$zohoCase->Status = "New";
+				$zohoCase->type = "Problem"; 
+				$zohoCase->reason = $_POST['ContactForm']['motivo']; 
+									
+				$respuesta = $zohoCase->save_potential(); 
+				
+				$model=new ContactForm; 
 				$this->render('contact',array('model'=>$model));
 				
 			}

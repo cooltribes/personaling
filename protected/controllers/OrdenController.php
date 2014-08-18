@@ -1524,7 +1524,7 @@ public function actionValidar()
 							
 						if($estado->save())
 					{
-						Yii::app()->user->setFlash('success',"La Entrega fué Registrada");
+						Yii::app()->user->setFlash('success',"La entrega fue registrada");
 						
 						
 							
@@ -2426,6 +2426,8 @@ public function actionValidar()
 		 $ptcs = explode(',',$_POST['ptcs']);
 		 $looks = explode(',',$_POST['looks']);
 		 $dhptcs=array();
+		 $response = array();
+		 $response['productos'] = array();
 		 $i=0;
 		 $out="ok";
 		 $proceder=false;
@@ -2443,12 +2445,27 @@ public function actionValidar()
 					array_push($dhptcs,$dhptc);
 					$proceder=true;
 					Yii::app()->user->setFlash('success', 'Su Devolución fue registrada exitosamente.');
+
+					// datos para procesar la solicitud en analytics
+					$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$dhptc->preciotallacolor->producto->id));
+					$category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+	                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$dhptc->preciotallacolor->producto_id));
+
+	                $response['productos'][] = array(
+	                	'id'=>$dhptc->preciotallacolor->sku,
+	                	'name'=>$dhptc->preciotallacolor->producto->nombre,
+	                	'category'=>$category->nombre,
+	                	'brand'=>$dhptc->preciotallacolor->producto->mymarca->nombre,
+	                	'variant'=>$dhptc->preciotallacolor->mycolor->valor. " ". $dhptc->preciotallacolor->mytalla->valor,
+	                	'price'=>$precio->precioImpuesto,
+	                	'quantity'=>$dhptc->cantidad
+	                );
 				}
 			}
 			
-			
 			$i++;
 		 }
+
 		 if(!$proceder)
 		 	{	Yii::app()->user->setFlash('error', 'Su Devolución no procede.');
 		 		echo "no";
@@ -2498,7 +2515,9 @@ public function actionValidar()
 			else
 				Yii::app()->user->setFlash('error', 'Su devolución no se pudo registrar.');
 			}
-			echo $out;
+			//echo $out;
+			$response['status'] = $out;
+			echo json_encode($response);
 		 }
     }
    

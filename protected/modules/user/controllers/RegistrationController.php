@@ -585,6 +585,9 @@ class RegistrationController extends Controller
 									$zohoCase->Email = $user->email;
 					            	$zohoCase->Description = "Aplicación de ".$user->profile->first_name." ".$user->profile->last_name." (".$user->email.") para personal Shopper.";
 									$zohoCase->internal = "Sin revisar";
+									$zohoCase->Origin = "Email";
+									$zohoCase->Status = "New";
+									$zohoCase->type = "Feature Request"; 
 									
 									$respuesta = $zohoCase->save_potential(); 
                                 

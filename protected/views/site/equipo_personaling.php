@@ -29,7 +29,6 @@ $this->breadcrumbs=array(
                <li class="span3">  <img alt="Nelly Oliveros Russian" class="img-circle" src="../images/nelly.jpg" width="250"> <h3><a href="https://twitter.com/heidiadragna"target="_blank"  title="Nelly Oliveros Russian">Nelly Oliveros Russian</a></h3>
             <p>La experiencia es la primera garantía de la casa. Abogada (Master en Gestión Comercial), me he dedicado más de 20 años al sector del retail y a asesorar a los principales inversionistas del país en temas inmobiliarios.</p>
         </li>
-        
                 
         <li class="span3"> <img alt="Rosa Virginia" class="img-circle" src="../images/rosa.jpg" width="250"> <h3>Rosa Virginia</h3>
             <p>Modelo, Abogada, amante de la moda y adicta al shopping. Se lo que te favorece, porque se de moda real. Directora de Relaciones Publicas de Personaling.com</p>
@@ -58,8 +57,8 @@ $this->breadcrumbs=array(
         <li class="span3"> <img alt="Yondri" class="img-circle" src="../images/avatar_yondri.jpg" width="250"> <h3><a href="https://twitter.com/yondri"target="_blank"  title="Yondri">Yondri Roa</a></h3>
             <p>Mi trabajo es desarrollar aplicaciones web bajo PHP con el framework Yii. Siempre intento crear la atmósfera necesaria para lograr unir lo que quiere el cliente con una excelente experiencia del usuario. Trabajo en el área creativa a la hora de presentar a clientes nuevos proyectos.  </p>
         </li>
-        <li class="span3"> <img alt="Daniel" class="img-circle" src="../images/avatar_daniel.jpg" width="250"> <h3><a href="https://twitter.com/nashfx"target="_blank"  title="Daniel">Daniel Duque</a></h3>
-            <p>Mi trabajo se basa en hacer realidad –dentro de la web- lo que se diseña. Utilizo herramientas para crear sensaciones y experiencias basadas en un análisis previo. Adoro mi trabajo y me apasiona ver terminados proyectos que alguna vez observe en simples ideas. </p>
+        <li class="span3"> <img alt="Daniel" class="img-circle" src="../images/avatar_daniell.jpg" width="250"> <h3><a href="https://twitter.com/nashfx"target="_blank"  title="Daniel">Daniel Duque</a></h3>
+            <p>Mi trabajo se basa en hacer realidad –dentro de la web- lo que se diseña. Utilizo herramientas para crear sensaciones y experiencias basadas en un análisis previo. Adoro mi trabajo y me apasiona ver terminados proyectos que alguna vez observé en simples ideas. </p>
         </li>
         <li class="span3"> <img alt="Gaby" class="img-circle" src="../images/avatar_gaby.jpg" width="250"> <h3><a href="https://twitter.com/_gabyta_by"target="_blank"  title="Gaby">Gaby Torres</a></h3>
             <p>Cuando no estoy de un lado a otro en mi patín, estoy diseñando.  Adoro el proceso creativo por el que pasa mi cabeza al desarrollar un proyecto nuevo. Nunca podré describir la satisfacción de imaginar algo y verlo luego "vivo", sea en el formato que sea.  </p>

@@ -11,8 +11,12 @@ class ZohoCases{
 	public $Solution;
 	public $internal;
 	public $reason;
-	public $type; 
-	  
+	public $type;
+	public $posible; 
+	public $posible_id;
+	public $related;
+	public $related_id;
+	
 	// Save case
 	function save_potential(){
 		
@@ -28,6 +32,14 @@ class ZohoCases{
 		if(isset($this->type)) $xml .= '<FL val="Type">'.$this->type.'</FL>'; 
         if(isset($this->Email)) $xml .= '<FL val="Email">'.$this->Email.'</FL>';
 		if(isset($this->Phone)) $xml .= '<FL val="Phone">'.$this->Phone.'</FL>';
+		if(isset($this->posible)){
+			$xml .= '<FL val="Posible Cliente">'.$this->posible.'</FL>';
+			$xml .= '<FL val="Posible Cliente Id">'.$this->posible_id.'</FL>';
+		} 
+		if(isset($this->related)){
+			$xml .= '<FL val="Related To">'.$this->related.'</FL>';
+			$xml .= '<FL val="Related To Id">'.$this->related_id.'</FL>';
+		}
 		if(isset($this->reason)) $xml .= '<FL val="Case Reason">'.$this->reason.'</FL>';
 		if(isset($this->Description)) $xml .= '<FL val="Description">'.$this->Description.'</FL>';
 		if(isset($this->Comment)) $xml .= '<FL val="Add Comment">'.$this->Comment.'</FL>';

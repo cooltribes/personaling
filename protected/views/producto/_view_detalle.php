@@ -104,18 +104,7 @@
 
               }  ?>
                 
-<!--                 <div class="btn-group hidden-phone">
-                  <button class="dropdown-toggle btn-mini btn-success" data-toggle="dropdown"><span class="">&#59157; Compartir</span></button>
-                  <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                    
-                    <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                    <li><a class="addthis_button_tweet"></a></li>
-                    <li><a class="addthis_button_pinterest_pinit"></a></li>
-                  </ul>
-                  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                  
-                </div> -->
+
             </div>
           </div>
           <div class="row">

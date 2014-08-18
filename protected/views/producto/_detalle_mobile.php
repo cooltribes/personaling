@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<div class="container margin_top" id="carrito_compras">
+<div id="carrito_compras">
   <div class="row detalle_producto">
     <div class="span12">
       <div class="row"> 
-      	
-      	
-      	
-      	<article>
-         
-          
-           
-          
+ 		<article> 
           <?php 
           
 
@@ -20,39 +12,20 @@
 		if($producto->tipo){
 			
 			$tienda=Tienda::model()->findByPk($producto->tienda_id);
-			
-				$msj="Comprar en ".$tienda->urlVista;
+			$msj="Comprar en ".$tienda->urlVista;
 		}
 			
 	
 	?>
  
 
-		<h3><?php $producto->nombre ?></h3>
-		<div>   
-   			<div class='row-fluid'>
-   		 		<div class='span7'>
-   		 			<div class='carousel slide' id='myCarousel'>
+		<h3><?php echo $producto->nombre ?></h3>
+   		<div class='span7'>
+   		 	<div class='carousel slide imagen_principal' id='myCarousel'>
    		 <?php 
 			$ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
-		/*if(count($ima)>1)
-		{
-			echo "<ol class='carousel-indicators'>";
-			foreach ($ima as $key=>$img){
-				if($key==0)
-				echo "<li class='active' data-slide-to='".$key."' data-target='#myCarousel'></li>";
-				else
-					echo "<li class='' data-slide-to='".$key."' data-target='#myCarousel'></li>";
-				if($key==2)
-					break;
-		    }
-		       	echo '</ol>';
-	    } */ ?>
-        <div class="carousel-inner" id="carruselImag">
-    
-		
-	
-		
+		 ?>
+        		<div class="carousel-inner" id="carruselImag">
 	<?php    foreach ($ima as $img){
 					
 			if($img->orden==1)
@@ -74,14 +47,15 @@
 			}// que no es la primera en el orden
 		} ?>
 		
-       </div>
-      <a data-slide="prev" href="#myCarousel" class="left carousel-control">&lsaquo;</a>
-      <a data-slide="next" href="#myCarousel" class="right carousel-control">&rsaquo;</a>
-      </div></div>
+       			</div>
+			      <a data-slide="prev" href="#myCarousel" class="left carousel-control">&lsaquo;</a>
+			      <a data-slide="next" href="#myCarousel" class="right carousel-control">&rsaquo;</a>
+      		</div>
+     </div>
         
 	  <div class="span5">
-	   <div class="row-fluid call2action">
-	    <div>
+	   		<div class="row-fluid">
+
 	<?php
    		$precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 	    if($precio_producto){
@@ -105,9 +79,10 @@
 			}
 	    }?>
 
-        </div>
+        	</div>
+     
         
-      <div class="margin_top_xsmall">
+      		<div class="margin_top_xsmall">
 	<?php
 	
 
@@ -116,8 +91,8 @@
       /*  if($producto->mymarca->is_100chic)
         	echo '<div class="row-fluid"><div class="span12"><img src="'.Yii::app()->baseUrl.'/images/080bannerprevia.jpg'.'"</div><div class="row-fluid">';
 		else*/
-			echo '<div class="row-fluid"><div class="row-fluid">';
-        echo '<div style="width:50%; float:left">';
+			echo '<div class="row-fluid margin_top_small"><div class="row-fluid">';
+        echo '<div class="half">';
         echo '<h5>Colores</h5>';
         echo '<div class="clearfix colores" id="vCo">';
         
@@ -144,7 +119,7 @@
 				
 			if( $cont1 == 1){ // Si solo hay un color seleccionelo
 				$color = Color::model()->findByPk($cantcolor[0]);							
-				echo  "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 		
+				echo  "<div value='solo' id=".$color->id." class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 		
 			}
 			else{
 				foreach ($producto->preciotallacolor as $talCol) {
@@ -154,7 +129,7 @@
 						if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
 						}
 						else{
-							echo  "<div id=".$color->id." style='cursor: pointer' class='coloress' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+							echo  "<div id=".$color->id." class='coloress' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
 							array_push($valores, $color->id);
 						}
 					}
@@ -162,9 +137,10 @@
 				
 			}  
 		?>
-	</div></div>
+			</div>
+	</div>
 		
-   <div style="width:50%; float:left">
+   <div class="half">
 		<h5>Tallas</h5>
 		<div class="clearfix tallas" id="vTa">
 		<?php
@@ -189,7 +165,7 @@
 
 		if( $cont2 == 1){ // Si solo hay un color seleccionelo
 			$talla = Talla::model()->findByPk($canttallas[0]);
-			echo  "<div value='solo' id=".$talla->id." style='cursor: pointer' class='tallass active' title='talla'>".$talla->valor."</div>"; 
+			echo  "<div value='solo' id=".$talla->id." class='tallass active' title='talla'>".$talla->valor."</div>"; 
 		}
 		else{            	
 			foreach ($producto->preciotallacolor as $talCol) {
@@ -199,7 +175,7 @@
 					if(in_array($talla->id, $valores)){	// no hace nada para que no se repita el valor			
 					}
 					else{
-						echo  "<div id=".$talla->id." style='cursor: pointer' class='tallass' title='talla'>".$talla->valor."</div>"; 
+						echo  "<div id=".$talla->id." class='tallass' title='talla'>".$talla->valor."</div>"; 
 						array_push($valores, $talla->id);
 					}
 				}
@@ -207,75 +183,84 @@
 	   	}// else
 		?>
       
-       </div></div></div> 
+       		</div>
+	</div> 
+	</div> 
+	
+	<div>  
        <?php
        
        if(is_null($tienda))
-       		echo '<a class="btn btn-warning btn-block" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>';
+       		echo '<a class="btn btn-warning btn-block margin_top_small" title="Agregar a la bolsa" id="agregar" onclick="c()"> <i class="icon-shopping-cart icon-white"></i> Comprar </a>';
 		else
-			echo '<a class="btn btn-warning btn-block" target="_blank" href="'.$producto->url_externo.'" title="'.$msj.'" >'.$msj.'</a>';
+			echo '<a class="btn btn-warning btn-block margin_top_small" target="_blank" href="'.$producto->url_externo.'" title="'.$msj.'" >'.$msj.'</a>';
         	
        ?>
-       <div class="row-fluid"> 
+   </div>
+	
+	
+	
+    
 		<?php $marca = Marca::model()->findByPk($producto->marca_id); ?>
-   		
-  		<div class="thumbnails">
-   			<div style="width:80%; float:left">
-   				<strong><?php echo Yii::t('contentForm','Description'); ?></strong>: <?php echo $producto->descripcion; ?><br/>
-   				<strong><?php echo Yii::t('contentForm','Weight'); ?></strong> <?php echo  $producto->peso; ?>
-    		</div>
-   			<div style="width:20%; float:left">
-   				<img width="66px" height="66px" src="<?php echo Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen)?>"/>
-    		</div> 
-    	 
+   		<div  class="complete margin_top_small">
+	  		<div class="thumbnails margin_top_small">
+	   			<div class="fifth4">
+	   				<strong><?php echo Yii::t('contentForm','Description'); ?></strong>: <?php echo $producto->descripcion; ?><br/>
+	   				<strong><?php echo Yii::t('contentForm','Weight'); ?></strong> <?php echo  $producto->peso; ?>
+	    		</div>
+	   			<div class="fifth">
+	   				<img width="66px" height="66px" src="<?php echo Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen)?>"/>
+	    		</div> 
+	    	 
+	    	</div>
     	</div>
-    	
-    	<div class="addthis">
-    		<?php if(!Yii::app()->user->isGuest){
-              $entro = 0;
-        
-        $like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$producto->id));
-              
-              if(isset($like)) // le ha dado like
-        {
-          //echo "p:".$like->producto_id." us:".$like->user_id;
-          $entro=1;
-          ?>
-            <a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span> <?php echo Yii::t('contentForm','Like'); ?></a>
-                  <?php 
-          
-        }
-          
-          if($entro==0)
-          {?>
-             <a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium"> 
-      
-      		&nbsp; </span> <?php echo Yii::t('contentForm','Like'); ?></a>
-        <?php  }
-
-              }  ?>
-    		
-    		
-    		
-    		
-    		
-    		<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-	            <a class="addthis_button_facebook"></a>
-	            <a class="addthis_button_twitter" tw:via="personaling"></a>
-	            <a class="addthis_button_pinterest_share"></a>
-            </div>
-    	</div>
-    	<script type="text/javascript">       
-              var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
-              var addthis_share = {
-                  templates : {
-                      twitter : "{{title}} {{url}} #MiPersonaling via @personaling "
-                  }
-              }
-            </script> 
-  	
-  		</div>
+    	<div class="addthis braker_horz">
+    		<div class="complete margin_top_medium">
+  				<div class="half">
+    
+     		</div>
+     		<div class="half">
+     			
+     			<?php if(!Yii::app()->user->isGuest){
+   
+		        $like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$producto->id));
+		 
+		
+		              if(isset($like)) // le ha dado like 
+		        {
+		            ?>
+		          
+		            	<a class="btn btn-danger_modificado" id="btn-encanta" onclick="encantar()">
+		            		<span class="entypo icon_personaling_medium">&nbsp;</span> 
+		            		<?php echo Yii::t('contentForm','Like'); ?>
+		            	</a> &nbsp;
+		              <?php
+		        }
+		        else {
+		        ?>
+		       	
+		       			<a class="btn" id="btn-encanta" onclick="encantar()">
+		       				<span class="entypo icon_personaling_medium"> &nbsp; </span> 
+		       				<?php echo Yii::t('contentForm','Like'); ?>
+		       			</a> &nbsp;
+		        <?php
+		        }
+		        ?>
+		       		<small id="total-likes">
+		        <?php 
+		          $cuantos = UserEncantan::model()->countByAttributes(array('producto_id'=>$producto->id));   
+		          echo $cuantos;
+		        ?>
+		        	</small>
+			<?php } ?>
+     			
+     		</div>
+      		
+     			</article>
+     		</div>
+     	</div>
   	</div>
+ </div>
     	
     	<div id="alertRegister" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
 		 <div class="modal-header">
@@ -298,13 +283,54 @@
 		  	
 		  </div>
 		</div>
+
+   	<script>	
+   		function encantar()
+    {
+	      var idProd = <?php echo $id;?>;
+	
+	      $.ajax({
+	          type: "post",
+	          dataType:"json",
+	          url: "<?php echo Yii::app()->baseUrl;?>/producto/encantar", // action Tallas de Producto
+	          data: { 'idProd':idProd}, 
+	          success: function (data) {
+	        
+	        if(data.mensaje=="ok") 
+	        { 
+	          var a = "♥";	          
+              $("#total-likes").text(data.total); 
+	          $("#btn-encanta").addClass("btn-danger_modificado");
+	        }
+	        
+	        if(data.mensaje=="no")
+	        {
+	          bootbox.alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar 'Me Encanta' a un producto");
+
+	        }
+	         
+	        if(data.mensaje=="borrado")
+	        {
+	          var a = "♡"; 
+	          $("#btn-encanta").removeClass("btn-danger_modificado");
+              $("#total-likes").text(data.total);         
+	        }
+	          
+	          }//success
+	         });
+      
+      
+    }
     
-    	<script>
+    
+    
+    
+    
+    
+
 		
-      function agregarBolsaGuest(producto, talla, color){
-                    
-                   
- 
+        function agregarBolsaGuest(producto, talla, color){
+
        <?php echo CHtml::ajax(array(
 	            	'url'=>array('/producto/agregarBolsaGuest'),
 			        'data'=>array('producto'=>'js:producto',
@@ -325,29 +351,31 @@
                             }
 
                         } ",
-                        ));?>
-      } //Cerrar funcion agregarBolsaGuest();
-   		$("body").removeClass("aplicacion-cargando");var bandera=false;
+                        )); ?>
+        } //Cerrar funcion agregarBolsaGuest();
+                
+		$("body").removeClass("aplicacion-cargando");
+		var bandera=false;
 		$(document).ready(function() {
 		$('.closeModal').click(function(event){
 		$('#alertRegister').hide();});
-		$('.coloress').click(function(ev){ // Click en alguno de los colores -> cambia las tallas disponibles para el color
-			ev.preventDefault();
+		$('.coloress').click(function(ev){// Click en alguno de los colores -> cambia las tallas disponibles para el color
+		ev.preventDefault();
 			
 				
-		var prueba = $("#vTa div.tallass.active").attr("value");
-			if(prueba == 'solo'){
+			var prueba = $("#vTa div.tallass.active").attr("value");
+				if(prueba == 'solo'){
    				$(this).addClass('coloress active'); // aÃ±ado la clase active al seleccionado
    				$('#vTa div.tallass.active').attr('value','0');
 			}
    			else{
-			$("#vCo").find("div").siblings().removeClass("active"); // para quitar el active en caso de que ya alguno estuviera seleccionado
+				$("#vCo").find("div").siblings().removeClass("active"); // para quitar el active en caso de que ya alguno estuviera seleccionado
    				var dataString = $(this).attr("id");
      			var prod = $("#producto").attr("value");
      			$(this).removeClass('coloress');
-  				$(this).addClass('coloress active'); // aÃ±ado la clase active al seleccionado
+  				$(this).addClass('coloress active');// aÃ±ado la clase active al seleccionado
 				
-  			<?php echo CHtml::ajax(array(
+  				<?php echo CHtml::ajax(array(
             		'url'=>array('producto/tallaspreview'),
 		            'data'=>array('idTalla'=>"js:$(this).attr('id')",'idProd'=>$id),
 		            'type'=>'post',
@@ -372,19 +400,18 @@
 						
 		 				
 		            } ",
-		            ));?>
-		    	return false; 
+		            )); ?>
+		    	 return false; 
 
 				
-			}// else
+				} // else
 				
 			});// coloress click
 			
 			
-			$(".tallass").click(function(ev){ // click en tallas -> recarga los colores para esa talla
+		$(".tallass").click(function(ev){ // click en tallas -> recarga los colores para esa talla
 			ev.preventDefault();
 
-		
 			var prueba = $("#vCo div.coloress.active").attr("value");
 
    			if(prueba == 'solo'){
@@ -393,13 +420,13 @@
    			}
    			else{
 		   		$("#vTa").find("div").siblings().removeClass("active"); // para quitar el active en caso de que ya alguno estuviera seleccionado
-		   			var dataString = $(this).attr("id");
-     				var prod = $("#producto").attr("value");
+		   		var dataString = $(this).attr("id");
+     			var prod = $("#producto").attr("value");
      
      			$(this).removeClass('tallass');
   				$(this).addClass('tallass active'); // aÃ±ado la clase active al seleccionado
      
-     			<?php echo  CHtml::ajax(array(
+     			<?php echo CHtml::ajax(array(
             		'url'=>array('producto/colorespreview'),
 		            'data'=>array('idColor'=>"js:$(this).attr('id')",'idProd'=>$id),
 		            'type'=>'post',
@@ -415,11 +442,11 @@
 				      	$('#vCo').fadeIn(20,function(){});				
 
 		            } ",
-		            ));?>
-		    		return false;     
+		            )); ?>
+		    		 return false;    
      
-				}
-			});
+				} //else
+			}); // tallas click
 			
 		}); // ready
 		
@@ -436,8 +463,8 @@
    			$("#vCo").find("div#"+id+".coloress").removeClass("coloress");
 			$("#vCo").find("div#"+id).addClass("coloress active");		
    		}
-   		
-		function c(){// comprobar quienes estÃ¡n seleccionados
+		
+		function c(){ // comprobar quienes estÃ¡n seleccionados
    		
    			var talla = $("#vTa").find(".tallass.active").attr("id");
    			var color = $("#vCo").find(".coloress.active").attr("id");
@@ -449,28 +476,27 @@
  				alert("Seleccione talla y color para poder aÃ±adir.");
  			}
  		
- 		if(talla==undefined && color!=undefined){// falta talla 
+ 			if(talla==undefined && color!=undefined){// falta talla 
  				alert("Seleccione la talla para poder aÃ±adir a la bolsa.");
  			}
- 			
- 			
- 		if(talla!=undefined && color==undefined){ // falta color
+ 		
+ 			if(talla!=undefined && color==undefined){// falta color
  				alert("Seleccione el color para poder aÃ±adir a la bolsa.");
  			}
 			
 			if(talla!=undefined && color!=undefined){
-			if(bandera==true) return false; bandera = true; 
+			 if(bandera==true) return false; bandera = true; 
 			$("#agregar").click(function(e){e.preventDefault();});$("#agregar").addClass("disabled"); 
 
-                       var isGuest = '<?php echo (Yii::app()->user->isGuest?"true":"false")?>'; 
-                       if(isGuest)
+                    var isGuest = <?php echo (Yii::app()->user->isGuest?"true":"false"); ?>;
+                     if(isGuest)
                                 {                                   
                                 
-                                    agregarBolsaGuest('<?php $id ?>', talla, color);
+                                    agregarBolsaGuest('.$id.', talla, color);
                                     
                                 }else{ 
-				<?php 
-                         echo  CHtml::ajax(array(
+				
+                       <?php echo CHtml::ajax(array(
 	            	'url'=>array('bolsa/agregar'),
 			        'data'=>array('producto'=>$id,'talla'=>'js:$("#vTa").find(".tallass.active").attr("id")','color'=>'js:$("#vCo").find(".coloress.active").attr("id")'),
 			        'type'=>'post',
@@ -486,209 +512,18 @@
 						}
 						
 			        } ",
-		   		)); ?>
+		   		));?>
                          
                         }     //cerrar else para usuarios logueados
                          
-			 return false;   
- 			}// cerro   
+				 return false;     
+ 			} // cerro   
 			
-		}// c
+		} // c
 			
-</script>
-		
-
-          
-
-           
-              
-           
-    
-        </article>
-      	
-      	
-      	
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-	
-	function agregarBolsaGuest(producto, talla, color){
-       
-       $.ajax({
-            type: "POST",
-            dataType: "JSON",
-            url: "<?php echo Yii::app()->createUrl('/producto/agregarBolsaGuest'); ?>", // action Tallas de Producto
-            data: { 'producto':producto, 'talla':talla, 'color':color}, 
-            success: function (data) {
-              
-                comprando = true;
-              if(data.status == "success"){                  
-              
-                  desplegarBolsaGuest(data);
-
-              }
-            }//success
-         });
-   }
-   
-   function comprar(){ // comprobar quienes están seleccionados
-      
-      if (comprando == true){
-        var talla = $("#vTa").find(".tallass.active").attr("id");
-        var color = $("#vCo").find(".coloress.active").attr("id");
-        var producto = $("#producto").attr("value");
-        
-        
-      if(color==undefined) // falta color
-      {
-          $('#tooltipColor').tooltip('show');  
-      }   
-      if(talla==undefined) // falta color
-      {
-          $('#tooltipTalla').tooltip('show');  
-      }    
-      
-      var isGuest = <?php echo Yii::app()->user->isGuest?"true":"false"; ?>;
-        
-         //LLamada ajax
-      if(talla!=undefined && color!=undefined)
-      {
-        
-        $('#agregar').attr("disabled", true);
-        comprando = false;
-        
-        if(isGuest)
-        {
-            agregarBolsaGuest(producto, talla, color);
-        }
-        else
-        {
-            //si no es guest, agregar a la bolsa normal del usuario logueado
-            $.ajax({
-                type: "post",
-                url: "<?php echo Yii::app()->createUrl('bolsa/agregar2'); ?>", // action Tallas de Producto
-                data: { 'producto':producto, 'talla':talla, 'color':color}, 
-                dataType: 'json',
-                success: function (data) {
-                  comprando = true;
-                  console.log(data);
-
-                  if(data.status=="ok"){
-                    // registrar impresión en google analytics
-                    
-                      ga('ec:addProduct', {
-                        'id': data.id,
-                        'name': data.name,
-                        'category': data.category,
-                        'brand': data.brand,
-                        'variant': data.variant,
-                        'price': data.price,
-                        'quantity': data.quantity,
-                      });
-                      ga('ec:setAction', 'add');
-                      ga('send', 'event', 'UX', 'click', 'add to cart');     // Send data using an event.
-                    
-                    //alert("redireccionar mañana");
-                    window.location="<?php echo Yii::app()->createUrl('bolsa/index'); ?>";
-                  }
-
-                  if(data.status=="no es usuario")
-                  {
-                    $('#alertRegister').show();
-                    //bootbox.alert("Debes primero ingresar con tu cuenta de usuario o registrarte");
-                  }
-
-                }//success
-             });
-             
-        }//fin si no es invitado
-            
-        
-        
-        
-      }// cerro   
-    }
+    </script>
 
 
-   }
-   
-    function encantar()
-    {
-      var idProd = <?php echo $id?>;
-     // alert("id:"+idProd);    
-      
-      $.ajax({
-          type: "post",
-          dataType:"json",
-          url: "<?php echo Yii::app()->baseUrl;?>/producto/encantar", // action Tallas de Producto
-          data: { 'idProd':idProd}, 
-          success: function (data) {
-            
-          //  alert(data); 
-        
-        if(data.mensaje=="ok") 
-        {         
-          var a = "♥";
-          
-          //$("#meEncanta").removeClass("btn-link");
-          $("#meEncanta").addClass("btn-link-active");
-          $("span#like").text(a);
-          
-          $("#total-likes").text(data.total); 
-          $("#btn-encanta").addClass("btn-danger_modificado");
-        }
-        
-        if(data.mensaje=="no")
-        {
-          bootbox.alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar 'Me Encanta' a un producto");
-          //window.location="../../user/login";
-        }
-        
-        if(data.mensaje=="borrado")
-        {
-          var a = "♡";
-          
-          //alert("borrando");
-          $("#btn-encanta").removeClass("btn-danger_modificado");
-          $("#meEncanta").removeClass("btn-link-active");
-          $("span#like").text(a);
-          
-          $("#total-likes").text(data.total);         
-        }
-          
-          }//success
-         })
-      
-      
-    }
-
-<?php if(!UserModule::isAdmin()){ ?>
-    //Guardar el click cuando sea para una tienda externa
-    $("#comprarExterno").click(function(e){
-        var url = "<?php echo $this->createUrl("producto/contarClick"); ?>";
-        var idProducto = <?php echo $producto->id ?>;
-        $.ajax({
-            type: 'POST',
-            url: url,
-            dataType: 'JSON',
-            data: {idProducto: idProducto},
-//            success: function(data){
-//
-//                console.log(data);
-//            }
-        });
-
-    });
-<?php } ?>
-   
-</script>
-	
-	
-	
-</script>
 
 
 

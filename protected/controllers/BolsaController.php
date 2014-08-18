@@ -122,9 +122,27 @@ class BolsaController extends Controller
 			}
 			if (isset($_POST['look_id'])){
 				$todos = true;
+				$productos_look = array();
 				foreach($_POST['producto'] as $key => $value){ 
 					list($producto_id,$color_id) = explode("_",$value);
 					$response = $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
+					
+					$producto = Producto::model()->findByPk($producto_id);
+					$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$producto_id,'talla_id'=>$_POST['talla'.$value],'color_id'=>$color_id));
+					$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$producto_id));
+	                $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+	                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto_id));
+					if($producto){
+						$productos_look[] = array(
+							'id' => $ptcolor->producto->id,
+							'name' => $ptcolor->producto->nombre,
+							'category' => $category->nombre,
+							'brand' => $ptcolor->producto->mymarca->nombre,
+							'variant' => $ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor,
+							'price' => $precio->precioImpuesto,
+							'quantity' => 1
+						);
+					}
 					if($response == 'fail'){
 						$todos = false;
 					}
@@ -139,7 +157,8 @@ class BolsaController extends Controller
 						'brand' => 'Personaling',
 						'variant' => 'Look',
 						'price' => $look->getPrecioDescuento(),
-						'quantity' => 1
+						'quantity' => 1,
+						'productos' => $productos_look
 					));
 				}
 			} else {

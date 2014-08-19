@@ -163,7 +163,7 @@ $total_productos_look = 0;
                 <tr>
                   <th colspan="2"><?php echo  Yii::t('contentForm', 'Products from third parts');  ?></th>
                   <th><?php echo  Yii::t('contentForm', 'Unit price');  ?></th>
-                  <th colspan="2"><?php echo  Yii::t('contentForm', 'Quantity');  ?></th>
+                  <th colspan="2"><?php //echo  Yii::t('contentForm', 'Quantity');  ?></th>
                 </tr>
               </thead>
               <tbody>
@@ -221,15 +221,27 @@ $total_productos_look = 0;
                             ?>
                           </td>
                           
-                <td width='8%'>
-                  <input type="hidden" value="<?php echo $productotallacolor->cantidad; ?>" />
-                  <input type='text' name="cant[<?php echo $productotallacolor->preciotallacolor_id; ?>][<?php echo $look->id; ?>]" maxlength='2' placeholder='Cant.' value='<?php echo $productotallacolor->cantidad; ?>' class='span1 cantidades'/>
-                        <a id="<?php echo $productotallacolor->preciotallacolor_id; ?>" onclick='actualizar(this)' style="display:none"  class='btn btn-mini'>Actualizar</a>
-                        
-                      </td>
-                      <td style='cursor: pointer' onclick='eliminar(<?php echo $productotallacolor->preciotallacolor_id; ?>)' id='elim<?php echo $productotallacolor->preciotallacolor_id; ?>'>&times;</td>
-                
-                        </tr>
+                          <td width='30%'>
+                            <?php
+                            $params = array();
+                            $link = $producto->url_externo;
+                            if($productotallacolor->preciotallacolor->url_externo && $productotallacolor->preciotallacolor->url_externo != ''){
+                              $link = $productotallacolor->preciotallacolor->url_externo;
+                            }
+                            $this->widget('bootstrap.widgets.TbButton', array(
+                                'label'=>Yii::t('contentForm', 'Buy at').' '.$producto->tienda->getUrlVista(),
+                                'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                                'size'=>'mini', // null, 'large', 'small' or 'mini'
+                                'url'=> $link,
+                                'icon'=>'shopping-cart white',
+                                'htmlOptions' => array('style'=>'float: right;', 'target'=>'_blank')
+                            )); 
+                            ?>
+                                  
+                          </td>
+                          <td style='cursor: pointer' onclick='eliminar(<?php echo $productotallacolor->preciotallacolor_id; ?>)' id='elim<?php echo $productotallacolor->preciotallacolor_id; ?>'>&times;</td>
+                    
+                          </tr>
                     <?php 
                   
               } 
@@ -549,12 +561,12 @@ $total_productos_look = 0;
                     <?php
                        $params = array();                    
                        $this->widget('bootstrap.widgets.TbButton', array(
-				    'label'=>Yii::t('contentForm', 'Complete purchase'),
-				    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-				    'size'=>'normal', // null, 'large', 'small' or 'mini'
-				    'url'=> $this->createAbsoluteUrl('bolsa/compra',$params,'https'), // action ir 
-				    'icon'=>'lock white',
-				)); 				 
+                				    'label'=>Yii::t('contentForm', 'Complete purchase'),
+                				    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                				    'size'=>'normal', // null, 'large', 'small' or 'mini'
+                				    'url'=> $this->createAbsoluteUrl('bolsa/compra',$params,'https'), // action ir 
+                				    'icon'=>'lock white',
+                				)); 				 
 		
                         ?>
                    

@@ -367,21 +367,43 @@ class BolsaController extends Controller
 			$model= BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
 			           
             if ($model) {
+            	$look_id = $model->look_id;
+            	$bolsa_id = $model->bolsa_id;
+            	$response = array();
                 $model->delete();
+
+                // check si es el último producto de un look dentro de la bolsa
+                if($look_id != 0){
+                	$ultimo= BolsaHasProductotallacolor::model()->findByAttributes(array('bolsa_id'=>$bolsa_id, 'look_id'=>$look_id));
+                	if(!$ultimo){ // se acaba de eliminar el último producto del look, agrego datos para analytics
+                		$look = Look::model()->findByPk($look_id);
+                		$response['ultimo'] = 'true';
+                		$response['look'] = array(
+							'id' => $look->id,
+							'name' => $look->title,
+							'category' => 'Looks',
+							'brand' => 'Personaling',
+							'price' => $look->getPrecioDescuento(),
+							'quantity' => 1,
+                		);
+                	}else{
+                		$response['ultimo'] = 'false';
+                	}
+                }
             	
 				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$model->preciotallacolor->producto->id));
                 $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
                 $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->preciotallacolor->producto->id));
-				echo json_encode(array(
-					'status' => 'ok',
-					'id' => $model->preciotallacolor->producto->id,
-					'name' => $model->preciotallacolor->producto->nombre,
-					'category' => $category->nombre,
-					'brand' => $model->preciotallacolor->producto->mymarca->nombre,
-					'variant' => $model->preciotallacolor->mycolor->valor." ".$model->preciotallacolor->mytalla->valor,
-					'price' => $precio->precioImpuesto,
-					'quantity' => $model->cantidad
-				));
+                $response['status'] = 'ok';
+                $response['id'] = $model->preciotallacolor->producto->id;
+                $response['name'] = $model->preciotallacolor->producto->nombre;
+                $response['category'] = $category->nombre;
+                $response['brand'] = $model->preciotallacolor->producto->mymarca->nombre;
+                $response['variant'] = $model->preciotallacolor->mycolor->valor." ".$model->preciotallacolor->mytalla->valor;
+                $response['price'] = $precio->precioImpuesto;
+                $response['quantity'] = $model->cantidad;
+                
+				echo json_encode($response);
 			}   
         }
         else

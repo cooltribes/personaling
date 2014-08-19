@@ -729,6 +729,23 @@ $total_productos_look = 0;
               });
               ga('ec:setAction', 'remove');
               ga('send', 'event', 'UX', 'click', 'remove from cart');     // Send data using an event.
+
+              // check si fue el ultimo producto de un look
+              if(data.ultimo == 'true'){
+                ga('ec:addProduct', {
+                  'id': data.look.id,
+                  'name': data.look.name,
+                  'category': data.look.category,
+                  'brand': data.look.brand,
+                  'variant': data.look.variant,
+                  'price': data.look.price,
+                  'quantity': data.look.quantity
+                });
+                ga('ec:setAction', 'remove');
+                ga('send', 'event', 'UX', 'click', 'remove from cart');     // Send data using an event.
+              }else{
+                console.log('No es ultimo');
+              }
     					window.location.reload()
     				}
 					

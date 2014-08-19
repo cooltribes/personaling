@@ -70,7 +70,7 @@ $total_productos_look = 0;
   				 
   		  	?>
           <!-- Look ON -->
-          <h3 class="braker_bottom margin_top"><?php echo $look->title; ?></h3>
+          <h3 class="braker_bottom margin_top"><?php echo $look->title; ?><small><a class="pull-right" style='cursor: pointer; margin-top: 1em; padding-right: 1.2em; text-decoration: none;' onclick='eliminar_look(<?php echo $look->id; ?>, <?php echo $bolsa->id; ?>)' id='elim_look<?php echo $look->id; ?>'>&times;</a></small></h3>
           <div class="padding_left">
             <table class="table" width="100%" >
               <thead>
@@ -737,6 +737,54 @@ $total_productos_look = 0;
 
 	}
 	
+  function eliminar_look(look_id, bolsa_id){
+    
+  var td = $(this);
+  
+  //alert(cantidad);
+  
+  // llamada ajax para el controlador de bolsa     
+      $.ajax({
+          type: "post",
+          url: "eliminarLook", // action de actualizar
+          data: { 'look_id':look_id, 'bolsa_id':bolsa_id }, 
+          dataType: 'json',
+          success: function (data) {
+            console.log(data);
+            if(data.status=="ok")
+            {
+              for (var index = 0; index < data.productos.length; ++index) {
+                //console.log(data.productos[index]);
+                ga('ec:addProduct', {
+                  'id': data.productos[index].id,
+                  'name': data.productos[index].name,
+                  'category': data.productos[index].category,
+                  'brand': data.productos[index].brand,
+                  'variant': data.productos[index].variant,
+                  'price': data.productos[index].price,
+                  'quantity': data.productos[index].quantity,
+                });
+                ga('ec:setAction', 'remove');
+                ga('send', 'event', 'UX', 'click', 'remove from cart');     // Send data using an event.
+              }
+              ga('ec:addProduct', {
+                'id': data.id,
+                'name': data.name,
+                'category': data.category,
+                'brand': data.brand,
+                'variant': data.variant,
+                'price': data.price,
+                'quantity': data.quantity,
+              });
+              ga('ec:setAction', 'remove');
+              ga('send', 'event', 'UX', 'click', 'remove from cart');     // Send data using an event.
+              window.location.reload()
+            }
+          
+          }//success
+         })
+
+  }
 	
 	function limpiar(idBolsa)
 	{

@@ -34,7 +34,7 @@ class BolsaController extends Controller
                     'pagos','eliminar','compra', 'direcciones','confirmar','comprar',
                     'pedido','cpago', 'pedidoGC','comprarGC','clickBotonConfirmar', 
                     'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 
-                    'agregar2',),
+                    'agregar2','eliminarLook',),
                     'users'=>array('@'),
                 ),                
                 array('deny',  // deny all users
@@ -387,6 +387,53 @@ class BolsaController extends Controller
         else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
+
+
+    /*
+	 * 
+	 * action para eliminar un look completo de la bolsa
+	 * 
+	 * */
+    public function actionEliminarLook() {
+        if (Yii::app()->request->isPostRequest) {
+        	$elementos_bolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$_POST['look_id'], 'bolsa_id'=>$_POST['bolsa_id']));
+        	$look = Look::model()->findByPk($_POST['look_id']);
+        	$productos_look = array();
+        	foreach ($elementos_bolsa as $model) {
+        		$model->delete();
+        		
+				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$model->preciotallacolor->producto->id));
+                $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->preciotallacolor->producto->id));
+				
+					$productos_look[] = array(
+						'id' => $model->preciotallacolor->producto->id,
+						'name' => $model->preciotallacolor->producto->nombre,
+						'category' => $category->nombre,
+						'brand' => $model->preciotallacolor->producto->mymarca->nombre,
+						'variant' => $model->preciotallacolor->mycolor->valor." ".$model->preciotallacolor->mytalla->valor,
+						'price' => $precio->precioImpuesto,
+						'quantity' => 1
+					);
+				
+        	}
+			           
+			echo json_encode(array(
+				'status' => 'ok',
+				'id' => $look->id,
+				'name' => $look->title,
+				'category' => 'Looks',
+				'brand' => 'Personaling',
+				'price' => $look->getPrecioDescuento(),
+				'quantity' => 1,
+				'productos' => $productos_look
+			));
+			
+        }
+        else
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+    }
+
 	/*
 	 * 
 	 * para validar los datos del usuario 

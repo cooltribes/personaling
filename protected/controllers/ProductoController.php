@@ -1871,10 +1871,10 @@ public function actionReportexls(){
             $view = new ProductoView;
             $view->producto_id = $producto->id;
             $view->user_id = Yii::app()->user->id;
-
+ 
             if (!$view->save())
                 Yii::trace('ProductoController.php:946, Error:' . print_r($view->getErrors(), true), 'registro');
-
+ 
 			$detect = new Mobile_Detect;
 			if($detect->isMobile()) 
             	$this->render('_detalle_mobile', array('producto' => $producto));

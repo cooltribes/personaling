@@ -370,7 +370,7 @@ public function actionReportexls(){
 					Yii::app()->user->updateSession();
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 					
-					if($_POST['accion'] == "normal") // si es el boton principal
+					//if($_POST['accion'] == "normal") // si es el boton principal
 						//$this->redirect(array('create','id'=>$exist->id));
 					
 					if($_POST['accion'] == "avanzar") // guardar y avanzar

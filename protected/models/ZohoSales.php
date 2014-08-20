@@ -34,7 +34,7 @@ class ZohoSales{
 		$xml .= '<row no="1">';
 		$xml .= '<FL val="Subject"> Orden '.$orden->id.'</FL>';
         $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
-		$xml .= '<FL val="Status">Created</FL>';
+		$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
 		$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';
 		$xml .= '<FL val="Contact Id">'.$orden->user->zoho_id.'</FL>';
 		$xml .= '<FL val="Contact Name">'.$orden->user->profile->first_name.' '.$orden->user->profile->last_name.'</FL>';
@@ -138,6 +138,9 @@ class ZohoSales{
 	{
 		$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$order));
 		$xml2;
+		$costo = 0;
+		$dcto_productos = 0;
+		
 		$xml2 = '<FL val="Product Details">';
 		$i=1; 
 		foreach ($productos as $tallacolor){
@@ -145,6 +148,9 @@ class ZohoSales{
 			
 			$producto = $tallacolor->preciotallacolor->producto;
 			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+			
+			$costo += $precio->costo;
+			$dcto_productos += $precio->ahorro;
 			
 			/*--------------*/
 			$url ="https://crm.zoho.com/crm/private/xml/Products/getRecordById";
@@ -196,7 +202,9 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 			$xml2 .= '</product>';
 		}
 		$xml2 .= '</FL>';
-		return $xml2;
+		$xml2 .= '<FL val="Costo">'.(double)$costo.'</FL>'; 
+		$xml2 .= '<FL val="Descuento Productos">'.(double)$dcto_productos.'</FL>'; 
+		return $xml2; 
 	}
 
 	function convertirLead($lead_id,$lead_mail){

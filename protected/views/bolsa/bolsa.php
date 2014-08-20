@@ -269,6 +269,17 @@ $total_productos_look = 0;
 
             <hr/>
             <p class="muted"><i class="icon-user"></i> <?php echo Yii::t('contentForm','Created for') ?>: <a href="#" title="ir al perfil"><?php echo $look->user->profile->first_name; ?></a></p>
+            <?php
+            if(!is_null($look->tipoDescuento)){
+              ?>
+              <div class="descuento_look_bolsa">
+                <?php
+                echo Yii::t('contentForm','Con la compra del look te damos un descuento del').' '.$look->getPorcentajeDescuento().'%';
+                ?>
+              </div>
+              <?php
+            }
+            ?>
           </div>
           <!-- Look OFF -->
           <?php
@@ -457,14 +468,14 @@ $total_productos_look = 0;
 				$indiv = Yii::app()->db->createCommand($sql)->queryScalar();
 				
             	?>
-                <h5><?php echo Yii::t('contentForm', 'Selected looks').': '.  $total_look; ?><br/>
+                <h5><?php //echo Yii::t('contentForm', 'Selected looks').': '.  $total_look; ?><br/>
                   <?php 
               	
               	if($total_look!=0)
                 { 
-                    echo Yii::t('contentForm', 'Products that make the Looks').": ". $total_productos_look ."<br/>";
+                    //echo Yii::t('contentForm', 'Products that make the Looks').": ". $total_productos_look ."<br/>";
                     echo Yii::t('contentForm', 'Products available on Personaling').": ". $cont_propios ."<br/>";
-                    echo Yii::t('contentForm', 'Products from third parts').": ". $cont_externos ."<br/>";
+                    //echo Yii::t('contentForm', 'Products from third parts').": ". $cont_externos ."<br/>";
 
                 }
                 $balance=Profile::getSaldo(Yii::app()->user->id);
@@ -477,11 +488,11 @@ $total_productos_look = 0;
               	Yii::app()->getSession()->add('totalIndiv',$indiv);
               	
               	?>
-                 <?php echo Yii::t('contentForm', 'Individual products').': '.$indiv; 
+                 <?php //echo Yii::t('contentForm', 'Individual products').': '.$indiv; 
                  if($balance>0)
 
 				{ 
-					echo "<br/><br/>".Yii::t('contentForm', 'Available Balance:').' <strong>'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, '').'</strong> '; 
+					echo Yii::t('contentForm', 'Available Balance:').' <strong>'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($balance, '').'</strong> '; 
 				}?>
                  </h5>
                 <hr/>
@@ -529,49 +540,51 @@ $total_productos_look = 0;
                         //Yii::app()->getSession()->add('totalConIva', $totalConIVA);
                            
                       	?>
-                      <!--PRODUCTOS-->  
-                      <tr>
-                        <th class="text_align_left"><?php echo Yii::t('contentForm', 'Products'); ?>:</th>
-                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.
-                                Yii::app()->numberFormatter->formatCurrency($totalPr, ''); ?></td>
-                      </tr>
+                     
                       
-                      <tr>
-                        <th class="text_align_left">I.V.A. (<?php echo Yii::app()->params['IVAtext'];?>):</th>
-                        <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.
-                                Yii::app()->numberFormatter->formatCurrency($IVA, ''); ?></td>
-                      </tr>
+                      <!-- <tr>
+                        <th class="text_align_left">I.V.A. (<?php //echo Yii::app()->params['IVAtext'];?>):</th>
+                        <td class="text_align_right"><?php //echo Yii::t('contentForm', 'currSym').' '.
+                                //Yii::app()->numberFormatter->formatCurrency($IVA, ''); ?></td>
+                      </tr> -->
                       
                       <!--DESCUENTOS-->
                       <?php if($totalDe != 0){ // si HAY descuento ?> 
-                      <tr>
-                        <th class="text_align_left"><?php echo Yii::t('contentForm', 'Discount'); ?>:</th>
-                        <td class="text_align_right"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.
-                                Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
-                      </tr>
+                         <!--PRODUCTOS-->  
+                        <tr>
+                          <td class="text_align_left"><?php echo Yii::t('contentForm', 'Subtotal'); ?>:</td>
+                          <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.
+                                  Yii::app()->numberFormatter->formatCurrency($totalConIVA, ''); ?></td>
+                        </tr>
+                        <tr>
+                          <td class="text_align_left"><?php echo Yii::t('contentForm', 'Discount'); ?>:</td>
+                          <td class="text_align_right"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.
+                                  Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
+                        </tr>
                       <?php } ?>
                       
                       <tr>
-                        <th class="text_align_left"><h4><?php echo Yii::t('contentForm', 'Subtotal'); ?>:</h4></th>
-                        <td class="text_align_right"><h4><?php echo Yii::t('contentForm', 'currSym').' '.
-                                Yii::app()->numberFormatter->formatCurrency($total, ''); ?></h4></td>
+                        <th class="text_align_left"><h4><strong><?php echo Yii::t('contentForm', 'Total'); ?>:</strong></h4></th>
+                        <td class="text_align_right"><h4><strong><?php echo Yii::t('contentForm', 'currSym').' '.
+                                Yii::app()->numberFormatter->formatCurrency($total, ''); ?></strong></h4></td>
                       </tr>
                     </table>
                     
-                    <?php
-                       $params = array();                    
-                       $this->widget('bootstrap.widgets.TbButton', array(
-                				    'label'=>Yii::t('contentForm', 'Complete purchase'),
-                				    'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-                				    'size'=>'normal', // null, 'large', 'small' or 'mini'
-                				    'url'=> $this->createAbsoluteUrl('bolsa/compra',$params,'https'), // action ir 
-                				    'icon'=>'lock white',
-                				)); 				 
-		
-                        ?>
-                   
-                	<a  onclick='actualizartodos()' class='btn btn-mini'><?php echo Yii::t('contentForm', 'Update all'); ?></a>
+                    
                   </div>
+                  <div class="text_align_center">
+                    <?php
+                     $params = array();                    
+                     $this->widget('bootstrap.widgets.TbButton', array(
+                          'label'=>Yii::t('contentForm', 'Complete purchase'),
+                          'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                          'size'=>'large', // null, 'large', 'small' or 'mini'
+                          'url'=> $this->createAbsoluteUrl('bolsa/compra',$params,'https'), // action ir 
+                          'icon'=>'lock white',
+                      ));          
+
+                      ?>
+                    </div>
                 </div>
                 <p><i class="icon-calendar"></i> <?php echo Yii::t('contentForm', 'Date estimated delivery'); ?>: <?php echo date('d/m/Y', strtotime('+1 day'));?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
               </div>  
@@ -593,7 +606,7 @@ $total_productos_look = 0;
               <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" target="_blank"><?php echo Yii::t('contentForm', 'See Shipping and Returns Policies'); ?></a></p>
               <p class="muted"><i class="icon-comment"></i> <?php echo Yii::t('contentForm', 'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm'); ?></p>
               <hr/>
-              <p class="muted"><a style="cursor: pointer" onclick="limpiar(<?php echo($bolsa->id); ?>)" title="vaciar la bolsa de compras"><?php echo  Yii::t('contentForm', 'Empty shopping bag');  ?></a> | <a href="../tienda/index" title="seguir comprando"><?php echo  Yii::t('contentForm', 'Keep buying');  ?></a></p>
+              <p class="muted"><a  onclick='actualizartodos()' class='' style='cursor: pointer;'><?php echo Yii::t('contentForm', 'Update all'); ?></a> | <a style="cursor: pointer" onclick="limpiar(<?php echo($bolsa->id); ?>)" title="vaciar la bolsa de compras"><?php echo  Yii::t('contentForm', 'Empty shopping bag');  ?></a> | <a href="../tienda/index" title="seguir comprando"><?php echo  Yii::t('contentForm', 'Keep buying');  ?></a></p>
             </div>
             
           

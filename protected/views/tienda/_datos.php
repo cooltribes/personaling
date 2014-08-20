@@ -197,7 +197,7 @@ $b='';
 							}
 						}
 						if(!is_null($tienda))
-							$precio = "<span class='precio' style='display:inline'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>&nbsp;&nbsp;&nbsp;<span><a class='detalle_producto' href='#' style='color:#3286A5; cursor:pointer' onclick='detalle_producto(".json_encode(array(
+							$precio = "<span class='precio' style='display:inline'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>&nbsp;&nbsp;&nbsp;<span><a class='detalle_producto' href='' style='color:#3286A5; cursor:pointer' onclick='event.preventDefault(); detalle_producto(".json_encode(array(
 																												    		'id' => $data->id,
 																												    		'name' => $data->nombre,
 																												    		'category' => $category->nombre,
@@ -209,7 +209,7 @@ $b='';
 							
 
 						echo($encabezado."
-						<input id='idprod' value='".$data->id."' type='hidden' ><a class='detalle_producto' href='#' onclick='detalle_producto(".json_encode(array(
+						<input id='idprod' value='".$data->id."' type='hidden' ><a class='detalle_producto' href='' onclick='event.preventDefault(); detalle_producto(".json_encode(array(
 																												    		'id' => $data->id,
 																												    		'name' => $data->nombre,
 																												    		'category' => $category->nombre,
@@ -232,7 +232,7 @@ $b='';
 						).$style."		 
 												
 						</a>
-						<header><h3><a class='link_producto detalle_producto' href='#' title='".$data->nombre."' onclick='detalle_producto(".json_encode(array(
+						<header><h3><a class='link_producto detalle_producto' href='' title='".$data->nombre."' onclick='event.preventDefault(); detalle_producto(".json_encode(array(
 																												    		'id' => $data->id,
 																												    		'name' => $data->nombre,
 																												    		'category' => $category->nombre,
@@ -241,7 +241,7 @@ $b='';
 																												    		'position' => $cont,
 																												    		'url' => $data->getUrl()
 																												    	)).")'>".$data->nombre."</a></h3>
-						<a href='#' class='ver_detalle icon_lupa detalle_producto' title='Ver detalle' onclick='detalle_producto(".json_encode(array(
+						<a href='' class='ver_detalle icon_lupa detalle_producto' title='Ver detalle' onclick='event.preventDefault(); detalle_producto(".json_encode(array(
 																												    		'id' => $data->id,
 																												    		'name' => $data->nombre,
 																												    		'category' => $category->nombre,

@@ -2,7 +2,10 @@
 
 /**
  * 
- *ESTADO: 2=> FINALIZADO; 3=> FINALIZADO CON DISCREPANCIAS; 4=> DISCREPANCIAS RESUELTAS  
+ *ESTADO: 	2=> FINALIZADO; 
+ * 			3=> FINALIZADO CON DISCREPANCIAS;
+ * 			4=> DISCREPANCIAS RESUELTAS; 
+ * 			5=> ITEMS INCOMPLETOS;
  *
  * This is the model class for table "{{return}}".
  *
@@ -106,7 +109,7 @@ class Retturn extends CActiveRecord
 		));
 	}
 	function getConfirmation(){
-            	
+           	
 			$return=$this;
             $enProduccion = strpos(Yii::app()->baseUrl, "develop") == false
                 && strpos(Yii::app()->baseUrl, "test") == false;
@@ -144,8 +147,9 @@ class Retturn extends CActiveRecord
             $nombreArchivo =  $tipoArchivo.$return->devolucion_id;
 
             $encontrado = false;
+          
             foreach ($listado as $arch){
-
+				$cuenta=0;
                 //Si ya ha sido cargado el inbound
                 if(strpos($arch, $nombreArchivo) !== false){
 			
@@ -161,40 +165,49 @@ class Retturn extends CActiveRecord
                     $conDiscrepancias = false;
 
                     foreach ($xml as $elemento){
-                       
-			
+                     
                        if($elemento->getName() == "FechaEstado"){
                           
 						   $return->fechaEstado=date('Y-m-d',strtotime($elemento[0]));
                         }
                         if($elemento->getName() == "Estado"){
-                          
+                          	
                             $return->estadoConfirmation=(string)$elemento[0];
                         }
 
                         if($elemento->getName() == "Item"){
-					
+                         
                             //Consultar en BD
-                            ;
+                            
                             $item = ItemReturn::model()->findByAttributes(array(
                                         "return_id"=>$return->id,
                                         "sku"=>(string)$elemento->EAN[0]));
+							if($item)
+							{
+								$cuenta++;
                             //Guardar lo que viene en el XML
-                            $item->cantidadConfirmation = (int)$elemento->Cantidad[0];
-                            if($item->cantidadConfirmation != $item->cantidad){
-                                $conDiscrepancias = true; //para marcar el return completo
-                                $item->resuelto=0;
-                             }
+	                            $item->cantidadConfirmation = (int)$elemento->Cantidad[0];
+	                            if($item->cantidadConfirmation != $item->cantidad){
+	                                $conDiscrepancias = true; //para marcar el return completo
+	                                $item->resuelto=0;
+									if(!$item->save())
+										print_r($item->errors);
+									
+	                             }
+							}
                     }
 					
 
                     //Marcar return con estado
 
                 }
-
+			
 			if($conDiscrepancias){
                                     $return->estado = 3;
-                                }else{
+				if($cuenta!=count($return->items))
+					$return->estado=5;
+                                
+			}else{
                                     $return->estado = 2;
                                 }
             if(!$return->save())

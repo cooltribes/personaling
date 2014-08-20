@@ -494,7 +494,7 @@ class ColorController extends Controller
 	//	var_dump($xml);
 
 		$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
-		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=2&duplicateCheck=2&xmlData=".$xml;
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=2&duplicateCheck=2&version=4&xmlData=".$xml;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);

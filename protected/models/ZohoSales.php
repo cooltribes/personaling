@@ -137,9 +137,12 @@ class ZohoSales{
 	function Products($order)
 	{
 		$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$order));
+		$ordenhas = new OrdenHasProductotallacolor;
+		
 		$xml2;
 		$costo = 0;
 		$dcto_productos = 0;
+		$dcto_looks = 0;
 		
 		$xml2 = '<FL val="Product Details">';
 		$i=1; 
@@ -203,7 +206,39 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 		}
 		$xml2 .= '</FL>';
 		$xml2 .= '<FL val="Costo">'.(double)$costo.'</FL>'; 
-		$xml2 .= '<FL val="Descuento Productos">'.(double)$dcto_productos.'</FL>'; 
+		$xml2 .= '<FL val="Descuento Productos">'.(double)$dcto_productos.'</FL>';
+		
+		if($ordenhas->countLooks($order) > 0) // hay looks
+		{ 
+			$looks = $ordenhas->getLooks($order);
+			
+			//var_dump($looks);
+			//Yii::app()->end();
+			
+			foreach($looks as $lk)
+			{
+				$look = Look::model()->findByPk($lk['look_id']); 
+				
+				if(isset($look->tipoDescuento)) // No es null. hay descuento
+				{
+					if($look->tipoDescuento == 0) // porcentaje
+					{
+						$prc = $look->getPorcentajeDescuento();
+						$total = $look->getPrecioProductosDescuento(false) * $look->valorDescuento / 100;
+						$dcto_looks += $total;
+					}
+					
+					if($look->tipoDescuento == 1){
+						$dcto_looks += $look->valorDescuento; 
+					}
+						
+				}
+				
+			}
+		} 
+		
+		$xml2 .= '<FL val="Descuento Looks">'.(double)$dcto_looks.'</FL>';
+		
 		return $xml2; 
 	}
 

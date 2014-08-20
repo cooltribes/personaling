@@ -157,101 +157,106 @@ $total_productos_look = 0;
               </tbody>
             </table>
 
-
-            <table class="table" width="100%" >
-              <thead>
-                <tr>
-                  <th colspan="2"><?php echo  Yii::t('contentForm', 'Products from third parts');  ?></th>
-                  <th><?php echo  Yii::t('contentForm', 'Unit price');  ?></th>
-                  <th colspan="2"><?php //echo  Yii::t('contentForm', 'Quantity');  ?></th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                foreach($productos_externos as $productotallacolor){ ?>
-                <?php 
-                  //$total_productos_look++;
-                  $color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
-                        $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
-                        $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
-                        
-                        //if($producto->tipo == 0){
-                          //$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-                          //$doblimg= CHtml::image( str_replace(".","_x90.",$producto->getImageUrl($productotallacolor->preciotallacolor->color_id)) , "Imagen", array("width" => "70", "height" => "70"));
-                          if(!is_null($productotallacolor->preciotallacolor->imagen)){
-                                  $doblimg=CHtml::image(Yii::app()->baseUrl.str_replace(".","_x90.",$productotallacolor->preciotallacolor->imagen['url']), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
-                          }else{
-                                  $doblimg= "No hay foto</br>para el color";
-                          }           
-
-                          array_push($cantidades,$productotallacolor->cantidad);
-
-
-                          //$precioSumar = $producto->getPrecioVenta2(false);
-                          $precioMostrar = $producto->getPrecioImpuesto();
-                          $precio_descuento = $producto->getPrecioDescuento();
-                          //array_push($precios,floatval($precioSumar));  
-                          //array_push($precios,floatval($pre));  
-                          //array_push($descuentos,$producto->getAhorro(false));
-                                          
-                              
-                            ?>
-                        <tr>
-                          <?php
-                            //$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
-                            echo "<td>".$doblimg."</td>";
-                          ?>                          
-                  
-                          <td><strong><?php echo $producto->nombre; ?></strong> <br/>
-                            <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
-                            <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?> 
-                            
-                          </td>
-                            
-                          
-                          <td>
-                            <?php                        
-                            if(floatval($precio_descuento) < floatval($precioMostrar)){
-                                    
-                                    echo '<del>'.Yii::t('contentForm', 'currSym').' '.$precioMostrar.'</del>
-                                        <br/>'.Yii::t('contentForm', 'currSym').' '.$precio_descuento;
-                            }else{
-                                    echo Yii::t('contentForm', 'currSym').' '.$precioMostrar;
-                            }
-                            ?>
-                          </td>
-                          
-                          <td width='30%'>
-                            <?php
-                            $params = array();
-                            $link = $producto->url_externo;
-                            if($productotallacolor->preciotallacolor->url_externo && $productotallacolor->preciotallacolor->url_externo != ''){
-                              $link = $productotallacolor->preciotallacolor->url_externo;
-                            }
-                            $this->widget('bootstrap.widgets.TbButton', array(
-                                'label'=>Yii::t('contentForm', 'Buy at').' '.$producto->tienda->getUrlVista(),
-                                'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-                                'size'=>'mini', // null, 'large', 'small' or 'mini'
-                                'url'=> $link,
-                                'icon'=>'shopping-cart white',
-                                'htmlOptions' => array('style'=>'float: right;', 'target'=>'_blank')
-                            )); 
-                            ?>
-                                  
-                          </td>
-                          <td style='cursor: pointer' onclick='eliminar(<?php echo $productotallacolor->preciotallacolor_id; ?>)' id='elim<?php echo $productotallacolor->preciotallacolor_id; ?>'>&times;</td>
-                    
-                          </tr>
-                    <?php 
-                  
-              } 
-
-              
-
-
+            <?php
+            if(sizeof($productos_externos) > 0){
               ?>
-              </tbody>
-            </table>
+              <table class="table" width="100%" >
+                <thead>
+                  <tr>
+                    <th colspan="2"><?php echo  Yii::t('contentForm', 'Products from third parts');  ?></th>
+                    <th><?php echo  Yii::t('contentForm', 'Unit price');  ?></th>
+                    <th colspan="2"><?php //echo  Yii::t('contentForm', 'Quantity');  ?></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  foreach($productos_externos as $productotallacolor){ ?>
+                  <?php 
+                    //$total_productos_look++;
+                    $color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
+                          $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
+                          $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
+                          
+                          //if($producto->tipo == 0){
+                            //$imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
+                            //$doblimg= CHtml::image( str_replace(".","_x90.",$producto->getImageUrl($productotallacolor->preciotallacolor->color_id)) , "Imagen", array("width" => "70", "height" => "70"));
+                            if(!is_null($productotallacolor->preciotallacolor->imagen)){
+                                    $doblimg=CHtml::image(Yii::app()->baseUrl.str_replace(".","_x90.",$productotallacolor->preciotallacolor->imagen['url']), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+                            }else{
+                                    $doblimg= "No hay foto</br>para el color";
+                            }           
+
+                            array_push($cantidades,$productotallacolor->cantidad);
+
+
+                            //$precioSumar = $producto->getPrecioVenta2(false);
+                            $precioMostrar = $producto->getPrecioImpuesto();
+                            $precio_descuento = $producto->getPrecioDescuento();
+                            //array_push($precios,floatval($precioSumar));  
+                            //array_push($precios,floatval($pre));  
+                            //array_push($descuentos,$producto->getAhorro(false));
+                                            
+                                
+                              ?>
+                          <tr>
+                            <?php
+                              //$aaa = CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
+                              echo "<td>".$doblimg."</td>";
+                            ?>                          
+                    
+                            <td><strong><?php echo $producto->nombre; ?></strong> <br/>
+                              <strong>Color</strong>: <?php echo $color; //isset($productotallacolor->preciotallacolor->color->valor)?$productotallacolor->preciotallacolor->color->valor:"N/A"; ?> <br/>
+                              <strong>Talla</strong>: <?php echo $talla; //isset($productotallacolor->preciotallacolor->talla->valor)?$productotallacolor->preciotallacolor->talla->valor:"N/A"; ?> 
+                              
+                            </td>
+                              
+                            
+                            <td>
+                              <?php                        
+                              if(floatval($precio_descuento) < floatval($precioMostrar)){
+                                      
+                                      echo '<del>'.Yii::t('contentForm', 'currSym').' '.$precioMostrar.'</del>
+                                          <br/>'.Yii::t('contentForm', 'currSym').' '.$precio_descuento;
+                              }else{
+                                      echo Yii::t('contentForm', 'currSym').' '.$precioMostrar;
+                              }
+                              ?>
+                            </td>
+                            
+                            <td width='30%'>
+                              <?php
+                              $params = array();
+                              $link = $producto->url_externo;
+                              if($productotallacolor->preciotallacolor->url_externo && $productotallacolor->preciotallacolor->url_externo != ''){
+                                $link = $productotallacolor->preciotallacolor->url_externo;
+                              }
+                              $this->widget('bootstrap.widgets.TbButton', array(
+                                  'label'=>Yii::t('contentForm', 'Buy at').' '.$producto->tienda->getUrlVista(),
+                                  'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                                  'size'=>'mini', // null, 'large', 'small' or 'mini'
+                                  'url'=> $link,
+                                  'icon'=>'shopping-cart white',
+                                  'htmlOptions' => array('style'=>'float: right;', 'target'=>'_blank')
+                              )); 
+                              ?>
+                                    
+                            </td>
+                            <td style='cursor: pointer' onclick='eliminar(<?php echo $productotallacolor->preciotallacolor_id; ?>)' id='elim<?php echo $productotallacolor->preciotallacolor_id; ?>'>&times;</td>
+                      
+                            </tr>
+                      <?php 
+                    
+                } 
+
+                
+
+
+                ?>
+                </tbody>
+              </table>
+              <?php
+            }
+            ?>
 
             <?php
             // revisar si el look tiene descuento
@@ -270,7 +275,7 @@ $total_productos_look = 0;
             <hr/>
             <p class="muted"><i class="icon-user"></i> <?php echo Yii::t('contentForm','Created for') ?>: <a href="#" title="ir al perfil"><?php echo $look->user->profile->first_name; ?></a></p>
             <?php
-            if(!is_null($look->tipoDescuento)){
+            if(!is_null($look->tipoDescuento) && $bolsa->getLookProducts($look_id) == $look->countItems()){
               ?>
               <div class="descuento_look_bolsa">
                 <?php

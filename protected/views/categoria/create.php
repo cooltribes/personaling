@@ -65,6 +65,7 @@ $this->breadcrumbs=array(
             	<label  class="control-label ">Nombre </label>
             	<div class="controls">
               		<?php echo $form->textField($model,'nombre',array('class'=>'span5','maxlength'=>70,'placeholder'=>'Nombre')); 
+              		      echo $form->error($model,'nombre'); 
               		// <input type="text" placeholder="Nombre"  class="span5">
               		?>
                 <div style="display:none" class="help-inline"></div>
@@ -107,7 +108,7 @@ $this->breadcrumbs=array(
 					}
 					return 1;
 				}
-				
+				echo $form->error($model,'padreId'); 
 				?>
 				</select>
                 <div style="display:none" class="help-inline">ayuda aqui </div>
@@ -119,6 +120,7 @@ $this->breadcrumbs=array(
               <div class="controls">
               	<?php echo $form->textArea($model,'descripcion',array('class'=>'span5','maxlength'=>200,'placeholder'=>'Ej.: pantalones de lana')); 
               		// <textarea placeholder="Ej.: pantalones de lana"  class="span5"></textarea>
+              		  echo $form->error($model,'descripcion'); 
               		?>   
                 <div style="display:none" class="help-inline">ayuda aqui </div>
               </div>
@@ -127,7 +129,9 @@ $this->breadcrumbs=array(
               <label  class="control-label ">Estado </label>
               <div class=""controls controls-row"">
               	<label class="checkbox inline">
-              	<?php echo $form->radioButtonList($model, 'estado', array(0 => 'Activa', 1 => 'Inactiva',)); ?>
+              	<?php echo $form->radioButtonList($model, 'estado', array(0 => 'Activa', 1 => 'Inactiva',)); 
+              		  echo $form->error($model,'estado'); 
+              	?>
                </label>
                
                 <div style="display:none" class="help-inline">ayuda aqui </div>

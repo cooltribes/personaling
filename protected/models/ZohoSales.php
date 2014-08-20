@@ -34,7 +34,7 @@ class ZohoSales{
 		$xml .= '<row no="1">';
 		$xml .= '<FL val="Subject"> Orden '.$orden->id.'</FL>';
         $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
-		$xml .= '<FL val="Status">Created</FL>';
+		$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
 		$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';
 		$xml .= '<FL val="Contact Id">'.$orden->user->zoho_id.'</FL>';
 		$xml .= '<FL val="Contact Name">'.$orden->user->profile->first_name.' '.$orden->user->profile->last_name.'</FL>';
@@ -78,14 +78,16 @@ class ZohoSales{
 			if($detalle->tipo_pago == 4 || $detalle->tipo_pago == 5){
 				$xml .= '<FL val="Paypal_Sabadell">'.(double)$detalle->monto.'</FL>';
 				
-				if($detalle->tipo_pago == 4)
+				/*if($detalle->tipo_pago == 4)
 					$forma .= " Sabadell, ";
 				if($detalle->tipo_pago == 5)
 					$forma .= " Paypal, ";
 				if($detalle->tipo_pago == 7)
 					$forma .= " Paypal prueba, ";
-				
+				*/
 			}
+			
+			$forma .= $detalle->getTipoPago().", "; 
 			
 			if(isset($orden->cupon)){
 				if($cupon == 0){
@@ -137,7 +139,14 @@ class ZohoSales{
 	function Products($order)
 	{
 		$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$order));
+		$ordenhas = new OrdenHasProductotallacolor;
+		
 		$xml2;
+		$costo = 0;
+		$dcto_productos = 0;
+		$dcto_looks = 0;
+		$dcto_total = 0;
+		
 		$xml2 = '<FL val="Product Details">';
 		$i=1; 
 		foreach ($productos as $tallacolor){
@@ -145,6 +154,9 @@ class ZohoSales{
 			
 			$producto = $tallacolor->preciotallacolor->producto;
 			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+			
+			$costo += $precio->costo;
+			$dcto_productos += $precio->ahorro;
 			
 			/*--------------*/
 			$url ="https://crm.zoho.com/crm/private/xml/Products/getRecordById";
@@ -196,7 +208,45 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 			$xml2 .= '</product>';
 		}
 		$xml2 .= '</FL>';
-		return $xml2;
+		$xml2 .= '<FL val="Costo">'.(double)$costo.'</FL>'; 
+		$xml2 .= '<FL val="Descuento Productos">'.(double)$dcto_productos.'</FL>';
+		
+		if($ordenhas->countLooks($order) > 0) // hay looks
+		{ 
+			$looks = $ordenhas->getLooks($order);
+			
+			//var_dump($looks);
+			//Yii::app()->end();
+			
+			foreach($looks as $lk)
+			{
+				$look = Look::model()->findByPk($lk['look_id']); 
+				
+				if(isset($look->tipoDescuento)) // No es null. hay descuento
+				{
+					if($look->tipoDescuento == 0) // porcentaje
+					{
+						$prc = $look->getPorcentajeDescuento();
+						$total = $look->getPrecioProductosDescuento(false) * $look->valorDescuento / 100;
+						$dcto_looks += $total;
+					}
+					
+					if($look->tipoDescuento == 1){
+						$dcto_looks += $look->valorDescuento; 
+					}
+						
+				}
+				
+			}
+		} 
+		$dcto_total = $dcto_productos + $dcto_looks; 
+		$totalProductos = $orden->total - $orden->envio;
+		
+		$xml2 .= '<FL val="Descuento Looks">'.(double)$dcto_looks.'</FL>';
+		$xml2 .= '<FL val="Descuento Total">'.(double)$dcto_total.'</FL>';
+		$xml2 .= '<FL val="Total Productos">'.(double)$totalProductos.'</FL>';
+		
+		return $xml2; 
 	}
 
 	function convertirLead($lead_id,$lead_mail){

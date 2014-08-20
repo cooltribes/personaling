@@ -579,7 +579,8 @@ return array (
     'Copy de crear usuario desde admin' => '<h2>¡Bienvenido a Personaling.es!</h2>  Queremos darte la bienvenida a vivir tu primera Shopping Experience única y... repetible. <br/>Tu registro se ha validado con éxito. <br/>Tu contraseña provisional es: <strong>{code}</strong><br/>Esta contraseña puedes cambiarla accediendo a tu cuenta y clicando en “cambiar contraseña”. El siguiente paso que debes dar es validar tu cuenta clicando en este enlace:<br/> <a href="{activation_url}">Clica aquí.</a>',
     'Load to shopping cart' => 'Cargar a la Bolsa',
     'Products available on Personaling' => 'Productos disponibles en Personaling',
-    'Products from third parts' => 'Productos de Terceros'
+    'Products from third parts' => 'Productos de Terceros',
+    'Buy at' => 'Comprar en'
 
 );
 

@@ -9,7 +9,7 @@ return CMap::mergeArray(
         'components'=>array(
 			'db'=>array(
 				'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
-                                    dbname=db_personalingES',
+                                    dbname=db_personalingDEV',
 				'emulatePrepare' => true,
 				'username' => 'personaling',
 				'password' => 'Perso123Naling',

@@ -66,7 +66,7 @@
         <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')).$mod_time, "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
         <?php } ?>
         	         
-                  	<?php echo CHtml::link($image,'#', array('onclick'=>'detalle_look('.json_encode(array(
+                  	<?php echo CHtml::link($image,'', array('onclick'=>'event.preventDefault(); detalle_look('.json_encode(array(
                                                                 'id' => $look->id,
                                                                 'name' => $look->title,
                                                                 'category' => 'Looks',
@@ -74,7 +74,9 @@
                                                                 'list' => 'Look clicks',
                                                                 'position' => $cont,
                                                                 'url' => $look->getUrl()
-                                                              )).')')); ?>
+                                                              )).')',
+                                                            'style'=>'cursor: pointer;'
+                                                          )); ?>
                   	
                   	<?php
                     /*

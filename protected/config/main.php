@@ -298,7 +298,7 @@ return array(
 				    'mostrarMarcas'=>true,
 				    'mostrarChic'=>true,
 				    'country'=>'Venezuela',
-				    'zohoToken'=>'d6fffa2b10dd0ce94fcfda0ce52b76a4',
+				    'zohoToken'=>'2fdec0a5be36fa577120a6d14bc0ac45', 
 		
 	),
 );

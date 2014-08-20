@@ -143,6 +143,7 @@ class ZohoSales{
 		$costo = 0;
 		$dcto_productos = 0;
 		$dcto_looks = 0;
+		$dcto_total = 0;
 		
 		$xml2 = '<FL val="Product Details">';
 		$i=1; 
@@ -236,8 +237,10 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 				
 			}
 		} 
+		$dcto_total = $dcto_productos + $dcto_looks; 
 		
 		$xml2 .= '<FL val="Descuento Looks">'.(double)$dcto_looks.'</FL>';
+		$xml2 .= '<FL val="Descuento Total">'.(double)$dcto_total.'</FL>';
 		
 		return $xml2; 
 	}

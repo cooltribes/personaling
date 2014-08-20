@@ -78,14 +78,16 @@ class ZohoSales{
 			if($detalle->tipo_pago == 4 || $detalle->tipo_pago == 5){
 				$xml .= '<FL val="Paypal_Sabadell">'.(double)$detalle->monto.'</FL>';
 				
-				if($detalle->tipo_pago == 4)
+				/*if($detalle->tipo_pago == 4)
 					$forma .= " Sabadell, ";
 				if($detalle->tipo_pago == 5)
 					$forma .= " Paypal, ";
 				if($detalle->tipo_pago == 7)
 					$forma .= " Paypal prueba, ";
-				
+				*/
 			}
+			
+			$forma .= $detalle->getTipoPago().", "; 
 			
 			if(isset($orden->cupon)){
 				if($cupon == 0){
@@ -238,9 +240,11 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 			}
 		} 
 		$dcto_total = $dcto_productos + $dcto_looks; 
+		$totalProductos = $orden->total - $orden->envio;
 		
 		$xml2 .= '<FL val="Descuento Looks">'.(double)$dcto_looks.'</FL>';
 		$xml2 .= '<FL val="Descuento Total">'.(double)$dcto_total.'</FL>';
+		$xml2 .= '<FL val="Total Productos">'.(double)$totalProductos.'</FL>';
 		
 		return $xml2; 
 	}

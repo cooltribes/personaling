@@ -5,7 +5,7 @@ $this->breadcrumbs=array(
 );
 ?>
 
-		<?php
+		<?php 
 			$sql = "select count( * ) as total from tbl_marca";
 			$num = Yii::app()->db->createCommand($sql)->queryScalar();
 		?>

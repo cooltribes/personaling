@@ -30,7 +30,7 @@ class MarcaController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','crear','delete'),
+				'actions'=>array('admin','crear','delete', 'busqueda'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -190,7 +190,12 @@ class MarcaController extends Controller
 			}// isset
 			
 		                
-		                
+		               if(Yii::app()->session['var']==1){
+		               		Yii::app()->user->setFlash('success',UserModule::t("Marca Guardada exitosamente."));
+		               		$this->redirect(array('crear'));
+		               }else{
+		               		$this->redirect(array('admin'));
+		               }	 
 		                
 		                $this->redirect(array('admin'));
 			}
@@ -199,7 +204,12 @@ class MarcaController extends Controller
 		$this->render('crear',array('marca'=>$marca));
 	}
 
-
+	public function actionBusqueda()
+	{
+			
+		Yii::app()->session['var']=$_GET['revisado'];
+		Yii::app()->end();
+	}
 
 	public function actionDelete($id)
 	{

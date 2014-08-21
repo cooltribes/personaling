@@ -37,7 +37,7 @@ class UserLogin extends CFormModel
 	{
 		return array(
 			'rememberMe'=>UserModule::t("Remember me next time"),
-			'username'=>UserModule::t("username or email"),
+			'username'=>UserModule::t("email"),
 			'password'=>UserModule::t("password"),
 		);
 	}
@@ -60,10 +60,10 @@ class UserLogin extends CFormModel
 					Yii::app()->user->login($identity,$duration);
 					break;
 				case UserIdentity::ERROR_EMAIL_INVALID:
-					$this->addError("username",UserModule::t("Email is incorrect."));
+					$this->addError("username",UserModule::t("Email or Password Incorrect."));
 					break;
 				case UserIdentity::ERROR_USERNAME_INVALID:
-					$this->addError("username",UserModule::t("Username is incorrect."));
+					$this->addError("username",UserModule::t("Email or Password Incorrect."));
 					break;
 				case UserIdentity::ERROR_STATUS_NOTACTIV:
 					$this->addError("status",UserModule::t("You account is not activated."));
@@ -78,7 +78,7 @@ class UserLogin extends CFormModel
 					$this->addError("status",UserModule::t("No puedes iniciar sesión, tu cuenta ha sido eliminada."));
 					break;
 				case UserIdentity::ERROR_PASSWORD_INVALID:
-					$this->addError("password",UserModule::t("Password is incorrect."));
+					$this->addError("password",UserModule::t("Email or Password Incorrect."));
 					break;
 			}
 		}

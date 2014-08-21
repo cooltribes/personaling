@@ -176,7 +176,7 @@ $b='';
 				if(Yii::app()->user->isGuest){
 					$gusta="{$iconoDescuento}</div></article>";
 				}
-					$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Imagen ", array("class"=>"img_hover bg_color3","width" => "270", "height" => "270",'id'=>'img-'.$data->id));
+					$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Personaling - ".$data->nombre, array("class"=>"img_hover bg_color3","width" => "270", "height" => "270",'id'=>'img-'.$data->id));
 					$b = '';
 					$style='';
 					if($data->mymarca->is_100chic){
@@ -185,7 +185,7 @@ $b='';
 					if(isset($segunda))
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 						//$b = CHtml::image($segunda->ge     tUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
-						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out bg_color3","style"=>"display:none","width" => "270", "height" => "270"));
+						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Personaling - ".$data->nombre, array("class"=>"img_hover_out bg_color3","style"=>"display:none","width" => "270", "height" => "270"));
 
 					//reviso si tiene descuento para mostrarlo
 						

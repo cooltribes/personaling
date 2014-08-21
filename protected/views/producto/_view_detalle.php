@@ -149,7 +149,7 @@
         { 
           $colorPredet = $img->color_id;
           
-          echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "producto", array('id'=>'principal','rel'=>'image_src'));
+          echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "Personaling - ".$producto->nombre, array('id'=>'principal','rel'=>'image_src'));
           echo "<!-- FOTO principal OFF -->";
 		  
 		   if($producto->mymarca->is_100chic){
@@ -168,7 +168,7 @@
         
           //imprimiendo igual la primera en thumbnail
           $pri = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-          echo CHtml::image( str_replace(".","_x90.",$img->getUrl()) , "Imagen ", array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));          
+          echo CHtml::image( str_replace(".","_x90.",$img->getUrl()) , "Personaling - ".$producto->nombre, array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));          
               
         }
         
@@ -177,7 +177,7 @@
           {
             //luego el resto para completar el scroll         
             
-            echo CHtml::image( str_replace(".","_x90.",$img->getUrl()), "Imagen", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
+            echo CHtml::image( str_replace(".","_x90.",$img->getUrl()), "Personaling - ".$producto->nombre, array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
             
           }// color
         }// que no es la primera en el orden

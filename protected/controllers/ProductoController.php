@@ -4733,19 +4733,23 @@ public function actionReportexls(){
             $message->activarPlantillaMandrill();
             Yii::app()->mail->activarMandrill();            
             
-            $subject = 'Comprando prueba';
-            $body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>
-                Recibes este correo porque se ha registrado tu dirección en Personaling.
-                Por favor valida tu cuenta haciendo click en el enlace que aparece 
-                a continuación:<br/> <br/>  <a href="http://www.google.com">Haz click aquí</a>';			            
+            $orden = Orden::model()->findByPk(112);
+            $usuario = $orden->user;
+            
+            $subject = 'Tu compra en Personaling';
             $message->subject    = $subject;
+
+            $body = $this->renderPartial("//mail/_pedido", array(
+                "orden" => $orden), true);
+            
             $message->setBody($body, 'text/html');                
-            $message->addTo("nramirez@upsidecorp.ch");
-            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+            $message->addTo($usuario->email);
+            $message->from = array('no-reply@personaling.com' => 'Tu Personal Shopper Digital');
 
             Yii::app()->mail->send($message);
             Yii::app()->user->setFlash('success',"El
                 correo electrónico de verificacion ha sido reenviado a <b>nramirez@upsidecorp.ch</b>");
+            
             $this->redirect(array('/user/admin/update', "id" => 5322));
 		
 	}

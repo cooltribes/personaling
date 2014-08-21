@@ -3687,17 +3687,32 @@ class BolsaController extends Controller
         
         /*Enviar el correo con el resumen de la orden al usuario*/
         function enviarEmail($orden, $usuario) {
-            
+        
             $message = new YiiMailMessage;
-            //this points to the file test.php inside the view path
-            $message->view = "mail_compra";
+            //Opciones de Mandrill
+            $message->activarPlantillaMandrill();
+            
             $subject = 'Tu compra en Personaling';
-            $params = array('subject'=>$subject, 'orden'=>$orden);
-            $message->subject = $subject;
-            $message->setBody($params, 'text/html');
+            $message->subject    = $subject;
+            $body = $this->renderPartial("//mail/_pedido", array(
+                "orden" => $orden), true);
+            
+            $message->setBody($body, 'text/html');                
             $message->addTo($usuario->email);
-            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            
             Yii::app()->mail->send($message);
+            
+            
+//            $message = new YiiMailMessage;
+//            //this points to the file test.php inside the view path
+//            $message->view = "mail_compra";
+//            $subject = 'Tu compra en Personaling';
+//            $params = array('subject'=>$subject, 'orden'=>$orden);
+//            $message->subject = $subject;
+//            $message->setBody($params, 'text/html');
+//            $message->addTo($usuario->email);
+//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+//            Yii::app()->mail->send($message);
         }
         
         

@@ -4730,8 +4730,7 @@ public function actionReportexls(){
 	
             $message            = new YiiMailMessage;
             //Opciones de Mandrill
-            $message->activarPlantillaMandrill();
-            Yii::app()->mail->activarMandrill();            
+            $message->activarPlantillaMandrill();                     
             
             $orden = Orden::model()->findByPk(112);
             $usuario = $orden->user;

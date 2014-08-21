@@ -71,7 +71,7 @@
 
         if(!in_array($cadalook,$vacio)){
 
-        echo('<p> <strong>Nombre del look:</strong> '.$look->title.' | Creado por: <a href="#" title="ir al perfil">'.$look->user->profile->first_name.'</a></p>
+        echo('<p> <strong>Nombre del look:</strong> '.$look->title.' | Creado por: <a href="#" title="Ir al perfil">'.$look->user->profile->first_name.'</a></p>
             <div>
               <table class="table" width="100%" >
                 <thead>

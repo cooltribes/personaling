@@ -145,8 +145,24 @@ class YiiMailMessage extends CComponent {
 		return $this->message->setBody($body, $contentType, $charset);
 	}
         
+        /**
+         * - Se activa la plantilla de MailChimp/Mandrill que se usará con éste
+         * correo.
+         * 
+         * - Se activa el envío de correos a través de Mandrill, para permitir 
+         * tracking de open y clicks en este correo.
+         * 
+         * - Se pone como remitente a no-reply@personaling.com ya que estos
+         * correos transaccionales no deberían ser respondidos
+         */
+        
         public function activarPlantillaMandrill(){
+            
             $headers = $this->getHeaders();            
             $headers->addTextHeader('X-MC-Template', 'plantilla-correos-transaccionales|main');
+            
+            Yii::app()->mail->activarMandrill();  
+            
+            $this->from = array('no-reply@personaling.com' => 'Tu Personal Shopper Digital');
         }
 }

@@ -2546,12 +2546,52 @@ class BolsaController extends Controller
 		if(isset($_POST['idBolsa'])){	
 		
 			$bolsahas = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$_POST['idBolsa']));
+			$productos = array();
+			$looks = array();
 			
 			foreach($bolsahas as $uno){
+				$look_id = $uno->look_id;
 				$uno->delete();
+
+				// check si es el último producto de un look dentro de la bolsa
+                if($look_id != 0){
+                	$ultimo= BolsaHasProductotallacolor::model()->findByAttributes(array('bolsa_id'=>$_POST['idBolsa'], 'look_id'=>$look_id));
+                	if(!$ultimo){ // se acaba de eliminar el último producto del look, agrego datos para analytics
+                		$look = Look::model()->findByPk($look_id);
+                		
+                		$looks[] = array(
+							'id' => $look->id,
+							'name' => $look->title,
+							'category' => 'Looks',
+							'brand' => 'Personaling',
+							'price' => $look->getPrecioDescuento(),
+							'quantity' => 1,
+                		);
+                	}else{
+                		$response['ultimo'] = 'false';
+                	}
+                }
+
+				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$uno->preciotallacolor->producto->id));
+                $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$uno->preciotallacolor->producto->id));
+				
+				$productos[] = array(
+					'id' => $uno->preciotallacolor->producto->id,
+					'name' => $uno->preciotallacolor->producto->nombre,
+					'category' => $category->nombre,
+					'brand' => $uno->preciotallacolor->producto->mymarca->nombre,
+					'variant' => $uno->preciotallacolor->mycolor->valor." ".$uno->preciotallacolor->mytalla->valor,
+					'price' => $precio->precioImpuesto,
+					'quantity' => 1
+				);
 			}
 			
-			echo "ok";
+			echo json_encode(array(
+				'status'=>'ok',
+				'productos'=>$productos,
+				'looks'=>$looks
+			));
 		
 		}
 	}

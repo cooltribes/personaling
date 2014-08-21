@@ -144,4 +144,9 @@ class YiiMailMessage extends CComponent {
 		}
 		return $this->message->setBody($body, $contentType, $charset);
 	}
+        
+        public function activarPlantillaMandrill(){
+            $headers = $this->getHeaders();            
+            $headers->addTextHeader('X-MC-Template', 'plantilla-correos-transaccionales|main');
+        }
 }

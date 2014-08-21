@@ -68,6 +68,7 @@ $this->breadcrumbs=array(
 	<?php if(CCaptcha::checkRequirements()): ?>
 		<?php echo $form->captchaRow($model,'verifyCode',array(
             'hint'=>'Por favor escriba las letras que se muestran aquí arriba. No importa si están en mayúscula o minúscula.',
+            'showRefreshButton' => true,
         )); ?>
 	<?php endif; ?>
 

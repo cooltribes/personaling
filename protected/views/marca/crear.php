@@ -6,6 +6,18 @@ $this->breadcrumbs=array(
 );
 ?>
 
+
+	<?php if(Yii::app()->user->hasFlash('success')){?>
+	    <div class="alert in alert-block fade alert-success text_align_center">
+	        <?php echo Yii::app()->user->getFlash('success'); ?>
+	    </div>
+	<?php } ?>
+	<?php if(Yii::app()->user->hasFlash('error')){?>
+	    <div class="alert in alert-block fade alert-error text_align_center">
+	        <?php echo Yii::app()->user->getFlash('error'); ?>
+	    </div>
+	<?php } ?>
+
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'marca-form',
 	'enableAjaxValidation'=>false,
@@ -247,7 +259,7 @@ $this->breadcrumbs=array(
            
           </fieldset>
       </form>
-            </div>
+           </div>
         </div>
         
         
@@ -256,10 +268,20 @@ $this->breadcrumbs=array(
             	
             	<?php $this->widget('bootstrap.widgets.TbButton', array(
 					'buttonType'=>'submit',
+					'id'=>'botoncrear',
 					'type'=>'danger',
 					'size' => 'large',
 					'block'=>'true',
 					'label'=>$marca->isNewRecord ? 'Crear' : 'Guardar',
+				)); ?>
+				
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'buttonType'=>'submit',
+					'id'=>'botonnuevo',
+					'type'=>'danger',
+					'size' => 'large',
+					'block'=>'true',
+					'label'=>$marca->isNewRecord ? 'Guardar y Crear Otro' : 'Guardar y Crear Otro',
 				)); ?>
             	
                 <ul class="nav nav-stacked nav-tabs margin_top">
@@ -281,6 +303,37 @@ $this->breadcrumbs=array(
 <?php $this->endWidget(); ?>
 
 <script>
+	
+	$('#botoncrear').focusin( function () {// boton viejo
+			
+			revisado=0;
+			$.ajax({
+			url: "<?php echo Yii::app()->createUrl('Marca/busqueda') ?>",
+			type: 'GET',
+			data:{
+					revisado:revisado
+				 },
+			success: function(resp){
+			} 
+		 }); 
+			
+  	});	
+  	
+  	$('#botonnuevo').focusin( function () { //boton nuevo
+			
+			revisado=1;			
+			$.ajax({
+			url: "<?php echo Yii::app()->createUrl('Marca/busqueda') ?>",
+			type: 'GET',
+			data:{
+					revisado:revisado
+				 },
+			success: function(resp){
+			} 
+		 }); 
+  			//alert(revisado);
+  	});
+  	
 	
 	$('#limpiar').on('click', function() {
 			

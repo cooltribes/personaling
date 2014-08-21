@@ -1423,7 +1423,7 @@ public function actionCategorias2(){
     	$datos=$datos."<div class='modal-header'>";
 		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>";
 		$datos=$datos."<h3 id='myModalLabel'><a href='".$producto->getUrl()."' title='".$producto->nombre."'>".$producto->nombre."</a></h3></div>";
-		$datos=$datos."<div class='modal-body'>";
+		$datos=$datos."<div>";
    
    		$datos=$datos."<div class='row-fluid'>";
    		$datos=$datos."<div class='span7'><div class='carousel slide' id='myCarousel'>";

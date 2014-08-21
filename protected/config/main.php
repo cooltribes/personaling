@@ -185,7 +185,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		
 		'db'=>array(
-			'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingVE',
+			'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingDEV',
 			'emulatePrepare' => true,
 			'username' => 'personaling',
 			'password' => 'Perso123Naling',
@@ -298,7 +298,7 @@ return array(
 				    'mostrarMarcas'=>true,
 				    'mostrarChic'=>true,
 				    'country'=>'Venezuela',
-				    'zohoToken'=>'d6fffa2b10dd0ce94fcfda0ce52b76a4',
+				    'zohoToken'=>'2fdec0a5be36fa577120a6d14bc0ac45',
 		
 	),
 );

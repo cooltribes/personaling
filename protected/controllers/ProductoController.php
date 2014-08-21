@@ -371,7 +371,7 @@ public function actionReportexls(){
 					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 					
 					if($_POST['accion'] == "normal") // si es el boton principal
-						//$this->redirect(array('create','id'=>$exist->id));
+						$this->redirect(array('create','id'=>$exist->id));
 					
 					if($_POST['accion'] == "avanzar") // guardar y avanzar
 						$this->redirect(array('precios','id'=>$exist->id));
@@ -1871,11 +1871,12 @@ public function actionReportexls(){
             $view = new ProductoView;
             $view->producto_id = $producto->id;
             $view->user_id = Yii::app()->user->id;
-
+ 
             if (!$view->save())
                 Yii::trace('ProductoController.php:946, Error:' . print_r($view->getErrors(), true), 'registro');
+ 
 			$detect = new Mobile_Detect;
-			if(!$detect->isMobile()) 
+			if($detect->isMobile()) 
             	$this->render('_detalle_mobile', array('producto' => $producto));
 			else
 				$this->render('_view_detalle', array('producto' => $producto));

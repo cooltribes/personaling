@@ -1,5 +1,12 @@
 <?php
-
+/*
+ * tipoDescuento:
+ * 
+ * 0 = porcentaje
+ * 1 = Valor en euros 
+ * 
+ */
+  
 /**
  * This is the model class for table "{{look}}".
  *

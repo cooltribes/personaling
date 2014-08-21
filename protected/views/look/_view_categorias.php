@@ -30,9 +30,15 @@
 					?>	
 	<ul class="thumbnails">
               <?php
-              foreach($categorias as $categoria){
+             
+              foreach($categorias as $space=>$categoria){
+              	if($space%3==0 && $space!=0)
+              		echo '<li class="span4" style="margin-left:0px" draggable="false" >';
+              	else
+					echo '<li class="span4" draggable="false" > ';	 
               ?>
-              <li class="span6" draggable="false" > 
+              
+    
               	<div>
               		
               		
@@ -40,7 +46,7 @@
               		$a = $categoria->getImage($categoria->id);
               		
               		if($a!="no")// tiene img
-              			$image = CHtml::image(Yii::app()->baseUrl . $a, "categoria", array('id'=>'img-categoria'));
+              			$image = CHtml::image(Yii::app()->baseUrl . $a,"Personaling - ".$categoria->nombre, array('id'=>'img-categoria'));
 					else
               			$image = CHtml::image("http://placehold.it/140");
 

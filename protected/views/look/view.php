@@ -210,11 +210,12 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                              'success' => "function( data )
                                   {
+                                    console.log(data);
                                     var invitado = ".(Yii::app()->user->isGuest ? "true":"false")."
                                      if(invitado){
                                         agregarBolsaGuest(data);
                                      }else{
-                                        console.log(data);
+                                        
                                          if(data.status == 'ok')
                                         {
                                           ga('ec:addProduct', {
@@ -389,13 +390,26 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                              'success' => "function( data )
                                   {
-
                                     var invitado = ".(Yii::app()->user->isGuest ? "true":"false")."
                                      if(invitado){
                                         agregarBolsaGuest(data);
                                      }else{
-                                         if(data.status == 'ok')
+                                        if(data.status == 'ok')
                                         {
+                                          for (var index = 0; index < data.productos.length; ++index) {
+                                              console.log(data.productos[index]);
+                                              ga('ec:addProduct', {
+                                                'id': data.productos[index].id,
+                                                'name': data.productos[index].name,
+                                                'category': data.productos[index].category,
+                                                'brand': data.productos[index].brand,
+                                                'variant': data.productos[index].variant,
+                                                'price': data.productos[index].price,
+                                                'quantity': data.productos[index].quantity,
+                                              });
+                                              ga('ec:setAction', 'add');
+                                              ga('send', 'event', 'UX', 'click', 'add to cart');     // Send data using an event.
+                                          }
                                           ga('ec:addProduct', {
                                             'id': data.id,
                                             'name': data.name,

@@ -287,9 +287,11 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 				Yii::app()->user->setFlash('contact','Gracias por contactarnos. Te estaremos respondiendo a la brevedad.');
 				
 				/* Creando el caso */ 
+				
+				$usuario = User::model()->findByAttributes(array('email'=>$_POST['ContactForm']['email']));
 									
 				$zohoCase = new ZohoCases;
-				$zohoCase->Subject = "Formulario Contáctanos - ".$_POST['ContactForm']['email'];
+				$zohoCase->Subject = "Formulario Contáctanos - ".$_POST['ContactForm']['email']." - ".date("d-m-Y");
 				$zohoCase->Priority = "High";
 				$zohoCase->Email = $_POST['ContactForm']['email'];
 				$zohoCase->Description = "A través del formulario. Asunto: ".$_POST['ContactForm']['subject'].". Mensaje: ".$_POST['ContactForm']['body'];
@@ -298,6 +300,17 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 				$zohoCase->Status = "New";
 				$zohoCase->type = "Problem"; 
 				$zohoCase->reason = $_POST['ContactForm']['motivo']; 
+				 
+				if(isset($usuario)){ 
+					if($usuario->tipo_zoho == 0){ 
+						$zohoCase->posible = $usuario->profile->first_name." ".$usuario->profile->last_name;
+						$zohoCase->posible_id = $usuario->zoho_id;
+					}
+					else if($usuario->tipo_zoho == 1){
+						$zohoCase->related = $usuario->profile->first_name." ".$usuario->profile->last_name;
+						$zohoCase->related_id = $usuario->zoho_id; 
+					}
+				}
 									
 				$respuesta = $zohoCase->save_potential(); 
 				

@@ -104,18 +104,7 @@
 
               }  ?>
                 
-<!--                 <div class="btn-group hidden-phone">
-                  <button class="dropdown-toggle btn-mini btn-success" data-toggle="dropdown"><span class="">&#59157; Compartir</span></button>
-                  <ul class="dropdown-menu addthis_toolbox addthis_default_style ">
-                    
-                    <li><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> </li>
-                    <li><a class="addthis_button_tweet"></a></li>
-                    <li><a class="addthis_button_pinterest_pinit"></a></li>
-                  </ul>
-                  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script> 
-                  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script> 
-                  
-                </div> -->
+
             </div>
           </div>
           <div class="row">
@@ -160,7 +149,7 @@
         { 
           $colorPredet = $img->color_id;
           
-          echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "producto", array('id'=>'principal','rel'=>'image_src'));
+          echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "Personaling - ".$producto->nombre, array('id'=>'principal','rel'=>'image_src'));
           echo "<!-- FOTO principal OFF -->";
 		  
 		   if($producto->mymarca->is_100chic){
@@ -179,7 +168,7 @@
         
           //imprimiendo igual la primera en thumbnail
           $pri = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
-          echo CHtml::image( str_replace(".","_x90.",$img->getUrl()) , "Imagen ", array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));          
+          echo CHtml::image( str_replace(".","_x90.",$img->getUrl()) , "Personaling - ".$producto->nombre, array("width" => "90", "height" => "90",'id'=>'thumb'.$pri->id,'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));          
               
         }
         
@@ -188,7 +177,7 @@
           {
             //luego el resto para completar el scroll         
             
-            echo CHtml::image( str_replace(".","_x90.",$img->getUrl()), "Imagen", array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
+            echo CHtml::image( str_replace(".","_x90.",$img->getUrl()), "Personaling - ".$producto->nombre, array("width" => "90", "height" => "90", 'id'=>'thumb'.$img->id, 'class'=>'miniaturas_listado_click','style'=>'cursor: pointer'));
             
           }// color
         }// que no es la primera en el orden

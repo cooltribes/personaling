@@ -1538,6 +1538,72 @@ src: url('../fonts/entypo.woff'),
 
 /*------------- Detalle de Producto ON -------------*/
 
+//------------- Mobile ON --------------------------------//
+
+.item img{
+    margin: 0 auto;
+  }
+  
+.half{
+  width:50%; float:left;
+}
+  
+.complete{
+  width:100%;
+}
+
+.fifth4{
+  width:80%; float:left;
+}
+
+.fifth{
+  width:20%; float:left;
+}
+
+
+//-------------- Mobile OFF -----------------------------//
+
+
+
+
+#btn-encanta{
+                       border-radius: 0;
+                      background-color: #E3DEDE;
+                      background-image: url('../images/icon_corazon_vacio.png');
+                      background-repeat: no-repeat;
+                      background-position-x: 11px;
+                      background-position-y: 9px;  
+                      text-shadow: none;                    
+ }   
+.btn-danger_modificado{
+                      background: @negro !important;
+                      background-image: url('../images/icon_corazon_lleno.png') !important;
+                      background-repeat: no-repeat !important;
+                      background-position-x: 11px !important;
+                      background-position-y: 9px !important;  
+                      color: #FFF !important;
+}      
+#total-likes{
+                      background: #E3DEDE;
+                      color: #3C4141;              
+                      display: inline-block;
+                      font-size: 12px;
+                      height: 25px;
+                      line-height: 23px;
+                      left: -12px;
+                      padding: 2px 6px;
+                      position: relative;
+                      border-left-style: solid;
+                      border-left-width: 1px;
+}
+
+
+
+
+
+
+
+
 .detalle_producto{
     
     //** Icono de Descuento ON **//
@@ -1909,6 +1975,54 @@ src: url('../fonts/entypo.woff'),
 /*------------ Mensajes/Notificaciones OFF -------------*/
 
 /*------------ Detalle del Look ON --------------*/
+.detalle_look_mobile{
+  .row-fluid .span12 .imagen_principal .img_1{
+    border:0px;
+  }
+  .span8 .precioslook {
+    .text_align_center;
+    .precio{
+        font-weight:500;
+        font-size:1.7em;
+        margin-top:0;
+        
+          .entypo{
+              color:#ff9600;
+          }
+          span{
+              font-size: 0.5em;
+              display:block;
+              font-weight: bold;
+              color:#999;
+          }
+          
+              .leyenda{
+                font-size: 0.4em;
+                margin-bottom: 0;
+              }
+              .monto{
+                font-weight: 500;
+                margin-top: -5px;
+                font-size:0.8em;
+              }
+
+          
+          
+        
+     }
+         
+  }
+  
+  .span8 .marcas{
+    text-align:right;
+    font-size:0.9em;
+    font-weight:500;
+  }
+    
+  
+  
+}
+
 
 
 .detalle_look{
@@ -2722,6 +2836,10 @@ display:none;
     .margin_top_medium;
     .margin_bottom_large;
     }
+.braker_horz{
+    background: url(../images/braker_horz_1.png) no-repeat center top;
+    padding:10px 0;
+     }
 .form-search .input-append .btn{
     border-radius:0;
     -moz-border-radius:0;
@@ -4300,6 +4418,15 @@ img[alt="Loading"]{
 .bolsa-authGC , .bolsa-pagoGC, .bolsa-confirmarGC, .bolsa-errorGC{
     #navegacion_principal  .nav, #wrapper_footer{ display: none;}
 }
+
+.descuento_look_bolsa
+{   border: solid 1px #888;
+    padding: 1.2em;
+    text-align: center;
+    font-weight: bold;
+    color: #666;
+}
+
 /*--------------- HACKS ON --------------------*/
 #profile-form{
     select#Profile_pais, select#Profile_day, #Profile_sex_0{
@@ -4762,9 +4889,16 @@ img[alt="Loading"]{
     display:none;
   }
   
-  
-  
 }
+
+@media  (min-width: 779px) {
+  .lookmobile{
+    width:780px;
+   }
+}
+
+
+
 @media  (max-width: 768px) {
   #btnTodos{
     height:auto;

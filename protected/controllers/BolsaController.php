@@ -34,7 +34,7 @@ class BolsaController extends Controller
                     'pagos','eliminar','compra', 'direcciones','confirmar','comprar',
                     'pedido','cpago', 'pedidoGC','comprarGC','clickBotonConfirmar', 
                     'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 
-                    'agregar2',),
+                    'agregar2','eliminarLook',),
                     'users'=>array('@'),
                 ),                
                 array('deny',  // deny all users
@@ -122,9 +122,27 @@ class BolsaController extends Controller
 			}
 			if (isset($_POST['look_id'])){
 				$todos = true;
+				$productos_look = array();
 				foreach($_POST['producto'] as $key => $value){ 
 					list($producto_id,$color_id) = explode("_",$value);
 					$response = $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
+					
+					$producto = Producto::model()->findByPk($producto_id);
+					$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$producto_id,'talla_id'=>$_POST['talla'.$value],'color_id'=>$color_id));
+					$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$producto_id));
+	                $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+	                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto_id));
+					if($producto){
+						$productos_look[] = array(
+							'id' => $ptcolor->producto->id,
+							'name' => $ptcolor->producto->nombre,
+							'category' => $category->nombre,
+							'brand' => $ptcolor->producto->mymarca->nombre,
+							'variant' => $ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor,
+							'price' => $precio->precioImpuesto,
+							'quantity' => 1
+						);
+					}
 					if($response == 'fail'){
 						$todos = false;
 					}
@@ -139,7 +157,8 @@ class BolsaController extends Controller
 						'brand' => 'Personaling',
 						'variant' => 'Look',
 						'price' => $look->getPrecioDescuento(),
-						'quantity' => 1
+						'quantity' => 1,
+						'productos' => $productos_look
 					));
 				}
 			} else {
@@ -348,26 +367,95 @@ class BolsaController extends Controller
 			$model= BolsaHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$_POST['prtc']));
 			           
             if ($model) {
+            	$look_id = $model->look_id;
+            	$bolsa_id = $model->bolsa_id;
+            	$response = array();
                 $model->delete();
+
+                // check si es el último producto de un look dentro de la bolsa
+                if($look_id != 0){
+                	$ultimo= BolsaHasProductotallacolor::model()->findByAttributes(array('bolsa_id'=>$bolsa_id, 'look_id'=>$look_id));
+                	if(!$ultimo){ // se acaba de eliminar el último producto del look, agrego datos para analytics
+                		$look = Look::model()->findByPk($look_id);
+                		$response['ultimo'] = 'true';
+                		$response['look'] = array(
+							'id' => $look->id,
+							'name' => $look->title,
+							'category' => 'Looks',
+							'brand' => 'Personaling',
+							'price' => $look->getPrecioDescuento(),
+							'quantity' => 1,
+                		);
+                	}else{
+                		$response['ultimo'] = 'false';
+                	}
+                }
             	
 				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$model->preciotallacolor->producto->id));
                 $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
                 $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->preciotallacolor->producto->id));
-				echo json_encode(array(
-					'status' => 'ok',
-					'id' => $model->preciotallacolor->producto->id,
-					'name' => $model->preciotallacolor->producto->nombre,
-					'category' => $category->nombre,
-					'brand' => $model->preciotallacolor->producto->mymarca->nombre,
-					'variant' => $model->preciotallacolor->mycolor->valor." ".$model->preciotallacolor->mytalla->valor,
-					'price' => $precio->precioImpuesto,
-					'quantity' => $model->cantidad
-				));
+                $response['status'] = 'ok';
+                $response['id'] = $model->preciotallacolor->producto->id;
+                $response['name'] = $model->preciotallacolor->producto->nombre;
+                $response['category'] = $category->nombre;
+                $response['brand'] = $model->preciotallacolor->producto->mymarca->nombre;
+                $response['variant'] = $model->preciotallacolor->mycolor->valor." ".$model->preciotallacolor->mytalla->valor;
+                $response['price'] = $precio->precioImpuesto;
+                $response['quantity'] = $model->cantidad;
+                
+				echo json_encode($response);
 			}   
         }
         else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
     }
+
+
+    /*
+	 * 
+	 * action para eliminar un look completo de la bolsa
+	 * 
+	 * */
+    public function actionEliminarLook() {
+        if (Yii::app()->request->isPostRequest) {
+        	$elementos_bolsa = BolsaHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$_POST['look_id'], 'bolsa_id'=>$_POST['bolsa_id']));
+        	$look = Look::model()->findByPk($_POST['look_id']);
+        	$productos_look = array();
+        	foreach ($elementos_bolsa as $model) {
+        		$model->delete();
+        		
+				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$model->preciotallacolor->producto->id));
+                $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$model->preciotallacolor->producto->id));
+				
+					$productos_look[] = array(
+						'id' => $model->preciotallacolor->producto->id,
+						'name' => $model->preciotallacolor->producto->nombre,
+						'category' => $category->nombre,
+						'brand' => $model->preciotallacolor->producto->mymarca->nombre,
+						'variant' => $model->preciotallacolor->mycolor->valor." ".$model->preciotallacolor->mytalla->valor,
+						'price' => $precio->precioImpuesto,
+						'quantity' => 1
+					);
+				
+        	}
+			           
+			echo json_encode(array(
+				'status' => 'ok',
+				'id' => $look->id,
+				'name' => $look->title,
+				'category' => 'Looks',
+				'brand' => 'Personaling',
+				'price' => $look->getPrecioDescuento(),
+				'quantity' => 1,
+				'productos' => $productos_look
+			));
+			
+        }
+        else
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+    }
+
 	/*
 	 * 
 	 * para validar los datos del usuario 

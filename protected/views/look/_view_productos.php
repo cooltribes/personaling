@@ -28,6 +28,7 @@ if (isset($categoria_padre) ){
 ?>	
 <div class="row-fluid"><ul class="thumbnails">
 	<?php
+	$space=0;
 	foreach($productos as $producto){
 		/*
 		$tallacolores=Preciotallacolor::model()->findAll(array(
@@ -66,8 +67,15 @@ if (isset($categoria_padre) ){
 				$imagecolor = $producto->colorimage( array('condition'=>'color_id=:color_id','params' => array(':color_id'=>$tallacolor->color_id) ) ); 
 				if(isset($imagecolor)){
 					if ( $producto->getImageUrl($tallacolor->color_id)!="http://placehold.it/180"){
+							if($space%3==0 && $space!=0)
+			              		echo '<li class="span4" style="margin-left:0px" >';
+			              	else
+								echo '<li class="span4" > ';
+						
 						?>
-						<li class="span6" > 
+						
+						
+				
 							<div class=" column" draggable="true" id="div_producto<?php echo $producto->id."_".$tallacolor->color_id; ?>">
 								<div class="new" id="div<?php echo $producto->id."_".$tallacolor->color_id; ?>">
 
@@ -90,7 +98,7 @@ if (isset($categoria_padre) ){
 									//echo $image;
 									
 									
-									echo CHtml::image($producto->getImageUrl($tallacolor->color_id), "Imagen", array("width" => "180", "height" => "180"));
+									echo CHtml::image($producto->getImageUrl($tallacolor->color_id), "Personaling - ".$producto->nombre, array("width" => "180", "height" => "180"));
 									//echo CHtml::image(Yii::app()->createUrl('site/productoImagen',array('producto'=>$producto->id,'color'=>$tallacolor->color_id,'h'=>180,'w'=>180)), "Imagen", array("width" => "180", "height" => "180"));
 									
 									
@@ -141,6 +149,7 @@ if (isset($categoria_padre) ){
 							?>              	
 						</li>
 						<?php 
+						$space++;
 					} // if
 				} // if isset image color (no mostrar color si no tiene imagen)
 			} //foreach

@@ -27,10 +27,10 @@
 		<!--	<div class="has_100chic"></div> -->
       	<?php }?>
       	<?php if ($pages->currentPage > 0){ ?>
-      	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')).$mod_time, "Look", array("id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
+      	<?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')).$mod_time, "Personaling - ".$look->title, array("id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
       	<?php }else{ ?>
       	<?php echo CHtml::image(Yii::app()->baseUrl .'/images/loading.gif','Loading',array('class'=>'imgloading','id'=>"imgloading".$look->id)); ?>                            	
-        <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')).$mod_time, "Look", array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
+        <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$look->id,'w'=>'368','h'=>'368')).$mod_time, "Personaling - ".$look->title, array("style"=>"display: none","id" => "imglook".$look->id,"width" => "368", "height" => "368", 'class'=>'imglook')); ?>
         <?php } ?>
         	         
                   	<?php echo CHtml::link($image,$look->getUrl()); ?>
@@ -72,6 +72,55 @@
             <div class="mis_looks">
               <div class="mis_looks_titulo"><?php echo $look->title; ?></div>
               <div class="mis_looks_descripcion"><?php echo $look->description; ?></div>
+              <script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
+              <div>
+                <?php
+                // twitter button
+                echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_twitter_2.png', 'Compartir en twitter', array('width'=>40, 'height'=>40)),
+                  'https://twitter.com/intent/tweet?url='.Yii::app()->getBaseUrl(true).'/look/'.$look->id.'&text='.$look->title.'&lang=es&via=Personaling'
+                );
+                
+
+                // facebook button
+                echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_facebook_2.png', 'Compartir en facebook', array('width'=>40, 'height'=>40)),
+                  Yii::app()->getBaseUrl(true).'/look/'.$look->id,
+                  array(
+                    'data-image'=>'/look/'.$look->id.'.png',
+                    'data-title'=>$look->title,
+                    'data-desc'=>$look->description,
+                    'class'=>'facebook_share'
+                  )
+                );
+
+                // pinterest button
+                echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_pinterest_2.png', 'Compartir en pinterest', array('width'=>40, 'height'=>40)),
+                  '//pinterest.com/pin/create/button/?url='.Yii::app()->getBaseUrl(true).'/look/'.$look->id.'&description='.$look->title.'&media='.Yii::app()->getBaseUrl(true).'/images/look/'.$look->id.'.png',
+                  array(
+                    'target'=>'_blank'
+                  )
+                );
+
+                // polyvore button
+                echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_polyvore_2.png', 'Compartir en polyvore', array('width'=>40, 'height'=>40)),
+                  'http://www.polyvore.com?url='.Yii::app()->getBaseUrl(true).'/look/'.$look->id.'&description='.$look->title.'&media='.Yii::app()->getBaseUrl(true).'/images/look/'.$look->id.'.png',
+                  array(
+                    'target'=>'_blank',
+                    'name'=>'addToPolyvore',
+                    'id'=>'addToPolyvore',
+                    'data-product-url'=>Yii::app()->getBaseUrl(true).'/look/'.$look->id,
+                    'data-image-url'=>Yii::app()->getBaseUrl(true).'/images/look/'.$look->id.'.png',
+                    'data-name'=>$look->title,
+                    //'data-price'=>$look->getPrecioDescuento(),
+                  )
+                );
+                ?>
+                <script type="text/javascript" src="http://akwww.polyvorecdn.com/rsrc/add_to_polyvore.js"></script>
+              </div>
+              
             </div>
           </div>
         <div class="share_like">
@@ -103,6 +152,23 @@
     console.log('clicking');
    // FB.Canvas.scrollTo(0,0);        
 	});
+  window.fbAsyncInit = function(){
+    FB.init({
+        appId: '323808071078482', status: true, cookie: true, xfbml: true }); 
+  };
+  (function(d, debug){var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];if   (d.getElementById(id)) {return;}js = d.createElement('script'); js.id = id; js.async = true;js.src = "//connect.facebook.net/es_ES/all" + (debug ? "/debug" : "") + ".js";ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
+  function postToFeed(title, desc, url, image){
+    var obj = {method: 'feed',link: url, picture: 'http://www.personaling.es/images/'+image,name: title,description: desc};
+    function callback(response){}
+  FB.ui(obj, callback);
+  }
+
+  $('.facebook_share').click(function(){
+    elem = $(this);
+    postToFeed(elem.data('title'), elem.data('desc'), elem.prop('href'), elem.data('image'));
+
+    return false;
+  });
 </script>
 
 	<?php $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(

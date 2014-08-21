@@ -82,6 +82,13 @@ function getMonthsArray()
 	),
 	
 )); ?>
+          
+        <?php $this->widget('bootstrap.widgets.TbButton', array(    
+            'label'=>'Enviar Email',
+            'type'=>'danger',    
+            'url'=>$this->createUrl("admin/sendMandrillEmail"),                
+        )); ?>
+          
         <fieldset>
           <legend >Datos de Usuario: </legend>
           <?php echo $form->textFieldRow($model,'email',array('class'=>'span5',)); ?>

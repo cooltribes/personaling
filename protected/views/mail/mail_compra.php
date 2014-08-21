@@ -94,7 +94,7 @@
                                                                 
                                                                 <?php
                                                                     $user = User::model()->findByPk(Yii::app()->user->id);
-																	$tipo_pago = $orden->getTipoPago();
+                                                                    $tipo_pago = $orden->getTipoPago();
                                                                    // $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                     //echo $orden->pago_id;
                                                                 ?>

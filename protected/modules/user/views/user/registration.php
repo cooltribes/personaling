@@ -279,13 +279,14 @@ function check_fb(){
 
 			FB.api('/me/picture?type=large', function(response) {
                 //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
-                console.log(response);
+                //console.log(response);
                 if(response.data.is_silhouette != 'false'){
                 	$('#facebook_picture').val(response.data.url);
                 }
             });
                     
             FB.api('/me', function(response) {
+            	//console.log(response);
                 //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
                 
                 
@@ -321,12 +322,12 @@ function check_fb(){
                     }
 
                     $('#registration-form').submit();
-            }, {scope: 'email,user_birthday'});
+            }, {scope: 'email,user_birthday,user_interests'});
         } else {
             FB.login(function(response) {
                 if (response.authResponse) {
                 	//user is already logged in and connected (using information)
-                    console.log('Welcome!  Fetching your information.... ');
+                    //console.log('Welcome!  Fetching your information.... ');
 
                     FB.api('/me/picture?type=large', function(response) {
 		                if(response.data.is_silhouette != 'false'){
@@ -335,13 +336,13 @@ function check_fb(){
 		            });
                     
                     FB.api('/me', function(response) {
-                        console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
-						console.log(response.user_birthday);
+                        //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+						//console.log(response.user_birthday);
 						
 						//$("#registration-form").fadeOut(100,function(){
 	     					var ciudad=response.location.name;
- 					ciudad=ciudad.split(",");
- 					ciudad=ciudad[0];
+	 					ciudad=ciudad.split(",");
+	 					ciudad=ciudad[0];
  		
                     		$('#Profile_ciudad').val(ciudad);
 	     					$('#facebook_id').val(response.id);
@@ -389,11 +390,10 @@ function check_fb(){
                         });*/
                         
                     });
-                    
                 } else {
                     console.log('User cancelled login or did not fully authorize.');
                 }
-            }, {scope: 'email,user_birthday'});
+            }, {scope: 'email,user_birthday,user_interests'});
         }
     });
 }

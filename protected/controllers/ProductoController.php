@@ -44,7 +44,7 @@ class ProductoController extends Controller
                         'recatprod','seo', 'historial','importar','descuentos',
                         'reporte','reportexls', "createExcel", 'plantillaDescuentos',
                         'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
-                        'importarExternos'),
+                        'importarExternos', 'sendMandrillEmail'),
                     //'users'=>array('admin'),
                     'expression' => 'UserModule::isAdmin()',
                 ),
@@ -3760,8 +3760,8 @@ public function actionReportexls(){
         
         
         
-        public function exportarExcelInbound($idMarca){
-		
+        public function exportarExcelInbound($idMarca){	
+            
             Yii::import('ext.phpexcel.XPHPExcel');
             $objPHPExcel = XPHPExcel::createPHPExcel();
 
@@ -4722,6 +4722,32 @@ public function actionReportexls(){
                         echo CJSON::encode($response);
                     }
                 }
+                
+                
+        public function actionSendMandrillEmail()
+	{
+	
+            $message            = new YiiMailMessage;
+            //Opciones de Mandrill
+            $message->activarPlantillaMandrill();
+            Yii::app()->mail->activarMandrill();            
+            
+            $subject = 'Comprando prueba';
+            $body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>
+                Recibes este correo porque se ha registrado tu dirección en Personaling.
+                Por favor valida tu cuenta haciendo click en el enlace que aparece 
+                a continuación:<br/> <br/>  <a href="http://www.google.com">Haz click aquí</a>';			            
+            $message->subject    = $subject;
+            $message->setBody($body, 'text/html');                
+            $message->addTo("nramirez@upsidecorp.ch");
+            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+
+            Yii::app()->mail->send($message);
+            Yii::app()->user->setFlash('success',"El
+                correo electrónico de verificacion ha sido reenviado a <b>nramirez@upsidecorp.ch</b>");
+            $this->redirect(array('/user/admin/update', "id" => 5322));
+		
+	}
                 
                 
                 

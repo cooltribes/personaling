@@ -190,6 +190,7 @@ class YiiMail extends CApplicationComponent
 			implode('', $message->headers->getAll())."\n".
 			$message->body
 		;
+		
 		Yii::log($msg, CLogger::LEVEL_INFO, 'ext.yii-mail.YiiMail'); // TODO: attempt to determine alias/category at runtime
 		return $msg;
 	}
@@ -239,4 +240,19 @@ class YiiMail extends CApplicationComponent
 		Yii::registerAutoloader(array('Swift','autoload'));
 		require dirname(__FILE__).'/vendors/swiftMailer/swift_init.php';
 	}
+    /**
+    * Setear las opciones de Mandrill
+    */
+    public function activarMandrill() {
+    	$this->transportType = "smtp";
+        
+    	$this->transportOptions = array(
+            "host" => "smtp.mandrillapp.com",
+            "port" => 587,
+            "username" => "johann@personaling.com",
+            "password" => "PEfcgPXzlPx70kAlHxjnkA",          
+            
+        );
+    }
+    
 }

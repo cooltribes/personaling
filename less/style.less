@@ -1550,7 +1550,7 @@ src: url('../fonts/entypo.woff'),
   
 .complete{
   width:100%;
-}
+} 
 
 .fifth4{
   width:80%; float:left;
@@ -1558,6 +1558,14 @@ src: url('../fonts/entypo.woff'),
 
 .fifth{
   width:20%; float:left;
+}
+
+.fifth3{
+  width:60%; float:left;
+}
+ 
+.fifth2{
+  width:40%; float:left;
 }
 
 
@@ -1979,6 +1987,29 @@ src: url('../fonts/entypo.woff'),
   .row-fluid .span12 .imagen_principal .img_1{
     border:0px;
   }
+  
+  .productos_del_look .row-fluid .span6{
+     border: solid 1px #DDD;
+     padding: 6px;
+     .complete{
+      .fifth2{
+        vertical-align: middle;
+        line-height: 35px;
+        font-size: 25px;
+        color: #000;
+      }
+      .fifth3{
+        h5{
+          margin:0;
+        }
+      }
+  }
+  .complete.container{
+    border: solid 1px #DDD;
+    padding: 6px;
+    margin: -7px;
+  }
+}
   .span8 .precioslook {
     .text_align_center;
     .precio{
@@ -2010,6 +2041,7 @@ src: url('../fonts/entypo.woff'),
           
         
      }
+   
          
   }
   
@@ -2022,6 +2054,32 @@ src: url('../fonts/entypo.woff'),
   
   
 }
+
+@media (max-width: 290px) {
+ .detalle_look_mobile{
+      .productos_del_look .row-fluid .span6 .complete{
+            .fifth2{
+                font-size: 18px;
+            }
+       }
+}
+   .complete .fifth4{
+      text-align:right;
+   } 
+} 
+
+@media (max-width: 380px) {
+   .complete .fifth4{
+      text-align:right;
+   } 
+} 
+
+
+
+
+
+
+
 
 
 
@@ -3764,7 +3822,13 @@ img[alt="Loading"]{
     h4{
         .color1;
         .margin_bottom_medium;
-        .margin_top_medium;}
+        .margin_top_medium;
+        a{
+          padding:4px 8px;  
+        }
+           
+    }
+     
     .canvas img{
         margin:20px;}
     .canvas{

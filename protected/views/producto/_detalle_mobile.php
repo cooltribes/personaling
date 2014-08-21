@@ -33,7 +33,7 @@
 				$colorPredet = $img->color_id;
 				
 				echo '<div class="item active">';	
-				echo  CHtml::image($img->getUrl(array('ext'=>'jpg')), $producto->nombre, array("width" => "450", "height" => "450"));
+				echo  CHtml::image($img->getUrl(array('ext'=>'jpg')), "Personaling - ".$producto->nombre, array("width" => "450", "height" => "450"));
 				echo '</div>';
 			}
 				
@@ -41,7 +41,7 @@
 				if($colorPredet == $img->color_id)
 				{
 					echo '<div class="item">';
-					echo CHtml::image($img->getUrl(array('ext'=>'jpg')), $producto->nombre, array("width" => "450", "height" => "450"));
+					echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "Personaling - ".$producto->nombre, array("width" => "450", "height" => "450"));
 					echo '</div>';
 				}
 			}// que no es la primera en el orden

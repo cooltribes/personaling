@@ -421,36 +421,8 @@ $('#btn_atras').click(function(){
 });	
 */
 </script>
-<div class="container margin_top" id="crear_look">
-  <div class="row">
-    <div class="span4">
-      <h1><?php echo Yii::t('contentForm', 'Create Look'); ?></h1>
-    </div>
-    <div class="span8 margin_top_small"><?php $this->widget('bootstrap.widgets.TbButton', array(
-	    'label'=>Yii::t('contentForm', 'Next'),
-	    'type'=>'danger',
-		'buttonType' => 'ajaxSubmit',
-	    'htmlOptions'=> array(
-		     // 'data-toggle'=>'modal',
-			//	'data-target'=>'#dialogPublicar',
-				'class'=>'pull-right margin_left_small', 
-		        'onclick'=>"{addPublicar(1);}",
-		        'disabled'=>'disabled',
-		        'id'=>'btn_siguiente',
-		       ),	    
-	)); ?>
-    <?php $this->widget('bootstrap.widgets.TbButton', array(
-	    'label'=>Yii::t('contentForm', 'Save draft'),
-	   // 'type'=>'danger',
-
-	    'htmlOptions'=> array(
-		     // 'data-toggle'=>'modal',
-			//	'data-target'=>'#dialogPublicar',
-				'class'=>'pull-right', 
-		        'onclick'=>"{addPublicar(0);}"
-		       ),	    
-	)); ?></div>
-  </div>
+<div class="container margin_top_small" id="crear_look">
+  
   <!-- FLASH ON -->
   <?php $this->widget('bootstrap.widgets.TbAlert', array(
         'block'=>true, // display a larger alert block?
@@ -464,7 +436,7 @@ $('#btn_atras').click(function(){
 ); ?>
   <!-- FLASH OFF -->
   
-  <hr/>
+
   <?php
 	$list = CHtml::listData($models, 'id', 'nombre');
   ?>
@@ -484,8 +456,38 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               array('empty' => 'Seleccione una campaña', 'options' => array($model->campana_id => array('selected' => true))));
 		?>
           <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
+            <a  title="Traer al frente" class="btn" id="btn_frente"><?php echo Yii::t('contentForm', 'Bring front'); ?></a>
+            <a  title="Llevar atrás" class="btn" id="btn_atras"> <?php echo Yii::t('contentForm', 'Send back') ?></a>
+             <?php $this->widget('bootstrap.widgets.TbButton', array(
+	    'label'=>Yii::t('contentForm', 'Save draft'),
+	   // 'type'=>'danger',
+
+	    'htmlOptions'=> array(
+	    'style'=>'padding:4px 6px',
+		     // 'data-toggle'=>'modal',
+			//	'data-target'=>'#dialogPublicar',
+				//'class'=>'pull-right', 
+		        'onclick'=>"{addPublicar(0);}"
+		       ),	    
+	)); ?>
+            
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
+	    'label'=>Yii::t('contentForm', 'Next'),
+	    'type'=>'danger',
+		'buttonType' => 'ajaxSubmit',
+	    'htmlOptions'=> array(
+	    'style'=>'padding:4px 6px',
+		     // 'data-toggle'=>'modal',
+			//	'data-target'=>'#dialogPublicar',
+				//'class'=>'pull-right margin_left_small', 
+		        'onclick'=>"{addPublicar(1);}",
+		        'disabled'=>'disabled',
+		        'id'=>'btn_siguiente',
+		       ),	    
+	)); ?>
+   
         </h4>
-        <a  title="Traer al frente" class="btn" id="btn_frente"><?php echo Yii::t('contentForm', 'Bring front'); ?></a> <a  title="Llevar atrás" class="btn" id="btn_atras"> <?php echo Yii::t('contentForm', 'Send back') ?></a>
+      
         <!--
         <a href="#" title="Borrar" class="btn"><i class="icon-trash"></i></a> <a href="#" title="Flip" class="btn"><i class="icon-resize-horizontal"></i> Flip</a> <a href="#" title="Copiar" class="btn">Copiar</a> <a href="#" title="Traer al frente" class="btn"> Traer al frente</a> <a href="#" title="Llevar atrás" class="btn"> Llevar atrás</a>
         

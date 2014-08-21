@@ -903,7 +903,22 @@ if(!Yii::app()->user->isGuest){
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-1015357-44', 'auto');
+  // New Google Analytics code to set User ID.
+
+    <?php
+    // New Google Analytics code to set User ID.
+    // $userId is a unique, persistent, and non-personally identifiable string ID.
+    if (isset(Yii::app()->user->id)) {
+      $gacode = "ga('create', 'UA-1015357-44', { 'userId': '%s' });";
+      echo sprintf($gacode, Yii::app()->user->id);
+      $setcode = "ga('set', '&uid', %s);";
+      echo sprintf($setcode, Yii::app()->user->id);
+    }else{
+        $gacode = "ga('create', 'UA-1015357-44', 'auto');";
+        echo sprintf($gacode);
+    }
+    ?>
+  //ga('create', 'UA-1015357-44', 'auto');
    ga('require', 'displayfeatures');
   ga('send', 'pageview');
   ga('require', 'ec');

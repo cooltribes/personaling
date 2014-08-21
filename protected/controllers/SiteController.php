@@ -315,8 +315,8 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 				$respuesta = $zohoCase->save_potential(); 
 				
 				$model=new ContactForm; 
-				$this->render('contact',array('model'=>$model));
-				
+			//	$this->render('contact',array('model'=>$model));
+				$this->redirect(array('contacto')); 
 			}
 		}
 		

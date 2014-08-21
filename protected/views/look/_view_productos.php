@@ -68,7 +68,7 @@ if (isset($categoria_padre) ){
 				if(isset($imagecolor)){
 					if ( $producto->getImageUrl($tallacolor->color_id)!="http://placehold.it/180"){
 							if($space%3==0 && $space!=0)
-			              		echo '<li class="span4" style="margin-left:0px" >';
+			              		echo '<li class="span4 no_margin_left"  >';
 			              	else
 								echo '<li class="span4" > ';
 						

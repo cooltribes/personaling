@@ -156,10 +156,13 @@ class YiiMailMessage extends CComponent {
          * correos transaccionales no deberían ser respondidos
          */
         
-        public function activarPlantillaMandrill(){
+        public function activarPlantillaMandrill($plantilla = null){
             
+            if($plantilla == null){
+                $plantilla = "plantilla-correos-transaccionales";
+            }
             $headers = $this->getHeaders();            
-            $headers->addTextHeader('X-MC-Template', 'plantilla-correos-transaccionales|main');
+            $headers->addTextHeader('X-MC-Template', "$plantilla|main");
             
             Yii::app()->mail->activarMandrill();  
             

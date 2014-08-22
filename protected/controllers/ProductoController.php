@@ -4727,25 +4727,46 @@ public function actionReportexls(){
                 
         public function actionSendMandrillEmail()
 	{
-	
-            $message            = new YiiMailMessage;
+            $message = new YiiMailMessage;
             //Opciones de Mandrill
-            $message->activarPlantillaMandrill();                     
+            $message->activarPlantillaMandrill();
+            $subject = 'Registro Personaling';                                
+            $message->subject    = $subject;
+            $body = Yii::t('contentForm','<h2>¡Bienvenida a Personaling!</h2>
+                Recibes este correo electrónico porque te has registrado en Personaling.es. 
+                Por favor valida tu cuenta haciendo clic en el enlace que aparece a continuación:
+                <br/><br/><a href="{url}">Clica aquí</a>',
+                    array('{url}'=>"urlNElson"));
+
+            $nelson = "nramirez@upsidecorp.ch";
+            $nelson = "nelsond.ramirez@gmail.com";
+            $nelson = "dust_s@hotmail.com";
+            $message->setBody($body, 'text/html');                
+            $message->addTo($nelson);
+
+            Yii::app()->mail->send($message);                   
             
-            $orden = Orden::model()->findByPk(112);
-            $usuario = $orden->user;
+            
+           
+            Yii::app()->user->setFlash('success',"El
+                correo electrónico de verificacion ha sido reenviado a <b>nramirez@upsidecorp.ch</b>");
+            $this->redirect(array('/user/admin/update', "id" => 5322));
+            
+            /*Plantilla*/
+            $message = new YiiMailMessage;
+            //Opciones de Mandrill
+            $message->activarPlantillaMandrill();
             
             $subject = 'Tu compra en Personaling';
+                            
             $message->subject    = $subject;
-
-            $body = $this->renderPartial("//mail/_pedido", array(
-                "orden" => $orden), true);
-            
             $message->setBody($body, 'text/html');                
-            $message->addTo($usuario->email);
-            $message->from = array('no-reply@personaling.com' => 'Tu Personal Shopper Digital');
-
+            $message->addTo($model->email);
             Yii::app()->mail->send($message);
+
+
+
+            //APARTE
             Yii::app()->user->setFlash('success',"El
                 correo electrónico de verificacion ha sido reenviado a <b>nramirez@upsidecorp.ch</b>");
             

@@ -148,6 +148,7 @@ return array (
 
 
 	'Gift Card' => 'Gift Card',
+	'Get a new code'=>'Obten un nuevo codigo',
 	'Go to Store' => 'Ir a la tienda',
 	'<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>' =>  '<h2>¡Molas un montón! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra.<br/><br/>',
 
@@ -462,9 +463,16 @@ return array (
 
 	// Copys de paginas estaticas
 	'copy FAQ' => '<h3>¿Cómo funciona Personaling.es?</h3>
-      <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación. </p>
-      <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>      
+      <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación. </p>   
       <hr/>
+      <div class="cajadevideo">
+
+        <div class="video">
+
+            <iframe src="http://www.youtube.com/embed/oAKyeeTng1U"></iframe>
+
+        </div>
+    </div>
       <h3>¿Debo pagar por mi envío?</h3>
       <p>Sí, si tu compra es menor a 30 euros. De igual forma las tarifas cambiarán dependiendo del destino final del envío y de la urgencia con que desees la entrega. </p>
       <h3>Quiero devolver mi compra ¿Debo hacerlo a través del mismo operador?</h3>

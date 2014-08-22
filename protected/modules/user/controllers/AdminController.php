@@ -1642,6 +1642,7 @@ class AdminController extends Controller
                                 
 							
 		}
+
 	}
 	
 	public function actionCompra($id)
@@ -2440,7 +2441,7 @@ class AdminController extends Controller
     }
     public function actionBalance($id){
 
-
+			
             $model=$this->loadModel();
             $balances=Balance::model()->findAllByAttributes(array('user_id'=>$id),
                         array("order" => "fecha DESC"));   

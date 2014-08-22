@@ -1,4 +1,4 @@
-<?php
+<?php 
 /* @var $this SiteController */
 // Open Graph
 
@@ -43,10 +43,10 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
             <li data-target="#sliderHome" data-slide-to="2" ></li>
         </ol>
         <!-- Carousel items ON -->
-        <div class="carousel-inner text_align_center">
+        <div class="carousel-inner text_align_center" alt="afuera">
             <div class="item active" >
                 <div class="slider-home slide-1">
-                    <div class="slide-content">
+                    <div class="slide-content" alt="Personaling - Tu Personal Shopper Online">
                         <div class="copy-right">
                           
                                 <figure class="logo-personaling ">
@@ -68,7 +68,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
             </div>
             <div class="item" >
                 <div class="slider-home slide-2">
-                    <div class="slide-content">
+                    <div class="slide-content" alt="Personaling - Tu Personal Shopper Online">
                         <div class="copy-right">
                             <div>
                                 
@@ -88,7 +88,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
             </div>
             <div class="item" >
                 <div class="slider-home slide-3">
-                    <div class="slide-content">
+                    <div class="slide-content" alt="Personaling - Tu Personal Shopper Online">
                         <div class="copy-right">
                             <div>
                                 <figure class="logo-personaling ">

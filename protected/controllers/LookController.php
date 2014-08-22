@@ -399,7 +399,7 @@ class LookController extends Controller
 		
 		 
 		$detect = new Mobile_Detect;
-			if($detect->isMobile()) 
+			if(($detect->isMobile()||$detect->isTablet())) 
             	$this->render('view_mobile',array(
 						'model'=>$model,
 						'ultimos_vistos'=> $productoView->lastView(),

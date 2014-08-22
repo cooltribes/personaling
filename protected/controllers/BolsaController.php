@@ -125,6 +125,7 @@ class BolsaController extends Controller
 				$productos_look = array();
 				foreach($_POST['producto'] as $key => $value){ 
 					list($producto_id,$color_id) = explode("_",$value);
+					
 					$response = $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
 					
 					$producto = Producto::model()->findByPk($producto_id);

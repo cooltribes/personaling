@@ -153,36 +153,14 @@ class ZohoSales{
 			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 			
 			$costo += $precio->costo;
-			$dcto_productos += $precio->ahorro;
+			$dcto_productos += $precio->ahorro;	
 			
-			// Products(Product Name,descuento,Precio Impuesto,Unit Price,Precio Descuento)
-			
-			 
-			//*--------------*/
-			$url ="https://crm.zoho.com/crm/private/xml/Products/getRecordById";
-$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&id=".$tallacolor->preciotallacolor->zoho_id."&selectColumns=Products(Product Name,descuento,Precio Impuesto,Unit Price,Precio Descuento)";
-			
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
-	
-			$response = curl_exec($ch);
-			curl_close($ch);
-		//	echo htmlspecialchars($response)."<p><p>";
-			
-			$datos = simplexml_load_string($response);
-			
-			$id = $datos->result[0]->Products[0]->row->FL[0]; 
-			$nombre = $datos->result[0]->Products[0]->row->FL[1];
-			$unit = $datos->result[0]->Products[0]->row->FL[2];
-			$contax = $datos->result[0]->Products[0]->row->FL[3];
-			$discount_price = $datos->result[0]->Products[0]->row->FL[4];
-			$discount = $datos->result[0]->Products[0]->row->FL[5];
-			// Yii::app()->end();
+			$id = $tallacolor->preciotallacolor->zoho_id;
+			$nombre = $producto->nombre." - ".$tallacolor->preciotallacolor->sku;
+			$unit = $precio->precioVenta;
+			$contax = $precio->precioImpuesto;
+			$discount_price = $precio->precioDescuento;
+			$discount = $precio->ahorro; 
 			
 			$xml2 .= '<FL val="Product Id">'.intval($id).'</FL>';
 			$xml2 .= '<FL val="Product Name">'.$nombre.'</FL>';
@@ -236,7 +214,7 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 	
 			//Execute cUrl session 
 			$response = curl_exec($ch);
-			curl_close($ch); 
+			curl_close($ch);
 			
 		/* ===================== */ 	
 		
@@ -264,7 +242,7 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 					}
 						
 				} 
-				
+				 
 			}
 		} 
 		$dcto_total = $dcto_productos + $dcto_looks; 

@@ -44,16 +44,18 @@ class RecoveryController extends Controller
 							$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl(implode(Yii::app()->controller->module->recoveryUrl),array("activkey" => $user->activkey, "email" => $user->email));
 							
 							// Enviar correo con link de recuperación de contraseña
-							$message            = new YiiMailMessage;
-						    $message->view = "mail_template";
-							$subject = 'Recupera tu contraseña de Personaling';
-							$body = Yii::t('contentForm','<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com',array('{url}'=>$activation_url));		
-						    $params              = array('subject'=>$subject, 'body'=>$body);
+                                                    $message            = new YiiMailMessage;
+                                                    //Opciones de Mandrill
+                                                    $message->activarPlantillaMandrill();
+                                                    $subject = 'Recupera tu contraseña de Personaling';
+                                                    $body = Yii::t('contentForm','<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com',array('{url}'=>$activation_url));		
 						    $message->subject    = $subject;
-						    $message->setBody($params, 'text/html');                
+						    $message->setBody($body, 'text/html');                
 						    $message->addTo($user->email);
-							$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 						    Yii::app()->mail->send($message);
+//                                                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//						    $message->view = "mail_template";
+//						    $params              = array('subject'=>$subject, 'body'=>$body);
 							
 							Yii::app()->user->setFlash('recoveryMessage',UserModule::t("Please check your email. An instructions was sent to your email address."));
 			    			$this->refresh();

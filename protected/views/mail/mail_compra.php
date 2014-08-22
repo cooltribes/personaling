@@ -94,7 +94,7 @@
                                                                 
                                                                 <?php
                                                                     $user = User::model()->findByPk(Yii::app()->user->id);
-																	$tipo_pago = $orden->getTipoPago();
+                                                                    $tipo_pago = $orden->getTipoPago();
                                                                    // $pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
                                                                     //echo $orden->pago_id;
                                                                 ?>
@@ -160,31 +160,31 @@
         <td style=" background-color:#dff0d8; color:#468847;"><p> <strong>Fecha estimada de entrega</strong>: <?php echo  date('d/m/Y', strtotime($orden->fecha.'+1 week')); ?></p></td>
     </tr>
 </table>
-                                                                                                                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                                    <tr>
-                                                                        <td  style="text-align:left"><b>Subtotal:</b></th>
-                                                                        <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
-                                                                    </tr>
-                                                                    <?php if($orden->descuento != 0){ // si no hay descuento ?> 
-                                                                    <tr>
-                                                                        <td style="text-align:left"><b>Descuento:</b></th>
-                                                                        <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
-                                                                    </tr>
-                                                                    <?php } ?>
-                                                                    <tr>
-                                                                        <td style="text-align:left"><b>Envío:</b></th>
-                                                                        <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio+$orden->seguro, ''); ?></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:left"><b>I.V.A. (<?php echo Yii::t('contentForm','IVAtext'); ?>):</b></th>
-                                                                        <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
-                                                                    </tr>
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td  style="text-align:left"><b>Subtotal:</b></th>
+                    <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->subtotal, ''); ?></td>
+                </tr>
+                <?php if($orden->descuento != 0){ // si no hay descuento ?> 
+                <tr>
+                    <td style="text-align:left"><b>Descuento:</b></th>
+                    <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
+                </tr>
+                <?php } ?>
+                <tr>
+                    <td style="text-align:left"><b>Envío:</b></th>
+                    <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio+$orden->seguro, ''); ?></td>
+                </tr>
+                <tr>
+                    <td style="text-align:left"><b>I.V.A. (<?php echo Yii::t('contentForm','IVAtext'); ?>):</b></th>
+                    <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->iva, ''); ?></td>
+                </tr>
 
-                                                                    <tr>
-                                                                        <td style="text-align:left"><h4 class="color1">TOTAL:</h4></th>
-                                                                        <td><h4 class="color1"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
-                                                                    </tr>
-                                                                </table>
+                <tr>
+                    <td style="text-align:left"><h4 class="color1">TOTAL:</h4></th>
+                    <td><h4 class="color1"><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
+                </tr>
+            </table>
                                                                 <hr/>
                                                                 <?php
         

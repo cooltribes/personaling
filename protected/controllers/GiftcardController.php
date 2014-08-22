@@ -1101,8 +1101,8 @@ class GiftcardController extends Controller
 
                     if($model->validate()){                    
                         
-                        $envio->attributes = $_POST['EnvioGiftcard'];
-                        
+                        $envio->attributes = $_POST['EnvioGiftcard'];                        
+
                         Yii::app()->getSession()->remove('entrega');                        
                         Yii::app()->getSession()->add('entrega',$_POST['entrega']);
                         
@@ -1112,7 +1112,11 @@ class GiftcardController extends Controller
                             
                             //Guardar los datos del envio pero borrar los anteriores                        
                             Yii::app()->getSession()->remove('envio');                        
-                            Yii::app()->getSession()->add('envio',$_POST['EnvioGiftcard']);
+                            Yii::app()->getSession()->add('envio',$envio->attributes);
+//                            echo "<pre>";
+//                            print_r(Yii::app()->getSession()->get("envio"));
+//                            echo "</pre><br>";
+//                            Yii::app()->end();
 
                             /*
                             por los momentos se van a borrar todas las existentes

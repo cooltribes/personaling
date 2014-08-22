@@ -135,17 +135,20 @@ class AdminController extends Controller
                         $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $modelUser->activkey, "email" => $modelUser->email));
 
                         $message = new YiiMailMessage;
-                        $message->view = "mail_template";
+                        //Opciones de Mandrill
+                        $message->activarPlantillaMandrill();
                         $subject = 'Registro Personaling';
                         $body = Yii::t('contentForm','Copy de crear usuario desde admin',array(
                             '{code}'=>$originalPass,
                             '{activation_url}'=>$activation_url));
-                        $params = array('subject' => $subject, 'body' => $body);
                         $message->subject = $subject;
-                        $message->setBody($params, 'text/html');
+                        $message->setBody($body, 'text/html');
                         $message->addTo($modelUser->email);
-                        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                         Yii::app()->mail->send($message);
+                        
+//                        $message->view = "mail_template";
+//                        $params = array('subject' => $subject, 'body' => $body);
+//                        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 
                         $modelUser->unsetAttributes();
                         $profile->unsetAttributes();

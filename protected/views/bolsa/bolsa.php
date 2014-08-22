@@ -838,19 +838,47 @@ $total_productos_look = 0;
 		//alert(idBolsa);	
 	
 	// llamada ajax 
-     	$.ajax({
-	        type: "post",
-	        url: "limpiar", // action
-	        data: { 'idBolsa':idBolsa }, 
-	        success: function (data) {
-				
-				if(data=="ok")
-				{
-					window.location.reload()
-				}
-					
-	       	}//success
-	       })
+    $.ajax({
+      type: "post",
+      url: "limpiar", // action
+      data: { 'idBolsa':idBolsa }, 
+      dataType: 'json',
+      success: function (data) {
+        console.log(data);
+        if(data.status=="ok")
+        {
+          for (var index = 0; index < data.productos.length; ++index) {
+            //console.log(data.productos[index]);
+            ga('ec:addProduct', {
+              'id': data.productos[index].id,
+              'name': data.productos[index].name,
+              'category': data.productos[index].category,
+              'brand': data.productos[index].brand,
+              'variant': data.productos[index].variant,
+              'price': data.productos[index].price,
+              'quantity': data.productos[index].quantity,
+            });
+            ga('ec:setAction', 'remove');
+            ga('send', 'event', 'UX', 'click', 'remove from cart');     // Send data using an event.
+          }
+          for (var index = 0; index < data.looks.length; ++index) {
+            //console.log(data.productos[index]);
+            ga('ec:addProduct', {
+              'id': data.looks[index].id,
+              'name': data.looks[index].name,
+              'category': data.looks[index].category,
+              'brand': data.looks[index].brand,
+              'variant': data.looks[index].variant,
+              'price': data.looks[index].price,
+              'quantity': data.looks[index].quantity,
+            });
+            ga('ec:setAction', 'remove');
+            ga('send', 'event', 'UX', 'click', 'remove from cart');     // Send data using an event.
+          }
+          window.location.reload()
+        }
+      }//success
+    });
 
 	}
 	

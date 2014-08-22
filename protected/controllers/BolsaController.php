@@ -33,7 +33,7 @@ class BolsaController extends Controller
                     'eliminardireccion','editar','editardireccion','agregar','actualizar',
                     'pagos','eliminar','compra', 'direcciones','confirmar','comprar',
                     'pedido','cpago', 'pedidoGC','comprarGC','clickBotonConfirmar', 
-                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 
+                    'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 'confirmarGC', 
                     'agregar2','eliminarLook',),
                     'users'=>array('@'),
                 ),                
@@ -125,6 +125,7 @@ class BolsaController extends Controller
 				$productos_look = array();
 				foreach($_POST['producto'] as $key => $value){ 
 					list($producto_id,$color_id) = explode("_",$value);
+					
 					$response = $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
 					
 					$producto = Producto::model()->findByPk($producto_id);
@@ -2546,12 +2547,52 @@ class BolsaController extends Controller
 		if(isset($_POST['idBolsa'])){	
 		
 			$bolsahas = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$_POST['idBolsa']));
+			$productos = array();
+			$looks = array();
 			
 			foreach($bolsahas as $uno){
+				$look_id = $uno->look_id;
 				$uno->delete();
+
+				// check si es el último producto de un look dentro de la bolsa
+                if($look_id != 0){
+                	$ultimo= BolsaHasProductotallacolor::model()->findByAttributes(array('bolsa_id'=>$_POST['idBolsa'], 'look_id'=>$look_id));
+                	if(!$ultimo){ // se acaba de eliminar el último producto del look, agrego datos para analytics
+                		$look = Look::model()->findByPk($look_id);
+                		
+                		$looks[] = array(
+							'id' => $look->id,
+							'name' => $look->title,
+							'category' => 'Looks',
+							'brand' => 'Personaling',
+							'price' => $look->getPrecioDescuento(),
+							'quantity' => 1,
+                		);
+                	}else{
+                		$response['ultimo'] = 'false';
+                	}
+                }
+
+				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$uno->preciotallacolor->producto->id));
+                $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$uno->preciotallacolor->producto->id));
+				
+				$productos[] = array(
+					'id' => $uno->preciotallacolor->producto->id,
+					'name' => $uno->preciotallacolor->producto->nombre,
+					'category' => $category->nombre,
+					'brand' => $uno->preciotallacolor->producto->mymarca->nombre,
+					'variant' => $uno->preciotallacolor->mycolor->valor." ".$uno->preciotallacolor->mytalla->valor,
+					'price' => $precio->precioImpuesto,
+					'quantity' => 1
+				);
 			}
 			
-			echo "ok";
+			echo json_encode(array(
+				'status'=>'ok',
+				'productos'=>$productos,
+				'looks'=>$looks
+			));
 		
 		}
 	}
@@ -2910,6 +2951,7 @@ class BolsaController extends Controller
                 $this->redirect(array("giftcard/comprar"));
             }
 
+
             $monto = Yii::app()->getSession()->get('total');
 
              /*
@@ -3072,15 +3114,16 @@ class BolsaController extends Controller
 				
                 //Enviar la giftcard por correo solo si se selecciono email al comprar
                 if(Yii::app()->getSession()->get('entrega') == 2){
-                	
-                	$via="E-mail";
+                	                	
                     $envio = new EnvioGiftcard();
-                    $envio->attributes = Yii::app()->getSession()->get('envio');
+                    $campos = Yii::app()->getSession()->get('envio');                    
                     
-
+                    $envio->nombre = $campos["nombre"];
+                    $envio->mensaje = $campos["mensaje"];
+                    $envio->email = $campos["email"];
+                                        
                     $saludo = "<strong>{$model->UserComprador->profile->first_name}</strong> te ha enviado una Gift Card como obsequio.";               
 
-                    
                     $personalMes = ""; 
                     
                     if($envio->mensaje != ""){
@@ -3088,61 +3131,74 @@ class BolsaController extends Controller
                     }
                                       
                     $message = new YiiMailMessage;
-                    $message->view = "mail_giftcard";
+                    //Opciones de Mandrill
+                    $message->activarPlantillaMandrill("plantilla-correos-no-footer");
                     $subject = 'Gift Card de Personaling';
-                    $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
-    	                    <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.')."
+                    $body = "¡Hola!<br><br> {$saludo} 
+    	                    <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.es" title="Personaling">Personaling.es</a> using it.')."
     	                    <br/>
                             (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";
+                    
+                    $body = $this->renderPartial("//mail/_giftcard",
+                            array('body' => $body,'envio' => $envio,
+                                'model'=> $model), true);
+                    
+                    $message->subject = $subject;
+                    $message->setBody($body, 'text/html');
+                    $message->addTo($envio->email);
+                    Yii::app()->mail->send($message); 
                             
                     
-                    $params = array('subject' => $subject, 'body' => $body,'envio' => $envio, 'model'=> $model);
-                    $message->subject = $subject;
-                    $message->setBody($params, 'text/html');
+//                    $message->view = "mail_giftcard";
+//                    $params = array('subject' => $subject, 'body' => $body,'envio' => $envio, 'model'=> $model);
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 
-                    $message->addTo($envio->email);
 
-                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-                    Yii::app()->mail->send($message); 
-                	$resumen.="<tr><td>Email</td><td>{$envio->email}</td><td>{$model->monto}</td><tr>";
+                    $resumen.="<tr><td>Email</td><td>{$envio->email}</td><td>{$model->monto}</td><tr>";
                     
                 }
-				else{
-					$resumen.="<tr><td colspan='2' align='center' style='text-align:center'>Impresa</td><td>".Yii::t('contentForm','currSym')." {$model->monto}</td><tr>";
-				}
-					
-                
-				
+                else{
+                        $resumen.="<tr><td colspan='2' align='center' style='text-align:center'>Impresa</td><td>".Yii::t('contentForm','currSym')." {$model->monto}</td><tr>";
+                }		
                 
             }
             
-			$this->actionSendSummary($resumen,$ordenId,$userId);
-				         
-                    
-            
-            
+            $this->actionSendSummary($resumen,$ordenId,$userId);
+				                     
 
 	}
 	
 	
 	public function actionSendSummary($resumen,$ordenId,$userId){
-		$comprador=User::model()->findByPk($userId);
-		$user=$comprador->profile;
-		$message = new YiiMailMessage;
-                    $message->view = "mail_giftcard_summary";
-                    $subject = 'Tu compra de Gift Card de Personaling';
-                    $body = "¡Hola <strong>{$user->first_name}</strong>!<br/><br/>
-    	                    Hemos procesado satisfactoriamente tu compra de Gift Card.";
-                            
-                    
-                    $params = array('subject' => $subject, 'body' => $body,'resumen' => $resumen, 'orden'=> OrdenGC::model()->findByPk($ordenId));
-                    $message->subject = $subject;
-                    $message->setBody($params, 'text/html');
+                			
+            $comprador=User::model()->findByPk($userId);
+            $user=$comprador->profile;
+            
+            $message = new YiiMailMessage;                
+            //Opciones de Mandrill
+            $message->activarPlantillaMandrill();
+            $subject = 'Tu compra de Gift Card de Personaling';
+            $body = "¡Hola <strong>{$user->first_name}</strong>!<br/><br/>
+                    Hemos procesado satisfactoriamente tu compra de Gift Card.";
 
-                    $message->addTo($comprador->email);
+            $body = $this->renderPartial("//mail/_giftcard_summary",
+                            array( 'body' => $body,
+                                'resumen' => $resumen, 'orden'=> OrdenGC::model()->findByPk($ordenId)),
+                            true
+                    );
+            
+            $message->subject = $subject;
+            $message->setBody($body, 'text/html');
+            
+            $message->addTo($comprador->email);
+            return Yii::app()->mail->send($message);
 
-                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-                    return Yii::app()->mail->send($message);
+
+//            $message->view = "mail_giftcard_summary";
+//            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//            $params = array('subject' => $subject, 'body' => $body,'resumen' => $resumen, 'orden'=> OrdenGC::model()->findByPk($ordenId));
+
+
             
 	}
         
@@ -3647,17 +3703,32 @@ class BolsaController extends Controller
         
         /*Enviar el correo con el resumen de la orden al usuario*/
         function enviarEmail($orden, $usuario) {
-            
+        
             $message = new YiiMailMessage;
-            //this points to the file test.php inside the view path
-            $message->view = "mail_compra";
+            //Opciones de Mandrill
+            $message->activarPlantillaMandrill();
+            
             $subject = 'Tu compra en Personaling';
-            $params = array('subject'=>$subject, 'orden'=>$orden);
-            $message->subject = $subject;
-            $message->setBody($params, 'text/html');
+            $message->subject    = $subject;
+            $body = $this->renderPartial("//mail/_pedido", array(
+                "orden" => $orden), true);
+            
+            $message->setBody($body, 'text/html');                
             $message->addTo($usuario->email);
-            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            
             Yii::app()->mail->send($message);
+            
+            
+//            $message = new YiiMailMessage;
+//            //this points to the file test.php inside the view path
+//            $message->view = "mail_compra";
+//            $subject = 'Tu compra en Personaling';
+//            $params = array('subject'=>$subject, 'orden'=>$orden);
+//            $message->subject = $subject;
+//            $message->setBody($params, 'text/html');
+//            $message->addTo($usuario->email);
+//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+//            Yii::app()->mail->send($message);
         }
         
         

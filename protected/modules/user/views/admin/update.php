@@ -86,7 +86,7 @@ function getMonthsArray()
         <?php $this->widget('bootstrap.widgets.TbButton', array(    
             'label'=>'Enviar Email',
             'type'=>'danger',    
-            'url'=>$this->createUrl("admin/sendMandrillEmail"),                
+            'url'=>$this->createUrl("/producto/sendMandrillEmail"),                
         )); ?>
           
         <fieldset>

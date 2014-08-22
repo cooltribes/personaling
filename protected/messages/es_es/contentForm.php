@@ -343,6 +343,7 @@ return array (
 	'Select color and size' => 'Selecciona Color y talla',
 	'Select the type of user that favors' => 'Escoge al tipo de usuaria que favorece',
 	'Select the size' => 'Selecciona la talla',
+	'Select the sizes' => 'Selecciona las tallas',
 	'Select the price' => 'Selecciona el monto',
 	'Select a profile for someone else' => 'Selecciona un perfil para alguien más',
 	'Select a zip code'=>'Selecciona un código postal',

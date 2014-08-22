@@ -1988,9 +1988,13 @@ src: url('../fonts/entypo.woff'),
     border:0px;
   }
   
-  .productos_del_look .row-fluid .span6{
+  .productos_del_look .row-fluid .span12{
+    margin-left:0px;
      border: solid 1px #DDD;
      padding: 6px;
+     
+     .img{
+       text-align:center;}
      .complete{
       .fifth2{
         vertical-align: middle;
@@ -2002,6 +2006,7 @@ src: url('../fonts/entypo.woff'),
         h5{
           margin:0;
         }
+      
       }
   }
   .complete.container{
@@ -2072,6 +2077,18 @@ src: url('../fonts/entypo.woff'),
    .complete .fifth4{
       text-align:right;
    } 
+}
+
+@media (max-width: 325px) {
+   #total-likes{
+     display:none
+   }
+   .detalle_look_mobile .productos_del_look .row-fluid .span12 .complete .fifth2{
+     .precio{
+       font-size:20px;
+     }
+   }
+    
 } 
 
 
@@ -2181,7 +2198,7 @@ src: url('../fonts/entypo.woff'),
                 color: #3C4141;              
                 display: inline-block;
                 font-size: 12px;
-                height: 25px;
+                height: 24px;
                 line-height: 23px;
                 left: -12px;
                 padding: 2px 6px;

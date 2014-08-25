@@ -4533,7 +4533,7 @@ public function actionReportexls(){
         }
 		
 		public function actionProductosZoho(){ 
-			
+			/*
 			$criteria = new CDbCriteria(array('order'=>'id'));
 		//	$criteria->addBetweenCondition('id', 630, 640); 
 			//$rows = user::model()->findAllByAttributes($user, $criteria);
@@ -4679,9 +4679,218 @@ public function actionReportexls(){
 				}
 				else {
 					break;
-				}*/
-			}
+				}
+			}*/
+
+				$cont = 1;
+				$xml = "";
+				$ids = array();
+					
+				$criteria = new CDbCriteria(array('order'=>'id'));
+			//	$criteria->addBetweenCondition('id', 630, 640); 
 			
+				$todos_preciotallacolor = Preciotallacolor::model()->findAll($criteria);
+				
+				$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+				$xml .= '<Products>';
+				
+				foreach($todos_preciotallacolor as $ptc){ // para cada combinacion crear un nuevo producto en zoho	
+					
+					if($cont >= 10) {
+							
+						$xml .= '</Products>';
+						//	var_dump($xml);
+						
+						$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
+						$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=2&duplicateCheck=2&version=4&xmlData=".$xml;
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_URL, $url);
+						curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+						curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+						curl_setopt($ch, CURLOPT_POST, 1);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+						
+						//Execute cUrl session
+						$response = curl_exec($ch);
+						curl_close($ch);
+				
+						$datos = simplexml_load_string($response);
+						$i=0;
+						
+						foreach($datos->result[0] as $each){   
+							//echo $datos->result[0]->row[$i]->success->details->FL[0];
+							
+							$number = $datos->result[0]->row[$i];
+							$p = xml_parser_create();
+							$transform = xml_parse_into_struct($p, $number, $values);			
+							var_dump($values);
+							print_r($values);
+							Yii::app()->end();
+							$i++;
+						} 
+						 
+						foreach($ids as $clave => $data){
+							// echo $datos["row"]." ".$datos["ptc"];
+							$precioTalla = Preciotallacolor::model()->findByPk($data["ptc"]);
+							$pos = (int)$data['row'];
+							
+							var_dump($ids);
+							var_dump($datos->result[0]);
+							
+							var_dump("<br>".$response);
+							 
+							
+							
+							Yii::app()->end();
+							
+							
+								
+							echo "<br> El ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$clave]->success->details->FL[0];
+						} 
+						
+						Yii::app()->end();
+						
+						$xml = "";
+						$cont = 1;					
+					} // else
+					
+					if($cont < 10)
+					{
+						$producto = Producto::model()->findByPk($ptc->producto_id);
+						$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+						
+						$add = array("row" => $cont, "ptc" => $ptc->id);
+						array_push($ids,$add);
+						
+						$xml .= '<row no="'.$cont.'">';
+				
+						$nombre = $producto->nombre." - ".$ptc->sku;
+						
+							$xml .= '<FL val="Product Name">'.$nombre.'</FL>';
+						
+						if(strpos($producto->mymarca->nombre, "&") === false )
+							$marca = $producto->mymarca->nombre;
+						else{
+							$marca_cambiar = $producto->mymarca->nombre;
+							$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+							
+							$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+							
+							$marca = $marcacorregida;
+						}
+						
+						$xml .= '<FL val="Marca">'.$marca.'</FL>';
+						$xml .= '<FL val="Referencia">'.$producto->codigo.'</FL>';
+						
+						if($producto->estado==0)
+							$estado = "TRUE";
+						
+						$xml .= '<FL val="Product Active">'.$estado.'</FL>';
+					
+						$xml .= '<FL val="Peso">'.$producto->peso.'</FL>';
+						$xml .= '<FL val="Sales Start Date">'.date("Y-m-d",strtotime($producto->fecha)).'</FL>';
+						
+						$hascateg = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id));
+							$i=1;
+							foreach($hascateg as $each){
+								$cat = Categoria::model()->findByPk($each->tbl_categoria_id);	
+								
+								if($i==1)
+									$categoria = $cat->nombre;
+								if($i==2)
+									$subcategoria1 = $cat->nombre;
+								if($i==3)
+									$subcategoria2 = $cat->nombre;
+								
+								$i++;
+							}
+						
+						if(isset($categoria)) $xml .= '<FL val="Categoria">'.$categoria.'</FL>';
+						if(isset($subcategoria1)) $xml .= '<FL val="Subcategoría1">'.$subcategoria1.'</FL>';
+						if(isset($subcategoria2)) $xml .= '<FL val="Subcategoria2">'.$subcategoria2.'</FL>';
+						
+						if($producto->tipo == 0)
+							$tipo = "Interno"; 
+						else{
+							$tienda = $producto->tienda->name;
+							$tipo = "Externo"; 
+							$url = "http://personaling.es/producto/detalle/".$producto->id; 
+						}
+						
+						if(strpos($producto->descripcion, "&nbsp;") === false)
+							$descripcion = $producto->descripcion;
+						else{
+							$cambiar = $producto->descripcion;
+							$primera = str_replace("&nbsp;",' ' ,$cambiar);
+							
+							$descripcion = $primera;
+							$producto->descripcion = $primera;
+							$producto->save();
+						}
+						
+						$xml .= '<FL val="Tipo">'.$tipo.'</FL>';
+						if(isset($tienda)) $xml .= '<FL val="Tienda">'.$tienda.'</FL>';
+						if(isset($url)) $xml .= '<FL val="url">'.$url.'</FL>';
+						$xml .= '<FL val="Description">'.$descripcion.'</FL>';
+						
+						if(isset($precio))
+						{
+							$costo = $precio->costo;
+							$precioVenta = $precio->precioVenta;
+							
+							if($precio->ahorro > 0){
+								$precioDescuento = $precio->precioDescuento;
+								$descuento = $precio->ahorro;
+							}
+							else{
+								$precioDescuento = $precio->precioImpuesto;
+								$descuento = 0; 
+							}
+							
+							$precioImpuesto = $precio->precioImpuesto;
+					
+							if($precio->tipoDescuento == 0) // descuento por porcentaje
+								$porcentaje = $precio->valorTipo;
+							else 	 
+								$porcentaje = 0;
+						}
+						
+						$xml .= '<FL val="Costo">'.$costo.'</FL>'; 
+						$xml .= '<FL val="Unit Price">'.$precioVenta.'</FL>';
+						$xml .= '<FL val="Precio Descuento">'.$precioDescuento.'</FL>';
+						$xml .= '<FL val="descuento">'.$descuento.'</FL>';
+						$xml .= '<FL val="Precio Impuesto">'.$precioImpuesto.'</FL>';
+						$xml .= '<FL val="PorcentajeDescuento">'.$porcentaje.'</FL>';
+						
+						$talla = $ptc->mytalla->valor;
+						$color = $ptc->mycolor->valor;
+						$SKU = $ptc->sku;
+						$cantidad = $ptc->cantidad;
+						
+						if(isset($producto->seo)){
+							$titulo = $producto->seo->mTitulo;
+							$metaDescripcion = $producto->seo->mDescripcion;
+							$tags = $producto->seo->pClave;
+						}
+						
+						$xml .= '<FL val="Talla">'.$talla.'</FL>';
+						$xml .= '<FL val="Color">'.$color.'</FL>';
+						$xml .= '<FL val="SKU">'.$SKU.'</FL>';
+						$xml .= '<FL val="Qty in Stock">'.$cantidad.'</FL>';
+						
+						if(isset($titulo)) $xml .= '<FL val="Titulo">'.$titulo.'</FL>';
+						if(isset($metaDescripcion)) $xml .= '<FL val="Meta Descripcion">'.$metaDescripcion.'</FL>';
+						if(isset($tags)) $xml .= '<FL val="Tags">'.$tags.'</FL>';
+						$xml .= '</row>';
+						
+					$cont++;
+					
+					} // if
+				
+			
+			}// foreach
+						
 		}
                 
                 /**

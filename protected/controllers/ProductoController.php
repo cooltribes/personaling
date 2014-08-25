@@ -44,7 +44,7 @@ class ProductoController extends Controller
                         'recatprod','seo', 'historial','importar','descuentos',
                         'reporte','reportexls', "createExcel", 'plantillaDescuentos',
                         'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
-                        'importarExternos', 'sendMandrillEmail'),
+                        'importarExternos', 'sendMandrillEmail','plantillaExternos'),
                     //'users'=>array('admin'),
                     'expression' => 'UserModule::isAdmin()',
                 ),
@@ -1876,7 +1876,7 @@ public function actionReportexls(){
                 Yii::trace('ProductoController.php:946, Error:' . print_r($view->getErrors(), true), 'registro');
  
 			$detect = new Mobile_Detect;
-			if($detect->isMobile()) 
+			if(($detect->isMobile()||$detect->isTablet())) 
             	$this->render('_detalle_mobile', array('producto' => $producto));
 			else
 				$this->render('_view_detalle', array('producto' => $producto));
@@ -4723,7 +4723,7 @@ public function actionReportexls(){
                         echo CJSON::encode($response);
                     }
                 }
-                
+                 
                 
         public function actionSendMandrillEmail()
 	{
@@ -4753,7 +4753,7 @@ public function actionReportexls(){
 		
 	}
                 
-                
+             
                 
         
 }

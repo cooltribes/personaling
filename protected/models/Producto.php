@@ -919,9 +919,14 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('destacado',$this->destacado,true);
 
 		$criteria->compare('peso',$this->peso,true);
+		
 		$imgsql = "SELECT tbl_producto_id FROM tbl_imagen";
        	$enImagen= Yii::app()->db->createCommand($imgsql)->queryColumn();
 		$criteria->addInCondition('t.id',$enImagen);
+		
+		$catsql = "SELECT tbl_producto_id FROM tbl_categoria_has_tbl_producto";
+       	$enCategoria= Yii::app()->db->createCommand($catsql)->queryColumn();
+		$criteria->addInCondition('t.id',$enCategoria);
 		
 		$criteria->with = array('preciotallacolor','precios','categorias', 'mymarca','mycolor');
 		if(isset(Yii::app()->session['chic'])){

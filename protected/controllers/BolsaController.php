@@ -3134,7 +3134,7 @@ class BolsaController extends Controller
                     //Opciones de Mandrill
                     $message->activarPlantillaMandrill("plantilla-correos-no-footer");
                     $subject = 'Gift Card de Personaling';
-                    $body = "¡Hola!<br><br> {$saludo} 
+                    $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
     	                    <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.es" title="Personaling">Personaling.es</a> using it.')."
     	                    <br/>
                             (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";

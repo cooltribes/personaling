@@ -1016,21 +1016,23 @@ class AdminController extends Controller
                     $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
                     
                     $message = new YiiMailMessage;
-                    $message->view = "mail_template";
+                    //Opciones de Mandrill
+                    $message->activarPlantillaMandrill();
                     $subject = 'Registro Personaling';
                     $body = '<h2>¡Felicitaciones! Tu aplicación ha sido aceptada.</h2><br/><br/>
-                        Nuestro equipo piensa que tienes potencial como Personal Shopper de Personaling.com
+                        Nuestro equipo piensa que tienes potencial como Personal Shopper de Personaling.es
                         <br/><br/>
                         ¿Nervios? No por favor, sabemos que tienes madera para esto.<br/>
                         Gracias por querer ser parte de nuestro equipo.<br/><br>
                         Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>
                         <a href="' . $activation_url.'"> Haz click aquí </a>';
-                    $params = array('subject' => $subject, 'body' => $body);
                     $message->subject = $subject;
-                    $message->setBody($params, 'text/html');
+//                    $message->view = "mail_template";
+//                    $params = array('subject' => $subject, 'body' => $body);
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    $message->setBody($body, 'text/html');
                     $message->addTo($model->email);
-                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-                    Yii::app()->mail->send($message);
+                    Yii::app()->mail->send($message);                    
                     
                 }else{
                     

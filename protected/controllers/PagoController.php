@@ -337,8 +337,9 @@ class PagoController extends Controller
         function enviarRespuestaPersonalShopper($pago, $accion) {
             
             $message = new YiiMailMessage;
-            //this points to the file test.php inside the view path
-            $message->view = "mail_template";
+            //Opciones de Mandrill
+            $message->activarPlantillaMandrill();
+//            $message->view = "mail_template";
             
             $subject = 'Solicitud de pago';
             
@@ -390,19 +391,21 @@ class PagoController extends Controller
                 $destinatario = "nramirez@upsidecorp.ch";               
             }     
                      
-            $params = array('subject'=>$subject, 'body'=>$body);
+//            $params = array('subject'=>$subject, 'body'=>$body);
             $message->subject = $subject;
-            $message->setBody($params, 'text/html');
+            $message->setBody($body, 'text/html');
             $message->addTo($destinatario);
-            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
             Yii::app()->mail->send($message);
         }
         
         function enviarNotificacionPersonalShopper($pago) {
             
             $message = new YiiMailMessage;
-            //this points to the file test.php inside the view path
-            $message->view = "mail_template";
+            //Opciones de Mandrill
+            $message->activarPlantillaMandrill();
+            
+//            $message->view = "mail_template";
             
             $subject = 'Solicitud de pago';            
             
@@ -432,11 +435,11 @@ class PagoController extends Controller
                 $destinatario = "nramirez@upsidecorp.ch";               
             }     
                      
-            $params = array('subject'=>$subject, 'body'=>$body);
+//            $params = array('subject'=>$subject, 'body'=>$body);
             $message->subject = $subject;
-            $message->setBody($params, 'text/html');
+            $message->setBody($body, 'text/html');
             $message->addTo($destinatario);
-            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
             Yii::app()->mail->send($message);
         }
         

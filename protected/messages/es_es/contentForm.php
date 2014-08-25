@@ -148,6 +148,7 @@ return array (
 
 
 	'Gift Card' => 'Gift Card',
+	'Get a new code'=>'Obten un nuevo codigo',
 	'Go to Store' => 'Ir a la tienda',
 	'<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>' =>  '<h2>¡Molas un montón! Tu pago ha sido aceptado.</h2> Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra.<br/><br/>',
 
@@ -156,7 +157,7 @@ return array (
 	'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
 	'How much should measure the woman who wears this Look?' => '¿Cuánto debe medir la mujer que use este look?',
 	'Help' => 'Ayuda',
-    'Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>' => '¡¡Hola! Alguien ha pensado que Personaling.es es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>{name}.</strong>
+    'Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>' => '¡Hola! Alguien ha pensado que Personaling.es es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>{name}.</strong>
      <br/><br/><i>{message}</i><br/><br/>Comienza a disfrutar de tu primera Shopping Experience única y… repetible. <br/> Puedes registrarte clicando en el enlace que aparece a continuación: <br/><br/><a href="{registration_url}">Clica aquí</a>',
 
 	'ID' => 'ID',
@@ -358,7 +359,7 @@ return array (
 	'Subject' => 'Asunto',
 	'Sumary' => 'Resumen',
 	'Summary of the purchase' => 'Resumen de la compra',
-    'Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en cualquier producto de <a href="https://www.personaling.com" title="Personaling">Personaling.com</a>',
+        'Start enjoying your Gift Card in <a href="https://www.personaling.es" title="Personaling">Personaling.es</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en cualquier producto de <a href="https://www.personaling.es" title="Personaling">Personaling.es</a>',
 
 
 
@@ -411,7 +412,7 @@ return array (
     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/><br/>{{link}}<br/>' => '¡Hola! Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.es<br/> Valida tu cuenta clicando en el enlace que aparece a continuación: <br/><br/><a href="{{link}}">Clica aquí</a>.',	
 	'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
 	'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
-    'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Seur: https://www.seur.com/seguimiento-online.do?accion=nuevaBusqueda con el siguiente número de seguimiento: {number}',
+    'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Seur: https://www.seur.com/seguimiento-online.do?accion=nuevaBusqueda con el siguiente número de seguimiento: <b>{number}</b>',
 	'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',
 	'You must select all sizes' => 'Debes seleccionar todas las tallas',
 	'You should select a Billing Address.'=>'Debes seleccionar una dirección de facturación',
@@ -445,7 +446,10 @@ return array (
 	'We will verify the transfer or deposit in the next 2-3 business days and will notify you when it has been approved' => 'Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado',
 	'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
 	'Weigth' => 'Peso',
-    '<h2>Welcome to Personaling</h2>Receiving this email because you registered your address Personaling. Please validate your account by clicking on the link below:<br/><br/><a href="{url}">Click here</a>' => '<h2>¡Bienvenida a Personaling!</h2>Recibes este correo electrónico porque te has registrado en Personaling.es. Por favor valida tu cuenta haciendo clic en el enlace que aparece a continuación:<br/><br/><a href="{url}">Clica aquí</a>',	
+        '<h2>Welcome to Personaling</h2>Receiving
+                                    this email because you registered your address Personaling.
+                                    Please validate your account by clicking on the link below:
+                                    <br/><br/><a href="{url}">Click here</a>' => '<h2>¡Bienvenida a Personaling!</h2>Recibes este correo electrónico porque te has registrado en Personaling.es. Por favor valida tu cuenta haciendo clic en el enlace que aparece a continuación:<br/><br/><a href="{url}">Clica aquí</a>',	
 	'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
 	'What name would you give this Look?' => '¿Qué nombre le pondrías a este look?',
 	'What style suits this Look?' => '¿Qué estilo se adapta a este Look?',
@@ -463,9 +467,16 @@ return array (
 
 	// Copys de paginas estaticas
 	'copy FAQ' => '<h3>¿Cómo funciona Personaling.es?</h3>
-      <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación. </p>
-      <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>      
+      <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación. </p>   
       <hr/>
+      <div class="cajadevideo">
+
+        <div class="video">
+
+            <iframe src="http://www.youtube.com/embed/oAKyeeTng1U"></iframe>
+
+        </div>
+    </div>
       <h3>¿Debo pagar por mi envío?</h3>
       <p>Sí, si tu compra es menor a 30 euros. De igual forma las tarifas cambiarán dependiendo del destino final del envío y de la urgencia con que desees la entrega. </p>
       <h3>Quiero devolver mi compra ¿Debo hacerlo a través del mismo operador?</h3>

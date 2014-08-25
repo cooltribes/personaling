@@ -21,7 +21,10 @@ class ContactForm extends CFormModel
 	{
 		return array(
 			// name, email, subject and body are required
-			array('name, email, subject, body, motivo', 'required'),
+			#array('name, email, subject, body, motivo', 'required'),
+			#array('nombre, email, subject, body, motivo, verifyCode', 'required', 'message'=>'{attribute} No puede ser vacio.'),
+			array('nombre', 'required', 'message'=>'{attribute} No puede ser vacio.'),
+			array('nombre', 'required', 'message'=>'Ingrese un {attribute}.'),
 			// email has to be a valid email address
 			array('email', 'email'),
 			array('name', 'required', 'message'=>'Ingrese un nombre.'),
@@ -29,8 +32,10 @@ class ContactForm extends CFormModel
 			array('subject', 'required', 'message'=>'Ingrese un asunto.'),
 			array('body', 'required', 'message'=>'Ingrese un mensaje.'),
 			array('motivo', 'required', 'message'=>'Seleccione un motivo.'),
+			array('verifyCode', 'required', 'message'=>'Ingrese codigo de verificacion.'),
 			// verifyCode needs to be entered correctly
-			array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements()),
+			#array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements()),
+			array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements(),'message' => Yii::t("", "El Codigo de Verificacion es Incorrecto.")),
 		);
 	}
 
@@ -47,7 +52,8 @@ class ContactForm extends CFormModel
 			'email' => 'Correo electrónico',
 			'subject' => 'Asunto',
 			'body' => 'Mensaje',
-			'motivo' => 'Motivo', 			
+			'motivo' => 'Motivo',
+						
 		);
 	}
 

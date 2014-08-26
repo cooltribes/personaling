@@ -61,6 +61,9 @@ class Producto extends CActiveRecord
             'activos'=>array(
                 'condition'=>'t.estado=0',
             ),
+            'featured'=>array(
+                'condition'=>'destacado=1',
+            )
         );
     }
 	/**

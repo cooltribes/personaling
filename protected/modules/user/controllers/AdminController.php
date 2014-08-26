@@ -135,17 +135,20 @@ class AdminController extends Controller
                         $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $modelUser->activkey, "email" => $modelUser->email));
 
                         $message = new YiiMailMessage;
-                        $message->view = "mail_template";
+                        //Opciones de Mandrill
+                        $message->activarPlantillaMandrill();
                         $subject = 'Registro Personaling';
                         $body = Yii::t('contentForm','Copy de crear usuario desde admin',array(
                             '{code}'=>$originalPass,
                             '{activation_url}'=>$activation_url));
-                        $params = array('subject' => $subject, 'body' => $body);
                         $message->subject = $subject;
-                        $message->setBody($params, 'text/html');
+                        $message->setBody($body, 'text/html');
                         $message->addTo($modelUser->email);
-                        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                         Yii::app()->mail->send($message);
+                        
+//                        $message->view = "mail_template";
+//                        $params = array('subject' => $subject, 'body' => $body);
+//                        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
 
                         $modelUser->unsetAttributes();
                         $profile->unsetAttributes();
@@ -1013,21 +1016,23 @@ class AdminController extends Controller
                     $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
                     
                     $message = new YiiMailMessage;
-                    $message->view = "mail_template";
+                    //Opciones de Mandrill
+                    $message->activarPlantillaMandrill();
                     $subject = 'Registro Personaling';
                     $body = '<h2>¡Felicitaciones! Tu aplicación ha sido aceptada.</h2><br/><br/>
-                        Nuestro equipo piensa que tienes potencial como Personal Shopper de Personaling.com
+                        Nuestro equipo piensa que tienes potencial como Personal Shopper de Personaling.es
                         <br/><br/>
                         ¿Nervios? No por favor, sabemos que tienes madera para esto.<br/>
                         Gracias por querer ser parte de nuestro equipo.<br/><br>
                         Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>
                         <a href="' . $activation_url.'"> Haz click aquí </a>';
-                    $params = array('subject' => $subject, 'body' => $body);
                     $message->subject = $subject;
-                    $message->setBody($params, 'text/html');
+//                    $message->view = "mail_template";
+//                    $params = array('subject' => $subject, 'body' => $body);
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                    $message->setBody($body, 'text/html');
                     $message->addTo($model->email);
-                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-                    Yii::app()->mail->send($message);
+                    Yii::app()->mail->send($message);                    
                     
                 }else{
                     
@@ -1642,6 +1647,7 @@ class AdminController extends Controller
                                 
 							
 		}
+
 	}
 	
 	public function actionCompra($id)
@@ -2440,7 +2446,7 @@ class AdminController extends Controller
     }
     public function actionBalance($id){
 
-
+			
             $model=$this->loadModel();
             $balances=Balance::model()->findAllByAttributes(array('user_id'=>$id),
                         array("order" => "fecha DESC"));   

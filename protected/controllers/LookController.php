@@ -397,16 +397,16 @@ class LookController extends Controller
 				ga('send', 'pageview');       // Send product details view with the initial pageview.
 		");	
 		
-		
+		 
 		$detect = new Mobile_Detect;
-			if($detect->isMobile()) 
+			if(($detect->isMobile()||$detect->isTablet())) 
             	$this->render('view_mobile',array(
 						'model'=>$model,
 						'ultimos_vistos'=> $productoView->lastView(),
 						'dataProvider' => $looks->match($user),
 						'user'=>$user,	
 						//'categorias'=>$categorias,
-					)
+					) 
 				);
 			else
 				$this->render('view',array(

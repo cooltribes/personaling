@@ -122,6 +122,9 @@ $this->widget('bootstrap.widgets.TbAlert', array(
     
     <input id="accion" type="hidden" value="" />	
         	
+        	 
+        	
+        	
           <?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'ajaxButton',
 			'type'=>'danger',
@@ -148,7 +151,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 			'data'=>array('a'=>'5'),
 			'success'=>"function(data){
 				
-				if(data=='ok')
+				
 					window.location.reload();
 				
 			}",

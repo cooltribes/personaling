@@ -59,8 +59,8 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                         </button>
                        <?php
 
-                }
-
+                } 
+ 
                     if($entro==0) // no le ha dado like
                     {
                         echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
@@ -79,13 +79,15 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                   //Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->createUrl('look/getImage',array('id'=>$model->id)), 'twitter:image:src', null, null, null); //Registro de meta para Card de Twitter
 
             ?>
-            <div class="span12" ><div class="imagen_principal"> <span class="label label-important margin_top_medium"><?php echo Yii::t('contentForm','Promotion'); ?></span> <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Look", array('class'=>'img_1')); ?> </div></div>
+            <div class="span12" ><div class="imagen_principal"> <span class="label label-important margin_top_medium"><?php echo Yii::t('contentForm','Promotion'); ?></span>
+            		 <?php echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$model->id,'w'=>770,'h'=>770)), "Personaling - ".$model->title , array('class'=>'img_1')); ?> 
+            		 </div></div>
 
           </div>
           <div class="hidden-phone row-fluid vcard">
             <div class="span2 avatar ">
             <a href="<?php $perfil = $model->user->profile; echo $perfil->getUrl(); ?>" title="perfil" class="url">
-            <?php echo CHtml::image($model->user->getAvatar(),'Avatar',array("width"=>"84", "class"=>"pull-left photo  img-circle")); //,"height"=>"270" ?>
+            <?php echo CHtml::image($model->user->getAvatar(),"Personaling - ".$model->user->profile->first_name.' '.$model->user->profile->last_name,array("width"=>"84", "class"=>"pull-left photo  img-circle")); //,"height"=>"270" ?>
             </a>
             </div>
             <div class="span5 braker_right row-fluid">
@@ -267,7 +269,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                       $prod = Producto::model()->findByPk($lookhasproducto->producto_id);
                       ?>
 
-                      <?php $image = CHtml::image($image_url, "Imagen ", array('class'=>'imagen_producto'));  ?>
+                      <?php $image = CHtml::image($image_url, "Personaling - ".$prod->nombre, array('class'=>'imagen_producto'));  ?>
                       <?php echo CHtml::link($image, $prod->getUrl() ); ?>
                       <?php //$color_id = @LookHasProducto::model()->findByAttributes(array('look_id'=>$model->id,'producto_id'=>$lookhasproducto->producto_id))->color_id ?>
                       <?php $color_id = $lookhasproducto->color_id; ?>
@@ -508,7 +510,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
               <div class="span4 look">
                   <article class="item" >
                       <?php echo CHtml::image('../images/loading.gif','Loading',array('id'=>"imgloading".$lookre->id)); ?>
-                        <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$lookre->id,'w'=>'368','h'=>'368')), "Look", array("style"=>"display: none","id" => "imglook".$lookre->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
+                        <?php $image = CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$lookre->id,'w'=>'368','h'=>'368')), $lookre->title, array("style"=>"display: none","id" => "imglook".$lookre->id,"width" => "368", "height" => "368", 'class'=>'')); ?>
 
                         <?php echo CHtml::link($image,$lookre->getUrl()); //array('look/view', 'id'=>$lookre->id ?>
                         <?php
@@ -587,7 +589,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
      if (isset($producto)):
                          ?>
               <div class="span2">
-                  <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "170", "height" => "170"));    ?>
+                  <?php $image = CHtml::image($producto->getImageUrl(), "Personaling - ".$producto->nombre, array("width" => "170", "height" => "170"));    ?>
                             <?php echo CHtml::link($image, $producto->getUrl()); ?>
 
               </div>
@@ -646,6 +648,22 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
  		<button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
   </div>-->
 </div>
+
+<div id="alertSizes" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+ <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+     <h3 ><?php echo Yii::t('contentForm','Remember');?></h3>
+ 
+  </div>
+  <div class="modal-body">
+ 		 <h4><?php echo Yii::t('contentForm','You should set the sizes for the items.');?></h4>
+ 		 
+  </div>
+  <!--<div class="modal-footer">   
+ 		<button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
+  </div>-->
+</div>
+
 
 <!-- // Modal Window -->
 <script>

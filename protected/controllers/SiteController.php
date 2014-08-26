@@ -28,7 +28,7 @@ class SiteController extends Controller
                                     'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',
                                     'preguntas_frecuentes', 'equipo_personaling','captcha',
-                                    'comofunciona', 'afterApply','sitemap','landingpage','ve',
+                                    'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos',
                                     'tienda', 'conversion'), 
 				'users'=>array('*'),
 			),
@@ -315,8 +315,8 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 				$respuesta = $zohoCase->save_potential(); 
 				
 				$model=new ContactForm; 
-				$this->render('contact',array('model'=>$model));
-				
+			//	$this->render('contact',array('model'=>$model));
+				$this->redirect(array('contacto')); 
 			}
 		}
 		
@@ -498,4 +498,26 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
             header('Location: ' . $trackBackURL);
         }
         
+		 public function actionPlantillaExternos(){
+    	  
+			$archivo=Yii::getPathOfAlias("webroot")."/docs/PlantillaExternos.xlsx";
+			$downloadfilename = "PlantillaExternos.xlsx";
+	        header('Content-Description: File Transfer');
+	        header('Content-Type: application/octet-stream');
+	        header('Content-Disposition: attachment; filename=' . $downloadfilename);
+	        header('Content-Transfer-Encoding: binary');
+	        header('Expires: 0');
+	        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+	        header('Pragma: public');
+	        header('Content-Length: ' . filesize($archivo));
+	
+	        ob_clean();
+	        flush();
+	        readfile($archivo);
+	        exit;
+			
+	
+			
+    	}  
+		
 }

@@ -317,22 +317,27 @@ class GiftcardController extends Controller
                     }
                                       
                     $message = new YiiMailMessage;
-                    $message->view = "mail_giftcard";
+                    //Opciones de Mandrill
+                    $message->activarPlantillaMandrill("plantilla-correos-no-footer");
                     $subject = 'Gift Card de Personaling';
                     $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
                             <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.')."
                             <br/>
                             (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";
-                            
                     
-                    $params = array('subject' => $subject, 'body' => $body,'envio' => $envio, 'model'=> $model);
+                    $body = $this->renderPartial("//mail/_giftcard",
+                            array('body' => $body,'envio' => $envio,
+                                'model'=> $model), true);                            
+                    
                     $message->subject = $subject;
-                    $message->setBody($params, 'text/html');
-
+                    $message->setBody($body, 'text/html');
                     $message->addTo($envio->email);
-
-                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                     Yii::app()->mail->send($message); 
+
+//                    $message->view = "mail_giftcard";
+//                    $params = array('subject' => $subject, 'body' => $body,'envio' => $envio, 'model'=> $model);
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+
                     
                     Yii::app()->user->updateSession();
                     Yii::app()->user->setFlash('success',
@@ -1101,8 +1106,8 @@ class GiftcardController extends Controller
 
                     if($model->validate()){                    
                         
-                        $envio->attributes = $_POST['EnvioGiftcard'];
-                        
+                        $envio->attributes = $_POST['EnvioGiftcard'];                        
+
                         Yii::app()->getSession()->remove('entrega');                        
                         Yii::app()->getSession()->add('entrega',$_POST['entrega']);
                         
@@ -1112,7 +1117,11 @@ class GiftcardController extends Controller
                             
                             //Guardar los datos del envio pero borrar los anteriores                        
                             Yii::app()->getSession()->remove('envio');                        
-                            Yii::app()->getSession()->add('envio',$_POST['EnvioGiftcard']);
+                            Yii::app()->getSession()->add('envio',$envio->attributes);
+//                            echo "<pre>";
+//                            print_r(Yii::app()->getSession()->get("envio"));
+//                            echo "</pre><br>";
+//                            Yii::app()->end();
 
                             /*
                             por los momentos se van a borrar todas las existentes

@@ -463,7 +463,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	   // 'type'=>'danger',
 
 	    'htmlOptions'=> array(
-	    'style'=>'padding:4px 6px',
+	    //'style'=>'padding:4px 6px',
 		     // 'data-toggle'=>'modal',
 			//	'data-target'=>'#dialogPublicar',
 				//'class'=>'pull-right', 
@@ -476,7 +476,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	    'type'=>'danger',
 		'buttonType' => 'ajaxSubmit',
 	    'htmlOptions'=> array(
-	    'style'=>'padding:4px 6px',
+	   // 'style'=>'padding:4px 6px',
 		     // 'data-toggle'=>'modal',
 			//	'data-target'=>'#dialogPublicar',
 				//'class'=>'pull-right margin_left_small', 

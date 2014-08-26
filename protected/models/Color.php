@@ -39,6 +39,7 @@ class Color extends CActiveRecord
 			array('valor', 'length', 'max'=>45),
 			array('path_image', 'length', 'max'=>255),
 			array('rgb', 'length', 'max'=>6),
+			array('valor, padreId, path_image', 'required', 'message'=>'{attribute} No puede ser vacio.'),
 			array('title, url', 'length', 'max'=>150),
 			array('description, keywords', 'length', 'max'=>250),
 			// The following rule is used by search().
@@ -71,6 +72,8 @@ class Color extends CActiveRecord
 			'description' => 'Descripción',
 			'keywords' => 'Palabras clave',
 			'url' => 'Url',
+			'path_image' => 'Imagen',
+			
 		);
 	}
 

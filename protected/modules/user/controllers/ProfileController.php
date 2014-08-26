@@ -83,24 +83,27 @@ class ProfileController extends Controller
                     $registration_url = $this->createAbsoluteUrl('/user/registration', array("email" => $email, "requestId" => $requestId));
                     
                     $message = new YiiMailMessage;
-                    $message->view = "mail_invite";
+                    //Opciones de Mandrill
+                    $message->activarPlantillaMandrill("plantilla-correo-invitacion");
                     $subject = 'Invitación a Personaling';
+                    $body = Yii::t('contentForm','Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>', array(
+                            '{name}'=>$model->profile->first_name,
+                            '{message}'=>$textoMensaje,
+                            '{registration_url}'=>$registration_url));                        
+                    
+                    $message->subject = $subject;
+                    $message->setBody($body, 'text/html');
+
+                    $message->addTo($email);
+                    Yii::app()->mail->send($message);   
+//                    $message->view = "mail_invite";
                     // $body = '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>' . $model->profile->first_name . '</strong>.' .
                     //         '<br/><br/><i>' . $textoMensaje . '</i><br/><br/>' .
                     //         'Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas.<br/><br/>' .
                     //         'Puedes registrarte haciendo click en el enlace que aparece a continuación:<br/><br/> <a href="' . $registration_url.'">Click aquí</a>';
-					$body = Yii::t('contentForm','Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>', array(
-						'{name}'=>$model->profile->first_name,
-						'{message}'=>$textoMensaje,
-						'{registration_url}'=>$registration_url));                        
-                    $params = array('subject' => $subject, 'body' => $body);
-                    $message->subject = $subject;
-                    $message->setBody($params, 'text/html');
+//                    $params = array('subject' => $subject, 'body' => $body);
 
-                    $message->addTo($email);
-
-                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-                    Yii::app()->mail->send($message);   
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                     
                     //Guardar la invitacion en BD
                     $invitation = EmailInvite::model()->findByAttributes(array('user_id'=>$model->id, 'request_id'=>$requestId));                                       
@@ -118,11 +121,8 @@ class ProfileController extends Controller
                     }else{
                         $invitation->fecha = date('Y-m-d H:i:s');                       
                     }
-					 $invitation->save();
-//                    print_r($invitation->getErrors());
-//                    echo "<pre>";
-//                    print_r($invitation->attributes);
-//                    echo "</pre><br>";
+                     $invitation->save();
+
                 }
                 
                 $result['status'] = 'success';

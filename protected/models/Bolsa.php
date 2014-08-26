@@ -254,7 +254,12 @@ class Bolsa extends CActiveRecord
 	{   
             
             $carrito = Yii::app()->getSession()->get("Bolsa");
-
+			var_dump($producto_id);
+			var_dump($talla_id);
+			var_dump($color_id);
+			var_dump($look_id);
+			break;
+			
             $ptcolor = Preciotallacolor::model()->findByAttributes(array(
                 'producto_id'=>$producto_id,
                 'talla_id'=>$talla_id,

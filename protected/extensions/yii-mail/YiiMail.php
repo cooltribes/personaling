@@ -241,7 +241,8 @@ class YiiMail extends CApplicationComponent
 		require dirname(__FILE__).'/vendors/swiftMailer/swift_init.php';
 	}
     /**
-    * Setear las opciones de Mandrill
+    * Setear las opciones de Mandrill para enviar correos a través de esta 
+     * plataforma
     */
     public function activarMandrill() {
     	$this->transportType = "smtp";
@@ -253,6 +254,14 @@ class YiiMail extends CApplicationComponent
             "password" => "PEfcgPXzlPx70kAlHxjnkA",          
             
         );
+    }
+    /**
+    * Setear las opciones de Mandrill
+    */
+    public function desactivarMandrill() {
+    	$this->transportType = "php";
+        
+    	$this->transportOptions = null;
     }
     
 }

@@ -27,7 +27,7 @@ class ColorController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','pruebazohoproducto'),
+				'actions'=>array('index','view','pruebazohoproducto','pruebazoho'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -282,36 +282,39 @@ class ColorController extends Controller
 	
 	public function actionPruebazoho()
 	{
+		$orden = Orden::model()->findByPk(1);
+		$xml = "";
 		
-		$orden = Orden::model()->findByPk(103);
-		$zoho = new ZohoSales;
-		$usuario = User::model()->findByPk($orden->user->id);
-		/*
-		$conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email); 
-        $datos = simplexml_load_string($conv);
+		$xml .= "<Products>";
 
-        $id = $datos->Contact;
-        $usuario->zoho_id = $id;
-        $usuario->tipo_zoho = 1;
- 
-        $usuario->save(); 
-		*/
-		$respuesta = $zoho->save_potential($orden);
-		echo htmlspecialchars($respuesta)."<p><p>";
+		foreach($orden->productos as $combinacion){
+			$xml .= "<row no='1'>";
+			$xml .= "<FL val='PRODUCTID'>".(int)$combinacion->zoho_id."</FL>";
+       		$xml .= "</row>"; 
+		}
+		
+		$xml .= "</Products>";
+		
+		$url ="https://crm.zoho.com/crm/private/xml/Contacts/updateRelatedRecords"; 
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&relatedModule=Products&id=1245508000000078223&xmlData=".$xml;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
 
-		$datos = simplexml_load_string($respuesta);
+		//Execute cUrl session 
+		$response = curl_exec($ch);
+		curl_close($ch);
+	//	return $response;
+		var_dump( $response ); 
+
+		echo htmlspecialchars($response)."<p><p>";
+
+		$datos = simplexml_load_string($response);
 		var_dump($datos);
-		
-		$id = $datos->Contact;
-		echo $id;	
-		
-/*
-		$id = $datos->result[0]->recorddetail->FL[0];
-		echo $id;	
-		
-		$orden->zoho_id = $id;
-		if($orden->save())
-			echo "<p>TOD BIEN";*/
 		
 	}
 	
@@ -507,7 +510,7 @@ class ColorController extends Controller
 		$response = curl_exec($ch);
 		curl_close($ch);
 	//	return $response;
-		var_dump( $response );
+		var_dump( $response ); 
 
 		echo htmlspecialchars($response)."<p><p>";
 

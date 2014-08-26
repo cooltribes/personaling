@@ -29,7 +29,7 @@ class ProductoController extends Controller
                 array('allow',  // allow all users to perform 'index' and 'view' actions
                     'actions'=>array('index','view','detalle','tallas','tallaspreview',
                         'colorespreview','colores','imagenColor','updateCantidad','encantar',
-                        'contarClick', 'agregarBolsaGuest',"productoszoho"),
+                        'contarClick', 'agregarBolsaGuest'),
                     'users'=>array('*'),
                 ),
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -44,7 +44,7 @@ class ProductoController extends Controller
                         'recatprod','seo', 'historial','importar','descuentos',
                         'reporte','reportexls', "createExcel", 'plantillaDescuentos',
                         'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
-                        'importarExternos', 'sendMandrillEmail'),
+                        'importarExternos', 'sendMandrillEmail',"productoszoho","enviarzoho"),
                     //'users'=>array('admin'),
                     'expression' => 'UserModule::isAdmin()',
                 ),
@@ -4696,7 +4696,7 @@ public function actionReportexls(){
 				
 				foreach($todos_preciotallacolor as $ptc){ // para cada combinacion crear un nuevo producto en zoho	
 					
-					if($cont >= 10) {
+					if($cont >= 100) { 
 							
 						$xml .= '</Products>';
 						//	var_dump($xml);
@@ -4712,54 +4712,65 @@ public function actionReportexls(){
 						curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
 						
 						//Execute cUrl session
-						$response = curl_exec($ch);
+						$response = curl_exec($ch); 
 						curl_close($ch);
 				
 						$datos = simplexml_load_string($response);
-						$i=0;
+						$posicion=0;
 						
 						foreach($datos->result[0] as $each){   
-							//echo $datos->result[0]->row[$i]->success->details->FL[0];
+							//echo $datos->result[0]->row[$posicion]->success->details->FL[0]; 
 							
-							$number = $datos->result[0]->row[$i];
-							$p = xml_parser_create();
-							$transform = xml_parse_into_struct($p, $number, $values);			
-							var_dump($values);
-							print_r($values);
-							Yii::app()->end();
-							$i++;
-						} 
-						 
-						foreach($ids as $clave => $data){
-							// echo $datos["row"]." ".$datos["ptc"];
-							$precioTalla = Preciotallacolor::model()->findByPk($data["ptc"]);
-							$pos = (int)$data['row'];
+							$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+							//var_dump($number);
 							
-							var_dump($ids);
-							var_dump($datos->result[0]);
+								foreach($ids as $data){
+									if($number == $data['row']){
+										$pos = (int)$data['row'];
+										$precioTalla = Preciotallacolor::model()->findByPk($data["ptc"]);
+
+									//	var_dump($datos->result[0]->row[$posicion]->success->details->FL[0]);
+									//	var_dump($datos->result[0]->row[$pos]->success->details->FL[0]);
+										
+										if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+											$precioTalla->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+											$precioTalla->save();
+											
+											echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0]."<br>";
+										}else{
+											echo "Error en posicion ".$posicion;
+										}
+										
+									}
+								}
 							
-							var_dump("<br>".$response);
-							 
+							$posicion++;
+						}
 							
-							
-							Yii::app()->end();
-							
-							
-								
-							echo "<br> El ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$clave]->success->details->FL[0];
-						} 
+						//Yii::app()->end();
 						
-						Yii::app()->end();
+						echo "<br><br>";
 						
-						$xml = "";
-						$cont = 1;					
-					} // else
+						
+						//$this->actionEnviarZoho($xml,$ids,$cont);
+						
+						/* reiniciando todos los valores */
+						$xml = ""; 
+						$cont = 1;	
+						unset($ids);
+						
+						$ids = array();
+						
+						$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+						$xml .= '<Products>';				
+					} // mayor que 100
 					
-					if($cont < 10)
+					if($cont < 100)
 					{
 						$producto = Producto::model()->findByPk($ptc->producto_id);
 						$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 						
+						$add = array();
 						$add = array("row" => $cont, "ptc" => $ptc->id);
 						array_push($ids,$add);
 						
@@ -4891,6 +4902,63 @@ public function actionReportexls(){
 			
 			}// foreach
 						
+		}
+		
+		public function actionEnviarZoho($xml,$ids,$cont){
+				
+			$xml .= '</Products>';
+			
+			$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
+			$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=2&duplicateCheck=2&version=4&xmlData=".$xml;
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+						
+			//Execute cUrl session
+			$response = curl_exec($ch); 
+			curl_close($ch);
+			
+			var_dump($response); 
+				
+			$datos = simplexml_load_string($response);
+			$posicion=0;
+			
+			while($cont >= 0){			
+			//foreach($datos->result[0] as $each){   
+				//echo $datos->result[0]->row[$posicion]->success->details->FL[0]; 
+							
+				$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+				
+				foreach($ids as $data){
+					if($number == $data['row']){
+						$pos = (int)$data['row'];
+						$precioTalla = Preciotallacolor::model()->findByPk($data["ptc"]);
+
+						if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+							$precioTalla->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+							
+							if($precioTalla->save())
+								echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0]."<br>";
+							else
+								print_r($precioTalla->getErrors());
+									
+						}else{
+							echo "Error en posicion ".$posicion; 
+						}
+										
+					}
+				}
+							
+				$posicion++;
+				$cont--;
+			} 
+							
+			echo "<br><br>";
+			
 		}
                 
                 /**

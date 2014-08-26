@@ -714,7 +714,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
       <div class="">
         <ul class="nav nav-tabs">
           <li class="active"><a href="#tab1" data-toggle="tab" title="Todos los productos"><?php echo Yii::t('contentForm', 'Products'); ?></a></li>
-          <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks"><?php echo Yii::t('contentForm', 'Decorations'); ?></a></li>
+          <!--
+            <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks"><?php //echo Yii::t('contentForm', 'Decorations'); ?></a></li>
+          -->
           <li><a href="#tab3" data-toggle="tab" title="Productos destacados"><?php echo Yii::t('contentForm', 'Featured Products'); ?></a></li>
         </ul>
         <div class="tab-content">

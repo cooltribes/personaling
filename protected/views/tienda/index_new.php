@@ -480,13 +480,13 @@ if(isset($seo)){
 
 
 <?php 
-//Modal si no ha completado el perfil
+//Mostrar un Modal si no ha completado el perfil y solo si es mujer
 $completarPerfil = false;
 if (!Yii::app()->user->isGuest){
     
 $user = User::model()->findByPk(Yii::app()->user->id);
-$completarPerfil = $user->status_register == User::STATUS_REGISTER_NEW || 
-            $user->status_register == User::STATUS_REGISTER_TIPO;
+$completarPerfil = $user->profile->sex == Profile::G_FEMENINO && ($user->status_register == User::STATUS_REGISTER_NEW || 
+            $user->status_register == User::STATUS_REGISTER_TIPO);
 
 
     if ($completarPerfil){

@@ -28,12 +28,13 @@ src="<?php echo $this->createUrl("/site/conversion"); ?>?campaignID=15920&produc
 &conversionType=lead&https=0&transactionID=<?php echo Yii::app()->user->id; ?>"
 width="1" height="1" border="0" alt="" />
     <style>
-        .user-profile-tutipo #notificacion_validar + div {
+       /* .user-profile-tutipo #notificacion_validar + div {
             display: none;
         }
+        */
     </style>
     
-<div style="height: 48px"></div>
+<!-- <div style="height: 48px"></div> -->
 
 <div class="container tu_perfil margin_top_medLarge_minus">
   <div class="row">
@@ -64,7 +65,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
     <?php } ?>      
 
-    <?php $mensajeH1 = $ref ? "¡Tu perfil es tu ADN Personaling!"
+    <?php $mensajeH1 = isset($ref) ? "¡Tu perfil es tu ADN Personaling!"
             :"Escoge las opciones que más se parezcan a ti:"; ?>  
         
     <h1>Tu tipo<small> - <?php echo $mensajeH1; ?></small>
@@ -77,6 +78,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
       <?php $this->widget('bootstrap.widgets.TbButton', array(            
             'label'=>  Yii::t('contentForm', '¡Saltar este paso!'),
             'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+            'url'=>$this->createUrl("/tienda/look"), // null, 'large', 'small' or 'mini'
             'size'=>'large', // null, 'large', 'small' or 'mini'
             'htmlOptions' => array('class'=>'pull-right span3'), 
 
@@ -237,17 +239,13 @@ $script = "
     <p class="muted" >¡Queremos recomendarte ropa que te favorezca y haga ver espectacular! </p>
   </li>
   
-  <li id="numero3" data-id="yw1" data-button="Terminar" data-options="tipLocation:top;tipAnimation:fade">
+  <li id="numero3" data-id="yw2" data-button="Terminar" data-options="tipLocation:top;tipAnimation:fade">
     <p class="lead"><strong>Escoge tu estilo </strong></p>
     <p class="muted">Haz click en siguiente y elige entre las imágenes tu estilo </p>
   </li>
 </ol>
 </div>
-<script type="text/javascript">
-function joyRidePerfil(){
-    
-}
-</script>
+
 <?php if ($errorValidando): ?>
 <?php 
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/joyride-2.1.css',null);
@@ -255,12 +253,15 @@ Yii::app()->clientScript->registerScriptFile('/js/jquery.joyride-2.1.js',null,nu
 ?>
 <script type="text/javascript">
 function joyRidePerfil(){
+
     $('#div_aviso').show();
+    //$('#navegacion_principal').hide();
     $('#joyRideTipContent').joyride({      
           autoStart : <?php echo !((isset($editar) && $editar)) ? 'true' : 'false' ?>,
           modal: true,
           expose: true,
-          scroll: false,
+          scroll: false
+         // startOffset: 72,
         // 'tipLocation': 'bottom',         // 'top' or 'bottom' in relation to parent
         // 'nubPosition': 'auto',           // override on a per tooltip bases
         // 'scrollSpeed': false,              // Page scrolling speed in ms
@@ -281,13 +282,13 @@ function joyRidePerfil(){
 <?php endif; ?>
 <script type="text/javascript">
     
-$(document).ready(function() {
+//$(document).ready(function() {
 //    joyRidePerfil(); 
-});
+//});
 $(window).load(function() {
        
 //    $(".tu_perfil").css("margin-top", "+=58");     
-    joyRidePerfil(); 
+    joyRidePerfil();
 //    $(".tu_perfil").before('<div style="height: 48px"></div>');     
 });
 

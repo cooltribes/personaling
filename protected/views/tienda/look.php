@@ -323,6 +323,8 @@ $("#mobFiltrar").click(function() {
                     ));
                     ?>
                 </div>
+                <div class="spacerlook">&nbsp;
+  				</div>
             </div>
 
             <?php

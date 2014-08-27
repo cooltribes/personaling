@@ -60,7 +60,7 @@ if (isset($categoria_padre) ){
 					'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad GROUP BY color_id',
 					array(':cantidad'=>1, ':producto_id'=>$producto->id)
 				);
-			}
+			} 
 			foreach($tallacolores as $tallacolor){
 				//echo $producto->id.'<br/>';
 				//echo $producto->id.' - '.$tallacolor->color_id.'<br/>';

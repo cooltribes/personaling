@@ -1,5 +1,5 @@
 <div class="row-fluid">
-<?php
+<?php 
 					if ($categoria_padre > 0)
 					echo CHtml::ajaxLink(
 						  'Atras ', 

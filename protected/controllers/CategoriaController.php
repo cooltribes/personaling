@@ -101,7 +101,7 @@ class CategoriaController extends Controller
 							$model->save();
 							
 							$image = Yii::app()->image->load($nombre."/img.jpg");
-		                    $image->resize(150, 150);
+		                    $image->resize(100, 100);
 		                    $image->save($nombre."/img.jpg");
 		
 		                	} 

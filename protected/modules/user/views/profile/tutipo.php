@@ -77,7 +77,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
       <?php $this->widget('bootstrap.widgets.TbButton', array(            
             'label'=>  Yii::t('contentForm', '¡Saltar este paso!'),
             'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-            'url'=>$this->createUrl("tienda/look"), // null, 'large', 'small' or 'mini'
+            'url'=>$this->createUrl("/tienda/look"), // null, 'large', 'small' or 'mini'
             'size'=>'large', // null, 'large', 'small' or 'mini'
             'htmlOptions' => array('class'=>'pull-right span3'), 
 

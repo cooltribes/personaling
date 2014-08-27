@@ -386,6 +386,14 @@ function getMonthsArray()
                   ?>
               </li>
               
+              <li>
+              	<?php
+              	echo CHtml::ajaxLink(
+					  "<i class='icon-user'></i> Ver Historial de Personal Shopper",
+					  Yii::app()->createUrl( 'user/admin/toggle_admin' ,array('id'=>$model->id)));
+              	 ?>
+              </li>
+              
               
             </ul>
           </div>

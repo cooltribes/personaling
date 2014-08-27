@@ -341,8 +341,37 @@ if(isset($seo)){
 
 			<?php if (Yii::app()->params['mostrarMarcas']){ ?>
 			<li class="item">
+                            <?php 
+                            //Agregar la opcion de Todas las marcas al listado existente
+                            $marcasListData = CHtml::listData($marcas, "id" , "nombre");
+                            $marcasListData[0] = Yii::t('contentForm','All Brands');
 
-				<div class="dropdown">
+                            $this->widget('bootstrap.widgets.TbSelect2',array(
+                                    'asDropDownList' => true,
+                                    'name' => 'marcasAutocompletar',
+                                    'data' => $marcasListData,
+                                    'value' => 0,
+                                    
+                                    'htmlOptions' => array(
+//                                        'class' => 'span2',
+                                    ),
+                                    'options' => array(
+                                             'placeholder'=> Yii::t('contentForm','By brand'),
+                                             'multiple'=>false,
+                                             //'data'=>$data,
+                                             ////'data'=>array(array('id'=>1,'text'=>'rafa'),array('id'=>2,'text'=>'lore')),
+                                            // 'data'=> CHtml::listData(Color::model()->findAll(),'id', 'valor'),
+                                             //'width' => '40%',
+                                            ),
+                                    )
+                                );
+                            
+                          
+
+
+
+                            ?>
+<!--				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<div class="dropinput">
 							<span id="marca_titulo" ><?php echo Yii::t('contentForm','By brand');?></span>
@@ -371,7 +400,7 @@ if(isset($seo)){
 						?>
 						<li><a class="marca" value="0" href="#"><?php echo Yii::t('contentForm','All Brands');?></a></li>											
 					</ul>  	
-				</div>	
+				</div>	-->
 
 			</li>
 			<?php }else{

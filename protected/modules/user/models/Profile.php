@@ -62,9 +62,16 @@ class Profile extends UActiveRecord
                                         $field->id == 25)
 					 {
                                        if ($field->varname=="first_name")
-                                               array_push($rules,array($field->varname, 'required','message'=>' ¿Cómo te llamas? '));
+									   {
+									   	array_push($rules,array($field->varname, 'required','message'=>' ¿Cómo te llamas? '));
+										array_push($rules,array($field->varname, 'length', 'min' => 4,'tooShort'=>'El Nombre debe tener al menos 4 Caracteres'));
+									   }
+                                               
 									   else	if ($field->varname=="last_name")
-                                               array_push($rules,array($field->varname, 'required','message'=>' ¿Cuál es tu apellido? '));
+									   {
+									   	array_push($rules,array($field->varname, 'required','message'=>' ¿Cuál es tu apellido? '));
+										array_push($rules,array($field->varname, 'length', 'min' => 4,'tooShort'=>'El Apellido debe tener al menos 4 Caracteres'));
+									   }							         
 									   else if ($field->varname=="sex")
                                                array_push($rules,array($field->varname, 'required','message'=>' ¿Eres mujer/hombre? '));
                                                
@@ -85,7 +92,7 @@ class Profile extends UActiveRecord
 				if ($field->field_type=='VARCHAR'||$field->field_type=='TEXT') {
 					$field_rule = array($field->varname, 'length', 'max'=>$field->field_size, 'min' => $field->field_size_min);
 					if ($field->error_message) $field_rule['message'] = UserModule::t($field->error_message);
-					array_push($rules,$field_rule);
+					//array_push($rules,$field_rule); /// Se comento esto para que los errores dejen de salir en ingles y se personalizo cada campo en especifico.
 				}
 				if ($field->other_validator) {
 					if (strpos($field->other_validator,'{')===0) {

@@ -137,7 +137,7 @@ $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Aplicar para Person
                         }
                         //------------- condicion para mostar label en IE9 OFF ----------------//
 
-                        echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 ', 'maxlength' => (($field->field_size) ? $field->field_size : 255)));
+                        echo $form->textFieldRow($profile, $field->varname, array('class' => 'span12 '));    
                         echo $form->error($profile, $field->varname);
                     }
                     ?>

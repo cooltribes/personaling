@@ -1,3 +1,33 @@
+<?php /*<style>
+.cajadevideo{
+
+   max-width 710px;
+   margin:auto;
+
+}
+.video{
+
+   height:0px;
+   width:100%;
+   max-width:710px;    
+   padding-top:56.25%;
+   position:relative;
+
+}
+
+#acerca{
+
+   position:absolute;
+   height:80%;
+   width:80%;
+   top:0px;
+   left:0px;
+
+}
+	
+	
+</style>
+
 <?php
 //$this->pageTitle=Yii::app()->name . ' - Página de inicio';
 if(isset($seo)){
@@ -32,12 +62,14 @@ $this->breadcrumbs=array(
           <h1>Acerca Personaling</h1>
         </div>
         <div class="row">
-          <div class="span5">
+          
             <?php echo Yii::t('contentForm','About us text'); ?>
-          </div>
-          <div class="span5">
-            <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>
-          </div>
+          
+        	<div class="cajadevideo">
+        		<div class="video">
+            		<iframe id="acerca" src="http://www.youtube.com/embed/oAKyeeTng1U"></iframe>
+        		</div>
+    		</div>
         </div>
       </div>
     </div>

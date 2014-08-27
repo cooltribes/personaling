@@ -1,4 +1,4 @@
-<?php
+<?php 
 /* @var $this OrdenController */
 
 $this->breadcrumbs=array(

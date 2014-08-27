@@ -928,6 +928,7 @@ if(!Yii::app()->user->isGuest){
 
 <script>
     $(document).ready(function(){
+    	
         var accepted = readCookie('accept_cookies');
         if(!accepted){
             $('#cookies_notification').show();

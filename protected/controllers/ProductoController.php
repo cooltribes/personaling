@@ -1995,7 +1995,6 @@ public function actionReportexls(){
 	{
 		if(isset($_POST['check'])){
 			if($_POST['check']!=""){
-
 				$checks = explode(',',$_POST['check']);
 				$idProducto = $_POST['idProd'];
 				
@@ -2062,7 +2061,11 @@ public function actionReportexls(){
 				else if($_POST['accion'] == 'avanzar')
 					echo($idProducto); // realizo la relación
 					
+			}else{
+				
+				Yii::app()->user->setFlash('error', "El producto debe estar relacionado con al menos una categoria.");
 			}
+
 		}
 	}
 	

@@ -2,6 +2,12 @@
 
 class Profile extends UActiveRecord
 {
+    /*
+     * PARA EL GENERO
+     */
+    const G_MASCULINO = 1;
+    const G_FEMENINO = 0;
+    
 	/**
 	 * The followings are the available columns in table 'profiles':
 	 * @var integer $user_id

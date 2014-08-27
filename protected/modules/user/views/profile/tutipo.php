@@ -64,7 +64,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
     <?php } ?>      
 
-    <?php $mensajeH1 = $ref ? "¡Tu perfil es tu ADN Personaling!"
+    <?php $mensajeH1 = isset($ref) ? "¡Tu perfil es tu ADN Personaling!"
             :"Escoge las opciones que más se parezcan a ti:"; ?>  
         
     <h1>Tu tipo<small> - <?php echo $mensajeH1; ?></small>
@@ -77,6 +77,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
       <?php $this->widget('bootstrap.widgets.TbButton', array(            
             'label'=>  Yii::t('contentForm', '¡Saltar este paso!'),
             'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+            'url'=>$this->createUrl("tienda/look"), // null, 'large', 'small' or 'mini'
             'size'=>'large', // null, 'large', 'small' or 'mini'
             'htmlOptions' => array('class'=>'pull-right span3'), 
 

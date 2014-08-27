@@ -288,6 +288,7 @@ return array (
 	'<strong>Process Validation:</strong> usually takes 1 to 5 business days and is to validate your transfer or deposit with our bank. You can check the status of your purchase in your profile.' => '<strong>Proceso de validación:</strong> usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.',
 	'<strong>Process Validation:</strong> usually takes 1 to 5 business days of validating your payment.' => '<strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.',
 	'Promotion' => 'Promoción',
+	'Purchase confirmation' => 'Confirmación de la compra',
 
 
 

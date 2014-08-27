@@ -1,5 +1,4 @@
 <?php
-
 $this->breadcrumbs=array(
     'Pedidos'=>array('listado'),
     'Detalle del pedido',

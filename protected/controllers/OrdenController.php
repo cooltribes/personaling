@@ -1674,7 +1674,7 @@ public function actionValidar()
 				$params = array('subject' => $subject, 'body' => $body);
                 $message->subject = $subject;
                 $message->setBody($params, 'text/html');
-                if(isnull($mensaje->admin))
+                if(is_null($mensaje->admin))
                 	$message->addTo($usuario->email);
                 $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                 Yii::app()->mail->send($message);	

@@ -7,6 +7,8 @@ $mp->sandbox_mode(TRUE);
 //$accessToken = $mp->get_access_token();
 //var_dump($accessToken);
 
+$this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Purchase confirmation'));
+
 if (!Yii::app()->user->isGuest) { // que este logueado
 	
 //Yii::app()->getSession()->add('descuento',$descuento);
@@ -35,7 +37,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
   </div>
   <div class="row">
     <div class="span12">
-      <h1><?php echo Yii::t('contentForm','Confirmation of Purchase'); ?></h1>
+      <h1><?php echo Yii::t('contentForm','Purchase confirmation'); ?></h1>
     </div>
   </div>
   <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
@@ -207,7 +209,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                 "width" => "65%",                        
                                 "autoScale" => false,                        
                                 "transitionIn" => "none",                        
-                                "transitionOut" => "none",                
+                                "transitionOut" => "none",  
+                                
+                                "hideOnOverlayClick" => false,
+                                "enableEscapeButton" => false,
+                                "showCloseButton" => false,
 
                                 ),
                             )

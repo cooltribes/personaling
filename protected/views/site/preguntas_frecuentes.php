@@ -1,4 +1,4 @@
-<style>
+<?php /*<style>
 
 .cajadevideo{
 
@@ -16,7 +16,7 @@
 
 }
 
-iframe{
+#preguntas_frecuentes{
 
     position:absolute;
     height:100%;
@@ -27,6 +27,7 @@ iframe{
 }
 
 </style>
+ */?>
 
 <?php
 //$this->pageTitle=Yii::app()->name . ' - Página de inicio';

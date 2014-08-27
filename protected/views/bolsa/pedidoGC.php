@@ -1,5 +1,6 @@
 <?php
 $nf = new NumberFormatter("es_VE", NumberFormatter::CURRENCY);
+$this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Order Summary'));
 if (!Yii::app()->user->isGuest) { // que este logueado
     $user = User::model()->findByPk(Yii::app()->user->id);
 //$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));

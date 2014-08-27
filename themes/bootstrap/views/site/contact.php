@@ -41,7 +41,7 @@ $this->breadcrumbs=array(
 )); ?>
 
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model, 'Por favor rellena los Campos en Rojo'); ?>
 
     <?php echo $form->textFieldRow($model,'name'); ?>
 

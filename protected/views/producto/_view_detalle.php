@@ -125,7 +125,7 @@
                       # code...
                       break;
                   }
-                  $iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
+                  $iconoDescuento = '<div class="icono-descuento"><span><span class="to_add">-</span>'.round($porcentaje).'%</span><span class="to_cut leyenda"></br>Descuento</span></div>';
                   //$iconoDescuento = '<div class="icono-descuento">%<span>Descuento</span></div>';
                 }
               }

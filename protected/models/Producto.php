@@ -559,9 +559,23 @@ class Producto extends CActiveRecord
 				if ( isset( $imagecolor) ) return  $imagecolor->getUrl($opciones);
 				elseif ($this->mainimage) return $this->mainimage->getUrl($opciones);
 			}
-			return "http://placehold.it/180";
-			 
+			return "http://placehold.it/180";			 
 	}
+    
+    public function getThumbUrl($color_id,$ext){
+         if( strtolower($ext)!="jpg"&&strtolower($ext)!="png")
+            $ext="jpg";    
+          
+         $url=$this->getImageUrl($color_id);
+         if($url!="http://placehold.it/180"){
+            $url=explode('.',$url);             
+            $url=$url[0];
+            $url=$url."_thumb.".$ext; 
+         } 
+         return $url;
+            
+    }
+    
 	public function getColores($talla=null)
 	{
 		//$kwdata = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'Preciotallacolor.color_id == '.$color)))->findByPk($this->id);
@@ -1469,6 +1483,8 @@ public function multipleColor2($idColor, $idact)
 		}
 		return $img;
 	}
+	
+	
 	
 	public function Next($id_actual)
 	{

@@ -385,12 +385,19 @@ function getMonthsArray()
                   );
                   ?>
               </li>
-              
+               
               <li>
               	<?php
-              	echo CHtml::ajaxLink(
+              	
+              	echo CHtml::button("Ver Historial de Personal Shopper", array('submit'=>array('historial', 'class'=>'icon-user')));
+              	/*echo CHtml::ajaxLink(
 					  "<i class='icon-user'></i> Ver Historial de Personal Shopper",
-					  Yii::app()->createUrl( 'user/admin/toggle_admin' ,array('id'=>$model->id)));
+					  Yii::app()->createUrl( 'user/admin/todmin' ,array('id'=>$model->id)));*/
+					/* echo CHtml::ajaxLink(
+					  "<i class='icon-user'></i> Ver Historial de Personal Shopper",array('id'=>'botonedespues', 'submit'=>array('historial'))); */
+				/*echo CHtml::ajaxLink(
+					  "<i class='icon-user'></i> Ver Historial de Personal Shopper",
+					  Yii::app()->createUrl( 'user/admin/todmin' ,array('id'=>$model->id)));*/
               	 ?>
               </li>
               

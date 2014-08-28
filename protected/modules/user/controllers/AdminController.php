@@ -34,7 +34,7 @@ class AdminController extends Controller
                             'credito','editardireccion',
                             'eliminardireccion','comprafin','mensajes','displaymsj',
                             'invitaciones','porcomprar','seguimiento','balance',
-                            'reporteCSV','usuariosZoho', 'suscritosNl'),                      
+                            'reporteCSV','usuariosZoho', 'suscritosNl', 'historial'),                      
                         
                         'expression' => 'UserModule::isAdmin()',
 
@@ -1040,6 +1040,7 @@ class AdminController extends Controller
                    
                 }
 		
+		$model->admin_ps=Yii::app()->user->id;
 		if ($model->save()){
 			
 			/* Creando el caso */
@@ -2632,6 +2633,20 @@ class AdminController extends Controller
             ));
             
         }
+
+		public function actionHistorial()
+		{
+				             
+         	$model=new User('search');
+			$model->unsetAttributes();  // clear any default values  
+			if(isset($_GET['User']))
+				$model->attributes=$_GET['User'];
+
+			$this->render('historial',array(
+				'model'=>$model,
+			));     
+			
+		}
 
 
 

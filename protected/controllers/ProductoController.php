@@ -1734,11 +1734,7 @@ public function actionReportexls(){
 										$primera = str_replace("<",'%3C' ,$cambiar);
 										$segunda = str_replace(">",'%3E' ,$primera);
 										
-										$descripcion_nueva = "<![CDATA[".$segunda."]]>";
-										//echo htmlspecialchars($marcacorregida);
-										
-										//echo $marcacorregida;
-										//Yii::app()->end();
+										$descripcion_nueva = "<![CDATA[".$segunda."]]>"; 
 										
 										$zoho->descripcion = $descripcion_nueva;
 									}

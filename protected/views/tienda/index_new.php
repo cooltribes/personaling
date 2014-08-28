@@ -208,6 +208,42 @@ if(isset($seo)){
            </div>
 </div><?php }?>
 
+<style>
+.bard_tienda .dropinput #precio_titulo {
+    width: 130px;
+}
+
+.container-marcas {    
+    vertical-align: middle;
+}
+
+.container-marcas .select2-choice{
+    background-image: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border: 1px solid #ddd;
+}
+
+.container-marcas.select2-dropdown-open .select2-choice,
+.container-marcas.select2-container-active .select2-choice{
+    -webkit-box-shadow: none; 
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+    background: none;
+}
+
+.select2-container .select2-choice div{
+    background-image: none;    
+    -webkit-border-radius: 0 ;
+    -moz-border-radius: 0;
+    border-radius: 0; 
+    border: 0; 
+}
+
+</style>
+
 <section class="bard_tienda">
 
 	 	<ul class="nav unstyled">
@@ -218,8 +254,7 @@ if(isset($seo)){
 					else {
 						echo CHtml::hiddenField('padrehid',0);
 				}
-  			
-  			
+  			  			
 			if(isset(Yii::app()->session['f_cat']))
 						echo CHtml::hiddenField('cathid',Yii::app()->session['f_cat']);
 					else {
@@ -265,13 +300,9 @@ if(isset($seo)){
 				if($i>=3){
 					break;
 				}
-  			}
-  		
+  			}  		
   		?>
-  		
-
-  			
-  			
+                        
   			<li class="itemThumbnails tienda_iconos itemcolor">
   				<div class="dropdown">
 	  				<a href="#" class="dropdown-toggle" data-toggle="dropdown" class="color_b">
@@ -346,9 +377,9 @@ if(isset($seo)){
                             $marcasListData = CHtml::listData($marcas, "id" , "nombre");
                             $marcasListData[0] = Yii::t('contentForm','All Brands');
 
-                            $this->widget('bootstrap.widgets.TbSelect2',array(
+                            $this->widget('bootstrap.widgets.TbSelect2',array(                                    
                                     'asDropDownList' => true,
-                                    'name' => 'marcasAutocompletar',
+                                    'name' => 'filtroMarcas',
                                     'data' => $marcasListData,
                                     'value' => 0,
                                     
@@ -356,51 +387,59 @@ if(isset($seo)){
 //                                        'class' => 'span2',
                                     ),
                                     'options' => array(
-                                             'placeholder'=> Yii::t('contentForm','By brand'),
-                                             'multiple'=>false,
-                                             //'data'=>$data,
-                                             ////'data'=>array(array('id'=>1,'text'=>'rafa'),array('id'=>2,'text'=>'lore')),
-                                            // 'data'=> CHtml::listData(Color::model()->findAll(),'id', 'valor'),
-                                             //'width' => '40%',
-                                            ),
+                                        'formatNoMatches' => "",
+                                        'placeholder'=> Yii::t('contentForm','By brand'),
+                                        'containerCssClass'=> "container-marcas",
+//                                        'dropdownAutoWidth'=> true,
+
+
+////                                             'multiple'=>true,
+//                                             'tags' => $marcasListData,
+//
+//                                             ////'data'=>array(array('id'=>1,'text'=>'rafa'),array('id'=>2,'text'=>'lore')),
+//                                            // 'data'=> CHtml::listData(Color::model()->findAll(),'id', 'valor'),
+////                                             'width' => '40%',
+//                                            'tokenSeparators' => array(',', ' ')
+                                        ),
                                     )
                                 );
                             
-                          
-
-
+                            //Campo hidden para guardar la marca seleccionada
+                            echo CHtml::hiddenField('marcahid',0);
 
                             ?>
-<!--				<div class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<div class="dropinput">
-							<span id="marca_titulo" ><?php echo Yii::t('contentForm','By brand');?></span>
-							<small>
-								<b class="caret"></b>
-							</small>
-						</div>						
-					</a>
-					<ul class="dropdown-menu">	
-						
-						<?php
-							if(isset(Yii::app()->session['f_marca']))
-								echo CHtml::hiddenField('marcahid',Yii::app()->session['f_marca']);
-							else {
-								echo CHtml::hiddenField('marcahid',0);
-							}
-							foreach($marcas as $marca){
-								$cien="not_cien";
-								if($marca->is_100chic){
-									$cien="cien";
-								}
-								
-								echo'<li><a class="marca '.$cien.'" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
-								 
-							}
-						?>
-						<li><a class="marca" value="0" href="#"><?php echo Yii::t('contentForm','All Brands');?></a></li>											
-					</ul>  	
-				</div>	-->
+                            
+                            
+<!--                        <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <div class="dropinput">
+                                        <span id="marca_titulo" ><?php echo Yii::t('contentForm','By brand');?></span>
+                                        <small>
+                                                <b class="caret"></b>
+                                        </small>
+                                    </div>						
+                                </a>
+                                <ul class="dropdown-menu">	
+
+                                    <?php
+                                        if(isset(Yii::app()->session['f_marca']))
+                                                echo CHtml::hiddenField('marcahid',Yii::app()->session['f_marca']);
+                                        else {
+                                                echo CHtml::hiddenField('marcahid',0);
+                                        }
+                                        foreach($marcas as $marca){
+                                            $cien="not_cien";
+                                            if($marca->is_100chic){
+                                                    $cien="cien";
+                                            }
+
+                                            echo'<li><a class="marca '.$cien.'" value='.$marca->id.' href="#">'.$marca->nombre.'</a></li>';
+
+                                        }
+                                    ?>
+                                    <li><a class="marca" value="0" href="#"><?php echo Yii::t('contentForm','All Brands');?></a></li>											
+                                </ul>  	
+                            </div>	-->
 
 			</li>
 			<?php }else{
@@ -411,13 +450,7 @@ if(isset($seo)){
 							}
 				
 			} ?>
-			
-			
-			
-	
-
-
-		
+					
 	
 	<li class="item" id="li_chic">
 
@@ -478,10 +511,7 @@ if(isset($seo)){
 </div>
 </div>
 
-
 <div></div>
-
-
 
 <!-- BAR OFF -->
 <!-- PRODUCTOS ON -->
@@ -500,7 +530,6 @@ if(isset($seo)){
 
     </div>
 </div>
-
 
  <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
  
@@ -590,219 +619,246 @@ if (!Yii::app()->user->isGuest && $completarPerfil){
    $('#modalCompletarPerfil').modal('show')  
      
 <?php } ?>
-		  
+		
+    $(".precio").click(function() { 
 
-		
-		
-		$(".precio").click(function() { 
-            	
-            	$('#precio_titulo').html($(this).html());
-            	
-            	$('#preciohid').val($(this).attr('id'));
-            	if($('#preciohid').val()!='0'){
-            		$('#summPrecio').html($(this).html());
-            	}else{
-            		$('#summPrecio').html('');
-            	}
-            	//$('#catalogo').remove(); 
-            	//$('#tienda_productos').html(''); 
-            	$('.text_search').val(''); 
-            	preRefresh();
-           
-            	 
-              	
-		});
-       
-         $(".marca").click(function() { 
-            	
-            	var titulo;
-            	titulo=$(this).html();
-            	if(titulo.length>13){
-            		titulo=titulo.substring(0,10);
-            		titulo=titulo+'...';
-            	}
-            	$('#marca_titulo').html(titulo);
+            $('#precio_titulo').html($(this).html());
+
+            $('#preciohid').val($(this).attr('id'));
+            if($('#preciohid').val()!='0'){
+                    $('#summPrecio').html($(this).html());
+            }else{
+                    $('#summPrecio').html('');
+            }
+            //$('#catalogo').remove(); 
+            //$('#tienda_productos').html(''); 
+            $('.text_search').val(''); 
+            preRefresh();
+
+
+
+            });
+
+    $(".marca").click(function() { 
+
+        var titulo;
+        titulo=$(this).html();
+        if(titulo.length>13){
+                titulo=titulo.substring(0,10);
+                titulo=titulo+'...';
+        }
+        $('#marca_titulo').html(titulo);
+
+
+        $('#marcahid').val($(this).attr('value'));
+        if($('#preciohid').val()!='0'){
+                        $('#summMarca').html(titulo);
+        }else{
+                $('#summMarca').html('');
+        }
+        //$('#catalogo').remove();
+        //$('#tienda_productos').html(''); 
+        $('.text_search').val(''); 
+        $('#chic_hid').val('0');
+        preRefresh();
+
+
+    });
+
+    //Evento change del select para filtros de Marcas
+    $("#filtroMarcas").change(function(){
+        var valor = $(this).val();
+        
+        //asignar al campo hidden el valor de la marca seleccionada
+        $('#marcahid').val(valor);        
+        //limpiar el campo de busqueda por texto
+        $('.text_search').val('');
+        //No 100chic
+        $('#chic_hid').val('0');
+        
+        //Si es una marca cien o no_cien ?¿
+        //Mostrar el banner
+        if($(this).hasClass("cien")){
             
-            	
-            	$('#marcahid').val($(this).attr('value'));
-            	if($('#preciohid').val()!='0'){
-            			$('#summMarca').html(titulo);
-            	}else{
-            		$('#summMarca').html('');
-            	}
-            	//$('#catalogo').remove();
-            	//$('#tienda_productos').html(''); 
-            	$('.text_search').val(''); 
-            	$('#chic_hid').val('0');
-            	preRefresh();
+            $('#chic_hid').val('1');
+            $('#banner100chic').fadeIn(3000);
             
+        }else if($(this).hasClass("not_cien")){
+            
+            $('#chic_hid').val('0');
+            $('#banner100chic').fadeOut(3000);
+            
+        }        
+        
+        //Hacer la consulta
+        preRefresh();
 
-		});
-		
-		$(".100chic").click(function() { 
-            	            	          	
-            	$('#marcahid').val($(this).attr('value'));
-            	$('#chic_hid').val('1');
-            	//$('#catalogo').remove();
-            	//$('#tienda_productos').html(''); 
-            	$('.text_search').val('');  
+//        console.log(valor);
+    });  
 
-            	$('#banner100chic').fadeIn(3000);
-            	preRefresh();
-        });  
-		
-		$(".cien").click(function() { 
-            	
-            	$('#chic_hid').val('1');
-            	$('#banner100chic').fadeIn(3000);
-            	
-        });  
-		
-		$(".not_cien").click(function() { 
-            	
-				
-            	$('#chic_hid').val('0');
-				$('#banner100chic').fadeOut(3000);
-            	
-        }); 
-		
-		
-		$(".scolor").click(function() { 
-            	
-            	
-            	 $('#colorhid').val($(this).attr('value'));
-                //$('#catalogo').remove();
-                //$('#tienda_productos').html('');
-                if($('#colorhid').val()==0){
-                	$('#color_titulo').html('<img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>');
-                	$('#summColor').html('');
-                }
-                    
-                else{
-                	$('#color_titulo').html($(this).html());
-                	$('#summColor').html($(this).attr('title'));
-                }
-                  
-                $('.text_search').val('');
-                preRefresh()
+    $(".100chic").click(function() { 
 
-		});  
-		
-		$("#100chic").click(function() { 
-				$('#chic_hid').val('1');
-				$('#banner100chic').fadeIn(3000);
-				preRefresh();
-			});
-		$("#100chic").bind( "touchstart", function(e){
-			$('#chic_hid').val('1');
-			$('#banner100chic').fadeIn(3000);
-			preRefresh();
-		} );	
-			
-		function unchic(){
-				$('#chic_hid').val('0');
-				$('#banner100chic').fadeOut(3000);
-				preRefresh();
-				$('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/>");
-		}		
-		
-		$(".hijo").click(function() { 
-            	
+    $('#marcahid').val($(this).attr('value'));
+    $('#chic_hid').val('1');
+    //$('#catalogo').remove();
+    //$('#tienda_productos').html(''); 
+    $('.text_search').val('');  
 
-            	$(".hijo").css('outline','none');
-            	$(this).css('outline','solid 2px #ffd660');            	
-            	$('.padre').css('outline','none');
-            	$('#'+$(this).attr('name')).css('outline','solid 2px #ffd660');
-            	$('#cathid').val($(this).attr('value'));
-            	$('.summCat').html('');
-            	if($('#cathid').val()!='0')
-            		$('#summ'+$(this).attr('name')).html($(this).html());
-            	else
-            		$('#summ'+$(this).attr('name')).html('');
-            	
-            	//$('#catalogo').remove();
-            	//$('#tienda_productos').html(''); 
-            	$('.text_search').val(''); 
-            	preRefresh();
-            	
+    $('#banner100chic').fadeIn(3000);
+    preRefresh();
+    });  
 
-		});
-		
-		$(".padre").click(function() { 
-            	
-				$(".hijo").css('outline','none');
-            	$(".padre").css('outline','none');
-            	$(this).css('outline','solid 2px #ffd660');
-            	$('#padrehid').val($(this).attr('value'));
-            	$('#cathid').val('0');
-            	//$('#catalogo').remove();
-            	//$('#tienda_productos').html(''); 
-            	$('.text_search').val(''); 
-            	preRefresh();
- 
-		});
-		 
-		$(".allhijos").click(function() { 
-            	
-				$(".hijo").css('outline','none');
-            	$(".padre").css('outline','none');
-            	$('#padrehid').val($(this).attr('value'));
-            	$('#cathid').val('0');
-            	$('#'+$(this).attr('name')).css('outline','solid 2px #ffd660');
-            	//$('#catalogo').remove();
-            	//$('#tienda_productos').html(''); 
-            	$('.text_search').val(''); 
-            	preRefresh();
+    $(".cien").click(function() { 
 
-		});
-		
-		$("body").click(function() { 
-         	if($( "#dd080" ).hasClass( "open" )&&!$('#chic_hid').val()){
-         		$('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/>");       	
-         	}
+            $('#chic_hid').val('1');
+            $('#banner100chic').fadeIn(3000);
 
-		});
-		
-		$(".dropdown080").click(function() { 
-			white080();
-		});
-		
-		
-		$("#btn_search").click(function() { 
-            	
-			
-			if($('#deskText').val().length>2){
-               	$('#catalogo').remove();
-               	$('#cathid').val('0');
-               	$('#colorhid').val('0');
-               	$('#marcahid').val('0');
-               	$('#preciohid').val('5');
-               	$('#texthid').val($('#deskText').val()   );
-            	$('#tienda_productos').html(''); 
-            	preRefresh();
-           }
+    });  
 
-		});
-				
-		$("#reset").click(function() { 
-            	
+    $(".not_cien").click(function() { 
 
-               	$('#catalogo').remove();
-               	$('#resethid').val('1');
-            	$('#tienda_productos').html(''); 
-            	preRefresh();
+        $('#chic_hid').val('0');
+        $('#banner100chic').fadeOut(3000);
 
-		});
-		
-		$(".mobReset").click(function() { 
-            	
+    }); 
 
-               	$('.summ').html('');
-               	
-		});
+
+    $(".scolor").click(function() { 
+
+
+     $('#colorhid').val($(this).attr('value'));
+    //$('#catalogo').remove();
+    //$('#tienda_productos').html('');
+    if($('#colorhid').val()==0){
+            $('#color_titulo').html('<img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>');
+            $('#summColor').html('');
+    }
+
+    else{
+            $('#color_titulo').html($(this).html());
+            $('#summColor').html($(this).attr('title'));
+    }
+
+    $('.text_search').val('');
+    preRefresh()
+
+    });  
+
+    $("#100chic").click(function() { 
+                    $('#chic_hid').val('1');
+                    $('#banner100chic').fadeIn(3000);
+                    preRefresh();
+            });
+    $("#100chic").bind( "touchstart", function(e){
+            $('#chic_hid').val('1');
+            $('#banner100chic').fadeIn(3000);
+            preRefresh();
+    } );	
+
+    function unchic(){
+                    $('#chic_hid').val('0');
+                    $('#banner100chic').fadeOut(3000);
+                    preRefresh();
+                    $('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/>");
+    }		
+
+    $(".hijo").click(function() { 
+
+
+    $(".hijo").css('outline','none');
+    $(this).css('outline','solid 2px #ffd660');            	
+    $('.padre').css('outline','none');
+    $('#'+$(this).attr('name')).css('outline','solid 2px #ffd660');
+    $('#cathid').val($(this).attr('value'));
+    $('.summCat').html('');
+    if($('#cathid').val()!='0')
+            $('#summ'+$(this).attr('name')).html($(this).html());
+    else
+            $('#summ'+$(this).attr('name')).html('');
+
+    //$('#catalogo').remove();
+    //$('#tienda_productos').html(''); 
+    $('.text_search').val(''); 
+    preRefresh();
+
+
+    });
+
+    $(".padre").click(function() { 
+
+                    $(".hijo").css('outline','none');
+    $(".padre").css('outline','none');
+    $(this).css('outline','solid 2px #ffd660');
+    $('#padrehid').val($(this).attr('value'));
+    $('#cathid').val('0');
+    //$('#catalogo').remove();
+    //$('#tienda_productos').html(''); 
+    $('.text_search').val(''); 
+    preRefresh();
+
+    });
+
+    $(".allhijos").click(function() { 
+
+                    $(".hijo").css('outline','none');
+    $(".padre").css('outline','none');
+    $('#padrehid').val($(this).attr('value'));
+    $('#cathid').val('0');
+    $('#'+$(this).attr('name')).css('outline','solid 2px #ffd660');
+    //$('#catalogo').remove();
+    //$('#tienda_productos').html(''); 
+    $('.text_search').val(''); 
+    preRefresh();
+
+    });
+
+    $("body").click(function() { 
+    if($( "#dd080" ).hasClass( "open" )&&!$('#chic_hid').val()){
+            $('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/>");       	
+    }
+
+    });
+
+    $(".dropdown080").click(function() { 
+                white080();
+        });
 		
 		
-		$('.text_search').keyup(function(e){
+    $("#btn_search").click(function() { 
+
+
+            if($('#deskText').val().length>2){
+    $('#catalogo').remove();
+    $('#cathid').val('0');
+    $('#colorhid').val('0');
+    $('#marcahid').val('0');
+    $('#preciohid').val('5');
+    $('#texthid').val($('#deskText').val()   );
+    $('#tienda_productos').html(''); 
+    preRefresh();
+}
+
+    });
+
+    $("#reset").click(function() { 
+
+
+    $('#catalogo').remove();
+    $('#resethid').val('1');
+    $('#tienda_productos').html(''); 
+    preRefresh();
+
+    });
+
+    $(".mobReset").click(function() { 
+
+
+    $('.summ').html('');
+
+    });
+
+
+    $('.text_search').keyup(function(e){
 		    if(e.keyCode == 13)
 		    {
 		        if($(this).val().length>2){
@@ -877,30 +933,29 @@ function encantar(id)
    	}  
    
 function preRefresh(){
+
 	mixpanel.track("Filtros");
 	$('#accordion').addClass('hide');
+        
 	try{
 		 
-
-		$("#catalogo").infinitescroll("destroy");
+            $("#catalogo").infinitescroll("destroy");
+            refresh();
 	
-			refresh();
-		}
+        }
 	catch(e){
-		 refresh();
-		}
+            
+             refresh();
+             
+        }
 }
    
 function refresh(reset)
-{
-
-	
+{	
  //$("#catalogo").infinitescroll = null;
 
 	var datosRefresh = $('#preciohid, #colorhid, #marcahid, #cathid, #texthid, #padrehid, #resethid, #chic_hid, #outlet').serialize();
-  
-
-
+        
     if(reset){
         datosRefresh += '&reset=true';
     }
@@ -1000,8 +1055,5 @@ function refresh(reset)
 			})
 		});
 		
-		function nelson(pos, json_text){
-			console.log(json_text);
-		}
 		
 	</script>

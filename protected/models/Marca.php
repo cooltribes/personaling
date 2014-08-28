@@ -55,7 +55,9 @@ class Marca extends CActiveRecord
 			array('urlImagen', 'required'),
 			array('nombre, descripcion, urlImagen, contacto, cif, dirUno, telefono, ciudad_id, provincia_id, pais ', 'required', 'on'=>'adicional'),
 			array('descripcion', 'required', 'message'=>'No puede registrar una marca sin descripción.'),
-			array('nombre', 'required', 'message'=>'No puede registrar una marca sin nombre.'),			
+			array('nombre', 'required', 'message'=>'No puede registrar una marca sin nombre.'),
+			array('nombre', 'unique', 'message'=>'Nombre ya ha sido tomado.'),
+			#array('nombre','unique','attributeName'=>'nombre','className'=>'Marca','allowEmpty'=>false),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, nombre, descripcion, urlImagen', 'safe', 'on'=>'search'),
@@ -65,6 +67,8 @@ class Marca extends CActiveRecord
 	/**
 	 * @return array relational rules.
 	 */
+
+	 
 	public function relations()
 	{
 		// NOTE: you may need to adjust the relation name and the related

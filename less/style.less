@@ -301,6 +301,10 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
   margin-top: 132px; margin-left: 235px;
 }
 
+.to_add{
+  display:none;
+}
+
 /* No margin */
 .no_margin_left{ margin-left:0px !important;}
 .no_margin_right{ margin-right:0px !important;}
@@ -1629,12 +1633,16 @@ src: url('../fonts/entypo.woff'),
         font-size: 30px;
         padding-top: 33px;
         text-align: center;
+        line-height:13px;
 
-        span{
-            display: block;
+        .leyenda{
+            //display: block;
             font-size: 14px;
             line-height: 19px;
+            line-height:13px;
         }
+        
+        
 
         .especial{
           font-size: 13px;
@@ -4569,6 +4577,42 @@ img[alt="Loading"]{
  } 
  
  @media (max-width: 1199px) {
+ .detalle_producto{
+    
+    //** Icono de Descuento ON **//
+    .icono-descuento{
+        webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        line-height:0px;
+        height: 43px;
+        top: 10px;
+        width: 79px;
+        right: 10px;
+        font-size: 22px;
+        padding-top: 36px;
+        text-align: center;
+
+        .leyenda{
+            //display: block;
+            font-size: 10px;
+            line-height: 14px;
+        }
+        
+        
+
+        .especial{
+          font-size: 13px;
+          line-height: 1.2em;
+        }
+    }
+ }
+ 
+ 
+ 
+ 
+ 
+ 
  .btlooks{
           margin-left:53%;
           margin-right:2%;
@@ -5215,6 +5259,29 @@ img[alt="Loading"]{
   .to_upper{
     .CAPS;
   }
+  .to_add{
+    display:inline;
+  }
+   .detalle_producto{
+    
+    //** Icono de Descuento ON **//
+    .icono-descuento{
+        webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        line-height:9px;
+        height: 30px;
+        top: 5px;
+        width: 50px;
+        right: 5px;
+        font-size: 16px;
+        padding-top: 20px;
+
+     }
+ }
+  
+  
+  
   
 }
 @media  (max-width: 265px) {

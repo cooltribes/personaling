@@ -65,6 +65,8 @@ class MarcaController extends Controller
 
 	public function actionCrear($id = null)
 	{
+		
+			
 		if(is_null($id)){
 			$marca = new Marca;
 		}else{
@@ -74,6 +76,7 @@ class MarcaController extends Controller
 		if(isset($_POST['Marca'])){
 			
 			$marca->attributes = $_POST['Marca'];
+			$this->performAjaxValidation($marca);	
 			if(isset($_POST['padreId']))
 				$marca->padreId=$_POST['padreId'];
 			if(isset($_POST['Marca']['ciudad_id'])){				
@@ -190,7 +193,7 @@ class MarcaController extends Controller
 			}// isset
 			
 		                
-		               if(Yii::app()->session['var']==1){
+		               if(Yii::app()->session['var']==1){ //para saber si se va al administrador o a la pantalla de crear de nuevo.
 		               		Yii::app()->user->setFlash('success',UserModule::t("Marca Guardada exitosamente."));
 		               		$this->redirect(array('crear'));
 		               }else{
@@ -227,6 +230,15 @@ class MarcaController extends Controller
 			Yii::app()->user->setFlash('error',UserModule::t("Marca no puede ser eliminada. Existen productos asociados a ella."));
 		}
 		$this->redirect(array('admin'));		
+	}
+	
+	protected function performAjaxValidation($model)
+	{
+		if(isset($_POST['ajax']) && $_POST['ajax']==='marca-form')
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
 	}
 
 	// Uncomment the following methods and override them if needed

@@ -836,7 +836,7 @@ class AdminController extends Controller
         $error = 0;
         $message = '';
 		
-		$acumulador = 0;
+		$acumulador = 1;
 		$sumatoria = 1; // Usuarios hasta el momento
 		$cont = 1; // Contador para el ciclo
 		$xml = ""; // variable en string del xml

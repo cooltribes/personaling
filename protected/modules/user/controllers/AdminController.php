@@ -34,7 +34,7 @@ class AdminController extends Controller
                             'credito','editardireccion',
                             'eliminardireccion','comprafin','mensajes','displaymsj',
                             'invitaciones','porcomprar','seguimiento','balance',
-                            'reporteCSV','usuariosZoho', 'suscritosNl'),                      
+                            'reporteCSV','usuariosZoho', 'suscritosNl', 'historial','enviarzoho'),                                        
                         
                         'expression' => 'UserModule::isAdmin()',
 
@@ -835,106 +835,243 @@ class AdminController extends Controller
         $success = 0;
         $error = 0;
         $message = '';
-
+		
+		$acumulador = 1;
+		$sumatoria = 1; // Usuarios hasta el momento
+		$cont = 1; // Contador para el ciclo
+		$xml = ""; // variable en string del xml
+		$ids = array(); // arreglo para comparar
+					
+		$usuariosTotal = sizeof($dataProvider->getData());
+		
+		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml .= '<Leads>';
+		
         foreach($dataProvider->getData() as $data){
-            $user=User::model()->findByPk($data->id);
-
-            $time = strtotime($user->profile->birthday);
-
-            $admin = 'No';
-            $ps = 'No';
-            $no_suscrito = "";
-            $interno = 'Externo';
-
-            if($user->superuser == 1){
-                $admin = 'Si';
-            }
-            if($user->personal_shopper == 1){
-                $ps = 'Si';
-            }
-            if($user->suscrito_nl == 1){
-                $no_suscrito = "TRUE";
-            }
-            if($user->interno == 1){
-                $interno = 'Interno';
-            }
-
-            $direccion = Direccion::model()->findByAttributes(array('user_id'=>$user->id));
-
-            $rangos = array();
             
-            $profileFields=$user->profile->getFields();
-            if ($profileFields) {
-                foreach($profileFields as $field) {
-                    if($field->id > 4 && $field->id < 16){
-                        $rangos[] =  $field->range.";0==Ninguno";
-                    }
-                    if($field->id == 4){
-                        $rangosSex = $field->range;
-                    }
-                    
-                }
-            }
+			if($cont >= 100) { 
+				$xml .= '</Leads>';
+					
+				$url ="https://crm.zoho.com/crm/private/xml/Leads/insertRecords";
+				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+						
+				//Execute cUrl session
+				$response = curl_exec($ch); 
+				curl_close($ch);
+						
+				$datos = simplexml_load_string($response);
+				$posicion=0;
+						
+				$total = sizeof($ids);
+				
+				for($x=1; $x<=$total; $x++){ 
+					if(isset($datos->result[0]->row[$posicion])){	
+						$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+						
+							foreach($ids as $data){
+								if($number == $data['row']){
+									$pos = (int)$data['row'];
+									$user=User::model()->findByPk($data["user"]);
+																			
+									if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+										$user->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+										$user->tipo_zoho = 0;
+ 										//$user->save();
+										
+										if($user->save())
+	                						$success++;
+											
+									//	echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+									}
+										
+								}
+									
+							}
+					}  
+						
+					$posicion++;
+				}// for
+					
+				//echo "fin de ciclo"; 
+				$acumulador += $success;
+						
+				/* reiniciando todos los valores */
+				$xml = ""; 
+				$cont = 1;	
+				$posicion=0;
+						
+				unset($ids);
+						
+				$ids = array();
+						
+				$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+				$xml .= '<Leads>';			
+			} // mayor que 100
+			
+			if($cont < 100)
+			{
+				$user=User::model()->findByPk($data->id);
+				
+				/*Datos para el arreglo a comparar */
+					
+				$add = array();
+				$add = array("row" => $cont, "user" => $data->id);
+				array_push($ids,$add);
+						
+				$time = strtotime($user->profile->birthday);
+	
+	            $admin = 'No';
+	            $ps = 'No';
+	            $no_suscrito = "";
+	            $interno = 'Externo';
+	
+	            if($user->superuser == 1){
+	                $admin = 'Si';
+	            }
+	            if($user->personal_shopper == 1){
+	                $ps = 'Si';
+	            }
+	            if($user->suscrito_nl == 1){
+	                $no_suscrito = "TRUE";
+	            }
+	            if($user->interno == 1){
+	                $interno = 'Interno';
+	            }
+	
+	            $direccion = Direccion::model()->findByAttributes(array('user_id'=>$user->id));
+	
+	            $rangos = array();
+	            
+	            $profileFields=$user->profile->getFields();
+	            if ($profileFields) {
+	                foreach($profileFields as $field) {
+	                    if($field->id > 4 && $field->id < 16){
+	                        $rangos[] =  $field->range.";0==Ninguno";
+	                    }
+	                    if($field->id == 4){
+	                        $rangosSex = $field->range;
+	                    }
+	                    
+	                }
+	            }
+				
+				$xml .= '<row no="'.$cont.'">';
+				$xml .= '<FL val="First Name">'.$user->profile->first_name.'</FL>';
+				$xml .= '<FL val="Last Name">'.$user->profile->last_name.'</FL>';
+				$xml .= '<FL val="Email">'.$user->email.'</FL>';
+				$xml .= '<FL val="Lead Source">Tienda Personaling</FL>';
+				$xml .= '<FL val="Fecha de Nacimiento">'.date('d/m/Y', $time).'</FL>';
+				$xml .= '<FL val="Sexo">'.Profile::range($rangosSex,$user->profile->sex).'</FL>';
+				$xml .= '<FL val="Description">'.$user->profile->bio.'</FL>';
+				$xml .= '<FL val="Documento de Identidad">'.$user->profile->cedula.'</FL>';
+				$xml .= '<FL val="Phone">'.$user->profile->tlf_casa.'</FL>';
+				$xml .= '<FL val="Mobile">'.$user->profile->tlf_celular.'</FL>';
+				$xml .= '<FL val="Pinterest">'.$user->profile->pinterest.'</FL>';
+				$xml .= '<FL val="Twitter">'.$user->profile->twitter.'</FL>';
+				$xml .= '<FL val="Facebook">'.$user->profile->facebook.'</FL>';
+				if(isset($user->profile->url)) $xml .= '<FL val="Alias para el Url">'.$user->profile->url.'</FL>';
+				if(isset($user->profile->url)) $xml .= '<FL val="Website">'.$user->profile->url.'</FL>';
+				$xml .= '<FL val="Perfil de Administrador">'.$admin.'</FL>';
+				$xml .= '<FL val="Perfil de Personal Shopper">'.$ps.'</FL>';
+				$xml .= '<FL val="Altura">'.Profile::range($rangos[0],$user->profile->altura).'</FL>';
+				$xml .= '<FL val="Condición Física">'.Profile::range($rangos[1],$user->profile->contextura).'</FL>';
+				$xml .= '<FL val="Color de piel">'.Profile::range($rangos[10],$user->profile->piel).'</FL>';
+				$xml .= '<FL val="Color de cabello">'.Profile::range($rangos[2],$user->profile->pelo).'</FL>';
+				$xml .= '<FL val="Color de ojos">'.Profile::range($rangos[3],$user->profile->ojos).'</FL>';
+				$xml .= '<FL val="Tipo de Cuerpo">'.Profile::range($rangos[4],$user->profile->tipo_cuerpo).'</FL>';
+				$xml .= '<FL val="Diario">'.Profile::range($rangos[5],$user->profile->coctel).'</FL>';
+				$xml .= '<FL val="Fiesta">'.Profile::range($rangos[6],$user->profile->fiesta).'</FL>';
+				$xml .= '<FL val="Vacaciones">'.Profile::range($rangos[7],$user->profile->playa).'</FL>';
+				$xml .= '<FL val="Haciendo Deporte">'.Profile::range($rangos[8],$user->profile->sport).'</FL>';
+				$xml .= '<FL val="Oficina">'.Profile::range($rangos[9],$user->profile->trabajo).'</FL>';
+				if($direccion){
+					$xml .= '<FL val="Street">'.$direccion->dirUno.'</FL>';
+					$xml .= '<FL val="City">'.$direccion->ciudad->nombre.'</FL>';
+					$xml .= '<FL val="State">'.$direccion->provincia->nombre.'</FL>';
+					$xml .= '<FL val="Zip Code">'.$direccion->codigopostal->codigo.'</FL>';
+					$xml .= '<FL val="Country">'.$direccion->pais.'</FL>';
+					$xml .= '<FL val="Lead Status">'.$user->getStatus($user->status).'</FL>';
+				}
+				$xml .= '<FL val="Email Opt-out">'.$no_suscrito.'</FL>';
+				$xml .= '<FL val="Tipo">'.$interno.'</FL>';
+				$xml .= '</row>';
+						
+				$cont++;
+				/*
+	            $zoho = new Zoho();
+	            $zoho->email = $user->email;
+	            $zoho->first_name = $user->profile->first_name;
+	            $zoho->last_name = $user->profile->last_name;
+	            $zoho->birthday = date('d/m/Y', $time);
+	            $zoho->sex = Profile::range($rangosSex,$user->profile->sex);
+	            $zoho->bio = $user->profile->bio;
+	            $zoho->dni = $user->profile->cedula;
+	            $zoho->tlf_casa = $user->profile->tlf_casa;
+	            $zoho->tlf_celular = $user->profile->tlf_celular;
+	            $zoho->pinterest = $user->profile->pinterest;
+	            $zoho->twitter = $user->profile->twitter;
+	            $zoho->facebook = $user->profile->facebook;
+	            $zoho->url = $user->profile->url;
+	            $zoho->admin = $admin;
+	            $zoho->ps = $ps;
+	            $zoho->no_suscrito = $no_suscrito;
+	            $zoho->tipo = $interno;
+	            $zoho->altura = Profile::range($rangos[0],$user->profile->altura);
+	            $zoho->condicion_fisica = Profile::range($rangos[1],$user->profile->contextura);
+	            $zoho->color_piel = Profile::range($rangos[10],$user->profile->piel);
+	            $zoho->color_cabello = Profile::range($rangos[2],$user->profile->pelo);
+	            $zoho->color_ojos = Profile::range($rangos[3],$user->profile->ojos);
+	            $zoho->tipo_cuerpo = Profile::range($rangos[4],$user->profile->tipo_cuerpo);
+	            $zoho->diario = Profile::range($rangos[5],$user->profile->coctel);
+	            $zoho->fiesta = Profile::range($rangos[6],$user->profile->fiesta);
+	            $zoho->vacaciones = Profile::range($rangos[7],$user->profile->playa);
+	            $zoho->deporte = Profile::range($rangos[8],$user->profile->sport);
+	            $zoho->oficina = Profile::range($rangos[9],$user->profile->trabajo);
+	            $zoho->status = $user->getStatus($user->status);
+	            if($direccion){
+	                $zoho->calle = $direccion->dirUno;
+	                $zoho->ciudad = $direccion->ciudad->nombre;
+	                $zoho->estado = $direccion->provincia->nombre;
+	                $zoho->codigo_postal = $direccion->codigopostal->codigo;
+	                $zoho->pais = $direccion->pais;
+	            }
+	
+	            $result = $zoho->save_potential();
+	
+	            $xml = simplexml_load_string($result);
+	            //var_dump($xml);
+	            $id = (int)$xml->result[0]->recorddetail->FL[0];
+	
+	            $user->zoho_id = $id;
+	            if($user->save()){
+	                $success++;
+	            }else{
+	                $error++;
+	                /*foreach ($user->getErrors() as $key => $value) {
+	                    foreach ($value as $k => $v) {
+	                        $message .= 'Error: '.$v.'</br>';
+	                    }
+	                }*/
+			} // cont 100
+    	
+    		if($usuariosTotal == $sumatoria){
+				$success = $this->actionEnviarZoho($xml, $ids);
+				$acumulador += $success;
+			}
+			else
+				$sumatoria++;
+    	
+    	
+        } // foreach 
 
-            $zoho = new Zoho();
-            $zoho->email = $user->email;
-            $zoho->first_name = $user->profile->first_name;
-            $zoho->last_name = $user->profile->last_name;
-            $zoho->birthday = date('d/m/Y', $time);
-            $zoho->sex = Profile::range($rangosSex,$user->profile->sex);
-            $zoho->bio = $user->profile->bio;
-            $zoho->dni = $user->profile->cedula;
-            $zoho->tlf_casa = $user->profile->tlf_casa;
-            $zoho->tlf_celular = $user->profile->tlf_celular;
-            $zoho->pinterest = $user->profile->pinterest;
-            $zoho->twitter = $user->profile->twitter;
-            $zoho->facebook = $user->profile->facebook;
-            $zoho->url = $user->profile->url;
-            $zoho->admin = $admin;
-            $zoho->ps = $ps;
-            $zoho->no_suscrito = $no_suscrito;
-            $zoho->tipo = $interno;
-            $zoho->altura = Profile::range($rangos[0],$user->profile->altura);
-            $zoho->condicion_fisica = Profile::range($rangos[1],$user->profile->contextura);
-            $zoho->color_piel = Profile::range($rangos[10],$user->profile->piel);
-            $zoho->color_cabello = Profile::range($rangos[2],$user->profile->pelo);
-            $zoho->color_ojos = Profile::range($rangos[3],$user->profile->ojos);
-            $zoho->tipo_cuerpo = Profile::range($rangos[4],$user->profile->tipo_cuerpo);
-            $zoho->diario = Profile::range($rangos[5],$user->profile->coctel);
-            $zoho->fiesta = Profile::range($rangos[6],$user->profile->fiesta);
-            $zoho->vacaciones = Profile::range($rangos[7],$user->profile->playa);
-            $zoho->deporte = Profile::range($rangos[8],$user->profile->sport);
-            $zoho->oficina = Profile::range($rangos[9],$user->profile->trabajo);
-            $zoho->status = $user->getStatus($user->status);
-            if($direccion){
-                $zoho->calle = $direccion->dirUno;
-                $zoho->ciudad = $direccion->ciudad->nombre;
-                $zoho->estado = $direccion->provincia->nombre;
-                $zoho->codigo_postal = $direccion->codigopostal->codigo;
-                $zoho->pais = $direccion->pais;
-            }
-
-            $result = $zoho->save_potential();
-
-            $xml = simplexml_load_string($result);
-            //var_dump($xml);
-            $id = (int)$xml->result[0]->recorddetail->FL[0];
-
-            $user->zoho_id = $id;
-            if($user->save()){
-                $success++;
-            }else{
-                $error++;
-                /*foreach ($user->getErrors() as $key => $value) {
-                    foreach ($value as $k => $v) {
-                        $message .= 'Error: '.$v.'</br>';
-                    }
-                }*/
-            }
-    
-        }
-
-        $message .= $success.' usuarios exportados';
+        $message .= $acumulador.' usuarios exportados';
         if($error > 0){
             $message .= '</br>'.$error.' usuarios NO exportados';
         }
@@ -944,6 +1081,64 @@ class AdminController extends Controller
         $this->redirect(array('/user/admin'));
         
     }
+
+	public function actionEnviarZoho($xml,$ids){
+			$success=0;
+			$xml .= '</Leads>';
+					
+				$url ="https://crm.zoho.com/crm/private/xml/Leads/insertRecords";
+				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml; 
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+						
+				//Execute cUrl session
+				$response = curl_exec($ch); 
+				curl_close($ch);
+				
+			//	var_dump($response);
+			//	Yii::app()->end(); 
+				
+				$datos = simplexml_load_string($response);
+				$posicion=0;
+						
+				$total = sizeof($ids);
+				
+				for($x=1; $x<=$total; $x++){ 
+					if(isset($datos->result[0]->row[$posicion])){	
+						$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+						
+							foreach($ids as $data){
+								if($number == $data['row']){
+									$pos = (int)$data['row'];
+									$user=User::model()->findByPk($data["user"]);
+																			
+									if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+										$user->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+										$user->tipo_zoho = 0;
+ 										
+ 										if($user->save())
+											$success++;
+											
+									//	echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+									}
+										
+								}
+									
+							}
+					}  
+						
+					$posicion++;
+				}// for
+					
+				/* reiniciando todos los valores */
+				$xml = ""; 	
+			return $success;	 
+		}
 
 	/**
 	 * Displays a particular model.
@@ -1040,6 +1235,7 @@ class AdminController extends Controller
                    
                 }
 		
+		$model->admin_ps=Yii::app()->user->id;
 		if ($model->save()){
 			
 			/* Creando el caso */
@@ -2632,6 +2828,20 @@ class AdminController extends Controller
             ));
             
         }
+
+		public function actionHistorial()
+		{
+				             
+         	$model=new User('search');
+			$model->unsetAttributes();  // clear any default values  
+			if(isset($_GET['User']))
+				$model->attributes=$_GET['User'];
+
+			$this->render('historial',array(
+				'model'=>$model,
+			));     
+			
+		}
 
 
 

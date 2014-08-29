@@ -2692,7 +2692,7 @@ public function actionValidar()
 	
 	
 	public function actionOrdenesZoho(){
-		
+		/*
 		$criteria = new CDbCriteria(array('order'=>'id'));
 		$criteria->addBetweenCondition('id', 1, 10);  
 			
@@ -2732,7 +2732,181 @@ public function actionValidar()
 			}	
 			
 		}
+		*/
 		
+		$sumatoria = 1;
+		$cont = 1;
+		$xml = "";
+		$ids = array();
+					
+		$criteria = new CDbCriteria(array('order'=>'id'));
+		$todasOrdenes = Orden::model()->findAll($criteria);
+		
+		$ordenesTotal = sizeof($todasOrdenes);
+		
+		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml .= '<Invoices>';
+		
+		foreach($todasOrdenes as $orden){ // para cada orden nuevo invoice en zoho
+			
+			$user = User::model()->findByPk($orden->user->id);
+			$zoho = new ZohoSales;
+			
+			if($cont >= 100){
+				$xml .= '</Invoices>';
+				
+				$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
+				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+				
+				//Execute cUrl session
+				$response = curl_exec($ch); 
+				curl_close($ch);
+						
+				$datos = simplexml_load_string($response);
+				$posicion=0;
+						
+				$total = sizeof($ids);
+						
+				for($x=1; $x<=$total; $x++){ 
+					if(isset($datos->result[0]->row[$posicion])){	
+						$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+							
+							foreach($ids as $data){
+								if($number == $data['row']){
+									$order = Orden::model()->findByPk($data['orden']);
+
+									if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+										$order->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+										$order->save();
+											
+										echo "El row #".$data['row']." corresponde a orden ".$order->id." con id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+									}else{
+										echo "Error en posicion ".$posicion;
+									}
+								}	
+							}//foreach ids
+					}// isset  
+				$posicion++;
+
+				}// ciclo
+					
+				echo "fin de ciclo"; 
+				echo "<br><br>";
+				
+				/* reiniciando todos los valores */
+				$xml = ""; 
+				$cont = 1;	
+				$posicion=0;
+						
+				unset($ids);
+				$ids = array();
+						
+				$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+				$xml .= '<Invoices>';		
+			} // mayor a 100						
+			
+			if($cont < 100)
+			{				
+				if($user->tipo_zoho == 0){ 
+					$conv = $zoho->convertirLead($user->zoho_id, $user->email);
+					$datos = simplexml_load_string($conv);
+											
+					$id = $datos->Contact;
+					$user->zoho_id = $id;
+					$user->tipo_zoho = 1;
+											
+					$user->save(); 
+				}	
+
+				/*Datos para el arreglo a comparar */
+				$add = array();
+				$add = array("row" => $cont, "orden" => $orden->id);
+				array_push($ids,$add);
+				
+				
+				$xml .= '<row no="'.$cont.'">';
+				
+				
+				$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
+				$envio_pago = 0;
+				$ajuste=0;
+				$forma="";
+				$cupon=0;
+				
+				foreach($detalles as $detalle){
+					if($envio_pago == 0){		
+						if($orden->envio > 0){
+							$ajuste = $ajuste + $orden->envio;
+							$envio_pago = 1;
+						} 
+					}
+					
+					if($detalle->tipo_pago == 3){ 
+						$ajuste -= $detalle->monto; 
+						$xml .= '<FL val="Balance">'.(double)$detalle->monto.'</FL>';
+					}
+					
+					if($detalle->tipo_pago == 4 || $detalle->tipo_pago == 5){
+						$xml .= '<FL val="Paypal_Sabadell">'.(double)$detalle->monto.'</FL>';
+					}
+					
+					$forma .= $detalle->getTipoPago().", "; 
+					
+					if(isset($orden->cupon)){
+						if($cupon == 0){
+							$ajuste -= $orden->cupon->descuento;
+							$xml .= '<FL val="Cupon">'.(double)$orden->cupon->descuento.'</FL>';
+							$cupon++;
+						}	
+					} 
+				} 
+					
+				if((double)$orden->descuento > 0) 
+					$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
+				
+				$xml .= '<FL val="Subject"> Orden '.$orden->id.'</FL>';
+		        $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
+				$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
+				$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';
+				$xml .= '<FL val="Contact Id">'.$orden->user->zoho_id.'</FL>';
+				$xml .= '<FL val="Contact Name">'.$orden->user->profile->first_name.' '.$orden->user->profile->last_name.'</FL>';
+				$xml .= '<FL val="Email">'.$orden->user->email.'</FL>';
+				$xml .= '<FL val="Peso">'.$orden->peso.'</FL>';
+				$xml .= '<FL val="Envio">'.$orden->envio.'</FL>';
+				$xml .= '<FL val="Billing Street">'.$orden->direccionFacturacion->dirUno.' '.$orden->direccionFacturacion->dirDos.'</FL>';
+				$xml .= '<FL val="Billing State">'.$orden->direccionFacturacion->provincia->nombre.'</FL>';
+				$xml .= '<FL val="Billing City">'.$orden->direccionFacturacion->ciudad->nombre.'</FL>';
+				$xml .= '<FL val="Billing Country">'.$orden->direccionFacturacion->pais.'</FL>';
+				$xml .= '<FL val="Telefono Facturacion">'.$orden->direccionFacturacion->telefono.'</FL>';
+				$xml .= '<FL val="Shipping Street">'.$orden->direccionFacturacion->dirUno.' '.$orden->direccionFacturacion->dirDos.'</FL>';
+				$xml .= '<FL val="Shipping State">'.$orden->direccionFacturacion->provincia->nombre.'</FL>';
+				$xml .= '<FL val="Shipping City">'.$orden->direccionFacturacion->ciudad->nombre.'</FL>';
+				$xml .= '<FL val="Shipping Country">'.$orden->direccionFacturacion->pais.'</FL>';
+				$xml .= '<FL val="Telefono Envio">'.$orden->direccionFacturacion->telefono.'</FL>';
+				$xml .= '<FL val="Sub Total">'.(double)$orden->subtotal.'</FL>';
+				$xml .= '<FL val="Tax">'.(double)$orden->iva.'</FL>';
+				$xml .= '<FL val="Adjustment">'.(double)$ajuste.'</FL>';	
+				$xml .= '<FL val="Forma de Pago">'.$forma.'</FL>'; 
+				
+				// productos
+				$xml .= $zoho->Products($orden->id);  
+				// actualizar cantidades de productos
+				$zoho->actualizarCantidades($orden->id);
+				
+				$xml .= '<FL val="Grand Total">'.(double)$orden->total.'</FL>'; 
+				$xml .= '</row>';
+					
+				$cont++;	
+					
+			}// if
+		}
 	}
         
 }

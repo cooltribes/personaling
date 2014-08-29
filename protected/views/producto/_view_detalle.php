@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
- <?php
+ <?php 
 
  
   /* @var $this TiendaController */
@@ -489,10 +489,19 @@
             </div>
             </div>
           </div>
+          <?php
+          if($producto->tipo=="0")
+          {
+          ?>
           <div class="braker_horz_top_1">
            <p> <span class="entypo icon_personaling_medium">&#128197;</span>
-              <?php echo Yii::t('contentForm','Date estimated delivery'); ?>: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
+              <?php 
+				echo Yii::t('contentForm','Date estimated delivery'); ?>: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  
+              ?>  </p>    
           </div>
+          <?php
+          }
+		  ?>
           <div class="braker_horz_top_1 addthis row-fluid padding_bottom_medium"> 
             
             <?php

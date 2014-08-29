@@ -1734,11 +1734,7 @@ public function actionReportexls(){
 										$primera = str_replace("<",'%3C' ,$cambiar);
 										$segunda = str_replace(">",'%3E' ,$primera);
 										
-										$descripcion_nueva = "<![CDATA[".$segunda."]]>";
-										//echo htmlspecialchars($marcacorregida);
-										
-										//echo $marcacorregida;
-										//Yii::app()->end();
+										$descripcion_nueva = "<![CDATA[".$segunda."]]>"; 
 										
 										$zoho->descripcion = $descripcion_nueva;
 									}
@@ -4192,6 +4188,7 @@ public function actionReportexls(){
                                         //no actualizar la url.
 
                                     )); 
+                                   
 
                                     /* DATOS PARA ZOHO */      
                                     $zoho->nombre = $rNombre." - ".$rSku;
@@ -4262,7 +4259,16 @@ public function actionReportexls(){
                                 $producto->url_externo = $rURL;  
                                 
                                 $producto->save(); 
-								
+						
+//                                echo "<pre>";
+//                                print_r($producto->attributes);
+//                                echo "</pre><br>";
+//                                echo "<pre>";
+//                                print_r($producto->getErrors());
+//                                echo "</pre><br>";
+//                                Yii::app()->end();
+//Vicomte A. Cinturón mujer CEINTURE H PORTOFINO TRESSEE CUIR /COTON CIRE para mujer
+
                                 /* DATOS PARA ZOHO */      
                                 $zoho->nombre = $rNombre." - ".$rSku;
 
@@ -4369,11 +4375,11 @@ public function actionReportexls(){
                                 }
                             }
 							
-							/* DATOS PARA ZOHO */ 
-							$zoho->categoria = $rCatego1;
-							$zoho->subcategoria1 = $rCatego2;
-							$zoho->subcategoria2 = $rCatego3;
-							// Categorias para zoho
+                            /* DATOS PARA ZOHO */ 
+                            $zoho->categoria = $rCatego1;
+                            $zoho->subcategoria1 = $rCatego2;
+                            $zoho->subcategoria2 = $rCatego3;
+                            // Categorias para zoho
 
                             $cat = new CategoriaHasProducto;
                             $cat2 = new CategoriaHasProducto;
@@ -4414,18 +4420,17 @@ public function actionReportexls(){
                             $zoho->SKU = $rSku;
                             $zoho->cantidad = 1; //Todos los externos tienen cant = 1
                             $zoho->tipo = "Externo";
-							
+				
                             $ptc = Preciotallacolor::model()->findByAttributes(array(
-                                        'producto_id' => $producto->id,
+//                                        'producto_id' => $producto->id,
                                         'sku' => $rSku,
-                                        'talla_id' => $talla->id,
-                                        'color_id' => $color->id,
+//                                        'talla_id' => $talla->id,
+//                                        'color_id' => $color->id,
                                         //productos externos
                                         //'url_externo' => $rURL,
                                         
                                     ));                                   
 
-                            
                             // Si no existe crearlo
                             if (!isset($ptc)) { 
 
@@ -4437,10 +4442,9 @@ public function actionReportexls(){
                                 
                                 $ptc->producto_id = $producto->id;
                                 $ptc->talla_id = $talla->id;
-                                $ptc->color_id = $color->id;
+                                $ptc->color_id = $color->id;                                
                                 
-                                
-                                $ptc->save();
+                                $ptc->save();                                
 
                             }else{
                                 //Si ya existe

@@ -2755,8 +2755,7 @@ public function actionValidar()
 			if($cont >= 100){
 				$xml .= '</Invoices>';
 				
-				//var_dump($xml);
-				//Yii::app()->end();	
+				
 				
 				$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
@@ -2803,7 +2802,8 @@ public function actionValidar()
 				echo "fin de ciclo"; 
 				echo "<br><br>";
 				
-				//Yii::app()->end();
+			//	var_dump($response);
+			//	Yii::app()->end();
 				
 				/* reiniciando todos los valores */
 				$xml = ""; 
@@ -2924,9 +2924,9 @@ public function actionValidar()
 			}// if 
 			
 			if($ordenesTotal == $sumatoria)
-					$this->actionEnviarZoho($xml, $ids);
-				else
-					$sumatoria++;
+				$this->actionEnviarZoho($xml, $ids);
+			else
+				$sumatoria++;
 			
 		}
 	}

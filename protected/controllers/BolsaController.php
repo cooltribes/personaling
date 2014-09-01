@@ -3720,7 +3720,6 @@ class BolsaController extends Controller
             
             
 //            $message = new YiiMailMessage;
-//            //this points to the file test.php inside the view path
 //            $message->view = "mail_compra";
 //            $subject = 'Tu compra en Personaling';
 //            $params = array('subject'=>$subject, 'orden'=>$orden);

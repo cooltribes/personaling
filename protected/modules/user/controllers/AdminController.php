@@ -891,7 +891,7 @@ class AdminController extends Controller
 									//	echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
 									}
 										
-								}
+								} 
 									
 							}
 					}  

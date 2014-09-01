@@ -3,7 +3,12 @@ $this->breadcrumbs=array(
 	'Looks'=>array('mislooks'),
 	'Publicar',
 );
-$disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::STATUS_APROBADO) && !Yii::app()->user->isAdmin())
+$disabled = (($model->status == Look::STATUS_ENVIADO || $model->status == Look::STATUS_APROBADO) && !Yii::app()->user->isAdmin());
+$all = array();
+$all[0]['label'] = 'Todos';
+$all[0]['url'] = '#todos';
+$all[0]['htmlOptions'] = array('class'=>"select_todos");
+$all[0]['active']=false;
 ?>
 
 <script>
@@ -309,31 +314,37 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           <h4><?php echo Yii::t('contentForm','Select the type of user that favors'); ?></h4>
           <div class="control-group">
           	
-          	<?php echo CHtml::checkBox('contextura',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
+          	<?php //echo CHtml::checkBox('contextura',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
             <label class="control-label required"><?php echo Yii::t('contentForm','What type of body you favors?'); ?></label>
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
-                  <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+                  <?php
+                if (isset(Yii::app()->params['multiLook']['bodyFavors']) && Yii::app()->params['multiLook']['bodyFavors']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                else $buttons = Profile::rangeButtons($field->range,$model->contextura,$disabled);
+                $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               'type' => '',
-  				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-  				    'buttons' => Profile::rangeButtons($field->range,$model->contextura,$disabled),
+                    'toggle' => (isset(Yii::app()->params['multiLook']['bodyFavors']) && Yii::app()->params['multiLook']['bodyFavors'])?'checkbox':'radio', // 'checkbox' or 'radio'
+  				    'buttons' => $buttons,
   				)); ?>
   				<?php echo $form->hiddenField($model,'contextura'); ?>
   				<?php echo $form->error($model,'contextura'); ?>
             </div>
           </div>
           <div class="control-group">
-          	<?php echo CHtml::checkBox('pelo',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
+          	<?php //echo CHtml::checkBox('pelo',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
             <label class="control-label required"><?php echo Yii::t('contentForm','What hair color would look better?');?></label>
             <div class="controls">
             		
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  ?>
-                  <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+                  <?php
+                if (isset(Yii::app()->params['multiLook']['hairColor']) && Yii::app()->params['multiLook']['hairColor']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                else $buttons = Profile::rangeButtons($field->range,$model->pelo,$disabled);
+                $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               'type' => '',
-  				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-  				    'buttons' => Profile::rangeButtons($field->range,$model->pelo,$disabled),
+                    'toggle' => (isset(Yii::app()->params['multiLook']['hairColor']) && Yii::app()->params['multiLook']['hairColor'])?'checkbox':'radio', // 'checkbox' or 'radio'
+  				    'buttons' => $buttons,
   				)); ?>
   				<?php echo $form->hiddenField($model,'pelo'); ?>
   				<?php echo $form->error($model,'pelo'); ?>
@@ -341,60 +352,83 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
           </div>
           <div class="control-group">
-          	<?php echo CHtml::checkBox('altura',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
+          	<?php //echo CHtml::checkBox('altura',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
             <label class="control-label required"><?php echo Yii::t('contentForm','How much should measure the woman who wears this Look?');?></label>
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
-                  <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+
+                  <?php
+                if (isset(Yii::app()->params['multiLook']['womanMeasure']) && Yii::app()->params['multiLook']['womanMeasure']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                else $buttons = Profile::rangeButtons($field->range,$model->altura,$disabled);
+                $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               'type' => '',
-  				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-  				    'buttons' => Profile::rangeButtons($field->range,$model->altura,$disabled),
+                    'toggle' => (isset(Yii::app()->params['multiLook']['womanMeasure']) && Yii::app()->params['multiLook']['womanMeasure'])?'checkbox':'radio', // 'checkbox' or 'radio'
+  				    'buttons' => $buttons,
   				)); ?>
   				<?php echo $form->hiddenField($model,'altura'); ?>
   				<?php echo $form->error($model,'altura'); ?>
             </div>
           </div>
           <div class="control-group">
-          	<?php echo CHtml::checkBox('ojos',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
+          	<?php //echo CHtml::checkBox('ojos',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
             <label class="control-label required"><?php echo Yii::t('contentForm','What eye color is look better?');?></label>
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
-                  <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+                  <?php
+                if (isset(Yii::app()->params['multiLook']['eyesColor']) && Yii::app()->params['multiLook']['eyesColor']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                else $buttons = Profile::rangeButtons($field->range,$model->ojos,$disabled);
+                $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               'type' => '',
-  				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-  				    'buttons' => Profile::rangeButtons($field->range,$model->ojos,$disabled),
+                    'toggle' => (isset(Yii::app()->params['multiLook']['eyesColor']) && Yii::app()->params['multiLook']['eyesColor'])?'checkbox':'radio',
+  				    'buttons' => $buttons,
   				)); ?>
   				<?php echo $form->hiddenField($model,'ojos'); ?>
   				<?php echo $form->error($model,'ojos'); ?>
             </div>
           </div>
           <div class="control-group">
-          	<?php echo CHtml::checkBox('tipo_cuerpo',false,array('class'=>'select_todos', 'disabled'=>$disabled));?>
+          	<?php //echo CHtml::checkBox('tipo_cuerpo',false,array('class'=>'select_todos', 'disabled'=>$disabled));?>
             <label class="control-label required"><?php echo Yii::t('contentForm','What body type should I use?');?></label>
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
-                  <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+                  <?php
+                if (isset(Yii::app()->params['multiLook']['bodyType']) && Yii::app()->params['multiLook']['bodyType']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                else $buttons = Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
-              'type' => '',
-  				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-  				    'buttons' => Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled),
+                    'type' => '',
+  				    'toggle' => (isset(Yii::app()->params['multiLook']['bodyType']) && Yii::app()->params['multiLook']['bodyType'])?'checkbox':'radio', // 'checkbox' or 'radio'
+                    'buttons' => $buttons,
   				)); ?>
   				<?php echo $form->hiddenField($model,'tipo_cuerpo'); ?>
   				<?php echo $form->error($model,'tipo_cuerpo'); ?>
             </div>
           </div>
+              <?php
+             /* $all = array();
+              $all[0]['label'] = 'Todos';
+              $all[0]['url'] = '#todos';
+              $all[0]['htmlOptions'] = '';
+              $all[0]['active']=true;
+
+              print_r($all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled));*/
+              ?>
           <div class="control-group">
-          	<?php echo CHtml::checkBox('piel',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
+          	<?php //echo CHtml::checkBox('piel',false,array('class'=>'select_todos', 'disabled'=>$disabled));  ?>
             <label class="control-label required"><?php echo Yii::t('contentForm','What skin color is best suited to this Look?');?></label>
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
-                  <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
+                  <?php
+                if (isset(Yii::app()->params['multiLook']['bodyType']) && Yii::app()->params['multiLook']['skinColor']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                else $buttons = Profile::rangeButtons($field->range,$model->piel,$disabled);
+                $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               'type' => '',
-  				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-  				    'buttons' => Profile::rangeButtons($field->range,$model->piel,$disabled),
+
+                    'toggle' => (isset(Yii::app()->params['multiLook']['skinColor']) && Yii::app()->params['multiLook']['skinColor'])?'checkbox':'radio', // 'checkbox' or 'radio'
+                    'buttons' => $buttons
   				)); ?>
   				<?php echo $form->hiddenField($model,'piel'); ?>
   				<?php echo $form->error($model,'piel'); ?>
@@ -469,28 +503,30 @@ $script = "
 		});
 		//alert(ids);
 		$('#categorias').val(ids.substring(1));
-		$('#Look_has_ocasiones').val(ids.substring(1));			
+		$('#Look_has_ocasiones').val(ids.substring(1));
 	});
-	
+
 	$('.select_todos').on('click',function(e){
-		if ($(this).is(':checked')){
-			$(this).parent().find('.btn').addClass('active');
+		//if ($(this).is(':checked')){
+
+		if (!$(this).hasClass('active')){
+			$(this).parent().find('.btn').not('.select_todos').addClass('active');
 			 var ids = 0;
-			$(this).parent().find('.btn').each(function(index){
+			$(this).parent().find('.btn').not('.select_todos').each(function(index){
 				ids += parseInt($(this).attr('href').substring(1));
 			});
-			$(this).parent().find('.btn').parent().next('input').val(ids);
-			
+			$(this).parent().find('.btn').not('.select_todos').parent().next('input').val(ids);
+
 		}
 		else {
-			$(this).parent().find('.btn').removeClass('active');
-			$(this).parent().find('.btn').parent().next('input').val(0);
-			
+			$(this).parent().find('.btn').not('.select_todos').removeClass('active');
+			$(this).parent().find('.btn').not('.select_todos').parent().next('input').val(0);
+
 		}
 	});
-	
+
 	$('#div_ocasiones').on('click', 'a', function(e) {
-		 
+
 		 var ids = '';
 		 var selected = $(this).attr('href');
 		 $('#div_ocasiones .active').each(function(){
@@ -503,7 +539,7 @@ $script = "
 		 $('#Look_has_ocasiones').val(ids.substring(1));
 		 e.preventDefault();
 	 });
-	 
+
 	$('#div_tipo .btn-group').on('click', 'a', function(e) {
 		 var ids = 0;
 		 $(this).siblings('.active').each(function(){

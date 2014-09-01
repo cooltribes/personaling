@@ -2755,6 +2755,9 @@ public function actionValidar()
 			if($cont >= 100){
 				$xml .= '</Invoices>';
 				
+				//var_dump($xml);
+				//Yii::app()->end();	
+				
 				$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
 				$ch = curl_init();
@@ -2793,12 +2796,14 @@ public function actionValidar()
 								}	
 							}//foreach ids
 					}// isset  
-				$posicion++;
+				$posicion++; 
 
 				}// ciclo
 					
 				echo "fin de ciclo"; 
 				echo "<br><br>";
+				
+				//Yii::app()->end();
 				
 				/* reiniciando todos los valores */
 				$xml = ""; 
@@ -2814,7 +2819,11 @@ public function actionValidar()
 			
 			if($cont < 100)
 			{				
-				if($user->tipo_zoho == 0){ 
+				if($user->tipo_zoho == 0){
+					echo $user->email." estaba en 0<br>";
+					//var_dump($xml);
+					//Yii::app()->end();	
+						 
 					$conv = $zoho->convertirLead($user->zoho_id, $user->email);
 					$datos = simplexml_load_string($conv);
 											
@@ -2822,9 +2831,14 @@ public function actionValidar()
 					$user->zoho_id = $id;
 					$user->tipo_zoho = 1;
 											
-					$user->save(); 
+					$user->save(); 					
 				}	
-
+				else{
+					echo $user->email." ya estaba en 1 el tipo zoho<br>";
+					//var_dump($xml);
+					//Yii::app()->end();	
+				}
+				
 				/*Datos para el arreglo a comparar */
 				$add = array();
 				$add = array("row" => $cont, "orden" => $orden->id);
@@ -2896,17 +2910,77 @@ public function actionValidar()
 				$xml .= '<FL val="Forma de Pago">'.$forma.'</FL>'; 
 				
 				// productos
-				$xml .= $zoho->Products($orden->id);  
+				$xml .= $zoho->Products($orden->id); 
+				echo "Un request al relacionar productos<br>";
 				// actualizar cantidades de productos
-				$zoho->actualizarCantidades($orden->id);
+				//$zoho->actualizarCantidades($orden->id);
+				//echo "Otro para actualizar cantidades<br>"; 
 				
 				$xml .= '<FL val="Grand Total">'.(double)$orden->total.'</FL>'; 
 				$xml .= '</row>';
 					
-				$cont++;	
+				$cont++;
 					
-			}// if
+			}// if 
+			
+			if($ordenesTotal == $sumatoria)
+					$this->actionEnviarZoho($xml, $ids);
+				else
+					$sumatoria++;
+			
 		}
 	}
+
+
+	public function actionEnviarZoho($xml,$ids){
+				
+			$xml .= '</Invoices>'; 
+			
+			$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
+				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+				
+				//Execute cUrl session
+				$response = curl_exec($ch); 
+				curl_close($ch);
+						
+				$datos = simplexml_load_string($response);
+				$posicion=0;
+						
+				$total = sizeof($ids);
+						
+				for($x=1; $x<=$total; $x++){ 
+					if(isset($datos->result[0]->row[$posicion])){	
+						$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+							
+							foreach($ids as $data){
+								if($number == $data['row']){
+									$order = Orden::model()->findByPk($data['orden']);
+
+									if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+										$order->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+										$order->save();
+											
+										echo "El row #".$data['row']." corresponde a orden ".$order->id." con id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+									}else{
+										echo "Error en posicion ".$posicion;
+									}
+								}	
+							}//foreach ids
+					}// isset  
+				$posicion++; 
+
+				}// ciclo
+					
+				echo "fin de ciclo final";		
+			
+		}
+
         
 }

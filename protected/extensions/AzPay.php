@@ -33,8 +33,7 @@ class AzPay {
     const CUSTOMERID = '396349057';
     
     /*PARA PRUEBAS*/
-    const TERMINAL = '999';    
-    const SECRET = 'qwerty1234567890uiop';
+
 //    
     /*PARA PRODUCCION*/
 //    const TERMINAL = '001';    
@@ -52,8 +51,8 @@ class AzPay {
      */
     public function __construct() {
         $this->customerid = self::CUSTOMERID;
-        $this->terminal = self::TERMINAL;
-        $this->secret = self::SECRET;
+        $this->terminal = Yii::app()->params['AzPayTerminal'];
+        $this->secret = Yii::app()->params['AzPaySecret'];
     }
 
     /**

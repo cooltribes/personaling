@@ -53,7 +53,11 @@ return CMap::mergeArray(
                     'womanMeasure' => true,
                     'bodyFavors' => false,
                     'skinColor' => true,
-                )
+                ),
+                'AzPayTerminal'=>'999',
+                'AzPaySecret'=> 'qwerty1234567890uiop',
+
+
 		),
     )
 );

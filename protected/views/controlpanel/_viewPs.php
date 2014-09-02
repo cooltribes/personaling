@@ -3,10 +3,9 @@
 <?php } else { ?>
     <tr class=" <?php echo ($data->personal_shopper == 2) ? 'info' : ''; ?> ">
 <?php } ?>
-    <td><input name="Check" type="checkbox" value="Check"></td>
     
-    <!--IMAGEN-->
     
+    <!--IMAGEN-->    
     <td>
         <?php
         // <img src="images/kitten.png" width="70" height="70" alt="avatar">
@@ -14,8 +13,7 @@
         ?>
     </td>
     
-    <!--DATOS PERSONALES-->
-    
+    <!--DATOS PERSONALES-->    
     <td>
         <h5 class="no_margin_bottom"> <?php echo $data->profile->first_name . ' '
                 . $data->profile->last_name; ?></h5>

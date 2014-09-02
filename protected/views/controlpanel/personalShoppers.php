@@ -68,8 +68,7 @@
 <?php
 $template = '{summary}
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped table-condensed">
-    <tr>
-      <th rowspan="2" scope="col"><input name="Check" type="checkbox" value="Check"></th>
+    <tr>      
       <th colspan="3" rowspan="2" scope="col">Usuario</th>
       <th colspan="2" scope="col" style="text-align: center">Ventas</th>
       <th rowspan="2" scope="col" style="text-align: center">Comisión<br>Actual</th>

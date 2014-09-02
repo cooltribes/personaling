@@ -725,7 +725,6 @@ if(!Yii::app()->user->isGuest){
           
           clickVaciar();
 
-
       },
       function(e){
 //            console.log(e.offsetX + " : " + e.offsetY);
@@ -1002,8 +1001,8 @@ if(!Yii::app()->user->isGuest){
 
         //mostrar el popover del carrito
         $('#btn-shoppingBag').popover("show");
-//        $('#btn-shoppingBag').trigger('mouseenter');
-//        $('#btn-shoppingBag a').trigger('mouseenter');
+        //agregar el evento del link para vaciar
+        clickVaciar();
         
         
     }

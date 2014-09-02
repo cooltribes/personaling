@@ -23,8 +23,8 @@ class ContactForm extends CFormModel
 			// name, email, subject and body are required
 			#array('name, email, subject, body, motivo', 'required'),
 			#array('nombre, email, subject, body, motivo, verifyCode', 'required', 'message'=>'{attribute} No puede ser vacio.'),
-			array('nombre', 'required', 'message'=>'{attribute} No puede ser vacio.'),
-			array('nombre', 'required', 'message'=>'Ingrese un {attribute}.'),
+			array('name', 'required', 'message'=>'{attribute} No puede ser vacio.'),
+			array('name', 'required', 'message'=>'Ingrese un {attribute}.'),
 			// email has to be a valid email address
 			array('email', 'email'),
 			array('name', 'required', 'message'=>'Ingrese un nombre.'),

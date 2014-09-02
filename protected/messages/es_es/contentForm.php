@@ -137,7 +137,7 @@ return array (
 	'Empty shopping bag' => 'Vaciar la Bolsa de Compras',
 	'Eye Color' => 'Color de Ojos',
 	'Expiration' => 'Vencimiento',
-
+	'Featured Products'=>'Productos Destacados',
 	'From' => 'De',
 	'From1' => 'Desde',
 	'From Our Magazine' => 'Desde Nuestra Magazine',

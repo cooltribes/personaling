@@ -292,13 +292,13 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 									
 				$zohoCase = new ZohoCases;
 				$zohoCase->Subject = "Formulario Contáctanos - ".$_POST['ContactForm']['email']." - ".date("d-m-Y");
-				$zohoCase->Priority = "High";
+				$zohoCase->Priority = "Alta";
 				$zohoCase->Email = $_POST['ContactForm']['email'];
 				$zohoCase->Description = "A través del formulario. Asunto: ".$_POST['ContactForm']['subject'].". Mensaje: ".$_POST['ContactForm']['body'];
 				$zohoCase->internal = "Sin revisar";
 				$zohoCase->Origin = "Web";
-				$zohoCase->Status = "New";
-				$zohoCase->type = "Problem"; 
+				$zohoCase->Status = "Nuevo";
+				$zohoCase->type = "Problema";
 				$zohoCase->reason = $_POST['ContactForm']['motivo']; 
 				 
 				if(isset($usuario)){ 

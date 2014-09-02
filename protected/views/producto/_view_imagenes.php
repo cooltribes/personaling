@@ -13,7 +13,7 @@ var uno=0;
                	data: "id="+$(this).parent().parent().attr('id').replace('img_',''),
                 success: function(data){
 
-                    if(data=='OK'){
+                   
                         
                         span.parent().parent().fadeOut('medium', function() {
 						    // Animation complete.
@@ -31,13 +31,10 @@ var uno=0;
 		                            $("#respuesta").empty();
 		                            $("#respuesta").html(data);
 		                        }
-		                    });
+		                   });
 					    
 					  });
                     
-                    }else{
-
-                    }
                     
                 
                     

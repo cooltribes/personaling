@@ -619,13 +619,13 @@ class RegistrationController extends Controller
 									
 									$zohoCase = new ZohoCases;
 									$zohoCase->Subject = "Aplicación PS - ".$user->email;
-									$zohoCase->Priority = "High";
+									$zohoCase->Priority = "Alta";
 									$zohoCase->Email = $user->email;
 					            	$zohoCase->Description = "Aplicación de ".$user->profile->first_name." ".$user->profile->last_name." (".$user->email.") para personal Shopper.";
 									$zohoCase->internal = "Sin revisar";
 									$zohoCase->Origin = "Email";
-									$zohoCase->Status = "New";
-									$zohoCase->type = "Feature Request"; 
+									$zohoCase->Status = "Nuevo";
+									$zohoCase->type = "Solicitud de Peticion"; 
 									
 									$respuesta = $zohoCase->save_potential(); 
                                 

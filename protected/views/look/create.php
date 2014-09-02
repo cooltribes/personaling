@@ -1,4 +1,4 @@
-<?php
+<?php 
 //$this->breadcrumbs=array(
 //	'Looks'=>array('admin'),
 //	'Crear',
@@ -20,7 +20,7 @@
 }
 </style>
 <script language="JavaScript">
-
+ 
 
 var dragSrcEl = '';
 function handleDragStart(e) {

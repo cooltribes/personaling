@@ -46,7 +46,20 @@ echo Producto::model()->countByAttributes(array('status'=>1));
 ?>
 		</p>
         Totales</td>
-      <td><p class="T_xlarge margin_top_xsmall">
+        <td><p class="T_xlarge margin_top_xsmall">
+<?php
+/*
+$sql = "select count( * ) as total from tbl_producto where status=1";
+$num = Yii::app()->db->createCommand($sql)->queryScalar();
+// echo $num;
+*/
+
+echo Producto::model()->countByAttributes(array('tipo'=>1));
+
+?>
+		</p>
+        Productos de Terceros</td>
+      <td><p class="T_xlarge margin_top_xsmall"> 
 <?php
 /*
 $sql = "select count( * ) as total from tbl_producto where estado=0 and status=1";
@@ -58,6 +71,19 @@ echo Producto::model()->countByAttributes(array('estado'=>0,'status'=>1));
 ?>
       	</p>
         Activos</td>
+        <td><p class="T_xlarge margin_top_xsmall">
+<?php
+/*
+$sql = "select count( * ) as total from tbl_producto where status=1";
+$num = Yii::app()->db->createCommand($sql)->queryScalar();
+// echo $num;
+*/
+
+echo Producto::model()->countByAttributes(array('tipo'=>0));
+
+?>
+		</p>
+        Productos Personaling</td>
       <td><p class="T_xlarge margin_top_xsmall"> 
 <?php
 /*

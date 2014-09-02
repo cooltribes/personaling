@@ -217,6 +217,7 @@ $this->breadcrumbs=array(
 				        array('label'=>'2','url'=>'#59'),
 				        array('label'=>'3','url'=>'#60'),
 				        array('label'=>'4','url'=>'#61'),
+				        array('label'=>'Varias','url'=>'#62'),
 				    ),
 				)); ?>
                

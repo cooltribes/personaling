@@ -102,6 +102,17 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                         ?>
                     </div>
                 </div>
+                <legend>3.- Descargar archivo Excel para importación: </legend>
+                <div class="well span5">
+                    <div class="row-fluid">
+                        
+                        <div class="span5">
+                           	<a href="../site/plantillaExternos" class="btn btn-info" <i class="icon-download-alt icon-white"></i> Descargar Plantilla</a>
+                            
+                        </div>
+                    </div>                    
+                        
+                </div>
             </fieldset>
             
             <?php $this->endWidget(); ?>

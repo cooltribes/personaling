@@ -41,7 +41,7 @@ $this->breadcrumbs=array(
 )); ?>
 
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model, 'Por favor rellena los Campos en Rojo'); ?>
 
     <?php echo $form->textFieldRow($model,'name'); ?>
 
@@ -67,7 +67,9 @@ $this->breadcrumbs=array(
 
 	<?php if(CCaptcha::checkRequirements()): ?>
 		<?php echo $form->captchaRow($model,'verifyCode',array(
+			'language'=>'es_ES',
             'hint'=>'Por favor escriba las letras que se muestran aquí arriba. No importa si están en mayúscula o minúscula.',
+            'showRefreshButton' => true,
         )); ?>
 	<?php endif; ?>
 

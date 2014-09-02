@@ -77,14 +77,6 @@ class ZohoSales{
 			
 			if($detalle->tipo_pago == 4 || $detalle->tipo_pago == 5){
 				$xml .= '<FL val="Paypal_Sabadell">'.(double)$detalle->monto.'</FL>';
-				
-				/*if($detalle->tipo_pago == 4)
-					$forma .= " Sabadell, ";
-				if($detalle->tipo_pago == 5)
-					$forma .= " Paypal, ";
-				if($detalle->tipo_pago == 7)
-					$forma .= " Paypal prueba, ";
-				*/
 			}
 			
 			$forma .= $detalle->getTipoPago().", "; 
@@ -140,15 +132,20 @@ class ZohoSales{
 	{
 		$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$order));
 		$ordenhas = new OrdenHasProductotallacolor;
-		
+		$orden = Orden::model()->findByPk($order); 
+
+		$addProduct = "";
 		$xml2;
 		$costo = 0;
 		$dcto_productos = 0;
 		$dcto_looks = 0;
 		$dcto_total = 0;
+		$looks_orden = "";
 		
 		$xml2 = '<FL val="Product Details">';
 		$i=1; 
+		$addProduct .= "<Products>";
+		
 		foreach ($productos as $tallacolor){
 			$xml2 .= '<product no="'.intval($i).'">';
 			
@@ -156,33 +153,14 @@ class ZohoSales{
 			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 			
 			$costo += $precio->costo;
-			$dcto_productos += $precio->ahorro;
+			$dcto_productos += $precio->ahorro;	
 			
-			/*--------------*/
-			$url ="https://crm.zoho.com/crm/private/xml/Products/getRecordById";
-$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&id=".$tallacolor->preciotallacolor->zoho_id."&selectColumns=Products(Product Name,descuento,Precio Impuesto,Unit Price,Precio Descuento)";
-			
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
-	
-			$response = curl_exec($ch);
-			curl_close($ch);
-		//	echo htmlspecialchars($response)."<p><p>";
-			
-			$datos = simplexml_load_string($response);
-			
-			$id = $datos->result[0]->Products[0]->row->FL[0]; 
-			$nombre = $datos->result[0]->Products[0]->row->FL[1];
-			$unit = $datos->result[0]->Products[0]->row->FL[2];
-			$contax = $datos->result[0]->Products[0]->row->FL[3];
-			$discount_price = $datos->result[0]->Products[0]->row->FL[4];
-			$discount = $datos->result[0]->Products[0]->row->FL[5];
-			// Yii::app()->end();
+			$id = $tallacolor->preciotallacolor->zoho_id;
+			$nombre = $producto->nombre." - ".$tallacolor->preciotallacolor->sku;
+			$unit = $precio->precioVenta;
+			$contax = $precio->precioImpuesto;
+			$discount_price = $precio->precioDescuento;
+			$discount = $precio->ahorro; 
 			
 			$xml2 .= '<FL val="Product Id">'.intval($id).'</FL>';
 			$xml2 .= '<FL val="Product Name">'.$nombre.'</FL>';
@@ -206,22 +184,50 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 						
 			$i++;
 			$xml2 .= '</product>';
+			
+									/* Añadiendo el producto al usuario */ 
+						
+									$addProduct .= "<row no='".intval($i)."'>";
+									$addProduct .= "<FL val='PRODUCTID'>".(int)$tallacolor->preciotallacolor->zoho_id."</FL>";
+						       		$addProduct .= "</row>"; 
+		
+			
 		}
 		$xml2 .= '</FL>';
 		$xml2 .= '<FL val="Costo">'.(double)$costo.'</FL>'; 
 		$xml2 .= '<FL val="Descuento Productos">'.(double)$dcto_productos.'</FL>';
 		
+		
+		/*AÑANDIENDO AL CLIENTE */
+		
+			$addProduct .= "</Products>";
+			
+			$url2 ="https://crm.zoho.com/crm/private/xml/Contacts/updateRelatedRecords"; 
+			$query2="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&relatedModule=Products&id=".$orden->user->zoho_id."&xmlData=".$addProduct; 
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url2);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $query2);// Set the request as a POST FIELD for curl.
+	
+			//Execute cUrl session 
+			$response = curl_exec($ch);
+			curl_close($ch);
+			
+		/* ===================== */ 	
+		
 		if($ordenhas->countLooks($order) > 0) // hay looks
 		{ 
 			$looks = $ordenhas->getLooks($order);
-			
-			//var_dump($looks);
-			//Yii::app()->end();
 			
 			foreach($looks as $lk)
 			{
 				$look = Look::model()->findByPk($lk['look_id']); 
 				
+				$looks_orden .= $look->title." (id: ".$look->id."), ";
+								
 				if(isset($look->tipoDescuento)) // No es null. hay descuento
 				{
 					if($look->tipoDescuento == 0) // porcentaje
@@ -235,16 +241,17 @@ $query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&i
 						$dcto_looks += $look->valorDescuento; 
 					}
 						
-				}
-				
+				} 
+				 
 			}
 		} 
 		$dcto_total = $dcto_productos + $dcto_looks; 
-		$totalProductos = $orden->total - $orden->envio;
+		$totalProductos = $orden->total - $orden->envio; 
 		
+		$xml2 .= '<FL val="Looks">'.$looks_orden.'</FL>';
 		$xml2 .= '<FL val="Descuento Looks">'.(double)$dcto_looks.'</FL>';
 		$xml2 .= '<FL val="Descuento Total">'.(double)$dcto_total.'</FL>';
-		$xml2 .= '<FL val="Total Productos">'.(double)$totalProductos.'</FL>';
+		$xml2 .= '<FL val="Total Productos">'.(double)$totalProductos.'</FL>'; 
 		
 		return $xml2; 
 	}

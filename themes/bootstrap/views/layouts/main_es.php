@@ -24,7 +24,7 @@ mixpanel.init("da3a06a70248326e132ae8c873390868");</script><!-- end Mixpanel -->
 <body class="<?php echo $this->getBodyClasses(); ?>">
   <div class="barra-carga"></div>
   <div id="navegacion_principal">
-<?php  
+<?php
 
 $total = 0; //variable para llevar el numero de notificaciones
 $cont_productos = 0 ; //variable para llevar el numero de productos
@@ -40,31 +40,31 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
             'class'=>'bootstrap.widgets.TbMenu',
             'htmlOptions'=>array('class'=>'pull-right'),
             'items'=>array(
- 
+
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 array('label'=>'Panel de Control', 'url'=>'#', 'items'=>array(
                                             array('label'=>'General', 'url'=>array('/controlpanel/index')),
-                                            array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')), 
+                                            array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')),
                                             array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
                                             array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
                                             array('label'=>'Acciones', 'url'=>array('/adorno/index')),
                                             array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
                                             array('label'=>'SEO', 'url'=>array('/controlpanel/seo')),
 //                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
-					)),  
-                
+					)),
+
                 array('label'=>'Usuarios', 'url'=>'#', 'items'=>array(
                                             array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
                                             array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
 					)),
-                
-                array('label'=>'Looks', 'url'=>'#', 'items'=>array(                  
+
+                array('label'=>'Looks', 'url'=>'#', 'items'=>array(
                                             array('label'=>'Looks', 'url'=>array('/look/admin')),
                                             array('label'=>'Importar Descuentos', 'url'=>array('/look/importarDescuentos')),
                                             array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
                                             array('label'=>'Campañas', 'url'=>array('/campana/index')),
                                         )),
-                
+
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
                                             array('label'=>'Productos', 'url'=>array('/producto/admin')),
                                             array('label'=>'Colores', 'url'=>array('/color/admin')),
@@ -72,28 +72,28 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                             array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
                                              array('label'=>'Tiendas', 'url'=>array('/tiendaExterna/admin')),
                                             '---',
-                                            array('label'=>'Inventario','url'=>'#',                                                
+                                            array('label'=>'Inventario','url'=>'#',
                                                 'items' => array(
                                                     array('label' => 'Reporte de Inventario',
                                                         'url'=>array('/producto/reporte'),),
                                                     array('label' => 'Egresos de Mercancía',
                                                         'url'=>array('/movimiento/adminEgresos'),),
                                                     array('label' => 'Reporte de Defectuosos',
-                                                        'url'=>array('/movimiento/defectuosos'),),                                                   
+                                                        'url'=>array('/movimiento/defectuosos'),),
                                                     array('label' => 'Ver MasterDatas',
                                                         'url'=>array('/masterData/admin'),),
                                                     array('label' => 'Ver Inbounds',
-                                                        'url'=>array('/inbound/admin'),),                                                    
+                                                        'url'=>array('/inbound/admin'),),
                                                 )),
-                                            array('label'=>'Importar','url'=>'#',                                                
+                                            array('label'=>'Importar','url'=>'#',
                                                 'items' => array(
-                                                   
+
                                                     array('label' => 'Productos Personaling',
                                                         'url'=>array('/producto/importar'),),
                                                     array('label' => 'Descuentos',
-                                                        'url'=>array('/producto/importarPrecios'),),                                                   
+                                                        'url'=>array('/producto/importarPrecios'),),
                                                     array('label' => 'Productos Externos',
-                                                        'url'=>array('/producto/importarExternos'),),                                                   
+                                                        'url'=>array('/producto/importarExternos'),),
                                                 )),
 					)
 				),
@@ -104,8 +104,8 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Pagos a Personal Shoppers', 'url'=>Yii::app()->baseUrl.'/pago/admin')
                     )
                 ),
-                
-                array('label'=>'Promociones', 'url'=>'#', 'items'=>array(                	
+
+                array('label'=>'Promociones', 'url'=>'#', 'items'=>array(
                     array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
                     array('label'=>'Códigos de Descuento', 'url'=>array('/codigoDescuento/index')),
 
@@ -115,7 +115,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 				array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     array('label'=>'Perfil', 'url'=>'#'),
-                   
+
                     '---',
                     array('label'=>'Salir', 'url'=>array('/site/logout')),
                 ),
@@ -123,18 +123,18 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
             ),
         ),
     ),
-)); 
+));
 } else {
 	$cont_productos = 0;
         $cantProductosGuest = 0;
-        
+
         if(Yii::app()->getSession()->contains("Bolsa")){
-            
+
             $cantProductosGuest = count(Yii::app()->getSession()->get("Bolsa"));
         }
-        
-        
-	
+
+
+
 		$sql = "select count( * ) as total from tbl_orden where user_id=".Yii::app()->user->id." and estado < 5";
 		$total = Yii::app()->db->createCommand($sql)->queryScalar();
 
@@ -147,17 +147,17 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
           $contadorMensaje++;
       }
     }
-		
+
   // Buscar usuario para avatar en el menu
-	if (Yii::app()->user->id){ 
-		$profile = Profile::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));    
+	if (Yii::app()->user->id){
+		$profile = Profile::model()->findByAttributes(array('user_id'=>Yii::app()->user->id));
 		$user = User::model()->findByPk(Yii::app()->user->id);
     $avatar ='';
-    if($user){ 
+    if($user){
       $file = explode('.',$user->getAvatar());
       $avatar = "<img  src='".$file[0]."_x30.".$file[1]."' class='img-circle avatar_menu' width='30' height='30' />   ";
     }
-    
+
     $Arraynombre = explode(" ",$profile->first_name);
     if(strlen($Arraynombre[0]) > 0)
       $nombre = $Arraynombre[0];
@@ -168,7 +168,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
 		if(isset($bolsa))
 			$cont_productos = count($bolsa->bolsahasproductos);
-		
+
 	} else {
 		$nombre = 'N/A';
     $avatar = '';
@@ -183,48 +183,48 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Solicitar Pago', 'url'=>array('/pago/solicitar'), 'visible' => UserModule::isPersonalShopper()),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     // array('label'=>'Perfil', 'url'=>'#'),
-                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),                    
+                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),
                     '---',
                     array('label'=>'¿Comprando para alguién más?'),
                     //array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>',
 //                    array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise',
-//                        'url'=>array(''), 'linkOptions' => array('class' => 'sub_perfil_item'),),                    
-                    
+//                        'url'=>array(''), 'linkOptions' => array('class' => 'sub_perfil_item'),),
+
                 );
 
         $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id),array('order' => 'id_filter DESC'));
 
-        $verMas = count($otrosPerfiles) > 2;       
-        
+        $verMas = count($otrosPerfiles) > 2;
+
         $cont = 0;
-        
+
         foreach($otrosPerfiles as $perfil){
             $cont++;
             if(strlen($perfil->name) > 15){
                 $perfil->name = substr_replace($perfil->name, " ...", 15);
             }
-            
+
             $itemsUser[] = array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">'.$perfil->name,
                 'url'=>'#',
                 'linkOptions' => array('class' => 'sub_perfil_item', 'id' => $perfil->id_filter),
                 //'itemOptions' => array('id' => $perfil->id_filter),
                 );
-            
+
             if($cont >= 2){
                 break;
             }
         }
         $todos = count($otrosPerfiles);
         if($verMas){
-           $itemsUser[] =  array('label'=>"Ver todos los perfiles ...",  
+           $itemsUser[] =  array('label'=>"Ver todos los perfiles ...",
                                     'url'=>'#', 'linkOptions' => array('class' => 'sub_perfil_item ver_todos'), //array('/site/preguntas_frecuentes')
                                     );
         }
-        
 
-        array_push($itemsUser, array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',  
+
+        array_push($itemsUser, array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',
                                     'url'=>'#modalFiltroPerfil', 'linkOptions' => array('data-toggle' => 'modal', 'id' => 'agregar-perfil'), //array('/site/preguntas_frecuentes')
-                                    ),                    
+                                    ),
                                 '---',
                                 array('label'=>'Salir', 'url'=>array('//site/logout')));
 
@@ -237,9 +237,9 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
             'htmlOptions'=>array('class'=>'pull-right'),
             'encodeLabel'=>false,
             'items'=>array(
-  
+
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
-                
+
                 // array('label'=>'¿Cómo funciona?', 'url'=>array('/site/comofunciona')),
                 array('label'=>'Looks', 'url'=>array('/tienda/look'),'visible'=>!UserModule::isPersonalShopper()),
                 // array('label'=>'Top', 'url'=>array('//site/top'),'visible'=>!Yii::app()->user->isGuest),
@@ -252,7 +252,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>'Tienda', 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
                 //array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu')),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
-                array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('id'=>'btn-gift','class'=>'hidden-phone to-white-icon', 'data-html'=>"true"), 'visible'=>!Yii::app()->user->isGuest,),                 
+                array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('id'=>'btn-gift','class'=>'hidden-phone to-white-icon', 'data-html'=>"true"), 'visible'=>!Yii::app()->user->isGuest,),
 				array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>$cont_productos,'icon'=>'icon-shopping-cart', 'itemOptions'=>
@@ -270,7 +270,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 'visible'=>!Yii::app()->user->isGuest,
 				),
             ),
-        ), 
+        ),
 
     ),
 ));
@@ -419,7 +419,7 @@ if(!Yii::app()->user->isGuest){
     <hr/>
     <div class="row">
       <div class="span12 text_align_center creditos">Personaling Enterprise S.L. Nuestro NIF B66202383 | Todos los derechos reservados<br/>
-       Programado por <a href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> </div>
+       Desarrollado por <a href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> </div>
     </div>
   </footer>
 </div>
@@ -725,7 +725,6 @@ if(!Yii::app()->user->isGuest){
           
           clickVaciar();
 
-
       },
       function(e){
 //            console.log(e.offsetX + " : " + e.offsetY);
@@ -923,6 +922,7 @@ if(!Yii::app()->user->isGuest){
 
 <script>
     $(document).ready(function(){
+    	
         var accepted = readCookie('accept_cookies');
         if(!accepted){
             $('#cookies_notification').show();
@@ -996,8 +996,8 @@ if(!Yii::app()->user->isGuest){
 
         //mostrar el popover del carrito
         $('#btn-shoppingBag').popover("show");
-//        $('#btn-shoppingBag').trigger('mouseenter');
-//        $('#btn-shoppingBag a').trigger('mouseenter');
+        //agregar el evento del link para vaciar
+        clickVaciar();
         
         
     }

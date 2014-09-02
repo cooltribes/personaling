@@ -61,6 +61,9 @@ class Producto extends CActiveRecord
             'activos'=>array(
                 'condition'=>'t.estado=0',
             ),
+            'featured'=>array(
+                'condition'=>'destacado=1',
+            )
         );
     }
 	/**
@@ -556,9 +559,23 @@ class Producto extends CActiveRecord
 				if ( isset( $imagecolor) ) return  $imagecolor->getUrl($opciones);
 				elseif ($this->mainimage) return $this->mainimage->getUrl($opciones);
 			}
-			return "http://placehold.it/180";
-			 
+			return "http://placehold.it/180";			 
 	}
+    
+    public function getThumbUrl($color_id,$ext){
+         if( strtolower($ext)!="jpg"&&strtolower($ext)!="png")
+            $ext="jpg";    
+          
+         $url=$this->getImageUrl($color_id);
+         if($url!="http://placehold.it/180"){
+            $url=explode('.',$url);             
+            $url=$url[0];
+            $url=$url."_thumb.".$ext; 
+         } 
+         return $url;
+            
+    }
+    
 	public function getColores($talla=null)
 	{
 		//$kwdata = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'Preciotallacolor.color_id == '.$color)))->findByPk($this->id);
@@ -919,9 +936,14 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		$criteria->compare('destacado',$this->destacado,true);
 
 		$criteria->compare('peso',$this->peso,true);
+		
 		$imgsql = "SELECT tbl_producto_id FROM tbl_imagen";
        	$enImagen= Yii::app()->db->createCommand($imgsql)->queryColumn();
 		$criteria->addInCondition('t.id',$enImagen);
+		
+		$catsql = "SELECT tbl_producto_id FROM tbl_categoria_has_tbl_producto";
+       	$enCategoria= Yii::app()->db->createCommand($catsql)->queryColumn();
+		$criteria->addInCondition('t.id',$enCategoria);
 		
 		$criteria->with = array('preciotallacolor','precios','categorias', 'mymarca','mycolor');
 		if(isset(Yii::app()->session['chic'])){
@@ -1461,6 +1483,8 @@ public function multipleColor2($idColor, $idact)
 		}
 		return $img;
 	}
+	
+	
 	
 	public function Next($id_actual)
 	{

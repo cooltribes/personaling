@@ -19,6 +19,9 @@ $this->breadcrumbs = array(
                         <div class=" margin_top">
                             <div class="">
                                 <ul class="nav nav-tabs">
+                                	<div id="saldoAct" align="right">
+                                	<a title="Cargar Saldo" href="#" onclick='carga(<?php echo $model->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a> 
+                                	</div>                                  
                                     <li class="active"><a data-toggle="tab" href="#tab1">Operaciones</a></li>
 
                                 </ul>    
@@ -81,3 +84,60 @@ $this->breadcrumbs = array(
     </div>
 </div>
 <!-- /container -->
+
+<div id='saldoCarga' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+       </div>
+
+<script>
+
+function carga(id){
+
+	$.ajax({
+		type: "post",
+		'url' :'<?php echo  CController::createUrl('admin/saldo');?>',
+		data: { 'id':id}, 
+		'success': function(data){
+			$('#saldoCarga').html(data);
+			$('#saldoCarga').modal(); 
+		},
+		'cache' :false});
+
+}
+function saldo(id){	
+		
+		var cant=$("#cant").val();
+       	var desc=0;
+        if(cant.length>1){
+	        if(cant.indexOf(',')==(cant.length-2))
+	        	cant+='0';
+			if(cant.indexOf(',')==-1)
+				cant+=',00';
+				}
+        var pattern = /^\d+(?:\,\d{0,2})$/ ;
+       
+       if($('#discount').attr('checked')=='checked')
+       	desc=1;
+       
+        
+        if (pattern.test(cant)||cant.length<2) { 
+          	cant=cant.replace(',','.');
+           
+           $.ajax({
+			type: "post",
+			'url' :'<?php echo  CController::createUrl('admin/saldo');?>',
+			data: { 'cant':cant,
+			'id':id,'desc':desc}, 
+			'success': function(data){
+				window.location.reload();	                                    
+			},
+			'cache' :false});
+        }else{
+        	alert("Formato de cantidad no válido");
+         }     
+}
+
+
+
+
+
+</script>

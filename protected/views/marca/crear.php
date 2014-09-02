@@ -20,8 +20,8 @@ $this->breadcrumbs=array(
 
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'marca-form',
-	'enableAjaxValidation'=>false,
-	'enableClientValidation'=>true,
+	'enableAjaxValidation'=>true,
+	'enableClientValidation'=>false,
 	'type'=>'horizontal',
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true, 
@@ -33,7 +33,7 @@ $this->breadcrumbs=array(
 
 ?>
 
-<?php echo $form->errorSummary($marca); ?>
+<?php echo $form->errorSummary($marca, "Por favor corrija los siguientes errores."); ?>
 
 
 <div class="container margin_top">

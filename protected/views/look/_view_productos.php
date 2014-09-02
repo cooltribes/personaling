@@ -60,7 +60,7 @@ if (isset($categoria_padre) ){
 					'SELECT * FROM tbl_precioTallaColor WHERE producto_id=:producto_id AND cantidad >= :cantidad GROUP BY color_id',
 					array(':cantidad'=>1, ':producto_id'=>$producto->id)
 				);
-			}
+			} 
 			foreach($tallacolores as $tallacolor){
 				//echo $producto->id.'<br/>';
 				//echo $producto->id.' - '.$tallacolor->color_id.'<br/>';
@@ -68,7 +68,7 @@ if (isset($categoria_padre) ){
 				if(isset($imagecolor)){
 					if ( $producto->getImageUrl($tallacolor->color_id)!="http://placehold.it/180"){
 							if($space%3==0 && $space!=0)
-			              		echo '<li class="span4" style="margin-left:0px" >';
+			              		echo '<li class="span4 no_margin_left"  >';
 			              	else
 								echo '<li class="span4" > ';
 						
@@ -98,7 +98,7 @@ if (isset($categoria_padre) ){
 									//echo $image;
 									
 									
-									echo CHtml::image($producto->getImageUrl($tallacolor->color_id), "Personaling - ".$producto->nombre, array("width" => "180", "height" => "180"));
+									echo CHtml::image($producto->getThumbUrl($tallacolor->color_id,"png"), "Personaling - ".$producto->nombre, array("width" => "180", "height" => "180"));
 									//echo CHtml::image(Yii::app()->createUrl('site/productoImagen',array('producto'=>$producto->id,'color'=>$tallacolor->color_id,'h'=>180,'w'=>180)), "Imagen", array("width" => "180", "height" => "180"));
 									
 									

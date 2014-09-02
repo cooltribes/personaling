@@ -1,5 +1,5 @@
 <div class="row-fluid">
-<?php
+<?php 
 					if ($categoria_padre > 0)
 					echo CHtml::ajaxLink(
 						  'Atras ', 
@@ -33,7 +33,7 @@
              
               foreach($categorias as $space=>$categoria){
               	if($space%3==0 && $space!=0)
-              		echo '<li class="span4" style="margin-left:0px" draggable="false" >';
+              		echo '<li class="span4 no_margin_left" draggable="false" >';
               	else
 					echo '<li class="span4" draggable="false" > ';	 
               ?>

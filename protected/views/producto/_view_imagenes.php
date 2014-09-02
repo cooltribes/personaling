@@ -13,7 +13,7 @@ var uno=0;
                	data: "id="+$(this).parent().parent().attr('id').replace('img_',''),
                 success: function(data){
 
-                    if(data=='OK'){
+                   
                         
                         span.parent().parent().fadeOut('medium', function() {
 						    // Animation complete.
@@ -31,13 +31,10 @@ var uno=0;
 		                            $("#respuesta").empty();
 		                            $("#respuesta").html(data);
 		                        }
-		                    });
+		                   });
 					    
 					  });
                     
-                    }else{
-
-                    }
                     
                 
                     
@@ -160,6 +157,7 @@ $this->breadcrumbs=array(
           <ul>
             <li> Ten en cuenta que la primera imagen será la principal del producto</li>
             <li>Arrastra las imágenes para organizarlas</li>
+             <li>Se debe seleccionar un color a la foto del producto, ya que de no hacerlo no se mostrara en la tienda.</li>
           </ul>
         </div>
         <div class="clearfix productos_del_look">

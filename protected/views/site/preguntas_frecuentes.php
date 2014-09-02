@@ -1,3 +1,34 @@
+<?php /*<style>
+
+.cajadevideo{
+
+    max-width 710px;
+    margin:auto;
+
+}
+.video{
+
+    height:0px;
+    width:100%;
+    max-width:710px;
+    padding-top:56.25%;
+    position:relative;
+
+}
+
+#preguntas_frecuentes{
+
+    position:absolute;
+    height:100%;
+    width:100%;
+    top:0px;
+    left:0px;
+
+}
+
+</style>
+ */?>
+
 <?php
 //$this->pageTitle=Yii::app()->name . ' - Página de inicio';
 if(isset($seo)){

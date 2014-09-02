@@ -253,8 +253,8 @@ class Bolsa extends CActiveRecord
 	public static function addProductoGuest($producto_id,$talla_id,$color_id,$look_id=0)
 	{   
             
-            $carrito = Yii::app()->getSession()->get("Bolsa");
-
+            $carrito = Yii::app()->getSession()->get("Bolsa");			
+			
             $ptcolor = Preciotallacolor::model()->findByAttributes(array(
                 'producto_id'=>$producto_id,
                 'talla_id'=>$talla_id,
@@ -280,13 +280,10 @@ class Bolsa extends CActiveRecord
                 $nuevoProducto->preciotallacolor_id = $ptcolor->id;
                 $nuevoProducto->cantidad = 1;
                 $nuevoProducto->look_id = $look_id;	                    
-                $nuevoProducto->added_on = date("Y-m-d H:i:s");	                    
-
+                $nuevoProducto->added_on = date("Y-m-d H:i:s");	 
 
                 $carrito[] = $nuevoProducto;
-
             }
-
 
             Yii::app()->getSession()->add("Bolsa", $carrito);
 

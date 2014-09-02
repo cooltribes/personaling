@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
- <?php
+ <?php 
 
  
   /* @var $this TiendaController */
@@ -58,11 +58,6 @@
 
 ?>
 <!-- FLASH OFF -->
-
-
-
-
-
 
 
 <div class="container margin_top" id="carrito_compras">
@@ -125,7 +120,7 @@
                       # code...
                       break;
                   }
-                  $iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
+                  $iconoDescuento = '<div class="icono-descuento"><span><span class="to_add">-</span>'.round($porcentaje).'%</span><span class="to_cut leyenda"></br>Descuento</span></div>';
                   //$iconoDescuento = '<div class="icono-descuento">%<span>Descuento</span></div>';
                 }
               }
@@ -354,29 +349,40 @@
               <h5><?php echo Yii::t('contentForm','Colors'); ?></h5>
               <div id="vCo" class="clearfix colores">
                 <?php
-
+                
                 if( $cont1 == 1) // Si solo hay un color seleccionelo
                 {
-                  $color = Color::model()->findByPk($cantcolor[0]);             
-                  echo "<div value='solo' id=".$color->id." style='cursor: pointer' class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+                  $colorUnico = Color::model()->findByPk($cantcolor[0]);             
+                  echo "<div value='solo' id=".$colorUnico->id." style='cursor: pointer' 
+                      class='coloress active' title='".$colorUnico->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
 
                 }
                 else{
-                  
-                  foreach ($producto->preciotallacolor as $talCol) {
+                                      
+                    foreach ($producto->preciotallacolor as $talCol) {
 
-                    if($talCol->cantidad > 0) // que haya disp
-                    {
-                      $color = Color::model()->findByPk($talCol->color_id);   
+                        if($talCol->cantidad > 0) // que haya disp
+                        {
+                            $color = Color::model()->findByPk($talCol->color_id);   
 
-                      if(in_array($color->id, $valores)){ // no hace nada para que no se repita el valor      
-                      }
-                      else{
-                        echo "<div id=".$color->id." style='cursor: pointer' class='coloress' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
-                        array_push($valores, $color->id);
-                      }
+                            if(in_array($color->id, $valores)){ // no hace nada para que no se repita el valor      
+                            }else{
+                                
+                                //Si encontro el producto filtrando por color.
+                                //seleccionarlo entonces
+                                $claseActive = "";
+                                if(Yii::app()->getSession()->contains("f_color")){
+                                    $idColorFiltro = Yii::app()->getSession()->get("f_color");
+                                    if($idColorFiltro == $color->id){
+                                        $claseActive = " active";
+                                    }
+                                }                              
+                              
+                                echo "<div id=".$color->id." style='cursor: pointer' class='coloress".$claseActive."' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+                                array_push($valores, $color->id);
+                            }
+                        }
                     }
-                  }
 
                 } // else    
         
@@ -387,19 +393,28 @@
               <h5><?php echo Yii::t('contentForm','Sizes'); ?></h5>
               <div id="vTa" class="clearfix tallas">
                 <?php
-              
-        
-        	            
-          foreach ($producto->tallasDisponibles as $talla) { 
                     
-             
-                echo "<div id=".$talla['id']." style='cursor: pointer' class='tallass' title='talla'>".$talla['valor']."</div>"; 
-                array_push($valores2, $talla['id']);
-             
-            
-            }
+                    $cantidadTallas = count($producto->tallasDisponibles);
+                    
+                    if($cantidadTallas == 1){
+                        $tallaUnica = $producto->tallasDisponibles[0];
+                        
+                        echo "<div id=".$tallaUnica['id']." 
+                            style='cursor: pointer' class='tallass active' title='talla'>".
+                                $tallaUnica['valor']."</div>";                         
+                        
+                    }else{
+                        
+                        foreach ($producto->tallasDisponibles as $talla) { 
+
+                            echo "<div id=".$talla['id']." style='cursor: pointer' class='tallass' title='talla'>".$talla['valor']."</div>"; 
+                            array_push($valores2, $talla['id']);
+
+                        }
+                        
+                    }
+              
           
-          // else
                 ?>                
               </div>
                <div class="braker_top margin_top_small">
@@ -474,10 +489,19 @@
             </div>
             </div>
           </div>
+          <?php
+          if($producto->tipo=="0")
+          {
+          ?>
           <div class="braker_horz_top_1">
            <p> <span class="entypo icon_personaling_medium">&#128197;</span>
-              <?php echo Yii::t('contentForm','Date estimated delivery'); ?>: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  ?>  </p>    
+              <?php 
+				echo Yii::t('contentForm','Date estimated delivery'); ?>: <?php echo date('d/m/Y', strtotime('+1 day')); ?> - <?php echo date('d/m/Y', strtotime('+1 week'));  
+              ?>  </p>    
           </div>
+          <?php
+          }
+		  ?>
           <div class="braker_horz_top_1 addthis row-fluid padding_bottom_medium"> 
             
             <?php
@@ -931,26 +955,29 @@ $cont=0;
  
 <script>
 var comprando = true;
+var tallaSeleccionada = <?php echo $cantidadTallas == 1? $tallaUnica['id'] : 0  ?>;
+var colorSeleccionado = <?php echo isset($colorUnico)? $colorUnico->id : 
+                        (isset($idColorFiltro)? $idColorFiltro : 0) ?>;
 
 $(document).ready(function(){
 
-$('.closeModal').click(function(event) {
-	$('#alertRegister').hide();
-});
+    $('.closeModal').click(function(event) {
+            $('#alertRegister').hide();
+    });
 
 
-$('#tooltipColor').tooltip({
-    title:"Selecciona el color para poder añadir a la bolsa",
-    trigger:"manual",
-    placement:"left"
-    
-});
-$('#tooltipTalla').tooltip({
-    title:"Selecciona la talla para poder añadir a la bolsa",
-    trigger:"manual",
-//    placement:"left"
-    
-});
+    $('#tooltipColor').tooltip({
+        title:"Selecciona el color para poder añadir a la bolsa",
+        trigger:"manual",
+        placement:"left"
+
+    });
+    $('#tooltipTalla').tooltip({
+        title:"Selecciona la talla para poder añadir a la bolsa",
+        trigger:"manual",
+    //    placement:"left"
+
+    });
 
 
 
@@ -993,134 +1020,137 @@ $('.imagen_principal').zoom({url: imgZ});
 
    });
 
-    $(".coloress").click(function(ev){ // Click en alguno de los colores -> cambia las tallas disponibles para el color
-      ev.preventDefault();
-      //alert($(this).attr("id"));
-      $('#tooltipColor').tooltip('hide');  
-      var prueba = $("#vCo div.tallass.active").attr('value');
+    
+    // Click en alguno de los colores -> cambia las tallas disponibles para el color
+    $(".coloress").click(function(ev){
+            
+        ev.preventDefault();
+        //alert($(this).attr("id"));
+        $('#tooltipColor').tooltip('hide');  
+        var prueba = $("#vCo div.tallass.active").attr('value');
+        
+        /*No llamar ajax si esta seleccionado ya*/
+        if($(this).attr("id") == colorSeleccionado){
+            return;
+        }
+        
+        
+        /* 
+         * Si hay una sola talla dira solo, pero no haria mas nada 
+         */
+        if(prueba == 'solo')
+        {
+            $(this).addClass('coloress active'); // añado la clase active al seleccionado
+            $("#vTa div.tallass.active").attr('value','0');
+        }
+        else
+        {              
+            // para quitar el active en caso de que ya alguno estuviera seleccionado
+            $("#vCo").find("div").siblings().removeClass('active');
 
-    /* 
-     * Si hay una sola talla dira solo, pero no haria mas nada 
-     */
-    if(prueba == 'solo')
-      {
-        $(this).addClass('coloress active'); // añado la clase active al seleccionado
-        $("#vTa div.tallass.active").attr('value','0');
-      }
-      else{
-      
-      // para quitar el active en caso de que ya alguno estuviera seleccionado
-      $("#vCo").find("div").siblings().removeClass('active');
-      
-      var dataString = $(this).attr("id");
-      var prod = $("#producto").attr("value");
+            var dataString = $(this).attr("id");
+            var prod = $("#producto").attr("value");
 
-      $(this).removeClass('coloress');
-      $(this).addClass('coloress active'); // añado la clase active al seleccionado
-         
-      $.ajax({
-          type: "post",
-          url: '<?php echo Yii::app()->baseUrl; ?>/producto/tallas', // action Tallas de Producto
-          data: { 'idTalla':dataString , 'idProd':prod}, 
-          dataType:"json",
-          success: function (data) {
-            
-            if(data.status == 'ok')
-            {
-            	if(data.imagenes.length>0){
-            	
-              //alert(data.datos);
-          var cont="";
-          $.each(data.datos,function(clave,valor) {
-              //0 -> id, 1 -> valor
-              cont = cont + "<div onclick='a("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='tallass' title='talla'>"+valor[1]+"</div>";
-              
-          });
-          //alert(cont); 
-          
-          $("#vTa").fadeOut(100,function(){
-              $("#vTa").html(cont); // cambiando el div
+            $(this).removeClass('coloress');
+            $(this).addClass('coloress active'); // añado la clase active al seleccionado
+
+            $.ajax({
+                type: "post",
+                url: '<?php echo Yii::app()->baseUrl; ?>/producto/tallas', // action Tallas de Producto
+                data: { 'idTalla':dataString , 'idProd':prod}, 
+                dataType:"json",
+                success: function (data) {
+
+                    if(data.status == 'ok')
+                    {
+                        if(data.imagenes.length>0){
+                            
+                            //Crear los divs con las tallas
+                            var cont="";
+                            $.each(data.datos,function(clave,valor) {
+                              //0 -> id, 1 -> valor
+                              cont = cont + "<div onclick='a("+valor[0]+")' id='"+valor[0]
+                                      +"' style='cursor: pointer' class='tallass"+
+                                      (valor[0]==tallaSeleccionada?" active":"")+"' title='talla'>"+valor[1]+"</div>";
+
+                            });
+                            
+                            $("#vTa").fadeOut(100,function(){
+                              $("#vTa").html(cont); // cambiando el div
+                            });
+
+                            $("#vTa").fadeIn(20,function(){});      
+
+                            //ahora cambiar las imagenes a las del color 
+                            var zona="";
+                            var thumbs="";
+                            var contador=0;
+
+                            // luego muestro  
+                            $.each(data.imagenes, function(clave,valor) {
+                                //0 -> url | 1 -> orden | 2 -> id imagen
+
+                                // conseguir cual es el menor en el orden para determinar el color  
+                                if( contador == 0) {
+                                    var Url = "<?php echo Yii::app()->baseUrl; ?>" + valor[0];
+
+                                    var n = Url.split(".");                
+
+                                    if(n[1] == 'png')
+                                    {
+                                      Url = n[0] + ".jpg";
+                                    }
+
+                                    zona="<img id='principal' src='"+Url+"' alt'producto'>";
+                                    contador++;
+                                }
+
+                                var base = "<?php echo Yii::app()->baseUrl; ?>";    
+                                var thumb = valor[0].split('.');            
+                                thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='"+base + thumb[0] +'_x90.'+thumb[1]+"' alt='Imagen' style='cursor: pointer' >";
+
+                                objImage = new Image();
+                                var source = ''+base +valor[0];
+                                var imgZ = source.replace(".","_orig.");
+                              //  alert(imgZ);    
+                                imgZ = imgZ.replace("png", "jpg");  
+                                objImage.src = imgZ;
+
+
+                            });
+
+
+                            // cambiando la imagen principal :@
+                            $(".imagen_principal").fadeOut("10",function(){
+                            if($('#chic').val()==1){
+                                zona=zona+"<div class='text_align_center btn-block is_080chic'><img src='<?php echo Yii::app()->baseUrl; ?>/images/080_566x34.jpg'/></div>";
+                            }
+
+                            $(".imagen_principal").html(zona);
+                            var source = $('#principal').attr("src");
+
+                            var imgZ = source.replace(".","_orig.");
+                            imgZ = imgZ.replace("png", "jpg");
+                            imgZ = imgZ.replace("png", "jpg");
+                            $('.imagen_principal').zoom();
+
+                            });
+
+                        $(".imagen_principal").fadeIn("10",function(){});
+
+
+                        // cambiando los thumbnails
+                        $(".imagenes_secundarias").fadeOut("slow",function(){ 
+                            $(".imagenes_secundarias").html(thumbs); 
+                        });
+
+                        $(".imagenes_secundarias").fadeIn("slow",function(){});
+                    }
+                    }
+                }//success
             });
-      
-              $("#vTa").fadeIn(20,function(){});
-                 
-          
-          // ahora cambiar las imagenes a las del color 
-          
-            var zona="";
-            var thumbs="";
-            var contador=0;
-            
-          // luego muestro  
-            $.each(data.imagenes,function(clave,valor) {
-                //0 -> url | 1 -> orden | 2 -> id imagen
-                
-                // conseguir cual es el menor en el orden para determinar el color  
-                if( contador == 0) {
-                  var Url = "<?php echo Yii::app()->baseUrl; ?>" + valor[0];
-                  
-                var n = Url.split(".");
-                //alert(n[0]); path           
-                //alert(n[1]); extension            
-                  
-                  if(n[1] == 'png')
-                  {
-                    Url = n[0] + ".jpg";
-                  }
-                  
-                  zona="<img id='principal' src='"+Url+"' alt'producto'>";
-                  contador++;
-                }
-                var base = "<?php echo Yii::app()->baseUrl; ?>";    
-                var thumb = valor[0].split('.');            
-                thumbs = thumbs + "<img onclick='minis("+valor[2]+")' width='90' height='90' id='thumb"+valor[2]+"' class='miniaturas_listado_click' src='"+base + thumb[0] +'_x90.'+thumb[1]+"' alt='Imagen' style='cursor: pointer' >";
-                
-                objImage = new Image();
-                var source = ''+base +valor[0];
-                var imgZ = source.replace(".","_orig.");
-              //  alert(imgZ);    
-                imgZ = imgZ.replace("png", "jpg");  
-              objImage.src = imgZ;
-              
-                        
-            });
-            
-            //alert(thumbs);       
-            
-            // cambiando la imagen principal :@
-            $(".imagen_principal").fadeOut("10",function(){
-            	if($('#chic').val()==1){
-            		zona=zona+"<div class='text_align_center btn-block is_080chic'><img src='<?php echo Yii::app()->baseUrl;?>/images/080_566x34.jpg'/></div>";
-            	}
-            	
-              $(".imagen_principal").html(zona);
-              
-                var source = $('#principal').attr("src");
-                var imgZ = source.replace(".","_orig.");
-                  imgZ = imgZ.replace("png", "jpg");
-                    imgZ = imgZ.replace("png", "jpg");
-                $('.imagen_principal').zoom();
-              
-            });
-                
-            $(".imagen_principal").fadeIn("10",function(){});
-            
-            
-            // cambiando los thumbnails
-            $(".imagenes_secundarias").fadeOut("slow",function(){ 
-              $(".imagenes_secundarias").html(thumbs); 
-            });
-                
-            $(".imagenes_secundarias").fadeIn("slow",function(){});
-            
-            
-                        
-            }
-			}
-          }//success
-         })
-         
-       } // else
+             
+        } // else
       
     });   
    
@@ -1133,6 +1163,7 @@ $('.imagen_principal').zoom({url: imgZ});
       
       if(prueba == 'solo')
       {
+//          console.log("solo");
         $(this).addClass('tallass active'); // añado la clase active al seleccionado
         $("#vCo div.coloress.active").attr('value','0');
       }
@@ -1141,7 +1172,8 @@ $('.imagen_principal').zoom({url: imgZ});
       // para quitar el active en caso de que ya alguno estuviera seleccionado
       $("#vTa").find("div").siblings().removeClass('active');
       
-      var dataString = $(this).attr("id");
+      var dataString = $(this).attr("id");      
+      
       var prod = $("#producto").attr("value");
      
       $(this).removeClass('tallass');
@@ -1158,10 +1190,18 @@ $('.imagen_principal').zoom({url: imgZ});
             {
               var base = "<?php echo Yii::app()->baseUrl; ?>";    
               //alert(data.datos);
-          var cont="";
-          $.each(data.datos,function(clave,valor) {
-              //0 -> id, 1 -> valor
-              cont = cont + "<div onclick='b("+valor[0]+")' id='"+valor[0]+"' style='cursor: pointer' class='coloress' title='"+valor[1]+"'><img src='"+ base +"/images/colores/"+valor[2]+"'></div>";
+              var cont="";
+              $.each(data.datos,function(clave,valor) {
+                  console.log("clrs " + valor[0]);
+                  console.log(parseInt(valor[0])==colorSeleccionado?"activo":"nada");
+                  console.log(parseInt(valor[0]));
+                  console.log(parseInt(colorSeleccionado));
+        
+                //0 -> id, 1 -> valor
+                  cont = cont + "<div onclick='b("+valor[0]+")' id='"+valor[0]+
+                          "' style='cursor: pointer' class='coloress"+
+                          (parseInt(valor[0])==colorSeleccionado?" active":"")
+                          +"' title='"+valor[1]+"'><img src='"+ base +"/images/colores/"+valor[2]+"'></div>";
               
           });
           //alert(cont); 
@@ -1237,6 +1277,9 @@ $('.imagen_principal').zoom({url: imgZ});
       $("#vTa").find("div#"+id+".tallass").removeClass("tallass");
       $("#vTa").find("div#"+id).addClass("tallass active");
       $('#tooltipTalla').tooltip('hide');  
+      
+      tallaSeleccionada = id;
+      console.log("talla "+tallaSeleccionada);
 
    }
    
@@ -1248,6 +1291,9 @@ $('.imagen_principal').zoom({url: imgZ});
        $("#vCo").find("div#"+id).addClass("coloress active");      
       
        $('#tooltipColor').tooltip('hide');  
+       
+       colorSeleccionado = id;
+       console.log("color "+colorSeleccionado);
 
    }
    
@@ -1379,8 +1425,7 @@ $('.imagen_principal').zoom({url: imgZ});
         
         if(data.mensaje=="no")
         {
-          bootbox.alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar 'Me Encanta' a un producto");
-          //window.location="../../user/login";
+          bootbox.alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar 'Me Encanta' a un producto");          
         }
         
         if(data.mensaje=="borrado")
@@ -1411,10 +1456,6 @@ $('.imagen_principal').zoom({url: imgZ});
             url: url,
             dataType: 'JSON',
             data: {idProducto: idProducto},
-//            success: function(data){
-//
-//                console.log(data);
-//            }
         });
 
     });

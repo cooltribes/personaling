@@ -29,7 +29,7 @@ class ProductoController extends Controller
                 array('allow',  // allow all users to perform 'index' and 'view' actions
                     'actions'=>array('index','view','detalle','tallas','tallaspreview',
                         'colorespreview','colores','imagenColor','updateCantidad','encantar',
-                        'contarClick', 'agregarBolsaGuest',"productoszoho"),
+                        'contarClick', 'agregarBolsaGuest'),
                     'users'=>array('*'),
                 ),
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -44,7 +44,8 @@ class ProductoController extends Controller
                         'recatprod','seo', 'historial','importar','descuentos',
                         'reporte','reportexls', "createExcel", 'plantillaDescuentos',
                         'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
-                        'importarExternos', 'sendMandrillEmail'),
+                        'importarExternos', 'sendMandrillEmail','plantillaExternos',
+                        "productoszoho","enviarzoho","externtozoho") ,
                     //'users'=>array('admin'),
                     'expression' => 'UserModule::isAdmin()',
                 ),
@@ -1734,11 +1735,7 @@ public function actionReportexls(){
 										$primera = str_replace("<",'%3C' ,$cambiar);
 										$segunda = str_replace(">",'%3E' ,$primera);
 										
-										$descripcion_nueva = "<![CDATA[".$segunda."]]>";
-										//echo htmlspecialchars($marcacorregida);
-										
-										//echo $marcacorregida;
-										//Yii::app()->end();
+										$descripcion_nueva = "<![CDATA[".$segunda."]]>"; 
 										
 										$zoho->descripcion = $descripcion_nueva;
 									}
@@ -1876,7 +1873,7 @@ public function actionReportexls(){
                 Yii::trace('ProductoController.php:946, Error:' . print_r($view->getErrors(), true), 'registro');
  
 			$detect = new Mobile_Detect;
-			if($detect->isMobile()) 
+			if(($detect->isMobile()||$detect->isTablet())) 
             	$this->render('_detalle_mobile', array('producto' => $producto));
 			else
 				$this->render('_view_detalle', array('producto' => $producto));
@@ -1995,7 +1992,6 @@ public function actionReportexls(){
 	{
 		if(isset($_POST['check'])){
 			if($_POST['check']!=""){
-
 				$checks = explode(',',$_POST['check']);
 				$idProducto = $_POST['idProd'];
 				
@@ -2062,7 +2058,11 @@ public function actionReportexls(){
 				else if($_POST['accion'] == 'avanzar')
 					echo($idProducto); // realizo la relación
 					
+			}else{
+				
+				Yii::app()->user->setFlash('error', "El producto debe estar relacionado con al menos una categoria.");
 			}
+
 		}
 	}
 	
@@ -2333,11 +2333,16 @@ public function actionReportexls(){
                     $masterData = new SimpleXMLElement('<MasterData/>');                    
                     //Agregar la fecha de creacion
                     $masterData->addChild("FechaCreacion", date("Y-m-d")); 
-                   
+                   	
+					// variable para los id
+					$ids = array();
+					
                     // segundo foreach, si llega aqui es para insertar y todo es valido
                     foreach ($sheet_array as $row) {
-                        
-                        if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
+                       	
+                  		$preciotalla;
+						 
+                       	if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
                             
                             //Modificaciones a las columnas
                             //antes de procesarlas                            
@@ -2391,7 +2396,7 @@ public function actionReportexls(){
                                 )); 
 								
 								/* DATOS PARA ZOHO */ 
-								$zoho->nombre = $rNombre." - ".$rSku;
+							/*	$zoho->nombre = $rNombre." - ".$rSku;
 								
 								if(strpos($producto->mymarca->nombre, "&") === false )
 									$zoho->marca = $producto->mymarca->nombre;
@@ -2432,7 +2437,7 @@ public function actionReportexls(){
 									$descripcion_nueva = "<![CDATA[".$segunda."]]>";
 									$zoho->descripcion = $descripcion_nueva;
 								}
-								
+								*/
                            	} else
                             { // no existe la referencia, es producto nuevo                           
                                 
@@ -2449,7 +2454,7 @@ public function actionReportexls(){
                                 $producto->save();  
                                 
 								/* DATOS PARA ZOHO */      
-								$zoho->nombre = $rNombre." - ".$rSku;
+								/*$zoho->nombre = $rNombre." - ".$rSku;
 								
 								if(strpos($marca->nombre, "&") === false )
 									$zoho->marca = $marca->nombre;
@@ -2488,7 +2493,7 @@ public function actionReportexls(){
 										
 									$descripcion_nueva = "<![CDATA[".$segunda."]]>";
 									$zoho->descripcion = $descripcion_nueva;
-								}
+								}*/
 									                            
                             }
                             // Si existe o no el producto, actualizar o insertar precio nuevo
@@ -2505,7 +2510,7 @@ public function actionReportexls(){
                             $precio->impuesto = 1;
                             
 							 /* DATOS PARA ZOHO */ 
-							$zoho->costo = $rCosto;
+						//	$zoho->costo = $rCosto;
 							
                             //si es con iva
                             if(MasterData::TIPO_PRECIO == 1){
@@ -2515,9 +2520,9 @@ public function actionReportexls(){
                                 $precio->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
                                 
                                 /* DATOS PARA ZOHO */ 
-                                $zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+                               /* $zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
                                 $zoho->precioDescuento = $rPrecio;
-                                $zoho->precioImpuesto = $rPrecio; 
+                                $zoho->precioImpuesto = $rPrecio; */
 								
                             }else{ //si es sin iva
                                 
@@ -2526,9 +2531,9 @@ public function actionReportexls(){
                                 $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
 								
                                 /* DATOS PARA ZOHO */ 
-                                $zoho->precioVenta = $rPrecio;
+                            /*    $zoho->precioVenta = $rPrecio;
                                 $zoho->precioDescuento = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
-                                $zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                          
+                                $zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);    */                      
                             }
 							
                             $precio->save();
@@ -2542,11 +2547,11 @@ public function actionReportexls(){
                                 }
                             }
 							/* DATOS PARA ZOHO */ 
-							$zoho->categoria = $rCatego1;
+						/*	$zoho->categoria = $rCatego1;
 							$zoho->subcategoria1 = $rCatego2;
 							$zoho->subcategoria2 = $rCatego3;
 							// Categorias para zoho
-				
+				*/
                             $cat = new CategoriaHasProducto;
                             $cat2 = new CategoriaHasProducto;
                             $cat3 = new CategoriaHasProducto;
@@ -2581,12 +2586,12 @@ public function actionReportexls(){
                             $color = Color::model()->findByAttributes(array('valor' => $rColor));
                             
 							/* DATOS PARA ZOHO */
-							$zoho->talla = $talla->valor;
+						/*	$zoho->talla = $talla->valor;
 							$zoho->color = $color->valor;
 							$zoho->SKU = $rSku;
 							$zoho->cantidad = 0;
 							$zoho->tipo = "Interno";
-							
+							*/
                             $ptc = Preciotallacolor::model()->findByAttributes(array(
                                             'producto_id' => $producto->id,
                                             'sku' => $rSku,
@@ -2612,13 +2617,16 @@ public function actionReportexls(){
                                 //Si ya existe
                                 $actualizar++; //suma un producto actualizado                                
                                 
-                                //Marcar item como actualizado
+                                //Marcar item como actualizado 
                                 $itemMasterdataRow->estado = 1;
                             }
-                            
+							
+                            $add = array(); 
+							$add = array("ptc" => $ptc->id); 
+							array_push($ids,$add); // guardando los ids para procesarlos luego
 
                             //Agregar el preciotallacolor correspondiente
-                            $itemMasterdataRow->producto_id = $ptc->id;
+                    		$itemMasterdataRow->producto_id = $ptc->id;
                             
                             // seo
                             $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
@@ -2640,11 +2648,11 @@ public function actionReportexls(){
                                 $seo->save();
                             }
                             /* DATOS PARA ZOHO */
-							$zoho->titulo = $seo->mTitulo;
+						/*	$zoho->titulo = $seo->mTitulo;
 							$zoho->metaDescripcion = $seo->mDescripcion;
 							$zoho->tags = $seo->pClave;
 							/* SE GUARDAN LOS DATOS PARA ZOHO*/
-							$respuesta = $zoho->save_potential(); 
+						/*	$respuesta = $zoho->save_potential(); 
 							$datos = simplexml_load_string($respuesta);
 																
 							$id = $datos->result[0]->recorddetail->FL[0];
@@ -2652,7 +2660,7 @@ public function actionReportexls(){
 							
 							$ptc->zoho_id = $id;
 							$ptc->save();
-							
+							*/ 
 							/*  ========================================== */
 							
                             //Agregar el item al XML
@@ -2745,8 +2753,12 @@ public function actionReportexls(){
 //                                    $tabla = $tabla . 'se actualizaaron cantidades para el Producto-Talla-Color id ' . $pre->id . '<br/>';
 //                                }
 //                            }
-                        }
-                    }// foreach
+						}	
+
+                    }// foreach 
+                    
+                    // Enviando todo lo importado a Zoho
+                    $this->actionExternToZoho($ids);                    
                     
                     //Insertar nuevo MasterData                   
                     $masterDataBD->prod_actualizados = $actualizar;
@@ -4127,7 +4139,10 @@ public function actionReportexls(){
 
                     // Si pasa la validacion
                     $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
-
+					
+					// variable para los id
+					$ids = array();
+					
                     //para cada fila del archivo
                     foreach ($sheetArray as $row) {
 
@@ -4189,9 +4204,10 @@ public function actionReportexls(){
                                         //no actualizar la url.
 
                                     )); 
+                                   
 
                                     /* DATOS PARA ZOHO */      
-                                    $zoho->nombre = $rNombre." - ".$rSku;
+                                 /*   $zoho->nombre = $rNombre." - ".$rSku;
 
                                     if(strpos($producto->mymarca->nombre, "&") === false )
                                             $zoho->marca = $producto->mymarca->nombre;
@@ -4235,7 +4251,7 @@ public function actionReportexls(){
                                     $zoho->descripcion = $rDescrip;
 
                                     $zoho->tienda = $tienda->name;
-                                    $zoho->url = "http://personaling.es/producto/detalle/".$producto->id; 
+                                    $zoho->url = "http://personaling.es/producto/detalle/".$producto->id; */
                      		}
                             else
                             { // no existe la referencia, es producto nuevo                           
@@ -4259,9 +4275,18 @@ public function actionReportexls(){
                                 $producto->url_externo = $rURL;  
                                 
                                 $producto->save(); 
-								
+						
+//                                echo "<pre>";
+//                                print_r($producto->attributes);
+//                                echo "</pre><br>";
+//                                echo "<pre>";
+//                                print_r($producto->getErrors());
+//                                echo "</pre><br>";
+//                                Yii::app()->end();
+//Vicomte A. Cinturón mujer CEINTURE H PORTOFINO TRESSEE CUIR /COTON CIRE para mujer
+
                                 /* DATOS PARA ZOHO */      
-                                $zoho->nombre = $rNombre." - ".$rSku;
+                           /*     $zoho->nombre = $rNombre." - ".$rSku;
 
                                 if(strpos($marca->nombre, "&") === false )
                                         $zoho->marca = $marca->nombre;
@@ -4305,7 +4330,7 @@ public function actionReportexls(){
 
                                 $zoho->tienda = $tienda->name;
                                 $zoho->url = "http://personaling.es/producto/detalle/".$producto->id; 
-								
+								*/
 								
                             }
                             // Si existe o no el producto, actualizar o insertar precio nuevo
@@ -4321,7 +4346,7 @@ public function actionReportexls(){
                             $precio->impuesto = 1;
 							
                             /* DATOS PARA ZOHO */ 
-                            $zoho->costo = $rCosto;
+                           // $zoho->costo = $rCosto;
 							
                             //si es con iva
                             if(MasterData::TIPO_PRECIO == 1){
@@ -4337,10 +4362,10 @@ public function actionReportexls(){
                                 
 								
                                 /* DATOS PARA ZOHO */ 
-                                $zoho->precioImpuesto = $rPrecio; 
+                         /*       $zoho->precioImpuesto = $rPrecio; 
                                 $zoho->precioDescuento = $rPrecio;
                                 $zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
-								
+							*/	
 
                             }else{ //si es sin iva
 
@@ -4350,9 +4375,9 @@ public function actionReportexls(){
                                 $precio->precioDescuento = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
 								
                                 /* DATOS PARA ZOHO */ 
-                                $zoho->precioVenta = $rPrecio;
+                            /*    $zoho->precioVenta = $rPrecio;
                                 $zoho->precioDescuento = $rPrecio;
-                                $zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                        
+                                $zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);  */                      
                             }
 
                             $precio->save();
@@ -4366,12 +4391,12 @@ public function actionReportexls(){
                                 }
                             }
 							
-							/* DATOS PARA ZOHO */ 
-							$zoho->categoria = $rCatego1;
-							$zoho->subcategoria1 = $rCatego2;
-							$zoho->subcategoria2 = $rCatego3;
-							// Categorias para zoho
-
+                           /* DATOS PARA ZOHO */ 
+                         /*    $zoho->categoria = $rCatego1;
+                            $zoho->subcategoria1 = $rCatego2;
+                            $zoho->subcategoria2 = $rCatego3;
+                            // Categorias para zoho
+*/
                             $cat = new CategoriaHasProducto;
                             $cat2 = new CategoriaHasProducto;
                             $cat3 = new CategoriaHasProducto;
@@ -4406,23 +4431,22 @@ public function actionReportexls(){
                             $color = Color::model()->findByAttributes(array('valor' => $rColor));
 							
                             /* DATOS PARA ZOHO */
-                            $zoho->talla = $talla->valor;
+                         /*   $zoho->talla = $talla->valor;
                             $zoho->color = $color->valor;
                             $zoho->SKU = $rSku;
                             $zoho->cantidad = 1; //Todos los externos tienen cant = 1
                             $zoho->tipo = "Externo";
-							
+				*/
                             $ptc = Preciotallacolor::model()->findByAttributes(array(
-                                        'producto_id' => $producto->id,
+//                                        'producto_id' => $producto->id,
                                         'sku' => $rSku,
-                                        'talla_id' => $talla->id,
-                                        'color_id' => $color->id,
+//                                        'talla_id' => $talla->id,
+//                                        'color_id' => $color->id,
                                         //productos externos
                                         //'url_externo' => $rURL,
                                         
                                     ));                                   
 
-                            
                             // Si no existe crearlo
                             if (!isset($ptc)) { 
 
@@ -4434,10 +4458,9 @@ public function actionReportexls(){
                                 
                                 $ptc->producto_id = $producto->id;
                                 $ptc->talla_id = $talla->id;
-                                $ptc->color_id = $color->id;
+                                $ptc->color_id = $color->id;                                
                                 
-                                
-                                $ptc->save();
+                                $ptc->save();                                
 
                             }else{
                                 //Si ya existe
@@ -4469,11 +4492,11 @@ public function actionReportexls(){
                             }
                             
 							/* DATOS PARA ZOHO */
-							$zoho->titulo = $seo->mTitulo;
+						/*	$zoho->titulo = $seo->mTitulo;
 							$zoho->metaDescripcion = $seo->mDescripcion;
 							$zoho->tags = $seo->pClave;
 							/* SE GUARDAN LOS DATOS PARA ZOHO*/
-							
+					/*		
 							$respuesta = $zoho->save_potential(); 
 							
 							$datos = simplexml_load_string($respuesta);
@@ -4483,6 +4506,11 @@ public function actionReportexls(){
 							
 							$ptc->zoho_id = $id;
 							$ptc->save(); 
+						*/
+						
+						$add = array();
+						$add = array("ptc" => $ptc->id);
+						array_push($ids,$add); // guardando los ids para procesarlos luego
 						
                         } 
                         else if ($row['A'] == "") 
@@ -4490,8 +4518,10 @@ public function actionReportexls(){
 
                         }
                     }// foreach
-
-                    Yii::app()->user->setFlash("success", "Se ha cargado con éxito el archivo.
+					
+				$this->actionExternToZoho($ids);
+				
+				Yii::app()->user->setFlash("success", "Se ha cargado con éxito el archivo.
                                 Puede ver los detalles de la carga a continuación.<br>"); 
                 
                 }
@@ -4504,7 +4534,7 @@ public function actionReportexls(){
             ));
 
 	}
-        
+
         public function actionContarClick() {            
             
             //no contar nada si es admin
@@ -4533,7 +4563,7 @@ public function actionReportexls(){
         }
 		
 		public function actionProductosZoho(){ 
-			
+			/*
 			$criteria = new CDbCriteria(array('order'=>'id'));
 		//	$criteria->addBetweenCondition('id', 630, 640); 
 			//$rows = user::model()->findAllByAttributes($user, $criteria);
@@ -4679,9 +4709,328 @@ public function actionReportexls(){
 				}
 				else {
 					break;
-				}*/
-			}
+				}
+			}*/
+				$sumatoria = 1;
+				$cont = 1;
+				$xml = "";
+				$ids = array();
+					
+				$criteria = new CDbCriteria(array('order'=>'id'));
+			//	$criteria->addBetweenCondition('id', 630, 640); 
 			
+				$todos_preciotallacolor = Preciotallacolor::model()->findAll($criteria);
+				
+				$productosTotal = sizeof($todos_preciotallacolor);
+				
+				$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+				$xml .= '<Products>';
+				//echo sizeof($todos_preciotallacolor);
+				//Yii::app()->end();
+				
+				foreach($todos_preciotallacolor as $ptc){ // para cada combinacion crear un nuevo producto en zoho	
+					
+					if($cont >= 100) { 
+							
+						$xml .= '</Products>';
+					//	var_dump($xml."<br>");
+						
+						$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
+						$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&duplicateCheck=2&version=4&xmlData=".$xml;
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_URL, $url);
+						curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+						curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+						curl_setopt($ch, CURLOPT_POST, 1);
+						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+						
+						//Execute cUrl session
+						$response = curl_exec($ch); 
+						curl_close($ch);
+						
+						$datos = simplexml_load_string($response);
+						$posicion=0;
+						
+						//print_r($ids);
+					//	var_dump($response); 
+						$total = sizeof($ids);
+						
+						//Yii::app()->end();
+						
+						for($x=1; $x<=$total; $x++){ 
+						//if(isset($datos->result[0]->row[$posicion])){
+							
+						if(isset($datos->result[0]->row[$posicion])){	
+							$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+							//var_dump($number);
+
+								foreach($ids as $data){
+									if($number == $data['row']){
+										$pos = (int)$data['row'];
+										$precioTalla = Preciotallacolor::model()->findByPk($data["ptc"]);
+
+									if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+											$precioTalla->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+											$precioTalla->save();
+											
+											echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+										}else{
+											echo "Error en posicion ".$posicion;
+										}
+										
+									}
+								}
+						}  
+						
+						$posicion++;
+
+					}
+					
+					echo "fin de ciclo"; 
+					echo "<br><br>";
+						
+						
+					/* reiniciando todos los valores */
+					$xml = ""; 
+					$cont = 1;	
+					$posicion=0;
+						
+						unset($ids);
+						
+						$ids = array();
+						
+						$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+						$xml .= '<Products>';				
+					} // mayor que 100
+					
+					if($cont < 100)
+					{
+						$producto = Producto::model()->findByPk($ptc->producto_id);
+						$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+						
+						$add = array();
+						$add = array("row" => $cont, "ptc" => $ptc->id);
+						array_push($ids,$add);
+						
+						$xml .= '<row no="'.$cont.'">';
+				
+						$nombre = $producto->nombre." - ".$ptc->sku;
+						
+							$xml .= '<FL val="Product Name">'.$nombre.'</FL>';
+						
+						if(strpos($producto->mymarca->nombre, "&") === false )
+							$marca = $producto->mymarca->nombre;
+						else{
+							$marca_cambiar = $producto->mymarca->nombre;
+							$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+							
+							$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+							
+							$marca = $marcacorregida;
+						}
+						
+						$xml .= '<FL val="Marca">'.$marca.'</FL>';
+						$xml .= '<FL val="Referencia">'.$producto->codigo.'</FL>';
+						
+						if($producto->estado==0)
+							$estado = "TRUE";
+						
+						$xml .= '<FL val="Product Active">'.$estado.'</FL>';
+					
+						$xml .= '<FL val="Peso">'.$producto->peso.'</FL>';
+						$xml .= '<FL val="Sales Start Date">'.date("Y-m-d",strtotime($producto->fecha)).'</FL>';
+						
+						$hascateg = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id));
+							$i=1;
+							foreach($hascateg as $each){
+								$cat = Categoria::model()->findByPk($each->tbl_categoria_id);	
+								
+								if($i==1)
+									$categoria = $cat->nombre;
+								if($i==2)
+									$subcategoria1 = $cat->nombre;
+								if($i==3)
+									$subcategoria2 = $cat->nombre;
+								
+								$i++;
+							}
+						
+						if(isset($categoria)) $xml .= '<FL val="Categoria">'.$categoria.'</FL>';
+						if(isset($subcategoria1)) $xml .= '<FL val="Subcategoría1">'.$subcategoria1.'</FL>';
+						if(isset($subcategoria2)) $xml .= '<FL val="Subcategoria2">'.$subcategoria2.'</FL>';
+						
+						if($producto->tipo == 0){
+							$tipo = "Interno";
+							$tienda = "";
+							$url_externo = "";
+						}
+						else{
+							$tienda = $producto->tienda->name;
+							$tipo = "Externo"; 
+							$url_externo = "http://personaling.es/producto/detalle/".$producto->id;
+						}
+						
+						if(strpos($producto->descripcion, "&nbsp;") === false)
+							$descripcion = $producto->descripcion;
+						else{
+							$cambiar = $producto->descripcion;
+							$primera = str_replace("&nbsp;",' ' ,$cambiar);
+							
+							$descripcion = $primera;
+							$producto->descripcion = $primera;
+							$producto->save();
+						}
+						
+						if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)
+							$descripcion = $producto->descripcion;
+						else{
+							$cambiar = $producto->descripcion;
+							$primera = str_replace("<",'%3C' ,$cambiar);
+							$segunda = str_replace(">",'%3E' ,$primera); 
+							
+							$descripcion_nueva = "<![CDATA[".$segunda."]]>";
+							
+							$descripcion = $descripcion_nueva;
+						}
+						
+						$xml .= '<FL val="Tipo">'.$tipo.'</FL>';
+						if(isset($tienda)) $xml .= '<FL val="Tienda">'.$tienda.'</FL>';
+						if(isset($url_externo)) $xml .= '<FL val="url">'.$url_externo.'</FL>'; 
+						$xml .= '<FL val="Description">'.$descripcion.'</FL>';
+						
+						if(isset($precio))
+						{
+							$costo = $precio->costo;
+							$precioVenta = $precio->precioVenta;
+							
+							if($precio->ahorro > 0){
+								$precioDescuento = $precio->precioDescuento;
+								$descuento = $precio->ahorro;
+							}
+							else{
+								$precioDescuento = $precio->precioImpuesto;
+								$descuento = 0; 
+							}
+							
+							$precioImpuesto = $precio->precioImpuesto;
+					
+							if($precio->tipoDescuento == 0) // descuento por porcentaje
+								$porcentaje = $precio->valorTipo;
+							else 	 
+								$porcentaje = 0;
+						}
+						
+						$xml .= '<FL val="Costo">'.$costo.'</FL>'; 
+						$xml .= '<FL val="Unit Price">'.$precioVenta.'</FL>';
+						$xml .= '<FL val="Precio Descuento">'.$precioDescuento.'</FL>';
+						$xml .= '<FL val="descuento">'.$descuento.'</FL>';
+						$xml .= '<FL val="Precio Impuesto">'.$precioImpuesto.'</FL>';
+						$xml .= '<FL val="PorcentajeDescuento">'.$porcentaje.'</FL>';
+						
+						$talla = $ptc->mytalla->valor;
+						$color = $ptc->mycolor->valor;
+						$SKU = $ptc->sku;
+						$cantidad = $ptc->cantidad;
+						
+						if(isset($producto->seo)){
+							$titulo = $producto->seo->mTitulo;
+							$metaDescripcion = $producto->seo->mDescripcion;
+							$tags = $producto->seo->pClave;
+						}
+						
+						$xml .= '<FL val="Talla">'.$talla.'</FL>';
+						$xml .= '<FL val="Color">'.$color.'</FL>';
+						$xml .= '<FL val="SKU">'.$SKU.'</FL>';
+						$xml .= '<FL val="Qty in Stock">'.$cantidad.'</FL>'; 
+						
+						if(isset($producto->seo->mTitulo)){	
+							if(strpos($producto->seo->mTitulo, "*") === false )
+								$titulo = $producto->seo->mTitulo;
+							else{
+								$cambiar = $producto->seo->mTitulo;
+								$primera = str_replace("*","",$cambiar);
+								
+								$titulo = $primera; 
+							}
+						}
+						
+						if(isset($titulo)) $xml .= '<FL val="Titulo">'.$titulo.'</FL>';
+						if(isset($metaDescripcion)) $xml .= '<FL val="Meta Descripcion">'.$metaDescripcion.'</FL>';
+						if(isset($tags)) $xml .= '<FL val="Tags">'.$tags.'</FL>';
+						$xml .= '</row>';
+						
+					$cont++;
+					
+					} // if
+			
+				if($productosTotal == $sumatoria)
+					$this->actionEnviarZoho($xml, $ids);
+				else
+					$sumatoria++;
+					
+			
+			}// foreach
+						
+		}
+		
+		public function actionEnviarZoho($xml,$ids){
+				
+			$xml .= '</Products>';
+			
+			$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
+			$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=2&duplicateCheck=2&version=4&xmlData=".$xml;
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+						
+			//Execute cUrl session
+			$response = curl_exec($ch); 
+			curl_close($ch);
+			
+			//var_dump($response);
+			//Yii::app()->end();
+				
+			$datos = simplexml_load_string($response);
+			$posicion=0; 
+			
+			$total = sizeof($ids);
+			
+			for($x=1; $x<=$total; $x++){ 
+			
+				if(isset($datos->result[0]->row[$posicion])){	
+					$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+					//var_dump($number);
+
+					foreach($ids as $data){
+						if($number == $data['row']){
+							$pos = (int)$data['row'];
+							$precioTalla = Preciotallacolor::model()->findByPk($data["ptc"]);
+
+							if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+								$precioTalla->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+								$precioTalla->save(); 
+											
+								echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+							}else{
+								echo "Error en posicion ".$posicion;
+							}
+										
+						}
+									
+					}
+				}	  
+						
+				$posicion++;
+
+			}
+			//echo "fin de ciclo"; 			
+			//echo "<br><br>";
 		}
                 
                 /**
@@ -4723,34 +5072,300 @@ public function actionReportexls(){
                         echo CJSON::encode($response);
                     }
                 }
-                
+                 
                 
         public function actionSendMandrillEmail()
 	{
-	
-            $message            = new YiiMailMessage;
+            $message = new YiiMailMessage;
             //Opciones de Mandrill
             $message->activarPlantillaMandrill();
-            Yii::app()->mail->activarMandrill();            
-            
-            $subject = 'Comprando prueba';
-            $body = '<h2>Te damos la bienvenida a Personaling.</h2><br/><br/>
-                Recibes este correo porque se ha registrado tu dirección en Personaling.
-                Por favor valida tu cuenta haciendo click en el enlace que aparece 
-                a continuación:<br/> <br/>  <a href="http://www.google.com">Haz click aquí</a>';			            
+            $subject = 'Registro Personaling';                                
             $message->subject    = $subject;
-            $message->setBody($body, 'text/html');                
-            $message->addTo("nramirez@upsidecorp.ch");
-            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+            $body = Yii::t('contentForm','<h2>¡Bienvenida a Personaling!</h2>
+                Recibes este correo electrónico porque te has registrado en Personaling.es. 
+                Por favor valida tu cuenta haciendo clic en el enlace que aparece a continuación:
+                <br/><br/><a href="{url}">Clica aquí</a>',
+                    array('{url}'=>"urlNElson"));
 
-            Yii::app()->mail->send($message);
+            $nelson = "nramirez@upsidecorp.ch";
+            $nelson = "nelsond.ramirez@gmail.com";
+            $nelson = "dust_s@hotmail.com";
+            $message->setBody($body, 'text/html');                
+            $message->addTo($nelson);
+
+            Yii::app()->mail->send($message);                   
+            
+            
+           
             Yii::app()->user->setFlash('success',"El
                 correo electrónico de verificacion ha sido reenviado a <b>nramirez@upsidecorp.ch</b>");
+            $this->redirect(array('/user/admin/update', "id" => 5322));
+            
+            /*Plantilla*/
+            $message = new YiiMailMessage;
+            //Opciones de Mandrill
+            $message->activarPlantillaMandrill();
+            
+            $subject = 'Tu compra en Personaling';
+                            
+            $message->subject    = $subject;
+            $message->setBody($body, 'text/html');                
+            $message->addTo($model->email);
+            Yii::app()->mail->send($message);
+
+
+
+            //APARTE
+            Yii::app()->user->setFlash('success',"El
+                correo electrónico de verificacion ha sido reenviado a <b>nramirez@upsidecorp.ch</b>");
+            
             $this->redirect(array('/user/admin/update', "id" => 5322));
 		
 	}
                 
-                
-                
+     public function actionExternToZoho($externos){
+				
+			$sumatoria = 1;
+			$cont = 1;
+			$xml = "";
+			$ids = array();
+					
+			$productosTotal = sizeof($externos);
+				
+			$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+			$xml .= '<Products>';
+			
+			foreach($externos as $id){
+				
+				if($cont >= 100) { 
+					$xml .= '</Products>';
+					
+					$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
+					$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&duplicateCheck=2&version=4&xmlData=".$xml;
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL, $url);
+					curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+					curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+					curl_setopt($ch, CURLOPT_POST, 1);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+						
+					//Execute cUrl session
+					$response = curl_exec($ch); 
+					curl_close($ch);
+						
+					$datos = simplexml_load_string($response);
+					$posicion=0;
+						
+					$total = sizeof($ids);
+						
+					for($x=1; $x<=$total; $x++){ 
+						if(isset($datos->result[0]->row[$posicion])){	
+							$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+								
+							foreach($ids as $data){
+								if($number == $data['row']){
+									$pos = (int)$data['row'];
+									$precioTalla = Preciotallacolor::model()->findByPk($data["ptc"]);
+
+								if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+									$precioTalla->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+									$precioTalla->save();
+											
+									//echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+								}else{
+									echo "Error en posicion ".$posicion;
+								}
+										
+								}
+							}
+						}  
+						$posicion++;
+					}
+					
+					//echo "fin de ciclo"; 
+					//echo "<br><br>";
+						
+					/* reiniciando todos los valores */
+					$xml = ""; 
+					$cont = 1;	
+					$posicion=0;
+						
+					unset($ids);
+						
+					$ids = array();
+						
+					$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+					$xml .= '<Products>';				
+				} // mayor que 100
+					
+				if($cont < 100)
+				{
+					$precioTallaColor = Preciotallacolor::model()->findByPk($id['ptc']);
+					$producto = Producto::model()->findByPk($precioTallaColor->producto_id);
+					$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+						
+					$add = array();
+					$add = array("row" => $cont, "ptc" => $precioTallaColor->id);
+					array_push($ids,$add);	
+					
+					$nombre = $producto->nombre." - ".$precioTallaColor->sku;
+					if(strpos($producto->mymarca->nombre, "&") === false )
+						$marca = $producto->mymarca->nombre;
+					else{
+						$marca_cambiar = $producto->mymarca->nombre;
+						$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+							
+						$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+							
+						$marca = $marcacorregida; 
+					}
+					
+					if($producto->estado==0)
+						$estado = "TRUE";
+					else {
+						$estado = "FALSE";
+					}
+						
+					$hascateg = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id));
+					$i=1;
+					foreach($hascateg as $each){
+						$cat = Categoria::model()->findByPk($each->tbl_categoria_id);	
+								
+						if($i==1)
+							$categoria = $cat->nombre;
+						if($i==2)
+							$subcategoria1 = $cat->nombre;
+						if($i==3)
+							$subcategoria2 = $cat->nombre;
+								
+						$i++;
+					}
+						
+					if($producto->tipo == 0){
+						$tipo = "Interno";
+						$tienda = "";
+						$url_externo = "";
+					}
+					else{
+						$tienda = $producto->tienda->name;
+						$tipo = "Externo"; 
+						$url_externo = "http://personaling.es/producto/detalle/".$producto->id;
+					}
+				
+					if(strpos($producto->descripcion, "&nbsp;") === false)
+						$descripcion = $producto->descripcion;
+					else{
+						$cambiar = $producto->descripcion;
+						$primera = str_replace("&nbsp;",' ' ,$cambiar);
+							
+						$descripcion = $primera;
+						$producto->descripcion = $primera;
+						$producto->save();
+					}
+						
+					if(strpos($producto->descripcion, "<") === false && strpos($producto->descripcion, ">") === false)
+						$descripcion = $producto->descripcion;
+					else{
+						$cambiar = $producto->descripcion;
+						$primera = str_replace("<",'%3C' ,$cambiar);
+						$segunda = str_replace(">",'%3E' ,$primera); 
+							
+						$descripcion_nueva = "<![CDATA[".$segunda."]]>";
+							
+						$descripcion = $descripcion_nueva;
+					}
+				
+				if(isset($precio)){
+						
+					$costo = $precio->costo;
+					$precioVenta = $precio->precioVenta;
+							
+					if($precio->ahorro > 0){
+						$precioDescuento = $precio->precioDescuento;
+						$descuento = $precio->ahorro;
+					}
+					else{
+						$precioDescuento = $precio->precioImpuesto;
+						$descuento = 0; 
+					}
+							
+					$precioImpuesto = $precio->precioImpuesto;
+					
+					if($precio->tipoDescuento == 0){// descuento por porcentaje
+						$porcentaje = $precio->valorTipo;
+					}
+					else{
+						$porcentaje = 0;
+					}
+				}
+				
+				$talla = $precioTallaColor->mytalla->valor;
+				$color = $precioTallaColor->mycolor->valor;
+				$SKU = $precioTallaColor->sku;
+				$cantidad = $precioTallaColor->cantidad;
+						
+				if(isset($producto->seo)){
+					$titulo = $producto->seo->mTitulo;
+					$metaDescripcion = $producto->seo->mDescripcion;
+					$tags = $producto->seo->pClave;
+				}
+				
+				if(isset($producto->seo->mTitulo)){	
+					if(strpos($producto->seo->mTitulo, "*") === false )
+						$titulo = $producto->seo->mTitulo;
+					else{
+						$cambiar = $producto->seo->mTitulo;
+						$primera = str_replace("*","",$cambiar);
+								
+						$titulo = $primera; 
+						}
+				}
+				
+				$xml .= '<row no="'.$cont.'">';
+				$xml .= '<FL val="Product Name">'.$nombre.'</FL>';
+				$xml .= '<FL val="Marca">'.$marca.'</FL>';
+				$xml .= '<FL val="Referencia">'.$producto->codigo.'</FL>';
+				$xml .= '<FL val="Product Active">'.$estado.'</FL>';	
+				$xml .= '<FL val="Peso">'.$producto->peso.'</FL>';
+				$xml .= '<FL val="Sales Start Date">'.date("Y-m-d",strtotime($producto->fecha)).'</FL>';	
+				if(isset($categoria)) $xml .= '<FL val="Categoria">'.$categoria.'</FL>';
+				if(isset($subcategoria1)) $xml .= '<FL val="Subcategoría1">'.$subcategoria1.'</FL>';
+				if(isset($subcategoria2)) $xml .= '<FL val="Subcategoria2">'.$subcategoria2.'</FL>';
+				$xml .= '<FL val="Tipo">'.$tipo.'</FL>';
+				if(isset($tienda)) $xml .= '<FL val="Tienda">'.$tienda.'</FL>';
+				if(isset($url_externo)) $xml .= '<FL val="url">'.$url_externo.'</FL>'; 
+				$xml .= '<FL val="Description">'.$descripcion.'</FL>';
+				$xml .= '<FL val="Costo">'.$costo.'</FL>'; 
+				$xml .= '<FL val="Unit Price">'.$precioVenta.'</FL>';
+				$xml .= '<FL val="Precio Descuento">'.$precioDescuento.'</FL>';
+				$xml .= '<FL val="descuento">'.$descuento.'</FL>';
+				$xml .= '<FL val="Precio Impuesto">'.$precioImpuesto.'</FL>';
+				$xml .= '<FL val="PorcentajeDescuento">'.$porcentaje.'</FL>';
+				$xml .= '<FL val="Talla">'.$talla.'</FL>';
+				$xml .= '<FL val="Color">'.$color.'</FL>';
+				$xml .= '<FL val="SKU">'.$SKU.'</FL>';
+				$xml .= '<FL val="Qty in Stock">'.$cantidad.'</FL>'; 
+				if(isset($titulo)) $xml .= '<FL val="Titulo">'.$titulo.'</FL>';
+				if(isset($metaDescripcion)) $xml .= '<FL val="Meta Descripcion">'.$metaDescripcion.'</FL>';
+				if(isset($tags)) $xml .= '<FL val="Tags">'.$tags.'</FL>';
+				$xml .= '</row>';
+						
+				$cont++;
+				// echo $id['ptc']."<br>";
+			
+			} // if menor 100
+			
+			if($productosTotal == $sumatoria){
+				//var_dump($xml);
+				$this->actionEnviarZoho($xml, $ids);
+			}
+			else{
+				$sumatoria++;
+			}
+			
+		} // foreach        
+	}     
         
 }

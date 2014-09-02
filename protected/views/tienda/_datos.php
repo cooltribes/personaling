@@ -21,6 +21,8 @@ foreach($prods as $data):
 	//echo 'producto';
 
 	$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
+   if(isset($category_product))
+   {
     $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
 
     
@@ -46,8 +48,7 @@ foreach($prods as $data):
 		ga('send', 'pageview');              // Send product impressions with initial pageview.
 	", CClientScript::POS_END);	
 
-	
-
+}
 	if($data->tipo){
 		$tienda=Tienda::model()->findByPk($data->tienda_id);
 	}

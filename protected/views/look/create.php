@@ -1,4 +1,4 @@
-<?php
+<?php 
 //$this->breadcrumbs=array(
 //	'Looks'=>array('admin'),
 //	'Crear',
@@ -20,7 +20,7 @@
 }
 </style>
 <script language="JavaScript">
-
+ 
 
 var dragSrcEl = '';
 function handleDragStart(e) {
@@ -463,7 +463,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	   // 'type'=>'danger',
 
 	    'htmlOptions'=> array(
-	    'style'=>'padding:4px 6px',
+	    //'style'=>'padding:4px 6px',
 		     // 'data-toggle'=>'modal',
 			//	'data-target'=>'#dialogPublicar',
 				//'class'=>'pull-right', 
@@ -476,7 +476,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	    'type'=>'danger',
 		'buttonType' => 'ajaxSubmit',
 	    'htmlOptions'=> array(
-	    'style'=>'padding:4px 6px',
+	   // 'style'=>'padding:4px 6px',
 		     // 'data-toggle'=>'modal',
 			//	'data-target'=>'#dialogPublicar',
 				//'class'=>'pull-right margin_left_small', 
@@ -714,7 +714,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
       <div class="">
         <ul class="nav nav-tabs">
           <li class="active"><a href="#tab1" data-toggle="tab" title="Todos los productos"><?php echo Yii::t('contentForm', 'Products'); ?></a></li>
-          <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks"><?php echo Yii::t('contentForm', 'Decorations'); ?></a></li>
+          <!--
+            <li><a href="#tab2" data-toggle="tab" title="Productos que ya has utilizado para hacer otros looks"><?php //echo Yii::t('contentForm', 'Decorations'); ?></a></li>
+          -->
+          <li><a href="#tab3" data-toggle="tab" title="Productos destacados"><?php echo Yii::t('contentForm', 'Featured Products'); ?></a></li>
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="tab1">
@@ -1028,7 +1031,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             </div>
             </p>
           </div>
-          
+          <div class="tab-pane" id="tab3">
+              <p>
+              <div id="div_prendas">
+                  <?php $this->renderPartial('_view_productos',array('productos'=>Producto::model()->noeliminados()->activos()->featured()->findAll())) ?>
+              </div>
+              </p>
+          </div>
         </div>
       </div>
     </section>
@@ -1072,7 +1081,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         top: 0px;
         left: 0px;
         border-bottom: 1px solid #A29330;
-        background: #FDF2AB;
+        background: #fdf2ab;
         text-align: left;
         cursor: pointer;
         font-family: Arial,Helvetica,sans-serif;

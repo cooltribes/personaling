@@ -28,7 +28,9 @@ class User extends CActiveRecord {
     public static $statuses = array(self::STATUS_ACTIVE => 'Activo', 
         self::STATUS_NOACTIVE => 'Inactivo', self::STATUS_BANNED => 'Bloqueado',
         self::STATUS_DELETED => 'Eliminado');
-
+	
+	public $id_psShopper;
+	
     /**
      * The followings are the available columns in table 'users':
      * @var integer $id
@@ -83,7 +85,7 @@ class User extends CActiveRecord {
                     array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
                    array('username, email, superuser, status', 'required'),
                     array('superuser, status,status_register,privacy, twitter_id, facebook_id', 'numerical', 'integerOnly' => true),
-                    array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id, facebook_id, avatar_url, banner_url, ps_destacado, zoho_id, tipo_zoho', 'safe', 'on' => 'search'),
+                    array('id, username, password, email, activkey, create_at, lastvisit_at,visit, superuser, status,status_register,privacy,personal_shopper, twitter_id, facebook_id, avatar_url, banner_url, ps_destacado, zoho_id, tipo_zoho, admin_ps, id_psShopper', 'safe', 'on' => 'search'),
                         ) : ((Yii::app()->user->id == $this->id) ? array(
                             array('username, email', 'required'),
                             array('password', 'length', 'max' => 128, 'min' => 4, 'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
@@ -158,6 +160,8 @@ class User extends CActiveRecord {
             'zoho_id' => 'ID Zoho',
             'tipo_zoho' => 'Tipo Zoho',
             'interno' => "Interno",
+             'admin_ps' => "Status de Personal Shopper",
+            'id_psShopper' => "Usuario que hizo el Cambio",
         );
     }
 
@@ -912,6 +916,48 @@ class User extends CActiveRecord {
             return  $fechaOrden >= $haceUnMinuto;            
             
         }
+		
+		
+	public function buscarPsShopper()
+	{
+		
+		$criteria=new CDbCriteria;
+	
+		$criteria->compare('username',$this->username,true);
+		$criteria->compare('email',$this->email,true);
+		$criteria->addInCondition('admin_ps', array(Yii::app()->user->id));
+		$criteria->addInCondition('personal_shopper', array('1', '0'));
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array('pageSize'=>10),
+		));
+	}
+
+
+		public function averiguarNombre()
+		{
+			$modelado=Profile::model()->findByPk($this->id);	
+			return $modelado->first_name. " ".$modelado->last_name;	
+
+		}
+		
+		public function averiguarStatus()
+		{
+	
+			if($this->personal_shopper=="0"){
+					return "Lo elimino de Personal Shooper";}
+			else {
+					return "Lo agregó como Personal Shooper";
+			}
+		}
+		
+		public function averiguarQuien()
+		{
+			$modelado=Profile::model()->findByPk(Yii::app()->user->id);	
+			return $modelado->first_name. " ".$modelado->last_name;	
+			
+		}
         
 
 }

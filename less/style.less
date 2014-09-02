@@ -9,7 +9,7 @@
 /*--- @ ---*/
 @color1: #000; /*N*/
 @color2: #3c4141; /* Gris raton */
-@color3: #fff;
+@color3: #fff; // Blanco
 @color4: #231f20; /* Negro personaling */
 @color5: #ddd; /* Gris */
 @color6: #AD3682; /* Morado claro */
@@ -301,11 +301,15 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
   margin-top: 132px; margin-left: 235px;
 }
 
+.to_add{
+  display:none;
+}
+
 /* No margin */
-.no_margin_left{ margin-left:0;}
-.no_margin_right{ margin-right:0;}
-.no_margin_top{ margin-top:0;}
-.no_margin_bottom{ margin-bottom:0 !important;}
+.no_margin_left{ margin-left:0px !important;}
+.no_margin_right{ margin-right:0px !important;}
+.no_margin_top{ margin-top:0px !important;}
+.no_margin_bottom{ margin-bottom:0px !important;} 
 
 /* Paddings */
 .padding_top_large{padding-top:4.68em}
@@ -1550,7 +1554,7 @@ src: url('../fonts/entypo.woff'),
   
 .complete{
   width:100%;
-}
+} 
 
 .fifth4{
   width:80%; float:left;
@@ -1558,6 +1562,14 @@ src: url('../fonts/entypo.woff'),
 
 .fifth{
   width:20%; float:left;
+}
+
+.fifth3{
+  width:60%; float:left;
+}
+ 
+.fifth2{
+  width:40%; float:left;
 }
 
 
@@ -1621,12 +1633,16 @@ src: url('../fonts/entypo.woff'),
         font-size: 30px;
         padding-top: 33px;
         text-align: center;
+        line-height:13px;
 
-        span{
-            display: block;
+        .leyenda{
+            //display: block;
             font-size: 14px;
             line-height: 19px;
+            line-height:13px;
         }
+        
+        
 
         .especial{
           font-size: 13px;
@@ -1979,6 +1995,34 @@ src: url('../fonts/entypo.woff'),
   .row-fluid .span12 .imagen_principal .img_1{
     border:0px;
   }
+  
+  .productos_del_look .row-fluid .span12{
+    margin-left:0px;
+     border: solid 1px #DDD;
+     padding: 6px;
+     
+     .img{
+       text-align:center;}
+     .complete{
+      .fifth2{
+        vertical-align: middle;
+        line-height: 35px;
+        font-size: 25px;
+        color: #000;
+      }
+      .fifth3{
+        h5{
+          margin:0;
+        }
+      
+      }
+  }
+  .complete.container{
+    border: solid 1px #DDD;
+    padding: 6px;
+    margin: -7px;
+  }
+}
   .span8 .precioslook {
     .text_align_center;
     .precio{
@@ -2010,6 +2054,7 @@ src: url('../fonts/entypo.woff'),
           
         
      }
+   
          
   }
   
@@ -2022,6 +2067,44 @@ src: url('../fonts/entypo.woff'),
   
   
 }
+
+@media (max-width: 290px) {
+ .detalle_look_mobile{
+      .productos_del_look .row-fluid .span6 .complete{
+            .fifth2{
+                font-size: 18px;
+            }
+       }
+}
+   .complete .fifth4{
+      text-align:right;
+   } 
+} 
+
+@media (max-width: 380px) {
+   .complete .fifth4{
+      text-align:right;
+   } 
+}
+
+@media (max-width: 325px) {
+   #total-likes{
+     display:none
+   }
+   .detalle_look_mobile .productos_del_look .row-fluid .span12 .complete .fifth2{
+     .precio{
+       font-size:20px;
+     }
+   }
+    
+} 
+
+
+
+
+
+
+
 
 
 
@@ -2123,7 +2206,7 @@ src: url('../fonts/entypo.woff'),
                 color: #3C4141;              
                 display: inline-block;
                 font-size: 12px;
-                height: 25px;
+                height: 24px;
                 line-height: 23px;
                 left: -12px;
                 padding: 2px 6px;
@@ -3033,14 +3116,16 @@ ul.yiiPager .last
   .border_radius(@radius:17.5px); 
 }
 
-.go-top:hover {
-
+.go-top:hover {  
+    
   opacity:1;
 }
 /*----------- Tienda OFF -------------*/
 
 /*----------- Tienda LOOKS ON -------------*/
-
+.spacerlook{
+  width:730px;  
+}
 .pUnico{
   height:65%; width: 90%; text-align: right; float: left; font-size: 27px; margin-top: 15px; font-weight: 300;
 } 
@@ -3764,7 +3849,13 @@ img[alt="Loading"]{
     h4{
         .color1;
         .margin_bottom_medium;
-        .margin_top_medium;}
+        .margin_top_medium;
+        a{
+          padding:4px 6px;  
+        }
+           
+    }
+     
     .canvas img{
         margin:20px;}
     .canvas{
@@ -3972,8 +4063,8 @@ img[alt="Loading"]{
     text-align:center;
      height: 20px;
     margin: 3px;
-    padding: 12px 15px;
-    width: 15px;
+    padding: 8px;
+    width: 35px;
     box-shadow:0px 0px 0px 1px rgba(0, 0, 0, .3);
     -moz-box-shadow:0px 0px 0px 1px rgba(0, 0, 0, .3);
     -o-box-shadow:0px 0px 0px 1px rgba(0, 0, 0, .3);
@@ -4486,6 +4577,42 @@ img[alt="Loading"]{
  } 
  
  @media (max-width: 1199px) {
+ .detalle_producto{
+    
+    //** Icono de Descuento ON **//
+    .icono-descuento{
+        webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        line-height:0px;
+        height: 43px;
+        top: 10px;
+        width: 79px;
+        right: 10px;
+        font-size: 22px;
+        padding-top: 36px;
+        text-align: center;
+
+        .leyenda{
+            //display: block;
+            font-size: 10px;
+            line-height: 14px;
+        }
+        
+        
+
+        .especial{
+          font-size: 13px;
+          line-height: 1.2em;
+        }
+    }
+ }
+ 
+ 
+ 
+ 
+ 
+ 
  .btlooks{
           margin-left:53%;
           margin-right:2%;
@@ -4495,6 +4622,9 @@ img[alt="Loading"]{
   .tPrecio, .tPrecioLight{
     line-height: 8px;
     margin-bottom: 7px;
+  }
+  .spacerlook{
+    width:540px;
   }
 
  
@@ -4537,6 +4667,9 @@ img[alt="Loading"]{
      .namePs{
        margin-top:5px;
      }
+     .spacerlook{
+         width:350px;
+      }
  
  }
  
@@ -4684,6 +4817,9 @@ img[alt="Loading"]{
 }
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
+    .spacerlook{
+      display:none;
+    }
     .wrapper_home{
     }
     #myLogo a, #site-title a , .brand{
@@ -5119,11 +5255,33 @@ img[alt="Loading"]{
 @media  (max-width: 475px) {
   .to_cut{
     display:none;    
-  }
-  
+  }  
   .to_upper{
     .CAPS;
   }
+  .to_add{
+    display:inline;
+  }
+   .detalle_producto{
+    
+    //** Icono de Descuento ON **//
+    .icono-descuento{
+        webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        line-height:9px;
+        height: 30px;
+        top: 5px;
+        width: 50px;
+        right: 5px;
+        font-size: 16px;
+        padding-top: 20px;
+
+     }
+ }
+  
+  
+  
   
 }
 @media  (max-width: 265px) {
@@ -5147,7 +5305,6 @@ img[alt="Loading"]{
 .mis_looks{
   padding: 0.5em;
   height: auto;
-}
 .mis_looks_titulo{
   font-size: 16px;
   font-weight: bold;
@@ -5159,6 +5316,55 @@ img[alt="Loading"]{
   line-height: 1.5em;
   height: 3em;
 }
+div .social{
+  margin-left:0.2em
+}
+
+}
+
+
+//----------- FAQ ------------------
+
+.cajadevideo{
+
+   max-width: 710px;
+   margin:auto;
+     
+   .video{
+
+     height:0px;
+     width:100%;
+     max-width:710px;    
+     padding-top:56.25%;
+     position:relative;
+      #acerca{
+  
+         position:absolute;
+         height:80%;
+         width:80%;
+         top:0px;
+         left:0px;
+      
+      }
+      #preguntas_frecuentes{
+  
+         position:absolute;
+         height:100%;
+         width:100%;
+         top:0px;
+         left:0px;
+      
+      }      
+     
+  }
+  
+}
+
+
+
+
+
+//----------------------------------
 
 
 

@@ -1593,59 +1593,42 @@ public function actionValidar()
 		$orden->estado=4; // enviado
 		
 		if($orden->save())
-			{
-				// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-				$estado = new Estado;
-										
-				$estado->estado = 4;
-				$estado->user_id = Yii::app()->user->id; // quien cancelo la orden
-				$estado->fecha = date("Y-m-d H:i:s");
-				$estado->orden_id = $orden->id;
-						
-				if($estado->save())
-				{
-						$user = User::model()->findByPk($orden->user_id);		
-						$message            = new YiiMailMessage;
-						$message->view = "mail_template";
-						Yii::t('contentForm','',array('{number}'=>$orden->tracking));
-						$subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
-						$body = "Nos complace informarte que tu pedido #".$orden->id." esta en camino y pronto podrás disfrutar de tu compra
-								<br/>
-								<br/>
-								".Yii::t('contentForm','You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}',array('{number}'=>$orden->tracking))." <br/> 
-								";
-						$params              = array('subject'=>$subject, 'body'=>$body);
-						$message->subject    = $subject;
-						$message->setBody($params, 'text/html');                
-						$message->addTo($user->email);
-						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-						Yii::app()->mail->send($message);
-						
-					/*
-						// Enviar correo cuando se envia la compra
-						$user = User::model()->findByPk($orden->user_id);
-						$message             = new YiiMailMessage;
-						//this points to the file test.php inside the view path
-						$message->view = "mail_template";
-						$subject = 'Tu compra en Pesonaling #'.$orden->id.' ha sido enviada';
-						$body = "Nos complace informarte que tu pedido #".$orden->id." ha sido enviado </br>
-								</br>
-								Empresa: Zoom </br>
-								Número de seguimiento: ".$orden->tracking." </br> 
-								";
-						$params              = array('body'=>$body);
-						$message->subject    = $subject;
-						$message->setBody($params, 'text/html');
-						$message->addTo($user->email);
-						$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-						
-						Yii::app()->mail->send($message);					
-					*/
-					
-					Yii::app()->user->setFlash('success', 'Se ha enviado la orden.');
-					
-					echo "ok";
-				}
+                {
+                    // agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+                    $estado = new Estado;
+
+                    $estado->estado = 4;
+                    $estado->user_id = Yii::app()->user->id; // quien cancelo la orden
+                    $estado->fecha = date("Y-m-d H:i:s");
+                    $estado->orden_id = $orden->id;
+
+                    if($estado->save())
+                    {
+                        $user = User::model()->findByPk($orden->user_id);		
+                        $message            = new YiiMailMessage;
+                        //Opciones de Mandrill
+                        $message->activarPlantillaMandrill();
+                        $subject = 'Tu compra en Personaling #'.$orden->id.' ha sido enviada';
+                        $body = "Nos complace informarte que tu pedido #".$orden->id.
+                                " esta en camino y pronto podrás disfrutar de tu compra.
+                                <br/>
+                                <br/>
+                                ".Yii::t('contentForm','You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}',array('{number}'=>$orden->tracking))." <br/> 
+                                ";
+                        $message->subject    = $subject;
+                        $message->setBody($body, 'text/html');                
+                        $message->addTo($user->email);
+                        Yii::app()->mail->send($message);
+                        
+//                        $message->view = "mail_template";
+//                        Yii::t('contentForm','',array('{number}'=>$orden->tracking));
+//                        $params              = array('subject'=>$subject, 'body'=>$body);
+//                        $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+
+                        Yii::app()->user->setFlash('success', 'Se ha enviado la orden.');
+
+                        echo "ok";
+                    }
 		}	
 		
 	}
@@ -1691,7 +1674,7 @@ public function actionValidar()
 				$params = array('subject' => $subject, 'body' => $body);
                 $message->subject = $subject;
                 $message->setBody($params, 'text/html');
-                if(isnull($mensaje->admin))
+                if(is_null($mensaje->admin))
                 	$message->addTo($usuario->email);
                 $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                 Yii::app()->mail->send($message);	
@@ -2488,29 +2471,41 @@ public function actionValidar()
 				}
 			 }
 			if($out=="ok"){
-				$user = User::model()->findByPk($devolucion->orden->user_id);
-				$lf="";	
-					$comments="Disculpa las posibles molestias ocasionadas.<br/>Te recomendamos consultar nuestras politicas de devolución haciendo click <a href='http://www.personaling.es/develop/site/politicas_de_devoluciones'>aquí.</a>";
-									$message            = new YiiMailMessage;
-							           //this points to the file test.php inside the view path
-							        $message->view = "mail_devolucion";
-									$subject = 'Hemos recibido tu solicitud de devolución.';
-							        $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
-							        $message->subject    = $subject;
-							        $message->setBody($params, 'text/html');
-							        $message->addTo($user->email);
-									$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-							        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
-							        Yii::app()->mail->send($message);
-				if($devolucion->sendXML())
-					$lf="<br/>Devolución notificada a Logisfashion.";
 				
-				Yii::app()->user->setFlash('success', 'Devolucion Registrada exitosamente.'.$lf);
-				if(UserModule::isAdmin())
-					$out="okadmin";
-				else
-					$out="okuser";
-				
+                            $user = User::model()->findByPk($devolucion->orden->user_id);
+                            $lf="";
+                            
+                            $comments="Disculpa las posibles molestias ocasionadas.<br/>
+                                Te recomendamos consultar nuestras politicas de devolución haciendo click 
+                                <a href='http://www.personaling.es/develop/site/politicas_de_devoluciones'>aquí.</a>";
+                            
+                            $message            = new YiiMailMessage;
+                            //Opciones de Mandrill
+                            $message->activarPlantillaMandrill();                            
+                            
+                            $subject = 'Hemos recibido tu solicitud de devolución.';
+//                            $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
+                            $body = $this->renderPartial("//mail/_devolucion",
+                                    array('devolucion' => $devolucion,
+                                        'comments' => $comments)
+                                    , true);
+                            $message->subject    = $subject;
+                            $message->setBody($body, 'text/html');
+                            $message->addTo($user->email);
+//                            $message->addTo("nramirez@upsidecorp.ch");
+
+//                            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+//                            $message->view = "mail_devolucion";
+                            //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+                            Yii::app()->mail->send($message);
+                            if($devolucion->sendXML() && UserModule::isAdmin())
+                                $lf="<br/>Devolución notificada a Logisfashion.";
+
+                            Yii::app()->user->setFlash('success', 'Devolucion Registrada exitosamente.'.$lf);
+                            if(UserModule::isAdmin())
+                                $out="okadmin";
+                            else
+                                $out="okuser";
 			}
 			else
 				Yii::app()->user->setFlash('error', 'Su devolución no se pudo registrar.');
@@ -2563,69 +2558,87 @@ public function actionValidar()
 		$orden->totalActualizado=$orden->totalActualizado-$devolucion->montodevuelto;
 		$orden->estado=9;
 		if($orden->save()){
-			$estado=new Estado;
-			$estado->estado=9;
-			$estado->user_id=Yii::app()->user->id;
-			$estado->fecha=date('Y-m-d');
-			$estado->orden_id=$orden->id;
-			
-			if($devolucion->save()){
-				$balance=new Balance;
-				$balance->total=$devolucion->montodevuelto;
-				$balance->orden_id=$devolucion->orden_id;
-				$balance->user_id=$orden->user_id;
-				$balance->tipo=4;
-				if($balance->save()){	
-					$user = User::model()->findByPk($devolucion->orden->user_id);
-					$comments="Tu solicitud de devolución cumple con las condiciones y políticas de personaling.es y tenemos el gusto de informarte que el monto de la misma ha sido cargado a tu saldo en nuestro portal.";	
-									$message            = new YiiMailMessage;
-							           //this points to the file test.php inside the view path
-							        $message->view = "mail_devolucion";
-									$subject = 'Tu solicitud de devolución fué aprobada.';
-							        $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
-							        $message->subject    = $subject;
-							        $message->setBody($params, 'text/html');
-							        $message->addTo($user->email);
-									$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-							        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
-							        Yii::app()->mail->send($message);
-									
-					
-						
-					Yii::app()->user->setFlash('success', 'Devolución Aceptada exitosamente.');
-					echo "ok";
-				}
-			}
+                    $estado=new Estado;
+                    $estado->estado=9;
+                    $estado->user_id=Yii::app()->user->id;
+                    $estado->fecha=date('Y-m-d');
+                    $estado->orden_id=$orden->id;
+
+                    if($devolucion->save()){
+                        $balance=new Balance;
+                        $balance->total=$devolucion->montodevuelto;
+                        $balance->orden_id=$devolucion->orden_id;
+                        $balance->user_id=$orden->user_id;
+                        $balance->tipo=4;
+                        if($balance->save()){	
+                            $user = User::model()->findByPk($devolucion->orden->user_id);
+                            $comments = "Tu solicitud de devolución cumple con 
+                                las condiciones y políticas de Personaling.es y 
+                                tenemos el gusto de informarte que el monto de 
+                                la misma ha sido cargado a tu saldo en nuestro portal.";	
+
+                            $message            = new YiiMailMessage;
+                            //Opciones de Mandrill
+                            $message->activarPlantillaMandrill();
+                            $subject = 'Tu solicitud de devolución fué aprobada.';
+                            $body = $this->renderPartial("//mail/_devolucion",
+                                    array('devolucion' => $devolucion,
+                                        'comments' => $comments)
+                                    , true);
+
+                            $message->subject    = $subject;
+                            $message->setBody($body, 'text/html');
+                            $message->addTo($user->email);
+                                                        
+//                            $message->view = "mail_devolucion";
+//                            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+//                            $params = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
+                            //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+                            Yii::app()->mail->send($message);
+
+
+                            Yii::app()->user->setFlash('success', 'Devolución Aceptada exitosamente.');
+                            echo "ok";
+                        }
+                    }
 		}else{
 			Yii::app()->user->setFlash('error', 'La devolución no pudo aceptarse.');
 		}
 	}
 	public function actionRechazarDevolucion(){
-		$devolucion=Devolucion::model()->findByPk($_POST['id']);
-		$devolucion->estado=4;
-		if($devolucion->save()){
-			$user = User::model()->findByPk($devolucion->orden->user_id);
-			$comments="Lamentamos informarte que tu solicitud de devolución no cumple con las condiciones y políticas de devoluciones de personaling.es, para mayor información puedes comunicarte via
-			e-mail a info@personaling.com o visitar nuestro apartado de politicas de devoluciones haciendo click <a href='http://www.personaling.es/develop/site/politicas_de_devoluciones'>aquí.</a>";	
-								$message            = new YiiMailMessage;
-						           //this points to the file test.php inside the view path
-						        $message->view = "mail_devolucion";
-								$subject = 'Tenemos inconvenientes para procesar tu devolución';
-						        $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
-						        $message->subject    = $subject;
-						        $message->setBody($params, 'text/html');
-						        $message->addTo($user->email);
-								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-						        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
-						        Yii::app()->mail->send($message);
-								
-			Yii::app()->user->setFlash('success', 'Devolución Rechazada correctamente.e');
-			echo "ok";
-		}
-			
-		else 
-			{	Yii::app()->user->setFlash('error', 'La devolución no pudo rechazarse.');
-				echo "no";	}
+            $devolucion=Devolucion::model()->findByPk($_POST['id']);
+            $devolucion->estado=4;
+            if($devolucion->save()){
+                $user = User::model()->findByPk($devolucion->orden->user_id);
+                $comments="Lamentamos informarte que tu solicitud de devolución no cumple con las condiciones y políticas de devoluciones de Personaling.es, para mayor información puedes comunicarte vía
+                e-mail a info@personaling.com o visitar nuestro apartado de politicas de devoluciones haciendo click <a href='http://www.personaling.es/develop/site/politicas_de_devoluciones'>aquí.</a>";	
+                $message            = new YiiMailMessage;
+                //Opciones de Mandrill
+                $message->activarPlantillaMandrill();
+                   
+                $subject = 'Tenemos inconvenientes para procesar tu devolución';
+                $message->subject    = $subject;
+                $body = $this->renderPartial("//mail/_devolucion",
+                                array('devolucion' => $devolucion,
+                                    'comments' => $comments)
+                                , true);
+                
+                $message->setBody($body, 'text/html');
+                $message->addTo($user->email);
+//                $message->addTo("nramirez@upsidecorp.ch");
+//                $message->view = "mail_devolucion";
+//                $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
+//                $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+                //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+                Yii::app()->mail->send($message);
+
+                Yii::app()->user->setFlash('success', 'Devolución Rechazada correctamente');
+                echo "ok";
+            }
+
+            else 
+                    {	Yii::app()->user->setFlash('error', 'La devolución no pudo rechazarse.');
+                            echo "no";	}
 	}
 	public function actionAnularDevuelto(){
 		$devuelto=Devolucionhaspreciotallacolor::model()->findByPk($_POST['id']);
@@ -2679,7 +2692,7 @@ public function actionValidar()
 	
 	
 	public function actionOrdenesZoho(){
-		
+		/*
 		$criteria = new CDbCriteria(array('order'=>'id'));
 		$criteria->addBetweenCondition('id', 1, 10);  
 			
@@ -2719,7 +2732,255 @@ public function actionValidar()
 			}	
 			
 		}
+		*/
 		
+		$sumatoria = 1;
+		$cont = 1;
+		$xml = "";
+		$ids = array();
+					
+		$criteria = new CDbCriteria(array('order'=>'id'));
+		$todasOrdenes = Orden::model()->findAll($criteria);
+		
+		$ordenesTotal = sizeof($todasOrdenes);
+		
+		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml .= '<Invoices>';
+		
+		foreach($todasOrdenes as $orden){ // para cada orden nuevo invoice en zoho
+			
+			$user = User::model()->findByPk($orden->user->id);
+			$zoho = new ZohoSales;
+			
+			if($cont >= 100){
+				$xml .= '</Invoices>';
+				
+				
+				
+				$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
+				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+				
+				//Execute cUrl session
+				$response = curl_exec($ch); 
+				curl_close($ch);
+						
+				$datos = simplexml_load_string($response);
+				$posicion=0;
+						
+				$total = sizeof($ids);
+						
+				for($x=1; $x<=$total; $x++){ 
+					if(isset($datos->result[0]->row[$posicion])){	
+						$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+							
+							foreach($ids as $data){
+								if($number == $data['row']){
+									$order = Orden::model()->findByPk($data['orden']);
+
+									if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+										$order->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+										$order->save();
+											
+										echo "El row #".$data['row']." corresponde a orden ".$order->id." con id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+									}else{
+										echo "Error en posicion ".$posicion;
+									}
+								}	
+							}//foreach ids
+					}// isset  
+				$posicion++; 
+
+				}// ciclo
+					
+				echo "fin de ciclo"; 
+				echo "<br><br>";
+				
+			//	var_dump($response);
+			//	Yii::app()->end();
+				
+				/* reiniciando todos los valores */
+				$xml = ""; 
+				$cont = 1;	
+				$posicion=0;
+						
+				unset($ids);
+				$ids = array();
+						
+				$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+				$xml .= '<Invoices>';		
+			} // mayor a 100						
+			
+			if($cont < 100)
+			{				
+				if($user->tipo_zoho == 0){
+					echo $user->email." estaba en 0<br>";
+					//var_dump($xml);
+					//Yii::app()->end();	
+						 
+					$conv = $zoho->convertirLead($user->zoho_id, $user->email);
+					$datos = simplexml_load_string($conv);
+											
+					$id = $datos->Contact;
+					$user->zoho_id = $id;
+					$user->tipo_zoho = 1;
+											
+					$user->save(); 					
+				}	
+				else{
+					echo $user->email." ya estaba en 1 el tipo zoho<br>";
+					//var_dump($xml);
+					//Yii::app()->end();	
+				}
+				
+				/*Datos para el arreglo a comparar */
+				$add = array();
+				$add = array("row" => $cont, "orden" => $orden->id);
+				array_push($ids,$add);
+				
+				
+				$xml .= '<row no="'.$cont.'">';
+				
+				
+				$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
+				$envio_pago = 0;
+				$ajuste=0;
+				$forma="";
+				$cupon=0;
+				
+				foreach($detalles as $detalle){
+					if($envio_pago == 0){		
+						if($orden->envio > 0){
+							$ajuste = $ajuste + $orden->envio;
+							$envio_pago = 1;
+						} 
+					}
+					
+					if($detalle->tipo_pago == 3){ 
+						$ajuste -= $detalle->monto; 
+						$xml .= '<FL val="Balance">'.(double)$detalle->monto.'</FL>';
+					}
+					
+					if($detalle->tipo_pago == 4 || $detalle->tipo_pago == 5){
+						$xml .= '<FL val="Paypal_Sabadell">'.(double)$detalle->monto.'</FL>';
+					}
+					
+					$forma .= $detalle->getTipoPago().", "; 
+					
+					if(isset($orden->cupon)){
+						if($cupon == 0){
+							$ajuste -= $orden->cupon->descuento;
+							$xml .= '<FL val="Cupon">'.(double)$orden->cupon->descuento.'</FL>';
+							$cupon++;
+						}	
+					} 
+				} 
+					
+				if((double)$orden->descuento > 0) 
+					$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
+				
+				$xml .= '<FL val="Subject"> Orden '.$orden->id.'</FL>';
+		        $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
+				$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
+				$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';
+				$xml .= '<FL val="Contact Id">'.$orden->user->zoho_id.'</FL>';
+				$xml .= '<FL val="Contact Name">'.$orden->user->profile->first_name.' '.$orden->user->profile->last_name.'</FL>';
+				$xml .= '<FL val="Email">'.$orden->user->email.'</FL>';
+				$xml .= '<FL val="Peso">'.$orden->peso.'</FL>';
+				$xml .= '<FL val="Envio">'.$orden->envio.'</FL>';
+				$xml .= '<FL val="Billing Street">'.$orden->direccionFacturacion->dirUno.' '.$orden->direccionFacturacion->dirDos.'</FL>';
+				$xml .= '<FL val="Billing State">'.$orden->direccionFacturacion->provincia->nombre.'</FL>';
+				$xml .= '<FL val="Billing City">'.$orden->direccionFacturacion->ciudad->nombre.'</FL>';
+				$xml .= '<FL val="Billing Country">'.$orden->direccionFacturacion->pais.'</FL>';
+				$xml .= '<FL val="Telefono Facturacion">'.$orden->direccionFacturacion->telefono.'</FL>';
+				$xml .= '<FL val="Shipping Street">'.$orden->direccionFacturacion->dirUno.' '.$orden->direccionFacturacion->dirDos.'</FL>';
+				$xml .= '<FL val="Shipping State">'.$orden->direccionFacturacion->provincia->nombre.'</FL>';
+				$xml .= '<FL val="Shipping City">'.$orden->direccionFacturacion->ciudad->nombre.'</FL>';
+				$xml .= '<FL val="Shipping Country">'.$orden->direccionFacturacion->pais.'</FL>';
+				$xml .= '<FL val="Telefono Envio">'.$orden->direccionFacturacion->telefono.'</FL>';
+				$xml .= '<FL val="Sub Total">'.(double)$orden->subtotal.'</FL>';
+				$xml .= '<FL val="Tax">'.(double)$orden->iva.'</FL>';
+				$xml .= '<FL val="Adjustment">'.(double)$ajuste.'</FL>';	
+				$xml .= '<FL val="Forma de Pago">'.$forma.'</FL>'; 
+				
+				// productos
+				$xml .= $zoho->Products($orden->id); 
+				echo "Un request al relacionar productos<br>";
+				// actualizar cantidades de productos
+				//$zoho->actualizarCantidades($orden->id);
+				//echo "Otro para actualizar cantidades<br>"; 
+				
+				$xml .= '<FL val="Grand Total">'.(double)$orden->total.'</FL>'; 
+				$xml .= '</row>';
+					
+				$cont++;
+					
+			}// if 
+			
+			if($ordenesTotal == $sumatoria)
+				$this->actionEnviarZoho($xml, $ids);
+			else
+				$sumatoria++;
+			
+		}
 	}
+
+
+	public function actionEnviarZoho($xml,$ids){
+				
+			$xml .= '</Invoices>'; 
+			
+			$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
+				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+				
+				//Execute cUrl session
+				$response = curl_exec($ch); 
+				curl_close($ch);
+						
+				$datos = simplexml_load_string($response);
+				$posicion=0;
+						
+				$total = sizeof($ids);
+						
+				for($x=1; $x<=$total; $x++){ 
+					if(isset($datos->result[0]->row[$posicion])){	
+						$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+							
+							foreach($ids as $data){
+								if($number == $data['row']){
+									$order = Orden::model()->findByPk($data['orden']);
+
+									if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+										$order->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+										$order->save();
+											
+										echo "El row #".$data['row']." corresponde a orden ".$order->id." con id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+									}else{
+										echo "Error en posicion ".$posicion;
+									}
+								}	
+							}//foreach ids
+					}// isset  
+				$posicion++; 
+
+				}// ciclo
+					
+				echo "fin de ciclo final";		
+			
+		}
+
         
 }

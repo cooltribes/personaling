@@ -73,18 +73,18 @@
               <div class="mis_looks_titulo"><?php echo $look->title; ?></div>
               <div class="mis_looks_descripcion"><?php echo $look->description; ?></div>
               <script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
-              <div>
+              <div align="right">
                 <?php
                 // twitter button
                 echo CHtml::link(
-                  CHtml::image(Yii::app()->baseUrl.'/images/icon_twitter_2.png', 'Compartir en twitter', array('width'=>40, 'height'=>40)),
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_twitter_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),
                   'https://twitter.com/intent/tweet?url='.Yii::app()->getBaseUrl(true).'/look/'.$look->id.'&text='.$look->title.'&lang=es&via=Personaling'
                 );
                 
 
                 // facebook button
                 echo CHtml::link(
-                  CHtml::image(Yii::app()->baseUrl.'/images/icon_facebook_2.png', 'Compartir en facebook', array('width'=>40, 'height'=>40)),
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_facebook_2.png', 'Compartir en facebook', array('width'=>30, 'height'=>30, 'class'=>'social')),
                   Yii::app()->getBaseUrl(true).'/look/'.$look->id,
                   array(
                     'data-image'=>'/look/'.$look->id.'.png',
@@ -96,7 +96,7 @@
 
                 // pinterest button
                 echo CHtml::link(
-                  CHtml::image(Yii::app()->baseUrl.'/images/icon_pinterest_2.png', 'Compartir en pinterest', array('width'=>40, 'height'=>40)),
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_pinterest_2.png', 'Compartir en pinterest', array('width'=>30, 'height'=>30, 'class'=>'social')),
                   '//pinterest.com/pin/create/button/?url='.Yii::app()->getBaseUrl(true).'/look/'.$look->id.'&description='.$look->title.'&media='.Yii::app()->getBaseUrl(true).'/images/look/'.$look->id.'.png',
                   array(
                     'target'=>'_blank'
@@ -105,7 +105,7 @@
 
                 // polyvore button
                 echo CHtml::link(
-                  CHtml::image(Yii::app()->baseUrl.'/images/icon_polyvore_2.png', 'Compartir en polyvore', array('width'=>40, 'height'=>40)),
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_polyvore_2.png', 'Compartir en polyvore', array('width'=>30, 'height'=>30, 'class'=>'social')),
                   'http://www.polyvore.com?url='.Yii::app()->getBaseUrl(true).'/look/'.$look->id.'&description='.$look->title.'&media='.Yii::app()->getBaseUrl(true).'/images/look/'.$look->id.'.png',
                   array(
                     'target'=>'_blank',

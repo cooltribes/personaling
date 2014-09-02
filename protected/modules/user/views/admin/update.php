@@ -1,4 +1,4 @@
-	<?php
+	<?php 
 
 $this->breadcrumbs=array(
 	'Usuarios'=>array('admin'),
@@ -86,7 +86,7 @@ function getMonthsArray()
         <?php $this->widget('bootstrap.widgets.TbButton', array(    
             'label'=>'Enviar Email',
             'type'=>'danger',    
-            'url'=>$this->createUrl("admin/sendMandrillEmail"),                
+            'url'=>$this->createUrl("/producto/sendMandrillEmail"),                
         )); ?>
           
         <fieldset>
@@ -384,6 +384,21 @@ function getMonthsArray()
                           )
                   );
                   ?>
+              </li>
+               
+              <li>
+              	<?php 
+              	
+              	//echo CHtml::button("Ver Historial de Personal Shopper", array('submit'=>array('historial')));
+              	/*echo CHtml::ajaxLink(
+					  "<i class='icon-user'></i> Ver Historial de Personal Shopper",
+					  Yii::app()->createUrl( 'user/admin/todmin' ,array('id'=>$model->id)));*/
+					/* echo CHtml::ajaxLink(
+					  "<i class='icon-user'></i> Ver Historial de Personal Shopper",array('id'=>'botonedespues', 'submit'=>array('historial'))); */
+				/*echo CHtml::ajaxLink(
+					  "<i class='icon-user'></i> Ver Historial de Personal Shopper",
+					  Yii::app()->createUrl( 'user/admin/todmin' ,array('id'=>$model->id)));*/
+              	 ?>
               </li>
               
               

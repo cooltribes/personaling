@@ -1,4 +1,4 @@
-<?php
+<?php 
 $this->breadcrumbs=array(
 	'Categorías'
 );
@@ -55,7 +55,7 @@ $pagerParams=array(
 		});",CClientScript::POS_READY
 	);
 	
-	// Codigo para actualizar el list view cuando presionen ENTER
+	// Codigo para actualizar el list view cuando presionen ENTER 
 	
 	Yii::app()->clientScript->registerScript('query',
 		"var ajaxUpdateTimeout;

@@ -93,16 +93,10 @@ class CategoriaController extends Controller
 						if(!is_dir($nombre))
 						{
 				   			mkdir($nombre,0777,true);
-				 		}
-						/*else{
-							
-							unlink($nombre."/img.jpg");
-							rmdir($nombre); 
-							mkdir($nombre,0777,true);
-						}*/
-								
+				 		}	
 		                if ($pic->saveAs($nombre."/img.jpg")) {
 							 	
+							Yii::app()->session['ma']=2;
 							 $model->urlImagen = '/images/categorias/'. $model->id .'/img.jpg';
 							//$model->urlImagen = $_POST['Categoria']['urlImagen'];
 							$model->save();

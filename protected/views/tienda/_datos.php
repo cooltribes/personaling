@@ -206,7 +206,7 @@ $b='';
 																												    		'list' => 'Product clicks',
 																												    		'position' => $cont,
 																												    		'url' => $data->getUrl()
-																												    	)).")'>".$tienda->urlVista."</a></span>";
+																												    	)).")'>";
 							
 
 						echo($encabezado."

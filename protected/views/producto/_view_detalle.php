@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
- <?php 
+ <?php  
 
  
   /* @var $this TiendaController */
@@ -441,8 +441,15 @@
           <div class="margin_top">
             <ul class="nav nav-tabs" id="myTab">
               <li class="active"><a href="#descripcion" data-toggle="tab"><?php echo Yii::t('contentForm','Description'); ?></a></li>
+              <?php
+          if($producto->tipo=="0")
+          {
+          ?>  
               <li><a href="#detalles" data-toggle="tab"><?php echo Yii::t('contentForm','Details'); ?></a></li>
               <li><a href="#envio" data-toggle="tab"><?php echo Yii::t('contentForm','Delivery'); ?></a></li>
+           <?php
+          }
+		  ?>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="descripcion">

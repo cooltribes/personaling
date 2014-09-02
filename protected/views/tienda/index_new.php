@@ -213,8 +213,13 @@ if(isset($seo)){
     width: 130px;
 }
 
+
+/*Para el filtro de marcas*/
+.item.item-marcas{
+    vertical-align: top;
+}
 .container-marcas {    
-    vertical-align: middle;
+    width: 165px;
 }
 
 .container-marcas .select2-choice{
@@ -223,6 +228,9 @@ if(isset($seo)){
     -moz-border-radius: 0;
     border-radius: 0;
     border: 1px solid #ddd;
+    padding: 5px 5px 5px 10px;
+    height: 21px;
+    display: block;    
 }
 
 .container-marcas.select2-dropdown-open .select2-choice,
@@ -234,12 +242,55 @@ if(isset($seo)){
     background: none;
 }
 
+.select2-container .select2-choice span{
+    line-height: 21px;
+    width: 118px;
+    display: inline-block;
+    margin-right: 0; 
+}
 .select2-container .select2-choice div{
     background-image: none;    
     -webkit-border-radius: 0 ;
     -moz-border-radius: 0;
     border-radius: 0; 
     border: 0; 
+    background: #dfdfdf;
+    padding: 3px 1px;
+    height: auto;
+    display: inline-block;
+    position: initial;
+}
+.select2-container .select2-choice div b{
+    background-image: none;    
+    width: 0;
+    height: 0;
+    vertical-align: top;
+    border-top: 4px solid #000000;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    content: "";     
+    display: block;
+    margin: 5px;
+}
+
+.dropdown-marcas{
+    border: none;
+    margin-top: 2px;
+}
+.dropdown-marcas .select2-results{
+    padding: 0;
+}
+
+.dropdown-marcas li.select2-results-dept-0.select2-result.select2-result-selectable {
+    border-bottom: 1px solid #ddd;
+    padding: .5em 0;
+}
+.dropdown-marcas li.select2-results-dept-0.select2-result.select2-result-selectable:last-child {
+    border-bottom: 0;    
+}
+.dropdown-marcas li.select2-highlighted {
+    background: #ddd;
+    color: #333;
 }
 
 </style>
@@ -371,12 +422,13 @@ if(isset($seo)){
 			</li>
 
 			<?php if (Yii::app()->params['mostrarMarcas']){ ?>
-			<li class="item">
+			<li class="item item-marcas">
                             <?php 
                             //Agregar la opcion de Todas las marcas al listado existente
                             $marcasListData = CHtml::listData($marcas, "id" , "nombre");
                             $marcasListData[0] = Yii::t('contentForm','All Brands');
 
+                            
                             $this->widget('bootstrap.widgets.TbSelect2',array(                                    
                                     'asDropDownList' => true,
                                     'name' => 'filtroMarcas',
@@ -390,6 +442,7 @@ if(isset($seo)){
                                         'formatNoMatches' => "",
                                         'placeholder'=> Yii::t('contentForm','By brand'),
                                         'containerCssClass'=> "container-marcas",
+                                        'dropdownCssClass'=> "drop-down-menu dropdown-marcas",
 //                                        'dropdownAutoWidth'=> true,
 
 

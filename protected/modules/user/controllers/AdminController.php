@@ -912,7 +912,7 @@ class AdminController extends Controller
 				$ids = array();
 						
 				$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
-				$xml .= '<Leads>';			
+				$xml .= '<Leads>';			 
 			} // mayor que 100
 			
 			if($cont < 100)

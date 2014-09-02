@@ -2333,11 +2333,16 @@ public function actionReportexls(){
                     $masterData = new SimpleXMLElement('<MasterData/>');                    
                     //Agregar la fecha de creacion
                     $masterData->addChild("FechaCreacion", date("Y-m-d")); 
-                   
+                   	
+					// variable para los id
+					$ids = array();
+					
                     // segundo foreach, si llega aqui es para insertar y todo es valido
                     foreach ($sheet_array as $row) {
-                        
-                        if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
+                       	
+                  		$preciotalla;
+						 
+                       	if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
                             
                             //Modificaciones a las columnas
                             //antes de procesarlas                            
@@ -2391,7 +2396,7 @@ public function actionReportexls(){
                                 )); 
 								
 								/* DATOS PARA ZOHO */ 
-								$zoho->nombre = $rNombre." - ".$rSku;
+							/*	$zoho->nombre = $rNombre." - ".$rSku;
 								
 								if(strpos($producto->mymarca->nombre, "&") === false )
 									$zoho->marca = $producto->mymarca->nombre;
@@ -2432,7 +2437,7 @@ public function actionReportexls(){
 									$descripcion_nueva = "<![CDATA[".$segunda."]]>";
 									$zoho->descripcion = $descripcion_nueva;
 								}
-								
+								*/
                            	} else
                             { // no existe la referencia, es producto nuevo                           
                                 
@@ -2449,7 +2454,7 @@ public function actionReportexls(){
                                 $producto->save();  
                                 
 								/* DATOS PARA ZOHO */      
-								$zoho->nombre = $rNombre." - ".$rSku;
+								/*$zoho->nombre = $rNombre." - ".$rSku;
 								
 								if(strpos($marca->nombre, "&") === false )
 									$zoho->marca = $marca->nombre;
@@ -2488,7 +2493,7 @@ public function actionReportexls(){
 										
 									$descripcion_nueva = "<![CDATA[".$segunda."]]>";
 									$zoho->descripcion = $descripcion_nueva;
-								}
+								}*/
 									                            
                             }
                             // Si existe o no el producto, actualizar o insertar precio nuevo
@@ -2505,7 +2510,7 @@ public function actionReportexls(){
                             $precio->impuesto = 1;
                             
 							 /* DATOS PARA ZOHO */ 
-							$zoho->costo = $rCosto;
+						//	$zoho->costo = $rCosto;
 							
                             //si es con iva
                             if(MasterData::TIPO_PRECIO == 1){
@@ -2515,9 +2520,9 @@ public function actionReportexls(){
                                 $precio->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
                                 
                                 /* DATOS PARA ZOHO */ 
-                                $zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
+                               /* $zoho->precioVenta = (double) $rPrecio / (Yii::app()->params['IVA'] + 1);
                                 $zoho->precioDescuento = $rPrecio;
-                                $zoho->precioImpuesto = $rPrecio; 
+                                $zoho->precioImpuesto = $rPrecio; */
 								
                             }else{ //si es sin iva
                                 
@@ -2526,9 +2531,9 @@ public function actionReportexls(){
                                 $precio->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
 								
                                 /* DATOS PARA ZOHO */ 
-                                $zoho->precioVenta = $rPrecio;
+                            /*    $zoho->precioVenta = $rPrecio;
                                 $zoho->precioDescuento = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);
-                                $zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);                          
+                                $zoho->precioImpuesto = (double) $rPrecio * (Yii::app()->params['IVA'] + 1);    */                      
                             }
 							
                             $precio->save();
@@ -2542,11 +2547,11 @@ public function actionReportexls(){
                                 }
                             }
 							/* DATOS PARA ZOHO */ 
-							$zoho->categoria = $rCatego1;
+						/*	$zoho->categoria = $rCatego1;
 							$zoho->subcategoria1 = $rCatego2;
 							$zoho->subcategoria2 = $rCatego3;
 							// Categorias para zoho
-				
+				*/
                             $cat = new CategoriaHasProducto;
                             $cat2 = new CategoriaHasProducto;
                             $cat3 = new CategoriaHasProducto;
@@ -2581,12 +2586,12 @@ public function actionReportexls(){
                             $color = Color::model()->findByAttributes(array('valor' => $rColor));
                             
 							/* DATOS PARA ZOHO */
-							$zoho->talla = $talla->valor;
+						/*	$zoho->talla = $talla->valor;
 							$zoho->color = $color->valor;
 							$zoho->SKU = $rSku;
 							$zoho->cantidad = 0;
 							$zoho->tipo = "Interno";
-							
+							*/
                             $ptc = Preciotallacolor::model()->findByAttributes(array(
                                             'producto_id' => $producto->id,
                                             'sku' => $rSku,
@@ -2612,13 +2617,16 @@ public function actionReportexls(){
                                 //Si ya existe
                                 $actualizar++; //suma un producto actualizado                                
                                 
-                                //Marcar item como actualizado
+                                //Marcar item como actualizado 
                                 $itemMasterdataRow->estado = 1;
                             }
-                            
+							
+                            $add = array(); 
+							$add = array("ptc" => $ptc->id); 
+							array_push($ids,$add); // guardando los ids para procesarlos luego
 
                             //Agregar el preciotallacolor correspondiente
-                            $itemMasterdataRow->producto_id = $ptc->id;
+                    		$itemMasterdataRow->producto_id = $ptc->id;
                             
                             // seo
                             $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
@@ -2640,11 +2648,11 @@ public function actionReportexls(){
                                 $seo->save();
                             }
                             /* DATOS PARA ZOHO */
-							$zoho->titulo = $seo->mTitulo;
+						/*	$zoho->titulo = $seo->mTitulo;
 							$zoho->metaDescripcion = $seo->mDescripcion;
 							$zoho->tags = $seo->pClave;
 							/* SE GUARDAN LOS DATOS PARA ZOHO*/
-							$respuesta = $zoho->save_potential(); 
+						/*	$respuesta = $zoho->save_potential(); 
 							$datos = simplexml_load_string($respuesta);
 																
 							$id = $datos->result[0]->recorddetail->FL[0];
@@ -2652,7 +2660,7 @@ public function actionReportexls(){
 							
 							$ptc->zoho_id = $id;
 							$ptc->save();
-							
+							*/ 
 							/*  ========================================== */
 							
                             //Agregar el item al XML
@@ -2745,8 +2753,12 @@ public function actionReportexls(){
 //                                    $tabla = $tabla . 'se actualizaaron cantidades para el Producto-Talla-Color id ' . $pre->id . '<br/>';
 //                                }
 //                            }
-                        }
-                    }// foreach
+						}	
+
+                    }// foreach 
+                    
+                    // Enviando todo lo importado a Zoho
+                    $this->actionExternToZoho($ids);                    
                     
                     //Insertar nuevo MasterData                   
                     $masterDataBD->prod_actualizados = $actualizar;

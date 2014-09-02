@@ -44,9 +44,6 @@ foreach($prods as $data):
 		});
 		
 		ga('send', 'pageview');              // Send product impressions with initial pageview.
-
-		
-
 	", CClientScript::POS_END);	
 
 	

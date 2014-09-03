@@ -22,7 +22,7 @@
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
-						    'class' => 'thumbnail',
+						    'class' => 'thumbnail btn btn-block',
 						    'id' => 'categoria'.$categoria_padre,
 						    'draggable'=>"false",
 						  )
@@ -46,7 +46,7 @@
               		$a = $categoria->getImage($categoria->id);
               		
               		if($a!="no")// tiene img
-              			$image = CHtml::image(Yii::app()->baseUrl . $a,"Personaling - ".$categoria->nombre, array('id'=>'img-categoria'));
+              			$image = CHtml::image(Yii::app()->baseUrl . $a,"Personaling - ".$categoria->nombre, array('id'=>'img-categoria','draggable'=>"false"));
 					else
               			$image = CHtml::image("http://placehold.it/140");
 

@@ -2,6 +2,7 @@
 
  <?php  
 
+ #echo $producto->id;
  
   /* @var $this TiendaController */
   $this->breadcrumbs=array(
@@ -962,10 +963,28 @@ $cont=0;
  
 <script>
 var comprando = true;
-var tallaSeleccionada = <?php echo $cantidadTallas == 1? $tallaUnica['id'] : 0  ?>;
-var colorSeleccionado = <?php echo isset($colorUnico)? $colorUnico->id : 
-                        (isset($idColorFiltro)? $idColorFiltro : 0) ?>;
 
+ <?php 
+ $validar=0;
+ foreach ($producto->preciotallacolor as $talCol)
+ {
+ 	
+	if($talCol->cantidad>0)
+	{
+		
+		$validar=1;
+	}
+ }
+?>
+
+<?php 
+if($validar=="1") 
+{?>
+		var tallaSeleccionada = <?php echo $cantidadTallas == 1? $tallaUnica['id'] : 0  ?>;
+		var colorSeleccionado = <?php echo isset($colorUnico)? $colorUnico->id : 
+		                        (isset($idColorFiltro)? $idColorFiltro : 0) ?>;
+<?php 
+}?>
 $(document).ready(function(){
 
     $('.closeModal').click(function(event) {

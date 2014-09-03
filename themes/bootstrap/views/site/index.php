@@ -167,12 +167,9 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 ?>
 
 <script type="text/javascript">
-//$('#sliderHome').carousel({
-//  interval: 6000,
-//});
-$('#sliderHome').carousel('next');
-$('#sliderHome').carousel('next');
-$('#sliderHome').carousel('pause');
+$('#sliderHome').carousel({
+  interval: 6000,
+});
 $('#buttomCookies').on('click',function(){
     $('.message-cookies').css({display:'none',});
 });

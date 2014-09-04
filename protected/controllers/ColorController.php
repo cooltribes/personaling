@@ -402,7 +402,7 @@ class ColorController extends Controller
 		$tallacolor->zoho_id = $id;
 		if($tallacolor->save())
 			echo "<p>T BIEN";
-		*/
+		
 
 		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= '<Products>';
@@ -516,6 +516,39 @@ class ColorController extends Controller
 
 		$datos = simplexml_load_string($response);
 		var_dump($datos);
+		*/
+		
+		$orden = Orden::model()->findByPk(4); 
+		
+		$user = User::model()->findByPk($orden->user->id);
+		$zoho = new ZohoSales;
+								
+		if($user->tipo_zoho == 0){ 
+			$conv = $zoho->convertirLead($user->zoho_id, $user->email);
+			$datos = simplexml_load_string($conv);
+				
+			var_dump($datos);
+									
+			$id = $datos->Contact;
+			$user->zoho_id = $id;
+			$user->tipo_zoho = 1;
+									
+			$user->save();
+		}
+								
+		if($user->tipo_zoho == 1) // es ahora un contact
+		{
+			$respuesta = $zoho->save_potential($orden);
+			$datos = simplexml_load_string($respuesta);
+			
+			$id = $datos->result[0]->recorddetail->FL[0];
+									
+			$orden->zoho_id = $id;
+			$orden->save(); 
+			
+			var_dump($datos); 
+			Yii::app()->end(); 
+		}	
 		
 	}
 	

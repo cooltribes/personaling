@@ -566,11 +566,11 @@ class Producto extends CActiveRecord
          if( strtolower($ext)!="jpg"&&strtolower($ext)!="png")
             $ext="jpg";    
           
-         $url=$this->getImageUrl($color_id);
+         $url=$this->getImageUrl($color_id,array("ext"=>$ext));
          if($url!="http://placehold.it/180"){
             $url=explode('.',$url);             
-            $url=$url[0];
-            $url=$url."_thumb.".$ext; 
+            $url=$url[0]."_thumb.".$url[1];
+           // $url=$url."_thumb.".$ext;
          } 
          return $url;
             

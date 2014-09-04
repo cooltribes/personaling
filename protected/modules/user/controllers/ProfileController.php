@@ -459,10 +459,10 @@ class ProfileController extends Controller
 			{
 				if ($profile->save())
 				{
-					//$model->status_register = User::STATUS_REGISTER_ESTILO;
-					//if ($model->save()){
-               			Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+                                    $model->status_register = User::STATUS_REGISTER_ESTILO;
+                                    $model->save();
+                                    Yii::app()->user->updateSession();
+                                    Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
 
 						// update potential at zoho
 		                $zoho = new Zoho();
@@ -818,6 +818,10 @@ class ProfileController extends Controller
 			{
 				if ($profile->save())
 				{
+                                    
+                                    /*Marcar como que ya completo esta parte del registro*/
+                                    $model->status_register = User::STATUS_REGISTER_TIPO;
+                                    $model->save();
                                     
                                     /*Crear el filtro de perfil propio*/
                                         

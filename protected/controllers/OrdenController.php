@@ -2755,7 +2755,7 @@ public function actionValidar()
 			if($cont >= 100){
 				$xml .= '</Invoices>';
 				
-				
+				var_dump($xml);
 				
 				$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
@@ -2802,8 +2802,8 @@ public function actionValidar()
 				echo "fin de ciclo"; 
 				echo "<br><br>";
 				
-			//	var_dump($response);
-			//	Yii::app()->end();
+				var_dump($response);
+				Yii::app()->end();
 				
 				/* reiniciando todos los valores */
 				$xml = ""; 
@@ -2846,7 +2846,7 @@ public function actionValidar()
 				
 				
 				$xml .= '<row no="'.$cont.'">';
-				
+				$xml .= '<FL val="Subject">Orden Numero '.$orden->id.'</FL>';
 				
 				$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
 				$envio_pago = 0;
@@ -2885,7 +2885,7 @@ public function actionValidar()
 				if((double)$orden->descuento > 0) 
 					$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
 				
-				$xml .= '<FL val="Subject"> Orden '.$orden->id.'</FL>';
+				
 		        $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
 				$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
 				$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';

@@ -198,7 +198,7 @@ class ZohoSales{
 		$xml2 .= '<FL val="Descuento Productos">'.(double)$dcto_productos.'</FL>';
 		
 		
-		/*AÑANDIENDO AL CLIENTE */
+		/*AÑANDIENDO AL CLIENTE 
 		
 			$addProduct .= "</Products>";
 			

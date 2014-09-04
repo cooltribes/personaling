@@ -579,7 +579,7 @@ class Look extends CActiveRecord
 	public function countItems()
 	{
 		if (isset($this->_items)){
-			return $_items;
+			return $this->$_items;
 		}else {
 			$_items = count($this->productos);
 			return $_items;
@@ -1130,5 +1130,26 @@ class Look extends CActiveRecord
 		}
 		return false;
 	}
+
+    public function encode_url($alphabet,$look_id=null,$ps_id=null){
+
+        if ($look_id==null)
+            $look_id = $this->id;
+        if ($ps_id==null)
+            $ps_id = $this->user_id;
+        $num = $look_id.sprintf('%05d', $ps_id);
+        $base_count = strlen($alphabet);
+        $encoded = '';
+        while ($num >= $base_count) {
+            $div = $num/$base_count;
+            $mod = ($num-($base_count*intval($div)));
+            $encoded = $alphabet[$mod] . $encoded;
+            $num = intval($div);
+        }
+
+        if ($num) $encoded = $alphabet[$num] . $encoded;
+
+        return $encoded;
+    }
 	
 }

@@ -1410,11 +1410,29 @@ public function multipleColor2($idColor, $idact)
                     continue;
                 }
                 
+                if($column == 'tienda_id')
+                {
+                    //si seleccionaron la tienda personaling
+                    if($value == "NULL"){
+                        //si es el comparador igual o diferente
+                        $comparator = ($comparator == '=') ? "IS NULL" : "IS NOT NULL";
+
+                        $criteria->addCondition("t.".$column." ".$comparator,
+                                $logicOp);
+                        
+                    }else{
+                        $criteria->compare("t.".$column, $comparator." ".$value,
+                                false, $logicOp);                        
+                    }
+                    continue;
+                    
+                }
+                
                 if($column == 'fecha')
                 {
                     $value = strtotime($value);
                     $value = date('Y-m-d H:i:s', $value);
-                }
+                }                
                 
                 $criteria->compare("t.".$column, $comparator." ".$value,
                         false, $logicOp);

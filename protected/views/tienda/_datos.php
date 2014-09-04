@@ -18,14 +18,14 @@ $cont = 1;
 
 foreach($prods as $data): 
 
-	//echo 'producto';
-
+	
+	
 	$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
    if(isset($category_product))
    {
     $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
 
-    
+   
     ?>
 
     <?php
@@ -144,9 +144,29 @@ $b='';
 				}
 
 				// si no tiene descuento reviso si está marcada como precio especial para agregar el ícono
-				if($iconoDescuento == '' && $data->precio_especial == 1){
+				if($iconoDescuento == '' && $data->precio_especial == 1)
+				{
 					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 1.2em;">Precio especial</span></div>';
 				}
+				
+				$var=0;
+				foreach (Preciotallacolor::model()->findAllByAttributes(array('producto_id'=>$data->id)) as $talCol)
+				{ 	
+					if($talCol->cantidad>0)
+					{
+						$var=1;
+					}		
+				}
+				
+				if($var=="0") //si no quedan productos, no mostrar ofertas; si no decir que el producto esta agotado.
+				{
+					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 1.2em;">Agotado</span></div>';
+				}
+	
+						
+					 
+					
+				
 
 				//var_dump($data->tipoDescuento);
 				/*if($data->precioVenta < $data->getPrecioImpuesto()){
@@ -206,7 +226,7 @@ $b='';
 																												    		'list' => 'Product clicks',
 																												    		'position' => $cont,
 																												    		'url' => $data->getUrl()
-																												    	)).")'>".$tienda->urlVista."</a></span>";
+																												    	)).")'> ".Marca::model()->findByPk($data->marca_id)->nombre."";
 							
 
 						echo($encabezado."

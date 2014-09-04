@@ -1321,24 +1321,40 @@ src: url('../fonts/entypo.woff'),
 
 }
 .slide-1,.slide-2,.slide-3{
-  .slide-content{
-   // border: 2px solid white;
+  .slide-content{   
     height: 540px;
+
     .copy-right{
       color:@negro;
+      float: right;
+      padding: 5.5em 7.5em 0 0;
+      
+      .logo-personaling{
+          width: 183px;
+          margin: 0  auto;
+          img.adorno{
+            margin-top: 1.5em;
+          }
+      }     
+
      .border-bottom{
         border-bottom: 1px solid @color3;
         margin-bottom: 1em;
       }
-      float: right;
-      padding: 5em 7em 0 0;
       h2{
-        font-size: 37px;
+        font-size: 39px;
+        line-height: 41px;
         strong{
           color: @negro;
           font-weight: 700;
         }
       }
+      
+      a.btn{
+        padding: 4px 25px;
+        font-size: 15px;
+      }
+
       .btn-danger{
         background-color:@negro;
       }
@@ -1350,20 +1366,17 @@ src: url('../fonts/entypo.woff'),
           color: black;
         }
       }
+
+
     }
   }
 }
 .slide-1{
-
- // background: #ffd571;
+ 
   border: 11px solid #fff;// #ffd571;
   .slide-content{
-    background: url(../images/slider/01.jpg) no-repeat;
-      .copy-right{
-        padding-top: 7.8em;
-        width: 475px;
-        padding: 3.7em 8.7em 0 0;
-      }
+    background: url(../images/slider/oct-01.jpg) no-repeat;
+      
       a.btn-call2action{
         border: 2px solid @color4;
         display: block;
@@ -1378,45 +1391,16 @@ src: url('../fonts/entypo.woff'),
           color: @color3;
           .transition_all;
         }
-    }
-    a.btn{
-
-        height: 26px;
-        width: 95px;
-        padding-top: 8px;
-        font-size: 16px;
+    }   
       
-    
-    }
-    
-    h2{
-      line-height: 46px;
-      margin-top: 0;
-      margin-bottom: 18px;
-    }  
-    .logo-personaling{
-      width: 260px;
-      margin: 0  auto;
-    }        
   }
 }
 .slide-2{
- //background: #86e9f8;
+ 
   border: 11px solid #fff;//#f3efe8;
   .slide-content{
-    background: url(../images/slider/02.jpg) no-repeat;  
-    .copy-right{
-      width: 530px;
-      padding: 2em 7em 0 0;
-    }
-    h2{
-      line-height: 46px;
-    }
-    .logo-personaling{
-      width: 210px;
-      margin: 1.6em  auto 3em;
-
-    }  
+    background: url(../images/slider/oct-02.jpg) no-repeat;  
+    
   }    
 }
 
@@ -1424,9 +1408,21 @@ src: url('../fonts/entypo.woff'),
   //background: #f3efe8;
   border: 11px solid #fff;//#f3efe8;
   .slide-content{
-    background: url(../images/slider/03.jpg) no-repeat;     
+    background: url(../images/slider/oct-03.jpg) no-repeat;     
     .copy-right{
-      padding: 2em 7em 0 0;
+      padding-top: 4.5em;
+    }
+
+    .logo-personaling{
+        h3 {
+            margin: 0;
+            margin-top: 1em;
+            line-height: 25px;
+            font-size: 21px;
+        }
+        img.adorno {
+            margin-top: .5em;
+        }
     }
     a.btn-call2action{
       border: 2px solid @color4;
@@ -1441,10 +1437,10 @@ src: url('../fonts/entypo.woff'),
       line-height: 46px;
       font-size: 33px !important;
     }
-    .logo-personaling{
+    /*.logo-personaling{
       width: 210px;
       margin: 1.5em  auto;
-    }    
+    } */   
   } 
 }
 

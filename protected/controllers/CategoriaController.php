@@ -66,8 +66,9 @@ class CategoriaController extends Controller
 		{
 			$model = Categoria::model()->findByPk($_GET['id']);
 		}
-		else	
+		else	{
 			$model=new Categoria;
+		}
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -80,7 +81,7 @@ class CategoriaController extends Controller
 			
 			//echo($model->nombre);
 			if($model->validate()){
-			if($model->save()){
+			if($model->save()){ 
 
 	        	$images = CUploadedFile::getInstancesByName('url');
 					
@@ -92,10 +93,10 @@ class CategoriaController extends Controller
 						if(!is_dir($nombre))
 						{
 				   			mkdir($nombre,0777,true);
-				 		}
-								
+				 		}	
 		                if ($pic->saveAs($nombre."/img.jpg")) {
-							
+							 	
+							Yii::app()->session['ma']=2;
 							 $model->urlImagen = '/images/categorias/'. $model->id .'/img.jpg';
 							//$model->urlImagen = $_POST['Categoria']['urlImagen'];
 							$model->save();

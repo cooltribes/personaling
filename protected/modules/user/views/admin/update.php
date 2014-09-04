@@ -387,9 +387,9 @@ function getMonthsArray()
               </li>
                
               <li>
-              	<?php
+              	<?php 
               	
-              	echo CHtml::button("Ver Historial de Personal Shopper", array('submit'=>array('historial', 'class'=>'icon-user')));
+              	//echo CHtml::button("Ver Historial de Personal Shopper", array('submit'=>array('historial')));
               	/*echo CHtml::ajaxLink(
 					  "<i class='icon-user'></i> Ver Historial de Personal Shopper",
 					  Yii::app()->createUrl( 'user/admin/todmin' ,array('id'=>$model->id)));*/

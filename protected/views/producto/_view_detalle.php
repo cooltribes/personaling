@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 
- <?php 
+ <?php  
 
+ #echo $producto->id;
  
   /* @var $this TiendaController */
   $this->breadcrumbs=array(
@@ -441,8 +442,15 @@
           <div class="margin_top">
             <ul class="nav nav-tabs" id="myTab">
               <li class="active"><a href="#descripcion" data-toggle="tab"><?php echo Yii::t('contentForm','Description'); ?></a></li>
+              <?php
+          if($producto->tipo=="0")
+          {
+          ?>  
               <li><a href="#detalles" data-toggle="tab"><?php echo Yii::t('contentForm','Details'); ?></a></li>
               <li><a href="#envio" data-toggle="tab"><?php echo Yii::t('contentForm','Delivery'); ?></a></li>
+           <?php
+          }
+		  ?>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="descripcion">
@@ -955,10 +963,28 @@ $cont=0;
  
 <script>
 var comprando = true;
-var tallaSeleccionada = <?php echo $cantidadTallas == 1? $tallaUnica['id'] : 0  ?>;
-var colorSeleccionado = <?php echo isset($colorUnico)? $colorUnico->id : 
-                        (isset($idColorFiltro)? $idColorFiltro : 0) ?>;
 
+ <?php 
+ $validar=0;
+ foreach ($producto->preciotallacolor as $talCol)
+ {
+ 	
+	if($talCol->cantidad>0)
+	{
+		
+		$validar=1;
+	}
+ }
+?>
+
+<?php 
+if($validar=="1") 
+{?>
+		var tallaSeleccionada = <?php echo $cantidadTallas == 1? $tallaUnica['id'] : 0  ?>;
+		var colorSeleccionado = <?php echo isset($colorUnico)? $colorUnico->id : 
+		                        (isset($idColorFiltro)? $idColorFiltro : 0) ?>;
+<?php 
+}?>
 $(document).ready(function(){
 
     $('.closeModal').click(function(event) {

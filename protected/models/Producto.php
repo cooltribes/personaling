@@ -900,7 +900,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 	}
 	
 
-	public function nueva2($todos)
+	public function nueva2($todos) // esta funcion es el criteria de busqueda de la tienda.
 	{
 
 		$criteria=new CDbCriteria;
@@ -1091,7 +1091,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 
 		
 		
-		$criteria->addCondition('preciotallacolor.cantidad > 0');
+		#$criteria->addCondition('preciotallacolor.cantidad > 0'); // descomentar esto si no se quieren mostrar los productos agotados.
 			
 		// $criteria->order = "t.id ASC";
 		//------------------------- ALEATORIZAR LA VISTA PRINCIPAL -------------------------

@@ -1,4 +1,4 @@
-<?php
+<?php 
 //$this->breadcrumbs=array(
 //	'Looks'=>array('admin'),
 //	'Crear',
@@ -20,7 +20,7 @@
 }
 </style>
 <script language="JavaScript">
-
+ 
 
 var dragSrcEl = '';
 function handleDragStart(e) {
@@ -455,7 +455,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               $list,
               array('empty' => 'Seleccione una campaña', 'options' => array($model->campana_id => array('selected' => true))));
 		?>
-          <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
+
             <a  title="Traer al frente" class="btn" id="btn_frente"><?php echo Yii::t('contentForm', 'Bring front'); ?></a>
             <a  title="Llevar atrás" class="btn" id="btn_atras"> <?php echo Yii::t('contentForm', 'Send back') ?></a>
              <?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -485,7 +485,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		        'id'=>'btn_siguiente',
 		       ),	    
 	)); ?>
-   
+            <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
         </h4>
       
         <!--

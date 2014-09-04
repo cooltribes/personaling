@@ -40,7 +40,9 @@ $this->breadcrumbs=array(
           	<?php
           	if($model->urlImagen!="")
           	{
-          		echo CHtml::image(Yii::app()->baseUrl . $model->urlImagen, "categoria", array('id'=>'img-categoria'));
+          		//echo CHtml::image(Yii::app()->baseUrl . $model->urlImagen, "categoria", array('id'=>'img-categoria'));
+				 $ruta=Yii::app()->baseUrl . $model->urlImagen;
+				echo "<img src=".$ruta."?" . time() . ">";
           	}
 			else{
 				echo "<img src='http://placehold.it/150x150'/>";

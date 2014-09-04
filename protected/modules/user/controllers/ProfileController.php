@@ -22,25 +22,26 @@ class ProfileController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
+            return array(
+                array('allow',  // allow all users to perform 'index' and 'view' actions
 
-				'actions'=>array('modal','modalshopper','listado'),
+                        'actions'=>array('modal','modalshopper','listado'),
 
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('perfil','micuenta','direcciones','encantan','looksencantan', 'tusPerfiles'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array(),
-				//'users'=>array('admin'),
-				'expression' => 'UserModule::isAdmin()',
-			),
-			array('allow', // acciones validas para el personal Shopper
-               'actions' => array('banner'),
-               'expression' => 'UserModule::isPersonalShopper()'
+                        'users'=>array('*'),
+                ),
+                array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                    'actions'=>array('perfil','micuenta','direcciones','encantan',
+                        'looksencantan', 'tusPerfiles', 'unsuscribeMail'),
+                    'users'=>array('@'),
+                ),
+                array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                        'actions'=>array(),
+                        //'users'=>array('admin'),
+                        'expression' => 'UserModule::isAdmin()',
+                ),
+                array('allow', // acciones validas para el personal Shopper
+                   'actions' => array('banner'),
+                   'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -337,6 +338,38 @@ class ProfileController extends Controller
 	    $this->render('notificaciones',array(
 	    	'model'=>$model,
 			'profile'=>$model->profile,
+	    ));
+	}
+        
+        /**
+         * Darse de baja en la lista de correos
+         */
+	public function actionUnsuscribeMail()
+	{
+            $model = $this->loadUser();
+            
+            //si hizo click en el boton
+            if(isset($_POST["unsuscribe"]) && $_POST["unsuscribe"]){
+                
+                //LLamar la API
+                //API key para lista de Personaling en Mailchimp
+                $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
+                $result = $MailChimp->call('lists/unsubscribe', array(
+                    'id' => Yii::t('contentForm','List ID Mailchimp'),
+                    'email' => array('email' => $model->email),                    
+                    'send_goodbye' => false,
+                ));                
+               
+                $model->suscrito_nl = 0; //desuscribir en la BD
+                $model->save();
+                
+                Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash("success", "Te has dado de baja en la lista de correos.");
+            }
+            
+            
+	    $this->render('unsuscribe',array(
+	    	'user'=>$model,
 	    ));
 	}	
 /**

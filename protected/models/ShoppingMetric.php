@@ -38,7 +38,8 @@ class ShoppingMetric extends CActiveRecord
         /*MOVIMIENTOS DEL USUARIO*/
         const USER_INICIO = 100;
 	const USER_TIENDA = 101;
-	const USER_LOOK = 102;    
+	const USER_LOOK = 102;
+    const USER_VIEW_LOOK = 103;
         
         /*TIPOS DE COMPRA*/
 	const TIPO_TIENDA = 0; 
@@ -250,6 +251,9 @@ class ShoppingMetric extends CActiveRecord
                     break;
                 case 102: 
                     echo "Tienda de Looks"; 
+                    break;
+                case 103:
+                    echo "Vista de Look";
                     break;
                 default: //5 
                     echo "Acción no definida"; 

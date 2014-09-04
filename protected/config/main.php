@@ -155,8 +155,13 @@ return array(
 			'urlFormat'=>'path',
 			 'showScriptName'=>false,
      			//'caseSensitive'=>false, 
-     			'baseUrl'=>'/develop',  
+     			'baseUrl'=>'/develop',
+
 			'rules'=>array(
+                array(
+                    'class' => 'application.components.ShortenerUrlRule',
+                    'connectionID' => 'db',
+                ),
 				'productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
 				'looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',
 				'looks-personalizados'=>'tienda/look',
@@ -170,6 +175,7 @@ return array(
 				'inicio-personaling'=>'user/login',
 				'reportico'=>'reportico',
 				'tt'=>'site/tienda',
+                'look/<id:\d+>/ps/<ps_id:\d+>'=>'look/view',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',

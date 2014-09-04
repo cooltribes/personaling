@@ -377,7 +377,16 @@ class LookController extends Controller
 		}		
 		
 		$model->increaseView();
-	
+        $look_id = 0;
+        if (isset($_GET['id']))
+                $look_id = $_GET['id'];
+        $ps_id = 0;
+        if (isset($_GET['ps_id']))
+            $ps_id = $_GET['ps_id'];
+
+
+        ShoppingMetric::registro(ShoppingMetric::USER_VIEW_LOOK,array('look_id'=>$look_id,'ps_id'=>$ps_id));
+
 		$productoView = new ProductoView;
 		$productoView->user_id = Yii::app()->user->id;
 		

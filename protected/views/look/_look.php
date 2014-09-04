@@ -79,7 +79,7 @@
 
 
                   echo CHtml::link(
-                      CHtml::image(Yii::app()->baseUrl.'/images/icon_twitter_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),'',array('data-toggle'=>'modal',
+                      CHtml::image(Yii::app()->baseUrl.'/images/icon_compartir_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),'#',array('data-toggle'=>'modal',
                       	'data-target'=>'#dialogLook'.$look->id)
 
                   );
@@ -154,7 +154,7 @@
         <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogLook'.$look->id)); ?>
         <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>
-            <h4>Share Link</h4>
+            <h4><?php echo Yii::t('contentForm', 'Share Link'); ?></h4>
         </div>
 
         <div class="modal-body">
@@ -163,7 +163,7 @@
         <div class="modal-footer">
 
             <?php $this->widget('bootstrap.widgets.TbButton', array(
-                'label'=>'Close',
+                'label'=>Yii::t('contentForm', 'Close'),
                 'url'=>'#',
                 'htmlOptions'=>array('data-dismiss'=>'modal'),
             )); ?>

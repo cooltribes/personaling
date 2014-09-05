@@ -212,7 +212,8 @@ $looks_recomendados = $look->match($model);
           <div class="span4">
             <h2 class="braker_bottom"> Notificaciones </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><?php echo CHtml::link('Gestionar correos de Personaling',array('notificaciones'),array("title"=>"Gestionar correos de Personaling")); ?></li>
+              <li><?php echo CHtml::link('Darme de baja en la lista correos',array('unsuscribeMail'),array("title"=>"Darme de baja en la lista correos")); ?></li>
+              <!--<li><?php // echo CHtml::link('Gestionar correos de Personaling',array('notificaciones'),array("title"=>"Gestionar correos de Personaling")); ?></li>-->
               <!-- <li><a href="#" title="Desuscribirse de la lista de correos">Darte de baja de la lista correos (LINK MUERTO)</a></li> -->
             </ul>
             <h2 class="braker_bottom"> Privacidad </h2>

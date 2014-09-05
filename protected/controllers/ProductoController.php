@@ -1824,7 +1824,7 @@ public function actionReportexls(){
                 $producto = Producto::model()->noeliminados()->findByPk($seo->tbl_producto_id);
             } else {
     //			$producto = Producto::model()->activos()->noeliminados()->findByPk($_GET['id']);
-                $producto = Producto::model()->noeliminados()->findByPk($_GET['id']);
+    			$producto = Producto::model()->noeliminados()->findByPk($_GET['id']);
                 $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
             }
 
@@ -3790,12 +3790,11 @@ public function actionReportexls(){
             Yii::import('ext.phpexcel.XPHPExcel');
             $objPHPExcel = XPHPExcel::createPHPExcel();
 
-            $marca = Marca::model()->findByPk($idMarca);
-
             $objPHPExcel->getProperties()->setCreator("Personaling.com")
-                                     ->setLastModifiedBy("Personaling.com")
+                                     ->setLastModifiedBy("Personaling.com")                                     
                                      ->setTitle("Inbound $marca->nombre");
 
+            $marca = Marca::model()->findByPk($idMarca);
             // creando el encabezado
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', 'SKU')
@@ -3812,13 +3811,13 @@ public function actionReportexls(){
                 'font' => array(
                     'size' => 14,
                     'bold' => true,
-                    'color' => array(
-                                'rgb' => '000000'
-                            ),
-                    ),
-                'text-align' => array(
-                    'horizontal' => 'center',
+//                    'color' => array(
+//                                'rgb' => '000000'
+//                            ),
                 ),
+//                'text-align' => array(
+//                    'horizontal' => 'center',
+//                ),
             );
             $objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
             $objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
@@ -3847,8 +3846,9 @@ public function actionReportexls(){
                 }   
             }
             
+            
             // Set active sheet index to the first sheet, so Excel opens this as the first sheet
-            $objPHPExcel->setActiveSheetIndex(0);
+//            $objPHPExcel->setActiveSheetIndex(0);
 
             // Redirect output to a clientâ€™s web browser (Excel5)
             header('Content-Type: application/vnd.ms-excel');

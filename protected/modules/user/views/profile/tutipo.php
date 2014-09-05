@@ -75,14 +75,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                 mundo de looks adaptados para ti.");
     } ?>    
         
-      <?php $this->widget('bootstrap.widgets.TbButton', array(            
-            'label'=>  Yii::t('contentForm', '¡Saltar este paso!'),
-            'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-            'url'=>$this->createUrl("/tienda/look"), // null, 'large', 'small' or 'mini'
-            'size'=>'large', // null, 'large', 'small' or 'mini'
-            'htmlOptions' => array('class'=>'pull-right span3'), 
-
-        )); ?>
+      
       </h1>
       <article class="margin_top  margin_bottom_small ">
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -179,16 +172,27 @@ $this->widget('bootstrap.widgets.TbAlert', array(
             <p class="">Utilizamos tus características y medidas para que nuestros Personal Shoppers puedan dar en el clavo con los looks que te recomienden. <strong>¡No te preocupes!</strong> Esta información es confidencial y solo podremos saberla nosotros.</p>
           </div>
 <?php endif; ?>
-          <div  class="margin_top_medium row" >
-            <div id="numero3" class="span4 offset4 ">
+          <div  class="margin_top_medium row-fluid">
+<!--            <div id="numero3" class="span4 offset4 ">-->
+            <div class="span4 offset4 ">
               <?php $this->widget('bootstrap.widgets.TbButton', array(
-              				'buttonType' => 'submit',
-  						    'label'=>isset($editar)?'Guardar':'Siguiente',
-  						    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-  						    'size'=>'large', // null, 'large', 'small' or 'mini'
-  							'htmlOptions' => array('class'=>'btn-block'), 
-  							
-  						)); ?>
+                'buttonType' => 'submit',
+                    'label'=>isset($editar)?'Guardar':'Siguiente',
+                    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                    'size'=>'large', // null, 'large', 'small' or 'mini'
+                        'htmlOptions' => array('class'=>'btn-block', 'id' => 'numero3'), 
+
+                )); ?>
+            </div>
+            <div class="span3 offset1">
+             <?php $this->widget('bootstrap.widgets.TbButton', array(            
+                'label'=>  Yii::t('contentForm', '¡Saltar este paso!'),
+                'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                'url'=>$this->createUrl("/tienda/look"), // null, 'large', 'small' or 'mini'
+//                'size'=>'small', // null, 'large', 'small' or 'mini'
+                'htmlOptions' => array('class'=>'pull-right', 'id' => 'saltar'), 
+
+            )); ?>
             </div>
           </div>
         </fieldset>
@@ -239,7 +243,7 @@ $script = "
     <p class="muted" >¡Queremos recomendarte ropa que te favorezca y haga ver espectacular! </p>
   </li>
   
-  <li id="numero3" data-id="yw2" data-button="Terminar" data-options="tipLocation:top;tipAnimation:fade">
+  <li data-id="numero3" data-button="Terminar" data-options="tipLocation:top;tipAnimation:fade">
     <p class="lead"><strong>Escoge tu estilo </strong></p>
     <p class="muted">Haz click en siguiente y elige entre las imágenes tu estilo </p>
   </li>

@@ -1,44 +1,19 @@
 <?php
-class ZohoSales{
-	public $id;
-	public $subject;
-	public $SONumber;
-	public $status;
-	public $DueDate;
-	public $ContactName;
-	public $Email;
-	public $Peso;
-	public $BillingAddressStreet;
-	public $BillingAddressState;
-	public $BillingAddressCity;
-	public $BillingAddressCountry;
-	public $TelefonoFacturacion;
-	public $ShippingAddressStreet;
-	public $ShippingAddressState;
-	public $ShippingAddressCity;
-	public $ShippingAddressCountry;
-	public $TelefonoEnvio;
-	public $tax;
-	public $total;
-	public $Adjustments;
-	public $Discount;
-	public $TotalAfterDiscount; 
+class ZohoEgreso{
 	 
 	// Save user to potential clients list
-	function save_potential($orden){
-		
-		//$orden = Orden::model()->findByPk($orden); 
-		
+	function save($orden){
+			
 		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= '<Invoices>';
 		$xml .= '<row no="1">';
-		$xml .= '<FL val="Subject">Orden '.$orden->id.'</FL>';
-        $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
-		$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
-		$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';
-		$xml .= '<FL val="Contact Id">'.$orden->user->zoho_id.'</FL>';
-		$xml .= '<FL val="Contact Name">'.$orden->user->profile->first_name.' '.$orden->user->profile->last_name.'</FL>';
-		$xml .= '<FL val="Email">'.$orden->user->email.'</FL>';
+		$xml .= '<FL val="Subject">Egreso - '.date("d-m-Y").'</FL>';
+        $xml .= '<FL val="Purchase Order"> Egreso </FL>';
+		$xml .= '<FL val="Status">Finalizada</FL>'; 
+		$xml .= '<FL val="Invoice Date">'.date("Y-m-d").'</FL>';
+		$xml .= '<FL val="Contact Id">'.$this->findPersonalingUser().'</FL>';
+		$xml .= '<FL val="Contact Name">Personaling Enterprise S.L</FL>';
+		$xml .= '<FL val="Email">info@personaling.com</FL>';
 		$xml .= '<FL val="Peso">'.$orden->peso.'</FL>';
 		$xml .= '<FL val="Envio">'.$orden->envio.'</FL>';
 		$xml .= '<FL val="Billing Street">'.$orden->direccionFacturacion->dirUno.' '.$orden->direccionFacturacion->dirDos.'</FL>';
@@ -56,7 +31,7 @@ class ZohoSales{
 		
 		$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
 		$envio_pago = 0;
-		$ajuste=0;
+		$ajuste=0; 
 		$forma="";
 		$cupon=0;
 		
@@ -129,7 +104,12 @@ class ZohoSales{
 		 
 	}
 
-	function Products($order)
+	function findPersonalingUser(){
+		// check if already exists on Zoho, if not send it
+		
+	}
+
+	function Products($move)
 	{
 		$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$order));
 		$ordenhas = new OrdenHasProductotallacolor;

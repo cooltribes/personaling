@@ -2802,8 +2802,8 @@ public function actionValidar()
 				echo "fin de ciclo"; 
 				echo "<br><br>";
 				
-				var_dump($response);
-				Yii::app()->end();
+				//var_dump($response);
+				//Yii::app()->end();
 				
 				/* reiniciando todos los valores */
 				$xml = ""; 
@@ -2846,7 +2846,7 @@ public function actionValidar()
 				
 				
 				$xml .= '<row no="'.$cont.'">';
-				$xml .= '<FL val="Subject">Orden Numero '.$orden->id.'</FL>';
+				$xml .= '<FL val="Subject">Orden '.$orden->id.'</FL>';
 				
 				$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
 				$envio_pago = 0;
@@ -2936,6 +2936,8 @@ public function actionValidar()
 				
 			$xml .= '</Invoices>'; 
 			
+			var_dump($xml);
+			
 			$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
 				$ch = curl_init();
@@ -2949,6 +2951,9 @@ public function actionValidar()
 				//Execute cUrl session
 				$response = curl_exec($ch); 
 				curl_close($ch);
+				
+				var_dump($response);
+				Yii::app()->end();
 						
 				$datos = simplexml_load_string($response);
 				$posicion=0;

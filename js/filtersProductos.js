@@ -20,6 +20,10 @@ function changeFilter(e){
    {       
        listFilter(column, 'marcas');
 
+   }else if(column.val() === 'tienda_id') //Tienda del producto
+   {       
+       listFilter(column, 'tiendas');
+
    }else if(column.val() === 'codigo' || column.val() === 'categoria'
                 || column.val() === 'sku') 
    {

@@ -1,4 +1,5 @@
-<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
+<!--<div class="row margin_top margin_bottom" id="filters-view" style="display: none">-->
+<div class="row margin_top margin_bottom" id="filters-view" >
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
@@ -18,6 +19,12 @@
                                     'style' => 'display:none'));
     
     echo CHtml::dropDownList('marcas', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
+                            array('style' => 'display:none'));
+    
+    /*Filtro de tiendas*/
+    $allBrands = CHtml::listData(Tienda::model()->findAll(), 'id', 'name');
+    $allBrands['NULL'] = "Personaling";
+    echo CHtml::dropDownList('tiendas', '', $allBrands,
                             array('style' => 'display:none'));
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
@@ -55,6 +62,7 @@
                                 'estado' => 'Estado',
                                 'fecha' => 'Fecha de Carga',
                                 'marca_id' => 'Marca',
+                                'tienda_id' => 'Tienda',
                                 'view_counter' => 'Visitas',
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 

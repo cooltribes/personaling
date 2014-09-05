@@ -199,6 +199,10 @@ class MovimientoController extends Controller
 					$ptc->cantidad=$ptc->cantidad-$mhptc->cantidad;
 					$ptc->save();
 				}
+				
+				$zoho = new ZohoEgreso;
+				$zoho->save($movimiento);
+				
 				if($_POST['tipo']){
 					$defectuoso = new Defectuoso;
 					$defectuoso->cantidad = $mhptc->cantidad;

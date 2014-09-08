@@ -199,8 +199,6 @@ class ZohoSales{
 		$xml2 .= '<FL val="Descuento Productos">'.(double)$dcto_productos.'</FL>';
 		
 		
-		/*AÑANDIENDO AL CLIENTE 
-		
 			$addProduct .= "</Products>";
 			
 			$url2 ="https://crm.zoho.com/crm/private/xml/Contacts/updateRelatedRecords"; 
@@ -239,7 +237,8 @@ class ZohoSales{
 					}
 					
 					if($look->tipoDescuento == 1){
-						$dcto_looks += $look->valorDescuento; 
+						$discount = $look-> getPrecioProductosFull() - $look->valorDescuento; 
+						$dcto_looks += $discount; 
 					}
 						
 				} 

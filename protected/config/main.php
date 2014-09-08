@@ -305,6 +305,7 @@ return array(
 				    'mostrarChic'=>true,
 				    'country'=>'Venezuela',
 				    'zohoToken'=>'07c608e96b409f76ee5a47c383576418',
+				    'outlet'=>TRUE,
 		
 	),
 );

@@ -160,7 +160,7 @@ $b='';
 				
 				if($var=="0") //si no quedan productos, no mostrar ofertas; si no decir que el producto esta agotado.
 				{
-					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 1.2em;">Agotado</span></div>';
+					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 2.6em;">Agotado</span></div>';
 				}
 	
 						

@@ -180,7 +180,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Tus Compras', 'url'=>array('/orden/listado')),
                     array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
                     array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
-                    array('label'=>'Solicitar Pago', 'url'=>array('/pago/solicitar'), 'visible' => UserModule::isPersonalShopper()),
+                    array('label'=>'Tus Pagos', 'url'=>array('/pago/solicitar'), 'visible' => UserModule::isPersonalShopper()),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
 					array('label'=>'Tus Ventas', 'url'=>array('/controlpanel/misventas/'.Yii::app()->user->id.''), 'visible' => UserModule::isPersonalShopper()),	
 					
@@ -252,7 +252,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 )),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
-                array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu')),
+                array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu'), 'visible'=>Yii::app()->params['outlet']),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
                 array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('id'=>'btn-gift','class'=>'hidden-phone to-white-icon', 'data-html'=>"true"), 'visible'=>!Yii::app()->user->isGuest,),
 				array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),

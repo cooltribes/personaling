@@ -1913,16 +1913,24 @@ public function actionCategorias(){
 	public function actionListarLooks(){
 		$criteria = new CDbCriteria;
 		$criteria->compare('user_id', Yii::app()->user->id, true);
-    	$looks = Look::model()->findAll($criteria); 
+
     	$total = Look::model()->count($criteria);
     	$pages = new CPagination($total);
-        $pages->pageSize = 9;
+       // $pages->pageSize = 9;
+        $pages->setPageSize(9);
         $pages->applyLimit($criteria);
-    	
-		$this->render('listar_looks', array(
-            'looks' => $looks,
-            'pages'=>$pages,
-        ));
+        $looks = Look::model()->findAll($criteria);
+       // echo $total.'total';
+       // echo $pages->pageSize."pagesize";
+    	if (!isset($_GET['page'])){
+            $this->render('listar_looks', array(
+                'looks' => $looks,
+                'pages'=>$pages,
+            ));
+        } else {
+            echo $this->renderPartial('_look', array('looks' => $looks,
+                'pages' => $pages,), true, true);
+        }
     }
 
 	protected function validarArchivo($archivo){

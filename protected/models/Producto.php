@@ -566,11 +566,11 @@ class Producto extends CActiveRecord
          if( strtolower($ext)!="jpg"&&strtolower($ext)!="png")
             $ext="jpg";    
           
-         $url=$this->getImageUrl($color_id);
+         $url=$this->getImageUrl($color_id,array("ext"=>$ext));
          if($url!="http://placehold.it/180"){
             $url=explode('.',$url);             
-            $url=$url[0];
-            $url=$url."_thumb.".$ext; 
+            $url=$url[0]."_thumb.".$url[1];
+           // $url=$url."_thumb.".$ext;
          } 
          return $url;
             
@@ -1408,6 +1408,26 @@ public function multipleColor2($idColor, $idact)
                     
                     
                     continue;
+                }
+                
+
+                if($column == 'tienda_id')
+                {
+                    //si seleccionaron la tienda personaling
+                    if($value == "NULL"){                       
+                        
+                        //si es el comparador igual o diferente
+                        $comparator = ($comparator == '=') ? "IS NULL" : "IS NOT NULL";
+
+                        $criteria->addCondition("t.".$column." ".$comparator,
+                                $logicOp);
+                        
+                    }else{
+                        $criteria->compare("t.".$column, $comparator." ".$value,
+                                false, $logicOp);                        
+                    }
+                    continue;
+                    
                 }
                 
                 if($column == 'fecha')

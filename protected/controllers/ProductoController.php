@@ -4083,6 +4083,7 @@ public function actionReportexls(){
 	{
             $nuevos = 0;
             $actualizados = 0;
+            $uploadedFileName = "";
             $error = false;            
            
             /*Primer paso - Validar el archivo*/
@@ -4090,13 +4091,13 @@ public function actionReportexls(){
             {
                
                 $archivo = CUploadedFile::getInstancesByName('archivoValidacion');
-
+                
                 //Guardarlo en el servidor para luego abrirlo y revisar
                 if (isset($archivo) && count($archivo) > 0) {
                     foreach ($archivo as $arc => $xls) {
                         $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsMasterData/' . "Temporal";
                         $extension = '.' . $xls->extensionName;                     
-
+                        $uploadedFileName = $xls->name;
                         if (!$xls->saveAs($nombre . $extension)){
                             Yii::app()->user->updateSession();
                             Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));                            
@@ -4112,10 +4113,12 @@ public function actionReportexls(){
                 if(!$error && is_array($resValidacion = $this->validarImportacionExternos($nombre . $extension))){
 
                     Yii::app()->user->updateSession();
-                    Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
-                                Puede continuar con el siguiente paso.<br><br>
-                                Este archivo contiene <b>{$resValidacion['nProds']}
-                                </b> productos.");                    
+                    Yii::app()->user->setFlash('success', "<h4>
+                            Éxito! El archivo no tiene errores,
+                            puedes continuar con el siguiente paso.</h4><br>
+                                
+                            Nombre del archivo: <b>$uploadedFileName</b>.<br>
+                            Productos que contiene: <b>{$resValidacion['nProds']}</b>.");                    
                 }
 
             //Segundo paso - Subir el Archivo
@@ -4132,6 +4135,8 @@ public function actionReportexls(){
 
                         $nombre = $rutaArchivo.$nombreTemporal;
                         $extension = '.' . $xls->extensionName;
+                        $uploadedFileName = $xls->name;
+                        
 
                         if ($xls->saveAs($nombre . $extension)) {
 
@@ -4200,6 +4205,9 @@ public function actionReportexls(){
                             // Tienda
                             $tienda = Tienda::model()->findByAttributes(array('name' => $rTienda));                                                        
 
+                            /*Recortar el nombre para adatarlo al campo en la BD*/
+                            $rNombre = substr($rNombre, 0, 50);                            
+                            
                             if($prodExiste){
 
                                 // actualiza el producto
@@ -4541,6 +4549,7 @@ public function actionReportexls(){
             } // Cargar productos externos
 
             $this->render('importarExternos', array(                
+                'fileName' => $uploadedFileName,
                 'nuevos' => $nuevos,
                 'actualizados' => $actualizados,               
             ));

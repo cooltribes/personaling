@@ -182,7 +182,9 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
                     array('label'=>'Solicitar Pago', 'url'=>array('/pago/solicitar'), 'visible' => UserModule::isPersonalShopper()),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
-                    // array('label'=>'Perfil', 'url'=>'#'),
+					array('label'=>'Tus Ventas', 'url'=>array('/controlpanel/misventas/'.Yii::app()->user->id.''), 'visible' => UserModule::isPersonalShopper()),	
+					
+                     
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),
                     '---',
                     array('label'=>'¿Comprando para alguién más?'),

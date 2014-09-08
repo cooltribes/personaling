@@ -155,8 +155,13 @@ return array(
 			'urlFormat'=>'path',
 			 'showScriptName'=>false,
      			//'caseSensitive'=>false, 
-     			'baseUrl'=>'/develop',  
+     			'baseUrl'=>'/develop',
+
 			'rules'=>array(
+                array(
+                    'class' => 'application.components.ShortenerUrlRule',
+                    'connectionID' => 'db',
+                ),
 				'productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
 				'looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',
 				'looks-personalizados'=>'tienda/look',
@@ -170,6 +175,7 @@ return array(
 				'inicio-personaling'=>'user/login',
 				'reportico'=>'reportico',
 				'tt'=>'site/tienda',
+                'look/<id:\d+>/ps/<ps_id:\d+>'=>'look/view',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
@@ -298,7 +304,7 @@ return array(
 				    'mostrarMarcas'=>true,
 				    'mostrarChic'=>true,
 				    'country'=>'Venezuela',
-				    'zohoToken'=>'2fdec0a5be36fa577120a6d14bc0ac45',
+				    'zohoToken'=>'07c608e96b409f76ee5a47c383576418',
 		
 	),
 );

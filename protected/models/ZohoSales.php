@@ -32,7 +32,7 @@ class ZohoSales{
 		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= '<Invoices>';
 		$xml .= '<row no="1">';
-		$xml .= '<FL val="Subject"> Orden '.$orden->id.'</FL>';
+		$xml .= '<FL val="Subject">Orden '.$orden->id.'</FL>';
         $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
 		$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
 		$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';
@@ -107,6 +107,7 @@ class ZohoSales{
 		$xml .= '</row>';
 		$xml .= '</Invoices>';
 		
+		var_dump($xml);
 		//echo htmlspecialchars($xml)."<p><p>";
 		//Yii::app()->end();
 		
@@ -162,7 +163,7 @@ class ZohoSales{
 			$discount_price = $precio->precioDescuento;
 			$discount = $precio->ahorro; 
 			
-			$xml2 .= '<FL val="Product Id">'.intval($id).'</FL>';
+			$xml2 .= '<FL val="Product Id">'.(int)$id.'</FL>';
 			$xml2 .= '<FL val="Product Name">'.$nombre.'</FL>';
 			$xml2 .= '<FL val="Unit Price">'.(double)$unit.'</FL>';
 			$xml2 .= '<FL val="List Price">'.(double)$unit.'</FL>';
@@ -197,8 +198,6 @@ class ZohoSales{
 		$xml2 .= '<FL val="Costo">'.(double)$costo.'</FL>'; 
 		$xml2 .= '<FL val="Descuento Productos">'.(double)$dcto_productos.'</FL>';
 		
-		
-		/*AÑANDIENDO AL CLIENTE */
 		
 			$addProduct .= "</Products>";
 			
@@ -238,7 +237,8 @@ class ZohoSales{
 					}
 					
 					if($look->tipoDescuento == 1){
-						$dcto_looks += $look->valorDescuento; 
+						$discount = $look-> getPrecioProductosFull() - $look->valorDescuento; 
+						$dcto_looks += $discount; 
 					}
 						
 				} 

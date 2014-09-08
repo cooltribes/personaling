@@ -917,12 +917,17 @@ class AdminController extends Controller
 			
 			if($cont < 100)
 			{
-				$user=User::model()->findByPk($data->id);
+				//var_dump($data['id']); 
+				//Yii::app()->end();
+				if(isset($data['id']))
+					$user=User::model()->findByPk($data['id']);
+				else if(isset($data->id))
+					$user=User::model()->findByPk($data->id);
 				
 				/*Datos para el arreglo a comparar */
 					
 				$add = array();
-				$add = array("row" => $cont, "user" => $data->id);
+				$add = array("row" => $cont, "user" => $user->id);
 				array_push($ids,$add);
 						
 				$time = strtotime($user->profile->birthday);

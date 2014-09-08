@@ -74,11 +74,21 @@
               <div class="mis_looks_descripcion"><?php echo $look->description; ?></div>
               <script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
               <div align="right">
+                  <?php
+                  // link to share
+
+
+                  echo CHtml::link(
+                      CHtml::image(Yii::app()->baseUrl.'/images/icon_compartir_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),'#',array('data-toggle'=>'modal',
+                      	'data-target'=>'#dialogLook'.$look->id)
+
+                  );
+                  ?>
                 <?php
                 // twitter button
                 echo CHtml::link(
                   CHtml::image(Yii::app()->baseUrl.'/images/icon_twitter_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),
-                  'https://twitter.com/intent/tweet?url='.Yii::app()->getBaseUrl(true).'/look/'.$look->id.'&text='.$look->title.'&lang=es&via=Personaling'
+                  'https://twitter.com/intent/tweet?url='.Yii::app()->getBaseUrl(true).'/l/'.$look->encode_url("123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ").'&text='.$look->title.'&lang=es&via=Personaling'
                 );
                 
 
@@ -140,7 +150,25 @@
         </div>
         <span class="label label-important"><?php echo Yii::t('contentForm','Promotion'); ?></span> 
         </article>
-    </div>		
+    </div>
+        <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogLook'.$look->id)); ?>
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h4><?php echo Yii::t('contentForm', 'Share Link'); ?></h4>
+        </div>
+
+        <div class="modal-body">
+            <p><?php echo Yii::app()->getBaseUrl(true)."/l/".$look->encode_url("123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"); ?></p>
+        </div>
+        <div class="modal-footer">
+
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
+                'label'=>Yii::t('contentForm', 'Close'),
+                'url'=>'#',
+                'htmlOptions'=>array('data-dismiss'=>'modal'),
+            )); ?>
+        </div>
+        <?php $this->endWidget(); ?>
 	<?php endforeach; ?>
 	<script>
 	$('.imglook').on("load",function(){

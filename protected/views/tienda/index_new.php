@@ -292,7 +292,6 @@ if(isset($seo)){
     background: #ddd;
     color: #333;
 }
-
 </style>
 
 <section class="bard_tienda">

@@ -187,8 +187,13 @@ class User extends CActiveRecord {
 
     public function defaultScope() {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope, array(
-                    'alias' => 'user',
-                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status,user.status_register, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, user.ps_destacado, user.zoho_id, user.tipo_zoho, user.interno, user.admin_ps, user.fecha_ps',
+            'alias' => 'user',
+            'select' => 'user.id, user.username, user.email, user.create_at,
+                user.lastvisit_at, user.visit, user.superuser, user.status,
+                user.status_register, user.privacy, user.personal_shopper,
+                user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, 
+                user.ps_destacado, user.zoho_id, user.tipo_zoho, user.interno, user.suscrito_nl, user.admin_ps, user.fecha_ps',
+
         )); 
     }
 

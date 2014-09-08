@@ -8,7 +8,7 @@
   <div class="row" id="looks">
   	
 	<?php foreach($looks as $look): 
-			
+
                 if(!$look->getIsVisible()){
                     continue;
                 }
@@ -70,7 +70,7 @@
         <div class="hidden-phone margin_top_small vcard row-fluid">
           <div class="span12 hidden-tablet">
             <div class="mis_looks">
-              <div class="mis_looks_titulo"><?php echo $look->title; ?></div>
+              <div class="mis_looks_titulo"><?php echo $look->title."-".$look->id; ?></div>
               <div class="mis_looks_descripcion"><?php echo $look->description; ?></div>
               <script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
               <div align="right">
@@ -207,6 +207,5 @@
 	  //  'afterAjaxUpdate' => 'alert("hola");',
 	    'pages' => $pages,
 	    //'debug' => true,
-	)); ?> 
+	)); ?>
 	</div>
-  

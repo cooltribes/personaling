@@ -961,7 +961,12 @@ class ProfileController extends Controller
 		$model = $this->loadUser();
 		//Yii::trace('username:'.$model->username.' Error: Inicio Guardado', 'registro');	
 		$profile=$model->profile;
-		$profile->profile_type = 1;
+        if(User::model()->is_personalshopper($model->id)){
+            $profile->profile_type = 6;
+        } else {
+            $profile->profile_type = 1;
+        }
+
 		// ajax validator
 		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
 		{
@@ -1016,7 +1021,10 @@ class ProfileController extends Controller
 					Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos, no se guardaron los cambios, intente mas tarde."));
 					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
 				}
-			} else $profile->validate();
+			} else {
+                Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+                $profile->validate();
+            }
 		}
 
 		$this->render('edit',array(
@@ -1128,7 +1136,7 @@ class ProfileController extends Controller
 						Yii::app()->user->setFlash('success',UserModule::t("New password is saved."));
 						//$this->redirect(array("profile"));
 					} else {
-						Yii::trace('username:'.$user->username.' Error:'.print_r($user->getErrors(),true), 'registro');
+						Yii::trace('username:'.$new_password->username.' Error:'.print_r($new_password->getErrors(),true), 'registro');
 						Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos hubo un error, intente de nuevo mas tarde."));
 					}
 			}

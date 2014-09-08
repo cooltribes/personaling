@@ -1918,11 +1918,15 @@ public function actionCategorias(){
     	$pages = new CPagination($total);
         $pages->pageSize = 9;
         $pages->applyLimit($criteria);
-    	
-		$this->render('listar_looks', array(
-            'looks' => $looks,
-            'pages'=>$pages,
-        ));
+    	if (!isset($_GET['page'])){
+            $this->render('listar_looks', array(
+                'looks' => $looks,
+                'pages'=>$pages,
+            ));
+        } else {
+            echo $this->renderPartial('_look', array('looks' => $looks,
+                'pages' => $pages,), true, true);
+        }
     }
 
 	protected function validarArchivo($archivo){

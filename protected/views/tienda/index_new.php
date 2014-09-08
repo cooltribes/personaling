@@ -1,4 +1,4 @@
-<?php 
+<?php echo Yii::app()->session['outlet'];
 $seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
 if(isset($seo)){
     $this->pageTitle = $seo->title;

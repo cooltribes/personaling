@@ -2,89 +2,29 @@
 class ZohoEgreso{
 	 
 	// Save user to potential clients list
-	function save($orden){
+	function save($move){
 			
 		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= '<Invoices>';
 		$xml .= '<row no="1">';
-		$xml .= '<FL val="Subject">Egreso - '.date("d-m-Y").'</FL>';
+		$xml .= '<FL val="Subject">Egreso '.$move->motivo.' - '.date("d-m-Y").'</FL>';
         $xml .= '<FL val="Purchase Order"> Egreso </FL>';
 		$xml .= '<FL val="Status">Finalizada</FL>'; 
-		$xml .= '<FL val="Invoice Date">'.date("Y-m-d").'</FL>';
+		$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($move->fecha)).'</FL>';
 		$xml .= '<FL val="Contact Id">'.$this->findPersonalingUser().'</FL>';
-		$xml .= '<FL val="Contact Name">Personaling Enterprise S.L</FL>';
+		$xml .= '<FL val="Contact Name">Personaling Enterprise S.L. </FL>';
 		$xml .= '<FL val="Email">info@personaling.com</FL>';
-		$xml .= '<FL val="Peso">'.$orden->peso.'</FL>';
-		$xml .= '<FL val="Envio">'.$orden->envio.'</FL>';
-		$xml .= '<FL val="Billing Street">'.$orden->direccionFacturacion->dirUno.' '.$orden->direccionFacturacion->dirDos.'</FL>';
-		$xml .= '<FL val="Billing State">'.$orden->direccionFacturacion->provincia->nombre.'</FL>';
-		$xml .= '<FL val="Billing City">'.$orden->direccionFacturacion->ciudad->nombre.'</FL>';
-		$xml .= '<FL val="Billing Country">'.$orden->direccionFacturacion->pais.'</FL>';
-		$xml .= '<FL val="Telefono Facturacion">'.$orden->direccionFacturacion->telefono.'</FL>';
-		$xml .= '<FL val="Shipping Street">'.$orden->direccionFacturacion->dirUno.' '.$orden->direccionFacturacion->dirDos.'</FL>';
-		$xml .= '<FL val="Shipping State">'.$orden->direccionFacturacion->provincia->nombre.'</FL>';
-		$xml .= '<FL val="Shipping City">'.$orden->direccionFacturacion->ciudad->nombre.'</FL>';
-		$xml .= '<FL val="Shipping Country">'.$orden->direccionFacturacion->pais.'</FL>';
-		$xml .= '<FL val="Telefono Envio">'.$orden->direccionFacturacion->telefono.'</FL>';
-		$xml .= '<FL val="Sub Total">'.(double)$orden->subtotal.'</FL>';
-		$xml .= '<FL val="Tax">'.(double)$orden->iva.'</FL>';
+		$xml .= '<FL val="Description">'.$move->comentario.', '.$move->motivo.'</FL>';
+		$xml .= '<FL val="Sub Total">'.(double)$move->total.'</FL>';
+			
+		$xml .= $this->Products($move->id,$this->findPersonalingUser()); 
+		$this->actualizarCantidades($move->id);
 		
-		$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
-		$envio_pago = 0;
-		$ajuste=0; 
-		$forma="";
-		$cupon=0;
-		
-		foreach($detalles as $detalle)
-		{
-			if($envio_pago == 0){		
-				if($orden->envio > 0){
-					$ajuste = $ajuste + $orden->envio;
-					$envio_pago = 1;
-				}
-			}
-			
-			if($detalle->tipo_pago == 3){ 
-				$ajuste -= $detalle->monto; 
-				$xml .= '<FL val="Balance">'.(double)$detalle->monto.'</FL>';
-				$forma .= " Balance, ";
-			}
-			
-			if($detalle->tipo_pago == 4 || $detalle->tipo_pago == 5){
-				$xml .= '<FL val="Paypal_Sabadell">'.(double)$detalle->monto.'</FL>';
-			}
-			
-			$forma .= $detalle->getTipoPago().", "; 
-			
-			if(isset($orden->cupon)){
-				if($cupon == 0){
-					$ajuste -= $orden->cupon->descuento;
-					$xml .= '<FL val="Cupon">'.(double)$orden->cupon->descuento.'</FL>';
-					$forma .= " Cupón de descuento, ";
-					$cupon++;
-				}	
-			} 
-		} 
-			
-		$xml .= '<FL val="Adjustment">'.(double)$ajuste.'</FL>';	
-		$xml .= '<FL val="Forma de Pago">'.$forma.'</FL>';
-		// echo $ajuste;
-		//Yii::app()->end();
-			
-		if((double)$orden->descuento > 0) 
-			$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
-		
-			$xml .= $this->Products($orden->id); 
-		
-			$this->actualizarCantidades($orden->id);	
-		
-		$xml .= '<FL val="Grand Total">'.(double)$orden->total.'</FL>'; 
+		$xml .= '<FL val="Grand Total">'.(double)$move->total.'</FL>'; 
 		$xml .= '</row>';
 		$xml .= '</Invoices>';
 		
-		var_dump($xml);
-		//echo htmlspecialchars($xml)."<p><p>";
-		//Yii::app()->end();
+		// var_dump($xml);
 		
 		$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&xmlData=".$xml;
@@ -107,84 +47,144 @@ class ZohoEgreso{
 	function findPersonalingUser(){
 		// check if already exists on Zoho, if not send it
 		
+		$user = User::model()->findByAttributes(array('email'=>"info@personaling.com"));
+		
+		if(isset($user)){
+			if(isset($user->zoho_id)){
+				return $user->zoho_id;
+			}else{ // is not on zoho
+				$zoho = New Zoho;
+				$zoho->email = "info@personaling.com";
+				$zoho->first_name = "Personaling";
+				$zoho->last_name = "Enterprise S.L.";
+				$zoho->estado = "TRUE";
+				$zoho->tipo = "Interno";
+				
+				$response = $zoho->save_potential();
+				
+				$xml = simplexml_load_string($response);
+	            $id = (int)$xml->result[0]->recorddetail->FL[0];
+	
+	            $user->zoho_id = $id;
+				$user->tipo_zoho = 0;
+				$user->save();
+				
+				if($user->tipo_zoho == 0){ 
+					$conv = $this->convertirLead($user->zoho_id, $user->email);
+					$datos = simplexml_load_string($conv);
+										
+					$clientId = $datos->Contact;
+					$user->zoho_id = $clientId;
+					$user->tipo_zoho = 1;
+										
+					$user->save(); 
+					return $clientId;
+				}else{
+					return $id;
+				}
+				
+			}
+		}else{ // create new user and send it to zoho
+			$user = new User;
+			$user->email = "info@personaling.com";
+			$user->username = "info@personaling.com";
+			$user->superuser = 0;
+			$user->status = User::STATUS_ACTIVE;
+			$user->interno = 1;
+			$user->tipo_zoho = 0;
+			
+			if($user->save()){
+				$zoho = New Zoho;
+				$zoho->email = "info@personaling.com";
+				$zoho->fisrt_name = "Personaling"; 
+				$zoho->last_name = "Enterprise S.L.";
+				$zoho->estado = "TRUE";
+				$zoho->tipo = "Interno";
+				
+				$response = $zoho->save_potential();
+				
+				$xml = simplexml_load_string($response);
+	            $id = (int)$xml->result[0]->recorddetail->FL[0];
+	
+	            $user->zoho_id = $id;
+				$user->save();
+				
+				if($user->tipo_zoho == 0){ 
+					$conv = $this->convertirLead($user->zoho_id, $user->email);
+					$datos = simplexml_load_string($conv);
+										
+					$clientId = $datos->Contact;
+					$user->zoho_id = $clientId;
+					$user->tipo_zoho = 1;
+										
+					$user->save(); 
+					return $clientId;
+				}else{
+					return $id; 
+				}
+			}
+		}
+		
 	}
 
-	function Products($move)
+	function Products($move,$info_id)
 	{
-		$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$order));
-		$ordenhas = new OrdenHasProductotallacolor;
-		$orden = Orden::model()->findByPk($order); 
-
+		$products = Movimientohaspreciotallacolor::model()->findAllByAttributes(array('movimiento_id'=>$move));
+		//$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$order));
+		
 		$addProduct = "";
 		$xml2;
-		$costo = 0;
-		$dcto_productos = 0;
-		$dcto_looks = 0;
-		$dcto_total = 0;
-		$looks_orden = "";
+		$cost = 0;
 		
 		$xml2 = '<FL val="Product Details">';
-		$i=1; 
+		$i=1;
+		$y=1; 
 		$addProduct .= "<Products>";
 		
-		foreach ($productos as $tallacolor){
+		foreach ($products as $combination){
 			$xml2 .= '<product no="'.intval($i).'">';
 			
-			$producto = $tallacolor->preciotallacolor->producto;
-			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
+			$preciotallacolor = Preciotallacolor::model()->findByPk($combination->preciotallacolor_id);
 			
-			$costo += $precio->costo;
-			$dcto_productos += $precio->ahorro;	
+			$product = $preciotallacolor->producto;
+			$price = Precio::model()->findByAttributes(array('tbl_producto_id'=>$product->id));
 			
-			$id = $tallacolor->preciotallacolor->zoho_id;
-			$nombre = $producto->nombre." - ".$tallacolor->preciotallacolor->sku;
-			$unit = $precio->precioVenta;
-			$contax = $precio->precioImpuesto;
-			$discount_price = $precio->precioDescuento;
-			$discount = $precio->ahorro; 
+			$cost += $price->costo; 
+			
+			$id = $preciotallacolor->zoho_id;
+			$name = $product->nombre." - ".$preciotallacolor->sku;
+			$unit = $price->precioVenta;
+		//	$price_tax = $price->precioImpuesto;
 			
 			$xml2 .= '<FL val="Product Id">'.(int)$id.'</FL>';
-			$xml2 .= '<FL val="Product Name">'.$nombre.'</FL>';
-			$xml2 .= '<FL val="Unit Price">'.(double)$unit.'</FL>';
-			$xml2 .= '<FL val="List Price">'.(double)$unit.'</FL>';
-			$xml2 .= '<FL val="Total">'.(double)$unit.'</FL>';
-			if((double)$discount_price > 0){
-				$xml2 .= '<FL val="Total After Discount">'.(double)$discount_price.'</FL>';
-				$xml2 .= '<FL val="Discount">'.(double)$discount.'</FL>';
-			}
-			else {
-				$xml2 .= '<FL val="Total After Discount">'.(double)$unit.'</FL>';
-				$xml2 .= '<FL val="Discount"> 0 </FL>';
-			}
-			$xml2 .= '<FL val="Quantity">'.intval($tallacolor->cantidad).'</FL>';
+			$xml2 .= '<FL val="Product Name">'.$name.'</FL>'; 
+			$xml2 .= '<FL val="Unit Price">'.(double)$price->costo.'</FL>';
+			$xml2 .= '<FL val="List Price">'.(double)$price->costo.'</FL>';
+			$xml2 .= '<FL val="Total">'.(double)$price->costo.'</FL>';
+			$xml2 .= '<FL val="Quantity">'.intval($combination->cantidad).'</FL>';
 			
-			$impt = (double)$unit * 0.21;
-			
-			$xml2 .= '<FL val="Tax">'.(double)$impt.'</FL>';
-			$xml2 .= '<FL val="Net Total">'.(double)$contax.'</FL>';
+		//	$tax = (double)$unit * 0.21;
+		//	$xml2 .= '<FL val="Tax">'.(double)$tax.'</FL>';
+			$xml2 .= '<FL val="Net Total">'.(double)$price->costo.'</FL>';
 						
 			$i++;
 			$xml2 .= '</product>';
 			
 									/* Añadiendo el producto al usuario */ 
 						
-									$addProduct .= "<row no='".intval($i)."'>";
-									$addProduct .= "<FL val='PRODUCTID'>".(int)$tallacolor->preciotallacolor->zoho_id."</FL>";
+									$addProduct .= "<row no='".intval($y)."'>";
+									$addProduct .= "<FL val='PRODUCTID'>".(int)$preciotallacolor->zoho_id."</FL>";
 						       		$addProduct .= "</row>"; 
-		
+									$y++;
 			
 		}
 		$xml2 .= '</FL>';
-		$xml2 .= '<FL val="Costo">'.(double)$costo.'</FL>'; 
-		$xml2 .= '<FL val="Descuento Productos">'.(double)$dcto_productos.'</FL>';
-		
-		
-		/*AÑANDIENDO AL CLIENTE 
+		$xml2 .= '<FL val="Costo">'.(double)$cost.'</FL>';
 		
 			$addProduct .= "</Products>";
 			
 			$url2 ="https://crm.zoho.com/crm/private/xml/Contacts/updateRelatedRecords"; 
-			$query2="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&relatedModule=Products&id=".$orden->user->zoho_id."&xmlData=".$addProduct; 
+			$query2="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&relatedModule=Products&id=".$info_id."&xmlData=".$addProduct; 
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url2);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -197,44 +197,50 @@ class ZohoEgreso{
 			$response = curl_exec($ch);
 			curl_close($ch);
 			
-		/* ===================== */ 	
-		
-		if($ordenhas->countLooks($order) > 0) // hay looks
-		{ 
-			$looks = $ordenhas->getLooks($order);
-			
-			foreach($looks as $lk)
-			{
-				$look = Look::model()->findByPk($lk['look_id']); 
-				
-				$looks_orden .= $look->title." (id: ".$look->id."), ";
-								
-				if(isset($look->tipoDescuento)) // No es null. hay descuento
-				{
-					if($look->tipoDescuento == 0) // porcentaje
-					{
-						$prc = $look->getPorcentajeDescuento();
-						$total = $look->getPrecioProductosDescuento(false) * $look->valorDescuento / 100;
-						$dcto_looks += $total;
-					}
-					
-					if($look->tipoDescuento == 1){
-						$dcto_looks += $look->valorDescuento; 
-					}
-						
-				} 
-				 
-			}
-		} 
-		$dcto_total = $dcto_productos + $dcto_looks; 
-		$totalProductos = $orden->total - $orden->envio; 
-		
-		$xml2 .= '<FL val="Looks">'.$looks_orden.'</FL>';
-		$xml2 .= '<FL val="Descuento Looks">'.(double)$dcto_looks.'</FL>';
-		$xml2 .= '<FL val="Descuento Total">'.(double)$dcto_total.'</FL>';
-		$xml2 .= '<FL val="Total Productos">'.(double)$totalProductos.'</FL>'; 
+		/* ===================== */ 		
+		$xml2 .= '<FL val="Total Productos">'.(double)$cost.'</FL>'; 
 		
 		return $xml2; 
+	}
+
+	function actualizarCantidades($id){
+		
+		$moves = Movimientohaspreciotallacolor::model()->findAllByAttributes(array('movimiento_id'=>$id));
+//		$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$id));
+		
+		$xml;
+		$xml = '<Products>';
+		$i=1;
+		
+		foreach($moves as $move){
+				
+			$preciotallacolor = Preciotallacolor::model()->findByPk($move->preciotallacolor_id);			
+			$prod = Producto::model()->findByPk($preciotallacolor->producto_id);
+			
+			$xml .= '<row no="'.$i.'">';
+			$xml .= '<FL val="Product Name">'.$prod->nombre.' - '.$preciotallacolor->sku.'</FL>';
+			$xml .= '<FL val="Id">'.$preciotallacolor->zoho_id.'</FL>';
+			$xml .= '<FL val="Qty in Stock">'.$preciotallacolor->cantidad.'</FL>';
+			$xml .= '</row>';
+			
+			$i++;
+		} // foreach		
+		$xml .= '</Products>';
+		
+		/*--------------*/
+		$url ="https://crm.zoho.com/crm/private/xml/Products/updateRecords";
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&version=4&xmlData=".$xml;
+				
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+		
+		$response = curl_exec($ch);
+		curl_close($ch);
 	}
 
 	function convertirLead($lead_id,$lead_mail){
@@ -263,48 +269,6 @@ class ZohoEgreso{
 		$response = curl_exec($ch);
 		curl_close($ch);
 		return $response; 
-	}
-
-	function actualizarCantidades($id){
-		
-		$productos = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$id));
-		
-		$xml;
-		$xml = '<Products>';
-		$i=1;
-		
-		foreach($productos as $tallacolor){ 
-			
-			$prod = Producto::model()->findByPk($tallacolor->preciotallacolor->producto_id);
-			
-			$xml .= '<row no="'.$i.'">';
-			$xml .= '<FL val="Product Name">'.$prod->nombre.' - '.$tallacolor->preciotallacolor->sku.'</FL>';
-			$xml .= '<FL val="Id">'.$tallacolor->preciotallacolor->zoho_id.'</FL>';
-			$xml .= '<FL val="Qty in Stock">'.$tallacolor->preciotallacolor->cantidad.'</FL>';
-			$xml .= '</row>';
-			
-			$i++;
-			
-		} // foreach
-				
-		$xml .= '</Products>';
-		
-		/*--------------*/
-		$url ="https://crm.zoho.com/crm/private/xml/Products/updateRecords";
-		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&version=4&xmlData=".$xml;
-				
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
-		
-		$response = curl_exec($ch);
-		curl_close($ch);
-				
-		// $datos = simplexml_load_string($response);
 	}
 
 

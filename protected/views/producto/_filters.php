@@ -1,11 +1,11 @@
-<!--<div class="row margin_top margin_bottom" id="filters-view" style="display: none">-->
-<div class="row margin_top margin_bottom" id="filters-view" >
+<div class="row margin_top margin_bottom" id="filters-view" style="display: none">
+<!--<div class="row margin_top margin_bottom" id="filters-view" >-->
 
 <div class="span12">
   <div class="alert in" id="alert-msg" style="display: none">
     <button type="button" class="close" >&times;</button> 
     <!--data-dismiss="alert"-->
-    <div class="msg">loren ipsum</div>
+    <div class="msg"></div>
   </div>
 </div>          
     

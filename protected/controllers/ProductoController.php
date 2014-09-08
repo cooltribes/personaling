@@ -4083,6 +4083,7 @@ public function actionReportexls(){
 	{
             $nuevos = 0;
             $actualizados = 0;
+            $uploadedFileName = "";
             $error = false;            
            
             /*Primer paso - Validar el archivo*/
@@ -4204,6 +4205,9 @@ public function actionReportexls(){
                             // Tienda
                             $tienda = Tienda::model()->findByAttributes(array('name' => $rTienda));                                                        
 
+                            /*Recortar el nombre para adatarlo al campo en la BD*/
+                            $rNombre = substr($rNombre, 0, 50);                            
+                            
                             if($prodExiste){
 
                                 // actualiza el producto

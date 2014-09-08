@@ -1413,7 +1413,8 @@ public function multipleColor2($idColor, $idact)
                 if($column == 'tienda_id')
                 {
                     //si seleccionaron la tienda personaling
-                    if($value == "NULL"){
+                    if($value == "NULL"){                       
+                        
                         //si es el comparador igual o diferente
                         $comparator = ($comparator == '=') ? "IS NULL" : "IS NOT NULL";
 

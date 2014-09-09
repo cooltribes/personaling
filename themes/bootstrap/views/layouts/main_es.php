@@ -392,6 +392,7 @@ if(!Yii::app()->user->isGuest){
       <div class="span5 ">
         <h3> Sobre Personaling </h3>
         <p class="lead"><?php echo Yii::t('contentForm','Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.') ?></p>
+        <span class="tPrecio">*<?php echo Yii::t('contentForm','Prices are subject to change. You can check the final price on the web sales.'); ?> </span> <p></p>
         <div class="row-fluid"><div class="span8"><img class="margin_top_medium_minus at_exclude" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/es_es/logos_seguridad.png" alt="Logos de Seguridad">
                         </div><div class="span4"><script type="text/JavaScript">
                                 //<![CDATA[

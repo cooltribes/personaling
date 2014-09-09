@@ -513,9 +513,12 @@ $script = "
 			$(this).parent().find('.btn').not('.select_todos').addClass('active');
 			 var ids = 0;
 			$(this).parent().find('.btn').not('.select_todos').each(function(index){
+					
 				ids += parseInt($(this).attr('href').substring(1));
+				
 			});
-			$(this).parent().find('.btn').not('.select_todos').parent().next('input').val(ids);
+			
+			$(this).parent().find('.btn').parent().next('input').val(ids);
 
 		}
 		else {
@@ -541,14 +544,18 @@ $script = "
 	 });
 
 	$('#div_tipo .btn-group').on('click', 'a', function(e) {
-		 var ids = 0;
-		 $(this).siblings('.active').each(function(){
-		 	ids += parseInt($(this).attr('href').substring(1));
-		 });
-		 if (!($(this).hasClass('active')))
-		 	ids += parseInt($(this).attr('href').substring(1));
-		 $(this).parent().next('input').val(ids);
-		 e.preventDefault();
+		 if (!($(this).hasClass('select_todos'))){
+			 var ids = 0;
+			 $(this).siblings('.active').each(function(){
+			 	ids += parseInt($(this).attr('href').substring(1));
+			 });
+			 if (!($(this).hasClass('active')))
+			 	ids += parseInt($(this).attr('href').substring(1));
+			 
+			 $(this).parent().next('input').val(ids);
+			 e.preventDefault();
+		}
+		 
 	 });
 ";
 ?>

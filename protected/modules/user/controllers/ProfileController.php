@@ -40,7 +40,7 @@ class ProfileController extends Controller
                         'expression' => 'UserModule::isAdmin()',
                 ),
                 array('allow', // acciones validas para el personal Shopper
-                   'actions' => array('banner'),
+                   'actions' => array('banner', 'misVentas'),
                    'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
@@ -1859,6 +1859,23 @@ class ProfileController extends Controller
             
         }
 		
+        /*Muestra el panel de ventas de una PS, datos referentes a comisiones*/
+        public function actionMisVentas() {
+            $personalShopper = $this->loadUser();                    
+       
+            if($personalShopper===null)
+                    throw new CHttpException(404,'The requested page does not exist.');
+
+            $producto = new OrdenHasProductotallacolor;
+
+            /*Consultar los productos vendidos por la actual PS*/
+            $dataProvider = $producto->vendidosComision(Yii::app()->user->id);
+
+            $this->render('misVentas',array(
+                        'personalShopper' => $personalShopper,
+                        'dataProvider'=>$dataProvider,
+            ));	
+        }
 			
 		
 	

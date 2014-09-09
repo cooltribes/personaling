@@ -38,7 +38,16 @@ $all[0]['active']=false;
       " a " + $( "#slider" ).slider( "values", 1 )+" Años" );
   });
  </script> 
+ <style>
+div.infoBanner {
+    display: block;
+    border: 1px solid #DDD;  
+    padding: 9px 8px;
+    font-size: 1.2em;
+    text-align: center;
+}
 
+ </style>
 <div class="container margin_top" id="crear_look">
   <div class="page-header">
   		<!-- FLASH ON --> 
@@ -134,14 +143,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		'validateOnSubmit'=>true,
 		'afterValidate'=>"js:function(form, data, hasError) {
 				
-			
-				
-				
-				
 				}"
 	),
 )); ?>      	
+        
         <legend class="lead"><?php echo Yii::t('contentForm','Last step'); ?></legend>
+        <div class="infoBanner margin_bottom_small">
+           Completa la información de tu look. <br>
+           ¡Mientras más información contenga más fácil se venderá!
+        </div>
         <section class="well">
           <h4><strong>1.</strong><?php echo Yii::t('contentForm','Complete the following fields:'); ?></h4>
           <!-- <p>LLena los siguientes campos:</p> -->

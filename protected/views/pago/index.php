@@ -6,6 +6,9 @@ $this->breadcrumbs=array(
 	Yii::t('contentForm' , 'My Payments'),
 );
 
+$this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'My Payments'));
+
+
 ?>
 <div class="container">
     <div class="page-header">
@@ -54,14 +57,13 @@ $this->breadcrumbs=array(
         $template = '{summary}
           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
             <tr>
-                <th scope="col"></th>
+                
                 <th scope="col">'.Yii::t('contentForm' , 'No.').'</th>                
                 <th scope="col">'.Yii::t('contentForm' , 'State').'</th>                
                 <th scope="col">'.Yii::t('contentForm' , 'Payment Type').'</th>
                 <th scope="col">'.Yii::t('contentForm' , 'Amount').'</th>
                 <th scope="col">'.Yii::t('contentForm' , 'Request Date').'</th>
-                <th scope="col">'.Yii::t('contentForm' , 'Response Date').'</th>
-                <th scope="col">'.Yii::t('contentForm' , 'Actions').'</th>
+                <th scope="col">'.Yii::t('contentForm' , 'Response Date').'</th>                
             </tr>           
         {items}
         </table>

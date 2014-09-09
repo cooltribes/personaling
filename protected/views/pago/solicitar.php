@@ -114,13 +114,53 @@ $this->breadcrumbs=array(
     
     var minP = "<?php echo Pago::MONTO_MIN_PAYPAL; ?>";
     var minB = "<?php echo Pago::MONTO_MIN_BANCO; ?>";
-    var idTipo = <?php echo '"'.TbHtml::activeId($model, "tipo").'"'; ?>;
+    var minBal = "<?php echo Pago::MONTO_MIN_BALANCE; ?>";
     var idMonto = <?php echo '"'.TbHtml::activeId($model, "monto").'"'; ?>;
+    var idTipo = <?php echo '"'.TbHtml::activeId($model, "tipo").'"'; ?>;
+    var idEntidad = <?php echo '"'.TbHtml::activeId($model, "entidad").'"'; ?>;    
+    var idCuenta = <?php echo '"'.TbHtml::activeId($model, "cuenta").'"'; ?>;    
     
+    /*Cuando cambia el dropdown "Pagar mediante" */
     $("#" + idTipo).change(function(e){
-        var tipo = $(this).val();
-        console.log(tipo);
-        $("#" + idMonto).attr("min", tipo == 0 ? minP : minB);
+        
+        var tipo = $(this).val();        
+        /*tipo: 0 - Paypal, 1 - Banco, 2 - balance*/        
+        
+        //Validar el monto minimo para realizar la solicitud
+        $("#" + idMonto).attr("min", tipo == 0 ? minP : 
+                tipo == 1 ? minB : minBal);
+        
+        //Ocultar el campo para el nombre del banco si el tipo es distinto
+        //a cuenta bancaria
+        var controlGrpElem = $("#" + idEntidad).parent().parent();
+        var controlGrpElemCuenta = $("#" + idCuenta).parent().parent();
+        
+        //ocultar NombreBanco si no es bancaria
+        if(tipo != 1){
+            controlGrpElem.slideUp("fast");     
+            $("#" + idEntidad).removeAttr("required");
+            
+            //si es Paypal, mostrar el campo cuenta
+            if(tipo == 0){
+                controlGrpElemCuenta.slideDown("fast");
+                $("#" + idCuenta).attr("required", "required");                   
+                
+            }else{ //Si es agregar al balance, ocultar campo cuenta
+                controlGrpElemCuenta.slideUp("fast");                
+                $("#" + idCuenta).removeAttr("required");                
+            }
+            
+        }else{ //Si es banco, mostrar el NombreBanco
+            controlGrpElem.slideDown("fast");                        
+            $("#" + idEntidad).attr("required", "required");
+            
+            //Mostrar la cuenta
+            controlGrpElemCuenta.slideDown("fast");
+            $("#" + idCuenta).attr("required", "required");            
+            
+        }
+
+        
         
     });
     

@@ -292,8 +292,14 @@ class Profile extends UActiveRecord
 		return parent::afterFind();
 	}
 	
+        /**
+         * Obtiene el saldo actual del usuario, sin contar los movimientos 
+         * tipo 5,7 y 8 que son relacionados a pagos por comisiones.
+         */
 	public function getSaldo($id , $format=true){
-			$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id)->queryScalar();
+			$sum = Yii::app()->db->createCommand("
+                            SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id 
+                                ." and tipo not in (5, 7, 8)")->queryScalar();
 			//$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
 			return $sum;
 	}

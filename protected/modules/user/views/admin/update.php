@@ -81,13 +81,7 @@ function getMonthsArray()
 		'validateOnSubmit'=>$val,
 	),
 	
-)); ?>
-          
-        <?php $this->widget('bootstrap.widgets.TbButton', array(    
-            'label'=>'Enviar Email',
-            'type'=>'danger',    
-            'url'=>$this->createUrl("/producto/sendMandrillEmail"),                
-        )); ?>
+)); ?>          
           
         <fieldset>
           <legend >Datos de Usuario: </legend>

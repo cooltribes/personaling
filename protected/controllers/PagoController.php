@@ -75,8 +75,15 @@ class PagoController extends Controller
 
                     //si metodo de pago es paypal
                     if($model->tipo == 0){                            
-                        //poner el nombre del banco "PAYPAL"
+                        //poner el nombre del banco "PAYPAL" para no dejarlo vacío
                         $model->entidad = "PayPal";                            
+                    }
+                    //si el tipo de pago es Agregar al Balance
+                    if($model->tipo == 2){                            
+                        //poner el nombre del banco "Personaling" para no dejarlo vacío
+                        $model->entidad = "Personaling";                            
+                        //poner como cuenta "Balance" ya que no se indicó en el formulario
+                        $model->cuenta = "Balance";                            
                     }
                     
                     if($model->save()){
@@ -143,6 +150,8 @@ class PagoController extends Controller
             {
                 if($_POST['idTransaccion'] != ""){
 
+                    //Marcar el pago como aceptado, necesita un idTransaccion
+                    //para identificar la operacion bancaria o tranferencia de paypal
                     $model->fecha_respuesta = date("Y-m-d H:i:s");
                     $model->id_transaccion = $_POST['idTransaccion'];
                     $model->admin_id = Yii::app()->user->id;
@@ -353,14 +362,14 @@ class PagoController extends Controller
                      <br>                    
                      <br>
                      <br>
-                     <a title="Mis solicitudes" 
+                     <a title="Mis pagos" 
                      href="http://www.personaling.es'.Yii::app()->baseUrl.
                     '/pago/index" 
                         style="text-align:center;text-decoration:none;color:#ffffff;
                         word-wrap:break-word;background: #231f20; padding: 12px;" 
                         target="_blank">
                         
-                        Mis solicitudes
+                        Mis pagos
                         
                       </a><br><br/><br/>'
                      ."<br/>");
@@ -371,14 +380,14 @@ class PagoController extends Controller
                      <br>                    
                      <br>
                      <br>
-                     <a title="Mis solicitudes" 
+                     <a title="Mis pagos" 
                      href="http://www.personaling.es'.Yii::app()->baseUrl.
                     '/pago/index" 
                         style="text-align:center;text-decoration:none;color:#ffffff;
                         word-wrap:break-word;background: #231f20; padding: 12px;" 
                         target="_blank">
                         
-                        Mis solicitudes
+                        Mis pagos
                         
                       </a><br><br/><br/>'
                      ."<br/>");
@@ -416,14 +425,14 @@ class PagoController extends Controller
                  <br>                    
                  <br>
                  <br>
-                 <a title="Mis solicitudes" 
+                 <a title="Mis pagos" 
                  href="http://www.personaling.es'.Yii::app()->baseUrl.
                 '/pago/index" 
                     style="text-align:center;text-decoration:none;color:#ffffff;
                     word-wrap:break-word;background: #231f20; padding: 12px;" 
                     target="_blank">
 
-                    Mis solicitudes
+                    Mis pagos
 
                   </a><br><br/><br/>'
                  ."<br/>");

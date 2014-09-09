@@ -329,7 +329,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['bodyFavors']) && Yii::app()->params['multiLook']['bodyFavors']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                if (isset(Yii::app()->params['multiLook']['bodyFavors']) && Yii::app()->params['multiLook']['bodyFavors']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled));
                 else $buttons = Profile::rangeButtons($field->range,$model->contextura,$disabled);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
@@ -348,7 +348,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             		
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['hairColor']) && Yii::app()->params['multiLook']['hairColor']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                if (isset(Yii::app()->params['multiLook']['hairColor']) && Yii::app()->params['multiLook']['hairColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled));
                 else $buttons = Profile::rangeButtons($field->range,$model->pelo,$disabled);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
@@ -368,7 +368,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
 
                   <?php
-                if (isset(Yii::app()->params['multiLook']['womanMeasure']) && Yii::app()->params['multiLook']['womanMeasure']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                if (isset(Yii::app()->params['multiLook']['womanMeasure']) && Yii::app()->params['multiLook']['womanMeasure']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled));
                 else $buttons = Profile::rangeButtons($field->range,$model->altura,$disabled);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
@@ -386,7 +386,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['eyesColor']) && Yii::app()->params['multiLook']['eyesColor']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                if (isset(Yii::app()->params['multiLook']['eyesColor']) && Yii::app()->params['multiLook']['eyesColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled));
                 else $buttons = Profile::rangeButtons($field->range,$model->ojos,$disabled);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
@@ -404,7 +404,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['bodyType']) && Yii::app()->params['multiLook']['bodyType']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                if (isset(Yii::app()->params['multiLook']['bodyType']) && Yii::app()->params['multiLook']['bodyType']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled));
                 else $buttons = Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
@@ -431,7 +431,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['bodyType']) && Yii::app()->params['multiLook']['skinColor']) $buttons = $all+Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                if (isset(Yii::app()->params['multiLook']['bodyType']) && Yii::app()->params['multiLook']['skinColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled));
                 else $buttons = Profile::rangeButtons($field->range,$model->piel,$disabled);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
@@ -523,9 +523,12 @@ $script = "
 			$(this).parent().find('.btn').not('.select_todos').addClass('active');
 			 var ids = 0;
 			$(this).parent().find('.btn').not('.select_todos').each(function(index){
+					
 				ids += parseInt($(this).attr('href').substring(1));
+				
 			});
-			$(this).parent().find('.btn').not('.select_todos').parent().next('input').val(ids);
+			
+			$(this).parent().find('.btn').parent().next('input').val(ids);
 
 		}
 		else {
@@ -551,14 +554,18 @@ $script = "
 	 });
 
 	$('#div_tipo .btn-group').on('click', 'a', function(e) {
-		 var ids = 0;
-		 $(this).siblings('.active').each(function(){
-		 	ids += parseInt($(this).attr('href').substring(1));
-		 });
-		 if (!($(this).hasClass('active')))
-		 	ids += parseInt($(this).attr('href').substring(1));
-		 $(this).parent().next('input').val(ids);
-		 e.preventDefault();
+		 if (!($(this).hasClass('select_todos'))){
+			 var ids = 0;
+			 $(this).siblings('.active').each(function(){
+			 	ids += parseInt($(this).attr('href').substring(1));
+			 });
+			 if (!($(this).hasClass('active')))
+			 	ids += parseInt($(this).attr('href').substring(1));
+			 
+			 $(this).parent().next('input').val(ids);
+			 e.preventDefault();
+		}
+		 
 	 });
 ";
 ?>

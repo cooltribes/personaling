@@ -280,6 +280,7 @@ return array (
 	'Printed' => 'Impresa',
 	'Price' => 'Precio',
 	'Price in' => 'Precio en',
+	'Prices are subject to change. You can check the final price on the web sales.'=> 'Los precios están sujetos a cambios. Puedes revisar el precio final en la web de venta.',
 	'Product' => 'Producto',
 	'Products' => 'Productos',
 	'Province' => 'Provincia',

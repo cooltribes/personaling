@@ -17,7 +17,7 @@ class ShortenerUrlRule extends CBaseUrlRule
 
     public function parseUrl($manager,$request,$pathInfo,$rawPathInfo)
     {
-        if (preg_match('%^(l)(/([123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ]{5}))?$%', $pathInfo, $matches))
+        if (preg_match('%^(l)(/([123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ]{0,6}))?$%', $pathInfo, $matches))
         {
             if ($matches[1]=="l"){
 

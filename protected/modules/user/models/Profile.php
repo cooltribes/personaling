@@ -136,7 +136,7 @@ class Profile extends UActiveRecord
 				}
 			}
 			
-			array_push($rules,array('month,day,year', 'safe'));
+			array_push($rules,array('facebook, twitter,month,day,year,bio,url', 'safe'));
 			
 			array_push($rules,array(implode(',',$required), 'required', 'message'=>'{attribute}'));
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
@@ -270,6 +270,9 @@ class Profile extends UActiveRecord
 					case 5:
 						$this->_model=ProfileField::model()->forPersonalShopperComi()->forOwner()->findAll(); //forPersonal()->
 						break;
+                    case 6:
+                        $this->_model=ProfileField::model()->forPsEdit()->forOwner()->findAll(); //forPersonal()->
+                        break;
 					default:
 						$this->_model=ProfileField::model()->forOwner()->findAll(); //forPersonal()->	
 				}

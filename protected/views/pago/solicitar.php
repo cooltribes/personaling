@@ -4,13 +4,13 @@
 
 $this->breadcrumbs=array(
 	'Pagos'=>array('index'),
-	'Solicitar pago',
+	'Tus Pagos',
 );
 
 ?>
 
 <div class="container">
-	<h1>Solicitud de Pago</h1>
+	<h1>Tus Pagos</h1>
 	<section class="bg_color3  span9 offset1 margin_bottom_small padding_small box_1">
             <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                 'id'=>'giftcard-form',

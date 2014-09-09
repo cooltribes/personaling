@@ -1,4 +1,4 @@
-<?php echo Yii::app()->session['outlet'];
+<?php #echo Yii::app()->session['outlet'];
 $seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
 if(isset($seo)){
     $this->pageTitle = $seo->title;
@@ -324,7 +324,7 @@ if(isset($seo)){
 							
 							echo '<li class=""> 
 			              		<a class="hijo" name="'.$padre->nombre.'" value="'.$hijo->id.'" href="#" >
-			              			<img src="'.$hijo->urlImagen.'" width="60">
+			              			<img src="'.Yii::app()->baseUrl.$hijo->urlImagen.'" width="60">
 				              		<div class="caption">
 				                  		<p>'.$hijo->nombre.'</p>
 					                </div>

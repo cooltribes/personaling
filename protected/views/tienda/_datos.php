@@ -36,9 +36,9 @@ foreach($prods as $data):
 
 		ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
 		  'id': '".$data->id."',                   // Product ID (string).
-		  'name': '".$data->nombre."', // Product name (string).
-		  'category': '".$category->nombre."',   // Product category (string).
-		  'brand': '".$data->mymarca->nombre."',                // Product brand (string).
+		  'name': '".addslashes ($data->nombre)."', // Product name (string).
+		  'category': '".addslashes ($category->nombre)."',   // Product category (string).
+		  'brand': '".addslashes ($data->mymarca->nombre)."',                // Product brand (string).
 		  //'variant': 'Black',               // Product variant (string).
 		  'list': 'Product impression',         // Product list (string).
 		  'position': ".$cont.",                    // Product position (number).
@@ -65,9 +65,9 @@ foreach($prods as $data):
 	    	// hidden div con json para la función que se ejecuta con el scroll infinito
 	    	echo json_encode(array(
 	    		'id' => $data->id,
-	    		'name' => $data->nombre,
-	    		'category' => $category->nombre,
-	    		'brand' => $data->mymarca->nombre,
+	    		'name' => addslashes ($data->nombre),
+	    		'category' => addslashes ($category->nombre),
+	    		'brand' => addslashes ($data->mymarca->nombre),
 	    		'list' => 'Product impression',
 	    		'position' => $cont
 	    	));
@@ -160,7 +160,7 @@ $b='';
 				
 				if($var=="0") //si no quedan productos, no mostrar ofertas; si no decir que el producto esta agotado.
 				{
-					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 1.2em;">Agotado</span></div>';
+					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 2.6em;">Agotado</span></div>';
 				}
 	
 						
@@ -197,7 +197,7 @@ $b='';
 				if(Yii::app()->user->isGuest){
 					$gusta="{$iconoDescuento}</div></article>";
 				}
-					$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Personaling - ".$data->nombre, array("class"=>"img_hover bg_color3","width" => "270", "height" => "270",'id'=>'img-'.$data->id));
+					$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Personaling - ".addslashes($data->nombre), array("class"=>"img_hover bg_color3","width" => "270", "height" => "270",'id'=>'img-'.$data->id));
 					$b = '';
 					$style='';
 					if($data->mymarca->is_100chic){
@@ -206,7 +206,7 @@ $b='';
 					if(isset($segunda))
 						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
 						//$b = CHtml::image($segunda->ge     tUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
-						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Personaling - ".$data->nombre, array("class"=>"img_hover_out bg_color3","style"=>"display:none","width" => "270", "height" => "270"));
+						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Personaling - ".addslashes($data->nombre), array("class"=>"img_hover_out bg_color3","style"=>"display:none","width" => "270", "height" => "270"));
 
 					//reviso si tiene descuento para mostrarlo
 						
@@ -220,9 +220,9 @@ $b='';
 						if(!is_null($tienda))
 							$precio = "<span class='precio' style='display:inline'>".Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto()."</span>&nbsp;&nbsp;&nbsp;<span><a class='detalle_producto' href='' style='color:#3286A5; cursor:pointer' onclick='event.preventDefault(); detalle_producto(".json_encode(array(
 																												    		'id' => $data->id,
-																												    		'name' => $data->nombre,
-																												    		'category' => $category->nombre,
-																												    		'brand' => $data->mymarca->nombre,
+																												    		'name' => addslashes ($data->nombre),
+																												    		'category' => addslashes ($category->nombre),
+																												    		'brand' => addslashes ($data->mymarca->nombre),
 																												    		'list' => 'Product clicks',
 																												    		'position' => $cont,
 																												    		'url' => $data->getUrl()
@@ -232,9 +232,9 @@ $b='';
 						echo($encabezado."
 						<input id='idprod' value='".$data->id."' type='hidden' ><a class='detalle_producto' href='' onclick='event.preventDefault(); detalle_producto(".json_encode(array(
 																												    		'id' => $data->id,
-																												    		'name' => $data->nombre,
-																												    		'category' => $category->nombre,
-																												    		'brand' => $data->mymarca->nombre,
+																												    		'name' => addslashes ($data->nombre),
+																												    		'category' => addslashes ($category->nombre),
+																												    		'brand' => addslashes ($data->mymarca->nombre),
 																												    		'list' => 'Product clicks',
 																												    		'position' => $cont,
 																												    		'url' => $data->getUrl()
@@ -255,18 +255,18 @@ $b='';
 						</a>
 						<header><h3><a class='link_producto detalle_producto' href='' title='".$data->nombre."' onclick='event.preventDefault(); detalle_producto(".json_encode(array(
 																												    		'id' => $data->id,
-																												    		'name' => $data->nombre,
-																												    		'category' => $category->nombre,
-																												    		'brand' => $data->mymarca->nombre,
+																												    		'name' => addslashes ($data->nombre),
+																												    		'category' => addslashes ($category->nombre),
+																												    		'brand' => addslashes ($data->mymarca->nombre),
 																												    		'list' => 'Product clicks',
 																												    		'position' => $cont,
 																												    		'url' => $data->getUrl()
 																												    	)).")'>".$data->nombre."</a></h3>
 						<a href='' class='ver_detalle icon_lupa detalle_producto' title='Ver detalle' onclick='event.preventDefault(); detalle_producto(".json_encode(array(
 																												    		'id' => $data->id,
-																												    		'name' => $data->nombre,
-																												    		'category' => $category->nombre,
-																												    		'brand' => $data->mymarca->nombre,
+																												    		'name' => addslashes ($data->nombre),
+																												    		'category' => addslashes ($category->nombre),
+																												    		'brand' => addslashes ($data->mymarca->nombre),
 																												    		'list' => 'Product clicks',
 																												    		'position' => $cont,
 																												    		'url' => $data->getUrl()

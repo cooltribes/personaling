@@ -394,7 +394,9 @@ $total_productos_look = 0;
                      $mensaje = $bolsa->admin ? Yii::t('contentForm', 'The bag is empty')
                       :  Yii::t('contentForm', 'What are you waiting for? Looks amazing clothes and waiting for you');   
 
-                 echo "<h4 class='braker_bottom margin_top'>{$mensaje}</h4>";
+				$bolsa_id=Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id))->id;
+				if(BolsaHasProductotallacolor::model()->findByAttributes(array('bolsa_id'=>$bolsa_id))=="")
+					echo "<h4 class='braker_bottom margin_top'>{$mensaje}</h4>";
 
                  if($bolsa->admin){
 
@@ -434,7 +436,7 @@ $total_productos_look = 0;
                                                         position: "fixed",
                                                         top: "70px",
                                                         width: "439px",
-                                                        height: "439px"
+                                                       // height: "439px"
                                                 });
                                         } else {
                                                 if(st <= ot ) {

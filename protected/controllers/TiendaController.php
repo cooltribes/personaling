@@ -135,9 +135,7 @@ class TiendaController extends Controller
 			}
 		}else{
 			//$producto->outlet = null;
-			if(isset(Yii::app()->session['outlet'])){
-				unset(Yii::app()->session['outlet']);
-			}
+			Yii::app()->session['outlet'] ='false';
 		}
 
 		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
@@ -224,7 +222,7 @@ class TiendaController extends Controller
 					}
 				}
 
-				if(isset($_POST['outlet'])){
+			/*	if(isset($_POST['outlet'])){
 					if($_POST['outlet'] == 'true'){
 
 						Yii::app()->session['outlet'] = $_POST['outlet'];
@@ -235,7 +233,7 @@ class TiendaController extends Controller
 					if(isset(Yii::app()->session['outlet'])){
 							unset(Yii::app()->session['outlet']);
 						}
-				}
+				}*/
 
 				
 				

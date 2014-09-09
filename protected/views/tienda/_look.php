@@ -228,14 +228,14 @@
   }
 </script>
 
-	<?php $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
-	    'contentSelector' => '#looks',
-	    'itemSelector' => 'div.look',
-	    'loadingText' => 'Cargando Looks...',
-	    'donetext' => ' ',
-	  //  'afterAjaxUpdate' => 'alert("hola");',
-	    'pages' => $pages,
-	    //'debug' => true,
-	)); ?> 
 	</div>
-  
+
+<?php $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
+    'contentSelector' => '#looks',
+    'itemSelector' => 'div.look',
+    'loadingText' => 'Cargando Looks...',
+    'donetext' => ' ',
+    //  'afterAjaxUpdate' => 'alert("hola");',
+    'pages' => $pages,
+    //'debug' => true,
+)); ?>

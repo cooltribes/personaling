@@ -431,7 +431,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['bodyType']) && Yii::app()->params['multiLook']['skinColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->piel,$disabled));
+                if (isset(Yii::app()->params['multiLook']['skinColor']) && Yii::app()->params['multiLook']['skinColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->piel,$disabled));
                 else $buttons = Profile::rangeButtons($field->range,$model->piel,$disabled);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
@@ -555,13 +555,18 @@ $script = "
 
 	$('#div_tipo .btn-group').on('click', 'a', function(e) {
 		 if (!($(this).hasClass('select_todos'))){
-			 var ids = 0;
-			 $(this).siblings('.active').each(function(){
-			 	ids += parseInt($(this).attr('href').substring(1));
-			 });
-			 if (!($(this).hasClass('active')))
-			 	ids += parseInt($(this).attr('href').substring(1));
-			 
+             if ($(this).parent().attr('data-toggle')=='buttons-checkbox'){
+                 var ids = 0;
+                     $(this).siblings('.active').each(function(){
+                        ids += parseInt($(this).attr('href').substring(1));
+                     });
+
+                 if (!($(this).hasClass('active')))
+                    ids += parseInt($(this).attr('href').substring(1));
+            } else {
+                ids = parseInt($(this).attr('href').substring(1));
+            }
+
 			 $(this).parent().next('input').val(ids);
 			 e.preventDefault();
 		}

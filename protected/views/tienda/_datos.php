@@ -136,7 +136,7 @@ $b='';
 								$porcentaje = ($precio_producto->valorTipo * 100) / $precio_producto->precioImpuesto;
 								break;
 							default:
-								# code...
+								//$porcentaje = 0;
 								break;
 						}
 						$iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
@@ -185,9 +185,9 @@ $b='';
             	
             	if(isset($like)) // le ha dado like
 				{
-					$encabezado="<td><article class='span3'><div onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'> ";
+					$encabezado="<article class='span3'><div onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'> ";
 					$gusta="{$iconoDescuento}<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big like-active'>&hearts;
-                                            </a></div></article></td>";
+                                            </a></div></article>";
 				}
 				else{
 					$encabezado="<article class='span3'><div  onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'>";
@@ -226,7 +226,7 @@ $b='';
 																												    		'list' => 'Product clicks',
 																												    		'position' => $cont,
 																												    		'url' => $data->getUrl()
-																												    	)).")'> ".Marca::model()->findByPk($data->marca_id)->nombre."";
+																												    	)).")'> ".Marca::model()->findByPk($data->marca_id)->nombre."</a></span>";
 							
 
 						echo($encabezado."

@@ -60,7 +60,7 @@ class PagoController extends Controller
 		$model = new Pago;
                 $user = User::model()->findByPk(Yii::app()->user->id);
                 $balance = $user->getSaldoPorComisiones();
-            
+                $forApproval = $user->getSaldoEnEspera();
                 if($balance <= 0){
                     Yii::app()->user->setFlash("error", "No tienes suficiente balance
                         en comisiones para poder hacer una solicitud de cobro.");
@@ -131,6 +131,7 @@ class PagoController extends Controller
 		$this->render('solicitar',array(
 			'model'=>$model,
 			'balance'=>$balance,
+			'forApproval'=>$forApproval,
 		));
 	}
 
@@ -152,40 +153,71 @@ class PagoController extends Controller
             {
                 //Si ingresaron algun id de transaccion o si es un pago para agregar
                 //al balance, no necesitaria idTransaccion
-                if($_POST['idTransaccion'] != "" || $model->tipo == 2){
+                if((isset($_POST['idTransaccion']) && $_POST['idTransaccion'] != "") || $model->tipo == 2){
 
                     //Marcar el pago como aceptado, necesita un idTransaccion
                     //para identificar la operacion bancaria o tranferencia de paypal
                     $model->fecha_respuesta = date("Y-m-d H:i:s");
-                    $model->id_transaccion = $_POST['idTransaccion'] ? $_POST['idTransaccion']
-                            : ($model->tipo == 2 ? 0:"") ;
+                    $model->id_transaccion = $model->tipo == 2 ? $model->id
+                            : $_POST['idTransaccion'] ;
                     $model->admin_id = Yii::app()->user->id;
                     $model->estado = 1;
 
                     if($model->save()){
-                        
-                        //Si el tipo de pago fue agregar al balance, el idTransaccion
-                        //será el mismo ID
-                        $model->id_transaccion = $model->id;
-                        $model->save();
-                        
-                        //Pasar para el saldo
-                        $saldo = new Balance();
-                        $saldo->total = $model->monto;
-                        $saldo->orden_id = $model->id;
-                        $saldo->user_id = $model->user_id;
-                        $saldo->admin_id = Yii::app()->user->id;
-                        $saldo->tipo = 9; //por pago al cobrar agregando al balance
-                        $saldo->fecha = date("Y-m-d H:i:s");
-                        $saldo->save();
+                                                
+                        //Si el tipo de pago fue "agregar al balance", el idTransaccion
+                        //será el mismo ID y se le carga saldo al usuario
+                        if($model->tipo == 2){
+                            
+                            //Pasar para el saldo
+                            $saldo = new Balance();
+                            $saldo->total = $model->monto;
+                            $saldo->orden_id = $model->id;
+                            $saldo->user_id = $model->user_id;
+                            $saldo->admin_id = Yii::app()->user->id;
+                            $saldo->tipo = 9; //por pago al cobrar agregando al balance
+                            $saldo->fecha = date("Y-m-d H:i:s");
+                            if($saldo->save()){
+                                //enviar email a PS                                
+                                $this->enviarRespuestaPersonalShopper($model, 1);                        
+                                Yii::app()->user->setFlash("success", "Se ha registrado el pago exitosamente.");                           
+                                
+                            }
+                            else
+                            {
+                                Yii::trace('Aceptando pago, Error:'.print_r($saldo->getErrors(), true), 'Pagos');
+                                Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                           
+
+                                $model=$this->loadModel($id);                             
+                            }
+                        }
                         
                         //enviar email a PS
                         $this->enviarRespuestaPersonalShopper($model, 1);                        
-                        Yii::app()->user->setFlash("success", "Se ha registrado el pago exitosamente.");                           
+                        Yii::app()->user->setFlash("success", "Se ha registrado el pago exitosamente.");
 
                     }else{
+                        
+                        $errores = "";
+                        if($model->hasErrors("id_transaccion")){
+                            
+                            $errores = " Corrige los siguientes errores<br><ul>";
+                            
+                            $erroresArray = $model->getErrors("id_transaccion");
+                            
+                            foreach($erroresArray as $error){
+                                $errores .= "<li> $error </li>";
+                            }                            
+                            
+                            $errores .= "</ul>";
+                        }
+//                        echo "<pre>";
+//                        print_r($model->getErrors());
+//                        echo "</pre><br>";
+//                        Yii::app()->end();
+
                         Yii::trace('Aceptando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');
-                        Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                           
+                        Yii::app()->user->setFlash("error", "No se pudo registrar el pago." . $errores);                           
                         
                         $model=$this->loadModel($id);
                     }                     
@@ -359,9 +391,10 @@ class PagoController extends Controller
             Yii::app()->mail->send($message);
         }
         
-        /*Enviar el correo para notificar al PS sobre su pago
+        /** 
+         * Enviar el correo para notificar al PS sobre su pago
          * 
-         * @param $accion si fue aprobado o rechazado
+         * @param int $accion si fue aprobado o rechazado <br>
          * 1: aprobado
          * 2: rechazado
          */

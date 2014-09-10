@@ -82,7 +82,8 @@ class Pago extends CActiveRecord
             array('entidad', 'required', 'message'=>'Debes indicar el nombre del banco'),
             array('cuenta', 'required', 'message'=>'Debes indicar tu cuenta'),
             array('monto', 'required', 'message'=>'Debes ingresar un monto'),
-            array('estado, user_id, admin_id, tipo, id_transaccion', 'numerical', 'integerOnly'=>true),
+            array('estado, user_id, admin_id, tipo, id_transaccion', 'numerical',
+                'integerOnly'=>true, "message" => "{attribute} debe ser un valor numérico"),
             array('monto', 'numerical', 'min' => self::MONTO_MIN, 'max' => self::MONTO_MAX,
                     'tooSmall' => 'El pago debe ser de al menos <b>'.
                         Yii::t('contentForm', 'currSym').' {min}</b>',
@@ -127,7 +128,7 @@ class Pago extends CActiveRecord
             'tipo' => 'Tipo',
             'entidad' => 'Nombre del Banco',
             'cuenta' => 'Cuenta',
-            'id_transaccion' => 'Id Transaccion',
+            'id_transaccion' => 'Id de Transacción',
         );
     }
 

@@ -46,7 +46,7 @@ $pagerParams = array(
                         </strong>
                     </h4>
                     <label class="muted">
-                        En espera de aprobación:
+                        En espera de aprobación:                        
                         <strong>
                             <?php echo $personalShopper->getSaldoEnEspera()." ".Yii::t('backEnd', 'currSym'); ?>                                                        
                         </strong>

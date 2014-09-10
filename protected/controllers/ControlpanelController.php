@@ -17,17 +17,14 @@ class ControlpanelController extends Controller
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('create','update'),
 				'users'=>array('@'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('misventas'),
-				'expression' => 'UserModule::isAdmin() || UserModule::isPersonalShopper()',
-			),
+			),			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index','delete','ventas',
-                                    'pedidos','usuarios', 'looks', 'productos','ingresos',
-                                    'remuneraciones', 'personalshoppers','seo','createSeo','deleteSeo'),
-				//'users'=>array('admin'),
-				'expression' => 'UserModule::isAdmin()',
+                            'actions'=>array('index','delete','ventas',
+                                'pedidos','usuarios', 'looks', 'productos','ingresos',
+                                'remuneraciones', 'personalshoppers','seo','createSeo',
+                                'deleteSeo', 'misventas'),
+                            //'users'=>array('admin'),
+                            'expression' => 'UserModule::isAdmin()',
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -467,8 +464,10 @@ class ControlpanelController extends Controller
         
         $personalShopper = User::model()->findByPk($id); 
         //Que solo puedan entrar los admin y el propietario PS
-        if($personalShopper===null || 
-                (UserModule::isPersonalShopper() && $id != Yii::app()->user->id))
+//        if($personalShopper===null || 
+//                (UserModule::isPersonalShopper() && $id != Yii::app()->user->id))
+//                throw new CHttpException(404,'The requested page does not exist.');
+        if($personalShopper===null)
                 throw new CHttpException(404,'The requested page does not exist.');
         
         $producto = new OrdenHasProductotallacolor;

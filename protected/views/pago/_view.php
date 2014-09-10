@@ -3,11 +3,7 @@
 /* @var $data Pago */
 ?>
 
-<tr>    
-    <td>
-        <input name="check" type="checkbox" value="">
-    </td>
-    
+<tr>       
     <td>
         <?php echo $data->id; ?>
     </td>
@@ -45,7 +41,7 @@
     <!--Fecha de Respuesta-->
     <td>        
         <?php echo $data->fecha_respuesta ? date("d/m/Y h:i:s a", $data->getFechaRespuesta())                
-                : "-"; ?>
+                : $data->getEstado(); ?>
     </td>  
     
     

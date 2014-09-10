@@ -819,15 +819,7 @@ $tracking=$orden->getTrackingInfo();
     <div class="span7">
       <h3 class="braker_bottom margin_top">MENSAJES</h3>
       <form>
-        <div class="control-group">
-          <select>
-            <option>Elija un mensaje estandar</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-          </select>
-        </div>
+
         <div class="control-group">
         	<input type="text" id="asunto" placeholder="Asunto Del Mensaje" />
           	<textarea id="cuerpo" name="cuerpo" cols="" class="span7" rows="4" placeholder="Mensaje"></textarea>

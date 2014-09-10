@@ -95,7 +95,8 @@ $this->breadcrumbs=array(
         			<th>Precio Venta</th>
         			<th>Precio con Descuento</th>
         			<th>Precio con Impuesto</th>
-        			
+        			<th>Tipo de Descuento</th>
+        			<th>Valor de Descuento</th>
         			<th>Guardado en</th>
         		</tr>        		
         	</thead>
@@ -110,6 +111,9 @@ $this->breadcrumbs=array(
         			<td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$historico->precioVenta); ?></td>
         			<td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$historico->precioDescuento); ?></td>
         			<td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$historico->precioImpuesto); ?></td>
+        			
+        			<td><?php #echo Yii::app()->numberFormatter->format("#,##0.00",$historico->tipoDescuento); ?></td>
+        			<td><?php #echo Yii::app()->numberFormatter->format("#,##0.00",$historico->precioImpuesto); ?></td>
         			
         			<td width="23%"><?php echo date("d/m/Y h:i:s a",strtotime($historico->fecha)); ?></td>
         		</tr>

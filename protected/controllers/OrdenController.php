@@ -1665,19 +1665,20 @@ public function actionValidar()
 				$usuario = User::model()->findByPk($_POST['user_id']); 
 				
 				$message = new YiiMailMessage;
-                $message->view = "mail_template";
+                #$message->view = "mail_template";
+                $message->activarPlantillaMandrill();
                 $subject = 'Tienes un mensaje nuevo en Personaling';
                 $body = '<h2>Tienes un mensaje en Personaling.</h2>' . 
-                        '<br/><br/>' .
+                        '<br/>' .
                         'El Administrador del sistema te ha enviado un mensaje referente a tu compra <br/>'. 
                         'Ingresa con tu usuario y revisa tus notificaciones.';
-				$params = array('subject' => $subject, 'body' => $body);
+				//$params = array('subject' => $subject, 'body' => $body);
                 $message->subject = $subject;
-                $message->setBody($params, 'text/html');
+                $message->setBody($body, 'text/html');
                 if(is_null($mensaje->admin))
                 	$message->addTo($usuario->email);
-                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-                Yii::app()->mail->send($message);	
+                //$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                Yii::app()->mail->send($message);
 			}		
 			
 			Yii::app()->user->setFlash('success', 'Se ha enviado el mensaje correctamente.');

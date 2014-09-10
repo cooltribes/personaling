@@ -109,7 +109,7 @@ function handleDrop(e) {
     	var color_id = e.dataTransfer.getData('color_id');
     	var producto_id = e.dataTransfer.getData('producto_id');
     	
-    	var urlVar = "<?php echo Yii::app()->createUrl('site/productoImagen'); ?>";
+    	var urlVar = "<?php echo Yii::app()->createUrl('site/productoImagenPng'); ?>";
     	urlVar += '/producto/'+producto_id+'/color/'+color_id+'/w/270/h/270';
     	//urlVar = "http://personaling.es:1337/api/imagen/"+e.dataTransfer.getData('producto_id')+"/color/"+e.dataTransfer.getData('color_id');
     	//var dataVar = {'id':e.dataTransfer.getData('producto_id'),'color_id':e.dataTransfer.getData('color_id')};
@@ -474,7 +474,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <?php $this->widget('bootstrap.widgets.TbButton', array(
 	    'label'=>Yii::t('contentForm', 'Next'),
 	    'type'=>'danger',
-		'buttonType' => 'ajaxSubmit',
+		'buttonType' => 'button',
 	    'htmlOptions'=> array(
 	   // 'style'=>'padding:4px 6px',
 		     // 'data-toggle'=>'modal',

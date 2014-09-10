@@ -1098,7 +1098,7 @@ public function actionCategorias(){
             
             
             if (isset($_GET['id']))
-		$model= Look::model()->findByPk($_GET['id']);	
+		$model= Look::model()->findByPk($_GET['id']);
 		else
 		$model=new Look;
 		
@@ -1210,7 +1210,7 @@ public function actionCategorias(){
 				
 				$model->createImage();
 				if ($_POST['tipo']==1){
-			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
+			   		$this->redirect(array('look/publicar','id'=>$model->id));
 					Yii::app()->end();
 				} else {
 					Yii::app()->user->updateSession();
@@ -1921,7 +1921,7 @@ public function actionCategorias(){
         $pages->applyLimit($criteria);
         $looks = Look::model()->findAll($criteria);
        // echo $total.'total';
-       // echo $pages->pageSize."pagesize";
+        //echo $pages->pageSize."pagesize";
     	if (!isset($_GET['page'])){
             $this->render('listar_looks', array(
                 'looks' => $looks,

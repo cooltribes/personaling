@@ -274,7 +274,9 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
         $image_url = str_replace(".","_thumb.",$image->url);
         $filename = Yii::getPathOfAlias('webroot').$image_url;
         $image = Yii::app()->image->load($filename);
+
         $image->trim();
+        $image->resize($_GET['h'],$_GET['w']);
         $image->render();
 
     }

@@ -101,9 +101,21 @@ $this->breadcrumbs = array(
                                 <li><strong>Comisión actual: </strong>
                                     <?php echo $usuario->getComision(); ?>
                                 </li>
-                                <li><strong>Balance actual en comisiones (Disponible): </strong>
-                                    <?php echo  $usuario->getSaldoPorComisiones() . " " . Yii::t('backEnd', 'currSym'); ?> 
+                                <li><strong>Balance actual en comisiones: </strong>
+                                    <?php echo Yii::app()->numberFormatter->format(
+                                    "#,##0.00",($usuario->getSaldoPorComisiones(false) + 
+                                    ($model->estado == 0 ? $model->monto : 0))).
+                                    " " . Yii::t('backEnd', 'currSym'); ?> 
                                 </li>
+                                <?php 
+                                //si esta en espera de respuesta, mostrar la disponibilidad despues
+                                //de aceptar el pago
+                                if($model->estado == 0){ ?>
+                                    <li><strong>Balance en comisiones después de aceptar el pago: </strong>
+                                        <?php echo  $usuario->getSaldoPorComisiones() .
+                                                " " . Yii::t('backEnd', 'currSym'); ?> 
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </div>
                         <div class="span6">
@@ -142,6 +154,7 @@ $this->breadcrumbs = array(
                     <div class="row-fluid">
                         <div class="span12">
                             <h4>Ingresa el ID de Transacción:</h4>
+                            <label class="muted">Sólo para pagos con Paypal o Cuenta Bancaria</label>
                             <?php echo TbHtml::textField("idTransaccion", "", array(
                                 'placeholder' => "Código de la transacción"
                             )); ?>

@@ -388,6 +388,7 @@ return array (
 	'Type a description for this look' => 'Escriba una descripción para este look',
 	'Type of discount' => 'Tipo de descuento',
 	'Tracking' => 'Número de seguimiento',
+	'Transaction No.' => 'Nro. de Transacción',
 	'Try again' => 'Intentar nuevamente',
 
 

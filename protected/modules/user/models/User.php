@@ -815,6 +815,18 @@ class User extends CActiveRecord {
                     "SELECT SUM(total) as total FROM tbl_balance WHERE tipo IN
                      (5, 7, 8)
                      AND user_id = ".$this->id)
+                    ->queryScalar();            
+
+            return $format ? Yii::app()->numberFormatter->format("#,##0.00",$saldo) : $saldo;            
+
+        }
+        /*Calcula el saldo que está en solicitudes sin aprobar para PS*/
+        function getSaldoEnEspera($format = true) {
+                        
+            $saldo = Yii::app()->db->createCommand(
+                    "SELECT SUM(total) as total FROM tbl_balance WHERE tipo IN
+                     (7, 8)
+                     AND user_id = ".$this->id)
                     ->queryScalar();
             
 //            return $format ? Yii::app()->numberFormatter->formatCurrency($saldo, "") : $saldo;            

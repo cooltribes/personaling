@@ -93,8 +93,10 @@ class PagoController extends Controller
                         $saldo->total = - $model->monto;
                         $saldo->orden_id = $model->id;
                         $saldo->user_id = $model->user_id;
-                        $saldo->admin_id = Yii::app()->user->id;
+                        //ningun admin, el mismo usuario para no romper la integridad
+                        $saldo->admin_id = $model->user_id; 
                         $saldo->tipo = 7; //por retiro de dinero PS                        
+                        $saldo->fecha = date("Y-m-d H:i:s");
                         $saldo->save();
                         
                         Yii::app()->user->setFlash("success", "Se ha realizado tu solicitud con éxito,
@@ -148,16 +150,35 @@ class PagoController extends Controller
 
             if(isset($_POST['aceptar']))
             {
-                if($_POST['idTransaccion'] != ""){
+                //Si ingresaron algun id de transaccion o si es un pago para agregar
+                //al balance, no necesitaria idTransaccion
+                if($_POST['idTransaccion'] != "" || $model->tipo == 2){
 
                     //Marcar el pago como aceptado, necesita un idTransaccion
                     //para identificar la operacion bancaria o tranferencia de paypal
                     $model->fecha_respuesta = date("Y-m-d H:i:s");
-                    $model->id_transaccion = $_POST['idTransaccion'];
+                    $model->id_transaccion = $_POST['idTransaccion'] ? $_POST['idTransaccion']
+                            : ($model->tipo == 2 ? 0:"") ;
                     $model->admin_id = Yii::app()->user->id;
                     $model->estado = 1;
 
                     if($model->save()){
+                        
+                        //Si el tipo de pago fue agregar al balance, el idTransaccion
+                        //será el mismo ID
+                        $model->id_transaccion = $model->id;
+                        $model->save();
+                        
+                        //Pasar para el saldo
+                        $saldo = new Balance();
+                        $saldo->total = $model->monto;
+                        $saldo->orden_id = $model->id;
+                        $saldo->user_id = $model->user_id;
+                        $saldo->admin_id = Yii::app()->user->id;
+                        $saldo->tipo = 9; //por pago al cobrar agregando al balance
+                        $saldo->fecha = date("Y-m-d H:i:s");
+                        $saldo->save();
+                        
                         //enviar email a PS
                         $this->enviarRespuestaPersonalShopper($model, 1);                        
                         Yii::app()->user->setFlash("success", "Se ha registrado el pago exitosamente.");                           
@@ -191,7 +212,8 @@ class PagoController extends Controller
                     $saldo->orden_id = $model->id;
                     $saldo->user_id = $model->user_id;
                     $saldo->admin_id = Yii::app()->user->id;
-                    $saldo->tipo = 8; //por reintegro de dinero PS                        
+                    $saldo->tipo = 8; //por reintegro de dinero PS       
+                    $saldo->fecha = date("Y-m-d H:i:s");
                     $saldo->save();
                     
                     //enviar email a la PS
@@ -240,8 +262,8 @@ class PagoController extends Controller
             //Buscar mis solicitudes y pagos
             $pago->unsetAttributes();
             $pago->user_id = Yii::app()->user->id;
-            $dataProvider = $pago->search();
-                
+            $dataProvider = $pago->search();                
+            
             $this->render('index',array(
                 'dataProvider'=>$dataProvider,
             ));
@@ -355,9 +377,13 @@ class PagoController extends Controller
             //Aprobado
             if($accion == 1){
                 
+                //Si el pago fue agregar al balance (2) u otro
+                $tipoPago = $pago->tipo == 2 ? "Se ha hecho el pago cargándose 
+                    a tu balance Personaling"
+                        :"Se ha hecho el pago a tu cuenta. (Paypal o Banco) por";
                 $body = Yii::t('contentForm',
                     'Tu solicitud de pago <b>Nro.'.$pago->id.'</b> ha sido aprobada.
-                     Se ha hecho el pago a tu cuenta. (Paypal o Banco) por un monto
+                     '.$tipoPago.' un monto
                      de <b>'.$pago->getMonto().'</b>
                      <br>                    
                      <br>

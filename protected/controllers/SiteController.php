@@ -29,7 +29,7 @@ class SiteController extends Controller
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',
                                     'preguntas_frecuentes', 'equipo_personaling','captcha',
                                     'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos',
-                                    'tienda', 'conversion'), 
+                                    'tienda', 'conversion','ProductoImagenpng'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -262,7 +262,22 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 //$cpu_time = microtime(1) - $start_time;
 //echo $cpu_time."<br>";	
 
-	}	
+	}
+    public function actionProductoImagenPng()
+    {
+       // $model = $this->loadModel($id);
+        // $image_url = $model->getImageUrl(17,array('type'=>'thumb','ext'=>'png','baseUrl'=> true ));
+        //load the image
+        //echo $model->getImageUrl(17,array('type'=>'thumb','ext'=>'jpg','baseUrl'=> false ));
+        //$img = imagecreatefromjpeg(Yii::getPathOfAlias('webroot').$model->getImageUrl(17,array('type'=>'thumb','ext'=>'jpg','baseUrl'=> false )));
+        $image = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$_GET['producto'],'color_id'=>$_GET['color']),array('order'=>'orden','limit'=>1,'offset'=>0));
+        $image_url = str_replace(".","_thumb.",$image->url);
+        $filename = Yii::getPathOfAlias('webroot').$image_url;
+        $image = Yii::app()->image->load($filename);
+        $image->trim();
+        $image->render();
+
+    }
 
 	/**
 	 * Displays the contact page

@@ -188,7 +188,23 @@ class Image {
 
 		return $this;
 	}
-/**
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+    public function trim()
+    {
+        $this->actions['trim'] = array();
+
+        return $this;
+    }
+
+    /**
 	 * Crop an image to a specific width and height. You may also set the top
 	 * and left offset.
 	 * This method is chainable.

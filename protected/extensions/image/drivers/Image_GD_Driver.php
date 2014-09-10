@@ -200,6 +200,73 @@ class Image_GD_Driver extends Image_Driver {
 
 		return $status;
 	}
+    public function trim()
+    {
+        $img = $this->tmp_image;
+        //find the size of the borders
+        $b_top = 0;
+        $b_btm = 0;
+        $b_lft = 0;
+        $b_rt = 0;
+
+        //top
+        for(; $b_top < imagesy($img); ++$b_top) {
+            for($x = 0; $x < imagesx($img); ++$x) {
+                $color        = imagecolorat($img, $x, $b_top);
+                $transparency = ($color >> 24) & 0x7F;
+                if(!$transparency) {
+                    break 2; //out of the 'top' loop
+                }
+            }
+        }
+
+        //bottom
+        for(; $b_btm < imagesy($img); ++$b_btm) {
+            for($x = 0; $x < imagesx($img); ++$x) {
+                $color        = imagecolorat($img, $x, imagesy($img) - $b_btm-1);
+                $transparency = ($color >> 24) & 0x7F;
+                if(!$transparency) {
+                    break 2; //out of the 'bottom' loop
+                }
+            }
+        }
+
+        //left
+        for(; $b_lft < imagesx($img); ++$b_lft) {
+            for($y = 0; $y < imagesy($img); ++$y) {
+                $color        = imagecolorat($img, $b_lft, $y);
+                $transparency = ($color >> 24) & 0x7F;
+                if(!$transparency) {
+                    break 2; //out of the 'left' loop
+                }
+            }
+        }
+
+        //right
+        for(; $b_rt < imagesx($img); ++$b_rt) {
+            for($y = 0; $y < imagesy($img); ++$y) {
+                $color        = imagecolorat($img, imagesx($img) - $b_rt-1, $y);
+                $transparency = ($color >> 24) & 0x7F;
+                if(!$transparency) {
+                    break 2; //out of the 'right' loop
+                }
+            }
+        }
+
+        //copy the contents, excluding the border
+        $newimg = $this->imagecreatetransparent(
+            imagesx($img)-($b_lft+$b_rt), imagesy($img)-($b_top+$b_btm));
+
+        if ($status = imagecopy($newimg, $img, 0, 0, $b_lft, $b_top, imagesx($newimg), imagesy($newimg)))
+
+        {
+            // Swap the new image for the old one
+            imagedestroy($this->tmp_image);
+            $this->tmp_image = $newimg;
+        }
+
+        return $status;
+    }
 	public function super_crop($properties)
 	{
 		// Sanitize the cropping settings

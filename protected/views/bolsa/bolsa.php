@@ -353,8 +353,10 @@ $total_productos_look = 0;
 
                             echo "<td>";
                                 if(floatval($precio_descuento) < floatval($precioMostrar)){
-                                        echo '<del>'.Yii::t('contentForm', 'currSym').' '.$precioMostrar.
-                                                '</del><br/>'.Yii::t('contentForm', 'currSym').' '.$precio_descuento;
+                                        echo '<del>'.
+                                                Yii::t('contentForm', 'currSym').' '.$precioMostrar.
+                                            '</del>
+                                                <br/>'.Yii::t('contentForm', 'currSym').' '.$precio_descuento;
                                 }else{
                                         echo Yii::t('contentForm', 'currSym').' '.$precioMostrar;
                                 }

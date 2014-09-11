@@ -150,10 +150,11 @@ class Retturn extends CActiveRecord
           
             foreach ($listado as $arch){
 				$cuenta=0;
+				
                 //Si ya ha sido cargado el inbound
                 if(strpos($arch, $nombreArchivo) !== false){
 			
-					
+					//echo $arch."-";
 					
                     //Descargar el archivo
                     if(ftp_get($conexion, $rutaArchivo.$arch, $arch, FTP_BINARY)){
@@ -194,7 +195,14 @@ class Retturn extends CActiveRecord
 										print_r($item->errors);
 									
 	                             }
+                                else{
+                                    if(!$item->save())
+                                        print_r($item->errors);
+                                }
 							}
+                            else {
+                               $conDiscrepancias = true; 
+                            }
                     }
 					
 
@@ -233,8 +241,8 @@ class Retturn extends CActiveRecord
 	public function actualizarDiscrepancias(){
 		$resuelto=true;	
 		foreach($this->items as $item){
-			if(!is_null($item->resuelto))
-				if($item->resuelto==0){
+			
+				if($item->resuelto!=1){
 					$resuelto=false;
 					break;
 				}

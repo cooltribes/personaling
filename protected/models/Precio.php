@@ -172,19 +172,21 @@ class Precio extends CActiveRecord
 	*/
 	public function afterFind()
 	{
-			
-		setlocale(LC_MONETARY, 've_VE');
-		$this->costo = money_format('%i', $this->costo);
-		
-		$this->precioVenta = money_format('%i', $this->precioVenta);
-		
-		$this->valorTipo = money_format('%i', $this->valorTipo);
-		
-		$this->ahorro = money_format('%i', $this->ahorro);
-		
-		$this->precioDescuento = money_format('%i', $this->precioDescuento);
-		
-		$this->precioImpuesto = money_format('%i', $this->precioImpuesto);
+            
+
+//            setlocale(LC_MONETARY, 've_VE');
+//		$this->costo = money_format('%i', $this->costo);
+//		
+//		$this->precioVenta = money_format('%i', $this->precioVenta);
+//		
+//		$this->valorTipo = money_format('%i', $this->valorTipo);
+//		
+//		$this->ahorro = money_format('%i', $this->ahorro);
+//		
+//		$this->precioDescuento = money_format('%i', $this->precioDescuento);
+//		
+//		$this->precioImpuesto = money_format('%i', $this->precioImpuesto);
+            
 		
 		/*
 		$this->costo = Yii::app()->numberFormatter->formatDecimal($this->costo); 

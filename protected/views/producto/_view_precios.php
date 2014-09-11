@@ -102,9 +102,10 @@ $this->breadcrumbs=array(
         	</thead>
         	<tbody>
         		<?php foreach ($precio->anteriores as $historico) {
-     
+     					
+						$ahorro=$historico->precioImpuesto-$historico->precioDescuento;
                          ?>
-
+						
         		<tr>
         			<td><?php echo User::model()->getUsername($historico->user_id); ?></td>
         			<td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$historico->costo); ?></td>
@@ -112,8 +113,24 @@ $this->breadcrumbs=array(
         			<td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$historico->precioDescuento); ?></td>
         			<td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$historico->precioImpuesto); ?></td>
         			
-        			<td><?php #echo Yii::app()->numberFormatter->format("#,##0.00",$historico->tipoDescuento); ?></td>
-        			<td><?php #echo Yii::app()->numberFormatter->format("#,##0.00",$historico->precioImpuesto); ?></td>
+        			<td><?php 
+        			 if($historico->tipoDescuento=="1" && $ahorro>0)
+        			 { 
+        				 echo "Monto en €"; 
+					 }
+					 else
+					 {
+					 	if($historico->tipoDescuento=="0" && $ahorro>0)
+						{
+							echo "Porcentaje %";
+						}
+						else 
+						{
+							echo "-";
+						}	
+					 	
+					 } ?></td>
+        			<td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$ahorro); ?></td>
         			
         			<td width="23%"><?php echo date("d/m/Y h:i:s a",strtotime($historico->fecha)); ?></td>
         		</tr>
@@ -216,6 +233,53 @@ $("#Precio_precioVenta").keyup(function(){
             $("#Precio_ahorro").val(dos);
             $("#Precio_precioDescuento").val(this.value - dos);
 	}
+    
+});
+
+
+$("#Precio_precioImpuesto").keyup(function(){
+
+         var precio_impuesto; 
+         var tipo;
+         var valor;
+         var descuento;
+         var ahorro;   
+        precio_impuesto = $("#Precio_precioImpuesto").val();
+        
+        tipo = document.getElementById("Precio_tipoDescuento").value;
+		valor = document.getElementById("valordescuento").value;	
+		
+		 
+		 ahorro = $("#Precio_ahorro").val(); 
+		 descuento=$("#Precio_precioDescuento").val();
+		 
+
+		
+		if(precio_impuesto=="0")
+		{
+			$("#Precio_precioVenta").val("0");
+		}
+		else
+		{
+			precio=precio_impuesto/(parseFloat($("#iva").val())+1);
+		}
+			
+		$("#Precio_precioVenta").val(precio);
+	
+		
+		if(tipo=="0")
+		{
+			ahorro=(precio_impuesto*valor)/100;
+			$("#Precio_ahorro").val(ahorro);
+			$("#Precio_precioDescuento").val(precio_impuesto-ahorro);
+		}
+		else
+		{
+			$("#Precio_ahorro").val(valor);
+			$("#Precio_precioDescuento").val(precio_impuesto-valor);
+			
+		}
+		//alert(tipo);
     
 });
 

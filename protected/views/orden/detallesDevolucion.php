@@ -207,13 +207,20 @@ $this->breadcrumbs=array(
 			echo '<tr><td colspan="2">ITEMS</td></tr>';
 			echo '<tr><td>EAN</td><td>Cantidad</td></tr>';
 			foreach($return->items as $item){
-				if(is_null($item->resuelto))	
+				/*if(is_null($item->resuelto))	
 					echo '<tr><td>'.$item->sku.'</td><td>'.$item->cantidadConfirmation.'</td></tr>';
 				else{	if($item->resuelto==0)
 							echo '<tr><td class="alert-error">'.$item->sku.'</td><td class="alert-error">'.$item->cantidadConfirmation.'<span class="pull-right"><input style="margin-top:-2px" onclick="resolver('.$item->id.')" type="checkbox" id="'.$item->id.'"/><b>Resolver</b></span></td></tr>';
 						else
 							echo '<tr><td class="alert-success">'.$item->sku.'</td><td class="alert-success">'.$item->cantidadConfirmation.'<span class="pull-right"> <b>Resuelto</b></span></tr></td>';
-					}
+					}*/
+					
+					if($item->resuelto==1)
+                            echo '<tr><td class="alert-success">'.$item->sku.'</td><td class="alert-success">'.$item->cantidadConfirmation.'<span class="pull-right"> <b>Resuelto</b></span></tr></td>';
+                     else
+                         echo '<tr><td class="alert-error">'.$item->sku.'</td><td class="alert-error">'.$item->cantidadConfirmation.'<span class="pull-right"><input style="margin-top:-2px" onclick="resolver('.$item->id.')" type="checkbox" id="'.$item->id.'"/><b>Resolver</b></span></td></tr>';
+                       
+                            
 				 
 			}
 			echo '</table>';

@@ -172,19 +172,21 @@ class Precio extends CActiveRecord
 	*/
 	public function afterFind()
 	{
-			
-		setlocale(LC_MONETARY, 've_VE');
-		$this->costo = money_format('%i', $this->costo);
-		
-		$this->precioVenta = money_format('%i', $this->precioVenta);
-		
-		$this->valorTipo = money_format('%i', $this->valorTipo);
-		
-		$this->ahorro = money_format('%i', $this->ahorro);
-		
-		$this->precioDescuento = money_format('%i', $this->precioDescuento);
-		
-		$this->precioImpuesto = money_format('%i', $this->precioImpuesto);
+            
+
+//            setlocale(LC_MONETARY, 've_VE');
+//		$this->costo = money_format('%i', $this->costo);
+//		
+//		$this->precioVenta = money_format('%i', $this->precioVenta);
+//		
+//		$this->valorTipo = money_format('%i', $this->valorTipo);
+//		
+//		$this->ahorro = money_format('%i', $this->ahorro);
+//		
+//		$this->precioDescuento = money_format('%i', $this->precioDescuento);
+//		
+//		$this->precioImpuesto = money_format('%i', $this->precioImpuesto);
+            
 		
 		/*
 		$this->costo = Yii::app()->numberFormatter->formatDecimal($this->costo); 
@@ -255,10 +257,10 @@ class Precio extends CActiveRecord
 	}
 	
 	public function countxRango($min, $max){
-		$sql="SELECT count(p.id) from tbl_precio p ".
-		"JOIN tbl_producto pr ON pr.id=p.tbl_producto_id "."
+		$sql="SELECT count(pr.id) from tbl_producto pr ".
+		"JOIN tbl_precio p ON pr.id=p.tbl_producto_id "."
 		where pr.estado=0 AND pr.`status`=1 ".
-		"AND p.precioVenta >".$min." AND p.precioVenta <".$max.
+		"AND p.precioDescuento >=".$min." AND p.precioDescuento <".$max.
 		" AND pr.id IN (select tbl_producto_id from tbl_imagen)";
 		if(isset(Yii::app()->session['outlet'])){
 			if(Yii::app()->session['outlet'] == 'true'){

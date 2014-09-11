@@ -448,7 +448,7 @@ class TiendaController extends Controller
 			if(Yii::app()->session['order']=="") // se agrego nuevo porque pidieron que en una misma session se mantenga la misma vista de la tienda
 				Yii::app()->session['order']=rand(0,8);
 			
-		}
+		} 
 		$criteria = $producto->nueva2($a);
 
 		$criteria->order=$orden[Yii::app()->session['order']];

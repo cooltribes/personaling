@@ -905,15 +905,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 
 		$criteria=new CDbCriteria;
 		unset(Yii::app()->session['color']);
-		$criteria->compare('id',$this->id);
-		
-		$criteria->compare('codigo',$this->codigo,true);
-		$criteria->compare('t.nombre',$this->nombre,true);
-		$criteria->compare('t.estado',$this->estado,true);
-		$criteria->compare('descripcion',$this->descripcion,true);
-		
-		
-		$criteria->compare('marca_id',$this->marca_id,true);
+	
 
 		//$criteria->compare('outlet',$this->outlet,true);
 		if(isset(Yii::app()->session['outlet'])){
@@ -927,15 +919,6 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		}
 		//$criteria->compare('outlet',1,true);
 		//$criteria->compare('t.estado',0,true);
-		$criteria->compare('fInicio',$this->fInicio,true);
-		$criteria->compare('fFin',$this->fFin,true);
-		
-		$criteria->compare('fecha',$this->fecha,true);
-		
-		$criteria->compare('status',$this->status,true);
-		$criteria->compare('destacado',$this->destacado,true);
-
-		$criteria->compare('peso',$this->peso,true);
 		
 		$imgsql = "SELECT tbl_producto_id FROM tbl_imagen";
        	$enImagen= Yii::app()->db->createCommand($imgsql)->queryColumn();
@@ -951,21 +934,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			$criteria->addCondition(' tbl_clasificacion_marca.clasificacion = 1 ');
 			
 		}
-		if(is_array($todos)) // si la variable es un array, viene de una accion de filtrado
-		{
-			if(empty($todos)) // si no tiene hijos devuelve un array vacio por lo que debe buscar por el id de la categoria
-			{
-				$criteria->compare('tbl_categoria_id',$this->categoria_id);
-			}
-			else // si tienes hijos
-				{
-					$criteria->addInCondition("tbl_categoria_id",$todos);
-				}		
-		}else if($todos=="a")
-		{
-				$criteria->compare('tbl_categoria_id',$this->categoria_id);
-				
-		}
+		
 		
 		
 		//Filtro por color
@@ -1131,9 +1100,9 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		//else{
 			//Filtro por precio
 			if(isset(Yii::app()->session['p_index'])){
-				$criteria->addCondition('precioVenta > '.Yii::app()->session['min']);
-				$criteria->addCondition('precioVenta < '.Yii::app()->session['max']);
-				$criteria->order = "precioVenta ASC";
+				$criteria->addCondition('precioDescuento >= '.Yii::app()->session['min']);
+				$criteria->addCondition('precioDescuento < '.Yii::app()->session['max']);
+				$criteria->order = "precioDescuento ASC";
 			}
 			else
 				$criteria->order = "fecha DESC";

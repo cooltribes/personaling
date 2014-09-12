@@ -529,39 +529,46 @@ public function actionReportexls(){
 
 		if(isset($_POST['Precio']))
 		{
-			$precio->attributes=$_POST['Precio'];
-			$precio->ganancia=$_POST['Precio']['ganancia'];
-			$precio->gananciaImpuesto=$_POST['Precio']['gananciaImpuesto'];
-			$precio->impuesto = 1;
-			
-			if($id==""){
-				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('error',UserModule::t("No es posible almacenar los precios si aún no se ha creado el producto."));
-			}			
-			else{
-							
-				$precio->tbl_producto_id = $id;
-				
-				if($precio->save())
-				{
-					
-					Yii::app()->user->updateSession();
-					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
-						
-					if($_POST['accion'] == "normal") // si es el boton principal
-						$this->render('_view_precios',array('model'=>$model,'precio'=>$precio,));
-					
-					if($_POST['accion'] == "avanzar") // guardar y avanzar
-						$this->redirect(array('categorias','id'=>$model->id));
-					
-					Yii::app()->end();
+                    $precio->attributes=$_POST['Precio'];
+                    $precio->ganancia=$_POST['Precio']['ganancia'];
+                    $precio->gananciaImpuesto=$_POST['Precio']['gananciaImpuesto'];
+                    $precio->impuesto = 1;
 
-				}
-				
-			}
+                    if($id==""){
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash('error',UserModule::t("No es posible almacenar los precios si aún no se ha creado el producto."));
+                    }			
+                    else{
+
+                        $precio->tbl_producto_id = $id;
+
+                        if($precio->save())
+                        {
+
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+
+                            if($_POST['accion'] == "normal") // si es el boton principal
+                                    $this->render('_view_precios',array('model'=>$model,'precio'=>$precio,));
+
+                            if($_POST['accion'] == "avanzar") // guardar y avanzar
+                                    $this->redirect(array('categorias','id'=>$model->id));
+
+                            Yii::app()->end();
+
+                        }
+
+                    }
 		}
 
-		$this->render('_view_precios',array(
+//                echo "<pre>";
+//                print_r($precio->attributes);
+//                echo "</pre><br>";
+//                Yii::app()->end();
+
+
+
+                $this->render('_view_precios',array(
 			'model'=>$model,'precio'=>$precio,
 		));
 	}

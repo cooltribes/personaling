@@ -34,5 +34,11 @@
                 : $data->getEstado(); ?>
     </td>     
     
+    <!--Código de Transacción-->
+    <td>        
+       <?php echo $data->id_transaccion ? $data->id_transaccion : 
+               ($data->estado == 2 ? "-" :$data->getEstado()); ?>
+    </td>     
+    
     
 </tr>

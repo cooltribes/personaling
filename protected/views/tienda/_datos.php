@@ -12,7 +12,7 @@
 
 <div class="items" id="catalogo">
    
-      	
+      	 
 <?php
 $cont = 1;
 

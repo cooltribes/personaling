@@ -28,8 +28,17 @@ $this->breadcrumbs=array(
     
 
             <fieldset>
-                <legend><h3>Tu balance actual en comisiones: <strong><?php echo Yii::t('contentForm', 'currSym').
-                        " " . $balance; ?></strong></h3></legend>
+                <legend>
+                    <h3>Tu balance actual en comisiones: <strong><?php echo Yii::t('contentForm', 'currSym').
+                        " " . $balance; ?></strong>                      
+                     <small class="margin_top_small pull-right">En espera de aprobación: 
+                         <strong>
+                             <?php echo Yii::t('backEnd', 'currSym')." ".
+                                $forApproval; ?>                             
+                         </strong>
+                     </small>
+                    </h3>
+                </legend>
 
                  <!-- FLASH ON --> 
                 <?php $this->widget('bootstrap.widgets.TbAlert', array(

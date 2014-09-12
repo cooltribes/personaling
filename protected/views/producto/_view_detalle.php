@@ -521,13 +521,13 @@
         }
         else {
         ?>
-       <div class="span6"><a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium"> 
+       <div class="span6"><a class="btn lighted" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium"> 
       
       &nbsp; </span> <?php echo Yii::t('contentForm','Like'); ?></a> &nbsp;
         <?php
         }
         ?>
-        <small id="total-likes" class="hidden-tablet hidden-phone">
+        <small id="total-likes" class="lighted">
         <?php 
               // total de likes 
                     $cuantos = UserEncantan::model()->countByAttributes(array('producto_id'=>$producto->id));   

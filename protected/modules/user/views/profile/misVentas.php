@@ -45,6 +45,12 @@ $pagerParams = array(
                             <?php echo $personalShopper->getSaldoPorComisiones()." ".Yii::t('backEnd', 'currSym'); ?>                            
                         </strong>
                     </h4>
+                    <label class="muted">
+                        En espera de aprobación:                        
+                        <strong>
+                            <?php echo $personalShopper->getSaldoEnEspera()." ".Yii::t('backEnd', 'currSym'); ?>                                                        
+                        </strong>
+                    </label>                    
                 </div>
                 <!--Totales-->
                 <div class="span7 padding_top_medium margin_top_medium text_align_center">                    
@@ -171,7 +177,7 @@ $pagerParams = array(
     $template = '{summary}
   <table id="table" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
     <tr>
-      <th rowspan="2" scope="col"><input name="check" type="checkbox" id="todos"></th>
+     
       <th rowspan="2" scope="col" colspan="2" style="width:30%;">Producto</th>
       <th rowspan="2" scope="col">Look</th>      
       <th rowspan="2" scope="col">Fecha de Venta</th>

@@ -12,8 +12,11 @@ $this->breadcrumbs = array(
     textarea {
        resize: none;
     }
+    a.seeInfo {
+       text-decoration: underline;
+    }
 </style>
-<div class="container margin_top">
+<div class="container">
     <div class="page-header">
         <h1>Pago Nro. <?php echo $model->id; ?> - <small><?php echo $model->getEstado(); ?></small></h1>        
     </div>
@@ -36,7 +39,7 @@ $this->breadcrumbs = array(
         Monto: <strong><?php echo $model->getMonto(); ?></strong>                        
         
     </h2>  
-    <div class="row">                       
+    <div class="row margin_top">                       
         <div class="span8">
             <h3 class="braker_bottom"> Información del Pago</h3>                
             <div class="row-fluid">
@@ -86,7 +89,7 @@ $this->breadcrumbs = array(
                         <small> <?php if (Yii::app()->params['askId']) echo Yii::t('contentForm', 'C.I.') .
                                 " " . $usuario->profile->cedula; ?>
                                 - 
-                                <a href="<?php echo $this->createUrl("controlpanel/misventas",
+                                <a class="seeInfo" href="<?php echo $this->createUrl("controlpanel/misventas",
                                         array("id" => $usuario->id)); ?>">
                                 Ver información completa
                                 </a>
@@ -101,8 +104,13 @@ $this->breadcrumbs = array(
                                 <li><strong>Comisión actual: </strong>
                                     <?php echo $usuario->getComision(); ?>
                                 </li>
-                                <li><strong>Balance actual en comisiones (Disponible): </strong>
-                                    <?php echo  $usuario->getSaldoPorComisiones() . " " . Yii::t('backEnd', 'currSym'); ?> 
+                                <li><strong>Balance disponible en comisiones: </strong>
+                                    <?php echo $usuario->getSaldoPorComisiones().
+                                        " " . Yii::t('backEnd', 'currSym'); ?> 
+                                </li>
+                                <li><strong>Balance en espera de aprobación: </strong>
+                                    <?php echo  $usuario->getSaldoEnEspera() .
+                                            " " . Yii::t('backEnd', 'currSym'); ?> 
                                 </li>
                             </ul>
                         </div>
@@ -142,9 +150,20 @@ $this->breadcrumbs = array(
                     <div class="row-fluid">
                         <div class="span12">
                             <h4>Ingresa el ID de Transacción:</h4>
-                            <?php echo TbHtml::textField("idTransaccion", "", array(
-                                'placeholder' => "Código de la transacción"
-                            )); ?>
+                            <label class="muted">Sólo para pagos con Paypal o Cuenta Bancaria</label>
+                            <?php 
+                            //Campo para idTransaccion, solo permitir ingresar
+                            //datos cuando sea por Cuenta Bancaria o Paypal
+                            $htmlOptions = array();
+                            $htmlOptions["placeholder"] = $model->tipo == 2 ? 
+                            "No necesitas ID de Transacción" : "Código de la transacción";
+                                    
+                            if($model->tipo == 2){
+                                $htmlOptions["disabled"] = true;                                
+                            }        
+                                    
+                            echo TbHtml::textField("idTransaccion", "", $htmlOptions); ?>
+                            
                             <?php $this->widget("bootstrap.widgets.TbButton", array(
                                 'label' => 'Aceptar Pago',
                                 'type' => 'success',

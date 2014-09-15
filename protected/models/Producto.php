@@ -404,9 +404,57 @@ class Producto extends CActiveRecord
                 return 0;
     }*/
 
-    public function getPrecioDescuento($format=true)
+    /** 
+     * Retorna el precio con descuento almacenado en la base de datos, si el
+     * producto no tiene descuento se retorna el precio con impuesto.
+     * 
+     * @param boolean $format <b>true</b> (por defecto) Si se retorna el precio como un string,
+     * redondeado a dos decimales. <b>false</b> si se retorna el precio completo 
+     * como un float para hacer cálculos.
+     * @return mixed El precio con descuento con o sin formato.
+     * 
+     * Nelson
+     */
+    public function getPrecioDescuento($format = true)
     {
-        $precio_mostrar = 0;
+        $precioDescuento = 0;
+        if (is_null($this->_precio)) {
+            
+            //Si tiene un precio creado en la BD
+            if($this->precios){
+                //Relacion tabla precios HAS_MANY            
+                $this->_precio = $this->precios[0];                
+            }else{
+                return $precioDescuento;
+            }
+            
+        }        
+        
+        //Si tiene un precio con Impuesto, calcular el descuento
+        if (isset($this->_precio->precioImpuesto)){
+            
+            //si tiene descuento, asignarlo para el retorno
+            if(isset($this->_precio->tipoDescuento)){
+                
+                $precioDescuento = $this->_precio->precioDescuento;        
+                
+            }else{ //Si no tiene descuento, retornar el precio con impuesto
+                
+                $precioDescuento = $this->_precio->precioImpuesto;
+                
+            }
+            
+        }
+        
+        if ($format) {
+            return Yii::app()->numberFormatter->format("#,##0.00",$precioDescuento);
+        } else {
+            return $precioDescuento;
+        }
+                
+        
+        /*CODIGO VIEJO*/
+        /* $precio_mostrar = 0;
         if (is_null($this->_precio)) {
             $c = new CDbCriteria();
             $c->order = '`id` desc';
@@ -419,12 +467,7 @@ class Producto extends CActiveRecord
         			$precio_mostrar = $this->_precio->precioImpuesto - ($this->_precio->precioImpuesto * $this->_precio->valorTipo / 100);
         		}else if($this->_precio->tipoDescuento == 1){
         			$precio_mostrar = $this->_precio->precioImpuesto - $this->_precio->valorTipo;
-        		}                        
-                    
-                    //Guardar el precio con descuento
-//                    $this->_precio->precioDescuento = $precio_mostrar;
-//                    $this->_precio->save();
-                        
+        		}                   
         	}else{
         		$precio_mostrar = $this->_precio->precioImpuesto;
         	}
@@ -435,53 +478,117 @@ class Producto extends CActiveRecord
             }
         }else
             return 0;
+         */
     }
 
+    /** 
+     * Retorna el precio con impuesto almacenado en la base de datos, si el
+     * producto no tiene precio, se retorna 0
+     * 
+     * @param boolean $format <b>true</b> (por defecto) Si se retorna el precio como un string,
+     * redondeado a dos decimales. <b>false</b> si se retorna el precio completo 
+     * como un float para hacer cálculos.
+     * @return mixed El precio con impuesto con o sin formato.
+     * 
+     * Nelson
+     */    
     public function getPrecioImpuesto($format=true)
-	{
-            if (is_null($this->_precio)) {
-                $c = new CDbCriteria();
-                $c->order = '`id` desc';
-                $c->compare('tbl_producto_id', $this->id);
-                $this->_precio = Precio::model()->find($c);
+    {
+     
+        $precioImpuesto = 0;
+        if (is_null($this->_precio)) {            
+            //Si tiene un precio creado en la BD
+            if($this->precios){
+                //Relacion tabla precios HAS_MANY            
+                $this->_precio = $this->precios[0];                
+            }else{
+                return $precioImpuesto;
+            }            
+        }
+        
+        //Si tiene un precio con Impuesto
+        if (isset($this->_precio->precioImpuesto)){            
+           $precioImpuesto = $this->_precio->precioImpuesto;                               
+        }
+        
+        if ($format) {
+            return Yii::app()->numberFormatter->format("#,##0.00",$precioImpuesto);
+        } else {
+            return $precioImpuesto;
+        }
+        
+        /* CODIGO VIEJO
+        if (is_null($this->_precio)) {
+            $c = new CDbCriteria();
+            $c->order = '`id` desc';
+            $c->compare('tbl_producto_id', $this->id);
+            $this->_precio = Precio::model()->find($c);
+        }
+              
+        
+        if (isset($this->_precio->precioImpuesto)){
+            if ($format) {
+                return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioImpuesto);
+            } else {
+                return $this->_precio->precioImpuesto;
             }
-            if (isset($this->_precio->precioImpuesto)){
-                
-//                $this->_precio->precioImpuesto = $this->_precio->precioVenta * (1 + Yii::t('contentForm', 'IVA'));
-//                $this->_precio->save();
-                
-                if ($format) {
-                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioImpuesto);
-                } else {
-                    return $this->_precio->precioImpuesto;
-                }
-            }else
-                return 0;
+        }else
+            return 0;         
+         */
     }
 
     public function getPrecioVenta2($format=true)
-	{
-            if (is_null($this->_precio)) {
-                $c = new CDbCriteria();
-                $c->order = '`id` desc';
-                $c->compare('tbl_producto_id', $this->id);
-                $this->_precio = Precio::model()->find($c);
+    {
+        if (is_null($this->_precio)) {
+            $c = new CDbCriteria();
+            $c->order = '`id` desc';
+            $c->compare('tbl_producto_id', $this->id);
+            $this->_precio = Precio::model()->find($c);
+        }
+        if (isset($this->_precio->precioVenta))
+            if ($format) {
+                return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioVenta);
+            } else {
+                return $this->_precio->precioVenta;
             }
-            if (isset($this->_precio->precioVenta))
-                if ($format) {
-                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->precioVenta);
-                } else {
-                    return $this->_precio->precioVenta;
-                }
-            else
-                return 0;
+        else
+            return 0;
     }
 
-
-    
     public function getAhorro($format=true)
-	{
-            if (is_null($this->_precio)) {
+    {
+        $ahorro = 0;
+        if (is_null($this->_precio)) {            
+            //Si tiene un precio creado en la BD
+            if($this->precios){
+                //Relacion tabla precios HAS_MANY            
+                $this->_precio = $this->precios[0];                
+            }else{
+                return $ahorro;
+            }            
+        }
+        
+        //si tiene descuento, buscar el ahorro
+        if(isset($this->_precio->tipoDescuento)) {
+
+            //si ya tiene guardado un ahorro, mostrarlo
+            if (isset($this->_precio->ahorro)) { 
+                $ahorro = $this->_precio->ahorro;        
+                
+            //Si no ahorro guardado, calcularlo
+            } else { 
+               $ahorro = $this->getPrecioImpuesto(false) - $this->getPrecioDescuento(false);
+            }    
+
+        }
+        
+        if ($format) {
+            return Yii::app()->numberFormatter->format("#,##0.00",$ahorro);
+        } else {
+            return $ahorro;
+        }
+        
+            /*if (is_null($this->_precio)) {
                 $c = new CDbCriteria();
                 $c->order = '`id` desc';
                 $c->compare('tbl_producto_id', $this->id);
@@ -498,39 +605,9 @@ class Producto extends CActiveRecord
                     return $this->_precio->ahorro;
                 }
             }else
-                return 0;
+                return 0;*/
     }
     
-    
-    
-//    public function getAhorro($format=true)
-//	{
-//            if (is_null($this->_precio)) {
-//                $c = new CDbCriteria();
-//                $c->order = '`id` desc';
-//                $c->compare('tbl_producto_id', $this->id);
-//                $this->_precio = Precio::model()->find($c);
-//            }
-//            if (isset($this->_precio->ahorro))
-//                if ($format) {
-//                    return Yii::app()->numberFormatter->format("#,##0.00",$this->_precio->ahorro);
-//                } else {
-//                    return $this->_precio->ahorro;
-//                }
-//            else
-//                return 0;
-//    }
-	/*
-	public function getPrecioNf()
-	{
-	    $c = new CDbCriteria();
-	    $c->order = '`id` desc';
-	    $c->compare('tbl_producto_id', $this->id);
-	    $temp_precio = Precio::model()->find($c);
-        if (isset($temp_precio->precioImpuesto))
-            return $temp_precio->precioImpuesto;
-       return 0;
-    }	*/
 	public function getCantidad($talla=null,$color=null)
 	{
 	if (is_null($talla) and is_null($color))

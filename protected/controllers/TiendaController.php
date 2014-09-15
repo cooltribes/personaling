@@ -448,7 +448,7 @@ class TiendaController extends Controller
 			if(Yii::app()->session['order']=="") // se agrego nuevo porque pidieron que en una misma session se mantenga la misma vista de la tienda
 				Yii::app()->session['order']=rand(0,8);
 			
-		}
+		} 
 		$criteria = $producto->nueva2($a);
 
 		$criteria->order=$orden[Yii::app()->session['order']];
@@ -1396,7 +1396,7 @@ public function actionCategorias2(){
 	}
 
 
-	public function actionModal($id)
+	public function actionModal($id) //todo: change the view, because its difficult to undertand
 	{ 
 		
 		$datos="";
@@ -1514,9 +1514,9 @@ public function actionCategorias2(){
         
         $datos=$datos.'<div class="'.$right.' margin_top_xsmall">';
 		if(is_null($tienda))
-       		$datos=$datos.'<a class="btn btn-warning btn-block" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>';
+       		$datos=$datos.'<a class="btn btn-warning btn-block"  style="width:85px" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>';
 		else
-			$datos=$datos.'<a class="btn btn-warning btn-block" target="_blank" href="'.$producto->url_externo.'" title="'.$msj.'" >'.$msj.'</a>';
+			$datos=$datos.'<a class="btn btn-warning btn-block" style="width:167px" target="_blank" href="'.$producto->url_externo.'" title="'.$msj.'" >'.$msj.'</a>';
         $datos=$datos.'</div></div>';
         
         $datos=$datos.'<p class="muted t_small CAPS">Selecciona Color y talla </p>';
@@ -1830,11 +1830,11 @@ public function actionCategorias2(){
 			        {
 						if(data=='ok'){
 							//alert('redireccionar maÃ±ana');
-							window.location='../bolsa/index';
-						}
-						
+							window.location='".Yii::app()->baseUrl."/bolsa/index';
+						}	
 						if(data=='no es usuario'){
-							$('#alertRegister').show();
+							//$('#alertRegister').show();
+							
 						}
 						
 			        } ",

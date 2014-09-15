@@ -235,6 +235,15 @@ class Precio extends CActiveRecord
 		$historico->precioImpuesto =$this->precioImpuesto;
 		$historico->fecha=date("Y-m-d h:i:s");
 		$historico->user_id=Yii::app()->user->id;
+		if($historico->precioImpuesto-$historico->precioDescuento=="0") // si no hay descuento
+		{
+			$historico->tipoDescuento="-";			
+		}else
+		{
+			$historico->tipoDescuento=$this->tipoDescuento;	
+		}
+		
+		
 		$historico->save();
 		return parent::afterSave();			
 	
@@ -256,10 +265,10 @@ class Precio extends CActiveRecord
 	}
 	
 	public function countxRango($min, $max){
-		$sql="SELECT count(p.id) from tbl_precio p ".
-		"JOIN tbl_producto pr ON pr.id=p.tbl_producto_id "."
+		$sql="SELECT count(pr.id) from tbl_producto pr ".
+		"JOIN tbl_precio p ON pr.id=p.tbl_producto_id "."
 		where pr.estado=0 AND pr.`status`=1 ".
-		"AND p.precioVenta >".$min." AND p.precioVenta <".$max.
+		"AND p.precioDescuento >=".$min." AND p.precioDescuento <".$max.
 		" AND pr.id IN (select tbl_producto_id from tbl_imagen)";
 		if(isset(Yii::app()->session['outlet'])){
 			if(Yii::app()->session['outlet'] == 'true'){

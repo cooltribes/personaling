@@ -215,7 +215,7 @@
         'brand': look.brand,
         'position': look.position
     });
-    ga('ec:setAction', 'click', {list: 'Looks tienda'});
+    ga('ec:setAction', 'click', {list: 'Look impression'});
 
       // Send click with an event, then send user to product page.
     ga('send', 'event', 'UX', 'click', 'Looks Results', {

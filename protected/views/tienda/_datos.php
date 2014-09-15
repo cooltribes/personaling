@@ -356,7 +356,7 @@ function detalle_producto(product){
 	    'brand': product.brand,
 	    'position': product.position
 	});
-	ga('ec:setAction', 'click', {list: 'Productos tienda'});
+	ga('ec:setAction', 'click', {list: 'Product impression'});
 
 	  // Send click with an event, then send user to product page.
 	ga('send', 'event', 'UX', 'click', 'Results', {

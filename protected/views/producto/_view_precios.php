@@ -114,13 +114,13 @@ $this->breadcrumbs=array(
         			<td><?php echo Yii::app()->numberFormatter->format("#,##0.00",$historico->precioImpuesto); ?></td>
         			
         			<td><?php 
-        			 if($historico->tipoDescuento=="1" && $ahorro>0)
+        			 if($historico->tipoDescuento=="1")
         			 { 
         				 echo "Monto en €"; 
 					 }
 					 else
 					 {
-					 	if($historico->tipoDescuento=="0" && $ahorro>0)
+					 	if($historico->tipoDescuento=="0")
 						{
 							echo "Porcentaje %";
 						}
@@ -224,23 +224,28 @@ $("#Precio_precioVenta").keyup(function(){
 	
         //Cambiar el precio con impuesto
         if(valor==0)
-            $("#Precio_precioImpuesto").val(this.value);	
+        {
+        	$("#Precio_precioImpuesto").val(this.value);	
+        }  
         else{                    		
-            precioDescuento = parseFloat(this.value) * ( 1 + parseFloat($("#iva").val()));			
+            precioDescuento = parseFloat(this.value) * ( 1 + parseFloat($("#iva").val()));
+            precioDescuento=redondeo2decimales(precioDescuento);			
             $("#Precio_precioImpuesto").val(precioDescuento);
         }
         
         //Cambiar el ahorro y el precio con descuento
 	if(uno==0)
 	{
-            $("#Precio_ahorro").val(precioDescuento * (dos/100));		
-            $("#Precio_precioDescuento").val(precioDescuento - (precioDescuento * (dos/100)));		
+            precio_ahorro=redondeo2decimales(precioDescuento * (dos/100));
+            $("#Precio_ahorro").val(precio_ahorro);
+            precio_descuento=redondeo2decimales(precioDescuento - (precioDescuento * (dos/100)));		
+            $("#Precio_precioDescuento").val(precio_descuento);		
 		
 	}
 	else
 	{
             $("#Precio_ahorro").val(dos);
-            $("#Precio_precioDescuento").val(this.value - dos);
+            $("#Precio_precioDescuento").val(redondeo2decimales(this.value - dos));
 	}
     
 });
@@ -272,13 +277,16 @@ $("#Precio_precioImpuesto").keyup(function(){
 		{
 			precio=precio_impuesto/(parseFloat($("#iva").val())+1);
 		}
-			
+		
+		
+		precio=redondeo2decimales(precio);	
 		$("#Precio_precioVenta").val(precio);
 	
 		
 		if(tipo=="0")
 		{
 			ahorro=(precio_impuesto*valor)/100;
+			ahorro=redondeo2decimales(ahorro);	
 			$("#Precio_ahorro").val(ahorro);
 			$("#Precio_precioDescuento").val(precio_impuesto-ahorro);
 		}
@@ -304,8 +312,9 @@ $("#valordescuento").keyup(function(){
         /*Tipo de descuento 0-Porcentaje, 1-Fijo*/
 	if(tipoDescuento == 0)
 	{
-            $("#Precio_ahorro").val(precioImpuesto * (this.value/100));		
-            $("#Precio_precioDescuento").val(precioImpuesto - (precioImpuesto * (this.value/100)));				
+
+            $("#Precio_ahorro").val(redondeo2decimales(precioImpuesto * (this.value/100)));		
+            $("#Precio_precioDescuento").val(redondeo2decimales(precioImpuesto - (precioImpuesto * (this.value/100))));				
 	}
 	else
 	{
@@ -363,8 +372,8 @@ $("#Precio_tipoDescuento").change(function(){
 
     if(cinco==0){
 
-        $("#Precio_ahorro").val(precioImpuesto * (dos/100));		
-        $("#Precio_precioDescuento").val(precioImpuesto - (precioImpuesto * (dos/100)));
+        $("#Precio_ahorro").val(redondeo2decimales(precioImpuesto * (dos/100)));		
+        $("#Precio_precioDescuento").val(redondeo2decimales(precioImpuesto - (precioImpuesto * (dos/100))));
 
     }else{ 
 
@@ -435,5 +444,12 @@ $("#Precio_tipoDescuento").change(function(){
             {$('#Precio_gananciaImpuesto').val('0');
     }
 });
+
+	function redondeo2decimales(numero)
+	{
+		var flotante = parseFloat(numero);
+		var resultado = Math.round(flotante*100)/100;
+		return resultado;
+	}
 	
 </script>

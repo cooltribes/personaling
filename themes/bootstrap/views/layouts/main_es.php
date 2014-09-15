@@ -999,7 +999,7 @@ if(!Yii::app()->user->isGuest){
         //mostrar el popover del carrito
         $('#btn-shoppingBag').popover("show");
         //agregar el evento del link para vaciar
-        clickVaciar();
+        //clickVaciar();
         
         
     }

@@ -8,7 +8,7 @@
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <?php 
     
-    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css?v=2',null);
+    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css?v=3',null);
     // Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
     Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico?v=3',null,null);  
     Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
@@ -180,9 +180,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Tus Compras', 'url'=>array('/orden/listado')),
                     array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
                     array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
-                    array('label'=>'Solicitar Pago', 'url'=>array('/pago/solicitar'), 'visible' => UserModule::isPersonalShopper()),
+                    array('label'=>'Tus Pagos', 'url'=>array('/pago/solicitar'), 'visible' => UserModule::isPersonalShopper()),
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
-                    // array('label'=>'Perfil', 'url'=>'#'),
+					array('label'=>'Tus Ventas', 'url'=>array('/user/profile/misventas'),
+                                            'visible' => UserModule::isPersonalShopper()),						                     
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),
                     '---',
                     array('label'=>'¿Comprando para alguién más?'),
@@ -250,7 +251,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 )),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
-                //array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu')),
+                array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu'), 'visible'=>Yii::app()->params['outlet']),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
                 array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('id'=>'btn-gift','class'=>'hidden-phone to-white-icon', 'data-html'=>"true"), 'visible'=>!Yii::app()->user->isGuest,),
 				array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
@@ -390,6 +391,7 @@ if(!Yii::app()->user->isGuest){
       <div class="span5 ">
         <h3> Sobre Personaling </h3>
         <p class="lead"><?php echo Yii::t('contentForm','Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.') ?></p>
+        <span class="tPrecio">*<?php echo Yii::t('contentForm','Prices are subject to change. You can check the final price on the web sales.'); ?> </span> <p></p>
         <div class="row-fluid"><div class="span8"><img class="margin_top_medium_minus at_exclude" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/es_es/logos_seguridad.png" alt="Logos de Seguridad">
                         </div><div class="span4"><script type="text/JavaScript">
                                 //<![CDATA[

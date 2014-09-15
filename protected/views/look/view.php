@@ -450,11 +450,11 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 				    }
 			      else {?>
 			       
-			       <div class="span6"><a class="btn" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span><?php echo Yii::t('contentForm' , 'Like'); ?> </a> 
+			       <div class="span6"><a class="btn lighted" id="btn-encanta" onclick="encantar()" style="cursor: pointer;"><span class="entypo icon_personaling_medium">&nbsp;</span><?php echo Yii::t('contentForm' , 'Like'); ?> </a> 
       			<?php
       				}
       			?>	
-      &nbsp; <span id="total-likes" ><?php echo $cuantos; ?></span>
+      &nbsp; <span id="total-likes" class="lighted" ><?php echo $cuantos; ?></span>
           	
           
           	

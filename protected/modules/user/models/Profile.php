@@ -136,7 +136,7 @@ class Profile extends UActiveRecord
 				}
 			}
 			
-			array_push($rules,array('month,day,year', 'safe'));
+			array_push($rules,array('facebook, twitter,month,day,year,bio,url', 'safe'));
 			
 			array_push($rules,array(implode(',',$required), 'required', 'message'=>'{attribute}'));
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
@@ -270,6 +270,9 @@ class Profile extends UActiveRecord
 					case 5:
 						$this->_model=ProfileField::model()->forPersonalShopperComi()->forOwner()->findAll(); //forPersonal()->
 						break;
+                    case 6:
+                        $this->_model=ProfileField::model()->forPsEdit()->forOwner()->findAll(); //forPersonal()->
+                        break;
 					default:
 						$this->_model=ProfileField::model()->forOwner()->findAll(); //forPersonal()->	
 				}
@@ -292,8 +295,14 @@ class Profile extends UActiveRecord
 		return parent::afterFind();
 	}
 	
+        /**
+         * Obtiene el saldo actual del usuario, sin contar los movimientos 
+         * tipo 5,7 y 8 que son relacionados a pagos por comisiones.
+         */
 	public function getSaldo($id , $format=true){
-			$sum = Yii::app()->db->createCommand(" SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id)->queryScalar();
+			$sum = Yii::app()->db->createCommand("
+                            SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id 
+                                ." and tipo not in (5, 7, 8)")->queryScalar();
 			//$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
 			return $sum;
 	}

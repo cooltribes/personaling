@@ -1,7 +1,7 @@
 <?php
 class Zoho{
 	public $email;
-	public $fisrt_name;
+	public $first_name;
 	public $last_name;
 	public $birthday;
 	public $sex;

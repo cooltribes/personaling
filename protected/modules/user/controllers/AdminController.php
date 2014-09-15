@@ -917,12 +917,17 @@ class AdminController extends Controller
 			
 			if($cont < 100)
 			{
-				$user=User::model()->findByPk($data->id);
+				//var_dump($data['id']); 
+				//Yii::app()->end();
+				if(isset($data['id']))
+					$user=User::model()->findByPk($data['id']);
+				else if(isset($data->id))
+					$user=User::model()->findByPk($data->id);
 				
 				/*Datos para el arreglo a comparar */
 					
 				$add = array();
-				$add = array("row" => $cont, "user" => $data->id);
+				$add = array("row" => $cont, "user" => $user->id);
 				array_push($ids,$add);
 						
 				$time = strtotime($user->profile->birthday);
@@ -1235,7 +1240,33 @@ class AdminController extends Controller
                    
                 }
 		
-		$model->admin_ps=Yii::app()->user->id;
+		
+		$time=date("d-m-Y H:i:s");
+
+		if($model->admin_ps=="")
+		{
+			$model->admin_ps=Yii::app()->user->id."/A-";
+			$model->fecha_ps=$time."*";
+		}
+		else
+		{
+			$porciones = explode("-", $model->admin_ps);
+			$num=count($porciones)-2;
+			$value=$porciones[$num];
+			$letter="";
+			$ultima= explode("/", $value);		
+			if($ultima[1]=="A")
+			{
+				$letter="Q";	
+			}
+			else 
+			{
+				$letter="A";	
+			}
+			$model->fecha_ps=$model->fecha_ps."".$time."*";
+			$model->admin_ps=$model->admin_ps."".Yii::app()->user->id."/".$letter."-";
+		}
+		
 		if ($model->save()){
 			
 			/* Creando el caso */
@@ -2829,14 +2860,10 @@ class AdminController extends Controller
             
         }
 
-		public function actionHistorial()
+		public function actionHistorial($id)
 		{
 				             
-         	$model=new User('search');
-			$model->unsetAttributes();  // clear any default values  
-			if(isset($_GET['User']))
-				$model->attributes=$_GET['User'];
-
+         	$model=User::model()->findByPk($id);
 			$this->render('historial',array(
 				'model'=>$model,
 			));     

@@ -579,7 +579,7 @@ class Look extends CActiveRecord
 	public function countItems()
 	{
 		if (isset($this->_items)){
-			return $_items;
+			return $this->$_items;
 		}else {
 			$_items = count($this->productos);
 			return $_items;
@@ -787,16 +787,80 @@ class Look extends CActiveRecord
 			          break;
 			          case 'png':
 			          $src = imagecreatefrompng($image->path);
+							$b_top = 0;
+					        $b_btm = 0;
+					        $b_lft = 0;
+					        $b_rt = 0;
+					
+					        //top
+					        for(; $b_top < imagesy($src); ++$b_top) {
+					            for($x = 0; $x < imagesx($src); ++$x) {
+					                $color        = imagecolorat($src, $x, $b_top);
+					                $transparency = ($color >> 24) & 0x7F;
+					                if(!$transparency) {
+					                    break 2; //out of the 'top' loop
+					                }
+					            }
+					        }
+					
+					        //bottom
+					        for(; $b_btm < imagesy($src); ++$b_btm) {
+					            for($x = 0; $x < imagesx($src); ++$x) {
+					                $color        = imagecolorat($src, $x, imagesy($src) - $b_btm-1);
+					                $transparency = ($color >> 24) & 0x7F;
+					                if(!$transparency) {
+					                    break 2; //out of the 'bottom' loop
+					                }
+					            }
+					        }
+					
+					        //left
+					        for(; $b_lft < imagesx($src); ++$b_lft) {
+					            for($y = 0; $y < imagesy($src); ++$y) {
+					                $color        = imagecolorat($src, $b_lft, $y);
+					                $transparency = ($color >> 24) & 0x7F;
+					                if(!$transparency) {
+					                    break 2; //out of the 'left' loop
+					                }
+					            }
+					        }
+					
+					        //right
+					        for(; $b_rt < imagesx($src); ++$b_rt) {
+					            for($y = 0; $y < imagesy($src); ++$y) {
+					                $color        = imagecolorat($src, imagesx($src) - $b_rt-1, $y);
+					                $transparency = ($color >> 24) & 0x7F;
+					                if(!$transparency) {
+					                    break 2; //out of the 'right' loop
+					                }
+					            }
+					        }
+					
+					        //copy the contents, excluding the border
+					      //  $newimg = $this->imagecreatetransparent(
+					       //     imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
+					
+					      //  imagecopy($newimg, $src, 0, 0, $b_lft, $b_top, imagesx(imagesx($src)-($b_lft+$b_rt)), imagesy(imagesy($src)-($b_top+$b_btm)));
+					
+					       
+					            // Swap the new image for the old one
+					        //   $src = $newimg;
+					       
 						//Yii::trace('create a image look, Trace:'.$image->path, 'registro');  
 			          break;
 			      }			
 			$img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h);
+			//$img = imagecreatetruecolor(imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
+			
 			
 			imagealphablending( $img, false );
 			imagesavealpha( $img, true ); 
     		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
     		//imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
-			imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
+			//imagecopyresampled($img,$src,0,0,0,0,$b_lft, $b_top, imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
+			imagecopyresampled($img,$src,0,0,$b_lft, $b_top,imagesx($img), imagesy($img),imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
+			//imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
+    		
     		//imagecopyresized($img,$src,0,0,0,0,imagesx($src),imagesy($src),imagesx($src), imagesy($src));
 			if ($image->angle){
 				//Yii::trace('create a image look,'.$image->angle.' Trace:'.$image->path, 'registro');  	
@@ -1130,5 +1194,26 @@ class Look extends CActiveRecord
 		}
 		return false;
 	}
+
+    public function encode_url($alphabet,$look_id=null,$ps_id=null){
+
+        if ($look_id==null)
+            $look_id = $this->id;
+        if ($ps_id==null)
+            $ps_id = $this->user_id;
+        $num = $look_id.sprintf('%05d', $ps_id);
+        $base_count = strlen($alphabet);
+        $encoded = '';
+        while ($num >= $base_count) {
+            $div = $num/$base_count;
+            $mod = ($num-($base_count*intval($div)));
+            $encoded = $alphabet[$mod] . $encoded;
+            $num = intval($div);
+        }
+
+        if ($num) $encoded = $alphabet[$num] . $encoded;
+
+        return $encoded;
+    }
 	
 }

@@ -109,7 +109,7 @@ function handleDrop(e) {
     	var color_id = e.dataTransfer.getData('color_id');
     	var producto_id = e.dataTransfer.getData('producto_id');
     	
-    	var urlVar = "<?php echo Yii::app()->createUrl('site/productoImagen'); ?>";
+    	var urlVar = "<?php echo Yii::app()->createUrl('site/productoImagenPng'); ?>";
     	urlVar += '/producto/'+producto_id+'/color/'+color_id+'/w/270/h/270';
     	//urlVar = "http://personaling.es:1337/api/imagen/"+e.dataTransfer.getData('producto_id')+"/color/"+e.dataTransfer.getData('color_id');
     	//var dataVar = {'id':e.dataTransfer.getData('producto_id'),'color_id':e.dataTransfer.getData('color_id')};
@@ -455,7 +455,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               $list,
               array('empty' => 'Seleccione una campaña', 'options' => array($model->campana_id => array('selected' => true))));
 		?>
-          <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
+
             <a  title="Traer al frente" class="btn" id="btn_frente"><?php echo Yii::t('contentForm', 'Bring front'); ?></a>
             <a  title="Llevar atrás" class="btn" id="btn_atras"> <?php echo Yii::t('contentForm', 'Send back') ?></a>
              <?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -474,7 +474,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <?php $this->widget('bootstrap.widgets.TbButton', array(
 	    'label'=>Yii::t('contentForm', 'Next'),
 	    'type'=>'danger',
-		'buttonType' => 'ajaxSubmit',
+		'buttonType' => 'button',
 	    'htmlOptions'=> array(
 	   // 'style'=>'padding:4px 6px',
 		     // 'data-toggle'=>'modal',
@@ -485,7 +485,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 		        'id'=>'btn_siguiente',
 		       ),	    
 	)); ?>
-   
+            <div id="campana_id_error" style="font-size: small; color: red; display: none;"></div>
         </h4>
       
         <!--

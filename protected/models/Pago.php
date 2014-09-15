@@ -3,6 +3,7 @@
  * Tipos de Pago 
  * 0:Paypal
  * 1:Cuenta
+ * 2:Agregar al balance
  */
 
 /*
@@ -40,12 +41,14 @@ class Pago extends CActiveRecord
     public static $tiposPago = array(
                         "PayPal",
                         "Cuenta Bancaria",        
+                        "Agregar al balance",        
                         );
     
     const MONTO_MIN = 1;
     const MONTO_MAX = 1000;
     const MONTO_MIN_PAYPAL = 2;
     const MONTO_MIN_BANCO = 5;
+    const MONTO_MIN_BALANCE = 1;
 
 
                         /**
@@ -79,7 +82,8 @@ class Pago extends CActiveRecord
             array('entidad', 'required', 'message'=>'Debes indicar el nombre del banco'),
             array('cuenta', 'required', 'message'=>'Debes indicar tu cuenta'),
             array('monto', 'required', 'message'=>'Debes ingresar un monto'),
-            array('estado, user_id, admin_id, tipo, id_transaccion', 'numerical', 'integerOnly'=>true),
+            array('estado, user_id, admin_id, tipo, id_transaccion', 'numerical',
+                'integerOnly'=>true, "message" => "{attribute} debe ser un valor numérico"),
             array('monto', 'numerical', 'min' => self::MONTO_MIN, 'max' => self::MONTO_MAX,
                     'tooSmall' => 'El pago debe ser de al menos <b>'.
                         Yii::t('contentForm', 'currSym').' {min}</b>',
@@ -124,7 +128,7 @@ class Pago extends CActiveRecord
             'tipo' => 'Tipo',
             'entidad' => 'Nombre del Banco',
             'cuenta' => 'Cuenta',
-            'id_transaccion' => 'Id Transaccion',
+            'id_transaccion' => 'Id de Transacción',
         );
     }
 
@@ -157,12 +161,19 @@ class Pago extends CActiveRecord
             'criteria'=>$criteria,
         ));
     }
-    
+    /**
+     * Para usar la lista en los dropdowns
+     * @return array la lista con los tipos de pago
+     */
     public static function getTiposPago() {
             
         return self::$tiposPago; 
     }    
     
+    /**
+     * Para conocer el tipo de pago de $this segun el array
+     * @return type
+     */
     public function getTipoPago() {
             
         return self::$tiposPago[$this->tipo]; 
@@ -197,7 +208,7 @@ class Pago extends CActiveRecord
             $res .= $this->monto;
         }
         return $res;
-//        return $this->monto;
+
     }
     
     /**
@@ -207,12 +218,9 @@ class Pago extends CActiveRecord
     protected function beforeValidate() {
         
         $balance = $this->user->getSaldoPorComisiones(false);        
-        $balance = round($balance, 2);
+        $balance = round($balance, 2);        
         
-//        echo $balance. " " . $this->monto;
-//        Yii::app()->end();
-        
-        //Validar cuando esta haciendo la solicitud
+        //Validar solamente cuando esta haciendo la solicitud
         if($this->isNewRecord){     
             
             if($this->monto > $balance){
@@ -237,6 +245,15 @@ class Pago extends CActiveRecord
                     a ".Yii::t('contentForm', 'currSym')." ".self::MONTO_MIN_BANCO."
                         en tus comisiones para poder solicitar el pago a través de
                         una Cuenta Bancaria.");
+
+                return false;
+            }
+            if($this->tipo == 2 && $this->monto < self::MONTO_MIN_BALANCE){ //si es paypal
+                
+                $this->addError("monto", "Debes alcanzar un monto igual o superior
+                    a ".Yii::t('contentForm', 'currSym')." ".self::MONTO_MIN_BALANCE."
+                        en tus comisiones para poder solicitar que el pago sea agregado
+                        a tu balance.");
 
                 return false;
             }

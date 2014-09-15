@@ -44,8 +44,8 @@ class ProductoController extends Controller
                         'recatprod','seo', 'historial','importar','descuentos',
                         'reporte','reportexls', "createExcel", 'plantillaDescuentos',
                         'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
-                        'importarExternos', 'sendMandrillEmail','plantillaExternos',
-                        "productoszoho","enviarzoho","externtozoho") ,
+                        'importarExternos','plantillaExternos',"sendtozoho",
+                        "productoszoho","enviarzoho","externtozoho","updatezohoqty",) ,
                     //'users'=>array('admin'),
                     'expression' => 'UserModule::isAdmin()',
                 ),
@@ -529,39 +529,46 @@ public function actionReportexls(){
 
 		if(isset($_POST['Precio']))
 		{
-			$precio->attributes=$_POST['Precio'];
-			$precio->ganancia=$_POST['Precio']['ganancia'];
-			$precio->gananciaImpuesto=$_POST['Precio']['gananciaImpuesto'];
-			$precio->impuesto = 1;
-			
-			if($id==""){
-				Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('error',UserModule::t("No es posible almacenar los precios si aún no se ha creado el producto."));
-			}			
-			else{
-							
-				$precio->tbl_producto_id = $id;
-				
-				if($precio->save())
-				{
-					
-					Yii::app()->user->updateSession();
-					Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
-						
-					if($_POST['accion'] == "normal") // si es el boton principal
-						$this->render('_view_precios',array('model'=>$model,'precio'=>$precio,));
-					
-					if($_POST['accion'] == "avanzar") // guardar y avanzar
-						$this->redirect(array('categorias','id'=>$model->id));
-					
-					Yii::app()->end();
+                    $precio->attributes=$_POST['Precio'];
+                    $precio->ganancia=$_POST['Precio']['ganancia'];
+                    $precio->gananciaImpuesto=$_POST['Precio']['gananciaImpuesto'];
+                    $precio->impuesto = 1;
 
-				}
-				
-			}
+                    if($id==""){
+                        Yii::app()->user->updateSession();
+                        Yii::app()->user->setFlash('error',UserModule::t("No es posible almacenar los precios si aún no se ha creado el producto."));
+                    }			
+                    else{
+
+                        $precio->tbl_producto_id = $id;
+
+                        if($precio->save())
+                        {
+
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
+
+                            if($_POST['accion'] == "normal") // si es el boton principal
+                                    $this->render('_view_precios',array('model'=>$model,'precio'=>$precio,));
+
+                            if($_POST['accion'] == "avanzar") // guardar y avanzar
+                                    $this->redirect(array('categorias','id'=>$model->id));
+
+                            Yii::app()->end();
+
+                        }
+
+                    }
 		}
 
-		$this->render('_view_precios',array(
+//                echo "<pre>";
+//                print_r($precio->attributes);
+//                echo "</pre><br>";
+//                Yii::app()->end();
+
+
+
+                $this->render('_view_precios',array(
 			'model'=>$model,'precio'=>$precio,
 		));
 	}
@@ -1824,7 +1831,7 @@ public function actionReportexls(){
                 $producto = Producto::model()->noeliminados()->findByPk($seo->tbl_producto_id);
             } else {
     //			$producto = Producto::model()->activos()->noeliminados()->findByPk($_GET['id']);
-                $producto = Producto::model()->noeliminados()->findByPk($_GET['id']);
+    			$producto = Producto::model()->noeliminados()->findByPk($_GET['id']);
                 $seo = Seo::model()->findByAttributes(array('tbl_producto_id' => $producto->id));
             }
 
@@ -2872,6 +2879,10 @@ public function actionReportexls(){
                     $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
                     $fila = 1;
                     $totalCantidades = 0;
+					
+					// variable para los ids de ptc
+					$combinaciones = array();
+					
                     foreach ($sheetArray as $row){
                         
                         //Modificaciones a las columnas
@@ -2913,17 +2924,25 @@ public function actionReportexls(){
                                 
 								
 								/* ACTUALIZAR CANTIDADES EN ZOHO */
-								$rProducto = Producto::model()->findByPk($producto->producto_id);
+							/*	$rProducto = Producto::model()->findByPk($producto->producto_id);
 								
 								$zoho = New ZohoProductos;
 								$zoho->nombre = $rProducto->nombre." - ".$rSku;
 								$zoho->cantidad = $rCant;
 								$zoho->estado = "TRUE";
 								$zoho->save_potential();
-                            }
+								*/
+								
+								$add = array(); 
+								$add = array("ptc" => $rSku); 
+								array_push($combinaciones,$add); // guardando los ids para procesarlos luego
+	                    	}
                         }
                         $fila++;                        
                     } // foreach
+                    
+                    //enviando inbounds a zoho
+                    $this->actionUpdateZohoQty($combinaciones);               
                     
                     //Totales
                     $totalInbound = $fila - 2;
@@ -3774,14 +3793,14 @@ public function actionReportexls(){
         
         
         public function exportarExcelInbound($idMarca){	
-            
+
             Yii::import('ext.phpexcel.XPHPExcel');
             $objPHPExcel = XPHPExcel::createPHPExcel();
 
             $marca = Marca::model()->findByPk($idMarca);
-
+            
             $objPHPExcel->getProperties()->setCreator("Personaling.com")
-                                     ->setLastModifiedBy("Personaling.com")
+                                     ->setLastModifiedBy("Personaling.com")                                     
                                      ->setTitle("Inbound $marca->nombre");
 
             // creando el encabezado
@@ -3800,13 +3819,13 @@ public function actionReportexls(){
                 'font' => array(
                     'size' => 14,
                     'bold' => true,
-                    'color' => array(
-                                'rgb' => '000000'
-                            ),
-                    ),
-                'text-align' => array(
-                    'horizontal' => 'center',
+//                    'color' => array(
+//                                'rgb' => '000000'
+//                            ),
                 ),
+//                'text-align' => array(
+//                    'horizontal' => 'center',
+//                ),
             );
             $objPHPExcel->getActiveSheet()->getStyle('A1')->applyFromArray($title);
             $objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($title);
@@ -3835,8 +3854,9 @@ public function actionReportexls(){
                 }   
             }
             
+            
             // Set active sheet index to the first sheet, so Excel opens this as the first sheet
-            $objPHPExcel->setActiveSheetIndex(0);
+//            $objPHPExcel->setActiveSheetIndex(0);
 
             // Redirect output to a clientâ€™s web browser (Excel5)
             header('Content-Type: application/vnd.ms-excel');
@@ -3925,19 +3945,30 @@ public function actionReportexls(){
                     ->setCellValue('B'.($i), $producto->nombre) 
                     ->setCellValue('C'.($i), $producto->mymarca->nombre);
                 
+                //Concatenar las categorias en un solo campo
                 $categorias = "";
                 foreach($producto->categorias as $categoria){
                     $categorias .= "$categoria->nombre / ";
-                }
-                
+                }                
                 $categorias = substr($categorias, 0, -3);
                 
+                //Extraer precio, para evitar error cuando no tengan precios asignados
+                $precio = $producto->precios ? $producto->precios[0]:"-Sin Precio-";                
+//                echo "<pre>";
+//                print_r($precio);
+//                echo "</pre><br>";
+//                echo "<pre>";
+//                print_r($producto->precios->attributes);
+//                echo "</pre><br>";
+//                Yii::app()->end();
+
+
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('D'.($i), $categorias) 
                     ->setCellValue('E'.($i), $producto->descripcion) 
-                    ->setCellValue('F'.($i), $producto->precios[0]->costo)
-                    ->setCellValue('G'.($i), $producto->precios[0]->precioVenta)
-                    ->setCellValue('H'.($i), $producto->precios[0]->precioImpuesto);
+                    ->setCellValue('F'.($i), $precio->costo)
+                    ->setCellValue('G'.($i), $precio->precioVenta)
+                    ->setCellValue('H'.($i), $precio->precioImpuesto);
                 
                 $i++;
             }
@@ -4071,6 +4102,7 @@ public function actionReportexls(){
 	{
             $nuevos = 0;
             $actualizados = 0;
+            $uploadedFileName = "";
             $error = false;            
            
             /*Primer paso - Validar el archivo*/
@@ -4078,13 +4110,13 @@ public function actionReportexls(){
             {
                
                 $archivo = CUploadedFile::getInstancesByName('archivoValidacion');
-
+                
                 //Guardarlo en el servidor para luego abrirlo y revisar
                 if (isset($archivo) && count($archivo) > 0) {
                     foreach ($archivo as $arc => $xls) {
                         $nombre = Yii::getPathOfAlias('webroot') . '/docs/xlsMasterData/' . "Temporal";
                         $extension = '.' . $xls->extensionName;                     
-
+                        $uploadedFileName = $xls->name;
                         if (!$xls->saveAs($nombre . $extension)){
                             Yii::app()->user->updateSession();
                             Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));                            
@@ -4100,10 +4132,12 @@ public function actionReportexls(){
                 if(!$error && is_array($resValidacion = $this->validarImportacionExternos($nombre . $extension))){
 
                     Yii::app()->user->updateSession();
-                    Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
-                                Puede continuar con el siguiente paso.<br><br>
-                                Este archivo contiene <b>{$resValidacion['nProds']}
-                                </b> productos.");                    
+                    Yii::app()->user->setFlash('success', "<h4>
+                            Éxito! El archivo no tiene errores,
+                            puedes continuar con el siguiente paso.</h4><br>
+                                
+                            Nombre del archivo: <b>$uploadedFileName</b>.<br>
+                            Productos que contiene: <b>{$resValidacion['nProds']}</b>.");                    
                 }
 
             //Segundo paso - Subir el Archivo
@@ -4120,6 +4154,8 @@ public function actionReportexls(){
 
                         $nombre = $rutaArchivo.$nombreTemporal;
                         $extension = '.' . $xls->extensionName;
+                        $uploadedFileName = $xls->name;
+                        
 
                         if ($xls->saveAs($nombre . $extension)) {
 
@@ -4188,6 +4224,9 @@ public function actionReportexls(){
                             // Tienda
                             $tienda = Tienda::model()->findByAttributes(array('name' => $rTienda));                                                        
 
+                            /*Recortar el nombre para adatarlo al campo en la BD*/
+                            $rNombre = substr($rNombre, 0, 50);                            
+                            
                             if($prodExiste){
 
                                 // actualiza el producto
@@ -4529,6 +4568,7 @@ public function actionReportexls(){
             } // Cargar productos externos
 
             $this->render('importarExternos', array(                
+                'fileName' => $uploadedFileName,
                 'nuevos' => $nuevos,
                 'actualizados' => $actualizados,               
             ));
@@ -5072,56 +5112,8 @@ public function actionReportexls(){
                         echo CJSON::encode($response);
                     }
                 }
-                 
                 
-        public function actionSendMandrillEmail()
-	{
-            $message = new YiiMailMessage;
-            //Opciones de Mandrill
-            $message->activarPlantillaMandrill();
-            $subject = 'Registro Personaling';                                
-            $message->subject    = $subject;
-            $body = Yii::t('contentForm','<h2>¡Bienvenida a Personaling!</h2>
-                Recibes este correo electrónico porque te has registrado en Personaling.es. 
-                Por favor valida tu cuenta haciendo clic en el enlace que aparece a continuación:
-                <br/><br/><a href="{url}">Clica aquí</a>',
-                    array('{url}'=>"urlNElson"));
-
-            $nelson = "nramirez@upsidecorp.ch";
-            $nelson = "nelsond.ramirez@gmail.com";
-            $nelson = "dust_s@hotmail.com";
-            $message->setBody($body, 'text/html');                
-            $message->addTo($nelson);
-
-            Yii::app()->mail->send($message);                   
-            
-            
-           
-            Yii::app()->user->setFlash('success',"El
-                correo electrónico de verificacion ha sido reenviado a <b>nramirez@upsidecorp.ch</b>");
-            $this->redirect(array('/user/admin/update', "id" => 5322));
-            
-            /*Plantilla*/
-            $message = new YiiMailMessage;
-            //Opciones de Mandrill
-            $message->activarPlantillaMandrill();
-            
-            $subject = 'Tu compra en Personaling';
-                            
-            $message->subject    = $subject;
-            $message->setBody($body, 'text/html');                
-            $message->addTo($model->email);
-            Yii::app()->mail->send($message);
-
-
-
-            //APARTE
-            Yii::app()->user->setFlash('success',"El
-                correo electrónico de verificacion ha sido reenviado a <b>nramirez@upsidecorp.ch</b>");
-            
-            $this->redirect(array('/user/admin/update', "id" => 5322));
-		
-	}
+       
                 
      public function actionExternToZoho($externos){
 				
@@ -5366,6 +5358,160 @@ public function actionReportexls(){
 			}
 			
 		} // foreach        
-	}     
-        
+	}  
+
+	public function actionUpdateZohoQty($products){
+			
+		$sumatoria = 1;
+		$cont = 1;
+		$xml = "";
+		$ids = array();
+					
+		$productosTotal = sizeof($products);
+				
+		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml .= '<Products>';
+		
+		foreach($products as $id){
+			
+			if($cont >= 100) { 
+				$xml .= '</Products>';
+					
+				$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
+				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&duplicateCheck=2&version=4&xmlData=".$xml;
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+						
+				//Execute cUrl session
+				$response = curl_exec($ch); 
+				curl_close($ch);
+						
+				$datos = simplexml_load_string($response);
+				$posicion=0;
+						
+				$total = sizeof($ids);
+						
+				for($x=1; $x<=$total; $x++){ 
+					if(isset($datos->result[0]->row[$posicion])){	
+						$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+								
+						foreach($ids as $data){
+							if($number == $data['row']){
+								$pos = (int)$data['row'];
+								$precioTalla = Preciotallacolor::model()->findByPk($data["ptc"]);
+
+								if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+									$precioTalla->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+									$precioTalla->save();
+												
+									//echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+								}else{
+									echo "Error en posicion ".$posicion;
+								}
+										
+							}
+						}
+					}  
+					$posicion++;
+				}
+					/* reiniciando todos los valores */
+					$xml = ""; 
+					$cont = 1;	
+					$posicion=0;
+						
+					unset($ids);
+					$ids = array();
+						
+					$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+					$xml .= '<Products>';				
+				} // mayor que 100
+				
+			if($cont < 100){
+				$precioTallaColor = Preciotallacolor::model()->findByAttributes(array("sku"=>$id["ptc"]));
+				$producto = Producto::model()->findByPk($precioTallaColor->producto_id);
+				
+				$estado = "TRUE";
+				$cantidad = $precioTallaColor->cantidad;
+				$sku = $precioTallaColor->sku;
+				$nombre = $producto->nombre." - ".$precioTallaColor->sku;
+						
+				$add = array();
+				$add = array("row" => $cont, "ptc" => $precioTallaColor->id);
+				array_push($ids,$add);	
+				
+				$xml .= '<row no="'.$cont.'">';
+				$xml .= '<FL val="Product Name">'.$nombre.'</FL>';
+				$xml .= '<FL val="Qty in Stock">'.$cantidad.'</FL>';
+				$xml .= '<FL val="Product Active">'.$estado.'</FL>';	
+				$xml .= '</row>'; 
+				
+				$cont++;
+			}//if
+			
+			if($productosTotal == $sumatoria){
+				$this->actionSendToZoho($xml, $ids); 
+			}else{
+				$sumatoria++;
+			}
+			
+		} // foreach
+	}
+    
+	public function actionSendToZoho($xml, $ids)
+	{ 
+		$xml .= '</Products>';
+			
+			$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
+			$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=2&duplicateCheck=2&version=4&xmlData=".$xml;
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+						
+			//Execute cUrl session
+			$response = curl_exec($ch); 
+			curl_close($ch);
+				
+			$datos = simplexml_load_string($response);
+			$posicion=0; 
+			
+			$total = sizeof($ids);
+			
+			for($x=1; $x<=$total; $x++){ 
+				if(isset($datos->result[0]->row[$posicion])){	
+					$number = $datos->result[0]->row[$posicion]->attributes()->no[0]; 
+					
+					foreach($ids as $data){
+						if($number == $data['row']){
+							$pos = (int)$data['row'];
+							$precioTalla = Preciotallacolor::model()->findByPk($data["ptc"]);
+
+							if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
+								$precioTalla->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
+								$precioTalla->save(); 
+											
+								//echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+							}else{
+								echo "Error en posicion ".$posicion;
+							}
+										
+						}
+									
+					}
+				}	  		
+				$posicion++;
+
+			}
+			//echo "fin de ciclo"; 			
+			//echo "<br><br>";
+	}
+	    
 }

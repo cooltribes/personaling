@@ -280,6 +280,7 @@ return array (
 	'Printed' => 'Impresa',
 	'Price' => 'Precio',
 	'Price in' => 'Precio en',
+	'Prices are subject to change. You can check the final price on the web sales.'=> 'Los precios están sujetos a cambios. Puedes revisar el precio final en la web de venta.',
 	'Product' => 'Producto',
 	'Products' => 'Productos',
 	'Province' => 'Provincia',
@@ -387,6 +388,7 @@ return array (
 	'Type a description for this look' => 'Escriba una descripción para este look',
 	'Type of discount' => 'Tipo de descuento',
 	'Tracking' => 'Número de seguimiento',
+	'Transaction No.' => 'Nro. de Transacción',
 	'Try again' => 'Intentar nuevamente',
 
 
@@ -413,7 +415,7 @@ return array (
     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/><br/>{{link}}<br/>' => '¡Hola! Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.es<br/> Valida tu cuenta clicando en el enlace que aparece a continuación: <br/><br/><a href="{{link}}">Clica aquí</a>.',	
 	'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
 	'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
-    'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Seur: https://www.seur.com/seguimiento-online.do?accion=nuevaBusqueda con el siguiente número de seguimiento: <b>{number}</b>',
+    'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través del <a href="https://www.seur.com/seguimiento-online.do?accion=nuevaBusqueda" >Sitio web Seur</a> con el siguiente número de seguimiento: <b>{number}</b>',
 	'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',
 	'You must select all sizes' => 'Debes seleccionar todas las tallas',
 	'You should select a Billing Address.'=>'Debes seleccionar una dirección de facturación',

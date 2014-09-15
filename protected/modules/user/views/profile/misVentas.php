@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->pageTitle=Yii::app()->name . ' - Productos Vendidos';
 
@@ -50,7 +50,7 @@ $pagerParams = array(
                         <strong>
                             <?php echo $personalShopper->getSaldoEnEspera()." ".Yii::t('backEnd', 'currSym'); ?>                                                        
                         </strong>
-                    </label>
+                    </label>                    
                 </div>
                 <!--Totales-->
                 <div class="span7 padding_top_medium margin_top_medium text_align_center">                    

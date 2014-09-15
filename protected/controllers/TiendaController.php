@@ -135,9 +135,7 @@ class TiendaController extends Controller
 			}
 		}else{
 			//$producto->outlet = null;
-			if(isset(Yii::app()->session['outlet'])){
-				unset(Yii::app()->session['outlet']);
-			}
+			Yii::app()->session['outlet'] ='false';
 		}
 
 		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
@@ -224,7 +222,7 @@ class TiendaController extends Controller
 					}
 				}
 
-				if(isset($_POST['outlet'])){
+			/*	if(isset($_POST['outlet'])){
 					if($_POST['outlet'] == 'true'){
 
 						Yii::app()->session['outlet'] = $_POST['outlet'];
@@ -235,7 +233,7 @@ class TiendaController extends Controller
 					if(isset(Yii::app()->session['outlet'])){
 							unset(Yii::app()->session['outlet']);
 						}
-				}
+				}*/
 
 				
 				
@@ -446,9 +444,11 @@ class TiendaController extends Controller
 			unset(Yii::app()->session['f_padre']);
 			
 		}
-		if(!isset($_GET['page'])){
-			Yii::app()->session['order']=rand(0,8);
-		}
+		if(!isset($_GET['page'])){ 
+			if(Yii::app()->session['order']=="") // se agrego nuevo porque pidieron que en una misma session se mantenga la misma vista de la tienda
+				Yii::app()->session['order']=rand(0,8);
+			
+		} 
 		$criteria = $producto->nueva2($a);
 
 		$criteria->order=$orden[Yii::app()->session['order']];

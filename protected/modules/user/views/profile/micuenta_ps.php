@@ -131,6 +131,7 @@ $looks_recomendados = $look->match($model);
               <li><?php echo CHtml::link('Pedidos Activos',array('/orden/listado'),array("title"=>"Tus pedidos activos")); ?></li>
               <li><?php echo CHtml::link('Historial de Pedidos',array('/orden/listado'),array("title"=>"Tus pedidos nuevos y anteriores")); ?></li>
               <li> <?php echo CHtml::link('Aplicar Gift Card',array('/giftcard/aplicar'),array("title"=>"Aplica una Gift Card")); ?></li>
+              <li> <?php echo CHtml::link('Tus Ventas',array('/controlpanel/misventas/'.Yii::app()->user->id.''),array("title"=>"Tus Ventas")); ?></li>
               
             </ul>
              

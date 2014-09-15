@@ -1665,19 +1665,20 @@ public function actionValidar()
 				$usuario = User::model()->findByPk($_POST['user_id']); 
 				
 				$message = new YiiMailMessage;
-                $message->view = "mail_template";
+                #$message->view = "mail_template";
+                $message->activarPlantillaMandrill();
                 $subject = 'Tienes un mensaje nuevo en Personaling';
                 $body = '<h2>Tienes un mensaje en Personaling.</h2>' . 
-                        '<br/><br/>' .
+                        '<br/>' .
                         'El Administrador del sistema te ha enviado un mensaje referente a tu compra <br/>'. 
                         'Ingresa con tu usuario y revisa tus notificaciones.';
-				$params = array('subject' => $subject, 'body' => $body);
+				//$params = array('subject' => $subject, 'body' => $body);
                 $message->subject = $subject;
-                $message->setBody($params, 'text/html');
+                $message->setBody($body, 'text/html');
                 if(is_null($mensaje->admin))
                 	$message->addTo($usuario->email);
-                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-                Yii::app()->mail->send($message);	
+                //$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                Yii::app()->mail->send($message);
 			}		
 			
 			Yii::app()->user->setFlash('success', 'Se ha enviado el mensaje correctamente.');
@@ -2755,7 +2756,7 @@ public function actionValidar()
 			if($cont >= 100){
 				$xml .= '</Invoices>';
 				
-				
+				var_dump($xml);
 				
 				$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
@@ -2802,8 +2803,8 @@ public function actionValidar()
 				echo "fin de ciclo"; 
 				echo "<br><br>";
 				
-			//	var_dump($response);
-			//	Yii::app()->end();
+				//var_dump($response);
+				//Yii::app()->end();
 				
 				/* reiniciando todos los valores */
 				$xml = ""; 
@@ -2846,7 +2847,7 @@ public function actionValidar()
 				
 				
 				$xml .= '<row no="'.$cont.'">';
-				
+				$xml .= '<FL val="Subject">Orden '.$orden->id.'</FL>';
 				
 				$detalles = Detalle::model()->findAllByAttributes(array('orden_id'=>$orden->id));
 				$envio_pago = 0;
@@ -2885,7 +2886,7 @@ public function actionValidar()
 				if((double)$orden->descuento > 0) 
 					$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
 				
-				$xml .= '<FL val="Subject"> Orden '.$orden->id.'</FL>';
+				
 		        $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
 				$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
 				$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';
@@ -2936,6 +2937,8 @@ public function actionValidar()
 				
 			$xml .= '</Invoices>'; 
 			
+			var_dump($xml);
+			
 			$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
 				$ch = curl_init();
@@ -2949,6 +2952,9 @@ public function actionValidar()
 				//Execute cUrl session
 				$response = curl_exec($ch); 
 				curl_close($ch);
+				
+				var_dump($response);
+				Yii::app()->end();
 						
 				$datos = simplexml_load_string($response);
 				$posicion=0;

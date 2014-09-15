@@ -133,6 +133,11 @@ class ProfileField extends CActiveRecord
                 'order'=>'position',
             ),
             'forPersonal'=>array(
+                'condition'=>'required!='.self::REQUIRED_YES_ESTILO.' AND required!='.self::REQUIRED_YES_TIPO .' AND required!='.self::REQUIRED_YES_PERSONAL. ' AND required!='.self::REQUIRED_YES_PERSONAL_REG,
+                //'condition'=>'required='.self::REQUIRED_YES_PERSONAL.' OR required='.self::REQUIRED_YES_SHOW_REG,
+                'order'=>'position',
+            ),
+            'forPsEdit'=>array(
                 'condition'=>'required!='.self::REQUIRED_YES_ESTILO.' AND required!='.self::REQUIRED_YES_TIPO .' AND required!='.self::REQUIRED_YES_PERSONAL,
                 //'condition'=>'required='.self::REQUIRED_YES_PERSONAL.' OR required='.self::REQUIRED_YES_SHOW_REG,
                 'order'=>'position',

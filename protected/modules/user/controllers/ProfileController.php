@@ -22,25 +22,26 @@ class ProfileController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
+            return array(
+                array('allow',  // allow all users to perform 'index' and 'view' actions
 
-				'actions'=>array('modal','modalshopper','listado'),
+                        'actions'=>array('modal','modalshopper','listado'),
 
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('perfil','micuenta','direcciones','encantan','looksencantan', 'tusPerfiles'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array(),
-				//'users'=>array('admin'),
-				'expression' => 'UserModule::isAdmin()',
-			),
-			array('allow', // acciones validas para el personal Shopper
-               'actions' => array('banner'),
-               'expression' => 'UserModule::isPersonalShopper()'
+                        'users'=>array('*'),
+                ),
+                array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                    'actions'=>array('perfil','micuenta','direcciones','encantan',
+                        'looksencantan', 'tusPerfiles', 'unsuscribeMail'),
+                    'users'=>array('@'),
+                ),
+                array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                        'actions'=>array(),
+                        //'users'=>array('admin'),
+                        'expression' => 'UserModule::isAdmin()',
+                ),
+                array('allow', // acciones validas para el personal Shopper
+                   'actions' => array('banner', 'misVentas'),
+                   'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -338,6 +339,38 @@ class ProfileController extends Controller
 	    	'model'=>$model,
 			'profile'=>$model->profile,
 	    ));
+	}
+        
+        /**
+         * Darse de baja en la lista de correos
+         */
+	public function actionUnsuscribeMail()
+	{
+            $model = $this->loadUser();
+            
+            //si hizo click en el boton
+            if(isset($_POST["unsuscribe"]) && $_POST["unsuscribe"]){
+                
+                //LLamar la API
+                //API key para lista de Personaling en Mailchimp
+                $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
+                $result = $MailChimp->call('lists/unsubscribe', array(
+                    'id' => Yii::t('contentForm','List ID Mailchimp'),
+                    'email' => array('email' => $model->email),                    
+                    'send_goodbye' => false,
+                ));                
+               
+                $model->suscrito_nl = 0; //desuscribir en la BD
+                $model->save();
+                
+                Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash("success", "Te has dado de baja en la lista de correos.");
+            }
+            
+            
+	    $this->render('unsuscribe',array(
+	    	'user'=>$model,
+	    ));
 	}	
 /**
  * Mi cuenta  
@@ -459,10 +492,10 @@ class ProfileController extends Controller
 			{
 				if ($profile->save())
 				{
-					//$model->status_register = User::STATUS_REGISTER_ESTILO;
-					//if ($model->save()){
-               			Yii::app()->user->updateSession();
-						Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
+                                    $model->status_register = User::STATUS_REGISTER_ESTILO;
+                                    $model->save();
+                                    Yii::app()->user->updateSession();
+                                    Yii::app()->user->setFlash('success',UserModule::t("Changes are saved."));
 
 						// update potential at zoho
 		                $zoho = new Zoho();
@@ -819,6 +852,10 @@ class ProfileController extends Controller
 				if ($profile->save())
 				{
                                     
+                                    /*Marcar como que ya completo esta parte del registro*/
+                                    $model->status_register = User::STATUS_REGISTER_TIPO;
+                                    $model->save();
+                                    
                                     /*Crear el filtro de perfil propio*/
                                         
                                         $filter = Filter::model()->findByAttributes(
@@ -924,7 +961,12 @@ class ProfileController extends Controller
 		$model = $this->loadUser();
 		//Yii::trace('username:'.$model->username.' Error: Inicio Guardado', 'registro');	
 		$profile=$model->profile;
-		$profile->profile_type = 1;
+        if(User::model()->is_personalshopper($model->id)){
+            $profile->profile_type = 6;
+        } else {
+            $profile->profile_type = 1;
+        }
+
 		// ajax validator
 		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
 		{
@@ -979,7 +1021,10 @@ class ProfileController extends Controller
 					Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos, no se guardaron los cambios, intente mas tarde."));
 					Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
 				}
-			} else $profile->validate();
+			} else {
+                Yii::trace('username:'.$model->username.' Error:'.implode('|',$profile->getErrors()), 'registro');
+                $profile->validate();
+            }
 		}
 
 		$this->render('edit',array(
@@ -1091,7 +1136,7 @@ class ProfileController extends Controller
 						Yii::app()->user->setFlash('success',UserModule::t("New password is saved."));
 						//$this->redirect(array("profile"));
 					} else {
-						Yii::trace('username:'.$user->username.' Error:'.print_r($user->getErrors(),true), 'registro');
+						Yii::trace('username:'.$new_password->username.' Error:'.print_r($new_password->getErrors(),true), 'registro');
 						Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos hubo un error, intente de nuevo mas tarde."));
 					}
 			}
@@ -1822,6 +1867,23 @@ class ProfileController extends Controller
             
         }
 		
+        /*Muestra el panel de ventas de una PS, datos referentes a comisiones*/
+        public function actionMisVentas() {
+            $personalShopper = $this->loadUser();                    
+       
+            if($personalShopper===null)
+                    throw new CHttpException(404,'The requested page does not exist.');
+
+            $producto = new OrdenHasProductotallacolor;
+
+            /*Consultar los productos vendidos por la actual PS*/
+            $dataProvider = $producto->vendidosComision(Yii::app()->user->id);
+
+            $this->render('misVentas',array(
+                        'personalShopper' => $personalShopper,
+                        'dataProvider'=>$dataProvider,
+            ));	
+        }
 			
 		
 	

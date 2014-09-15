@@ -377,7 +377,13 @@ class LookController extends Controller
 		}		
 		
 		$model->increaseView();
-	
+        $look_id = 0;
+        if (isset($_GET['id']))
+                $look_id = $_GET['id'];
+        $ps_id = 0;
+        if (isset($_GET['ps_id']))
+            $ps_id = $_GET['ps_id'];
+        ShoppingMetric::registro(ShoppingMetric::USER_VIEW_LOOK,array('look_id'=>$look_id,'ps_id'=>$ps_id));
 		$productoView = new ProductoView;
 		$productoView->user_id = Yii::app()->user->id;
 		
@@ -1092,7 +1098,7 @@ public function actionCategorias(){
             
             
             if (isset($_GET['id']))
-		$model= Look::model()->findByPk($_GET['id']);	
+		$model= Look::model()->findByPk($_GET['id']);
 		else
 		$model=new Look;
 		
@@ -1204,7 +1210,7 @@ public function actionCategorias(){
 				
 				$model->createImage();
 				if ($_POST['tipo']==1){
-			   		$this->redirect(array('look/publicar','id'=>$model->id)); 
+			   		$this->redirect(array('look/publicar','id'=>$model->id));
 					Yii::app()->end();
 				} else {
 					Yii::app()->user->updateSession();
@@ -1907,16 +1913,24 @@ public function actionCategorias(){
 	public function actionListarLooks(){
 		$criteria = new CDbCriteria;
 		$criteria->compare('user_id', Yii::app()->user->id, true);
-    	$looks = Look::model()->findAll($criteria); 
+
     	$total = Look::model()->count($criteria);
     	$pages = new CPagination($total);
-        $pages->pageSize = 9;
+       // $pages->pageSize = 9;
+        $pages->setPageSize(9);
         $pages->applyLimit($criteria);
-    	
-		$this->render('listar_looks', array(
-            'looks' => $looks,
-            'pages'=>$pages,
-        ));
+        $looks = Look::model()->findAll($criteria);
+       // echo $total.'total';
+        //echo $pages->pageSize."pagesize";
+    	if (!isset($_GET['page'])){
+            $this->render('listar_looks', array(
+                'looks' => $looks,
+                'pages'=>$pages,
+            ));
+        } else {
+            echo $this->renderPartial('_look', array('looks' => $looks,
+                'pages' => $pages,), true, true);
+        }
     }
 
 	protected function validarArchivo($archivo){

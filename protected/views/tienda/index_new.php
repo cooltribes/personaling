@@ -1,4 +1,4 @@
-<?php 
+<?php #echo Yii::app()->session['outlet'];
 $seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
 if(isset($seo)){
     $this->pageTitle = $seo->title;
@@ -126,13 +126,13 @@ if(isset($seo)){
 						echo '</a></div>';
 		}?>
 			  
-		<?php echo "<h3>".Yii::t('contentForm','Color')."<span id='summColor' class='summ'></span></h3><div class='paraFiltrar'>"; 
+		<?php echo "<h3>".Yii::t('contentForm','Color')."<span id='summColor' class='summ'></span></h3><div><div class='paraFiltrar'>"; 
 		
 			foreach($colores as $color){ 
 				echo '<a value="'.$color->id.'" title="'.$color->valor.'" class="scolor">'.$color->valor.'</a></br>'; 
 			}
 							
-				echo '<a href="#" value="0" class="todos scolor" >'.Yii::t('contentForm','All colors').'</a></div>';		?>
+				echo '<a href="#" value="0" class="todos scolor" >'.Yii::t('contentForm','All colors').'</a></div></div>';		?>
 				
 		<?php echo "<h3>".Yii::t('contentForm','By price')." <span id='summPrecio' class='summ'></span></h3> <div class='paraFiltrar'>"; 
 		
@@ -151,7 +151,7 @@ if(isset($seo)){
 			<h3><?php echo Yii::t('contentForm','By brand')."<span id='summMarca' class='summ'></span>";?></h3>
 
 			  <?php
-			  echo "<div class='paraFiltrar'>";
+			  echo "<div><div class='paraFiltrar'>";
 			  foreach($marcas as $marca){
 								$cien="not_cien";
 								if($marca->is_100chic){
@@ -161,7 +161,7 @@ if(isset($seo)){
 								echo'<a class="marca '.$cien.'" value='.$marca->id.' >'.$marca->nombre.'</a><br/>';
 								 
 							}
-				echo '<a class="marca" value="0" href="#">'.Yii::t('contentForm','All Brands').'</a></div>';
+				echo '<a class="marca" value="0" href="#">'.Yii::t('contentForm','All Brands').'</a></div></div>';
 			  
 			  ?>
 			   <h3 class="mobReset" id="reset"><?php echo Yii::t('contentForm','Clean Filters');?></h3>
@@ -292,7 +292,6 @@ if(isset($seo)){
     background: #ddd;
     color: #333;
 }
-
 </style>
 
 <section class="bard_tienda">
@@ -325,7 +324,7 @@ if(isset($seo)){
 							
 							echo '<li class=""> 
 			              		<a class="hijo" name="'.$padre->nombre.'" value="'.$hijo->id.'" href="#" >
-			              			<img src="'.$hijo->urlImagen.'" width="60">
+			              			<img src="'.Yii::app()->baseUrl.$hijo->urlImagen.'" width="60">
 				              		<div class="caption">
 				                  		<p>'.$hijo->nombre.'</p>
 					                </div>

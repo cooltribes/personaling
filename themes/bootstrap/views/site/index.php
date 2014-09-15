@@ -49,18 +49,21 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
                     <div class="slide-content" alt="Personaling - Tu Personal Shopper Online">
                         <div class="copy-right">
                           
-                                <figure class="logo-personaling ">
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="130"  heigth="130"> 
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="175"> 
-                                </figure>
-                                <div class="margin_top_small">
-                                <h2 >Las únicas<strong> rebajas<br/>personalizadas</strong><br></h2>
-                            	<a href="<?php echo Yii::app()->baseUrl; ?>/user/registration" class="btn btn-danger margin_top_small Bold">¡Regístrate!</a>
-                            	</div>
-                            	<div class="margintop65">
-                            		<p class="personaling-slogan">La primera<b> shopping</b> experience <b>única </b>y... <b>repetible</b></p>
-                            	</div>
-                            
+                            <figure class="logo-personaling">
+                                <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="80"> 
+                                <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="120"> 
+                                <img src="<?php echo Yii::app()->theme->baseUrl.
+                                        '/images/logo_personaling_adorno.png' ?>" 
+                                        alt="Personaling" width="120" class="adorno"> 
+                            </figure>
+                            <div class="margin_top margin_bottom">
+                                <h2>¡Descubre qué<strong> tipo de <br/>cuerpo </strong>eres!<br></h2>
+                                <a href="http://personaling.com/magazine/descubre-tu-tipo-de-cuerpo-y-dejate-asesorar-por-personaling" 
+                                   class="btn btn-danger margin_top margin_bottom_small Bold">¡Clica aquí!</a>
+                            </div>
+                            <div class="margin_top">
+                                    <p class="personaling-slogan margin_top"><b>Imagínate, descúbrete y conquista.</b></p>
+                            </div>                            
                             
                         </div>
                     </div>
@@ -70,16 +73,26 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
                 <div class="slider-home slide-2">
                     <div class="slide-content" alt="Personaling - Tu Personal Shopper Online">
                         <div class="copy-right">
-                            <div>
                                 
-                                <figure class="logo-personaling ">
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="102"  heigth="102">                                    
-                               		 <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="146"> 
-                                </figure>
+                            <figure class="logo-personaling ">
+                                <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="80">                                    
+                                 <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="120"> 
+                                 <img src="<?php echo Yii::app()->theme->baseUrl.
+                                        '/images/logo_personaling_adorno.png' ?>" 
+                                        alt="Personaling" width="120" class="adorno">
+                            </figure>
+                            
+                            <div class="margin_top margin_bottom">
+                                <h2><strong>Imagina</strong> la<strong> mejor<br/>
+                                        versión </strong>de ti misma<br></h2>
+                                <a href="http://personaling.com/magazine" 
+                                   class="btn btn-danger margin_top_xlarge Bold margin_top_small">Magazine</a>                                  
                             </div>
-                            <a href="<?php echo Yii::app()->baseUrl; ?>/tienda/index" class="btn btn-danger margin_top_xlarge Bold goStore">¡Ir a la Tienda!</a>
-                            <div class="margintop80">
-                                <p class="personaling-slogan  margin_top_large">La primera <strong>shopping experience</strong> única y…repetible</p>
+                            
+                            <div class="margin_top_large">
+                                <p class="personaling-slogan  margin_top_large">
+                                    <strong>¡Tu Personal Shopper Online!</strong>
+                                </p>
                             </div>
                         </div>
                         
@@ -90,18 +103,27 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
                 <div class="slider-home slide-3">
                     <div class="slide-content" alt="Personaling - Tu Personal Shopper Online">
                         <div class="copy-right">
+                            <figure class="logo-personaling ">
+                                <img src="<?php echo Yii::app()->theme->baseUrl.
+                                        '/images/logo_personaling_small.png' ?>"
+                                        alt="Personaling" width="80" >                                    
+                                <img src="<?php echo Yii::app()->theme->baseUrl.
+                                        '/images/logo_personaling_large.png' ?>"
+                                        alt="Personaling" width="120"> 
+                                <h3 class="margin_top_small">Nueva Temporada</h3>
+                                <img src="<?php echo Yii::app()->theme->baseUrl.
+                                    '/images/logo_personaling_adorno.png' ?>" 
+                                    alt="Personaling" width="120" class="adorno">
+                            </figure>
                             <div>
-                                <figure class="logo-personaling ">
-                                    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_small.png' ?>" alt="Personaling" width="102"  heigth="102">                                    
-                               		 <img src="<?php echo Yii::app()->theme->baseUrl.'/images/logo_personaling_large.png' ?>" alt="Personaling" width="146"> 
-                                </figure>
-                                <h2>¿Un <b>look completo</b> por <b><?php echo Yii::t('contentForm','currSym');?> 49,00?</b></h2>
-                                <div class="separator90"></div>
-                                 <h2>¡Consígue uno hecho<br/><b>especialmente para ti</b>!</h2>
+                                <h2>OTOÑO-INVIERNO<br/>2015</h2>
                             </div>
-                            <a href="<?php echo Yii::app()->baseUrl; ?>/tienda/look" class="btn btn-danger margin_top_small Bold">¡Cómpralo Ya!</a>
+                            <a href="<?php echo Yii::app()->baseUrl; ?>/registro-personaling"
+                               class="btn btn-danger margin_top_small Bold">¡Regístrate!</a>
                             <div class="margintop50">
-                                <p class="personaling-slogan ">Las únicas <b>rebajas personalizadas</b></p>
+                                <p class="personaling-slogan "><b>
+                                        Imagínate, descúbrete y conquista.
+                                </b></p>
                             </div>
                         </div>                            
                         

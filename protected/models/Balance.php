@@ -17,7 +17,7 @@
  
  //UN BALANCE CON ORDER_ID = 0; REPRESENTA UNA CARGA DE SALDO DESDE ADMIN
 
- /* UN BALANCE CON TIPO = 7 o 8; REPRESENTA UN PAGO O DESCUENTO POR SOLICITUD
+ /* UN BALANCE CON TIPO = 7 u 8; REPRESENTA UN PAGO O DESCUENTO POR SOLICITUD
   * DE PS, POR LO TANTO ORDER_ID REPRESENTA EL PAGO AL CUAL ESTA ASOCIADO (tbl_pago)
   */
  
@@ -32,7 +32,7 @@
   * 6: Regalo por registro completo
   * 7: Retiro de dinero por pago a PS
   * 8: Reintegro de dinero por pago rechazado a PS
-  * 
+  * 9: Saldo por cobro tipo "agregar al balance" para PS 
   */
  
 class Balance extends CActiveRecord
@@ -136,6 +136,14 @@ class Balance extends CActiveRecord
 			return "Carga desde Administrador";
 		if($balance->tipo==4)
 			return "Saldo por devolución";
+		if($balance->tipo==5)
+			return "Saldo por pago de comisión";
+		if($balance->tipo==7)
+			return "Retiro por solicitud de pago";
+		if($balance->tipo==8)
+			return "Reintegro por pago rechazado";
+		if($balance->tipo==9)
+			return "Pago por cobro de comisión al balance";
 		
 		return "Desconocido";  		
 	}        

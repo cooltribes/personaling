@@ -128,6 +128,10 @@ class User extends CActiveRecord {
 //                        'joinType'=>'INNER JOIN',
                         'condition'=>'(looks.status = '.Look::STATUS_APROBADO.')',
             );
+        $relations['psPayments'] = array(self::HAS_MANY, 'Pago', 'user_id',
+
+                        'condition'=>'(psPayments.estado = 0)',
+            );
         
         return $relations;
     }
@@ -187,8 +191,13 @@ class User extends CActiveRecord {
 
     public function defaultScope() {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope, array(
-                    'alias' => 'user',
-                    'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.visit, user.superuser, user.status,user.status_register, user.privacy, user.personal_shopper, user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, user.ps_destacado, user.zoho_id, user.tipo_zoho, user.interno',
+            'alias' => 'user',
+            'select' => 'user.id, user.username, user.email, user.create_at,
+                user.lastvisit_at, user.visit, user.superuser, user.status,
+                user.status_register, user.privacy, user.personal_shopper,
+                user.twitter_id, user.facebook_id, user.avatar_url, user.banner_url, 
+                user.ps_destacado, user.zoho_id, user.tipo_zoho, user.interno, user.suscrito_nl, user.admin_ps, user.fecha_ps',
+
         )); 
     }
 
@@ -810,11 +819,29 @@ class User extends CActiveRecord {
                     "SELECT SUM(total) as total FROM tbl_balance WHERE tipo IN
                      (5, 7, 8)
                      AND user_id = ".$this->id)
-                    ->queryScalar();
-            
-//            return $format ? Yii::app()->numberFormatter->formatCurrency($saldo, "") : $saldo;            
+                    ->queryScalar();            
+
             return $format ? Yii::app()->numberFormatter->format("#,##0.00",$saldo) : $saldo;            
-//            return $saldo;            
+
+        }
+        /*Calcula el saldo que está en solicitudes sin aprobar para PS*/
+        function getSaldoEnEspera($format = true) {
+            
+            $saldo = 0;
+            foreach($this->psPayments as $payment){
+                $saldo += $payment->monto;
+            }
+            
+//            $saldo = Yii::app()->db->createCommand(
+//                    "SELECT SUM(total) as total FROM tbl_balance WHERE tipo IN
+//                     (7, 8, 9)
+//                     AND user_id = ".$this->id)
+//                    ->queryScalar();
+
+            $saldo = abs($saldo);
+
+            return $format ? Yii::app()->numberFormatter->format("#,##0.00",$saldo) : $saldo;            
+
         }
         
         /*Todos los productos vendidos como parte de looks de una PS*/
@@ -918,46 +945,7 @@ class User extends CActiveRecord {
         }
 		
 		
-	public function buscarPsShopper()
-	{
-		
-		$criteria=new CDbCriteria;
 	
-		$criteria->compare('username',$this->username,true);
-		$criteria->compare('email',$this->email,true);
-		$criteria->addInCondition('admin_ps', array(Yii::app()->user->id));
-		$criteria->addInCondition('personal_shopper', array('1', '0'));
-
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-			'pagination'=>array('pageSize'=>10),
-		));
-	}
-
-
-		public function averiguarNombre()
-		{
-			$modelado=Profile::model()->findByPk($this->id);	
-			return $modelado->first_name. " ".$modelado->last_name;	
-
-		}
-		
-		public function averiguarStatus()
-		{
-	
-			if($this->personal_shopper=="0"){
-					return "Lo elimino de Personal Shooper";}
-			else {
-					return "Lo agregó como Personal Shooper";
-			}
-		}
-		
-		public function averiguarQuien()
-		{
-			$modelado=Profile::model()->findByPk(Yii::app()->user->id);	
-			return $modelado->first_name. " ".$modelado->last_name;	
-			
-		}
         
 
 }

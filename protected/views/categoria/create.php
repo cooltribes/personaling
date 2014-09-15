@@ -40,7 +40,9 @@ $this->breadcrumbs=array(
           	<?php
           	if($model->urlImagen!="")
           	{
-          		echo CHtml::image(Yii::app()->baseUrl . $model->urlImagen, "categoria", array('id'=>'img-categoria'));
+          		//echo CHtml::image(Yii::app()->baseUrl . $model->urlImagen, "categoria", array('id'=>'img-categoria'));
+				 $ruta=Yii::app()->baseUrl . $model->urlImagen;
+				echo "<img src=".$ruta."?" . time() . ">";
           	}
 			else{
 				echo "<img src='http://placehold.it/150x150'/>";
@@ -80,11 +82,15 @@ $this->breadcrumbs=array(
             <div class="control-group">
               <label  class="control-label ">Categoría Padre</label>
               <div class="controls">
-              	<select id="Categoria_padreId" name="Categoria[padreId]" class="span5" >
-				<option>Seleccione...</option>
+              	
+				 
 				<?php
 				
-				nodos($cat,$form,$model); 
+	            $palabra="Ocasión";// Cristal comento que todas aquellas que digan Ocasion, no son categorias para seleccionar
+				$posts=Categoria::model()->findAllBySql("select * from tbl_categoria where mDescripcion NOT like '%".$palabra."%'");
+				echo $form->dropDownList($model,'padreId', CHtml::listData($posts,'id', 'nombre'), array('empty'=>'Seleccione la Categoria')); 
+				
+				/*nodos($cat,$form,$model); 
 	
 				function nodos($items,$form,$model){
 					foreach ($items as $item){
@@ -107,10 +113,12 @@ $this->breadcrumbs=array(
 						}
 					}
 					return 1;
-				}
-				echo $form->error($model,'padreId'); 
+				}*/
+				echo $form->error($model,'padreId');
+				
+				
 				?>
-				</select>
+				
                 <div style="display:none" class="help-inline">ayuda aqui </div>
               </div>
             </div>

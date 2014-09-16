@@ -235,6 +235,15 @@ class Precio extends CActiveRecord
 		$historico->precioImpuesto =$this->precioImpuesto;
 		$historico->fecha=date("Y-m-d h:i:s");
 		$historico->user_id=Yii::app()->user->id;
+		if($historico->precioImpuesto-$historico->precioDescuento=="0") // si no hay descuento
+		{
+			$historico->tipoDescuento="-";			
+		}else
+		{
+			$historico->tipoDescuento=$this->tipoDescuento;	
+		}
+		
+		
 		$historico->save();
 		return parent::afterSave();			
 	

@@ -1132,4 +1132,44 @@ if (isset(Yii::app()->session["modalOn"])) {
 $(function() {
         moveScroller();
     });
+/*
+$('#btnMatch').click(function(event) {
+      alert("NIGGA");
+      if($( "#btnMatch" ).hasClass( "lighted" )) {
+          $("#btnMatch").removeClass("lighted");
+          $("#btnMatch").addClass("btn-danger");
+          $("#btnTodos").addClass("lighted");
+          $("#btnTodos").removeClass("btn-danger");
+      } 
+      else{
+          $("#btnMatch").addClass("lighted");
+          $("#btnMatch").removeClass("btn-danger");
+          $("#btnTodos").removeClass("lighted");
+          $("#btnTodos").addClass("btn-danger");
+      }  
+               
+});
+ 
+$('#btnTodos').click(function(event) {
+     alert("NIGGA");
+         if($( "#btnTodos" ).hasClass( "lighted" )) {
+          $("#btnMatch").addClass("lighted");
+          $("#btnMatch").removeClass("btn-danger");
+          $("#btnTodos").removeClass("lighted");
+          $("#btnTodos").addClass("btn-danger");
+      }
+      else{
+          $("#btnMatch").removeClass("lighted");
+          $("#btnMatch").addClass("btn-danger");
+          $("#btnTodos").addClass("lighted");
+          $("#btnTodos").removeClass("btn-danger");
+          
+         
+      }         
+                
+});
+ 
+    */
+     
+ 
 </script>

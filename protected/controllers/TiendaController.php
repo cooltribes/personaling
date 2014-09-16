@@ -148,15 +148,15 @@ class TiendaController extends Controller
 				
 		
 		
-		$orden[0]="t.fecha DESC";
-		$orden[1]="t.fecha ASC";
-		$orden[2]="t.descripcion DESC";
-		$orden[3]="t.descripcion ASC";
-		$orden[4]="t.view_counter DESC";
-		$orden[5]="t.peso ASC";
-		$orden[6]="t.peso DESC";
-		$orden[7]="t.id DESC";
-		$orden[8]="t.id ASC";
+		$orden[0]="destacado DESC, t.fecha DESC";
+		$orden[1]="destacado DESC, t.fecha ASC";
+		$orden[2]="destacado DESC, t.descripcion DESC";
+		$orden[3]="destacado DESC, t.descripcion ASC";
+		$orden[4]="destacado DESC, t.view_counter DESC";
+		$orden[5]="destacado DESC, t.peso ASC";
+		$orden[6]="destacado DESC, t.peso DESC";
+		$orden[7]="destacado DESC, t.id DESC";
+		$orden[8]="destacado DESC, t.id ASC";
 		
 		
 		

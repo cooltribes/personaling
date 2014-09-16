@@ -250,6 +250,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Administrar Looks', 'url'=>array('/look/mislooks')),
                 )),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
+                array('label'=>'Looks', 'url'=>array('/tienda/look'),'visible'=>UserModule::isPersonalShopper()),
                 array('label'=>'Tienda', 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
                 array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu'), 'visible'=>Yii::app()->params['outlet']),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),

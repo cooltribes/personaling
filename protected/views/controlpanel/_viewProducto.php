@@ -6,7 +6,7 @@
 ?>
 
 <tr>
-    <td><input name='check' type='checkbox' id='<?php //echo $data->id; ?>' /></td>
+
 
     <!--DATOS-->
     <td>

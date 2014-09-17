@@ -726,6 +726,7 @@ if(!Yii::app()->user->isGuest){
           $(this).addClass('bg_color5');
           
           clickVaciar();
+          
 
       },
       function(e){

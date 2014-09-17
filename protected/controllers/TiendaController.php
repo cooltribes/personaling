@@ -1669,10 +1669,12 @@ public function actionCategorias2(){
                             if(data.status == 'success'){                  
                                 
                                 $('#myModal').on('hidden', function () {
-                                  
                                     desplegarBolsaGuest(data);
+                                    
                                 });
                                 $('#myModal').modal('hide');
+                                
+                                
 
                             }
 

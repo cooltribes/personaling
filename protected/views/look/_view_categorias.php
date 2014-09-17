@@ -23,7 +23,7 @@
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
 						    'class' => 'thumbnail btn btn-block',
-						    'id' => 'categoria'.$categoria_padre,
+						    'id' => 'categoria'.uniqid(),
 						    'draggable'=>"false",
 						  )
 						);
@@ -80,7 +80,7 @@
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
 						    'class' => 'thumbnail',
-						    'id' => 'categoria'.$categoria->id,
+						    'id' => 'categoria'.uniqid(),
 						    'draggable'=>"false",
 						  )
 						);

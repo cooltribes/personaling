@@ -247,13 +247,17 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;
 	                  		<div class="fifth4">
 	                  <?php  $color_id = $lookhasproducto->color_id;
 	                  
-	                  if($lookhasproducto->producto->estado == 0){
-	                          echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'complete tallas')); 
-	                        }else{
-	
-	                          echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',array(),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'complete tallas')); 
-	
-	                        }?>
+	                  if(is_null($lookhasproducto->producto->tienda))    
+                            if($lookhasproducto->producto->estado == 0){
+                              echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
+                            }else{
+    
+                              echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',array(),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
+    
+                            }
+                        else
+                             echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,array_shift(array_keys($lookhasproducto->producto->getTallas($color_id))),$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas'));
+                    ?>
 	                        </div>
 	                    	<div class="fifth">
 	                    	   <?php 
@@ -274,7 +278,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;
 	                      <?php      
 	                      $prod = Producto::model()->findByPk($lookhasproducto->producto_id);
 	                      ?>
-	
+	 
 	                      <?php $image = CHtml::image($image_url, "Imagen ", array('class'=>'imagen_producto'));  ?>
 	                      <?php echo "<div class='img'>".$image."</div>";
 	                      		//echo CHtml::link($image, $prod->getUrl() ); ?>

@@ -297,7 +297,7 @@ $("#mobFiltrar").click(function() {
                             'id' => 'btnTodos',
                             'onclick' => 'js:clickTodos()',
                             'role' => 'button',
-                            'class' => $todosLosLooks?'btn-large btn-danger':'btn-large lighted',
+                            'class' => $todosLosLooks?'all btn-large btn-danger':'all btn-large lighted',
                             'data-toggle' => 'modal',
                             
                         ),
@@ -318,7 +318,7 @@ $("#mobFiltrar").click(function() {
                             'onclick' => 'js:clickPersonal('.$status_register.',"'.
                             Yii::app()->createUrl("/user/profile/tuestilo", $params).'","'.
                             Yii::app()->createUrl("/user/profile/tutipo", $params).'")',
-                            'class' => $todosLosLooks?'btn-large lighted':'btn-large btn-danger',
+                            'class' => $todosLosLooks?'match btn-large lighted':'match btn-large btn-danger',
                         ),
                     ));
                     ?>
@@ -1132,4 +1132,44 @@ if (isset(Yii::app()->session["modalOn"])) {
 $(function() {
         moveScroller();
     });
+/* 
+$('.match').click(function(event) {
+
+      if($( ".match" ).hasClass( "lighted" )) {
+          $(".match").removeClass("lighted");
+          $(".match").addClass("btn-danger");
+          $(".all").addClass("lighted");
+          $(".all").removeClass("btn-danger");
+      } 
+      else{
+          $(".match").addClass("lighted");
+          $(".match").removeClass("btn-danger");
+          $(".all").removeClass("lighted");
+          $(".all").addClass("btn-danger");
+      }  
+               
+});
+ 
+$('.all').click(function(event) {
+
+         if($( ".all" ).hasClass( "lighted" )) {
+          $(".match").addClass("lighted");
+          $(".match").removeClass("btn-danger");
+          $(".all").removeClass("lighted");
+          $(".all").addClass("btn-danger");
+      }
+      else{
+          $(".match").removeClass("lighted");
+          $(".match").addClass("btn-danger");
+          $(".all").addClass("lighted");
+          $(".all").removeClass("btn-danger");
+          
+         
+      }         
+                
+});
+ 
+   */
+     
+ 
 </script>

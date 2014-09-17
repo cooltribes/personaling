@@ -78,6 +78,9 @@ $this->breadcrumbs=array(
 				foreach($prodslook as $prodlook){
 										$ptclk = Preciotallacolor::model()->findByAttributes(array('id'=>$prodlook['preciotallacolor_id']));
                                         $prdlk = Producto::model()->findByPk($ptclk->producto_id);
+                if(is_null($prdlk->tienda))
+                {
+                
                                         $marca=Marca::model()->findByPk($prdlk->marca_id);
                                         $talla=Talla::model()->findByPk($ptclk->talla_id);
                                         $color=Color::model()->findByPk($ptclk->color_id);
@@ -143,10 +146,10 @@ $this->breadcrumbs=array(
 										
 										
 					}
-					
-				}				
+				}
+			}				
 				
-			}
+		}
 			//INDIVIDUALES
 			
 			
@@ -156,67 +159,69 @@ $this->breadcrumbs=array(
 			foreach($separados as $prod){
 				$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
 				$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
-				$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
-				$marca=Marca::model()->findByPk($indiv->marca_id);
-				$talla=Talla::model()->findByPk($ptc->talla_id);
-				$color=Color::model()->findByPk($ptc->color_id);
-				if($prod['cantidadActualizada']>0){
-                                $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id,'color_id'=>$color->id),array('order'=>'orden'));
-                                $contador=0;
-                                $foto = "";
-                                $label = $color->valor;
-                                //$label = "No hay foto</br>para el color</br> ".$color->valor;
-                                 if(!is_null($ptc->imagen))
-                                  {
-                                     $foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "70", "height" => "70"));
-
-                                  }
-                                    else {
-                                        $foto="No hay foto</br>para el color";
-                                    } 
-                            
+				if(is_null($indiv->tienda))
+                {
+    				$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
+    				$marca=Marca::model()->findByPk($indiv->marca_id);
+    				$talla=Talla::model()->findByPk($ptc->talla_id);
+    				$color=Color::model()->findByPk($ptc->color_id);
+    				if($prod['cantidadActualizada']>0){
+                                    $imagen = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id,'color_id'=>$color->id),array('order'=>'orden'));
+                                    $contador=0;
+                                    $foto = "";
+                                    $label = $color->valor;
+                                    //$label = "No hay foto</br>para el color</br> ".$color->valor;
+                                     if(!is_null($ptc->imagen))
+                                      {
+                                         $foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "70", "height" => "70"));
+    
+                                      }
+                                        else {
+                                            $foto="No hay foto</br>para el color";
+                                        } 
                                 
-				echo("<tr>");
-//				echo("<td>".$indiv->codigo."</td>");// Referencia
-//				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
-				/*Datos resumidos + foto*/
-				echo("<td style='text-align:center'><div>".$foto."<br/>".$label."</div></td>");
-                 
-				echo('<td style="vertical-align: middle">'.$indiv->codigo.'</td>');
-               echo("<td>".$marca->nombre."</td>");
-               echo(   "<td>".$indiv->nombre."</td>");
-                echo("<td>".$color->valor."</td>");                         
-               
-              
-               echo("<td>".$talla->valor."</td>");
-			   
-			   
-               if($prod['cantidadActualizada']>Devolucion::model()->devueltosxOrden($orden->id, $ptc->id, 0)){                  
-               echo "<td><input type='number' id='".$ptc->id."_0' value='0' class='input-mini cant' max='".$prod['cantidadActualizada']."'  min='0' required='required' /></td>";
-			  echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td><td>");
-			   
-			  
-				  echo  (CHtml::dropDownList($ptc->id."_0motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled','class'=>'motivos'))."</td>");
-					echo CHtml::hiddenField($ptc->id."_0hid",$prod['cantidad']); 
-					echo CHtml::hiddenField($ptc->id."_0precio",$prod['precio']);
-					echo CHtml::hiddenField($ptc->id."_0indice",$indice);
-					echo"<script>ptcs.push('".$ptc->id."');</script>";
-					echo"<script>indices.push('".$indice."');</script>";
-					echo"<script>montos.push('0');</script>"; 
-					echo"<script>cantidades.push('0');</script>";
-					echo"<script>looks.push('0');</script>";
-					echo"<script>motivos.push('-');</script>";
-					$indice++; 
-				}
-			else{
-				echo "<td colspan='3'>Este producto se encuentra en proceso de devolución </td>";
+                                    
+    				echo("<tr>");
+    //				echo("<td>".$indiv->codigo."</td>");// Referencia
+    //				echo("<td>".CHtml::link($indiv->nombre, $this->createUrl('producto/detalle', array('id'=>$indiv->id)), array('target'=>'_blank'))."</td>"); // nombre
+    				/*Datos resumidos + foto*/
+    				echo("<td style='text-align:center'><div>".$foto."<br/>".$label."</div></td>");
+                     
+    				echo('<td style="vertical-align: middle">'.$indiv->codigo.'</td>');
+                   echo("<td>".$marca->nombre."</td>");
+                   echo(   "<td>".$indiv->nombre."</td>");
+                    echo("<td>".$color->valor."</td>");                         
+                   
+                  
+                   echo("<td>".$talla->valor."</td>");
+    			   
+    			   
+                   if($prod['cantidadActualizada']>Devolucion::model()->devueltosxOrden($orden->id, $ptc->id, 0)){                  
+                   echo "<td><input type='number' id='".$ptc->id."_0' value='0' class='input-mini cant' max='".$prod['cantidadActualizada']."'  min='0' required='required' /></td>";
+    			  echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td><td>");
+    			   
+    			  
+    				  echo  (CHtml::dropDownList($ptc->id."_0motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled','class'=>'motivos'))."</td>");
+    					echo CHtml::hiddenField($ptc->id."_0hid",$prod['cantidad']); 
+    					echo CHtml::hiddenField($ptc->id."_0precio",$prod['precio']);
+    					echo CHtml::hiddenField($ptc->id."_0indice",$indice);
+    					echo"<script>ptcs.push('".$ptc->id."');</script>";
+    					echo"<script>indices.push('".$indice."');</script>";
+    					echo"<script>montos.push('0');</script>"; 
+    					echo"<script>cantidades.push('0');</script>";
+    					echo"<script>looks.push('0');</script>";
+    					echo"<script>motivos.push('-');</script>";
+    					$indice++; 
+    				}
+    			else{
+    				echo "<td colspan='3'>Este producto se encuentra en proceso de devolución </td>";
+    			}
+    					
+    					
+    				 echo "</tr>";
+    				 
+    			}
 			}
-					
-					
-				 echo "</tr>";
-				 
-			}
-			
 		}
 		
 			

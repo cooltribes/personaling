@@ -43,6 +43,8 @@ function str_lreplace($search, $replace, $subject)
         $count = 0;
 	foreach($iterator as $look) {
 		if (isset($look)){
+			if($look->activo=="1" && $look->status=="2") // enviados y que esten activos
+			{
                     $count++;
 ?>
                         <div class="span4">
@@ -85,6 +87,7 @@ function str_lreplace($search, $replace, $subject)
 <?php 
                         if ($count >= 6 )
                              break;
+	}
 	}
 } ?>
                 </div>

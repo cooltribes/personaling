@@ -290,13 +290,16 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                       <?php // echo Chtml::hiddenField("producto[]",$producto->id); ?>
                       <?php 
                       //if($lookhasproducto->producto->tipo == 0){
-                        if($lookhasproducto->producto->estado == 0){
-                          echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
-                        }else{
-
-                          echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',array(),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
-
-                        }
+                        if(is_null($lookhasproducto->producto->tienda))    
+                            if($lookhasproducto->producto->estado == 0){
+                              echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
+                            }else{
+    
+                              echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',array(),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
+    
+                            }
+                        else
+                             echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,array_shift(array_keys($lookhasproducto->producto->getTallas($color_id))),$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas'));
                       /*}else{
                         echo $lookhasproducto->producto->tienda->name;
                       }*/

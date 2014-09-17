@@ -1,5 +1,5 @@
         <tr>
-            <td><input name="check" type="checkbox" value=""></td>
+            <td><input name="check" type="checkbox" value="" id=<?php echo $data->id; ?>></td>
             <td width="20%"><strong> <span class="CAPS"><?php echo $data->title; ?></span></strong><br/>
                 <strong><?php echo Yii::t('contentForm', 'ID'); ?></strong>: <?php echo $data->id; ?><br/>
                 <strong><?php echo Yii::t('contentForm', 'Nro. Items'); ?></strong>: <?php echo $data->countItems(); ?></td>
@@ -18,7 +18,7 @@
             <td><?php echo $data->getPrecio(); ?></td>
             <td><?php echo $data->getLookxStatus(3); ?></td>
             <td><?php echo $data->getMontoVentas(); ?></td>
-            <td><?php echo $data->getStatus(); ?></td>
+            <td><?php echo $data->getStatus();echo "\n"; if($data->activo=="1")echo "Activo";else echo "Inactivo"; ?></td>
             <td><?php echo $data->created_on; ?></td>
             <td> <?php $camp=Campana::model()->findByPk($data->campana_id); echo $camp->daysLeft();?>
                 <div class="progress margin_top_small  progress-danger">

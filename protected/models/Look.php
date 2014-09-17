@@ -91,6 +91,7 @@ class Look extends CActiveRecord
                 'condition'=>'status=1',
                 
             ),
+           
         );
     }	 
 	/**
@@ -447,6 +448,7 @@ class Look extends CActiveRecord
 		$criteria->compare('status',1,false,'OR');
 		$criteria->compare('status',2,false,'OR');
 		$criteria->compare('title',$this->title,true);
+		$criteria->order = 'id DESC';
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

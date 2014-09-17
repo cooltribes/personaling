@@ -111,7 +111,7 @@ class LookController extends Controller
 				'actions'=>array('admin','delete','create','categorias',
                                     'publicar','admin','detalle','edit','update','create',
                                     'publicar','marcas','mislooks','softdelete','descuento',
-                                    'calcularPrecioDescuento', 'exportarCSV', 'plantillaDescuentos', 'importarDescuentos'),
+                                    'calcularPrecioDescuento', 'exportarCSV', 'plantillaDescuentos', 'importarDescuentos', 'enabledLook', 'varias'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -2128,4 +2128,67 @@ public function actionCategorias(){
             "nLineas"=>$linea-2,
             );            
     }
+    
+    public function actionEnabledLook($id)
+	{
+		$model = Look::model()->findByPk($id);
+		
+		if($model->activo=="0")
+		{
+			$model->activo=1;
+			Yii::app()->user->setFlash('success', 'Look Activado');
+		}
+		else
+		{
+			$model->activo=0;	
+			Yii::app()->user->setFlash('success', 'Look Desactivado');
+		}
+		$model->scenario="enabledLook";
+		
+		if(!$model->save())
+			Yii::app()->user->setFlash('error', 'Look no ha sido guardado.');
+		
+		$this->redirect(array('look/admin'));
+		
+	}
+	
+	public function actionVarias()
+	{
+		$result = array();
+		if($_POST['check']!=""){
+			
+			$checks = explode(',',$_POST['check']);
+			$accion = $_POST['accion'];	
+		
+			if($accion=="Acciones")
+			{
+				//echo("2"); // no selecciono una accion
+				$result['status'] = "2";
+			}
+			else if($accion=="Activar")
+			{
+				foreach($checks as $id){
+					$model = Look::model()->findByPk($id);
+					$model->activo=1;
+					Look::model()->updateByPk($id, array('activo'=>'1'));	
+				}
+				$result['status'] = "3";
+			}
+			else if($accion=="Inactivar")
+			{
+				foreach($checks as $id){
+					$model = Look::model()->findByPk($id);
+					$model->activo=0;
+					Look::model()->updateByPk($id, array('activo'=>'0'));
+		
+				}				
+				$result['status'] = "4";
+			}
+		}
+		else {
+			//echo("1"); // no selecciono checks
+			$result['status'] = "1";
+		}
+		echo CJSON::encode($result);
+	}
 }

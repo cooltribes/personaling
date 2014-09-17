@@ -145,9 +145,7 @@ class TiendaController extends Controller
 		$lims=Precio::model()->getLimites();
 
 		$dif=$lims['maximo']-$lims['minimo'];
-				
-		
-		
+	
 		$orden[0]="destacado DESC, t.fecha DESC";
 		$orden[1]="destacado DESC, t.fecha ASC";
 		$orden[2]="destacado DESC, t.descripcion DESC";
@@ -157,9 +155,6 @@ class TiendaController extends Controller
 		$orden[6]="destacado DESC, t.peso DESC";
 		$orden[7]="destacado DESC, t.id DESC";
 		$orden[8]="destacado DESC, t.id ASC";
-		
-		
-		
 		
 		$rangos[0]['min']=0;
 		$rangos[0]['max']=($dif*.25)+$lims['minimo'];
@@ -187,11 +182,8 @@ class TiendaController extends Controller
 		  
     	if( isset($_POST['colorhid']) ||  (isset($_GET['page']) && isset(Yii::app()->session['bandera']) ) ){
     
-    		Yii::app()->session['bandera'] = true;
-		
-    		
-				
-    			Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+    		    Yii::app()->session['bandera'] = true;
+    		    Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 				Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 				Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
@@ -206,8 +198,6 @@ class TiendaController extends Controller
 			if (isset($_POST['texthid']))
 			if(strlen($_POST['texthid'])>0){
 				Yii::app()->session['f_text'] = $_POST['texthid'];
-
-				
 				
 			} else {
 				if (isset($_POST['colorhid'])){	 
@@ -1087,6 +1077,16 @@ public function actionCategorias2(){
 			//$start = microtime(true);
             $userTmp = User::model()->findByPk(Yii::app()->user->id);
             $todosLosLooks = true;
+            $orden[0]="destacado DESC, t.created_on DESC";
+            $orden[1]="destacado DESC, t.created_on ASC";
+            $orden[2]="destacado DESC, t.description DESC";
+            $orden[3]="destacado DESC, t.description ASC";
+            $orden[4]="destacado DESC, t.view_counter DESC";
+            $orden[5]="destacado DESC, t.edadMin ASC";
+            $orden[6]="destacado DESC, t.edadMax ASC";
+            $orden[7]="destacado DESC, t.id DESC";
+            $orden[8]="destacado DESC, t.id ASC";
+            
             if (isset($userTmp)) {
                 
                 //echo "user".$userTmp->status_register;
@@ -1167,6 +1167,7 @@ public function actionCategorias2(){
                 Yii::app()->session['todoPost'] = $_POST;
 
                 $criteria = new CDbCriteria;
+                $criteria->addCondition('activo = 1');
               
                 //Si no se resetearon - revisar lo que viene de los inputs 
                 if (!isset($_POST['reset'])) {
@@ -1257,7 +1258,7 @@ public function actionCategorias2(){
                 $sort->applyOrder($criteria);
 
                 $criteria->compare('status', 2);
-                $criteria->order = "orden DESC";
+                $criteria->order = $orden[Yii::app()->session['order']];
                 
                 $total = Look::model()->count($criteria);
                 $pages = new CPagination($total);
@@ -1307,13 +1308,13 @@ public function actionCategorias2(){
             
             /*Cargando la Pagina por primera vez*/    
             } else {
-
+                Yii::app()->session['order']=rand(0,8);
                 $search = "";
                 if (isset($_GET['search']))
                     $search = $_GET['search'];
 
                 $criteria = new CDbCriteria;
-
+                $criteria->addCondition('activo = 1');
                 //Para mostrar por defecto los looks recomendados para el usuario
                 //siempre la primera vez que se cargue la página
                 // $userTmp = User::model()->findByPk(Yii::app()->user->id);
@@ -1342,7 +1343,7 @@ public function actionCategorias2(){
                 $criteria->compare('title', $search, true, 'OR');
                 $criteria->compare('description', $search, true, 'OR');
                 $criteria->compare('status', 2);
-                $criteria->order = "orden DESC";
+                $criteria->order = $orden[Yii::app()->session['order']];
                 
                 $total = Look::model()->count($criteria);
 
@@ -1968,10 +1969,6 @@ public function actionCategorias2(){
                 }
                 
             }
-
-
-
-        
 
         echo CJSON::encode($response);
     }

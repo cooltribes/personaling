@@ -676,6 +676,7 @@ class LookController extends Controller
 		
 	}
 public function actionColores(){
+
 	Yii::app()->clientScript->scriptMap['jquery.js'] = false;
 	Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 	Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
@@ -685,10 +686,11 @@ public function actionColores(){
 	Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 	
 	$productos = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'color_id='.$_POST['colores'])))->findAll();
-	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);	
+	echo $this->renderPartial('_view_productos',array('productos'=>$productos,'page'=>1),true,true);
 	
 }
 public function actionCategorias(){
+    $page = (isset($_POST['page']) ? $_POST['page'] : 1);
 	$categorias = false;
 	if(isset($_POST['padreId'])){
 		switch ($_POST['padreId']) {
@@ -727,30 +729,34 @@ public function actionCategorias(){
 		echo $this->renderPartial('_view_categorias',array('categorias'=>$categorias,'categoria_padre'=>$categoria_padre->padreId),true,true);
 	}else{
 		$with = array();
+        $padreId = '';
 		if(isset($_POST['padreId'])){
+            $padreId = $_POST['padreId'];
 			switch ($_POST['padreId']) {
 				case 'Complementos':
-					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id);
+					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id,'together'=>true);
 					break;
 
 				case 'Ropa':
-					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id);
+					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id,'together'=>true);
 					break;
 
 				case 'Zapatos':
-					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id);
+					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id,'together'=>true);
 					break;
 				
 				default:
 					if ($_POST['padreId']!=0)
-						$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id);
+						$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id,'together'=>true);
 					break;
 			}
 			/*if ($_POST['padreId']!=0)
 				$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id);*/
 				//$with['categorias'] = array('condition'=>'tbl_categoria_id='.$_POST['padreId']);
 		}
-		if(isset($_POST['colores']))
+        $colores = "";
+		if(isset($_POST['colores'])){
+            $colores = $_POST['colores'];
 			if ($_POST['colores']!=''){
 				//condicion base, el color seleccionado
 				$condition = 'color_id='.$_POST['colores'];
@@ -762,23 +768,41 @@ public function actionCategorias(){
 						$condition .= ' OR color_id='.$hijo->id;
 					}
 				}
-				$with['preciotallacolor'] = array('condition'=>$condition);
+				$with['preciotallacolor'] = array('condition'=>$condition,'together'=>true);
 				$color = $_POST['colores'];
 			}
-
+        }
+        $limit = 15;
+        $offset = ($page -1) * $limit;
+        //$limit = 0;
+        $marcas = "";
+        $criteria = new CDbCriteria();
+        //$with['options'] = array("together"=>true);
+        $criteria->with = $with;
+        $criteria->offset    = $offset;
+        $criteria->limit     = $limit;
 		if(isset($_POST['marcas'])){
+            $marcas = $_POST['marcas'];
 			if ($_POST['marcas']!='Todas las Marcas')	
-				$productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']));
-			else	
-				$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
+				$productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),array('limit'=>$limit,'offset'=>$offset));
+               // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),$criteria);
+			else
+                //$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll($criteria);
+               // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
+                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset));
 		} else {
-			$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
+			//$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll($criteria);
+            $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset));
 		}
-		
-		if (isset($categoria_padre))
-			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId, 'color'=>$color),true,true);
-		else
-			echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null, 'color'=>$color),true,true);
+		$pages = ceil(count($productos)/$limit);
+        $page=$page>$pages?0:$page;
+
+
+
+        if (isset($categoria_padre))
+            echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId,'categoria'=>$padreId, 'color'=>$color, 'page'=>$page,'marcas'=>$marcas,'colores'=>$colores),true,true);
+        else
+            echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null,'categoria'=>$padreId, 'color'=>$color,'page'=>$page,'marcas'=>$marcas,'colores'=>$colores),true,true);
 	}
 }
 
@@ -798,7 +822,7 @@ public function actionCategorias(){
 			Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 			Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 		 	
-		 	echo $this->renderPartial('_view_productos',array('productos'=>$productos),true,true);
+		 	echo $this->renderPartial('_view_productos',array('productos'=>$productos,'page'=>1),true,true);
 		  
 	}
 

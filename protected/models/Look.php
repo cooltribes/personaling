@@ -780,6 +780,10 @@ class Look extends CActiveRecord
 		$inicio_x = 0;
 		foreach($imagenes as $image){
 			$ext = pathinfo($image->path, PATHINFO_EXTENSION);
+            $b_top = 0;
+            $b_btm = 0;
+            $b_lft = 0;
+            $b_rt = 0;
 			 switch($ext) { 
 			          case 'gif':
 			          $src = imagecreatefromgif($image->path);
@@ -789,11 +793,6 @@ class Look extends CActiveRecord
 			          break;
 			          case 'png':
 			          $src = imagecreatefrompng($image->path);
-							$b_top = 0;
-					        $b_btm = 0;
-					        $b_lft = 0;
-					        $b_rt = 0;
-					
 					        //top
 					        for(; $b_top < imagesy($src); ++$b_top) {
 					            for($x = 0; $x < imagesx($src); ++$x) {

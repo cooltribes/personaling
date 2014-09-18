@@ -959,7 +959,7 @@ class BolsaController extends Controller
                     //Si usa balance
                     $descuentoRegalo = 0;
                     if(Yii::app()->getSession()->get('usarBalance') == '1'){
-                            $balance = User::model()->findByPK($usuario)->saldo;
+                            $balance = Profile::getSaldo(Yii::app()->user->id, false);
                             $balance = floor($balance *100)/100; 
                             if($balance > 0){
                                 if($balance >= $total){

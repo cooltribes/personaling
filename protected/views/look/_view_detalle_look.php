@@ -1,4 +1,4 @@
-<!-- Modal 1 -->
+<!-- Modal 1 --> 
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -128,7 +128,28 @@
 		));
 		
 		 ?>
-    	
+   <?php 
+   if($model->activo=="0") 
+   {
+   		$this->widget('bootstrap.widgets.TbButton', array(
+			'label'=>'Activar',
+			'icon'=>'pencil',
+			'url' => CController::createUrl('look/enabledLook',array('id'=>$model->id)),
+
+		));
+   }
+   else
+   {
+		$this->widget('bootstrap.widgets.TbButton', array(
+			'label'=>'Desactivar',
+			'icon'=>'pencil',
+			'url' => CController::createUrl('look/enabledLook',array('id'=>$model->id)),
+
+		));
+   } 
+    ?>    	
+    
+   
     	
     	<!-- <a href="" title="ver" class="btn btn-info" target="_blank"><i class="icon-eye-open icon-white"></i> Ver</a> -->
     </div>

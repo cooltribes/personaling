@@ -1,4 +1,4 @@
-<?php
+<?php echo Yii::app()->session['hell'];
 
 	$this->breadcrumbs=array(
 		'Look',
@@ -90,6 +90,7 @@
 		)); ?>        	
         </div>
     </div>
+    </div>
     <hr/>
         <?php $this->renderPartial('_filters'); ?>
     <hr/>
@@ -97,7 +98,7 @@
 $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
-            <th scope="col"></th>
+         <th scope="col"><input name="check" type="checkbox" id="todos"></th>
             <th colspan="2" scope="col">Look</th>
             <th scope="col">Precio ('.Yii::t('contentForm','currSym').')</th>
             <th scope="col">Vendidos</th>
@@ -144,6 +145,67 @@ $template = '{summary}
 	?>
     <hr/>
      <div class="row">
+     	
+     <div class="span3">
+       <select class="span3" id="accion">
+        <option id="accion">Acciones</option>
+        <option>Activar</option>
+        <option>Inactivar</option>
+      </select>
+    </div>
+     			<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'ajaxButton',
+			'type'=>'danger',
+			'label'=>'Procesar',
+			'url'=>array('look/varias'),
+			'htmlOptions'=>array('id'=>'procesar','class'=>'span0.5'),
+			'ajaxOptions'=>array(
+			'type' => 'POST',
+			'dataType' => 'json',
+			'beforeSend' => "function( request )
+			{
+				 $(':checkbox:checked').each(function(){
+				 	console.log($(this));
+				 });
+			var checkValues = $(':checkbox:checked').map(function() {
+			        return this.id;
+			    }).get().join();
+				
+				var uno = $('#accion').val();
+			
+			this.data += '&accion='+uno+'&check='+checkValues;
+			
+			}",
+			
+			'data'=>array('a'=>'5'),
+			'success'=>"function(data){
+				console.log(data);
+				if(data.status==1)
+					alert('No ha seleccionado ningún look.');
+				
+				if(data.status==2)
+					alert('No ha seleccionado ninguna acción.');
+					
+					
+				if(data.status==3 || data.status==4){
+					
+						ajaxUpdateTimeout = setTimeout(function () {
+						$.fn.yiiListView.update(
+						'list-auth-items',
+						{
+						type: 'POST',	
+						url: '" . CController::createUrl('look/admin') . "',
+						data: ajaxRequest}
+						
+						)
+						},0);
+					alert('Los Looks han sido actualizados');
+					}
+
+			}",
+			),
+			)); ?>
+     	
         <div class="span3">
             <a href="exportarCSV" title="Exportar a excel" class="btn btn-info">Exportar a excel</a>
         </div>
@@ -151,7 +213,7 @@ $template = '{summary}
             <a href="plantillaDescuentos" title="Plantilla Descuentos" class="btn btn-info">Plantilla Descuentos</a>
         </div>
     </div>
-</div>
+
 <!-- /container --> 
 
 <!------------------- MODAL WINDOW ON -----------------> 
@@ -159,4 +221,23 @@ $template = '{summary}
 <?php $this->endWidget(); ?>
 
 <!------------------- MODAL WINDOW OFF ----------------->
+<script type="text/javascript">
+$(document).ready(function(){
+	
+            $("#todos").click(function() { 
+            	
+               inputs = $('table').find('input').filter('[type=checkbox]');
+ 
+               if($(this).attr("checked")){
+                     inputs.attr('checked', true);
+               }else {
+                     inputs.attr('checked', false);
+               } 	
+		});
+       
+                var selected = new Array();                   
+});
 
+
+  
+</script>

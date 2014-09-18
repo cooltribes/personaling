@@ -528,7 +528,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <div id="precio_total_hidden" style="display: none;"><?php echo $total; ?></div>
             <?php            
 			
-                $balance = User::model()->findByPK($user)->saldo;
+                $balance=Profile::getSaldo($user);
                 $balance = floor($balance *100)/100;
                 $class = "";		
 

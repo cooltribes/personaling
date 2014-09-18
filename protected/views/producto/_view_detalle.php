@@ -136,8 +136,15 @@
                   <!-- FOTO principal ON -->";
               
               $ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id),array('order'=>'orden ASC'));
+			  $var=99; //bandera
   
       foreach ($ima as $img){
+      	
+		if($img->orden<$var)
+		{
+			$var=$img->orden;
+			$url=$img->url;	
+		}
 
         Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$img->getUrl(array('ext'=>'jpg')), null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook
         Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$img->getUrl(array('ext'=>'jpg')), 'twitter:image:src', null, null, null);  // Registro de <meta> para compartir en Twitter        
@@ -535,12 +542,66 @@
               ?>
         </small>
             </div>
+            <script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
             <!-- AddThis Button BEGIN -->
-            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-            <a class="addthis_button_facebook"></a>
-            <a class="addthis_button_twitter" tw:via="personaling"></a>
-            <a class="addthis_button_pinterest_share"></a>
-            </div>
+                         <div align="right">
+                  <?php
+                  // link to share
+
+
+                  echo CHtml::link(
+                      CHtml::image(Yii::app()->baseUrl.'/images/icon_compartir_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),'#',array('data-toggle'=>'modal',
+                      	'data-target'=>'#dialogLook'.$producto->id)
+
+                  );
+                  ?>
+                <?php
+                // twitter button
+                echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_twitter_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),
+                  'https://twitter.com/intent/tweet?url='.Yii::app()->getBaseUrl(true).'/producto/detalle/'.$producto->id.'&text='.$producto->nombre.'&lang=es&via=Personaling'
+                );
+                
+				                // facebook button
+                echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_facebook_2.png', 'Compartir en facebook', array('width'=>30, 'height'=>30, 'class'=>'social')),
+                  Yii::app()->getBaseUrl(true).'/producto/detalle/'.$producto->id,
+                  array(
+                    'data-image'=>'/producto/'.$producto->id.'.png',
+                    'data-title'=>$producto->nombre,
+                    'data-desc'=>$producto->descripcion,
+                    'class'=>'facebook_share'
+                  )
+                );
+               
+                 //pinterest
+                 echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_pinterest_2.png', 'Compartir en pinterest', array('width'=>30, 'height'=>30, 'class'=>'social')),
+                  '//pinterest.com/pin/create/button/?url='.Yii::app()->getBaseUrl(true).'/producto/detalle/'.$producto->id.'&description='.$producto->descripcion.'&media='.Yii::app()->getBaseUrl(true).'/images/producto/'.$producto->id.'.png',
+                  array(
+                    'target'=>'_blank'
+                  )
+                );
+				
+				
+				//polyvore
+				  echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_polyvore_2.png', 'Compartir en polyvore', array('width'=>30, 'height'=>30, 'class'=>'social')),
+                  'http://www.polyvore.com?url='.Yii::app()->getBaseUrl(true).'/l/'.Yii::app()->getBaseUrl(true).'/producto/detalle/'.$producto->id.'&description='.$producto->descripcion.'&media='.Yii::app()->getBaseUrl(true).'/images/producto/'.$producto->id.'.png',
+                  array(
+                    'target'=>'_blank',
+                    'name'=>'addToPolyvore',
+                    'id'=>'addToPolyvore',
+                    'data-product-url'=>Yii::app()->getBaseUrl(true).'/producto/'.$producto->id,
+                    'data-image-url'=>Yii::app()->getBaseUrl(true).''.$url,
+                    'data-name'=>$producto->descripcion,
+                    //'data-price'=>$look->getPrecioDescuento(),
+                  )
+                );           
+                ?>
+                
+                <script type="text/javascript" src="http://akwww.polyvorecdn.com/rsrc/add_to_polyvore.js"></script>
+              </div>
             <!-- AddThis Button END -->           
             <script type="text/javascript">       
               var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
@@ -549,6 +610,7 @@
                       twitter : "{{title}} {{url}} #MiPersonaling via @personaling "
                   }
               }
+              
             </script> 
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>
           </div>
@@ -558,7 +620,24 @@
       </div>
     </div>
   </div>
-    
+     <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogLook'.$producto->id)); ?>
+     <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h4><?php echo Yii::t('contentForm', 'Share Link'); ?></h4>
+        </div>
+
+        <div class="modal-body">
+            <p><?php echo Yii::app()->getBaseUrl(true)."/producto/detalle/".$producto->id; ?></p>
+        </div>
+        <div class="modal-footer">
+
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
+                'label'=>Yii::t('contentForm', 'Close'),
+                'url'=>'#',
+                'htmlOptions'=>array('data-dismiss'=>'modal'),
+            )); ?>
+        </div>
+        <?php $this->endWidget(); ?>
 <?php
 $looksProducto = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$producto->id));
 
@@ -578,11 +657,11 @@ $cont=0;
       <?php
       foreach($looksProducto as $cadauno){
         if($cont<3){
-          if($cadauno->width != "" && $cadauno->height != ""){
+          if($cadauno->width != "" && $cadauno->height != ""  ){
           
           $lk = Look::model()->aprobados()->findByPk($cadauno->look_id);
           
-            if(isset($lk)){
+            if(isset($lk) && $lk->activo=="1" && $lk->status=="2"){
               echo('<div class="span4 look"><article class="">');
               echo("<a href='".$lk->getUrl()."' title='".$lk->title."'>");
               echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$cadauno->look_id)), "Look", array("width" => "370", "height" => "370", 'class'=>''));
@@ -1486,6 +1565,24 @@ $('.imagen_principal').zoom({url: imgZ});
 
     });
 <?php } ?>
+
+window.fbAsyncInit = function(){
+    FB.init({
+        appId: '323808071078482', status: true, cookie: true, xfbml: true }); 
+  };
+  (function(d, debug){var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];if   (d.getElementById(id)) {return;}js = d.createElement('script'); js.id = id; js.async = true;js.src = "//connect.facebook.net/es_ES/all" + (debug ? "/debug" : "") + ".js";ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
+  function postToFeed(title, desc, url, image){
+    var obj = {method: 'feed',link: url, picture: 'http://www.personaling.es/images/'+image,name: title,description: desc};
+    function callback(response){}
+  FB.ui(obj, callback);
+  }
+
+  $('.facebook_share').click(function(){
+    elem = $(this);
+    postToFeed(elem.data('title'), elem.data('desc'), elem.prop('href'), elem.data('image'));
+
+    return false;
+  });
    
 </script>
 

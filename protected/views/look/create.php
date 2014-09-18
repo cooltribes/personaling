@@ -1034,7 +1034,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           <div class="tab-pane" id="tab3">
               <p>
               <div id="div_prendas">
-                  <?php $this->renderPartial('_view_productos',array('productos'=>Producto::model()->noeliminados()->activos()->featured()->findAll())) ?>
+                  <?php $this->renderPartial('_view_productos',array('productos'=>Producto::model()->noeliminados()->activos()->featured()->findAll(),'page'=>1)) ?>
               </div>
               </p>
           </div>
@@ -1169,141 +1169,156 @@ function addPublicar(tipo)
 	var index_a = '';
 	
 	if($('#Look_campana_id').val() != ''){
-		$('#campana_id_error').hide('slow');
-		$("#productos_id").val('');
-		$('.canvas input[name="producto_id"]').each(function(item){
-			//console.log($(this).val());
-			productos_id += $(this).val()+',';
-			color_id += $(this).next().val()+',';
-			position = $(this).parent().position();
-			/* CALCULO DEL ANGULO */
-			tr = $(this).parent().css('-webkit-transform');
+        try{
+            $('#campana_id_error').hide('slow');
+            $("#productos_id").val('');
+            $('.canvas input[name="producto_id"]').each(function(item){
+                //console.log($(this).val());
+                productos_id += $(this).val()+',';
+                color_id += $(this).next().val()+',';
+                position = $(this).parent().position();
+                /* CALCULO DEL ANGULO */
+                tr = $(this).parent().css('-webkit-transform');
 
-			if(tr != 'none'){
-				var values = tr.split('(')[1];
-				    values = values.split(')')[0];
-				    values = values.split(',');
-				var a = values[0];
-				var b = values[1];
-				var c = values[2];
-				var d = values[3];
-				angle += (Math.round(Math.atan2(b, a) * (180/Math.PI)) ) + ',';
-			} else {
-				angle += '0,';
-			}
-			/* CALCULO DEL Z-INDEX */
-			//index = $(this).parent().css('z-index');
-			if (isNaN($(this).parent().css('z-index')))
-				index += '0,';
-			else
-				index += $(this).parent().css('z-index') + ',';
-			
-			//alert(angle);			
-			image = $(this).parent().find('img');
-			width += image.width() + ',';
-			height += image.height() + ',';
-			left += position.left + ',';
-			top += position.top + ',';
-			//console.log('count');
-			count++;
-		});
-		
-		// para los adornos
-		
-		$('.canvas input[name="adorno_id"]').each(function(item){
-			/* CALCULO DEL ANGULO */
-			tr = $(this).parent().css('-webkit-transform');
+                if(typeof tr === 'undefined'){
+                    angle += '0,';
+                } else {
+                    if(tr != 'none'){
+                        var values = tr.split('(')[1];
+                            values = values.split(')')[0];
+                            values = values.split(',');
+                        var a = values[0];
+                        var b = values[1];
+                        var c = values[2];
+                        var d = values[3];
+                        angle += (Math.round(Math.atan2(b, a) * (180/Math.PI)) ) + ',';
+                    } else {
+                        angle += '0,';
+                    }
+                }
+                /* CALCULO DEL Z-INDEX */
+                //index = $(this).parent().css('z-index');
+                if (isNaN($(this).parent().css('z-index')))
+                    index += '0,';
+                else
+                    index += $(this).parent().css('z-index') + ',';
 
-			if(tr != 'none'){
-				var values = tr.split('(')[1];
-				    values = values.split(')')[0];
-				    values = values.split(',');
-				var a = values[0];
-				var b = values[1];
-				var c = values[2];
-				var d = values[3];
-				angle_a += (Math.round(Math.atan2(b, a) * (180/Math.PI)) ) + ',';
-			} else {
-				angle_a += '0,';
-			}
-			/* CALCULO DEL Z-INDEX */
-			//index = $(this).parent().css('z-index');
-			if (isNaN($(this).parent().css('z-index')))
-				index_a += '0,';
-			else
-				index_a += $(this).parent().css('z-index') + ',';			
-			adornos_id += $(this).val()+',';
-			position = $(this).parent().position();
-			image = $(this).parent().find('img');
-			width_a += image.width() + ',';
-			height_a += image.height() + ',';
-			left_a += position.left + ',';
-			top_a += position.top + ',';
-			count_a++;
-		});
-		
-		productos_id = productos_id.substring(0, productos_id.length-1);
-		adornos_id = adornos_id.substring(0, adornos_id.length-1);
-		//alert(productos_id);
+                //alert(angle);
+                image = $(this).parent().find('img');
+                width += image.width() + ',';
+                height += image.height() + ',';
+                left += position.left + ',';
+                top += position.top + ',';
+                //console.log('count');
+                count++;
+            });
 
-		// check forr repeated products
-		//console.log(productos_id);
-		products_array = productos_id.split(',');
-		products_array.sort();
-		var last = products_array[0];
-		var repeated = false;
-		for (var i=1; i<products_array.length; i++) {
-			if (products_array[i] == last){
-				repeated = true;
-			}
-			last = products_array[i];
-		}
+            // para los adornos
 
-		if(repeated){
-			$('#alertText').html('<?php echo Yii::t('contentForm','You should not add repeated items.')?>');
-			$('#alertLook').show();
-			return false;
-		}
+            $('.canvas input[name="adorno_id"]').each(function(item){
+                /* CALCULO DEL ANGULO */
+                tr = $(this).parent().css('-webkit-transform');
+                if(typeof tr === 'undefined'){
+                    angle_a += '0,';
+                } else {
+                    if(tr != 'none'){
+                        var values = tr.split('(')[1];
+                            values = values.split(')')[0];
+                            values = values.split(',');
+                        var a = values[0];
+                        var b = values[1];
+                        var c = values[2];
+                        var d = values[3];
+                        angle_a += (Math.round(Math.atan2(b, a) * (180/Math.PI)) ) + ',';
+                    } else {
+                        angle_a += '0,';
+                    }
+                }
+                /* CALCULO DEL Z-INDEX */
+                //index = $(this).parent().css('z-index');
+                if (isNaN($(this).parent().css('z-index')))
+                    index_a += '0,';
+                else
+                    index_a += $(this).parent().css('z-index') + ',';
+                adornos_id += $(this).val()+',';
+                position = $(this).parent().position();
+                image = $(this).parent().find('img');
+                width_a += image.width() + ',';
+                height_a += image.height() + ',';
+                left_a += position.left + ',';
+                top_a += position.top + ',';
+                count_a++;
+            });
+
+            productos_id = productos_id.substring(0, productos_id.length-1);
+            adornos_id = adornos_id.substring(0, adornos_id.length-1);
+            //alert(productos_id);
+
+            // check forr repeated products
+            //console.log(productos_id);
+            products_array = productos_id.split(',');
+            products_array.sort();
+            var last = products_array[0];
+            var repeated = false;
+            for (var i=1; i<products_array.length; i++) {
+                if (products_array[i] == last){
+                    repeated = true;
+                }
+                last = products_array[i];
+            }
+
+            if(repeated){
+                $('#alertText').html('<?php echo Yii::t('contentForm','You should not add repeated items.')?>');
+                $('#alertLook').show();
+                return false;
+            }
 
 
 
-		//alert(left);
-		//productos_id = "1,2,3,4";
-		
-		$("#productos_id").val(productos_id);
-		$("#colores_id").val(color_id.substring(0, color_id.length-1));
-		$("#left").val(left.substring(0, left.length-1));
-		$("#top").val(top.substring(0, top.length-1));
-		$("#height").val(height.substring(0, height.length-1));
-		$("#width").val(width.substring(0, width.length-1));
-		$("#angle").val(angle.substring(0, angle.length-1));
-		$("#index").val(index.substring(0, index.length-1));
-		$("#tipo").val(tipo);
-		 
-		// ahora los de los adornos
-		$("#adornos_id").val(adornos_id);
-		$("#left_a").val(left_a.substring(0, left_a.length-1));
-		$("#top_a").val(top_a.substring(0, top_a.length-1));
-		$("#height_a").val(height_a.substring(0, height_a.length-1));
-		$("#width_a").val(width_a.substring(0, width_a.length-1));
-		$("#angle_a").val(angle_a.substring(0, angle_a.length-1));
-		$("#index_a").val(index_a.substring(0, index_a.length-1));
-		
-		//count = 6;
-		//alert(productos_id);
-		//count = count + count_a;
-		console.log(count);
-		if (count >= 6){
-			$("#form_productos").submit();
-		} else {
-			$('#alertText').html('<?php echo Yii::t('contentForm','You should add six items at least.')?>');
-			$('#alertLook').show();
-		}
-	
-	    return false; 
+            //alert(left);
+            //productos_id = "1,2,3,4";
+
+            $("#productos_id").val(productos_id);
+            $("#colores_id").val(color_id.substring(0, color_id.length-1));
+            $("#left").val(left.substring(0, left.length-1));
+            $("#top").val(top.substring(0, top.length-1));
+            $("#height").val(height.substring(0, height.length-1));
+            $("#width").val(width.substring(0, width.length-1));
+            $("#angle").val(angle.substring(0, angle.length-1));
+            $("#index").val(index.substring(0, index.length-1));
+            $("#tipo").val(tipo);
+
+            // ahora los de los adornos
+            $("#adornos_id").val(adornos_id);
+            $("#left_a").val(left_a.substring(0, left_a.length-1));
+            $("#top_a").val(top_a.substring(0, top_a.length-1));
+            $("#height_a").val(height_a.substring(0, height_a.length-1));
+            $("#width_a").val(width_a.substring(0, width_a.length-1));
+            $("#angle_a").val(angle_a.substring(0, angle_a.length-1));
+            $("#index_a").val(index_a.substring(0, index_a.length-1));
+
+            //count = 6;
+            //alert(productos_id);
+            //count = count + count_a;
+            console.log(count);
+            if (count >= 6){
+                $("#form_productos").submit();
+            } else {
+                $('#alertText').html('<?php echo Yii::t('contentForm','You should add six items at least.')?>');
+                $('#alertLook').show();
+            }
+
+            return false;
+        }
+        catch(err) {
+            $('#alertText').html('Hubo un error: '+err.message);
+            $('#alertLook').show();
+            return false;
+        }
     }else{
     	$('#campana_id_error').html('Debes seleccionar una campaña');
     	$('#campana_id_error').show('slow');
+        return false;
     }
 }
 

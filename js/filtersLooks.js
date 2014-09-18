@@ -217,9 +217,9 @@ function getFilterByClick(idPerfil, URL){
                             $('a.editar-filtro').parent('div').show(); 
                             
                             //Cambiar label del boton looks para mi
-                            $("#deskfilters #btnMatch").html("Looks para <b>" + data.name + "</b>");
-                            $("#deskfilters #btnMatch").addClass("btn-danger");
-                            $("#deskfilters #btnTodos").removeClass("btn-danger");
+                            $("#deskfilters .match").html("Looks para <b>" + data.name + "</b>");
+                            $("#deskfilters .match").addClass("btn-danger");
+                            $("#deskfilters .all").removeClass("btn-danger");
                             
                             //poner el nombre en el navbar
                             //var children = $("li#dropdownUser").children();
@@ -228,7 +228,7 @@ function getFilterByClick(idPerfil, URL){
                                 data.name = data.name.substring(0,7);
                                 data.name = data.name.concat("...");
                             }
-                            
+                             
                             $("li#dropdownUser span#userName").text(data.name);
                             
                             //Buscar
@@ -316,9 +316,9 @@ function saveFilter(nuevo) {
                                 
                                 
                                  //Cambiar label del boton looks para mi
-                                $("#btnMatch").html("Looks para <b>" + nombre + "</b>");
-                                $("#btnMatch").addClass("btn-danger");
-                                $("#btnTodos").removeClass("btn-danger");
+                                $(".match").html("Looks para <b>" + nombre + "</b>");
+                                $(".match").addClass("btn-danger");
+                                $(".all").removeClass("btn-danger");
                                 
                                 if(nombre.length > 7){
                                    nombre = nombre.substring(0,7);
@@ -448,10 +448,10 @@ function clickPersonal(status_register,urltuestilo,urltutipo){
     } else if (status_register == 1){
     	window.location.replace(urltuestilo);
     } else {
-    $("#btnMatch").addClass("btn-danger");
-    $("#btnTodos").removeClass("btn-danger");
-    $("#btnMatch").removeClass("lighted");
-    $("#btnTodos").addClass("lighted");
+    $(".match").addClass("btn-danger");
+    $(".all").removeClass("btn-danger");
+    $(".match").removeClass("lighted");
+    $(".all").addClass("lighted");
     if(!perfilActivo){
         $("#perfil_propio").val("1");
     }
@@ -477,10 +477,10 @@ function clickPersonal(status_register,urltuestilo,urltutipo){
 function clickTodos(){
     
     console.log("Todos");
-    $("#btnTodos").addClass("btn-danger");
-    $("#btnMatch").removeClass("btn-danger");
-    $("#btnTodos").removeClass("lighted");
-    $("#btnMatch").addClass("lighted");   
+    $(".all").addClass("btn-danger");
+    $(".match").removeClass("btn-danger");
+    $(".all").removeClass("lighted");
+    $(".match").addClass("lighted");   
     $("#perfil_propio").val("0");
     
      //desmarcar los filtros de ocasiones y shopper, ocultar divs., desmarcar precios.

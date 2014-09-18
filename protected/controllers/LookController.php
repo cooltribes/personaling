@@ -783,26 +783,42 @@ public function actionCategorias(){
         $criteria->limit     = $limit;
 		if(isset($_POST['marcas'])){
             $marcas = $_POST['marcas'];
-			if ($_POST['marcas']!='Todas las Marcas')	
-				$productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),array('limit'=>$limit,'offset'=>$offset));
+			if ($_POST['marcas']!='Todas las Marcas')	{
+
                // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),$criteria);
-			else
+                $count_productos = Producto::model()->with($with)->noeliminados()->activos()->countByAttributes(array('marca_id'=>$_POST['marcas']));
+                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),array('limit'=>$limit,'offset'=>$offset));
+            }else{
                 //$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll($criteria);
-               // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
+                $count_productos = Producto::model()->with($with)->noeliminados()->activos()->count();
                 $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset));
+            }
 		} else {
 			//$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll($criteria);
+            $count_productos = Producto::model()->with($with)->noeliminados()->activos()->count();
             $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset));
 		}
-		$pages = ceil(count($productos)/$limit);
-        $page=$page>$pages?0:$page;
+		$pages = ceil($count_productos/$limit);
 
 
 
+        echo $this->renderPartial('_view_productos',array(
+            'productos'=>$productos,
+            'categoria_padre'=>isset($categoria_padre)?$categoria_padre->padreId:null,
+            'categoria'=>$padreId,
+            'color'=>$color,
+            'page'=>$page,
+            'marcas'=>$marcas,
+            'colores'=>$colores,
+            'pages'=>$pages,
+            'space'=>isset($_POST["space"])?$_POST["space"]:null,
+        ),true,true);
+        /*
         if (isset($categoria_padre))
             echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId,'categoria'=>$padreId, 'color'=>$color, 'page'=>$page,'marcas'=>$marcas,'colores'=>$colores),true,true);
         else
             echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null,'categoria'=>$padreId, 'color'=>$color,'page'=>$page,'marcas'=>$marcas,'colores'=>$colores),true,true);
+        */
 	}
 }
 

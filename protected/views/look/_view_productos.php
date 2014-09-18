@@ -31,7 +31,7 @@ if (isset($categoria_padre) ){
     <ul class="thumbnails" id="ul_productos">
 <?php } ?>
 	<?php
-	$space=0;
+    $space = isset($space)?$space:0;
 	foreach($productos as $producto){
 		if ($producto->getPrecio(false)!=0 && $producto->mainimage){
 			if(isset($color) && $color != ''){
@@ -93,7 +93,7 @@ if (isset($categoria_padre) ){
 <?php }
 
 
-if (isset($categoria) && $page>0){
+if (isset($categoria) && $page<=$pages){
     echo "<script>";
     echo CHtml::ajax(array(
     'id'=>'load_pages'.$page,
@@ -103,7 +103,7 @@ if (isset($categoria) && $page>0){
           {
             $('#ul_productos').append(data);
           }",
-        'data' => array( 'padreId' => $categoria, 'page'=>$page+1,'marcas'=>$marcas,'colores'=>$colores ),
+        'data' => array( 'padreId' => $categoria, 'page'=>$page+1,'marcas'=>$marcas,'colores'=>$colores,'space'=>$space ),
 
     ));
 echo "</script>";

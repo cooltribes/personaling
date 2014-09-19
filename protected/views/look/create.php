@@ -520,8 +520,12 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					//echo $hasproducto->width.'/'.$hasproducto->height;
 			?>
 
-			<?php //echo CHtml::image($producto->getImageUrl($hasproducto->color_id,array('ext'=>'png')), "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height)); ?>
-            <?php echo CHtml::image( Yii::app()->createUrl('site/productoImagenPng').'/producto/'.$producto->id.'/color/'.$hasproducto->color_id.'/w/270/h/270', "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height)); ?>
+              <?php if ($model->id >= 638){
+                  echo CHtml::image( Yii::app()->createUrl('site/productoImagenPng').'/producto/'.$producto->id.'/color/'.$hasproducto->color_id.'/w/270/h/270', "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
+              } else {
+                  echo CHtml::image($producto->getImageUrl($hasproducto->color_id,array('ext'=>'png')), "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
+              }
+              ?>
             <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
             <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
             <span class="eliminar"><i class=" icon-remove"></i></span>

@@ -850,8 +850,10 @@ class Look extends CActiveRecord
 						//Yii::trace('create a image look, Trace:'.$image->path, 'registro');  
 			          break;
 			      }			
-			$img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h);
-			//$img = imagecreatetruecolor(imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
+
+                $img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h);
+
+			//    $img = imagecreatetruecolor(imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
 			
 			
 			imagealphablending( $img, false );
@@ -859,8 +861,10 @@ class Look extends CActiveRecord
     		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
     		//imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
 			//imagecopyresampled($img,$src,0,0,0,0,$b_lft, $b_top, imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
-			imagecopyresampled($img,$src,0,0,$b_lft, $b_top,imagesx($img), imagesy($img),imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
-			//imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
+            if ($look->id >= 638)
+                imagecopyresampled($img,$src,0,0,$b_lft, $b_top,imagesx($img), imagesy($img),imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
+            else
+			    imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
     		
     		//imagecopyresized($img,$src,0,0,0,0,imagesx($src),imagesy($src),imagesx($src), imagesy($src));
 			if ($image->angle){

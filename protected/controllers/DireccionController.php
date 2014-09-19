@@ -197,8 +197,11 @@ class DireccionController extends Controller
 	public function actionAddDireccion($user){
 		$direccion=new Direccion;
 		$direccion->attributes=$_POST;
-		$direccion->codigo_postal_id=$_POST['codigo_postal_id'];
-		$direccion->pais=Pais::model()->getOficial($direccion->pais);
+        if(isset($_POST['codigo_postal_id']))
+		  $direccion->codigo_postal_id=$_POST['codigo_postal_id'];
+        if(is_numeric($direccion->pais))
+		  $direccion->pais=Pais::model()->getOficial($direccion->pais);
+
 		if($direccion->save()){
 			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
 			echo '<legend >'
@@ -207,6 +210,9 @@ class DireccionController extends Controller
 	       			'direcciones'=>$direcciones,'user'=>$user, 'iddireccionNueva' =>$direccion->id ),true)
 	       		;
 		}
+        else {
+            print_r($direccion->getErrors());
+        }
 		
 	}
 	

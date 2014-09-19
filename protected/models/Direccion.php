@@ -47,14 +47,18 @@ class Direccion extends CActiveRecord
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
+		$codigoPostal="";
+		if(Yii::app()->params['codigoPostal'])
+            $codigoPostal=",'codigoPostal'=>true";
+		
 		return array(
-			array('user_id, ciudad_id, provincia_id, codigo_postal_id', 'numerical', 'integerOnly'=>true,'message' => 'Debes seleccionar una {attribute}'),
+			array('user_id, ciudad_id, provincia_id'.$codigoPostal, 'numerical', 'integerOnly'=>true,'message' => 'Debes seleccionar una {attribute}'),
 			array('nombre, apellido', 'length', 'max'=>70),
 			array('cedula', 'length', 'max'=>20),
 			array('dirUno, dirDos', 'length', 'max'=>120),
 			array('telefono', 'length', 'max'=>45),
 			array('pais', 'length', 'max'=>80),
-			array('nombre, apellido, dirUno, ciudad_id, provincia_id, pais, telefono, codigo_postal_id', 'required', 'message' => '{attribute} no puede estar vacío'),
+			array('nombre, apellido, dirUno, ciudad_id, provincia_id, pais, telefono'.$codigoPostal, 'required', 'message' => '{attribute} no puede estar vacío'),
 			array('pais','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Escoja un país.'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

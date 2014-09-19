@@ -11,13 +11,7 @@
 
 <?php endif; ?>
 <div class="container margin_top">
-	<?php if(Yii::app()->user->hasFlash('error')): ?>
 
-<div class="alert alert-error text_align_center">
-	<?php echo Yii::app()->user->getFlash('error'); ?>
-</div>
-
-<?php endif; ?>
 
 <div class="progreso_compra">
       <div class="clearfix margin_bottom">

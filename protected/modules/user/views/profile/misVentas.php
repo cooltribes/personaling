@@ -201,7 +201,7 @@ $pagerParams = array(
     $this->widget('zii.widgets.CListView', array(
         'id' => 'list-auth-items',
         'dataProvider' => $dataProvider,
-        'itemView' => '_viewProducto',
+        'itemView' => '//controlpanel/_viewProducto',
         'template' => $template,
         'summaryText' => "Mostrando {start} - {end} de {count} Resultados",
         'enableSorting' => 'true',

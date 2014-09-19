@@ -300,7 +300,7 @@ class Profile extends UActiveRecord
 	}
 	
         /**
-         * Obtiene el saldo actual del usuario, sin contar los movimientos 
+         * Obtiene el saldo actual del usuario, sin contar los movimientos (tbl_balance)
          * tipo 5,7 y 8 que son relacionados a pagos por comisiones.
          */
 	public function getSaldo($id , $format=true){

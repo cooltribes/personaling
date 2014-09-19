@@ -108,12 +108,14 @@ class LookController extends Controller
 				'users'=>Yii::app()->params['registro']?array('@'):array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias',
-                                    'publicar','admin','detalle','edit','update','create',
-                                    'publicar','marcas','mislooks','softdelete','descuento',
-                                    'calcularPrecioDescuento', 'exportarCSV', 'plantillaDescuentos', 'importarDescuentos', 'enabledLook', 'varias'),
-				//'users'=>array('admin'),
-				'expression' => 'UserModule::isAdmin()',
+                            'actions'=>array('admin','delete','create','categorias',
+                                'publicar','admin','detalle','edit','update','create',
+                                'publicar','marcas','mislooks','softdelete','descuento',
+                                'calcularPrecioDescuento', 'exportarCSV',
+                                'plantillaDescuentos', 'importarDescuentos',
+                                'enabledLook', 'varias', 'informacion'),
+                            //'users'=>array('admin'),
+                            'expression' => 'UserModule::isAdmin()',
 			),
 			array('allow', // acciones validas para el personal Shopper
                'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete','listarLooks'),
@@ -2231,4 +2233,15 @@ public function actionCategorias(){
 		}
 		echo CJSON::encode($result);
 	}
+        
+        
+        public function actionInformacion($id) {
+            
+            $look = Look::model()->findByPk($id);
+            
+            $this->render("informacion", array(
+                'look' => $look,
+            ));
+        }    
+        
 }

@@ -20,6 +20,8 @@ $this->breadcrumbs=array(
     <h1>Look - Aplicar descuento</small></h1>
     <h2 ><?php echo $model->title; ?></h2>
   </div>
+    
+<?php echo $this->renderPartial('_topBar', array('look'=>$model)); ?>
   
   <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'descuento-form',

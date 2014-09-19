@@ -2,7 +2,9 @@
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel"><?php echo $model->title; ?></h3><h4><?php echo $model->campana->nombre; ?></h4>
+        <h3 id="myModalLabel"><?php echo $model->title; ?> -
+        <small><?php echo $model->campana->nombre; ?></small>
+        </h3>
     </div>
     <div class="modal-body">
       <div class="text_align_center">
@@ -117,13 +119,23 @@
                 //'size'=>'large', // null, 'large', 'small' or 'mini'
             ));             
         }
+        if(UserModule::isAdmin() ){
+
+            $this->widget('bootstrap.widgets.TbButton', array(
+                'label'=>'Ver detalles',
+                'icon'=>'list-alt',
+                'url' => CController::createUrl('look/informacion',array('id'=>$model->id)),
+                'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                //'size'=>'large', // null, 'large', 'small' or 'mini'
+            ));             
+        }
 
     ?>
  <?php $this->widget('bootstrap.widgets.TbButton', array(
-			'label'=>'Ver',
+			'label'=>'Ver en tienda',
 			'icon'=>'eye-open',
 			'url' => $model->getUrl(), // 'look/view',array('id'=>$model->id
-			'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			//'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			//'size'=>'large', // null, 'large', 'small' or 'mini'
 		));
 		

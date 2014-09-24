@@ -4,7 +4,7 @@
 $yii=dirname(__FILE__).'/../../yii-1.1.13.e9e4a0/framework/yii.php';
 if (strstr($_SERVER['HTTP_HOST'],"personaling.es")) 
 	$config=dirname(__FILE__).'/protected/config/esp.php';
-else if  (strstr($_SERVER['HTTP_HOST'],"personaling.es"))
+else if  (strstr($_SERVER['HTTP_HOST'],"personaling.com.ve"))
     $config=dirname(__FILE__).'/protected/config/ve.php';
 else
     $config=dirname(__FILE__).'/protected/config/main.php';

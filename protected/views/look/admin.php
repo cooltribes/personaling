@@ -97,7 +97,7 @@
 <?php
 $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
-        <tr>
+        <tr> 
          <th scope="col"><input name="check" type="checkbox" id="todos"></th>
             <th colspan="2" scope="col">Look</th>
             <th scope="col">Precio ('.Yii::t('contentForm','currSym').')</th>
@@ -151,6 +151,8 @@ $template = '{summary}
         <option id="accion">Acciones</option>
         <option>Activar</option>
         <option>Inactivar</option>
+        <option>Destacar</option>
+        <option>Quitar Destacado</option>
       </select>
     </div>
      			<?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -187,7 +189,7 @@ $template = '{summary}
 					alert('No ha seleccionado ninguna acción.');
 					
 					
-				if(data.status==3 || data.status==4){
+				if(data.status==3 || data.status==4 || data.status==5 || data.status==6){
 					
 						ajaxUpdateTimeout = setTimeout(function () {
 						$.fn.yiiListView.update(
@@ -201,6 +203,7 @@ $template = '{summary}
 						},0);
 					alert('Los Looks han sido actualizados');
 					}
+				
 
 			}",
 			),

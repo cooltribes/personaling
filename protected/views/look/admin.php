@@ -1,4 +1,4 @@
-<?php echo Yii::app()->session['hell'];
+<?php
 
 	$this->breadcrumbs=array(
 		'Look',
@@ -93,11 +93,26 @@
     </div>
     <hr/>
         <?php $this->renderPartial('_filters'); ?>
-    <hr/>
+    <style>
+        td span.link-look{
+            text-decoration: underline;
+        }   
+        td.acciones{
+            width: 7%;
+            
+        }
+        #myModal{
+            left: 44%;
+            width: 720px;
+        }
+        #myModal.fade.in{
+            top: 45%;            
+        }
+    </style>
 <?php
+//         <th scope="col"><input name="check" type="checkbox" id="todos"></th>
 $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
-        <tr> 
          <th scope="col"><input name="check" type="checkbox" id="todos"></th>
             <th colspan="2" scope="col">Look</th>
             <th scope="col">Precio ('.Yii::t('contentForm','currSym').')</th>
@@ -106,43 +121,43 @@ $template = '{summary}
             <th scope="col">Estado</th>
             <th scope="col">Fecha de Carga</th>
             <th scope="col">Progreso de la campaña</th>
-            <th scope="col">Acción</th>
+            <th class="acciones" scope="col">Acciones</th>
         </tr>
     {items}
     </table>
     {pager}
 	';
-        $pagerParams=array(
-            'header'=>'',
-            'prevPageLabel' => Yii::t('contentForm','Previous'),
-            'nextPageLabel' => Yii::t('contentForm','Next'),
-            'firstPageLabel'=> Yii::t('contentForm','First'),
-            'lastPageLabel'=> Yii::t('contentForm','Last'),
-            'htmlOptions'=>array(
-                'class'=>'pagination pagination-right'));
+    $pagerParams=array(
+        'header'=>'',
+        'prevPageLabel' => Yii::t('contentForm','Previous'),
+        'nextPageLabel' => Yii::t('contentForm','Next'),
+        'firstPageLabel'=> Yii::t('contentForm','First'),
+        'lastPageLabel'=> Yii::t('contentForm','Last'),
+        'htmlOptions'=>array(
+            'class'=>'pagination pagination-right'));
 
-		$this->widget('zii.widgets.CListView', array(
-	    'id'=>'list-auth-items',
-	    'dataProvider'=>$dataProvider,
-	    'itemView'=>'_view_look',
-	    'template'=>$template,
+    $this->widget('zii.widgets.CListView', array(
+        'id'=>'list-auth-items',
+        'dataProvider'=>$dataProvider,
+        'itemView'=>'_view_look',
+        'template'=>$template,
         'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',        
-	    'afterAjaxUpdate'=>" function(id, data) {
-						    	
-							$('#todos').click(function() { 
-				            	inputs = $('table').find('input').filter('[type=checkbox]');
-				 
-				 				if($(this).attr('checked')){
-				                     inputs.attr('checked', true);
-				               	}else {
-				                     inputs.attr('checked', false);
-				               	} 	
-							});
-						   
-							} ",
-		'pager'=>$pagerParams,					
-	));    
-	?>
+        'afterAjaxUpdate'=>" function(id, data) {
+
+                                                    $('#todos').click(function() { 
+                                            inputs = $('table').find('input').filter('[type=checkbox]');
+
+                                                            if($(this).attr('checked')){
+                                                 inputs.attr('checked', true);
+                                            }else {
+                                                 inputs.attr('checked', false);
+                                            } 	
+                                                    });
+
+                                                    } ",
+            'pager'=>$pagerParams,					
+    ));    
+    ?>
     <hr/>
      <div class="row">
      	

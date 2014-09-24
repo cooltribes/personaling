@@ -108,12 +108,14 @@ class LookController extends Controller
 				'users'=>Yii::app()->params['registro']?array('@'):array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','categorias',
-                                    'publicar','admin','detalle','edit','update','create',
-                                    'publicar','marcas','mislooks','softdelete','descuento',
-                                    'calcularPrecioDescuento', 'exportarCSV', 'plantillaDescuentos', 'importarDescuentos', 'enabledLook', 'varias'),
-				//'users'=>array('admin'),
-				'expression' => 'UserModule::isAdmin()',
+                            'actions'=>array('admin','delete','create','categorias',
+                                'publicar','admin','detalle','edit','update','create',
+                                'publicar','marcas','mislooks','softdelete','descuento',
+                                'calcularPrecioDescuento', 'exportarCSV',
+                                'plantillaDescuentos', 'importarDescuentos',
+                                'enabledLook', 'varias', 'informacion'),
+                            //'users'=>array('admin'),
+                            'expression' => 'UserModule::isAdmin()',
 			),
 			array('allow', // acciones validas para el personal Shopper
                'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete','listarLooks'),
@@ -783,26 +785,42 @@ public function actionCategorias(){
         $criteria->limit     = $limit;
 		if(isset($_POST['marcas'])){
             $marcas = $_POST['marcas'];
-			if ($_POST['marcas']!='Todas las Marcas')	
-				$productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),array('limit'=>$limit,'offset'=>$offset));
+			if ($_POST['marcas']!='Todas las Marcas')	{
+
                // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),$criteria);
-			else
+                $count_productos = Producto::model()->with($with)->noeliminados()->activos()->countByAttributes(array('marca_id'=>$_POST['marcas']));
+                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),array('limit'=>$limit,'offset'=>$offset));
+            }else{
                 //$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll($criteria);
-               // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll();
+                $count_productos = Producto::model()->with($with)->noeliminados()->activos()->count();
                 $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset));
+            }
 		} else {
 			//$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll($criteria);
+            $count_productos = Producto::model()->with($with)->noeliminados()->activos()->count();
             $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset));
 		}
-		$pages = ceil(count($productos)/$limit);
-        $page=$page>$pages?0:$page;
+		$pages = ceil($count_productos/$limit);
 
 
 
+        echo $this->renderPartial('_view_productos',array(
+            'productos'=>$productos,
+            'categoria_padre'=>isset($categoria_padre)?$categoria_padre->padreId:null,
+            'categoria'=>$padreId,
+            'color'=>$color,
+            'page'=>$page,
+            'marcas'=>$marcas,
+            'colores'=>$colores,
+            'pages'=>$pages,
+            'space'=>isset($_POST["space"])?$_POST["space"]:null,
+        ),true,true);
+        /*
         if (isset($categoria_padre))
             echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>$categoria_padre->padreId,'categoria'=>$padreId, 'color'=>$color, 'page'=>$page,'marcas'=>$marcas,'colores'=>$colores),true,true);
         else
             echo $this->renderPartial('_view_productos',array('productos'=>$productos,'categoria_padre'=>null,'categoria'=>$padreId, 'color'=>$color,'page'=>$page,'marcas'=>$marcas,'colores'=>$colores),true,true);
+        */
 	}
 }
 
@@ -2235,4 +2253,15 @@ public function actionCategorias(){
 		}
 		echo CJSON::encode($result);
 	}
+        
+        
+        public function actionInformacion($id) {
+            
+            $look = Look::model()->findByPk($id);
+            
+            $this->render("informacion", array(
+                'look' => $look,
+            ));
+        }    
+        
 }

@@ -30,6 +30,7 @@ return CMap::mergeArray(
                 'IVAtext' => '21%',	
                 'registro' => false,	
                 'mostrarMarcas'=>true,
+                'codigoPostal'=>true,
                 'mostrarChic'=>false,
                 'country'=>'España',
                 'pais'=>'espana',

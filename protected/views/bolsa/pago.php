@@ -400,11 +400,6 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     if($shipping){
                             if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
                             {	
-                                    if($peso_total < 5){
-
-
-                                            //$envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
-
                                             $flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$total);
 
                                             if(!is_null($flete)){
@@ -421,18 +416,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
 
                                             $tipo_guia = 1;
-                                    }else{
-                                            $peso_adicional = ceil($peso_total-5);
-                                            $direccion = Direccion::model()->findByPk($idDireccion);
-                                            $ciudad_destino = Ciudad::model()->findByPk($direccion->ciudad_id);
-                                            $envio = 163.52 + ($peso_adicional*$ciudad_destino->ruta->precio);
-                                            if($envio > 327.04){
-                                                    $envio = 327.04;
-                                            }
-                                            $tipo_guia = 2;
-                                            $seguro=$envio*0.13;
-                                    }
-
+                                   
                             }
                             else{
                                     $seur=Tarifa::model()->envioSeur($ciudad_destino->nombre, $direccion->codigopostal->codigo, $peso_total);

@@ -1054,6 +1054,9 @@ class ProfileController extends Controller
 		if(isset($_POST['Profile']))
 		{
 			$profile->attributes=$_POST['Profile'];
+            $profile->web=$_POST['Profile']['web'];
+            $profile->blog=$_POST['Profile']['blog'];
+           
 			
 			if($profile->validate()) {
 				//$model->save();

@@ -495,7 +495,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         <hr/>
 
         <!-- CANVAS ON -->
-        <div class="well well-large canvas" style="z-index:0;overflow:hidden;position: relative;width: 670px;height: 670px;-webkit-user-drop: element;" id="div_canvas" dropzone="move s:text/plain">
+        <div class=" margin_left_xsmall canvas" style="z-index:0;overflow:hidden;position: relative;width: 710px;height: 710px;-webkit-user-drop: element;" id="div_canvas" dropzone="move s:text/plain">
           <?php 
         
         if (count($model->lookhasproducto)){
@@ -518,8 +518,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					//$image = CHtml::image("http://placehold.it/180");	
 					//echo $image; 
 					//echo $hasproducto->width.'/'.$hasproducto->height;
-			?> 
-			<?php echo CHtml::image($producto->getImageUrl($hasproducto->color_id,array('ext'=>'png')), "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height)); ?>
+			?>
+
+              <?php if ($model->id >= 638){
+                  echo CHtml::image( Yii::app()->createUrl('site/productoImagenPng').'/producto/'.$producto->id.'/color/'.$hasproducto->color_id.'/w/270/h/270', "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
+              } else {
+                  echo CHtml::image($producto->getImageUrl($hasproducto->color_id,array('ext'=>'png')), "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
+              }
+              ?>
             <input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
             <input type="hidden" name="color_id" value="<?php echo $hasproducto->color_id; ?>">
             <span class="eliminar"><i class=" icon-remove"></i></span>
@@ -528,7 +534,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           <?php 
               	$script = "$('.canvas').css('z-index',0);	$('#div".$producto->id."_".$hasproducto->color_id." ').draggable( {
     cursor: 'move',
-    containment: 'document',
+
+    containment: 'parent',
     start: function( event, ui ) { 
 	// calcular el mayor z-index y sumarle uno
 	var mayor = 0;
@@ -675,8 +682,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         	
         } else {
         	?>
+          <div class="margin_left_small">
           <h1><?php echo Yii::t('contentForm', 'Create your Look here'); ?></h1>
           <p><?php echo Yii::t('contentForm', 'Start by dragging the panel items right up here. Just click on them and move them to this box.'); ?></p>
+          </div>
           <?php        	
         }
 		?>

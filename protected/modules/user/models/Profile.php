@@ -81,9 +81,13 @@ class Profile extends UActiveRecord
 									   else if ($field->varname=="sex")
                                                array_push($rules,array($field->varname, 'required','message'=>' ¿Eres mujer/hombre? '));
                                                
-                                                                           else if ($field->varname=="url" || $field->varname=="bio"
-                                                                                   || $field->varname=="facebook" || $field->varname=="twitter")
-                                               { array_push($rules,array($field->varname, 'required','message'=>" {$field->error_message} ",'on'=>'PS'));
+                                             else if ($field->varname=="url" || $field->varname=="bio" || $field->varname=="facebook" || $field->varname=="twitter")
+                                               { 
+                                                      
+                                                    if($field->varname=="url")
+                                                        array_push($rules,array($field->varname,  'match', 'pattern' => '/^[A-Za-z0-9_-]+$/','allowEmpty' => true, 'message' => 'Usa sólo letras, números y underscore(_) o guiones(-).'));
+                                                    else 
+                                                        array_push($rules,array($field->varname, 'required','message'=>" {$field->error_message} ",'on'=>'PS'));
 											   	 
 											   }
 									   else									   
@@ -136,8 +140,8 @@ class Profile extends UActiveRecord
 				}
 			}
 			
-			array_push($rules,array('facebook, twitter,month,day,year,bio,url', 'safe'));
-			
+			array_push($rules,array('facebook, twitter,month,day,year,bio,url,web', 'safe'));
+			array_push($rules,array('web', 'url', 'defaultScheme' => 'http', 'allowEmpty' => true, 'message' => 'Formato de url inválido'));
 			array_push($rules,array(implode(',',$required), 'required', 'message'=>'{attribute}'));
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
 			array_push($rules,array(implode(',',$float), 'type', 'type'=>'float'));

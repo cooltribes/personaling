@@ -43,9 +43,11 @@ return CMap::mergeArray(
                 'clientEmail'=>'info@personaling.com',
                 '	 ',
                 'metodosPago'=> array(
-                        'bkCard' => true,
-                        'paypal' => true,
+                        'bkCard' => false,
+                        'paypal' => false, 
                         'prueba' => true,
+                        'instapago' => true,
+                        'depositoTransferencia' => true,
                         ),
                 'multiLook'=> array(
                     'bodyType' => false,

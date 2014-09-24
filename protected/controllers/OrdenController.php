@@ -2886,9 +2886,21 @@ public function actionValidar()
 				if((double)$orden->descuento > 0) 
 					$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
 				
+				$status = $orden->getTextEstado();		
+				
+				if($status == "Devuelta<br>Finalizada")
+					$status_final = str_replace("Devuelta<br>Finalizada",'Devuelta, Finalizada' ,$status);
+				
+				if($status == "Parcialmente devuelta<br>Finalizada")
+					$status_final = str_replace("Parcialmente devuelta<br>Finalizada",'Parcialmente devuelta, Finalizada' ,$status);
 				
 		        $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
-				$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
+				
+				if(isset($status_final))
+					$xml .= '<FL val="Status">'.$status_final.'</FL>';
+				else
+					$xml .= '<FL val="Status">'.$status.'</FL>';
+				
 				$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';
 				$xml .= '<FL val="Contact Id">'.$orden->user->zoho_id.'</FL>';
 				$xml .= '<FL val="Contact Name">'.$orden->user->profile->first_name.' '.$orden->user->profile->last_name.'</FL>';

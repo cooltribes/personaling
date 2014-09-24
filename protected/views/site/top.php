@@ -43,7 +43,7 @@ function str_lreplace($search, $replace, $subject)
         $count = 0;
 	foreach($iterator as $look) {
 		if (isset($look)){
-			if($look->activo=="1" && $look->status=="2") // enviados y que esten activos
+			if($look->activo=="1" && $look->status=="2" && $look->available=="1") // show all the looks availables and previous send it and active
 			{
                     $count++;
 ?>
@@ -140,6 +140,9 @@ function str_lreplace($search, $replace, $subject)
         <div class=" margin_bottom_large braker_horz_top_1">
             <div class="row">
                 <div class="span12">
+                	<?php
+                	//	var_dump(Yii::app()->params['metodosPago']);
+                	?>
                     <h3 class="margin_bottom_small text_align_center"><?php echo Yii::t('contentForm','Best selling items'); ?></h3>
                     <div class="thumbnails">
                             <?php

@@ -2226,6 +2226,26 @@ public function actionCategorias(){
 				}				
 				$result['status'] = "4";
 			}
+			else if($accion=="Destacar")
+			{
+				foreach($checks as $id){
+					$model = Look::model()->findByPk($id);
+					$model->destacado=1;
+					Look::model()->updateByPk($id, array('destacado'=>'1'));
+		
+				}				
+				$result['status'] = "5";
+			}
+			else if($accion=="Quitar Destacado")
+			{
+				foreach($checks as $id){
+					$model = Look::model()->findByPk($id);
+					$model->destacado=0;
+					Look::model()->updateByPk($id, array('destacado'=>'0'));
+		
+				}				
+				$result['status'] = "6";
+			}
 		}
 		else {
 			//echo("1"); // no selecciono checks

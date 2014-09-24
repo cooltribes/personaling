@@ -9,7 +9,7 @@ return CMap::mergeArray(
         'components'=>array(
 			'db'=>array(
 				'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
-                                    dbname=db_personalingDEV_ve',
+                                    dbname=db_personalingDEV_VE',
 				'emulatePrepare' => true,
 				'username' => 'personaling',
 				'password' => 'Perso123Naling',
@@ -43,9 +43,11 @@ return CMap::mergeArray(
                 'clientEmail'=>'info@personaling.com',
                 '	 ',
                 'metodosPago'=> array(
-                        'bkCard' => true,
-                        'paypal' => true,
+                        'bkCard' => false,
+                        'paypal' => false, 
                         'prueba' => true,
+                        'instapago' => true,
+                        'depositoTransferencia' => true,
                         ),
                 'multiLook'=> array(
                     'bodyType' => false,

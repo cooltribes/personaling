@@ -11,7 +11,7 @@ class CampanaController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view', 'getPS', 'inviteAll', 'uninviteAll','getMarca'),
+				'actions'=>array('index', 'create', 'delete', 'edit', 'invite', 'uninvite', 'view', 'getPS', 'inviteAll', 'uninviteAll','getMarca', 'changeCampaign'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -564,6 +564,32 @@ class CampanaController extends Controller
 		return array(
 			'accessControl', // perform access control for CRUD operations
 		);
+	}
+	
+	public function actionChangeCampaign() //accept 
+	{
+		if (isset($_POST['respuesta'])) 
+		{
+		 	 $respuesta=$_POST['respuesta'];
+			 $id=$_POST['id'];
+			  
+			 if($respuesta==1)
+			 {	
+			 	Campana::model()->updateByPk($id, array('activo'=>'0'));		
+				Look::model()->updateAll(array('activo'=>0,'campana_id=:campana_id',array('campana_id'=>$id)));
+				echo "ok";	 
+			 }
+			 if($respuesta==3)
+			 {
+			 	Campana::model()->updateByPk($id, array('activo'=>1));
+				Look::model()->updateAll(array('activo'=>1,'campana_id=:campana_id',array('campana_id'=>$id)));	
+				echo "ok"; 
+			 }
+			if($respuesta==2 || $respuesta==4)
+			{
+				echo "nada";
+			}		
+		}
 	}
 
 	// Uncomment the following methods and override them if needed

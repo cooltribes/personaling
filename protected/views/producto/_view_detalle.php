@@ -661,7 +661,7 @@ $cont=0;
           
           $lk = Look::model()->aprobados()->findByPk($cadauno->look_id);
           
-            if(isset($lk) && $lk->activo=="1" && $lk->status=="2"){
+            if(isset($lk) && $lk->activo=="1" && $lk->status=="2" && $lk->available=="1"){
               echo('<div class="span4 look"><article class="">');
               echo("<a href='".$lk->getUrl()."' title='".$lk->title."'>");
               echo CHtml::image(Yii::app()->createUrl('look/getImage',array('id'=>$cadauno->look_id)), "Look", array("width" => "370", "height" => "370", 'class'=>''));

@@ -128,6 +128,8 @@ return array (
 	'Delivery' => 'Envío',
 	'Decorations' => 'Adornos',
 	'Discount' => 'Descuento',
+	'Do you want to disable this campaign?' => '¿Quieres desactivar esta Campaña?',
+	'Do you want to enable this campaign?' => '¿Quieres activar esta Campaña?',
 	'Document' => 'Documento',
 	'Documents' => 'Documentos',
 

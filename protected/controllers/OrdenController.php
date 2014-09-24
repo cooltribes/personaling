@@ -2741,6 +2741,7 @@ public function actionValidar()
 		$ids = array();
 					
 		$criteria = new CDbCriteria(array('order'=>'id'));
+	//	$criteria->addBetweenCondition('id', 490, 650);  
 		$todasOrdenes = Orden::model()->findAll($criteria);
 		
 		$ordenesTotal = sizeof($todasOrdenes);
@@ -2756,7 +2757,7 @@ public function actionValidar()
 			if($cont >= 100){
 				$xml .= '</Invoices>';
 				
-				var_dump($xml);
+				// var_dump($xml);
 				
 				$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
@@ -2924,7 +2925,8 @@ public function actionValidar()
 				
 				// productos
 				$xml .= $zoho->Products($orden->id); 
-				echo "Un request al relacionar productos<br>";
+				//echo "Un request al relacionar productos<br>";
+				
 				// actualizar cantidades de productos
 				//$zoho->actualizarCantidades($orden->id);
 				//echo "Otro para actualizar cantidades<br>"; 
@@ -2964,9 +2966,6 @@ public function actionValidar()
 				//Execute cUrl session
 				$response = curl_exec($ch); 
 				curl_close($ch);
-				
-				var_dump($response);
-				Yii::app()->end();
 						
 				$datos = simplexml_load_string($response);
 				$posicion=0;
@@ -2991,7 +2990,7 @@ public function actionValidar()
 									}
 								}	
 							}//foreach ids
-					}// isset  
+					}// isset 
 				$posicion++; 
 
 				}// ciclo

@@ -141,7 +141,7 @@ function str_lreplace($search, $replace, $subject)
             <div class="row">
                 <div class="span12">
                 	<?php
-                		var_dump(Yii::app()->params['metodosPago']);
+                	//	var_dump(Yii::app()->params['metodosPago']);
                 	?>
                     <h3 class="margin_bottom_small text_align_center"><?php echo Yii::t('contentForm','Best selling items'); ?></h3>
                     <div class="thumbnails">

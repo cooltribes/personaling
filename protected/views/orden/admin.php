@@ -257,6 +257,10 @@ $template = '{summary}
     </div>
     
     <div class="span2">
+        <a href="<?php echo Yii::app()->baseUrl."/orden/ordeneszoho" ?>" title="Exportar todo a Zoho" class="btn btn-success">Exportar todo a Zoho</a> 
+    </div>
+    
+    <div class="span2">
         <a href="<?php echo Yii::app()->baseUrl."/orden/reporteDetallado"?>" title="Exportar a excel" 
            class="btn btn-danger">Reporte Detallado</a>
     </div>

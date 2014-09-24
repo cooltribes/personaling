@@ -229,9 +229,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             </div>	
                         </div>
                     </div>
-                <?php } ?>
+                <?php }
+				echo Yii::app()->params['metodosPago']['bkCard']."<br>";
+				echo Yii::app()->params['metodosPago']['instapago']."<br>";
+				echo Yii::app()->params['metodosPago']['depositoTransferencia'];				
+				?>
                 
-
                 <?php 
                 //Banking Card Aztive
                 if(Yii::app()->params['metodosPago']['bkCard']){ 

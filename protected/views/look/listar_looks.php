@@ -18,7 +18,21 @@ $this->breadcrumbs = array(
             <div class="msg"></div>
         </div>
     </div>
+<div>
+    <?php
+    $ps = User::model()->findByPk(Yii::app()->user->id);
+    echo $ps->lookreferredviews;
+    echo $ps->getLookReferredViewsByDate('2014-09-05','2014-09-17');
+    $match = addcslashes('ps_id":"', '%_');
+    echo ShoppingMetric::model()->count(
+        'data LIKE :match',
+        array(':match' => "%$match%")
+    );
 
+    ?>
+
+
+</div>
 
 <!-- SUBMENU OFF -->
 <div class="container" id="tienda_looks">

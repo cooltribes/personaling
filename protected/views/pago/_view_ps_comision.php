@@ -66,7 +66,7 @@
     <!--PORCENTAJE COMISION-->
     <td>
         <?php 
-            echo "2 %";
+            echo $this->_totallooksviews."2 %";
         ?>
     </td>
     

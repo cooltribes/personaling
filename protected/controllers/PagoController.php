@@ -11,6 +11,8 @@ class PagoController extends Controller
 	/**
 	 * @return array action filters
 	 */
+    public $_totallooksviews;
+
 	public function filters()
 	{
 		return array(
@@ -537,10 +539,15 @@ class PagoController extends Controller
                     'pageSize' => Yii::app()->getModule('user')->user_page_size,
                 ),
             ));
-            
+            $match = addcslashes('ps_id":"', '%_');
+            $this->_totallooksviews = ShoppingMetric::model()->count(
+                'data LIKE :match',
+                array(':match' => "%$match%")
+            );
             $this->render("comision_afiliacion", array(
                 "dataProvider" => $dataProvider,
             ));
         }
+
         
 }

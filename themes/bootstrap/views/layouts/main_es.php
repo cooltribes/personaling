@@ -419,10 +419,15 @@ if(!Yii::app()->user->isGuest){
         <img class="margin_top_small_minus" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logos_partners.png" alt="Logos de Partners"> -->
       </div>
     </div>
-    <hr/>
+    <hr/>  
     <div class="row">
       <div class="span12 text_align_center creditos">Personaling Enterprise S.L. Nuestro NIF B66202383 | Todos los derechos reservados<br/>
-       Desarrollado por <a href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> </div>
+       Desarrollado por: <br/>
+       <!-- <a class="to_add" href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> -->
+        <a  href="http://cooltribes.com" title="Connecting true fans" target="_blank">
+            <img src="<?php echo Yii::app()->baseUrl ?>/images/cooltribes100.png" width="100" />
+        </a> 
+       </div>
     </div>
   </footer>
 </div>

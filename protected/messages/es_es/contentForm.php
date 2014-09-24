@@ -101,6 +101,7 @@ return array (
 	'Color' => 'Color',
 	'Colors' => 'Colores',
 	'Courier delivery' => 'Transportista',
+	'Confirm' => 'Confirmar',
 	'Confirm <br>purchase' => 'Confirmar <br/>Compra',
 	'Current state' => 'Estado Actual',
 	'Confirm your credentials' => 'Confirma tus datos',
@@ -130,6 +131,7 @@ return array (
 	'Discount' => 'Descuento',
 	'Document' => 'Documento',
 	'Documents' => 'Documentos',
+	'Do you really want to pull this look out from your cart?'=>'Realmente deseas eliminar este look de tu carrito?',
 
 	'Edit' => 'Editar',
 	'Edit shipping address' => 'Editar dirección de envío',
@@ -220,6 +222,7 @@ return array (
 	'Nro. items' => 'No. de Prendas',
 	'No. of products' => 'Nro. de productos',
 	'No. of SKU' => 'Cantidad de SKU',
+	'No, thanks.' => 'No, gracias.',
 	'Number' => 'Número',
 
 	'Last step' => 'Último paso',
@@ -244,6 +247,7 @@ return array (
 	'Our deliveries through' => 'Nuestros envíos se realizan a través de',
 	'On this look' => 'En este look',
 	'Outstanding Looks' => 'Looks destacados',
+	'Outstanding Items' => 'Productos destacados',
 
 	'P.S' => 'P.S',
 	'Paid' => 'Ya pagados',
@@ -412,7 +416,7 @@ return array (
 	'Valid from <strong>{start}</strong> until <strong>{end}</strong>' => 'Válida desde <strong>{start}</strong> hasta <strong>{end}</strong>',
 	'Validity' => 'Validez',
 	'Value for returned shipping' => 'Monto por envío devuelto',
-
+    'Yes, I do'=>'Si, por favor',
 	'Year' => 'Año',
     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/><br/>{{link}}<br/>' => '¡Hola! Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.es<br/> Valida tu cuenta clicando en el enlace que aparece a continuación: <br/><br/><a href="{{link}}">Clica aquí</a>.',	
 	'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',

@@ -70,7 +70,7 @@ $total_productos_look = 0;
   				 
   		  	?>
           <!-- Look ON -->
-          <h3 class="braker_bottom margin_top"><?php echo $look->title; ?><small><a class="pull-right" style='cursor: pointer; margin-top: 1em; padding-right: 1.2em; text-decoration: none;' onclick='eliminar_look(<?php echo $look->id; ?>, <?php echo $bolsa->id; ?>)' id='elim_look<?php echo $look->id; ?>'>&times;</a></small></h3>
+          <h3 class="braker_bottom margin_top"><?php echo $look->title; ?><small><a class="pull-right" style='cursor: pointer; margin-top: 1em; padding-right: 1.2em; text-decoration: none;' onclick="toDeleteLook('<?php echo $look->id; ?>')" id='elim_look<?php echo $look->id; ?>'>&times;</a></small></h3>
           <div class="padding_left">
             <table class="table" width="100%" >
               <thead>
@@ -636,10 +636,42 @@ $total_productos_look = 0;
 		// redirecciona al login porque se murió la sesión
 	header('Location: /user/login');	
 }
+echo CHtml::hiddenField('toDelete','');
 ?>
 <!-- /container --> 
 
+<div id="confirmLook" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+ <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true" onclick="$('#confirmLook').hide();">×</button>
+     <h3 ><?php echo Yii::t('contentForm','Confirm');?></h3>
+ 
+  </div>
+  <div class="modal-body">
+         <h4><?php echo Yii::t('contentForm','Do you really want to pull this look out from your cart?');?></h4>
+         
+  </div>
+  <div class="modal-footer">  
+    <div class="row-fluid">
+        <a class="btn span3" href="#" onclick="eliminar_look()"><?php echo Yii::t('contentForm','Yes, I do');?></a>
+        <div class="span6"></div>
+        <button class="btn btn-danger span3 closeModal" data-dismiss="modal" aria-hidden="true" onclick="$('#confirmLook').hide();"><?php echo Yii::t('contentForm',"No, thanks.");?></button>
+    
+    </div>
+    
+  </div>
+</div>
+
+
+
+
+
 <script>
+    
+    function toDeleteLook(id){
+        $('#confirmLook').show();
+        $('#toDelete').val(id);
+    }
+
 	$('.cantidades').live('keyup',function(e){
 		
 		var code = e.which; // recommended to use e.which, it's normalized across browsers
@@ -788,8 +820,9 @@ $total_productos_look = 0;
 
 	}
 	
-  function eliminar_look(look_id, bolsa_id){
-    
+  function eliminar_look(){
+  var bolsa_id=<?php echo $bolsa->id; ?>;  
+  var look_id=$('#toDelete').val();
   var td = $(this);
   
   //alert(cantidad);

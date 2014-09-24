@@ -131,30 +131,30 @@ function str_lreplace($search, $replace, $subject)
             </li>-->
         </ul>
         <?php   
-            $pagination = $dataProvider_productos->pagination->pageSize;
+            /*$pagination = $dataProvider_productos->pagination->pageSize;
             $iterator = new CDataProviderIterator($dataProvider_productos);
-            $count = 0;
+            $count = 0;*/
             //echo "count: ".$iterator->getTotalItemCount();
-            if($iterator->getTotalItemCount()){
+
         ?>
-        <div class=" margin_bottom_large braker_horz_top_1">
+    <!--    <div class=" margin_bottom_large braker_horz_top_1">
             <div class="row">
                 <div class="span12">
                     <h3 class="margin_bottom_small text_align_center"><?php echo Yii::t('contentForm','Best selling items'); ?></h3>
                     <div class="thumbnails">
-                            <?php
+                            <?php /*
                             foreach($iterator as $record) {
                                     $producto = Producto::model()->findByPk($record['producto_id']);
                                     if (isset($producto)){
                                             if($producto->getCantidad() > 0){
                                                     $count++;
-                            ?>
+                           */ ?>
                                 <li class="span2"> 
-                                    <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
-                                    <?php echo CHtml::link($image, $producto->getUrl() ); ?>  
+                                    <?php // $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));	?>
+                                    <?php // echo CHtml::link($image, $producto->getUrl() ); ?>  
                                 </li>
                             <?php 			
-
+/*
                                                     if ($count >= $pagination)
                                                             break;	
                                             }
@@ -162,14 +162,42 @@ function str_lreplace($search, $replace, $subject)
 
                             }
 
-                                 ?>
+                                */ ?>
 
                     </div>
                 </div>
             </div>
         </div>
-            <?php } ?>
+          
+    </div>-->
+    <?php 
+?>
+    <div class=" margin_bottom_large braker_horz_top_1">
+            <div class="row">
+                <div class="span12" align="center">
+                    <h3 class="margin_bottom_small text_align_center"><?php echo Yii::t('contentForm','Outstanding Items'); ?></h3>
+                    <div class="thumbnails">
+                        <div style="margin:0 auto">
+                            <?php
+                            foreach($destacados as $producto){?>
+                                 <li class="span2"> 
+                                     
+                                    <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));    ?>
+                                    <?php echo CHtml::link($image, $producto->getUrl() ); ?>  
+                                </li>
+                           <?php }
+                            
+                            
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+          
     </div>
+    
+    
     <div class=" margin_bottom_large braker_horz_top_1 ">
        <!-- <h3 class="margin_bottom_small"><?php echo Yii::t('contentForm','From Our Magazine'); ?></h3>-->
         <div class="row posts_list">

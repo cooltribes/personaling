@@ -1289,6 +1289,21 @@ public function multipleColor2($idColor, $idact)
 
 		));  
 	 }
+	 
+	 public function destacados($limit=10)
+     {
+             
+        $criteria=new CDbCriteria;
+        $imgsql = "SELECT tbl_producto_id FROM tbl_imagen";
+        $enImagen= Yii::app()->db->createCommand($imgsql)->queryColumn();
+        $criteria->addInCondition('t.id',$enImagen);
+        $criteria->order="destacado DESC, fecha DESC";
+        $criteria->addCondition("estado = 0");
+        $criteria->addCondition("status = 1");
+        $criteria->group = "t.id";
+        $criteria->limit = $limit;
+        return Producto::model()->findAll($criteria);  
+     }
 
          /**
 	 * Productos que encantan a un usuario $userId
@@ -1523,7 +1538,7 @@ public function multipleColor2($idColor, $idact)
 	{
 		//	if(isset($this->url_amigable) && $this->url_amigable != "")	
 		
-		if(isset($this->seo->urlAmigable) && $this->seo->urlAmigable != ""){
+		if(isset($this->seo->urlAmigable) && ($this->seo->urlAmigable != "" && !is_null($this->seo->urlAmigable))){
 			return Yii::app()->baseUrl."/productos/".$this->seo->urlAmigable;
 		}
 		else{

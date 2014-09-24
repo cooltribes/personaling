@@ -1,6 +1,5 @@
 <tr>
-    <!--<td><input name="check" type="checkbox" value="" id=<?php echo $data->id; ?>></td>-->
-<!--    <td width="20%">-->
+    <td><input name="check" type="checkbox" value="" id=<?php echo $data->id; ?>></td>
     <td>
         <strong> <span class="CAPS link-look"><?php        
         
@@ -42,10 +41,7 @@
     <td><?php echo $data->getPrecio(); ?></td>
     <td><?php echo $data->getLookxStatus(3); ?></td>
     <td><?php echo $data->getMontoVentas(); ?></td>
-    <td><?php echo $data->getStatus();
-        echo "\n";
-        if ($data->activo == "1") echo "Activo";
-        else echo "Inactivo"; ?></td>
+     <td><?php echo $data->getStatus();echo "\n"; if($data->activo=="1")echo "Activo";else echo "Inactivo"; echo "\n"; if($data->destacado=="1")echo "Destacado";else echo "No Destacado";?></td>
     <td><?php echo $data->created_on; ?></td>
     <td> <?php $camp = Campana::model()->findByPk($data->campana_id);
         echo $camp->daysLeft(); ?>

@@ -498,7 +498,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
         {
           $lookre = Look::model()->findByPk($record['id']);
 
-          if($lookre->matchOcaciones(User::model()->findByPk(Yii::app()->user->id)) && $lookre->activo=="1" && $lookre->status=="2" && $lookre->id!=$model->id){ 
+          if($lookre->matchOcaciones(User::model()->findByPk(Yii::app()->user->id)) && $lookre->activo=="1" && $lookre->status=="2" && $lookre->id!=$model->id && $lookre->available=="1"){ 
               if($cont<3){
 
               //<div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; /images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>

@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
 	<h1>Tus Pagos</h1>
 	<section class="bg_color3  span9 offset1 margin_bottom_small padding_small box_1">
             <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-                'id'=>'giftcard-form',
+                'id'=>'solicitud-form',
                 //'enableAjaxValidation' => true,
                 'clientOptions' => array(
                     'validateOnSubmit' => true,

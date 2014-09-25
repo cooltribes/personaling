@@ -74,15 +74,15 @@
     <td style="text-align: center;">
        <?php 
        
-       echo CHtml::textField("amountPay", 0, array(
+       echo CHtml::textField("$data->id", 0, array(
            "readonly" => true,
            "class" => "span1",
-           "id" => "amount-$data->id",
+//           "id" => "",
            
        ));
        //aqui va el porcentaje de comision
-       echo CHtml::hiddenField("percentage-$data->id", 2, array(           
-           "id" => "amount-$data->id",
+       echo CHtml::hiddenField("percentage-$data->id", 0.2, array(           
+//           "id" => "amount-$data->id",
            
        ));
        

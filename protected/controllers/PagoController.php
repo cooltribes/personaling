@@ -539,14 +539,18 @@ class PagoController extends Controller
                     'pageSize' => Yii::app()->getModule('user')->user_page_size,
                 ),
             ));
+            
+            /*Compute the total views of all PS */
             $match = addcslashes('ps_id":"', '%_');
             $this->_totallooksviews = ShoppingMetric::model()->count(
                 'data LIKE :match',
                 array(':match' => "%$match%")
             );
+            
             $this->render("comision_afiliacion", array(
                 "dataProvider" => $dataProvider,
             ));
+            
         }
 
         

@@ -963,14 +963,7 @@ class User extends CActiveRecord {
             }
             
             $haceUnMinuto = time() - 60;
-            $fechaOrden = strtotime($orden->fecha);            
-                
-//            echo "<br>";
-//            echo "<br>unmi ". $haceUnMinuto;
-//            echo "<br>orden ". $fechaOrden;
-//            
-//            Yii::app()->end();
-            
+            $fechaOrden = strtotime($orden->fecha);    
             
             return  $fechaOrden >= $haceUnMinuto;            
             

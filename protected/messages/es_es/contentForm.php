@@ -236,9 +236,10 @@ return array (
 
 	'Order' => 'Pedido',
 	'Order Cancelled' => 'Orden Cancelada',
+	'Only can be used alphanumeric characters, hyphen (-) and underscore (_).'=>'Sólo puedes usar letras, números, guión (-) o underscore (_).',
 	'Order confirmation' => 'Confirmación del pedido',
 	'Order Date' => 'Fecha del pedido',
-	'Order Details' => 'Detalles del Pedido',
+	'Order Details' => 'Detalles del Pedido', 
 	'Order Sent' => 'Pedido enviado',
 	'Order Summary' => 'Resumen del pedido',
 	'Order for the user' => 'Pedido para el usuario',
@@ -248,6 +249,7 @@ return array (
 	'On this look' => 'En este look',
 	'Outstanding Looks' => 'Looks destacados',
 	'Outstanding Items' => 'Productos destacados',
+	'Only can be used alphanumeric characters, hyphen (-) and underscore (_).'=>'SOlo puedes usar letras, números y guión (-) o underscore (_).',
 
 	'P.S' => 'P.S',
 	'Paid' => 'Ya pagados',
@@ -263,6 +265,7 @@ return array (
 	'Payment Method Selected' => 'Método de Pago Seleccionado',
 	'Payment Type' => 'Tipo de Pago',
 	'Payment <br> method' => 'Método <br> de Pago',
+	'Personal Shopper URL'=>'Url de Personal Shopper',
 	'Pending payment' => 'Pendientes por pagar',
 	'Pending confirmation' => 'Pendientes por confirmar',
 	'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni

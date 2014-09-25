@@ -226,6 +226,7 @@ return array (
      'Output' => 'Salida',
      'Outstanding Items' => 'Productos destacados',
      'Our deliveries through' => 'Nuestros envíos se realizan a través de',
+     'Only can be used alphanumeric characters, hyphen (-) and underscore (_).'=>'Sólo puedes usar letras, números, guión (-) o underscore (_).',
      'On this look' => 'En este look',
      
      'P.S' => 'P.S',
@@ -242,6 +243,7 @@ return array (
      'Payment Method Selected' => 'Método de Pago Seleccionado',
      'Payment <br> method' => 'Método <br> de Pago',
      'Pending payment' => 'Pendientes por pagar',
+     'Personal Shopper URL'=>'Url de Personal Shopper',
      'Pending confirmation' => 'Pendientes por confirmar',
      'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
                 <b>Atrás</b> en tu navegador',

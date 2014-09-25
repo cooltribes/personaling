@@ -914,8 +914,58 @@ class User extends CActiveRecord {
 			$user=User::model()->findByPk($id);
 			return $user->personal_shopper;
 		}
+<<<<<<< HEAD
                 
                 
+=======
+
+    /*
+     * Function for calculate all external references to a look from a PS
+     * RANPACO
+     *
+     */
+
+    function getLookReferredViews(){
+            $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
+            $match = addcslashes($match, '%_');
+            return ShoppingMetric::model()->count(
+                'data LIKE :match',
+                array(':match' => "%$match%")
+            );
+        }
+
+    /*
+     * Function for calculate all external references to a look from a PS between dates
+     * RANPACO
+     *
+     */
+
+    function getLookReferredViewsByDate($from,$to){
+        $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
+        $match = addcslashes($match, '%_');
+        return ShoppingMetric::model()->count(
+            'data LIKE :match and created_on between :from and :to',
+            array(
+                ':match' => "%$match%",
+                ':from' => $from,
+                ':to' => $to
+            )
+        );
+    }
+    
+    /**
+     * 
+     * 
+     * @param string $from
+     * @param string $to
+     * @return float
+     */
+    function getLookViewsPercentage($from,$to, $total){
+        
+        $totalMensual = $this->getLookReferredViewsByDate($from, $to);
+        $porcentaje = $totalMensual / $total;
+    }
+>>>>>>> 6be166c126689336c67f5f4c420ff0b74ece538b
         /* 
          * Buscar la ultima orden del usuario y ver si fue hace menos de un minuto
          * Se usa para validar que no se hagan compras seguidas por error.
@@ -931,14 +981,7 @@ class User extends CActiveRecord {
             }
             
             $haceUnMinuto = time() - 60;
-            $fechaOrden = strtotime($orden->fecha);            
-                
-//            echo "<br>";
-//            echo "<br>unmi ". $haceUnMinuto;
-//            echo "<br>orden ". $fechaOrden;
-//            
-//            Yii::app()->end();
-            
+            $fechaOrden = strtotime($orden->fecha);    
             
             return  $fechaOrden >= $haceUnMinuto;            
             

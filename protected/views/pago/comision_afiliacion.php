@@ -163,197 +163,32 @@ Yii::app()->clientScript->registerScript('search', "
 );
 ?> 
 
-<h3>Acciones Masivas</h3>
-<hr/>
-<div class="row">
-    <div class="span3">       
-        <?php
-        echo CHtml::dropDownList("Filtros", "", array("1" => "Cambiar comisión",
-            "2" => "Cambiar validez de la bolsa"), array('prompt' => '-- Seleccione una acción --', 'id' => 'listaAcciones'))
-        ?>
-    </div>
-    <div class="span1">
-        <a id="btnProcesar" title="Procesar" class="btn btn-danger">Procesar</a>
-    </div>
 </div>
-</div>
-
-<!--MODAL CAMBIO COMISION ON-->
-<?php
-$this->beginWidget('bootstrap.widgets.TbModal', array(
-    'id' => 'modalComision',
-        ), array(
-    'class' => 'modal fade hide',
-    'tabindex' => "-1",
-    'role' => "dialog",
-    'aria-labelledby' => "myModalLabel",
-    'aria-hidden' => "true",
-        //'style' => "display: none;",
-))
-?>
-
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Cambiar comisión de ventas para los Personal Shoppers</h3>
-</div>
-<div class="modal-body">
-    <?php
-    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-        'id' => 'formCambiarComision',
-        'htmlOptions' => array('enctype' => 'multipart/form-data'),
-        'type' => 'horizontal',
-        'enableAjaxValidation' => true,
-        'clientOptions' => array(
-            'validateOnSubmit' => true,
-        ),
-    ));
-    ?>
-    <fieldset>       
-        <div class="control-group">
-            <label class="control-label">Tipo de Comisión:</label>
-            <div class="controls">
-                <?php
-                echo TbHtml::dropDownList("cambiarTpComision", 1, array(1 => "Porcentaje (%)",
-                    2 => "Fijo (" . Yii::t('backEnd', 'currSym') . ")"), array("span" => 2));
-                ?>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">Valor de la Comisión:</label>
-            <div class="controls">
-                <?php echo TbHtml::textField("cambiarVlComision", 0, array("append" => "%", "span" => "1"));
-                ?>
-            </div>
-        </div> 
-        <div class="control-group">            
-            <div class="controls">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'type' => 'danger',
-                    'buttonType' => 'button',
-                    'label' => "Guardar cambios",
-                    'htmlOptions' => array(
-                        'id' => 'btnComision',
-                    )
-                ));
-                ?>
-            </div>
-        </div>    
-        <div class="hidden" id="cambioMoneda"><?php echo Yii::t('backEnd', 'currSym'); ?></div>
-        <?php echo CHtml::hiddenField("action", 1); ?>
-    </fieldset>
-
-<?php $this->endWidget(); ?>
-
-    <div class="row-fluid">
-        <div class="span12 ">
-            <strong class="nroAfectados"><?php echo $dataProvider->getTotalItemCount(); ?></strong>
-            Personal Shoppers serán afectados <i class="icon-user"></i>
-        </div>
-    </div>
-
-</div>
-<div class="modal-footer text_align_left">
-    <h5 style="margin-top: 0">Descripción:</h5>
-    Cambiarás el valor de la comisión y el tipo de comisión para todos los Personal Shopper seleccionados.
-    Este nuevo valor se aplicará en las próximas ventas
-</div>                    
-
-<?php $this->endWidget() ?>
-<!--MODAL CAMBIO COMISION OFF-->
-
-
-<!--MODAL CAMBIO TIEMPO EN BOLSA ON-->
-<?php
-$this->beginWidget('bootstrap.widgets.TbModal', array(
-    'id' => 'modalTiempo',
-        ), array(
-    'class' => 'modal fade hide',
-    'tabindex' => "-1",
-    'role' => "dialog",
-    'aria-labelledby' => "myModalLabel",
-    'aria-hidden' => "true",
-        //'style' => "display: none;",
-))
-?>
-
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Cambiar tiempo de validez para los Personal Shoppers</h3>
-</div>
-<div class="modal-body">
-    <?php
-    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-        'id' => 'formCambiarTiempo',
-        'htmlOptions' => array('enctype' => 'multipart/form-data'),
-        'type' => 'horizontal',
-        // 'type'=>'inline',
-        //'enableClientValidation' => true,
-        'enableAjaxValidation' => true,
-        'clientOptions' => array(
-            'validateOnSubmit' => true,
-        ),
-    ));
-    ?>
-    <fieldset>       
-        <div class="control-group">
-            <label class="control-label">Tipo de Comisión:</label>
-            <div class="controls">
-                <?php
-                echo TbHtml::dropDownList("cambiarLmTiempo", 1, array(15 => "15 Días",
-                    30 => "1 Mes", 90 => "3 Meses", 180 => "6 Meses", 360 => "1 Año"),
-                        array("span" => 2));
-                ?>
-            </div> 
-        </div>   
-        <div class="control-group">            
-            <div class="controls">
-                <?php
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'type' => 'danger',
-                    'buttonType' => 'button',
-                    'label' => "Guardar cambios",
-                    'htmlOptions' => array(
-                        'id' => 'btnTiempo',
-                    )
-                ));
-                ?>
-            </div>
-        </div>    
-        <?php echo CHtml::hiddenField("action", 2); ?>
-    </fieldset>
-
-<?php $this->endWidget(); ?>
-
-    <div class="row-fluid">
-        <div class="span12 ">
-            <strong class="nroAfectados"><?php echo $dataProvider->getTotalItemCount(); ?></strong>
-            Personal Shoppers serán afectados <i class="icon-user"></i></div>
-    </div>
-
-</div>
-<div class="modal-footer text_align_left">
-    <h5 style="margin-top: 0">Descripción:</h5>
-    Cambiarás el tiempo máximo que pueden durar los productos en la bolsa para que las venta genere comisión a un Personal Shopper, afectará a todos los Personal Shopper seleccionados.
-    Este nuevo valor se aplicará en las próximas ventas.
-</div>                    
-
-<?php $this->endWidget() ?>
-<!--MODAL CAMBIO TIEMPO EN BOLSA OFF-->
 
 <!-- /container -->
 <script>
+
 
 /* Funcion para cambiar los montos que le corresponden a cada PS de acuerdo al 
  * monto ingresado en el campo #monthlyEarning
  * */
 function cambiarMontosEnTabla(e){
     
-    console.log($(this).val()); 
+    
+    var monthlyEarning = $("#monthlyEarning").val();
+    
+    $("input[name ^= 'amount']").each(function(index, element){
+
+        var id = $(element).attr("id");
+        var percentage = $("#percentage-"+id).val();
+        /* Asign corresponding amount to each PS*/
+        $(element).val(monthlyEarning * percentage);
+
+    });    
     
 }
 
-/*Método para el botón pagar*/
+/*Action when the form pago-form is submitted*/
 function formSubmit(e){
     
     e.preventDefault();    
@@ -376,11 +211,10 @@ function formSubmit(e){
 
 $(document).ready(function(){
 
-    $('#monthlyEarning').change(cambiarMontosEnTabla);
-    
-    
+    $('#monthlyEarning').change(cambiarMontosEnTabla).keypress(cambiarMontosEnTabla);            
 //    $('button#pay').click(accionBotonPagar);
     $('form#pago-form').submit(formSubmit);
+    
     
 });    
 </script>

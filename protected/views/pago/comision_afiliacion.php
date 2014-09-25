@@ -168,18 +168,23 @@ Yii::app()->clientScript->registerScript('search', "
 <!-- /container -->
 <script>
 
+
 /* Funcion para cambiar los montos que le corresponden a cada PS de acuerdo al 
  * monto ingresado en el campo #monthlyEarning
  * */
 function cambiarMontosEnTabla(e){
     
+    
+    var monthlyEarning = $("#monthlyEarning").val();
+    
     $("input[name ^= 'amount']").each(function(index, element){
 
-      var id = element.attr("id");
-      var val = $("#percentage-"+id);
+        var id = $(element).attr("id");
+        var percentage = $("#percentage-"+id).val();
+        /* Asign corresponding amount to each PS*/
+        $(element).val(monthlyEarning * percentage);
 
-    }) 
-    
+    });    
     
 }
 
@@ -206,10 +211,10 @@ function formSubmit(e){
 
 $(document).ready(function(){
 
-    $('#monthlyEarning').change(cambiarMontosEnTabla).keypress(cambiarMontosEnTabla);        
-    
+    $('#monthlyEarning').change(cambiarMontosEnTabla).keypress(cambiarMontosEnTabla);            
 //    $('button#pay').click(accionBotonPagar);
     $('form#pago-form').submit(formSubmit);
+    
     
 });    
 </script>

@@ -921,7 +921,7 @@ class User extends CActiveRecord {
      *
      */
 
-        function getLookReferredViews(){
+    function getLookReferredViews(){
             $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
             $match = addcslashes($match, '%_');
             return ShoppingMetric::model()->count(
@@ -947,6 +947,19 @@ class User extends CActiveRecord {
                 ':to' => $to
             )
         );
+    }
+    
+    /**
+     * 
+     * 
+     * @param string $from
+     * @param string $to
+     * @return float
+     */
+    function getLookViewsPercentage($from,$to, $total){
+        
+        $totalMensual = $this->getLookReferredViewsByDate($from, $to);
+        $porcentaje = $totalMensual / $total;
     }
         /* 
          * Buscar la ultima orden del usuario y ver si fue hace menos de un minuto

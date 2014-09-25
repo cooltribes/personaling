@@ -1,3 +1,6 @@
+<?php  ?>
+
+
 <?php if ($data->status == 0) { ?>
     <tr class="warning">
 <?php } else { ?>
@@ -66,7 +69,8 @@
     <!--PORCENTAJE COMISION-->
     <td>
         <?php 
-            echo $this->_totallooksviews."2 %";
+            echo "2 %";
+//            echo $data->getLookViewsPercentage()."2 %";
         ?>
     </td>
     
@@ -74,11 +78,10 @@
     <td style="text-align: center;">
        <?php 
        
-       echo CHtml::textField("$data->id", 0, array(
+       echo CHtml::textField("amount-$data->id", 0, array(
            "readonly" => true,
            "class" => "span1",
-//           "id" => "",
-           
+           "id" => $data->id,
        ));
        //aqui va el porcentaje de comision
        echo CHtml::hiddenField("percentage-$data->id", 0.2, array(           

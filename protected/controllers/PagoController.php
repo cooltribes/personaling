@@ -11,6 +11,8 @@ class PagoController extends Controller
 	/**
 	 * @return array action filters
 	 */
+    public $_totallooksviews;
+
 	public function filters()
 	{
 		return array(
@@ -32,7 +34,8 @@ class PagoController extends Controller
 				'expression'=>"UserModule::isPersonalShopper()",
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','view', 'detalle'),
+				'actions'=>array('admin','delete','view', 'detalle',
+                                    'comisionAfiliacion'),
 				'expression'=>"UserModule::isAdmin()",
 			),
 			array('deny',  // deny all users
@@ -510,5 +513,41 @@ class PagoController extends Controller
 //            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
             Yii::app()->mail->send($message);
         }
+        
+        /**
+         * This action is used for paying the PersonalShoppers with the monthly
+         * earnings.
+         */
+        public function actionComisionAfiliacion() {
+            
+            /*Si viene el campo con el monto a pagar*/
+            if(isset($_POST["monthlyEarning"]) && $_POST["monthlyEarning"] > 0){
+                
+                /* TODO: asignar el pago a las personalshoppers segun su comision*/
+                Yii::app()->user->setFlash("success", "Se ha hecho el pago satisfactoriamente");
+                
+            }
+            
+            
+            /*Enviar a la vista el listado de todos los PS*/
+            $criteria = new CDbCriteria;
+            $criteria->compare("personal_shopper", 1);
+            
+            $dataProvider = new CActiveDataProvider('User', array(
+                'criteria' => $criteria,
+                'pagination' => array(
+                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                ),
+            ));
+            $match = addcslashes('ps_id":"', '%_');
+            $this->_totallooksviews = ShoppingMetric::model()->count(
+                'data LIKE :match',
+                array(':match' => "%$match%")
+            );
+            $this->render("comision_afiliacion", array(
+                "dataProvider" => $dataProvider,
+            ));
+        }
+
         
 }

@@ -62,10 +62,27 @@
                                                 
                     )); ?>            
                 </li>
+                 <li>
+                    <?php 
+                    if($data->activo==1)
+					{
+						    echo CHtml::link('<i class="icon-pencil"></i>  Desactivar',
+                            $this->createUrl('look/enabledLook',array('id'=>$data->id)), array(                        
+                   			 )); 
+					}
+					else 
+					{
+							echo CHtml::link('<i class="icon-pencil"></i>  Activar',
+                            $this->createUrl('look/enabledLook',array('id'=>$data->id)), array(                        
+                   			 )); 
+					}
+
+                    
+                    ?>            
+                </li>
                 <li>
                     <?php echo CHtml::link('<i class="icon-eye-open"></i>  Ver en tienda',
-                            $this->createUrl('look/detalle',array('id'=>$data->id)), array(
-//                        
+                            $this->createUrl('look/detalle',array('id'=>$data->id)), array(                        
                     )); ?>            
                 </li>
                 <li>

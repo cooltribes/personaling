@@ -141,7 +141,7 @@
 		
 		 ?>
    <?php 
-   if($model->activo=="0") 
+   if($model->activo=="0" && UserModule::isAdmin()) 
    {
    		$this->widget('bootstrap.widgets.TbButton', array(
 			'label'=>'Activar',
@@ -150,7 +150,7 @@
 
 		));
    }
-   else
+   if($model->activo=="1" && UserModule::isAdmin()) 
    {
 		$this->widget('bootstrap.widgets.TbButton', array(
 			'label'=>'Desactivar',

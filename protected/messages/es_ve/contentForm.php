@@ -221,6 +221,7 @@ return array (
      'Order for the user' => 'Pedido para el usuario',
      'Order is process' => 'Pedido en proceso',
      'Output' => 'Salida',
+     'Outstanding Looks' => 'Looks destacados',
      'Our deliveries through' => 'Nuestros envíos se realizan a través de',
      'On this look' => 'En este look',
      

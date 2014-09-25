@@ -69,7 +69,7 @@ class DireccionEnvio extends CActiveRecord
 			'ordens' => array(self::HAS_MANY, 'Orden', 'direccionEnvio_id'),
 			'myciudad' => array(self::BELONGS_TO, 'Ciudad', 'ciudad_id'),
 			'codigoPostal' => array(self::BELONGS_TO, 'CodigoPostal', 'codigo_postal_id'),
-			'provincia' => array(self::BELONGS_TO, 'Provincia', 'provincia_id'),
+			'provincia' => array(self::BELONGS_TO, 'Provincia', 'provincia_id'), 
 		);
 	}
 

@@ -49,19 +49,20 @@ class TarjetaCredito extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, estado, user_id', 'required','message' => '{attribute} no puede estar en blanco.'),
-			array('user_id, ci', 'numerical', 'integerOnly'=>true,'message' => '{attribute} debe ser numérico'),
-			array('nombre', 'length', 'max'=>80), 
-			array('numero', 'length', 'min'=>14, 'max'=>16,'tooShort' => '{attribute} es muy corto (minimo 14 números)','tooLong'=>'{attribute} es muy largo (máximo 16 números)'),
-			array('codigo', 'length', 'min'=>3, 'max'=>4,'tooShort' => '{attribute} es muy corto (minimo 3 números)','tooLong'=>'{attribute} es muy largo (máximo 4 números)'),
+			array('nombre, numero, codigo, vencimiento, ci, direccion, ciudad, estado, user_id', 'required','message' => '{attribute} es un campo obligatorio.'),
+			array('user_id, numero, ci', 'numerical', 'integerOnly'=>true,'message' => '{attribute} debe ser numérico'),
+			array('nombre', 'length', 'max'=>80),
+			array('ci', 'length', 'max'=>8,'tooLong'=>'{attribute} permite un máximo de 8 números'), 
+			array('numero', 'length', 'min'=>14, 'max'=>16,'tooShort' => '{attribute} es muy corto (mínimo 14 números)','tooLong'=>'{attribute} es muy largo (máximo 16 números)'),
+			array('codigo', 'length', 'min'=>3, 'max'=>3,'tooShort' => '{attribute} es muy corto (mínimo 3 números)','tooLong'=>'{attribute} es muy largo (máximo 3 números)'),
 			//array('month','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Seleccione un mes.'),
 			//array('year','compare','compareValue'=>'0','operator'=>'>','allowEmpty'=>false, 'message'=>'Seleccione un año.'),
 			//array('month','compare','compareValue'=>'Mes','operator'=>'!=','message'=>'Seleccione un mes.'),
 			//array('year','compare','compareValue'=>'Año','operator'=>'==','message'=>'Seleccione un año.'),
-			array('zip', 'length', 'max'=>5,'tooLong'=>'{attribute} es muy largo (máximo 5 números)'),
+			array('zip', 'length', 'max'=>5,'tooLong'=>'{attribute} es muy largo (máximo 5 números)'), 
 			array('direccion', 'length', 'max'=>150,'tooLong'=>'{attribute} es muy largo (máximo 150 letras)'),
 			array('ciudad', 'length', 'max'=>50,'tooLong'=>'{attribute} es muy largo (máximo 50 letras)'),
-			array('estado', 'length', 'max'=>45,'tooLong'=>'{attribute} es muy largo (máximo 45 letras)'),
+			array('estado', 'length', 'max'=>45,'tooLong'=>'{attribute} es muy largo (máximo 45 letras)'), 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, nombre, numero, codigo, vencimiento, ci, direccion, ciudad, zip, estado, user_id', 'safe', 'on'=>'search'),
@@ -91,7 +92,7 @@ class TarjetaCredito extends CActiveRecord
 			'numero' => 'Número',
 			'codigo' => 'Código',
 			'vencimiento' => 'Vencimiento',
-			'ci' => 'Cédula',
+			'ci' => 'Cédula de Identidad',
 			'direccion' => 'Dirección',
 			'ciudad' => 'Ciudad',
 			'zip' => 'Código Postal',

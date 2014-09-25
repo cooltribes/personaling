@@ -20,6 +20,8 @@ $this->breadcrumbs=array(
 <!-- PAGINA DE CONTACTO ON -->
 <div class="span8 ">
     <div class="box_1" >
+    	
+    	<?php // echo $_SERVER['REMOTE_ADDR']; ?> 
         <h1>Ponte en contacto</h1>
 
     	<?php if(Yii::app()->user->hasFlash('contact')){?>

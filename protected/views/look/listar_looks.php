@@ -2,6 +2,7 @@
 $this->breadcrumbs = array(
     'Mis Looks',
 );
+Yii::app()->clientScript->registerScriptFile('http://akwww.polyvorecdn.com/rsrc/add_to_polyvore.js', CClientScript::POS_HEAD);             
 ?>
 
 <div class="container" id="scroller-anchor">

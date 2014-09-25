@@ -511,4 +511,47 @@ class PagoController extends Controller
             Yii::app()->mail->send($message);
         }
         
+<<<<<<< HEAD
+=======
+        /**
+         * This action is used for paying the PersonalShoppers with the monthly
+         * earnings.
+         */
+        public function actionComisionAfiliacion() {
+            
+            /*Si viene el campo con el monto a pagar*/
+            if(isset($_POST["monthlyEarning"]) && $_POST["monthlyEarning"] > 0){
+                
+                /* TODO: asignar el pago a las personalshoppers segun su comision*/
+                Yii::app()->user->setFlash("success", "Se ha hecho el pago satisfactoriamente");
+                
+            }
+            
+            
+            /*Enviar a la vista el listado de todos los PS*/
+            $criteria = new CDbCriteria;
+            $criteria->compare("personal_shopper", 1);
+            
+            $dataProvider = new CActiveDataProvider('User', array(
+                'criteria' => $criteria,
+                'pagination' => array(
+                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                ),
+            ));
+            
+            /*Compute the total views of all PS */
+            $match = addcslashes('ps_id":"', '%_');
+            $this->_totallooksviews = ShoppingMetric::model()->count(
+                'data LIKE :match',
+                array(':match' => "%$match%")
+            );
+            
+            $this->render("comision_afiliacion", array(
+                "dataProvider" => $dataProvider,
+            ));
+            
+        }
+
+        
+>>>>>>> 6be166c126689336c67f5f4c420ff0b74ece538b
 }

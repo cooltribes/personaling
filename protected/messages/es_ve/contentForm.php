@@ -227,7 +227,7 @@ return array (
      'Outstanding Items' => 'Productos destacados',
      'Our deliveries through' => 'Nuestros envíos se realizan a través de',
      'Only can be used alphanumeric characters, hyphen (-) and underscore (_).'=>'Sólo puedes usar letras, números, guión (-) o underscore (_).',
-     'On this look' => 'En este look',
+     'On this look' => 'En este look', 
      
      'P.S' => 'P.S',
      'Paid' => 'Ya pagados',

@@ -235,7 +235,7 @@ return array (
 
 
 	'Order' => 'Pedido',
-	'Order Cancelled' => 'Orden Cancelada',
+	'Order Cancelled' => 'Orden Cancelada', 
 	'Only can be used alphanumeric characters, hyphen (-) and underscore (_).'=>'Sólo puedes usar letras, números, guión (-) o underscore (_).',
 	'Order confirmation' => 'Confirmación del pedido',
 	'Order Date' => 'Fecha del pedido',

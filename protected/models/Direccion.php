@@ -49,7 +49,7 @@ class Direccion extends CActiveRecord
 		// will receive user inputs.
 		$codigoPostal="";
 		if(Yii::app()->params['codigoPostal'])
-            $codigoPostal=", codigo_postal_id";
+            $codigoPostal=", codigo_postal_id"; 
 		
 		return array(
 			array('user_id, ciudad_id, provincia_id'.$codigoPostal, 'numerical', 'integerOnly'=>true,'message' => 'Debes seleccionar una {attribute}'),

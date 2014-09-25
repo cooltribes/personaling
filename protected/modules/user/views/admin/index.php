@@ -291,7 +291,7 @@ $template = '{summary}
   </div>                    
 
 <?php $this->endWidget()?>
-<?php 
+<?php  
 echo CHtml::hiddenField('UrlText','');
 echo CHtml::hiddenField('UrlId','');
 $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'changeUrl','htmlOptions'=>array('class'=>'modal hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>

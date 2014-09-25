@@ -72,7 +72,7 @@
       <!-- <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li> -->
             <li><a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a> </li>
        <li> <?php echo CHtml::link('<i class="icon-shopping-cart">  </i>  Registrar Orden',array("admin/compra","id"=>$data->id)); ?></li>
-        <?php if($data->personal_shopper == 1){ ?>
+        <?php if($data->personal_shopper == 1){ ?> 
              <li><a href="#" onclick="changeUrl(<?php echo $data->id;?>,'<?php echo $data->profile->url; ?>')">  <i class="icon-globe">  </i>  Modificar URL</a></li>
      <?php  }     ?>
         

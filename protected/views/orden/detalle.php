@@ -320,7 +320,7 @@ $tracking=$orden->getTrackingInfo();
               <span class="locality"><?php echo $direccionEnvio->dirUno.", ".$direccionEnvio->dirDos; ?>.</span>
               <span class="locality"><?php echo $ciudad_envio->nombre ?>, <?php echo $provincia_envio->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
-          <?php    if(isset($direccionEnvio->codigoPostal)){?>
+          <?php    if(isset($direccionEnvio->codigoPostal)){?> 
               <div><strong>Código Postal: </strong><?php echo $direccionEnvio->codigoPostal->codigo; ?></div>
            <?php }?>
             </div>

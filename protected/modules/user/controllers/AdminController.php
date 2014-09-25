@@ -34,7 +34,7 @@ class AdminController extends Controller
                             'credito','editardireccion',
                             'eliminardireccion','comprafin','mensajes','displaymsj',
                             'invitaciones','porcomprar','seguimiento','balance',
-                            'reporteCSV','usuariosZoho', 'suscritosNl', 'historial','enviarzoho','saveUrl'),                                        
+                            'reporteCSV','usuariosZoho', 'suscritosNl', 'historial','enviarzoho','saveUrl'),                                         
                          
                         'expression' => 'UserModule::isAdmin()',
 

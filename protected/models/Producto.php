@@ -1184,7 +1184,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 			else
 				$criteria->order = "fecha DESC";
 
-		$criteria->addCondition('t.estado = 0');
+		$criteria->addCondition('t.estado = 0'); 
         $criteria->addCondition('t.status = 1');
         
 		$criteria->group = "t.id";

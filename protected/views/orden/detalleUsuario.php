@@ -258,7 +258,7 @@ $usuario = User::model()->findByPk($orden->user_id);
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
              <?php    if(isset($direccionEnvio->codigoPostal)){?>
               <div><strong>Código Postal: </strong><?php echo $direccionEnvio->codigoPostal->codigo; ?></div>
-           <?php }?>
+           <?php }?> 
 
             </div>
            <div class="row-fluid tel pull_left">

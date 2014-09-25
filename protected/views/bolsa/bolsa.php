@@ -392,10 +392,11 @@ $total_productos_look = 0;
           <?php
                 }// if de productos individuales
                 else
-                { 
-                     $mensaje = $bolsa->admin ? Yii::t('contentForm', 'The bag is empty')
-                      :  Yii::t('contentForm', 'What are you waiting for? Looks amazing clothes and waiting for you');   
-
+                {
+                     if($num==0){ // si no hay looks tampoco	 
+                     	$mensaje = $bolsa->admin ? Yii::t('contentForm', 'The bag is empty')
+                      	:  Yii::t('contentForm', 'What are you waiting for? Looks amazing clothes and waiting for you');   
+					 }
 				$bolsa_id=Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id))->id;
 				if(BolsaHasProductotallacolor::model()->findByAttributes(array('bolsa_id'=>$bolsa_id))=="")
 					echo "<h4 class='braker_bottom margin_top'>{$mensaje}</h4>";

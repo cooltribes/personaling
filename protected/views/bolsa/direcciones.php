@@ -234,36 +234,22 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               	?>
                 
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-            
-            
-            
-            <div class="control-group"> 
-            
-              <div class="controls">
-              	
-              	 
- 	 			 
- 	 			
- 	 		
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
-              </div>
-            </div>
-            <div class="control-group"> 
-              <div class="controls">            	            	
-		            <?php $this->widget('bootstrap.widgets.TbButton', array(
-		            'buttonType'=>'submit',
-		            'type'=>'danger',
-		            'size'=>'large',
-		            'label'=>'Guardar en mis direcciones',
-		            'id'=>'agregar',
-		            'htmlOptions' => array('class'=> 'span4 no_margin_left'),
-			        )); 				
-			        ?>
+                 <div class="controls margin_top_large">                             
+                    <?php $this->widget('bootstrap.widgets.TbButton', array(
+                    'buttonType'=>'submit',
+                    'type'=>'danger',
+                    'size'=>'large',
+                    'label'=>'Guardar en mis direcciones',
+                    'id'=>'agregar',
+                    'htmlOptions' => array('class'=> 'span4 no_margin_left'),
+                    ));                 
+                    ?>
                </div>
-            </div>  
-        	
+              </div>
+            </div>
+            
+            
+           
         
 
            

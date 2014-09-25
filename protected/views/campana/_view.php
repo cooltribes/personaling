@@ -1,6 +1,6 @@
  <tr>
       <td><input name="check" type="checkbox" value=""></td>
-      <td><?php echo $data->id; $ID=$data->id;?></td>
+      <td><?php echo $data->id; ?></td>
       <td><h4><?php echo $data->nombre; ?></h4></td>
       <td>
       	<?php
@@ -93,20 +93,6 @@
           <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             <li><a title="ver" onclick="ver_campana(<?php echo $data->id; ?>)" style="cursor: pointer;"> <i class="icon-eye-open"> </i> Ver</a></li>
             <li><?php echo CHtml::link('<i class="icon-edit"> </i> Editar', $this->createUrl('edit', array('id'=>$data->id))); ?></li>
-            <?php 
-            if($data->activo=="1")
-            { 
-            ?>
-           		<li><a title="Desactivar Campaña" onclick="callModal('<?php echo $data->id; ?>', 0);" style="cursor: pointer;"> <i class="icon-pencil"> </i> Desactivar Campaña</a></li>
-           	<?php 
-			}
-			else 
-			{
-			?>
-				<li><a title="Activar Campaña" onclick="callModal('<?php echo $data->id; ?>', 1);" style="cursor: pointer;"> <i class="icon-pencil"> </i> Activar Campaña</a></li>
-			<?php
-			}
-           	?>
             <!-- <li><a title="Pausar" href="admin_anadir_campana.php"> <i class="icon-pause"> </i> Pausar</a></li> -->
             <!-- <li><a title="Play" href="admin_anadir_campana.php"> <i class="icon-play"> </i> Reanudar</a></li> -->
             <!-- <li class="divider"></li> -->
@@ -115,14 +101,8 @@
         </div></td>
     </tr>
     
-    <?php 
-
-    ?>
-     
-
-
 <script>
-	function get_ps(campana_id){ 
+	function get_ps(campana_id){
 		$.ajax({
 	        type: "post",
 	        dataType: 'html',
@@ -147,6 +127,4 @@
 	       	}//success
 	       });
 	}
-	
-		
 </script>

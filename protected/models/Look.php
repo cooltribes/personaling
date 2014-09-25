@@ -31,6 +31,7 @@
  * @property string $approved_on
  * @property string $tipoDescuento -> 0: porcentaje | 1: monto
  * @property string $valorDescuento
+ * @property integer $available
  *
  * The followings are the available model relations:
  * @property LookHasTblBolsa[] $lookHasTblBolsas
@@ -91,6 +92,14 @@ class Look extends CActiveRecord
                 'condition'=>'status=1',
                 
             ),
+            'availables'=>array(
+                'condition'=>'available=1',
+                
+            ),
+            'unavailables'=>array(
+                'condition'=>'available=0',
+                
+            ),
            
         );
     }	 
@@ -111,6 +120,7 @@ class Look extends CActiveRecord
 			array('altura, contextura, pelo, ojos, tipo_cuerpo, piel', 'numerical','min'=>1,'tooSmall' => 'Debe seleccionar por lo menos un(a) {attribute}','on'=>'update'),
 			array('has_ocasiones','required','on'=>'update','message'=> 'Al menos debes elegir una ocasión'),
 			array('view_counter','numerical', 'integerOnly'=>true,'on'=>'increaseview'),
+			array('available','numerical', 'integerOnly'=>true),
 			array('view_counter','required','on'=>'increaseview'),
 			array('tipoDescuento','numerical', 'integerOnly'=>true,'on'=>'descuento'),
 			array('valorDescuento','numerical', 'integerOnly'=>false,'on'=>'descuento'),
@@ -174,6 +184,7 @@ class Look extends CActiveRecord
 			'campana_id' => 'Campaña',
 			'has_ocasiones' => 'Ocasiones',
 			'user_id'=>'Usuario',
+			'available'=>'Disponible',
 			'url_amigable' => 'Url Amigable',
                         'sent_on' => 'Fecha de envío',
                         'approved_on' => 'Fecha de aprobación',
@@ -330,6 +341,7 @@ class Look extends CActiveRecord
                 $criteria->compare('modified_on',$this->modified_on);
                 $criteria->compare('tipoDescuento',$this->tipoDescuento);
                 $criteria->compare('valorDescuento',$this->valorDescuento);
+                $criteria->compare('available',$this->available);
 		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -1219,6 +1231,26 @@ class Look extends CActiveRecord
         if ($num) $encoded = $alphabet[$num] . $encoded;
 
         return $encoded;
+    }
+    
+    public function countAvailableProducts(){
+        $count=0;    
+        foreach($this->lookhasproducto as $lhp){
+            $ptc=PrecioTallaColor::model()->findByAttributes(array('producto_id'=>$lhp->producto_id,'color_id'=>$lhp->color_id));
+            if($ptc->cantidad>0){
+                $count++;       
+            }
+        }
+        return $count;
+    }
+    
+    public function updateAvailability(){
+        if($this->countAvailableProducts<3)
+            $this->available=0;
+        else
+            $this->available=1;
+        return $this->save();
+        
     }
 	
 }

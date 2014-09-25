@@ -1,10 +1,11 @@
-<?php 
+<?php
 /* @var $this CampanaController */
 
 $this->breadcrumbs=array(
 	'Campañas',
 );
 ?>
+
 <div class="container margin_top">
   <div class="page-header">
     <h1>Administrar Campañas</h1>
@@ -285,63 +286,6 @@ $template = '{summary}
 </div>
 <!------------------- MODAL WINDOW OFF ----------------->
 
-<?php
-
-    
-  $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'DisabledCampaign','htmlOptions'=>array('class'=>'modal hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
-
-<div class="modal-header">
-        <h3 ><?php echo Yii::t('contentForm','Important');?></h3>
- </div>
-  <div class="modal-body">
- 		 <h3><?php echo Yii::t('contentForm','Do you want to disable this campaign?');?></h3>
-
- 		 
-  </div>
-  
-  <div class="modal-footer">
-  	<div class="row-fluid">
- 		 	<div class="span6" align="center">
- 		 		<button class="btn btn-danger closeModal" data-dismiss="modal" aria-hidden="true" onclick="changeCampaign('1')"><i class='icon-thumbs-up icon-white'></i> Si</button>
- 		 	</div>
- 		 	<div class="span6" align="center">
- 		 		<button class="btn btn-danger closeModal" data-dismiss="modal" aria-hidden="true" onclick="changeCampaign('0')"><i class='icon-thumbs-down icon-white'></i> No</button>
- 		 	</div>
- 		 </div>
-  	
-  </div>
-
-
-<?php $this->endWidget(); 
-echo CHtml::hiddenField('toDisable','');
-
-  $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'EnabledCampaign','htmlOptions'=>array('class'=>'modal hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true')));
-?>
-<div class="modal-header">
-        <h3 ><?php echo Yii::t('contentForm','Important');?></h3>
- </div>
-  <div class="modal-body">
- 		 <h3><?php echo Yii::t('contentForm','Do you want to enable this campaign?');?></h3>
-
- 		 
-  </div>
-  
-  <div class="modal-footer">
-  	<div class="row-fluid">
- 		 	<div class="span6" align="center">
- 		 		<button class="btn btn-danger closeModal" data-dismiss="modal" aria-hidden="true" onclick="changeCampaign('3')"><i class='icon-thumbs-up icon-white'></i> Si</button>
- 		 	</div>
- 		 	<div class="span6" align="center">
- 		 		<button class="btn btn-danger closeModal" data-dismiss="modal" aria-hidden="true" onclick="changeCampaign('4')"><i class='icon-thumbs-down icon-white'></i> No</button>
- 		 	</div>
- 		 </div>
-  	
-  </div>
-
-
-<?php $this->endWidget(); ?>
-
-
 <script>
 	function ver_campana(id_campana){
 		var path = location.pathname.split('/');
@@ -359,34 +303,5 @@ echo CHtml::hiddenField('toDisable','');
 	$('#search-form').submit(function () {
 		 return false;
 		});
-		
-		function callModal(id, valor)
-		{
-			$('#toDisable').val(id);
-			if(valor==0)
-				$('#DisabledCampaign').modal();
-			else
-				$('#EnabledCampaign').modal();
-		
-			
-		}
-		
-		function changeCampaign(respuesta){
-		
-				var id= $('#toDisable').val();
-				$.ajax({
-                        type: "post", 
-                        url: "<?php echo Yii::app()->createUrl('Campana/changeCampaign') ?>",
-                        data:{
-							respuesta:respuesta,id:id,
-						 },
-                        success: function (data) {
-                        	if(data=="ok")     
-                         		location.reload();
-                         }
-                   });
-                   
- 		
- 	}
-			
+	
 </script>

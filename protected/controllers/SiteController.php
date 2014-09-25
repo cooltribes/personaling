@@ -204,10 +204,10 @@ class SiteController extends Controller
                 
 		$this->render('top',array(
 					'dataProvider' => $looks->masvendidos(3),
-					'dataProvider_productos' => $productos->masvendidos(6),
+					'destacados' => $productos->destacados(6),
 					'dataProvider_destacados' => $looks->lookDestacados(3),
 					'user'=>$user,
-                                        'psDestacados' => $psDestacados,//->getPsDestacados(4),
+					'psDestacados' => $psDestacados,//->getPsDestacados(4),
 				));
 	}	
 

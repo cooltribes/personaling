@@ -291,14 +291,82 @@ $template = '{summary}
   </div>                    
 
 <?php $this->endWidget()?>
+<?php 
+echo CHtml::hiddenField('UrlText','');
+echo CHtml::hiddenField('UrlId','');
+$this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'changeUrl','htmlOptions'=>array('class'=>'modal hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+
+<div class="modal-header">
+          <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 ><?php echo Yii::t('contentForm','Personal Shopper URL');?></h3>
+ </div>
+  <div class="modal-body">
+         <small><?php echo Yii::t('contentForm','Only can be used alphanumeric characters, hyphen (-) and underscore (_).');?></small>
+        <?php echo CHtml::TextField('url','',array('id'=>'url','class'=>'span5 margin_top_small','placeholder'=>'Escribe el alias para tu Url'));?>
+         <span id="errorUrl" class="error margin_top_small_minus hide"><br/><small>Formato no válido, evita el uso de caracteres especiales y espacios en blanco.</small></span>
+  </div>
+  <div class="modal-footer">
+    <div class="row-fluid">
+            <div class="span6" align="center">
+                <button class="btn closeModal" data-dismiss="modal" aria-hidden="true" >Cancelar</button>
+            </div>
+            <div class="span6" align="center">
+                <button class="btn btn-danger closeModal" data-dismiss="modal" aria-hidden="true" id="saveUrl" disabled="true" onclick="saveUrl()">Guardar</button>
+            </div>
+         </div>
+    
+  </div>
+
+
+<?php $this->endWidget(); ?>
+
+
+
 <script>
 	$('#search-form').attr('action','');
 	$('#search-form').submit(function () {
 		 return false;
 		});
 	
+ $('body').on('input','#url', function() { 
+     var reg=/^[A-Za-z0-9_-]+$/;
+     if(reg.test($(this).val())){
+         $('#errorUrl').hide();
+         $('#saveUrl').attr('disabled',false);
+     }
+     else{
+         $('#saveUrl').attr('disabled',true);
+         $('#errorUrl').show();
+         if(!reg.test($(this).val().substring($(this).val().length-2,$(this).val().length-1)))
+            $(this).val($(this).val().substring(0, $(this).val().length- 1));
+     }
+        
+        
+     });	
+	
 </script>
 <script >
+function changeUrl(id, url){
+    $('#changeUrl').modal();
+    $('#UrlText').val(url);
+    $('#url').val(url);
+    $('#UrlId').val(id);     
+}
+function saveUrl(){
+    var url=$('#url').val();
+    var id=$('#UrlId').val();
+    $.ajax({
+            type: "post",
+            'url' :'admin/saveUrl',
+            data: { 'url':url,
+            'id':id},  
+            'success': function(data){ 
+              
+               window.location.reload();  
+            },
+            'cache' :false});
+    
+}
 function modal(id){
 
 	$.ajax({

@@ -394,7 +394,7 @@ $total_productos_look = 0;
                 else
                 {
                      if($num==0){ // si no hay looks tampoco	 
-                     	$mensaje = $bolsa->admin ? Yii::t('contentForm', 'The bag is empty')
+                     	$mensaje = $bolsa->admin ? Yii::t('contentForm', 'The bag is empty') 
                       	:  Yii::t('contentForm', 'What are you waiting for? Looks amazing clothes and waiting for you');   
 					 }
 				$bolsa_id=Bolsa::model()->findByAttributes(array('user_id'=>Yii::app()->user->id))->id;

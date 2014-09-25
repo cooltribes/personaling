@@ -93,7 +93,6 @@ return array (
      'Create your Look here' => 'Crea tus Looks aquí',
      'Color' => 'Color',
      'Courier delivery' => 'Transportista',
-     'Confirm' => 'Confirmar',
      'Confirm <br>purchase' => 'Confirmar <br/>Compra',
      'Current state' => 'Estado Actual',
      'Confirm your credentials' => 'Confirma tus datos',
@@ -121,7 +120,6 @@ return array (
      'Decorations' => 'Adornos',
      'Discount' => 'Descuento',
      'Document' => 'Documento',
-     'Do you really want to pull this look out from your cart?'=>'Realmente deseas eliminar este look de tu carrito?',
      'Documents' => 'Documentos',
 
      'Edit' => 'Editar',
@@ -201,7 +199,6 @@ return array (
      'No messages have been posted' => 'No se han enviado mensajes',
      'Nro. looks' => 'No. de looks',
      'Nro. items' => 'No. de Prendas',
-     'No, thanks.' => 'No, gracias.',
      'No elements to show'=>'No existen elementos para mostrar',
      'Number' => 'Número',
  
@@ -224,9 +221,7 @@ return array (
      'Order for the user' => 'Pedido para el usuario',
      'Order is process' => 'Pedido en proceso',
      'Output' => 'Salida',
-     'Outstanding Items' => 'Productos destacados',
      'Our deliveries through' => 'Nuestros envíos se realizan a través de',
-     'Only can be used alphanumeric characters, hyphen (-) and underscore (_).'=>'Sólo puedes usar letras, números, guión (-) o underscore (_).',
      'On this look' => 'En este look',
      
      'P.S' => 'P.S',
@@ -243,7 +238,6 @@ return array (
      'Payment Method Selected' => 'Método de Pago Seleccionado',
      'Payment <br> method' => 'Método <br> de Pago',
      'Pending payment' => 'Pendientes por pagar',
-     'Personal Shopper URL'=>'Url de Personal Shopper',
      'Pending confirmation' => 'Pendientes por confirmar',
      'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
                 <b>Atrás</b> en tu navegador',
@@ -378,7 +372,6 @@ return array (
      'Value for returned shipping' => 'Monto por envío devuelto',
 
      'Year' => 'Año',
-     'Yes, I do'=>'Si, por favor',
      'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => 'Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.com<br/> Valida tu cuenta haciendo click en el enlace que aparece a continuación:',   
      'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',

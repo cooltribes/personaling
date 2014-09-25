@@ -199,15 +199,6 @@ class PrecioTallaColor extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-	
-	public function afterSave()
-    {
-        $this->updateLooksAvailability();        
-        return parent::afterSave();         
-    
-    }
-	
-	
 	protected function afterFind(){
 		
    //$this->day = date('d', strtotime($this->birthday));
@@ -232,13 +223,4 @@ class PrecioTallaColor extends CActiveRecord
 		else
 			return;
 	}
-    
-    public function updateLooksAvailability(){
-        $lhps=LooksHasProducto::model()->findAllByAttributes(array('color_id'=>$this->color_id,'producto_id'=>$this->producto_id));
-        foreach($lhps as $lhp){
-            $look=Look::model()->findByPk($lhp->look_id);
-            $look->updateAvailability();
-        }
-    }
-    
 }

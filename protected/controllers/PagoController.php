@@ -510,9 +510,8 @@ class PagoController extends Controller
 //            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
             Yii::app()->mail->send($message);
         }
-        
-<<<<<<< HEAD
-=======
+
+
         /**
          * This action is used for paying the PersonalShoppers with the monthly
          * earnings.
@@ -552,6 +551,6 @@ class PagoController extends Controller
             
         }
 
-        
->>>>>>> 6be166c126689336c67f5f4c420ff0b74ece538b
+
+
 }

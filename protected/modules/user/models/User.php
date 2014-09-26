@@ -914,10 +914,6 @@ class User extends CActiveRecord {
 			$user=User::model()->findByPk($id);
 			return $user->personal_shopper;
 		}
-<<<<<<< HEAD
-                
-                
-=======
 
     /*
      * Function for calculate all external references to a look from a PS
@@ -960,12 +956,17 @@ class User extends CActiveRecord {
      * @param string $to
      * @return float
      */
-    function getLookViewsPercentage($from,$to, $total){
-        
-        $totalMensual = $this->getLookReferredViewsByDate($from, $to);
-        $porcentaje = $totalMensual / $total;
+    function getLookViewsPercentage($from,$to, $total, $format=true){
+
+        $monthTotal = $this->getLookReferredViewsByDate($from, $to);
+        $percentage = $monthTotal / $total;
+        if ($format)
+            return Yii::app()->numberFormatter->format("#,##0.00%",$percentage);
+        else
+            return $percentage;
+
     }
->>>>>>> 6be166c126689336c67f5f4c420ff0b74ece538b
+
         /* 
          * Buscar la ultima orden del usuario y ver si fue hace menos de un minuto
          * Se usa para validar que no se hagan compras seguidas por error.

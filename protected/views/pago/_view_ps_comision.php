@@ -1,4 +1,9 @@
-<?php  ?>
+<?php  
+
+// This code is supposed to be in the controller, or maybe in the model, but it's 
+// needed to be writen here because there is no other way to send
+
+?>
 
 
 <?php if ($data->status == 0) { ?>
@@ -11,7 +16,7 @@
     <!--IMAGEN-->    
     <td>
         <?php
-        // <img src="images/kitten.png" width="70" height="70" alt="avatar">
+        
         echo CHtml::image($data->getAvatar(), 'Avatar', array("width" => "70", "height" => "70"));
         ?>
     </td>
@@ -54,14 +59,16 @@
     <!--Visitas TOTALES-->
     <td>
         <?php
-            echo $data->getLooksVendidos();
+            echo $data->getLookReferredViews();
         ?>
     </td>
     
     <!--VISITAS MES ACTUAL-->
     <td>
         <?php 
-            echo $data->getProductosVendidos();
+        // if there is at least one payment in the table
+            echo $this->_lastDate ? $data->getLookReferredViewsByDate(
+                    $this->_lastDate, date("Y-m-d")) : $data->getLookReferredViews();
 
         ?>
     </td>
@@ -69,8 +76,9 @@
     <!--PORCENTAJE COMISION-->
     <td>
         <?php 
-            echo "2 %";
-//            echo $data->getLookViewsPercentage()."2 %";
+            echo $this->_lastDate ? $data->getLookViewsPercentageByDate(
+                    $this->_totallooksviews, date("Y-m-d")) : 
+                $data->getLookViewsPercentage($this->_totallooksviews);
         ?>
     </td>
     
@@ -84,10 +92,9 @@
            "id" => $data->id,
        ));
        //aqui va el porcentaje de comision
-       echo CHtml::hiddenField("percentage-$data->id", 0.2, array(           
-//           "id" => "amount-$data->id",
-           
-       ));
+       echo CHtml::hiddenField("percentage-$data->id", $this->_lastDate ?
+               $data->getLookViewsPercentageByDate($this->_totallooksviews, date("Y-m-d"), false)
+               : $data->getLookViewsPercentage($this->_totallooksviews, false));
        
        ?>                    
     </td>    

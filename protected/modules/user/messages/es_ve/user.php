@@ -14,6 +14,7 @@ return array(
     'Logout' => 'Cerrar sesión',
     'username' => "Nombre de Usuario",
     'username or email' => "Nombre de Usuario o Correo Electrónico",
+    'Email or Password Incorrect.'=>'Email o Contraseña incorrecta',
     'If you don\'t have an account' => 'Si no tienes cuenta',
     'password' => 'Contraseña',
     'old password' => 'Contraseña vieja',

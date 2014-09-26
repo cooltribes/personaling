@@ -168,6 +168,7 @@ Yii::app()->clientScript->registerScript('search', "
 <!-- /container -->
 <script>
 
+var validSubmit = false;
 
 /* Funcion para cambiar los montos que le corresponden a cada PS de acuerdo al 
  * monto ingresado en el campo #monthlyEarning
@@ -191,20 +192,23 @@ function cambiarMontosEnTabla(e){
 /*Action when the form pago-form is submitted*/
 function formSubmit(e){
     
-    e.preventDefault();    
-    bootbox.confirm("Se realizará el pago a todas las personal shoppers en\n\
-        Personaling, ¿Deseas continuar?",
-        function(result) {
+    if(!validSubmit){
+        
+        e.preventDefault();    
+        bootbox.confirm("Se realizará el pago a todas las personal shoppers en\n\
+            Personaling, ¿Deseas continuar?",
+            function(result) {
 
-            if(result){
+                if(result){
+                    validSubmit = true;
+                    $('body').addClass("aplicacion-cargando");
+                    $('form#pago-form').submit();
 
-                $('body').addClass("aplicacion-cargando");
-                $('form#pago-form').submit();
-                
+                }
+
             }
-            
-        }
-    );
+        );
+    }
         
 }
 

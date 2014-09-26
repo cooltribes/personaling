@@ -99,4 +99,23 @@ class AffiliatePayment extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+        
+        /**
+         * Method for retrieve the last payment to Personal Shoppers so we can
+         * know from what date we need to compute the views and commissions.
+         */
+        
+        public static function findLastDate(){
+            
+            $payment = self::model()->findAll(array('order' => 'created_at DESC',
+                'limit' => '1'));
+            
+            if($payment)
+                return $payment->created_at;
+            else
+                return null;
+                
+            
+        }
+        
 }

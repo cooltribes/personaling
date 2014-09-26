@@ -37,7 +37,8 @@ $this->breadcrumbs = array(
 
         <fieldset>
             <legend><?php echo Yii::t('contentForm','Buy Gift Card'); ?></legend>
-
+<div class="row margin_top">
+    <div class="span6">
             <div>
                 <p class="lead">1. <?php echo Yii::t('contentForm','Select a design for the Gift Card'); ?></p>
                 <ul class="thumbnails" id="plantillas">
@@ -68,7 +69,7 @@ $this->breadcrumbs = array(
             </div>	
 
 
-            <div class="row margin_top">
+            
                 <div class="span6">	
                     <p class="lead">3. <?php echo Yii::t('contentForm','Customize it'); ?></p>                                       
 
@@ -123,7 +124,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
 
                     </div>      
 
-
+</div>
 
                 </div>	
                 <div class="span5 box_shadow_personaling padding_medium">
@@ -154,13 +155,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
                     </div>
                 </div>
             </div>
-            <div class="control-group row margin_top">
-                <div class="controls pull-right"> 
-
-
-
-                </div>
-            </div>			
+           		
         </fieldset>
 
 <?php $this->endWidget(); ?>

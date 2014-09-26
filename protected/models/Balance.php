@@ -33,6 +33,7 @@
   * 7: Retiro de dinero por pago a PS
   * 8: Reintegro de dinero por pago rechazado a PS
   * 9: Saldo por cobro tipo "agregar al balance" para PS 
+  * 10: Saldo por pago de comision de productos externos para PS 
   */
  
 class Balance extends CActiveRecord

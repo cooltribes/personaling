@@ -1258,6 +1258,7 @@ public function actionCategorias2(){
                 $sort->applyOrder($criteria);
 
                 $criteria->compare('status', 2);
+                Yii::app()->session['order']=rand(0,8);
                 $criteria->order = $orden[Yii::app()->session['order']];
                 
                 $total = Look::model()->count($criteria);

@@ -2032,11 +2032,10 @@ public function actionReportexls(){
 				
 				if(isset($r)){
 					foreach($r as $cadauno){
-						$borr = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$idProducto,'tbl_categoria_id'=>$cadauno));
-
+						$borr = CategoriaHasProducto::model()->findByAttributes(array('tbl_categoria_id'=>$cadauno));
+						
 						if(isset($borr))
-							if (!$borr->delete())
-                                Yii::trace('ProductoController.php:2039, Error:'.print_r($borr->getErrors(), true), 'registro');
+							$borr->delete();
 					
 					}
 					
@@ -2051,7 +2050,7 @@ public function actionReportexls(){
 						$prodCat = new CategoriaHasProducto;
 						$prodCat->tbl_categoria_id = $separa[1]; //id Categoria cambia en el foreach
 						$prodCat->tbl_producto_id = $idProducto; // producto igual para todos
-
+										
 						$prodCat->save();
 						//Producto::model()->updateByPk($id, array('estado'=>'0'));					
 					}	
@@ -2322,11 +2321,9 @@ public function actionReportexls(){
                     $sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
 
                     //Esto no se pa que es
-                    /*
                     $anterior;
                     $pr_id;                   
-                    // RAFA: comments this two line
-                    */
+                    
                     /*
                     Para el MasterData en la BD
                      */                    
@@ -2349,10 +2346,8 @@ public function actionReportexls(){
 					
                     // segundo foreach, si llega aqui es para insertar y todo es valido
                     foreach ($sheet_array as $row) {
-                       	/*
+                       	
                   		$preciotalla;
-                       	// RAFA: Comments this line
-                       	*/
 						 
                        	if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
                             

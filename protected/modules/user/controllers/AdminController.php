@@ -23,7 +23,7 @@ class AdminController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(
+		return array( 
                     array('allow', // allow admin user to perform 'admin' and 'delete' actions
                         'actions'=>array('admin','delete','create','update',
                             'view','corporal','estilos','pedidos','carrito',
@@ -34,8 +34,8 @@ class AdminController extends Controller
                             'credito','editardireccion',
                             'eliminardireccion','comprafin','mensajes','displaymsj',
                             'invitaciones','porcomprar','seguimiento','balance',
-                            'reporteCSV','usuariosZoho', 'suscritosNl', 'historial','enviarzoho'),                                        
-                        
+                            'reporteCSV','usuariosZoho', 'suscritosNl', 'historial','enviarzoho','saveUrl'),                                         
+                         
                         'expression' => 'UserModule::isAdmin()',
 
                     ),
@@ -2869,6 +2869,28 @@ class AdminController extends Controller
 			));     
 			
 		}
+        
+        public function actionSaveUrl(){
+            if (Yii::app()->request->isPostRequest) {
+                    
+                $profile=Profile::model()->findByPk($_POST['id']);
+                $profile->url=$_POST['url'];
+                if($profile->save()){
+                     Yii::app()->user->setFlash('success',"El alias de Url de ".$profile->first_name." ".$profile->last_name." se ha modificado a ".$profile->url);
+                     echo json_encode(array(
+                        'status' => 'ok',                                              
+                     ));
+                }else{
+                    Yii::app()->user->setFlash('error', "El alias de Url de ".$profile->first_name." no pudo modificarse");
+                     echo json_encode($profile->errors);
+                }
+                    
+                    
+               
+            }
+             else
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
 
 
 

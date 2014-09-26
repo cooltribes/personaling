@@ -688,7 +688,7 @@ public function actionColores(){
 	Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 	
 	$productos = Producto::model()->with(array('preciotallacolor'=>array('condition'=>'color_id='.$_POST['colores'])))->findAll();
-	echo $this->renderPartial('_view_productos',array('productos'=>$productos,'page'=>1,'pages'=>1),true,true);
+	echo $this->renderPartial('_view_productos',array('productos'=>$productos,'page'=>1),true,true);
 	
 }
 public function actionCategorias(){
@@ -840,7 +840,7 @@ public function actionCategorias(){
 			Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 			Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
 		 	
-		 	echo $this->renderPartial('_view_productos',array('productos'=>$productos,'page'=>1,'pages'=>1),true,true);
+		 	echo $this->renderPartial('_view_productos',array('productos'=>$productos,'page'=>1),true,true);
 		  
 	}
 
@@ -2225,26 +2225,6 @@ public function actionCategorias(){
 		
 				}				
 				$result['status'] = "4";
-			}
-			else if($accion=="Destacar")
-			{
-				foreach($checks as $id){
-					$model = Look::model()->findByPk($id);
-					$model->destacado=1;
-					Look::model()->updateByPk($id, array('destacado'=>'1'));
-		
-				}				
-				$result['status'] = "5";
-			}
-			else if($accion=="Quitar Destacado")
-			{
-				foreach($checks as $id){
-					$model = Look::model()->findByPk($id);
-					$model->destacado=0;
-					Look::model()->updateByPk($id, array('destacado'=>'0'));
-		
-				}				
-				$result['status'] = "6";
 			}
 		}
 		else {

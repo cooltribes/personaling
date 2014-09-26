@@ -229,9 +229,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             </div>	
                         </div>
                     </div>
-                <?php }		
-				?>
+                <?php } ?>
                 
+
                 <?php 
                 //Banking Card Aztive
                 if(Yii::app()->params['metodosPago']['bkCard']){ 

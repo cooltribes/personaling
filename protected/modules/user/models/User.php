@@ -921,7 +921,7 @@ class User extends CActiveRecord {
      *
      */
 
-        function getLookReferredViews(){
+    function getLookReferredViews(){
             $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
             $match = addcslashes($match, '%_');
             return ShoppingMetric::model()->count(
@@ -948,6 +948,25 @@ class User extends CActiveRecord {
             )
         );
     }
+    
+    /**
+     * 
+     * 
+     * @param string $from
+     * @param string $to
+     * @return float
+     */
+    function getLookViewsPercentage($from,$to, $total, $format=true){
+
+        $monthTotal = $this->getLookReferredViewsByDate($from, $to);
+        $percentage = $monthTotal / $total;
+        if ($format)
+            return Yii::app()->numberFormatter->format("#,##0.00%",$percentage);
+        else
+            return $percentage;
+
+    }
+
         /* 
          * Buscar la ultima orden del usuario y ver si fue hace menos de un minuto
          * Se usa para validar que no se hagan compras seguidas por error.
@@ -963,14 +982,7 @@ class User extends CActiveRecord {
             }
             
             $haceUnMinuto = time() - 60;
-            $fechaOrden = strtotime($orden->fecha);            
-                
-//            echo "<br>";
-//            echo "<br>unmi ". $haceUnMinuto;
-//            echo "<br>orden ". $fechaOrden;
-//            
-//            Yii::app()->end();
-            
+            $fechaOrden = strtotime($orden->fecha);    
             
             return  $fechaOrden >= $haceUnMinuto;            
             

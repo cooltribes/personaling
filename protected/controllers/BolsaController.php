@@ -1386,11 +1386,12 @@ class BolsaController extends Controller
 			"CardNumber"=>$tarjeta->numero, // NUMERO DE TARJETA
 			"CVC"=>"".$tarjeta->codigo, //CODIGO DE SEGURIDAD
 			"ExpirationDate"=>$tarjeta->vencimiento, // FECHA DE VENCIMIENTO
-			"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
+			"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR 
+			"IP"=>$_SERVER['REMOTE_ADDR'],
 			"Address"=>$tarjeta->direccion, // DIRECCION
 			"City"=>$tarjeta->ciudad, // CIUDAD
 			"ZipCode"=>$tarjeta->zip, // CODIGO POSTAL
-			"State"=>$tarjeta->estado, //ESTADO
+			"State"=>$tarjeta->estado, //ESTADO 
 		);
 		$output = Yii::app()->curl->putPago($data_array); // se ejecuto
 		Yii::trace('realizo cobro, return:'.print_r($output, true), 'registro');
@@ -1463,6 +1464,7 @@ class BolsaController extends Controller
 								"CVC"=>"".$tarjeta->codigo, //CODIGO DE SEGURIDAD
 								"ExpirationDate"=>$tarjeta->vencimiento, // FECHA DE VENCIMIENTO
 								"StatusId"=>"2", // 1 = RETENER 2 = COMPRAR
+								"IP"=>$_SERVER['REMOTE_ADDR'],
 								"Address"=>$tarjeta->direccion, // DIRECCION
 								"City"=>$tarjeta->ciudad, // CIUDAD
 								"ZipCode"=>$tarjeta->zip, // CODIGO POSTAL

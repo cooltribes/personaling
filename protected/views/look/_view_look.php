@@ -1,5 +1,6 @@
 <tr>
-    <td><input name="check" type="checkbox" value="" id=<?php echo $data->id; ?>></td>
+    <!--<td><input name="check" type="checkbox" value="" id=<?php echo $data->id; ?>></td>-->
+<!--    <td width="20%">-->
     <td>
         <strong> <span class="CAPS link-look"><?php        
         
@@ -41,7 +42,10 @@
     <td><?php echo $data->getPrecio(); ?></td>
     <td><?php echo $data->getLookxStatus(3); ?></td>
     <td><?php echo $data->getMontoVentas(); ?></td>
-     <td><?php echo $data->getStatus();echo "\n"; if($data->activo=="1")echo "Activo";else echo "Inactivo"; echo "\n"; if($data->destacado=="1")echo "Destacado";else echo "No Destacado";?></td>
+    <td><?php echo $data->getStatus();
+        echo "\n";
+        if ($data->activo == "1") echo "Activo";
+        else echo "Inactivo"; ?></td>
     <td><?php echo $data->created_on; ?></td>
     <td> <?php $camp = Campana::model()->findByPk($data->campana_id);
         echo $camp->daysLeft(); ?>
@@ -62,27 +66,10 @@
                                                 
                     )); ?>            
                 </li>
-                 <li>
-                    <?php 
-                    if($data->activo==1)
-					{
-						    echo CHtml::link('<i class="icon-pencil"></i>  Desactivar',
-                            $this->createUrl('look/enabledLook',array('id'=>$data->id)), array(                        
-                   			 )); 
-					}
-					else 
-					{
-							echo CHtml::link('<i class="icon-pencil"></i>  Activar',
-                            $this->createUrl('look/enabledLook',array('id'=>$data->id)), array(                        
-                   			 )); 
-					}
-
-                    
-                    ?>            
-                </li>
                 <li>
                     <?php echo CHtml::link('<i class="icon-eye-open"></i>  Ver en tienda',
-                            $this->createUrl('look/detalle',array('id'=>$data->id)), array(                        
+                            $this->createUrl('look/detalle',array('id'=>$data->id)), array(
+//                        
                     )); ?>            
                 </li>
                 <li>

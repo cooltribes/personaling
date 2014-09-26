@@ -8,11 +8,11 @@ class PagoController extends Controller
 	 */
 	//public $layout='//layouts/column2';
 
+    var $_totallooksviews;
+    
 	/**
 	 * @return array action filters
 	 */
-    public $_totallooksviews;
-
 	public function filters()
 	{
 		return array(
@@ -214,10 +214,6 @@ class PagoController extends Controller
                             
                             $errores .= "</ul>";
                         }
-//                        echo "<pre>";
-//                        print_r($model->getErrors());
-//                        echo "</pre><br>";
-//                        Yii::app()->end();
 
                         Yii::trace('Aceptando pago, Error:'.print_r($model->getErrors(), true), 'Pagos');
                         Yii::app()->user->setFlash("error", "No se pudo registrar el pago." . $errores);                           
@@ -513,7 +509,7 @@ class PagoController extends Controller
 //            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
             Yii::app()->mail->send($message);
         }
-        
+
         /**
          * This action is used for paying the PersonalShoppers with the monthly
          * earnings.
@@ -524,6 +520,63 @@ class PagoController extends Controller
             if(isset($_POST["monthlyEarning"]) && $_POST["monthlyEarning"] > 0){
                 
                 /* TODO: asignar el pago a las personalshoppers segun su comision*/
+                
+                // Get the last date of payment for computing the next period
+                $lastDate = AffiliatePayment::findLastDate();                
+                
+                // if doesn't exist any payment
+                if(!$lastDate){
+                    //get from shoppingmetrics method
+                    $totalViews = 100;
+                    
+                }else{ // if there is at least one payment in the table
+                    
+                    $totalViews = 50;
+                }
+                
+                //find all Personal Shoppers
+                $allPs = User::model()->findAllByAttributes(array("personal_shopper" => 1));
+                
+                foreach ($allPs as $userPs){
+                    
+                    // if the percentage is computed from the beginning or from 
+                    // one specific date
+                    if(!$lastDate){
+//                        $percent = $user->getTotal...
+                        $percent = 0;
+
+                    }else{ // if there is at least one payment in the table
+                        
+                        $percent = $userPs->getLookViewsPercentage($lastDate, date("Y-m-d"), $totalViews);                        
+                    }
+                    
+                    $amountToPay = $_POST["monthlyEarning"] * $percent;
+                    
+                    //Pasar para el saldo
+//                    $saldo = new Balance();
+//                    $saldo->total = $model->monto;
+//                    $saldo->orden_id = $model->id;
+//                    $saldo->user_id = $model->user_id;
+//                    $saldo->admin_id = Yii::app()->user->id;
+//                    $saldo->tipo = 9; //por pago al cobrar agregando al balance
+//                    $saldo->fecha = date("Y-m-d H:i:s");
+//                    if($saldo->save()){
+//                        //enviar email a PS                                
+//                        $this->enviarRespuestaPersonalShopper($model, 1);                        
+//                        Yii::app()->user->setFlash("success", "Se ha registrado el pago exitosamente.");                           
+//
+//                    }
+//                    else
+//                    {
+//                        Yii::trace('Aceptando pago, Error:'.print_r($saldo->getErrors(), true), 'Pagos');
+//                        Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                                                      
+//                    }
+                    
+                    
+                }
+                
+                Yii::app()->end();
+                
                 Yii::app()->user->setFlash("success", "Se ha hecho el pago satisfactoriamente");
                 
             }
@@ -539,15 +592,18 @@ class PagoController extends Controller
                     'pageSize' => Yii::app()->getModule('user')->user_page_size,
                 ),
             ));
+            
+            /*Compute the total views of all PS */
             $match = addcslashes('ps_id":"', '%_');
             $this->_totallooksviews = ShoppingMetric::model()->count(
                 'data LIKE :match',
                 array(':match' => "%$match%")
             );
+            
             $this->render("comision_afiliacion", array(
                 "dataProvider" => $dataProvider,
             ));
+            
         }
 
-        
 }

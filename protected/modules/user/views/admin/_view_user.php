@@ -68,18 +68,21 @@
             <li>
               <?php echo CHtml::link('<i class="icon-refresh">  </i>   Enviar Correo electrónico de Verificación ',array("admin/resendvalidationemail","id"=>$data->id)); ?>
             </li>
-            <?php } ?>
+            <?php } ?> 
       <!-- <li><a title="Reenviar invitacion" href="#">  <i class="icon-refresh">  </i>  Reenviar invitacion</a></li> -->
-            <li><a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a>
-       <li> <?php echo CHtml::link('<i class="icon-shopping-cart">  </i>  Registrar Orden',array("admin/compra","id"=>$data->id)); ?>
-      
+            <li><a title="Cargar Saldo" href="#" onclick='carga(<?php echo $data->id; ?>)'>  <i class="icon-gift">  </i>  Cargar Saldo</a> </li>
+       <li> <?php echo CHtml::link('<i class="icon-shopping-cart">  </i>  Registrar Orden',array("admin/compra","id"=>$data->id)); ?></li>
+        <?php if($data->personal_shopper == 1){ ?> 
+             <li><a href="#" onclick="changeUrl(<?php echo $data->id;?>,'<?php echo $data->profile->url; ?>')">  <i class="icon-globe">  </i>  Modificar URL</a></li>
+     <?php  }     ?>
+        
             <li class="divider"></li>
-      <li><a title="Eliminar" href="#">  <i class="icon-trash">  </i>  Eliminar</a></li>
+      <li><a title="Eliminar" href="#">  <i class="icon-trash">  </i>  Eliminar</a></li> 
           </ul>
         </div>
       <?php if($data->status == 0){ ?>
       <?php } ?>
-      </td>
+      </td> 
     </tr>
     <div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
         </div>

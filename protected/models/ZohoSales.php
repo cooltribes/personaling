@@ -104,10 +104,14 @@ class ZohoSales{
 			$this->actualizarCantidades($orden->id);	
 		
 		$xml .= '<FL val="Grand Total">'.(double)$orden->total.'</FL>'; 
-		$xml .= '</row>';
+		$xml .= '</row>'; 
 		$xml .= '</Invoices>';
 		
-		var_dump($xml);
+		$this->addAddress($orden->user->zoho_id, $orden->user->profile->first_name, $orden->user->profile->last_name, $orden->user->email, $orden->direccionEnvio->dirUno,
+							$orden->direccionEnvio->dirDos, $orden->direccionEnvio->provincia->nombre, $orden->direccionEnvio->myciudad->nombre,
+							$orden->direccionEnvio->pais, $orden->direccionEnvio->codigoPostal->codigo); 
+							
+		//var_dump($xml);
 		//echo htmlspecialchars($xml)."<p><p>";
 		//Yii::app()->end();
 		
@@ -326,5 +330,39 @@ class ZohoSales{
 		// $datos = simplexml_load_string($response);
 	}
 
-
+	function addAddress($id, $first, $last, $email, $rowOne, $rowTwo, $state, $city, $country, $zip){ // add the address to zoho client profile 
+		
+		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml .= '<Contacts>';
+		$xml .= '<row no="1">'; 
+		$xml .= '<FL val="First Name">'.$first.'</FL>';
+		$xml .= '<FL val="Last Name">'.$last.'</FL>';
+		$xml .= '<FL val="Email">'.$email.'</FL>';
+		$xml .= '<FL val="Mailing Street">'.$rowOne.' '.$rowTwo.'</FL>';
+		$xml .= '<FL val="Mailing State">'.$state.'</FL>';
+		$xml .= '<FL val="Mailing City">'.$city.'</FL>';
+		$xml .= '<FL val="Mailing Country">'.$country.'</FL>';
+		$xml .= '<FL val="Mailing Zip">'.$zip.'</FL>'; 
+		$xml .= '</row>';
+		$xml .= '</Contacts>';
+		
+		$url ="https://crm.zoho.com/crm/private/xml/Contacts/updateRecords";
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=2&id=".$id."&xmlData=".$xml;
+				
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+		
+		$response = curl_exec($ch); 
+		curl_close($ch);  
+		
+		//var_dump($response);
+		//Yii::app()->end();
+		
+	}
+	
 }

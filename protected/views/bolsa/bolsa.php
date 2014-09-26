@@ -4,8 +4,13 @@ $this->breadcrumbs=array(
 	Yii::t('contentForm','Bag'),
 );
 
-$this->setPageTitle(Yii::app()->name." - ".Yii::t('contentForm','Your bag'));
-
+$this->setPageTitle(Yii::app()->name." - ".Yii::t('contentForm','Your bag')); ?>
+          <h1 class="margin_bottom_small">
+          <?php echo $bolsa->admin ? "Bolsa de <strong>{$bolsa->user->profile->first_name}
+                        {$bolsa->user->profile->last_name}</strong>"
+                      : Yii::t('contentForm','Your bag');  ?>
+          </h1>
+          <?php
 
 
 if (!Yii::app()->user->isGuest) { // que este logueado
@@ -26,7 +31,7 @@ $total_look = 0;
 $total_productos_look = 0;
 ?>
 
-<div class="container margin_top" id="carrito_compras">
+<div class="container margin_top_large_minus" id="carrito_compras">
   <div class="row margin_bottom_large">
 	
     <div class="span12"> 
@@ -34,11 +39,7 @@ $total_productos_look = 0;
     	
       <div class="row">
         <article class="span7">            
-          <h1>
-          <?php echo $bolsa->admin ? "Bolsa de <strong>{$bolsa->user->profile->first_name}
-                        {$bolsa->user->profile->last_name}</strong>"
-                      : Yii::t('contentForm','Your bag');  ?>
-          </h1>
+
           
           
           <!-- FLASH ON --> 

@@ -127,14 +127,14 @@ class Look extends CActiveRecord
 			array('tipoDescuento, valorDescuento','required','on'=>'descuento'),
 			array('title', 'length', 'max'=>45),
 			array('deleted,deleted_on', 'required', 'on'=>'softdelete'),
-			array('description, created_on, sent_on, approved_on, modified_on', 'safe'),
+			array('description, created_on, sent_on, approved_on, modified_on, activo', 'safe'),
 			array('url_amigable', 'unique', 'message'=>'Url Amigable ya registrada para otro look.'),
 			//array('url_amigable', 'match', 'pattern'=>'/^\w{1}([a-zA-Z_|\-]*[a-zA-Z]+[a-zA-Z_|\-]*)$/', 'message'=>'Url Amigable presenta caracteres no válidos'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched. 
 			array('id, title, description, altura, contextura, pelo, ojos, 
                             tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, 
-                            campana_id, view_counter, url_amigable, sent_on, approved_on, modified_on, tipoDescuento, valorDescuento', 'safe', 'on'=>'search'),
+                            campana_id, view_counter, url_amigable, sent_on, approved_on, modified_on, tipoDescuento, valorDescuento, activo', 'safe', 'on'=>'search'),
 		);
 	}
 

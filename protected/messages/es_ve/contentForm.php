@@ -42,6 +42,7 @@ return array (
      'Amount in' => 'Monto en',
      'Amount Gift Card' => 'Monto de la GiftCard',
      'Amount returned' => 'Monto devuelto',
+     'Amount to pay' => 'Monto a pagar',
      'Authentication' => 'Autenticación',
      'Awaiting confimation' => 'Espera confirmación',
      'Awaiting confirmation deposit'=> 'Depósito en espera de confirmación',
@@ -53,6 +54,8 @@ return array (
      'Avaliable for {user}:' => 'Disponible para {user}:',
      'Active Orders' => 'Pedidos Activos',
      'Ask for Return' => 'Solicitar Devolución',
+     'Assurance' => 'Seguro',
+     
 
 
      'Balance' => 'Saldo',
@@ -126,6 +129,8 @@ return array (
      'Edit shipping address' => 'Editar dirección de envío',
      'Effective date' => 'Fecha de vigencia',
      'Email' => 'Correo electrónico',
+     'Email or Password Incorrect.' => 'Correo electrónico',
+     
      'Empty shopping bag' => 'Vaciar la Bolsa de Compras',
      'Eye Color' => 'Color de Ojos',
      'Expiration' => 'Vencimiento',

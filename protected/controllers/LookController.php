@@ -1260,7 +1260,7 @@ public function actionCategorias(){
 					
 					$user = User::model()->findByPk(Yii::app()->user->id);
 					$criteria=new CDbCriteria;
-					$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" >= recepcion_inicio AND "'.date('Y-m-d H:i:s').'" <= recepcion_fin';
+					$criteria->condition = 'activo=1 AND estado = 2 AND "'.date('Y-m-d H:i:s').'" >= recepcion_inicio AND "'.date('Y-m-d H:i:s').'" <= recepcion_fin';
 					if($user->superuser != '1'){
 						$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
 					}
@@ -1284,7 +1284,7 @@ public function actionCategorias(){
 		} else {
 			$user = User::model()->findByPk(Yii::app()->user->id);
 			$criteria=new CDbCriteria;
-			$criteria->condition = 'estado = 2 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
+			$criteria->condition = 'activo=1 AND estado = 2 AND "'.date('Y-m-d H:i:s').'" > recepcion_inicio AND "'.date('Y-m-d H:i:s').'" < recepcion_fin';
 			if($user->superuser != '1'){
 				$criteria->join = 'JOIN tbl_campana_has_personal_shopper ps ON t.id = ps.campana_id and ps.user_id = '.Yii::app()->user->id;
 			}

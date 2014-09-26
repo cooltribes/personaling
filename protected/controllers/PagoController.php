@@ -32,7 +32,8 @@ class PagoController extends Controller
 				'expression'=>"UserModule::isPersonalShopper()",
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','view', 'detalle'),
+				'actions'=>array('admin','delete','view', 'detalle',
+                                    'comisionAfiliacion'),
 				'expression'=>"UserModule::isAdmin()",
 			),
 			array('deny',  // deny all users
@@ -511,8 +512,7 @@ class PagoController extends Controller
             Yii::app()->mail->send($message);
         }
         
-<<<<<<< HEAD
-=======
+
         /**
          * This action is used for paying the PersonalShoppers with the monthly
          * earnings.
@@ -552,6 +552,4 @@ class PagoController extends Controller
             
         }
 
-        
->>>>>>> 6be166c126689336c67f5f4c420ff0b74ece538b
 }

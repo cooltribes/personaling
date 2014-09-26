@@ -914,10 +914,6 @@ class User extends CActiveRecord {
 			$user=User::model()->findByPk($id);
 			return $user->personal_shopper;
 		}
-<<<<<<< HEAD
-                
-                
-=======
 
     /*
      * Function for calculate all external references to a look from a PS
@@ -965,7 +961,7 @@ class User extends CActiveRecord {
         $totalMensual = $this->getLookReferredViewsByDate($from, $to);
         $porcentaje = $totalMensual / $total;
     }
->>>>>>> 6be166c126689336c67f5f4c420ff0b74ece538b
+
         /* 
          * Buscar la ultima orden del usuario y ver si fue hace menos de un minuto
          * Se usa para validar que no se hagan compras seguidas por error.

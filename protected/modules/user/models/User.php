@@ -956,10 +956,15 @@ class User extends CActiveRecord {
      * @param string $to
      * @return float
      */
-    function getLookViewsPercentage($from,$to, $total){
-        
-        $totalMensual = $this->getLookReferredViewsByDate($from, $to);
-        $porcentaje = $totalMensual / $total;
+    function getLookViewsPercentage($from,$to, $total, $format=true){
+
+        $monthTotal = $this->getLookReferredViewsByDate($from, $to);
+        $percentage = $monthTotal / $total;
+        if ($format)
+            return Yii::app()->numberFormatter->format("#,##0.00%",$percentage);
+        else
+            return $percentage;
+
     }
 
         /* 

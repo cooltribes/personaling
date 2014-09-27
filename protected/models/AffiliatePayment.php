@@ -107,15 +107,14 @@ class AffiliatePayment extends CActiveRecord
         
         public static function findLastPayment(){
             
-            $payment = self::model()->findAll(array('order' => 'created_at DESC',
-                'limit' => '1'));
+            $payment = self::model()->find(array('order' => 'created_at DESC'));           
             
             return $payment ? $payment : null;
         }
         
         public function getAmount($format=true){
            
-            return $format ? Yii::app()->numberFormatter->format("#,##0.00%",$this->amount):
+            return $format ? Yii::app()->numberFormatter->format("#,##0.00",$this->amount):
             $this->amount;            
 
         }

@@ -554,6 +554,10 @@ class PagoController extends Controller
 
                         $amountToPay = $_POST["monthlyEarning"] * $percent;
 
+                        if($amountToPay == 0){
+                            continue;
+                        }
+                        
                         //Register maonthly payment to PS
                         $payToPs = new PayPersonalShopper();
                         $payToPs->user_id = $userPs->id;

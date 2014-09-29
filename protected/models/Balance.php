@@ -17,8 +17,14 @@
  
  //UN BALANCE CON ORDER_ID = 0; REPRESENTA UNA CARGA DE SALDO DESDE ADMIN
 
- /* UN BALANCE CON TIPO = 7 u 8; REPRESENTA UN PAGO O DESCUENTO POR SOLICITUD
+ /* 
+  * UN BALANCE CON TIPO = 7 u 8; REPRESENTA UN PAGO O DESCUENTO POR SOLICITUD
   * DE PS, POR LO TANTO ORDER_ID REPRESENTA EL PAGO AL CUAL ESTA ASOCIADO (tbl_pago)
+  */
+
+ /* 
+  * UN BALANCE CON TIPO = 10; REPRESENTA UN PAGO POR COMISION DE PRODUCTOS EXTERNOS
+  * A PS, POR LO TANTO order_id REPRESENTA EL PAGO AL CUAL ESTA ASOCIADO (tbl_affiliatePayment)
   */
  
  /* TIPO:
@@ -33,6 +39,7 @@
   * 7: Retiro de dinero por pago a PS
   * 8: Reintegro de dinero por pago rechazado a PS
   * 9: Saldo por cobro tipo "agregar al balance" para PS 
+  * 10: Saldo por pago de comision de productos externos para PS 
   */
  
 class Balance extends CActiveRecord

@@ -101,7 +101,8 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),
                     array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'),
                     array('label'=>'Devoluciones', 'url'=>Yii::app()->baseUrl.'/orden/adminDevoluciones'),
-                    array('label'=>'Pagos a Personal Shoppers', 'url'=>Yii::app()->baseUrl.'/pago/admin')
+                    array('label'=>'Pagos a Personal Shoppers', 'url'=>Yii::app()->baseUrl.'/pago/admin'),
+                    array('label'=>'Comisiones por afiliación PS', 'url'=>array('/pago/comisionAfiliacion')),                    
                     )
                 ),
 

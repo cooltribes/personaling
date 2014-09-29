@@ -817,7 +817,7 @@ class User extends CActiveRecord {
             //Balance tipo 5 = por commisiones
             $saldo = Yii::app()->db->createCommand(
                     "SELECT SUM(total) as total FROM tbl_balance WHERE tipo IN
-                     (5, 7, 8)
+                     (5, 7, 8, 10)
                      AND user_id = ".$this->id)
                     ->queryScalar();            
 
@@ -914,10 +914,6 @@ class User extends CActiveRecord {
 			$user=User::model()->findByPk($id);
 			return $user->personal_shopper;
 		}
-<<<<<<< HEAD
-                
-                
-=======
 
     /*
      * Function for calculate all external references to a look from a PS
@@ -952,7 +948,26 @@ class User extends CActiveRecord {
             )
         );
     }
-    
+    /**
+     *
+     *
+     * @param string $from
+     * @param string $to
+     * @param int $total
+     * @param bool $format
+     * @return float
+     *
+     */
+    function getLookViewsPercentageByDate($from,$to, $total, $format=true){
+
+        $monthTotal = $this->getLookReferredViewsByDate($from, $to);
+        $percentage = $total > 0 ? ($monthTotal / $total) : 0;
+        if ($format)
+            return Yii::app()->numberFormatter->format("#,##0.00%",$percentage);
+        else
+            return $percentage;
+
+    }
     /**
      * 
      * 
@@ -960,12 +975,17 @@ class User extends CActiveRecord {
      * @param string $to
      * @return float
      */
-    function getLookViewsPercentage($from,$to, $total){
-        
-        $totalMensual = $this->getLookReferredViewsByDate($from, $to);
-        $porcentaje = $totalMensual / $total;
+    function getLookViewsPercentage($total, $format=true){
+
+        $monthTotal = $this->lookreferredviews;
+        $percentage = $total > 0 ? ($monthTotal / $total) : 0;
+        if ($format)
+            return Yii::app()->numberFormatter->format("#,##0.00%",$percentage);
+        else
+            return $percentage;
+
     }
->>>>>>> 6be166c126689336c67f5f4c420ff0b74ece538b
+
         /* 
          * Buscar la ultima orden del usuario y ver si fue hace menos de un minuto
          * Se usa para validar que no se hagan compras seguidas por error.

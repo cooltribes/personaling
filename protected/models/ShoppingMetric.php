@@ -277,5 +277,23 @@ class ShoppingMetric extends CActiveRecord
             
             return $ref;
         }
+    public static function getAllViewsPs(){
+        $match = addcslashes('ps_id":"', '%_');
+        return ShoppingMetric::model()->count(
+            'data LIKE :match',
+            array(':match' => "%$match%")
+        );
+    }
+    public static function getAllViewsPsByDate($from,$to){
+        $match = addcslashes('ps_id":"', '%_');
+       return ShoppingMetric::model()->count(
+            'data LIKE :match and created_on between :from and :to',
+            array(
+                ':match' => "%$match%",
+                ':from' => $from,
+                ':to' => $to
+            )
+        );
+    }
         
 }

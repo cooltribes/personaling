@@ -817,7 +817,7 @@ class User extends CActiveRecord {
             //Balance tipo 5 = por commisiones
             $saldo = Yii::app()->db->createCommand(
                     "SELECT SUM(total) as total FROM tbl_balance WHERE tipo IN
-                     (5, 7, 8)
+                     (5, 7, 8, 10)
                      AND user_id = ".$this->id)
                     ->queryScalar();            
 
@@ -948,7 +948,26 @@ class User extends CActiveRecord {
             )
         );
     }
-    
+    /**
+     *
+     *
+     * @param string $from
+     * @param string $to
+     * @param int $total
+     * @param bool $format
+     * @return float
+     *
+     */
+    function getLookViewsPercentageByDate($from,$to, $total, $format=true){
+
+        $monthTotal = $this->getLookReferredViewsByDate($from, $to);
+        $percentage = $total > 0 ? ($monthTotal / $total) : 0;
+        if ($format)
+            return Yii::app()->numberFormatter->format("#,##0.00%",$percentage);
+        else
+            return $percentage;
+
+    }
     /**
      * 
      * 
@@ -956,10 +975,10 @@ class User extends CActiveRecord {
      * @param string $to
      * @return float
      */
-    function getLookViewsPercentage($from,$to, $total, $format=true){
+    function getLookViewsPercentage($total, $format=true){
 
-        $monthTotal = $this->getLookReferredViewsByDate($from, $to);
-        $percentage = $monthTotal / $total;
+        $monthTotal = $this->lookreferredviews;
+        $percentage = $total > 0 ? ($monthTotal / $total) : 0;
         if ($format)
             return Yii::app()->numberFormatter->format("#,##0.00%",$percentage);
         else

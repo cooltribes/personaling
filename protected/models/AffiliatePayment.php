@@ -105,17 +105,18 @@ class AffiliatePayment extends CActiveRecord
          * know from what date we need to compute the views and commissions.
          */
         
-        public static function findLastDate(){
+        public static function findLastPayment(){
             
-            $payment = self::model()->findAll(array('order' => 'created_at DESC',
-                'limit' => '1'));
+            $payment = self::model()->find(array('order' => 'created_at DESC'));           
             
-            if($payment)
-                return $payment->created_at;
-            else
-                return null;
-                
-            
+            return $payment ? $payment : null;
+        }
+        
+        public function getAmount($format=true){
+           
+            return $format ? Yii::app()->numberFormatter->format("#,##0.00",$this->amount):
+            $this->amount;            
+
         }
         
 }

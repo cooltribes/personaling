@@ -102,7 +102,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'),
                     array('label'=>'Devoluciones', 'url'=>Yii::app()->baseUrl.'/orden/adminDevoluciones'),
                     array('label'=>'Pagos a Personal Shoppers', 'url'=>Yii::app()->baseUrl.'/pago/admin'),
-                    array('label'=>'Comisiones por afiliación PS', 'url'=>array('/pago/comisionAfiliacion')),
+                    array('label'=>'Comisiones por afiliación PS', 'url'=>array('/pago/comisionAfiliacion')),                    
                     )
                 ),
 
@@ -175,16 +175,15 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     $avatar = '';
 
 	}
-
+    if(!UserModule::isPersonalShopper())
         $itemsUser = array(
                     array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
                     array('label'=>'Tus Compras', 'url'=>array('/orden/listado')),
                     array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
                     array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
-                    array('label'=>'Tus Pagos', 'url'=>array('/pago/solicitar'), 'visible' => UserModule::isPersonalShopper()),
+                   
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
-					array('label'=>'Tus Ventas', 'url'=>array('/user/profile/misventas'),
-                                            'visible' => UserModule::isPersonalShopper()),						                     
+										                     
                     array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),
                     '---',
                     array('label'=>'¿Comprando para alguién más?'),
@@ -192,6 +191,21 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 //                    array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise',
 //                        'url'=>array(''), 'linkOptions' => array('class' => 'sub_perfil_item'),),
 
+                );
+    else
+        $itemsUser = array(
+                    array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
+                    array('label'=>'Tus Compras', 'url'=>array('/orden/listado')),
+                    array('label'=>'Tus Ventas', 'url'=>array('/user/profile/misventas'),
+                                            'visible' => UserModule::isPersonalShopper()),   
+                    array('label'=>'Tus Pagos', 'url'=>array('/pago/solicitar'), 'visible' => UserModule::isPersonalShopper()),
+                    array('label'=>'Looks Favoritos', 'url'=>array('/user/profile/looksencantan')),
+                    array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
+                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
+                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),
+                    '---',
+                    array('label'=>'¿Comprando para alguién más?'),
+                 
                 );
 
         $otrosPerfiles = Filter::model()->findAllByAttributes(array('type' => '0', 'user_id' => Yii::app()->user->id),array('order' => 'id_filter DESC'));

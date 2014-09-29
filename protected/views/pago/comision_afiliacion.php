@@ -27,16 +27,20 @@
     <div class="row">
         <div class="span6">
            <fieldset>
-                
-                <legend>Datos del último pago realizado</legend>
+               <legend>Datos del último pago realizado</legend>
+               <?php if($lastPayment){ ?>
                 <ul class="no_bullets no_margin_left">                    
                     <li><strong>Fecha y hora: </strong>
-                        14/07/2014 11:30:46 pm                        </li>
+                        <?php echo date("d-m-Y h:m:i a", strtotime($lastPayment->created_at)); ?>
+                    </li>
                     <li><strong>Monto pagado: </strong>
-                        24.000,9 <?php echo Yii::t('contentForm', 'currSym'); ?>
+                        <?php echo $lastPayment->getAmount() . " " .
+                        Yii::t('contentForm', 'currSym'); ?>
                     </li>                    
                 </ul>
-
+               <?php }else{ ?>
+               <h4>No se ha hecho ningún pago hasta el momento</h4>
+               <?php } ?>
             </fieldset>
         </div>
         <div class="span6">
@@ -127,7 +131,7 @@ $this->widget('zii.widgets.CListView', array(
     'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',                
     'afterAjaxUpdate'=>" function(id, data) {
 
-        actualizarNroUsuarios(id, data);
+        
 
       } ",
     'pager' => array(

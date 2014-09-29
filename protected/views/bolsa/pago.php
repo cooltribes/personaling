@@ -396,10 +396,10 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 
                 if($ciudad_destino->ruta_id==9)
                         $shipping=true;
-
+                
                     if($shipping){
                             if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
-                            {	
+                            {	          
                                             $flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$total);
 
                                             if(!is_null($flete)){
@@ -486,7 +486,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
                 <td class="text_align_right" id="descuento"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
               </tr>
-              <?php } ?>
+              <?php } 
+        
+              ?>
               
               
               <tr>

@@ -96,7 +96,7 @@ class ZohoEgreso{
 			if($user->save()){
 				$zoho = New Zoho;
 				$zoho->email = "info@personaling.com";
-				$zoho->fisrt_name = "Personaling"; 
+				$zoho->first_name = "Personaling"; 
 				$zoho->last_name = "Enterprise S.L.";
 				$zoho->estado = "TRUE";
 				$zoho->tipo = "Interno";

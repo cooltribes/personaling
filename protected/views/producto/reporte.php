@@ -117,7 +117,7 @@
 	
 
 ?>
-<div class="margin_top pull-left"><a href="<?php echo Yii::app()->baseUrl."/producto/reportexls" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a></div>
+<div class="margin_top pull-left"><a href="<?php echo Yii::app()->baseUrl."/producto/reportecsv" ?>" title="Exportar a Excel" class="btn btn-info">Exportar a Excel</a></div>
 </div>
 </div>
 

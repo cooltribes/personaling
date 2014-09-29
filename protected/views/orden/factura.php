@@ -1,6 +1,9 @@
 <?php
 $profile = Profile::model()->findByAttributes(array('user_id' => $factura->orden->user_id));
 $direccion_fiscal = DireccionFacturacion::model()->findByPk($factura->direccion_fiscal_id);
+if(is_null($direccion_fiscal)){
+    $direccion_fiscal = DireccionEnvio::model()->findByPk($factura->direccion_envio_id);
+}
 $ciudad_fiscal = Ciudad::model()->findByPk($direccion_fiscal->ciudad_id);
 $provincia_fiscal = Provincia::model()->findByPk($direccion_fiscal->provincia_id);
 

@@ -669,7 +669,7 @@ class Orden extends CActiveRecord
 		}
 		$guia=$orden->tracking;
 		if($orden->shipCarrier=='ZOOM'){
-			$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
+			$cliente = new ZoomService;
 		 	return $cliente->call("getInfoTracking", array("tipo_busqueda"=>"1", "codigo"=>$guia,"codigo_cliente"=>"400933"));
 		//Devuelve array de tracking si lo consigue o null si no
 		}
@@ -685,19 +685,28 @@ class Orden extends CActiveRecord
 			{
 				$orden=$this->findByPk($id);
 		}
-		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
-	 	//if(is_null($cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$orden->direccionEnvio->myciudad->cod_zoom,NULL,"cantidad_piezas"=>$orden->nproductos, "peso"=>$orden->peso,NULL,"valor_declarado"=>$orden->total))))
-			//return $orden->direccionEnvio->myciudad->cod_zoom." - ".$orden->nproductos." - ".$orden->peso." - ".$orden->total;
-		//else
+		$cliente = new ZoomService;
+	 	
 	 		return $cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$orden->direccionEnvio->myciudad->cod_zoom,NULL,"cantidad_piezas"=>$orden->nproductos, "peso"=>$orden->peso,NULL,"valor_declarado"=>$orden->total));
-		//Devuelve array de tracking si lo consigue o null si no
+		
 	} 
 	public function calcularTarifa($ciudad,$nproductos,$peso,$total){
 			
-		$cliente = new ZoomJsonService("http://www.grupozoom.com/servicios/webservices/");
-	 	//return array($ciudad,$nproductos,$peso,round($total,2));
-		
-	 	return $cliente->call("CalcularTarifa", array("tipo_tarifa"=>"2","modalidad_tarifa"=>"2","ciudad_remitente"=>"15","ciudad_destinatario"=>$ciudad,NULL,"cantidad_piezas"=>$nproductos, "peso"=>$peso,NULL,"valor_declarado"=>$total));
+		$cliente = new ZoomService;
+       
+        
+        
+        $array=array(  "tipo_tarifa"=>2,
+                "modalidad_tarifa"=>2,
+                "ciudad_remitente"=>"15",
+                "ciudad_destinatario"=>"$ciudad",
+                NULL,
+                "cantidad_piezas"=>"$nproductos", 
+                "peso"=>"$peso",
+                NULL,
+                "valor_declarado"=>"$total");
+	 	return $cliente->call("CalcularTarifa", $array);
+        
 	 
 		//Devuelve array de tracking si lo consigue o null si no
 	} 
@@ -1010,4 +1019,5 @@ class Orden extends CActiveRecord
 	{
             return $this->cupon && $this->cupon->cupon_id == $idCupon;
 	}
+
 }

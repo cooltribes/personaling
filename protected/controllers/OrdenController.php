@@ -689,18 +689,6 @@ public function actionReportexls(){
 	 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 	   
         /**          
          * Obtiene el filtro con id $id          

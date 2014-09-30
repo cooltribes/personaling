@@ -57,6 +57,7 @@ $this->breadcrumbs=array(
 			    'Problemas con la mercancía'=>'Problemas con la mercancía',
 			    'Devoluciones'=>'Devoluciones',
 			    'Falla Técnica'=>'Falla Técnica',
+			    'Asesoría de imagen' => 'Asesoría de imagen', 
 			    'Otro'=>'Otro',
 			), array(
 			    'empty' => 'Seleccione' 

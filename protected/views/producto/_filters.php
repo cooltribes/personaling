@@ -64,6 +64,7 @@
                                 'marca_id' => 'Marca',
                                 'tienda_id' => 'Tienda',
                                 'view_counter' => 'Visitas',
+                                'destacado' => 'Destacados',
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>

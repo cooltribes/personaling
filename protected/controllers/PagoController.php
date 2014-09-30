@@ -8,8 +8,9 @@ class PagoController extends Controller
 	 */
 	//public $layout='//layouts/column2';
 
-    var $_totallooksviews;
+
     var $_lastDate;
+    public $_totallooksviews;
     
 	/**
 	 * @return array action filters
@@ -564,7 +565,7 @@ class PagoController extends Controller
                 $paymentPs->created_at = date("Y-m-d H:i:s"); //Datetime which the payment was made
                 $paymentPs->amount = $_POST["monthlyEarning"]; //Amount of the payment
                 $paymentPs->total_views = $totalViews; //Amount of the payment
-                                
+                            
                 if($paymentPs->save()){
                     
                     /*Recalculate the variables because the new payment*/
@@ -658,8 +659,7 @@ class PagoController extends Controller
                     'pageSize' => Yii::app()->getModule('user')->user_page_size,
                 ),
             ));
-            
-            
+                        
             $this->render("comision_afiliacion", array(
                 "dataProvider" => $dataProvider,
                 "lastPayment" => $lastPayment,

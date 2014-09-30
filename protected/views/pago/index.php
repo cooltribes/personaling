@@ -3,7 +3,7 @@
 /* @var $model Pago */
 
 $this->breadcrumbs=array(	
-	Yii::t('contentForm' , 'My Payments'),
+	Yii::t('contentForm' , 'Your Payments'),
 );
 
 $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'My Payments'));

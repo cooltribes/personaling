@@ -20,7 +20,7 @@ $pagerParams = array(
         <h1>Productos Vendidos - Personal Shopper</h1>       
     </div>
     <div class="row">
-        <div class="span12 box_shadow bg_color13">
+        <div class="span12">
             <div class="row"> 
                 <!--Imagen-->
                 <div class="span2">
@@ -35,11 +35,7 @@ $pagerParams = array(
                         " " . $personalShopper->profile->last_name;
                         ?>
                     </h2>
-                    <h4>Comisión actual:
-                        <strong>
-                            <?php echo $personalShopper->getComision(); ?>                            
-                        </strong>
-                    </h4>
+                   
                     <h4>Saldo en comisiones:
                         <strong>
                             <?php echo $personalShopper->getSaldoPorComisiones()." ".Yii::t('backEnd', 'currSym'); ?>                            
@@ -50,7 +46,12 @@ $pagerParams = array(
                         <strong>
                             <?php echo $personalShopper->getSaldoEnEspera()." ".Yii::t('backEnd', 'currSym'); ?>                                                        
                         </strong>
-                    </label>                    
+                    </label>  
+                     <h4>Comisión actual:
+                        <strong>
+                            <?php echo $personalShopper->getComision(); ?>                            
+                        </strong>
+                    </h4>                  
                 </div>
                 <!--Totales-->
                 <div class="span7 padding_top_medium margin_top_medium text_align_center">                    

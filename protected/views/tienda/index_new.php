@@ -197,7 +197,7 @@ if(isset($seo)){
 <!-- BAR ON -->
 <?php if(Yii::app()->user->isGuest&&Yii::app()->params['registerGift']) {?>
 <div class="slide-out-div">
-            <div class="handle" href="#"><div class="rotate">Gana un bono de 5 EUR&nbsp;&nbsp;&nbsp;<img src="<?php echo Yii::app()->baseUrl; ?>/images/backtopWhite.png" width="20px" height="20px"> </div></div>
+            <div class="handle" href="#"><div class="rotate">Gana un bono de 5 <?php echo Yii::t('contentForm','currSym');?>&nbsp;&nbsp;&nbsp;<img src="<?php echo Yii::app()->baseUrl; ?>/images/backtopWhite.png" width="20px" height="20px"> </div></div>
            <div class="row-fluid margin_top_medium">
            		<div class="span12">
            				Al registrarte y completar tu perfil.<br/><br/>

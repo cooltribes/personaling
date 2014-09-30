@@ -42,7 +42,7 @@ class ProductoController extends Controller
                         'orden','eliminar','inventario','detalles',
                         'tallacolor','addtallacolor','varias','categorias',
                         'recatprod','seo', 'historial','importar','descuentos',
-                        'reporte','reportexls', "createExcel", 'plantillaDescuentos',
+                        'reporte','reportexls','reportecsv', "createExcel", 'plantillaDescuentos',
                         'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
                         'importarExternos','plantillaExternos',"sendtozoho",
                         "productoszoho","enviarzoho","externtozoho","updatezohoqty",) ,
@@ -220,6 +220,51 @@ public function actionReportexls(){
 			Yii::app()->end();
 				  
 	}
+
+
+
+    
+    
+    
+    public function actionReporteCSV(){
+    
+        ini_set('memory_limit','256M'); 
+                   
+            
+            
+            $ptc = Preciotallacolor::model()->existencia(false); 
+            header( "Content-Type: text/csv;charset=utf-8" );
+            header('Content-Disposition: attachment; filename="Inventario.csv"');
+            $fp = fopen('php://output', 'w');
+            fputcsv($fp,array(  'SKU','Referencia','Marca','Nombre',
+                                'Color','Talla','Cantidad','Costo ('.utf8_decode(Yii::t('contentForm','currSym')).')',
+                                'Precio de Venta sin IVA ('.utf8_decode(Yii::t('contentForm','currSym')).')',
+                                 'Precio de Venta con IVA ('.utf8_encode(Yii::t('contentForm','currSym')).')'));
+            
+            
+            
+            
+            
+            
+            foreach($ptc->getData() as $data)
+            {
+                    //Buscando los precios si los productos se vendieron en un look o dejando los de ordenhasptc
+             
+                    $I=number_format($data['Precio'],2,',','.'); 
+                    $J=number_format($data['pIVA'],2,',','.');
+                    $vals=array($data['SKU'], $data['Referencia'], $data['Marca'],
+                                $data['Nombre'], $data['Color'], $data['Talla'],
+                                $data['Cantidad'], number_format($data['Costo'],2,',','.'),
+                                trim($I), trim($J));
+                    fputcsv($fp,$vals,";",'"');
+                
+
+            } 
+            fclose($fp); 
+            ini_set('memory_limit','128M'); 
+            Yii::app()->end();
+                  
+    }
 	
 	
 	
@@ -2032,10 +2077,11 @@ public function actionReportexls(){
 				
 				if(isset($r)){
 					foreach($r as $cadauno){
-						$borr = CategoriaHasProducto::model()->findByAttributes(array('tbl_categoria_id'=>$cadauno));
-						
-						if(isset($borr))
-							$borr->delete();
+						 $borr = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$idProducto,'tbl_categoria_id'=>$cadauno));
+
+                        if(isset($borr))
+                            if (!$borr->delete())
+                                Yii::trace('ProductoController.php:2039, Error:'.print_r($borr->getErrors(), true), 'registro');
 					
 					}
 					
@@ -2321,10 +2367,10 @@ public function actionReportexls(){
                     $sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
 
                     //Esto no se pa que es
-                    $anterior;
-                    $pr_id;                   
+                     /* $anterior;
+                        $pr_id;                   
                     
-                    /*
+                  
                     Para el MasterData en la BD
                      */                    
                     $masterDataBD = new MasterData();
@@ -2346,8 +2392,10 @@ public function actionReportexls(){
 					
                     // segundo foreach, si llega aqui es para insertar y todo es valido
                     foreach ($sheet_array as $row) {
-                       	
-                  		$preciotalla;
+                       	   /*
+                          $preciotalla;
+                           // RAFA: Comments this line
+                           */
 						 
                        	if ($row['A'] != "" && $row['A'] != "SKU") { // para que no tome la primera ni vacios
                             

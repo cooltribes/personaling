@@ -466,7 +466,7 @@
                   <p class="margin_left_small"><strong><?php echo (null!==$marca)?$marca->nombre:'N/D'; ?></strong></p>                    
                   <?php
                   if (null!==$marca)
-                  echo CHtml::image(Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65","class" => "margin_left_small"));
+                  echo CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65","class" => "margin_left_small"));
                   ?>   
                   </div>
                   <div class="span6">

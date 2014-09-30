@@ -19,7 +19,7 @@
  * @property integer $codigo_postal_id
  *  @property integer $pais
  *  *  @property integer $padreId
-
+ *
  */
 class Marca extends CActiveRecord
 {
@@ -148,12 +148,12 @@ class Marca extends CActiveRecord
 	 	if ($thumb){
 	 		if ($this->urlImagen!='')	
 	 			//$url = Yii::app()->baseUrl .'/images/marca/' . str_replace('.','_thumb.',$this->urlImagen);
-	 			$url = Yii::app()->baseUrl .'/images/marca/' . $this->id . '_thumb.jpg';
+	 			$url = Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/marca/' . $this->id . '_thumb.jpg';
 			else
 			 	$url = "http://placehold.it/50";
 		} else {
 			if ($this->urlImagen!='')	
-				$url = Yii::app()->baseUrl . '/images/marca/' . $this->urlImagen; 
+				$url = Yii::app()->baseUrl . '/images/'.Yii::app()->language.'/marca/' . $this->urlImagen; 
 			else
 				$$url = "http://placehold.it/100"; 
 		}

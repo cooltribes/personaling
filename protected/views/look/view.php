@@ -67,7 +67,6 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                            <span id='like' class='entypo icon_personaling_big'>&#9825;</span>
                            </button>";
                     }
-
                    ?>
 
 

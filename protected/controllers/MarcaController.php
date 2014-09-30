@@ -114,16 +114,16 @@ class MarcaController extends Controller
 		
 			echo($_POST['url']);
 		
-			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/marca/'))
+			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/marca/'))
 				{
-	   				mkdir(Yii::getPathOfAlias('webroot').'/images/marca/',0777,true);
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/marca/',0777,true);
 	 			}
 			
 			$rnd = rand(0,9999);  
 			$images=CUploadedFile::getInstanceByName('url');
 			
-			var_dump($images);
-			echo "<br>".count($images);
+			//var_dump($images);
+			//echo "<br>".count($images);
 			if (isset($images) && count($images) > 0) {
 				$marca->urlImagen = "{$rnd}-{$images}";
 				
@@ -137,11 +137,11 @@ class MarcaController extends Controller
 				else {
 					if($marca->is_100chic){
 							$cmarca=ClasificacionMarca::model()->findByPk(array('marca_id'=>$marca->id,'clasificacion'=>1));
-							$cmarca->delete();			
+							$cmarca->delete();
 						}
 				}
 		        
-		        $nombre = Yii::getPathOfAlias('webroot').'/images/marca/'.$marca->id;
+		        $nombre = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/marca/'.$marca->id;
 		        $extension_ori = ".jpg";
 				$extension = '.'.$images->extensionName;
 		       
@@ -159,9 +159,19 @@ class MarcaController extends Controller
 					
 					if($extension == '.png'){
 						$image = Yii::app()->image->load($nombre.$extension);
+						$image->save($nombre.'.jpg');
+
+						$image = Yii::app()->image->load($nombre.$extension);
 						$image->resize(150, 150);
 						$image->save($nombre.'_thumb.jpg');
-					}	
+					}else if($extension == '.jpg'){
+						$image = Yii::app()->image->load($nombre.$extension);
+						$image->save($nombre.'.png');
+
+						$image = Yii::app()->image->load($nombre.$extension);
+						$image->resize(150, 150);
+						$image->save($nombre.'_thumb.png');
+					}
 					
 				}
 				else {

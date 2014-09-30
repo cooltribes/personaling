@@ -104,7 +104,7 @@ $this->breadcrumbs=array(
 				              	if($marca->isNewRecord)
 				              		echo '';
 								else {
-									echo CHtml::image(Yii::app()->request->baseUrl.'/images/marca/'.$marca->id.'_thumb.jpg',"image");
+									echo CHtml::image(Yii::app()->request->baseUrl.'/images/'.Yii::app()->language.'/marca/'.$marca->id.'_thumb.jpg',"image");
 								} 
 				              	?>
 				              </div>

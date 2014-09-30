@@ -5,6 +5,12 @@
 //'Usuarios',
 //);
 ?>
+
+<style>
+    h5 a.link-ps{
+        text-decoration: underline;
+    }
+</style>
 <div class="container margin_top">
 
     <?php
@@ -205,6 +211,10 @@ function formSubmit(e){
 
                 if(result){
                     validSubmit = true;
+                    //disable the button, start the loading animation
+                    //and submit the form
+                    
+                    $('#pay').attr("disabled", true);
                     $('body').addClass("aplicacion-cargando");
                     $('form#pago-form').submit();
 

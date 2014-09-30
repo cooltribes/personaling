@@ -20,6 +20,26 @@ class Funciones {
                         || strpos(Yii::app()->baseUrl, "test") !== false;
 
 	}
+	/**
+	 * Para cuando se necesiten hacer cosas específicas solamente en develop
+         * 
+	 * @return  boolean Si está en DEVELOP o no
+	 */
+	public static function isDev()
+	{
+		return strpos(Yii::app()->baseUrl, "develop") !== false;
+
+	}
+	/**
+	 * Para cuando se necesiten hacer cosas específicas solamente en test
+         * 
+	 * @return  boolean Si está en TEST o no
+	 */
+	public static function isTest()
+	{
+		return strpos(Yii::app()->baseUrl, "test") !== false;
+
+	}
 
 	
 

@@ -8,8 +8,9 @@ class PagoController extends Controller
 	 */
 	//public $layout='//layouts/column2';
 
-    var $_totallooksviews;
+
     var $_lastDate;
+    public $_totallooksviews;
     
 	/**
 	 * @return array action filters
@@ -538,7 +539,7 @@ class PagoController extends Controller
                 $paymentPs->created_at = date("Y-m-d H:i:s"); //Datetime which the payment was made
                 $paymentPs->amount = $_POST["monthlyEarning"]; //Amount of the payment
                 $paymentPs->total_views = $totalViews; //Amount of the payment
-                                
+                            
                 if($paymentPs->save()){
                     
                     //find all Personal Shoppers so they can be paid
@@ -632,7 +633,11 @@ class PagoController extends Controller
                     
                 }
             }
-            
+            $match = addcslashes('ps_id":"', '%_');
+            $this->_totallooksviews = ShoppingMetric::model()->count(
+                'data LIKE :match',
+                array(':match' => "%$match%")
+            );
             
             $this->render("comision_afiliacion", array(
                 "dataProvider" => $dataProvider,

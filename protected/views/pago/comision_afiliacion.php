@@ -145,8 +145,8 @@ $this->widget('zii.widgets.CListView', array(
 
 Yii::app()->clientScript->registerScript('search', "
             var ajaxUpdateTimeout;
-	    var ajaxRequest;
-	    $(document).keyup(function(e){
+        var ajaxRequest;
+        $(document).keyup(function(e){
                 if(e.which == 13) {
                     $('.crear-filtro').click();
                     ajaxRequest = $('#textbox_buscar').serialize();
@@ -161,9 +161,9 @@ Yii::app()->clientScript->registerScript('search', "
                         )
                     },
                     // this is the delay
-                    300);		        
-                }		        
-	    });"
+                    300);               
+                }               
+        });"
 );
 ?> 
 

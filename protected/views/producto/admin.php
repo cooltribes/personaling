@@ -344,10 +344,12 @@ $template = '{summary}
 				}
 				
 			}",
-			),
+			), 
 			)); ?>
 
     <div class="span2"><a href="exportarCSV" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
+    <div class="span2"><a href="productoszoho" title="Enviar todos a Zoho" class="btn btn-info">Exportar
+todos a Zoho</a></div>
     <div class="span3"><a href="plantillaDescuentos" title="Exportar plantilla" class="btn btn-success">
             <i class="icon icon-download icon-white"></i> Descargar planilla de precios</a></div>
     

@@ -94,6 +94,15 @@ class ZohoEgreso{
 			$user->tipo_zoho = 0;
 			
 			if($user->save()){
+			    $perfil = new Profile;
+
+                $perfil->user_id = $user->id;
+                $perfil->first_name = "Info";
+                $perfil->last_name = "Personaling";
+                $perfil->birthday = "1980-01-01";
+                $perfil->sex = 2;
+
+                $perfil->save();
 				$zoho = New Zoho;
 				$zoho->email = "info@personaling.com";
 				$zoho->first_name = "Personaling"; 

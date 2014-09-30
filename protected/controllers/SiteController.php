@@ -37,7 +37,7 @@ class SiteController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin'),
+				'actions'=>array('admin',"SendCasesToZoho"),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -328,8 +328,30 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 						$zohoCase->related_id = $usuario->zoho_id; 
 					}
 				}
+				else{ // no es usuario
+					
+					$zoho = New Zoho;
+					$zoho->email = $_POST['ContactForm']['email'];
+					$varios = explode(" ", $_POST['ContactForm']['name']);
+					$zoho->first_name = $varios[0];
+					$zoho->last_name = $varios[1];
+					$zoho->estado = "TRUE";
+					$zoho->tipo = "Interno";
+					
+					$response = $zoho->save_potential();
+					$xml = simplexml_load_string($response);
+				
+		            $id = (int)$xml->result[0]->recorddetail->FL[0];
+					/*
+		            $user->zoho_id = $id;
+					$user->save();
+					*/
+					
+					$zohoCase->posible = $varios[0]." ".$varios[1];
+					$zohoCase->posible_id = $id;
+				}
 									
-				$respuesta = $zohoCase->save_potential(); 
+				$respuesta = $zohoCase->save_potential();
 				
 				$model=new ContactForm; 
 			//	$this->render('contact',array('model'=>$model));
@@ -535,6 +557,114 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 			
 	
 			
-    	}  
+    	}
+
+		public function actionSendCasesToZoho(){
+			
+			$archivo = CUploadedFile::getInstancesByName('archivoCarga');
+			$nombre = "";
+			$extension = "";
+			
+			if (isset($archivo) && count($archivo) > 0) {
+            	$nombreTemporal = "ZohoCases";
+                $rutaArchivo = Yii::getPathOfAlias('webroot').'/docs/xlsMasterData/';
+                foreach ($archivo as $arc => $xls) {
+
+                        $nombre = $rutaArchivo.$nombreTemporal;
+                        $extension = '.' . $xls->extensionName;
+                        $uploadedFileName = $xls->name;
+                        
+						if ($xls->saveAs($nombre . $extension)) {
+
+                        } else {
+                            Yii::app()->user->updateSession();
+                            Yii::app()->user->setFlash('error', UserModule::t("Error al cargar el archivo."));
+                		}
+					}
+      		}else{
+            	Yii::app()->user->updateSession();
+                Yii::app()->user->setFlash('error', UserModule::t("Debes seleccionar un archivo."));                            
+				$error = true;
+			} 
+
+	        // Si pasa la validacion
+	     	if($nombre != "")
+	     		$sheetArray = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
+					
+			// variable para los id
+			$ids = array();
+			
+			if(isset($sheetArray)){
+	           	//para cada fila del archivo
+	           	foreach ($sheetArray as $row) {
+	
+	            	if ($row['A'] != "" && $row['A'] != "Fecha") { // para que no tome la primera ni vacios
+	
+	               		$eDate = $row['A'];
+						$eName = $row['B'];
+	                    $eMail = $row['C'];
+						$eMotive = $row['D'];
+	                    $eContent = $row['E'];
+						
+						$user = User::model()->findByAttributes(array('email'=>$eMail));
+						$userExists = isset($user);
+								
+	                    $zoho = New ZohoCases;
+						
+						$zohoCase = new ZohoCases;
+						$zohoCase->Subject = "Formulario Contáctanos - ".$eMail." - ".date("d-m-Y",strtotime($eDate));
+						$zohoCase->Priority = "Alta";
+						$zohoCase->Email = $eMail; 
+						$zohoCase->Description = "A través del formulario. Mensaje: ".$eContent;
+						$zohoCase->internal = "Sin revisar";
+						$zohoCase->Origin = "Web";
+						$zohoCase->Status = "Nuevo";
+						$zohoCase->type = "Problema";
+						$zohoCase->reason = $eMotive; 
+						 
+						if(isset($user)){ 
+							if($user->tipo_zoho == 0){ 
+								$zohoCase->posible = $user->profile->first_name." ".$user->profile->last_name;
+								$zohoCase->posible_id = $user->zoho_id;
+							}
+							else if($user->tipo_zoho == 1){
+								$zohoCase->related = $user->profile->first_name." ".$user->profile->last_name;
+								$zohoCase->related_id = $user->zoho_id; 
+							}
+						}
+						else{ // no es usuario
+							
+							$zoho = New Zoho;
+							$zoho->email = $eMail;
+							$varios = explode(" ", $eName);
+							$zoho->first_name = $varios[0];
+							if(isset($varios[1])) $zoho->last_name = $varios[1];
+							$zoho->estado = "TRUE";
+							$zoho->tipo = "Interno";
+							
+							$response = $zoho->save_potential();
+							$xml = simplexml_load_string($response);
+						
+				            $id = (int)$xml->result[0]->recorddetail->FL[0];
+							/*
+				            $user->zoho_id = $id;
+							$user->save();
+							*/
+							
+							$zohoCase->posible = $varios[0]." ".$varios[1];
+							$zohoCase->posible_id = $id;
+						}
+											
+						$respuesta = $zohoCase->save_potential();							
+	                    
+	              	}// if
+				}// foreach			
+				Yii::app()->user->setFlash("success", "Se ha cargado con éxito el archivo. Puede ver los detalles de la carga a continuación.<br>"); 	
+			} // if
+			
+			$this->render('zohoCases');			 
+		}
+		
+		
 		
 }

@@ -8,8 +8,9 @@ class PagoController extends Controller
 	 */
 	//public $layout='//layouts/column2';
 
-    var $_totallooksviews;
+
     var $_lastDate;
+    public $_totallooksviews;
     
 	/**
 	 * @return array action filters
@@ -109,7 +110,7 @@ class PagoController extends Controller
                         /*Enviar correo OPERACIONES (operaciones@personaling.com
                          si no esta en develop                          
                          */  
-                        if(strpos(Yii::app()->baseUrl, "develop") === false){
+                        if(Funciones::isDev()){
 
                             $this->enviarEmailOperaciones($model);  
 
@@ -378,7 +379,7 @@ class PagoController extends Controller
                      
             $destinatario = "operaciones@personaling.com";
             //si esta en test, enviarlo a cristal
-            if(strpos(Yii::app()->baseUrl, "test") !== false){
+            if(Funciones::isTest()){
                 
                 $destinatario = "cmontanez@upsidecorp.ch";               
             }     
@@ -402,9 +403,7 @@ class PagoController extends Controller
             
             $message = new YiiMailMessage;
             //Opciones de Mandrill
-            $message->activarPlantillaMandrill();
-//            $message->view = "mail_template";
-            
+            $message->activarPlantillaMandrill();            
             $subject = 'Solicitud de pago';
             
             //Aprobado
@@ -454,7 +453,7 @@ class PagoController extends Controller
                      
             $destinatario = $pago->user->email;
             
-            if(strpos(Yii::app()->baseUrl, "develop") !== false){
+            if(Funciones::isDev()){
                 
                 $destinatario = "nramirez@upsidecorp.ch";               
             }     
@@ -498,7 +497,7 @@ class PagoController extends Controller
                      
             $destinatario = $pago->user->email;
             
-            if(strpos(Yii::app()->baseUrl, "develop") !== false){
+            if(Funciones::isDev()){
                 
                 $destinatario = "nramirez@upsidecorp.ch";               
             }     
@@ -512,38 +511,78 @@ class PagoController extends Controller
         }
 
         /**
+         * Enviar notificacion de pago por comision de afiliados a PS
+         */
+        
+        function enviarNotificacionPagoAfiliacionPS($user) {
+            
+            $message = new YiiMailMessage;
+            //Opciones de Mandrill
+            $message->activarPlantillaMandrill();            
+            $subject = 'Pago por comisiones';
+            
+            $body = Yii::t('contentForm',
+                '¡Enhorabuena FashionLover, has recibido un pago por comisión!
+                 <br>                    
+                 <br>
+                 Entra en tu cuenta haciendo click 
+                 <a title="Aquí" 
+                 href="http://www.personaling.es'.Yii::app()->baseUrl.
+                'inicio-personaling" target="_blank">
+                    Aquí
+                  </a><br>');                    
+                     
+            $destinatario = $user->email;                 
+
+            $message->subject = $subject;
+            $message->setBody($body, 'text/html');
+            $message->addTo($destinatario);
+            Yii::app()->mail->send($message);
+        }
+        
+        /**
          * This action is used for paying the PersonalShoppers with the monthly
-         * earnings.
+         * earnings, distributing the money based on their generated visits.
          */
         public function actionComisionAfiliacion() {
             
             // Get the last date of payment for computing the next period
             $lastPayment = AffiliatePayment::findLastPayment();            
+            $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
+            // if doesn't exist any payment or if there is at least one of them
+            $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
+                ShoppingMetric::getAllViewsPs();                   
+
+            //Asign the totalViews attribute for optimize new queries
+            $this->_totallooksviews = $totalViews;
             
             /*Si viene el campo con el monto a pagar*/
             if(isset($_POST["monthlyEarning"]) && $_POST["monthlyEarning"] > 0){                
-                                
-                $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
-                
-                // if doesn't exist any payment or if there is at least one of them
-                $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
-                    ShoppingMetric::getAllViewsPs();                   
-                
-                //Asign the totalViews attribute for optimize new queries
-                $this->_totallooksviews = $totalViews;
-                
+               
                 //Save the payment in the BD
                 $paymentPs = new AffiliatePayment();
                 $paymentPs->user_id = Yii::app()->user->id; //Admin who make the payment
                 $paymentPs->created_at = date("Y-m-d H:i:s"); //Datetime which the payment was made
                 $paymentPs->amount = $_POST["monthlyEarning"]; //Amount of the payment
                 $paymentPs->total_views = $totalViews; //Amount of the payment
-                                
+                            
                 if($paymentPs->save()){
+                    
+                    /*Recalculate the variables because the new payment*/
+                    //Asign the payment so it can be shown on the page
+                    $lastPayment = $paymentPs;
+                    
+                    $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
+                    // if doesn't exist any payment or if there is at least one of them
+                    $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
+                        ShoppingMetric::getAllViewsPs();                   
+
+                    //Asign the totalViews attribute for optimize new queries
+                    $this->_totallooksviews = $totalViews;                    
                     
                     //find all Personal Shoppers so they can be paid
                     $allPs = User::model()->findAllByAttributes(array("personal_shopper" => 1));                
-
+                    $primera = true;
                     foreach ($allPs as $userPs){
 
                         // if the percentage is computed from the beginning or from 
@@ -579,8 +618,14 @@ class PagoController extends Controller
                             $saldo->tipo = 10; //Type of payment specified in Balance model
                             $saldo->fecha = date("Y-m-d H:i:s");
                             if($saldo->save()){
-                                //enviar email a PS                                
-                                //$this->enviarRespuestaPersonalShopper($model, 1);                        
+                                
+                                //enviar email a PS if not in Test or dev. 
+                                if(!Funciones::isDevTest()){
+                
+                                    $this->enviarNotificacionPagoAfiliacionPS($userPs);     
+                                    
+                                }
+                                
                                 Yii::app()->user->setFlash("success", "Se ha hecho el pago satisfactoriamente");
 
                             }
@@ -614,26 +659,7 @@ class PagoController extends Controller
                     'pageSize' => Yii::app()->getModule('user')->user_page_size,
                 ),
             ));
-            
-            
-            //Asign the totalViews attribute for optimize new queries
-            if(!$this->_totallooksviews){
-                // Get the last date of payment for computing the next period
-                $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
-
-                // if doesn't exist any payment
-                if(!$lastDate){
-                    //get from shoppingmetrics method
-                    $this->_totallooksviews = ShoppingMetric::getAllViewsPs();
-                    
-                }else{ // if there is at least one payment in the table
-
-                    $this->_totallooksviews = ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d"));
-                    
-                }
-            }
-            
-            
+                        
             $this->render("comision_afiliacion", array(
                 "dataProvider" => $dataProvider,
                 "lastPayment" => $lastPayment,

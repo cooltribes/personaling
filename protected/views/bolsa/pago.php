@@ -158,7 +158,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                     <?php echo Yii::t('contentForm', 'Expiration'); ?> *
                                     <div class="controls">
                                         <?php echo $form->dropDownList($tarjeta, 'month', array('0' => 'Mes', '01' => '01', '02' => '02', '03' => '03', '04' => '04', '05' => '05', '06' => '06', '07' => '07', '08' => '08', '09' => '09', '10' => '10', '11' => '11', '12' => '12'), array('class' => 'span1', 'placeholder' => Yii::t('contentForm', 'Month'))); ?>
-                                        <?php echo $form->dropDownList($tarjeta, 'year', array('0' => 'Año', '2013' => '2013', '2014' => '2014', '2015' => '2015', '2016' => '2016', '2017' => '2017', '2018' => '2018', '2019' => '2019', '2020' => '2020'), array('class' => 'span1', 'placeholder' => Yii::t('contentForm', 'Year'))); ?>
+                                        <?php echo $form->dropDownList($tarjeta, 'year', array('0' => 'Año', '2014' => '2014', '2015' => '2015', '2016' => '2016', '2017' => '2017', '2018' => '2018', '2019' => '2019', '2020' => '2020', '2021' => '2021'), array('class' => 'span1', 'placeholder' => Yii::t('contentForm', 'Year'))); ?>
                                         <?php echo $form->hiddenField($tarjeta, 'vencimiento'); ?>
                                         <?php echo $form->error($tarjeta, 'vencimiento'); ?>
 

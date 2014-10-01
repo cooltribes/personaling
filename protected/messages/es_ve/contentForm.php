@@ -432,6 +432,8 @@ return array (
      'Who said '.Yii::app()->params['registerGift'].'{currSym} is nothing ?'=>'¿Quién dijo qué '.Yii::app()->params['registerGift'].'Bs. es poco ?',
 
      'Zip code' => 'Código postal',
+     
+	 'Reference' => "Referencia de pago",
 
      // Copys de paginas estaticas
      'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?  </h3>

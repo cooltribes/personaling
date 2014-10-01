@@ -5,6 +5,12 @@
 //'Usuarios',
 //);
 ?>
+
+<style>
+    h5 a.link-ps{
+        text-decoration: underline;
+    }
+</style>
 <div class="container margin_top">
 
     <?php
@@ -145,8 +151,8 @@ $this->widget('zii.widgets.CListView', array(
 
 Yii::app()->clientScript->registerScript('search', "
             var ajaxUpdateTimeout;
-	    var ajaxRequest;
-	    $(document).keyup(function(e){
+        var ajaxRequest;
+        $(document).keyup(function(e){
                 if(e.which == 13) {
                     $('.crear-filtro').click();
                     ajaxRequest = $('#textbox_buscar').serialize();
@@ -161,9 +167,9 @@ Yii::app()->clientScript->registerScript('search', "
                         )
                     },
                     // this is the delay
-                    300);		        
-                }		        
-	    });"
+                    300);               
+                }               
+        });"
 );
 ?> 
 
@@ -205,6 +211,10 @@ function formSubmit(e){
 
                 if(result){
                     validSubmit = true;
+                    //disable the button, start the loading animation
+                    //and submit the form
+                    
+                    $('#pay').attr("disabled", true);
                     $('body').addClass("aplicacion-cargando");
                     $('form#pago-form').submit();
 

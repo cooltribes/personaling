@@ -166,6 +166,8 @@ $template = '{summary}
         <option id="accion">Acciones</option>
         <option>Activar</option>
         <option>Inactivar</option>
+        <option>Destacar</option> 
+        <option>Quitar Destacado</option>
       </select>
     </div>
      			<?php $this->widget('bootstrap.widgets.TbButton', array(

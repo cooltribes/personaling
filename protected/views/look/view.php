@@ -67,7 +67,6 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                            <span id='like' class='entypo icon_personaling_big'>&#9825;</span>
                            </button>";
                     }
-
                    ?>
 
 
@@ -463,23 +462,63 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
           	
           </div>            
           <!-- AddThis Button BEGIN -->
-          <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-          <a class="addthis_button_facebook" ></a>
-          <a class="addthis_button_twitter" tw:via="personaling"></a>
-          <a class="addthis_button_pinterest_share" ></a>
-          </div>
+            <script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
+         <div align="right">
+          <?php
+                  // link to share
+                  echo CHtml::link(
+                      CHtml::image(Yii::app()->baseUrl.'/images/icon_compartir_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),'#',array('data-toggle'=>'modal',
+                          'data-target'=>'#dialogLook'.$model->id)
+
+                  );
+
+                // twitter button
+                echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_twitter_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),
+                  'https://twitter.com/intent/tweet?url='.Yii::app()->getBaseUrl(true)."/look/".$model->id.'&text='.$model->title.'&lang=es&via=Personaling'
+                );
+
+                 echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_facebook_2.png', 'Compartir en facebook', array('width'=>30, 'height'=>30, 'class'=>'social')),
+                  Yii::app()->getBaseUrl(true)."/look/".$model->id,
+                  array(
+                    'data-image'=>'/look/'.$model->id.'.png',
+                    'data-title'=>$model->title,
+                    'data-desc'=>$model->description,
+                    'class'=>'facebook_share'
+                  )
+                );
+
+                  echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_pinterest_2.png', 'Compartir en pinterest', array('width'=>30, 'height'=>30, 'class'=>'social')),
+                  '//pinterest.com/pin/create/button/?url='.Yii::app()->getBaseUrl(true)."/look/".$model->id.'&description='.$model->title.'&media='.Yii::app()->getBaseUrl(true).'/images/look/'.$model->id.'.png',
+                  array(
+                    'target'=>'_blank'
+                  )
+                );
+
+                echo CHtml::link(
+                  CHtml::image(Yii::app()->baseUrl.'/images/icon_polyvore_2.png', 'Compartir en polyvore', array('width'=>30, 'height'=>30, 'class'=>'social')),
+                  'http://www.polyvore.com?url='.Yii::app()->getBaseUrl(true)."/look/".$model->id.'&description='.$model->title.'&media='.Yii::app()->getBaseUrl(true).'/images/look/'.$model->id.'.png',
+                  array(
+                    'target'=>'_blank',
+                    'name'=>'addToPolyvore',
+                    'id'=>'addToPolyvore',
+                    'data-product-url'=>Yii::app()->getBaseUrl(true).'/look/'.$model->id,
+                    'data-image-url'=>Yii::app()->getBaseUrl(true).'/images/look/'.$model->id.'.png',
+                    'data-name'=>$model->title,
+                    //'data-price'=>$look->getPrecioDescuento(),
+                  )
+                );
+            ?>
+
+
+         </div>
+
+          <script type="text/javascript" src="http://akwww.polyvorecdn.com/rsrc/add_to_polyvore.js"></script>
           <!-- AddThis Button END --> 
             
-            <script type="text/javascript">       
-              var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
-              var addthis_share = {
-                  templates : {
-                      twitter : "{{title}} {{url}} #MiPersonaling via @personaling "
-                  }
-              }
-            </script> 
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=juanrules"></script>           
-          </div>
+            </div>
         </div>
         <!-- Columna secundaria OFF -->
 <!--         <div>
@@ -498,7 +537,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
         {
           $lookre = Look::model()->findByPk($record['id']);
 
-          if($lookre->matchOcaciones(User::model()->findByPk(Yii::app()->user->id)) && $lookre->activo=="1" && $lookre->status=="2" && $lookre->id!=$model->id){ 
+          if($lookre->matchOcaciones(User::model()->findByPk(Yii::app()->user->id)) && $lookre->activo=="1" && $lookre->status=="2" && $lookre->id!=$model->id&& $lookre->available=="1"){ 
               if($cont<3){
 
               //<div class="span4"><img src="<?php echo Yii::app()->getBaseUrl(true) . '/'; /images/look_sample_pequeno_1.jpg" width="370" height="370" alt="Nombre del Look"></div>
@@ -667,9 +706,46 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
   </div>-->
 </div>
 
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogLook'.$model->id)); ?>
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h4><?php echo Yii::t('contentForm', 'Share Link'); ?></h4>
+        </div>
+
+        <div class="modal-body">
+            <p><?php echo Yii::app()->getBaseUrl(true)."/"."look/".$model->id; ?></p>
+        </div>
+        <div class="modal-footer">
+
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
+                'label'=>Yii::t('contentForm', 'Close'),
+                'url'=>'#',
+                'htmlOptions'=>array('data-dismiss'=>'modal'),
+            )); ?>
+        </div>
+        <?php $this->endWidget(); ?>
 
 <!-- // Modal Window -->
 <script>
+    window.fbAsyncInit = function(){
+    FB.init({
+        appId: '323808071078482', status: true, cookie: true, xfbml: true });
+  };
+  (function(d, debug){var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];if   (d.getElementById(id)) {return;}js = d.createElement('script'); js.id = id; js.async = true;js.src = "//connect.facebook.net/es_ES/all" + (debug ? "/debug" : "") + ".js";ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
+  function postToFeed(title, desc, url, image){
+    var obj = {method: 'feed',link: url, picture: 'http://www.personaling.es/images/'+image,name: title,description: desc};
+    function callback(response){}
+  FB.ui(obj, callback);
+  }
+
+  $('.facebook_share').click(function(){
+    elem = $(this);
+    postToFeed(elem.data('title'), elem.data('desc'), elem.prop('href'), elem.data('image'));
+
+    return false;
+  });
+
+
 	$('.closeModal').click(function(event) {
 			$('#alertSizes').hide();
 		});

@@ -15,16 +15,26 @@
     
     <!--IMAGEN-->    
     <td>
-        <?php
-        
-        echo CHtml::image($data->getAvatar(), 'Avatar', array("width" => "70", "height" => "70"));
-        ?>
+    <?php
+        echo TbHtml::link(
+                CHtml::image($data->getAvatar(), 'Avatar', array("width" => "70", "height" => "70")),
+                array("controlpanel/misventas", "id" => $data->id)
+            );
+    ?>
     </td>
     
     <!--DATOS PERSONALES-->    
     <td>
-        <h5 class="no_margin_bottom"> <?php echo $data->profile->first_name . ' '
-                . $data->profile->last_name; ?></h5>
+        <h5 class="no_margin_bottom">
+
+             <?php 
+             echo TbHtml::link(
+                    $data->profile->getNombre(),
+                    array("controlpanel/misventas", "id" => $data->id),
+                     array("class" => "link-ps")
+                );
+             ?>
+        </h5>
         <small><strong>ID</strong>: <?php echo $data->id; ?><br/>
             <?php
             if ($data->personal_shopper == 1) {

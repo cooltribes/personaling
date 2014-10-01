@@ -229,7 +229,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             </div>	
                         </div>
                     </div>
-                <?php } ?>
+                <?php }  
+               
+                ?>
                 
 
                 <?php 

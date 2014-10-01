@@ -85,8 +85,8 @@ class ColorController extends Controller
                     exit;               
                 }
                 else{
-                	if(!is_dir(Yii::getPathOfAlias('webroot').'/images/colores/')){
-			   			mkdir(Yii::getPathOfAlias('webroot').'/images/colores/',0777,true);
+                	if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/colores/')){
+			   			mkdir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/colores/',0777,true);
 			 		}
 					
 					$rnd = rand(0,9999);  
@@ -100,7 +100,7 @@ class ColorController extends Controller
 						$model->save();
 						
 				        
-				        $nombre = Yii::getPathOfAlias('webroot').'/images/colores/'.$model->id;
+				        $nombre = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/colores/'.$model->id;
 				        $extension_ori = ".jpg";
 						$extension = '.'.$images->extensionName;
 				       
@@ -131,7 +131,7 @@ class ColorController extends Controller
                 	Yii::app()->user->setFlash('success',UserModule::t("Color guardado exitosamente"));
                     $this->redirect(array('admin'));
                 }
-            } 
+            }
 		}
 
         if (Yii::app()->request->isAjaxRequest)
@@ -224,7 +224,7 @@ class ColorController extends Controller
 	{
 	        Yii::import("ext.EAjaxUpload.qqFileUploader");
 	 
-	        $folder=Yii::app()->getBasePath().'/../images/colores/';// folder for uploaded files
+	        $folder=Yii::app()->getBasePath().'/../images/'.Yii::app()->language.'/colores/';// folder for uploaded files
 	        Yii::trace('PrecioTallaColor Error:'.$folder, 'registro');
 	        $allowedExtensions = array("jpg");//array("jpg","jpeg","gif","exe","mov" and etc...
 	        $sizeLimit = 10 * 1024 * 1024;// maximum file size in bytes
@@ -547,7 +547,7 @@ class ColorController extends Controller
 			$orden->save(); 
 			
 			var_dump($datos); 
-			Yii::app()->end(); 
+			Yii::app()->end();
 		}	
 		
 	}

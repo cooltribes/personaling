@@ -4,7 +4,10 @@ $this->breadcrumbs=array(
 	'Colores'=>array('admin'),
 	'Crear Color',
 );
+
 ?>
+
+
 
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'color-form',
@@ -57,7 +60,8 @@ $this->breadcrumbs=array(
 					            	echo CHtml::activeFileField($model, 'path_image',array('name'=>'path_image'));
 									echo $form->error($model, 'path_image'); 
 									if(!$model->isNewRecord){
-										echo '<div>'.CHtml::image(Yii::app()->request->baseUrl.'/images/colores/'.$model->path_image,"image", array('width'=>50)).'</div>';
+										$ruta=Yii::app()->request->baseUrl.'/images/'.Yii::app()->language.'/colores/'.$model->path_image;
+										echo '<div>'.CHtml::image($ruta,"image", array('width'=>50)).'</div>';
 									} 
 									?>
                             </div>

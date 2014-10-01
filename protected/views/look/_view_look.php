@@ -1,7 +1,6 @@
 <tr>
-    <!--<td><input name="check" type="checkbox" value="" id=<?php echo $data->id; ?>></td>-->
-<!--    <td width="20%">-->
-    <td>
+    <td><input name="check" type="checkbox" value="" id=<?php echo $data->id; ?>></td>    
+    <td  width="20%">
         <strong> <span class="CAPS link-look"><?php        
         
             echo CHtml::link($data->title,

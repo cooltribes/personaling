@@ -2195,7 +2195,7 @@ public function actionCategorias(){
 	}
 	
 	public function actionVarias()
-	{
+	{            
 		$result = array();
 		if($_POST['check']!=""){
 			

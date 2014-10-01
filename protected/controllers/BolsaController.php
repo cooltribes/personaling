@@ -34,7 +34,7 @@ class BolsaController extends Controller
                     'pagos','eliminar','compra', 'direcciones','confirmar','comprar',
                     'pedido','cpago', 'pedidoGC','comprarGC','clickBotonConfirmar', 
                     'cambiarTipoPago','error','successMP', 'authGC', 'pagoGC', 'confirmarGC', 
-                    'agregar2','eliminarLook',),
+                    'agregar2','eliminarLook',"errorGC"),
                     'users'=>array('@'),
                 ),                
                 array('deny',  // deny all users
@@ -608,7 +608,7 @@ class BolsaController extends Controller
                     if(!$errores){
                         if($_POST['tipo_pago']==2){ // pago de tarjeta de credito
 
-                                $idUsuario = $_POST["user"]; 
+                                $idUsuario = Yii::app()->user->id; 
 
                                 $tarjeta->nombre = $_POST['TarjetaCredito']['nombre'];
                                 $tarjeta->numero = $_POST['TarjetaCredito']['numero'];
@@ -626,7 +626,7 @@ class BolsaController extends Controller
                                 $tarjeta->estado = $_POST['TarjetaCredito']['estado'];
                                 $tarjeta->user_id = $idUsuario;		
 
-                                if($tarjeta->save())
+                                if($tarjeta->save()) 
                                 {
                                         $tipoPago = $_POST['tipo_pago'];
 
@@ -1393,8 +1393,11 @@ class BolsaController extends Controller
 			"ZipCode"=>$tarjeta->zip, // CODIGO POSTAL
 			"State"=>$tarjeta->estado, //ESTADO 
 		);
+		
 		$output = Yii::app()->curl->putPago($data_array); // se ejecuto
 		Yii::trace('realizo cobro, return:'.print_r($output, true), 'registro');
+		//Yii::app()->end();
+		
 		if($output->code == 201){ // PAGO AUTORIZADO
 			$rest = substr($tarjeta->numero, -4);
 			 // se guardan solo los ultimos 4 numeros y se limpian los datos
@@ -1410,6 +1413,8 @@ class BolsaController extends Controller
 				'status'=> true, // paso o no
 				'mensaje' => $output->message,
 				'idOutput' => $output->id,
+				'referencia' => $output->reference,
+				'voucher' => $output->voucher,
 				//'idDetalle' => $detalle->id,
 				
 			);
@@ -1714,7 +1719,9 @@ class BolsaController extends Controller
 			        break;
 			    case 2: // TARJETA DE CREDITO
 			        $resultado = $this->cobrarTarjeta(Yii::app()->getSession()->get('idTarjeta'), $usuario, Yii::app()->getSession()->get('total_tarjeta'));
-                                if ($resultado['status'] == "ok") {
+					$global = $resultado;
+					
+					            if ($resultado['status'] == "ok") {
                                     $tarjeta = TarjetaCredito::model()->findByPk(Yii::app()->getSession()->get('idTarjeta'));
                                     $detalle = new Detalle;
                                     $detalle->nTarjeta = $tarjeta->numero;
@@ -1973,11 +1980,18 @@ class BolsaController extends Controller
                         /*Generar el Outbound para Logishfashion*/
                         $this->generarOutbound($orden);
                         
+						
+						/* Si llega aca, se asignan las variables globales de voucher y referencia */
+						if($tipoPago == 2){
+							Yii::app()->session['voucher'] = $global['voucher'];
+							Yii::app()->session['referencia'] = $global['referencia'];
+						} 
+						
                         $this->redirect($this->createAbsoluteUrl('bolsa/pedido',array(
                             'id'=>$orden->id,
                             'admin' => $admin,
                             'user' => $usuario,
-                                ),'http'));	
+                                ),'http'));	 
 		}
 		 
 	}
@@ -2412,6 +2426,8 @@ class BolsaController extends Controller
                  'orden'=>$orden,
                  'admin'=>$admin,
                  'user'=>$usuario,
+                 'voucher'=>Yii::app()->session['voucher'],
+                 'referencia'=>Yii::app()->session['referencia'],
                 ));
 	}
 
@@ -2993,7 +3009,10 @@ class BolsaController extends Controller
          * Para pasar la tarjeta y cobrar
          */
         public function actionComprarGC()
-	{
+		{
+			
+			$global;
+			
             if (Yii::app()->request->isPostRequest){ // asegurar que viene en post
                 
                 $codigo_randon = Yii::app()->getSession()->get('codigo_randon');
@@ -3012,6 +3031,8 @@ class BolsaController extends Controller
                     case 2: // TARJETA DE CREDITO
                         $tarjetaId = Yii::app()->getSession()->get('idTarjeta');
                         $resultado = $this->cobrarTarjeta($tarjetaId, $userId, $total);
+						$global = $resultado;
+						
 //                        if (true)
                         if ($resultado['status'] == "ok")
                         {
@@ -3052,9 +3073,6 @@ class BolsaController extends Controller
                             $detalle->orden_id = $orden->id;
                             $detalle->tipo_pago = 2;
                             $detalle->save();
-                            	
-								
-                            
                             
                         } else { 
                             $this->redirect($this->createAbsoluteUrl('bolsa/errorGC',array('codigo'=>$resultado['codigo'],'mensaje'=>$resultado['mensaje']),'http'));
@@ -3078,6 +3096,11 @@ class BolsaController extends Controller
 //	        Yii::app()->mail->send($message);		
                 
                 //Ver resumen del pedido
+                if($tipoPago == 2){ // tarjeta
+            		Yii::app()->session['voucher'] = $global['voucher'];
+					Yii::app()->session['referencia'] = $global['referencia'];
+				}
+				
                 $this->redirect($this->createAbsoluteUrl('bolsa/pedidoGC',array('id'=>$orden->id),'http'));	
             }
 		 
@@ -3212,36 +3235,30 @@ class BolsaController extends Controller
 	{
 		$orden = OrdenGC::model()->findByPk($id);
 				
-		$this->render('pedidoGC',array('orden'=>$orden));
+		$this->render('pedidoGC',array('orden'=>$orden,'voucher'=>Yii::app()->session['voucher'],'referencia'=>Yii::app()->session['referencia'],
+										'tipoPago'=>Yii::app()->getSession()->get('tipoPago'))); 
 	}
         
         /**
          * Para mostrar el Error con el pago de TDC en la compra de una GC
          */
-        public function actionErrorGC(){
+        public function actionErrorGC(){ 
 		
             $codigo = 	isset($_GET['codigo']) ? $_GET['codigo'] : "000";
             $mensaje = 	$_GET['mensaje'];
-            
+			
             if ($mensaje=="The CardNumber field is not a valid credit card number."){
-                
                 $mensaje = "El número de tarjeta que introdujo no es un número válido.";
-                
             }
             if ($mensaje=="Credit card has Already Expired"){
-                
                 $mensaje = "La tarjeta que introdujo ha expirado.";
-                
             }
             if ($codigo == 403){
-                
-                $mensaje = "El pago ha sido rechazado por el banco.";
-                
+               $mensaje = "El pago ha sido rechazado por el banco.";
             }
             
-            
             $this->render('errorGC',array('mensaje'=>$mensaje));
-	}
+		} 
         
         /**
          * Urls para recibir las notificaciones del proceso de compra

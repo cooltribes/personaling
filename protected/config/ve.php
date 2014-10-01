@@ -44,7 +44,7 @@ return CMap::mergeArray(
                 '	 ',
                 'metodosPago'=> array(
                         'bkCard' => false,
-                        'paypal' => false,
+                        'paypal' => false, 
                         'prueba' => true,
                     	'depositoTransferencia' => true,
                     	'instapago' => true,

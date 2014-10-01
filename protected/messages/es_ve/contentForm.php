@@ -229,6 +229,7 @@ return array (
      'Order for the user' => 'Pedido para el usuario',
      'Order is process' => 'Pedido en proceso',
      'Output' => 'Salida',
+     'Outstanding Looks' => 'Looks destacados',
      'Outstanding Items' => 'Productos destacados',
      'Our deliveries through' => 'Nuestros envíos se realizan a través de',
      'Only can be used alphanumeric characters, hyphen (-) and underscore (_).'=>'Sólo puedes usar letras, números, guión (-) o underscore (_).',
@@ -392,6 +393,7 @@ return array (
      'You must select all sizes' => 'Debes seleccionar todas las tallas',
      'You should select a Billing Address.'=>'Debes seleccionar una dirección de facturación',
      'Your bag' =>'Tu bolsa',
+     'Your payments'=>'Tus Pagos',
      'Your Purchases' => 'Tus Compras',
      'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
      'Your order has been successfully completed.' => 'Tu compra se ha realizado con éxito.',
@@ -432,6 +434,8 @@ return array (
      'Who said '.Yii::app()->params['registerGift'].'{currSym} is nothing ?'=>'¿Quién dijo qué '.Yii::app()->params['registerGift'].'Bs. es poco ?',
 
      'Zip code' => 'Código postal',
+     
+	 'Reference' => "Referencia de pago",
 
      // Copys de paginas estaticas
      'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?  </h3>

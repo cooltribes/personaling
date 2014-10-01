@@ -591,15 +591,14 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 	     	if($nombre != "")
 	     		$sheetArray = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
 					
-			// variable para los id
-			$ids = array();
+			$i=0;
 			
 			if(isset($sheetArray)){
 	           	//para cada fila del archivo
 	           	foreach ($sheetArray as $row) {
-	
+					
 	            	if ($row['A'] != "" && $row['A'] != "Fecha") { // para que no tome la primera ni vacios
-	
+						$i++; // fila
 	               		$eDate = $row['A'];
 						$eName = $row['B'];
 	                    $eMail = $row['C'];
@@ -612,7 +611,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 	                    $zoho = New ZohoCases;
 						
 						$zohoCase = new ZohoCases;
-						$zohoCase->Subject = "Formulario Contáctanos - ".$eMail." - ".date("d-m-Y",strtotime($eDate));
+						$zohoCase->Subject = "Formulario Contáctanos - ".$eMail." - ".$eDate." - ".$i; 
 						$zohoCase->Priority = "Alta";
 						$zohoCase->Email = $eMail; 
 						$zohoCase->Description = "A través del formulario. Mensaje: ".$eContent;
@@ -637,21 +636,38 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 							$zoho = New Zoho;
 							$zoho->email = $eMail;
 							$varios = explode(" ", $eName);
-							$zoho->first_name = $varios[0];
-							if(isset($varios[1])) $zoho->last_name = $varios[1];
+							
+							if(!isset($varios[1])){ 
+								$zoho->last_name = $varios[0];
+								$nombre = $varios[0];
+							}
+							else{
+								$zoho->first_name = $varios[0];
+								$zoho->last_name = $varios[1];
+								
+								$nombre = $varios[0]." ".$varios[1];
+							}
+							
 							$zoho->estado = "TRUE";
 							$zoho->tipo = "Interno";
 							
 							$response = $zoho->save_potential();
 							$xml = simplexml_load_string($response);
-						
-				            $id = (int)$xml->result[0]->recorddetail->FL[0];
+							
+							if(isset($xml->result[0]->recorddetail->FL[0]))
+								$id = (int)$xml->result[0]->recorddetail->FL[0];
+							else {
+								echo "fila: ".$i;
+								echo "<br>".var_dump($xml);
+								Yii::app()->end();
+							}
+							
 							/*
 				            $user->zoho_id = $id;
 							$user->save();
 							*/
 							
-							$zohoCase->posible = $varios[0]." ".$varios[1];
+							$zohoCase->posible = $nombre;
 							$zohoCase->posible_id = $id;
 						}
 											

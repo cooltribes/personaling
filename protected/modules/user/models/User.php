@@ -969,7 +969,7 @@ class User extends CActiveRecord {
 
     }
     /**
-     * 
+     * Porcentaje correspondiente a las visitas generadas por una PS
      * 
      * @param string $from
      * @param string $to

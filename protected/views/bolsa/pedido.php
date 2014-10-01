@@ -10,6 +10,12 @@ $tipo_pago = $orden->getTipoPago();
 
 ?>
 <?php //echo "xPagar".$orden->getxPagar()." SumxOrden".Detalle::model()->getSumxOrden($orden->id);?>
+ <style>
+    	#voucher div table{
+    		border:solid 1px #000;
+    		margin:0 auto;
+    	}
+    </style>
 <div class="container margin_top">
 <div class="row">
   <div class="span8 offset2">
@@ -192,6 +198,14 @@ $tipo_pago = $orden->getTipoPago();
           <?php } ?>
           <?php
         
+        if(Yii::app()->getSession()->get('tipoPago') == 2){ 
+		?>
+			<p><?php echo Yii::t('contentForm','Reference').": ".$referencia; ?></p>	
+	        <div style="margin: 0 auto; " id="voucher"><?php echo CHtml::decode($voucher); ?>
+	        </div>
+		<?php	
+        }	
+        	
         $s1 = "select count( * ) as total from tbl_orden_has_productotallacolor where look_id != 0 and tbl_orden_id = ".$orden->id."";
 		$look = Yii::app()->db->createCommand($s1)->queryScalar();
         

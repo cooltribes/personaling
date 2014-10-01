@@ -2729,6 +2729,7 @@ public function actionValidar()
 		$ids = array();
 					
 		$criteria = new CDbCriteria(array('order'=>'id'));
+        //    $criteria->addBetweenCondition('id', 490, 650);  
 		$todasOrdenes = Orden::model()->findAll($criteria);
 		
 		$ordenesTotal = sizeof($todasOrdenes);
@@ -2744,7 +2745,7 @@ public function actionValidar()
 			if($cont >= 100){
 				$xml .= '</Invoices>';
 				
-				var_dump($xml);
+				//var_dump($xml);
 				
 				$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 				$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&version=4&xmlData=".$xml;
@@ -2875,7 +2876,20 @@ public function actionValidar()
 					$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
 				
 				
+                 $status = $orden->getTextEstado();
+
+                if($status == "Devuelta<br>Finalizada")
+                    $status_final = str_replace("Devuelta<br>Finalizada",'Devuelta, Finalizada' ,$status);
+
+                if($status == "Parcialmente devuelta<br>Finalizada")
+                    $status_final = str_replace("Parcialmente devuelta<br>Finalizada",'Parcialmente devuelta, Finalizada' ,$status);
+                
+                
 		        $xml .= '<FL val="Purchase Order">'.intval($orden->id).'</FL>';
+		        if(isset($status_final))
+                    $xml .= '<FL val="Status">'.$status_final.'</FL>';
+                else
+                    $xml .= '<FL val="Status">'.$status.'</FL>';
 				$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
 				$xml .= '<FL val="Invoice Date">'.date("Y-m-d",strtotime($orden->fecha)).'</FL>';
 				$xml .= '<FL val="Contact Id">'.$orden->user->zoho_id.'</FL>';

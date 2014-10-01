@@ -79,7 +79,11 @@
 
 
                   echo CHtml::link(
+
                       CHtml::image(Yii::app()->baseUrl.'/images/icon_compartir_2.png', '', array('width'=>30, 'height'=>30, 'class'=>'social')),'',array('class'=>'pointer','onclick'=>'callModal('.$look->id.')')
+
+                      #CHtml::image(Yii::app()->baseUrl.'/images/icon_compartir_2.png', 'Compartir', array('width'=>30, 'height'=>30, 'class'=>'social')),'#',array('onclick'=>'share_link_modal('.$look->id.')')
+
 
                   );
                   ?>
@@ -127,7 +131,7 @@
                   )
                 );
                 ?>
-                <script type="text/javascript" src="http://akwww.polyvorecdn.com/rsrc/add_to_polyvore.js"></script>
+                
               </div>
               
             </div>
@@ -173,15 +177,14 @@
   FB.ui(obj, callback);
   }
 
-  $('.facebook_share').click(function(){
+  $('.facebook_share').live('click',function(){
     elem = $(this);
     postToFeed(elem.data('title'), elem.data('desc'), elem.prop('href'), elem.data('image'));
 
     return false;
   });
-  
-  
-  
+
+
      function callModal(id)
         {        
                          $.ajax({
@@ -202,6 +205,11 @@
           
 
         }
+
+  /*function share_link_modal(id){
+    console.log('dialogLook'+id);
+    $('#dialogLook'+id).modal();
+  }*/
 </script>
 
 

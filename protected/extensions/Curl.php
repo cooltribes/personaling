@@ -86,14 +86,21 @@ class Curl extends CComponent {
 	public function putPago($data) {
 			
 
-		//$url = "https://api.instapago.com/payment/";
-		$url = "http://personaling.com/payment/";
+		$url = "https://api.instapago.com/payment/";
+		//$url = "http://personaling.com/payment/";
 			
-		$data_keys = array(
+	/*	$data_keys = array(
 		"KeyId"=> "069C794A-6917-4283-B26F-2AFC7F685A96",
 		"PublicKeyId"=>"5274e829763cd383270512b87a6c947e",
+		);*/
+		
+		$data_keys = array(
+		"KeyId"=> "EDC20F86-9C7E-4D2A-9603-6EF5612F5536",
+		"PublicKeyId"=>"5274e829763cd383270512b87a6c947e", 
 		);
+		
 		$data = array_merge($data_keys, $data);
+		//var_dump($data); 
 		$data_string = http_build_query($data);
 		//echo $data_string;
 		//$f_response = fopen('/var/www/html/site/images/request.txt', 'w');

@@ -88,7 +88,7 @@ class CategoriaController extends Controller
 			 	if (isset($images) && count($images) > 0) {
 					foreach ($images as $image => $pic) {
 
-		                $nombre = Yii::getPathOfAlias('webroot').'/images/categorias/'. $model->id;
+		                $nombre = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/categorias/'. $model->id;
 						
 						if(!is_dir($nombre))
 						{
@@ -97,7 +97,7 @@ class CategoriaController extends Controller
 		                if ($pic->saveAs($nombre."/img.jpg")) {
 							 	
 							Yii::app()->session['ma']=2;
-							 $model->urlImagen = '/images/categorias/'. $model->id .'/img.jpg';
+							 $model->urlImagen = '/images/'.Yii::app()->language.'/categorias/'. $model->id .'/img.jpg';
 							//$model->urlImagen = $_POST['Categoria']['urlImagen'];
 							$model->save();
 							

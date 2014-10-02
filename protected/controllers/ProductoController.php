@@ -2240,7 +2240,7 @@ public function actionReportexls(){
 				$base = Yii::app()->baseUrl;		
 				$co = Color::model()->findByPk($p->color_id);
 				
-				$div = $div."<div onclick='b(".$co->id.")' id='".$co->id."' style='cursor: pointer' class='coloress' title='".$co->valor."'><img src='".$base."/images/colores/".$co->path_image."'></div>";
+				$div = $div."<div onclick='b(".$co->id.")' id='".$co->id."' style='cursor: pointer' class='coloress' title='".$co->valor."'><img src='".$base."/images/".Yii::app()->language."/colores/".$co->path_image."'></div>";
 			}
 		}	
 		

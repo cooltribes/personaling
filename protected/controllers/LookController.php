@@ -118,7 +118,7 @@ class LookController extends Controller
                             'expression' => 'UserModule::isAdmin()',
 			),
 			array('allow', // acciones validas para el personal Shopper
-               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete','listarLooks'),
+               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete','listarLooks', 'setVar'),
                'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
@@ -2195,7 +2195,7 @@ public function actionCategorias(){
 	}
 	
 	public function actionVarias()
-	{
+	{            
 		$result = array();
 		if($_POST['check']!=""){
 			
@@ -2262,6 +2262,17 @@ public function actionCategorias(){
             $this->render("informacion", array(
                 'look' => $look,
             ));
-        }    
+        } 
+		
+		public function actionSetVar() 
+		{
+			if (isset($_POST['id'])) 
+			{
+				$id=$_POST['id']; 
+				$look = Look::model()->findByPk($id);
+				echo Yii::app()->getBaseUrl(true)."/l/".$look->encode_url("123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ");
+			}
+			Yii::app()->end();
+		}   
         
 }

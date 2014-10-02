@@ -119,7 +119,7 @@
 				
 			if( $cont1 == 1){ // Si solo hay un color seleccionelo
 				$color = Color::model()->findByPk($cantcolor[0]);							
-				echo  "<div value='solo' id=".$color->id." class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 		
+				echo  "<div value='solo' id=".$color->id." class='coloress active' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/".Yii::app()->language."/colores/".$color->path_image."'></div>"; 		
 			}
 			else{
 				foreach ($producto->preciotallacolor as $talCol) {
@@ -129,7 +129,7 @@
 						if(in_array($color->id, $valores)){	// no hace nada para que no se repita el valor			
 						}
 						else{
-							echo  "<div id=".$color->id." class='coloress' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+							echo  "<div id=".$color->id." class='coloress' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/".Yii::app()->language."/colores/".$color->path_image."'></div>"; 
 							array_push($valores, $color->id);
 						}
 					}

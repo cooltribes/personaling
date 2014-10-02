@@ -79,7 +79,11 @@
 
 
                   echo CHtml::link(
-                      CHtml::image(Yii::app()->baseUrl.'/images/icon_compartir_2.png', 'Compartir', array('width'=>30, 'height'=>30, 'class'=>'social')),'#',array('onclick'=>'share_link_modal('.$look->id.')')
+
+                      CHtml::image(Yii::app()->baseUrl.'/images/icon_compartir_2.png', '', array('width'=>30, 'height'=>30, 'class'=>'social')),'',array('class'=>'pointer','onclick'=>'callModal('.$look->id.')')
+
+                      #CHtml::image(Yii::app()->baseUrl.'/images/icon_compartir_2.png', 'Compartir', array('width'=>30, 'height'=>30, 'class'=>'social')),'#',array('onclick'=>'share_link_modal('.$look->id.')')
+
 
                   );
                   ?>
@@ -150,24 +154,7 @@
         <span class="label label-important"><?php echo Yii::t('contentForm','Promotion'); ?></span> 
         </article>
     </div>
-        <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogLook'.$look->id)); ?>
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">&times;</a>
-            <h4><?php echo Yii::t('contentForm', 'Share Link'); ?></h4>
-        </div>
-
-        <div class="modal-body">
-            <p><?php echo Yii::app()->getBaseUrl(true)."/l/".$look->encode_url("123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"); ?></p>
-        </div>
-        <div class="modal-footer">
-
-            <?php $this->widget('bootstrap.widgets.TbButton', array(
-                'label'=>Yii::t('contentForm', 'Close'),
-                'url'=>'#',
-                'htmlOptions'=>array('data-dismiss'=>'modal'),
-            )); ?>
-        </div>
-        <?php $this->endWidget(); ?>
+        
 	<?php endforeach; ?>
 	<script>
 	$('.imglook').on("load",function(){
@@ -196,10 +183,33 @@
 
     return false;
   });
-  function share_link_modal(id){
+
+
+     function callModal(id)
+        {        
+                         $.ajax({
+                        type: "post", 
+                        url: "<?php echo Yii::app()->createUrl('Look/setVar') ?>",
+                        data:{
+                            id:id,
+                         },
+                        success: function (data) {
+                             $('#toEnable').val(data);
+                             $('#nombre').html($('#toEnable').val());        
+          					 $('#dialogLook').modal();
+                         }
+
+                   });
+                   
+         
+          
+
+        }
+
+  /*function share_link_modal(id){
     console.log('dialogLook'+id);
     $('#dialogLook'+id).modal();
-  }
+  }*/
 </script>
 
 

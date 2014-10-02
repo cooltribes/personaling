@@ -2,7 +2,9 @@
 $this->breadcrumbs = array(
     'Mis Looks',
 );
+
 Yii::app()->clientScript->registerScriptFile('http://akwww.polyvorecdn.com/rsrc/add_to_polyvore.js', CClientScript::POS_HEAD);  
+
 ?>
 
 <div class="container" id="scroller-anchor">
@@ -39,7 +41,7 @@ Yii::app()->clientScript->registerScriptFile('http://akwww.polyvorecdn.com/rsrc/
 <div class="container" id="tienda_looks">
     <?php if(empty($looks)){ ?>
     <p>
-       No tienes looks disponibles.
+       No tienes looks disponibles. 
     </p>
         
     <?php } ?>
@@ -50,3 +52,29 @@ Yii::app()->clientScript->registerScriptFile('http://akwww.polyvorecdn.com/rsrc/
     ));
     ?>
 </div>
+
+<?php 
+
+ echo CHtml::hiddenField('toEnable','');
+$this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogLook')); ?>
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h4><?php echo Yii::t('contentForm', 'Share Link'); ?></h4>
+        </div>
+
+        <div class="modal-body">
+        	<span id="nombre">  		
+        	</span>
+        </div>
+        <div class="modal-footer">
+
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
+                'label'=>Yii::t('contentForm', 'Close'),
+                'url'=>'#',
+                'htmlOptions'=>array('data-dismiss'=>'modal'),
+            )); ?>
+        </div>
+        <?php $this->endWidget(); 
+       
+        ?>
+        

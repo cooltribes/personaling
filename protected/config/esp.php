@@ -42,11 +42,11 @@ return CMap::mergeArray(
                 'clientPhone'=>'934 344 634',
                 'clientEmail'=>'info@personaling.com',
                 '	 ',
-                'metodosPago'=> array(
-                        'bkCard' => true,
+                'pagoPS'=> array(           
                         'paypal' => true,
-                        'prueba' => true,
-                        ),
+                        'banco' => true,
+                        'saldo' => true,
+                    ),
                 'multiLook'=> array(
                     'bodyType' => false,
                     'eyesColor' => false,

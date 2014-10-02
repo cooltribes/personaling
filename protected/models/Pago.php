@@ -30,6 +30,10 @@
  * @property string $cuenta
  * @property integer $id_transaccion
  * @property integer $observacion
+ * @property string recipient
+ * @property string identification
+ * @property string accountType
+ * @property string email
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -42,6 +46,10 @@ class Pago extends CActiveRecord
                         "PayPal",
                         "Cuenta Bancaria",        
                         "Agregar al balance",        
+                        );
+    public static $tiposCuenta = array(
+                        "Ahorros",
+                        "Corriente", 
                         );
     
     const MONTO_MIN = 1;
@@ -76,7 +84,8 @@ class Pago extends CActiveRecord
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
-        return array(
+        
+        $rules= array(
             array('user_id', 'required'),
             array('tipo', 'required', 'message'=>'Debes seleccionar un método de pago'),
             array('entidad', 'required', 'message'=>'Debes indicar el nombre del banco'),
@@ -92,11 +101,14 @@ class Pago extends CActiveRecord
                 ),
             array('cuenta', 'length', 'max'=>140),
             array('fecha_solicitud, fecha_respuesta', 'safe'),
+            array('email', 'email', 'message'=>'Introduzca un correo electronico valido.'),
+           
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('id, estado, monto, fecha_solicitud, fecha_respuesta, user_id,
                 admin_id, tipo, entidad, cuenta, id_transaccion, observacion', 'safe', 'on'=>'search'),
         );
+       return $rules;
     }
 
     /**
@@ -129,6 +141,10 @@ class Pago extends CActiveRecord
             'entidad' => 'Nombre del Banco',
             'cuenta' => 'Cuenta',
             'id_transaccion' => 'Id de Transacción',
+            'accountType'=>'Tipo de cuenta',
+            'recipient'=>'Beneficiario',
+            'identification'=>'Cédula o RIF',
+            'email'=>'E-mail del Beneficiario',
         );
     }
 
@@ -166,9 +182,32 @@ class Pago extends CActiveRecord
      * @return array la lista con los tipos de pago
      */
     public static function getTiposPago() {
-            
-        return self::$tiposPago; 
-    }    
+        $pagosPS=self::$tiposPago;
+          
+        if(!Yii::app()->params['pagoPS']['paypal'])
+            if(($key = array_search('PayPal', $pagosPS)) !== false)
+             unset($pagosPS[$key]);
+        if(!Yii::app()->params['pagoPS']['banco'])
+            if(($key = array_search('Cuenta Bancaria', $pagosPS)) !== false)
+             unset($pagosPS[$key]);
+        if(!Yii::app()->params['pagoPS']['saldo'])
+            if(($key = array_search('Agregar al balance', $pagosPS)) !== false)
+             unset($pagosPS[$key]);
+       
+        return $pagosPS; 
+    } 
+    
+    public static function getTiposCuenta() {
+       
+        return self::$tiposCuenta;
+       
+    }  
+    public function getTipoCuenta($id) {
+        if($id<count(self::$tiposPago)&&$id>=0)    
+        return self::$tiposCuenta[$id];
+        
+        return "No Determinado"; 
+    }   
     
     /**
      * Para conocer el tipo de pago de $this segun el array

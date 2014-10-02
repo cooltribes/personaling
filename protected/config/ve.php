@@ -49,6 +49,13 @@ return CMap::mergeArray(
                     	'depositoTransferencia' => true,
                     	'instapago' => true,
 					),
+				'pagoPS'=> array(
+           
+                        'paypal' => false,
+                        'banco' => true,
+                        'saldo' => true,
+                    ),	
+                 
                 'multiLook'=> array(
                     'bodyType' => false,
                     'eyesColor' => false,

@@ -73,23 +73,30 @@ class PagoController extends Controller
                 
                 
 		if(isset($_POST['Pago']))
-		{
+		{           
                     $model->attributes = $_POST['Pago'];
+                    
                     $model->user_id = Yii::app()->user->id;
                     $model->fecha_solicitud = date("Y-m-d H:i:s");
 
                     //si metodo de pago es paypal
-                    if($model->tipo == 0){                            
+                    if($model->tipo == 0 && Yii::app()->params['pagoPS']['paypal']){                            
                         //poner el nombre del banco "PAYPAL" para no dejarlo vacío
                         $model->entidad = "PayPal";                            
                     }
                     //si el tipo de pago es Agregar al Balance
-                    if($model->tipo == 2){                            
+                    if($model->tipo == 2 && Yii::app()->params['pagoPS']['banco']){                            
                         //poner el nombre del banco "Personaling" para no dejarlo vacío
                         $model->entidad = "Personaling";                            
                         //poner como cuenta "Balance" ya que no se indicó en el formulario
-                        $model->cuenta = "Balance";                            
+                        $model->cuenta = "Balance"; 
+                                                  
                     }
+                    if(Yii::app()->language=='es_ve'&&$model->tipo == 1){
+                            $model->recipient=$_POST['Pago']['recipient']; 
+                            $model->identification=$_POST['Pago']['identification']; 
+                            $model->accountType=Pago::model()->getTipoCuenta($_POST['Pago']['accountType']);
+                    } 
                     
                     if($model->save()){
                         
@@ -137,6 +144,7 @@ class PagoController extends Controller
 			'model'=>$model,
 			'balance'=>$balance,
 			'forApproval'=>$forApproval,
+			'user'=>$user
 		));
 	}
 

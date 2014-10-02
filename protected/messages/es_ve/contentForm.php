@@ -393,7 +393,7 @@ return array (
      'You must select all sizes' => 'Debes seleccionar todas las tallas',
      'You should select a Billing Address.'=>'Debes seleccionar una dirección de facturación',
      'Your bag' =>'Tu bolsa',
-     'Your payments'=>'Tus Pagos',
+     'Your Payments'=>'Tus Pagos',
      'Your Purchases' => 'Tus Compras',
      'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
      'Your order has been successfully completed.' => 'Tu compra se ha realizado con éxito.',

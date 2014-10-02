@@ -82,7 +82,7 @@
                 </li>
                 <li>
                     <?php echo CHtml::link('<i class="icon-eye-open"></i>  Ver en tienda',
-                            $this->createUrl('look/detalle',array('id'=>$data->id)), array(
+                            '../'.$data->id, array(
 //                        
                     )); ?>            
                 </li>

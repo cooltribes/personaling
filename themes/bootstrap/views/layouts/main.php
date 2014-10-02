@@ -40,48 +40,83 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
             'class'=>'bootstrap.widgets.TbMenu',
             'htmlOptions'=>array('class'=>'pull-right'),
             'items'=>array(
- 
+
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 array('label'=>'Panel de Control', 'url'=>'#', 'items'=>array(
-					array('label'=>'General', 'url'=>array('/controlpanel/index')),
-					array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')), 
-					array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
-					array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
-					array('label'=>'Acciones', 'url'=>array('/adorno/index')),
-                                        array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                            array('label'=>'General', 'url'=>array('/controlpanel/index')),
+                                            array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')),
+                                            array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
+                                            array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
+                                            array('label'=>'Acciones', 'url'=>array('/adorno/index')),
+                                            array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                                            array('label'=>'SEO', 'url'=>array('/controlpanel/seo')),
 //                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
-					)),                
+					)),
+
                 array('label'=>'Usuarios', 'url'=>'#', 'items'=>array(
-					array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
-					array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
+                                            array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
+                                            array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
 					)),
+
                 array('label'=>'Looks', 'url'=>'#', 'items'=>array(
-                  
-        					array('label'=>'Looks', 'url'=>array('/look/admin')),
-                  array('label'=>'Importar Descuentos', 'url'=>array('/look/importarDescuentos')),
-        					array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
-                  array('label'=>'Campañas', 'url'=>array('/campana/index')),
-					)),
+                                            array('label'=>'Looks', 'url'=>array('/look/admin')),
+                                            array('label'=>'Importar Descuentos', 'url'=>array('/look/importarDescuentos')),
+                                            array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
+                                            array('label'=>'Campañas', 'url'=>array('/campana/index')),
+                                        )),
+
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
-                	array('label'=>'Productos', 'url'=>array('/producto/admin')),
-					array('label'=>'Marcas', 'url'=>array('/marca/admin')),
-					array('label'=>'Reporte de Inventario', 'url'=>Yii::app()->baseUrl.'/producto/reporte'),
-          array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
+                                            array('label'=>'Productos', 'url'=>array('/producto/admin')),
+                                            array('label'=>'Colores', 'url'=>array('/color/admin')),
+                                            array('label'=>'Marcas', 'url'=>array('/marca/admin')),
+                                            array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
+                                             array('label'=>'Tiendas', 'url'=>array('/tiendaExterna/admin')),
+                                            '---',
+                                            array('label'=>'Inventario','url'=>'#',
+                                                'items' => array(
+                                                    array('label' => 'Reporte de Inventario',
+                                                        'url'=>array('/producto/reporte'),),
+                                                    array('label' => 'Egresos de Mercancía',
+                                                        'url'=>array('/movimiento/adminEgresos'),),
+                                                    array('label' => 'Reporte de Defectuosos',
+                                                        'url'=>array('/movimiento/defectuosos'),),
+                                                    array('label' => 'Ver MasterDatas',
+                                                        'url'=>array('/masterData/admin'),),
+                                                    array('label' => 'Ver Inbounds',
+                                                        'url'=>array('/inbound/admin'),),
+                                                )),
+                                            array('label'=>'Importar','url'=>'#',
+                                                'items' => array(
+
+                                                    array('label' => 'Productos Personaling',
+                                                        'url'=>array('/producto/importar'),),
+                                                    array('label' => 'Descuentos',
+                                                        'url'=>array('/producto/importarPrecios'),),
+                                                    array('label' => 'Productos Externos',
+                                                        'url'=>array('/producto/importarExternos'),),
+                                                )),
 					)
 				),
-                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),
-                array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'),
-				array('label'=>'Devoluciones', 'url'=>Yii::app()->baseUrl.'/orden/adminDevoluciones'))),
-                array('label'=>'Gift Card', 'url'=>'#', 'items'=>array(                	
-                array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
+                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(
+                    array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),
+                    array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'),
+                    array('label'=>'Devoluciones', 'url'=>Yii::app()->baseUrl.'/orden/adminDevoluciones'),
+                    array('label'=>'Pagos a Personal Shoppers', 'url'=>Yii::app()->baseUrl.'/pago/admin'),
+                    array('label'=>'Comisiones por afiliación PS', 'url'=>array('/pago/comisionAfiliacion')),                    
+                    )
+                ),
 
-					),
-				),
+                array('label'=>'Promociones', 'url'=>'#', 'items'=>array(
+                    array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
+                    array('label'=>'Códigos de Descuento', 'url'=>array('/codigoDescuento/index')),
+
+                                ),
+                    ),
                	//array('label'=>'Sistema', 'url'=>array('/site/logout')),
 				array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     array('label'=>'Perfil', 'url'=>'#'),
-                   
+
                     '---',
                     array('label'=>'Salir', 'url'=>array('/site/logout')),
                 ),

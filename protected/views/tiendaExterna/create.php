@@ -92,7 +92,8 @@ $this->breadcrumbs=array(
 				              	if($tienda->isNewRecord)
 				              		echo '';
 								else {
-									echo CHtml::image(Yii::app()->request->baseUrl.'/images/tienda/'.$tienda->id.'_thumb.jpg',"image");
+									echo "<img src=".Yii::app()->request->baseUrl.'/images/'.Yii::app()->language.'/tienda/'.$tienda->id.'_thumb.jpg'."?" . time() . ">";	
+									#echo CHtml::image(Yii::app()->request->baseUrl.'/images/'.Yii::app()->language.'/tienda/'.$tienda->id.'_thumb.jpg',"image");
 								} 
 				              	?>
 				              </div>

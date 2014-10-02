@@ -122,7 +122,7 @@ class LookController extends Controller
                'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
-				'users'=>array('*'),
+				'users'=>array('*'), 
 			), 
 		);
 	}

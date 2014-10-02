@@ -83,14 +83,14 @@ class TiendaExternaController extends Controller
 			$images=CUploadedFile::getInstanceByName('logo');
 			if(isset($images))
 			{
-				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/tienda/'))
-					mkdir(Yii::getPathOfAlias('webroot').'/images/tienda/',0777,true);
+				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/tienda/'))
+					mkdir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/tienda/',0777,true);
 				$rnd = rand(0,9999);  
 				$tienda->logo = "{$rnd}-{$images}";
 				
 				$tienda->save();
 					        
-		        $nombre = Yii::getPathOfAlias('webroot').'/images/tienda/'.$tienda->id;
+		        $nombre = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/tienda/'.$tienda->id;
 		        $extension_ori = ".jpg";
 				$extension = '.'.$images->extensionName;
 		       

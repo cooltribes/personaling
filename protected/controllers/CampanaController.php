@@ -288,7 +288,7 @@ class CampanaController extends Controller
 			
 		$marca= Marca::model()->findByPk($marcaid);	
 		$return.= '<tr>
-				          <td>'.CHtml::image(Yii::app()->baseUrl.'/images/marca/'.$marca->id.'_thumb.jpg', $marca->nombre).'</td>
+				          <td>'.CHtml::image(Yii::app()->baseUrl.'/images/'.Yii::app()->language.'/marca/'.$marca->id.'_thumb.jpg', $marca->nombre).'</td>
 				          <td>'.$marca->nombre.'</td>
 				        </tr>';
 			}

@@ -4289,6 +4289,8 @@ public function actionReportexls(){
                                         //para los externos
                                         'tienda_id' => $tienda->id,
                                         //no actualizar la url.
+                                        // operaciones mandó a modificar la url. Atte: yondri
+                                        'url_externo' => $rURL,
 
                                     )); 
                                    

@@ -154,8 +154,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
         $user = User::model()->findByPk(Yii::app()->user->id);
     $avatar ='';
     if($user){
-      $file = explode('.',$user->getAvatar());
-      $avatar = "<img  src='".$file[0]."_x30.".$file[1]."' class='img-circle avatar_menu' width='30' height='30' />   ";
+        $cache = !(Yii::app()->getController()->getId() == 'profile' && Yii::app()->getController()->getAction()->getId() == 'avatar' && !Yii::app()->getSession()->get('loadAvatar'));
+        $file = explode('.',$user->getAvatar($cache));
+        $avatar = "<img  src='".$file[0]."_x30.".$file[1]."' class='img-circle avatar_menu' width='30' height='30' />   ";
+        Yii::app()->getSession()->remove('loadAvatar');
     }
 
     $Arraynombre = explode(" ",$profile->first_name);

@@ -234,7 +234,7 @@ class PrecioTallaColor extends CActiveRecord
 	}
     
     public function updateLooksAvailability(){
-        $lhps=LooksHasProducto::model()->findAllByAttributes(array('color_id'=>$this->color_id,'producto_id'=>$this->producto_id));
+        $lhps=LookHasProducto::model()->findAllByAttributes(array('color_id'=>$this->color_id,'producto_id'=>$this->producto_id));
         foreach($lhps as $lhp){
             $look=Look::model()->findByPk($lhp->look_id);
             $look->updateAvailability();

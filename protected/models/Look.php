@@ -1245,7 +1245,7 @@ class Look extends CActiveRecord
     }
     
     public function updateAvailability(){
-        if($this->countAvailableProducts<3)
+        if($this->countAvailableProducts()<3)
             $this->available=0;
         else
             $this->available=1;

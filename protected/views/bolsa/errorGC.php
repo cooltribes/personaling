@@ -5,7 +5,7 @@ $this->breadcrumbs=array(
 	'Error',
 );
 ?>
-	
+	 
     <hr/>
 
     <div class='alert alert-error margin_top_medium margin_bottom'>

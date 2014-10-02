@@ -3,8 +3,8 @@
 $ima ='';
 
 echo"<tr>";
-
-	$ima = CHtml::image(Yii::app()->baseUrl.'/images/colores/'.$data->path_image, $data->valor, array('width'=>50, 'style'=>'border-style: solid; border-width: 1px; border-color: #666'));
+	$ruta=Yii::app()->baseUrl.'/images/'.Yii::app()->language.'/colores/'.$data->path_image;
+	$ima = CHtml::image($ruta, $data->valor, array('width'=>50, 'style'=>'border-style: solid; border-width: 1px; border-color: #666'));
 
 	if(isset($ima))
    		echo "<td>".$ima."</td>";

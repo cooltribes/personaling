@@ -9,6 +9,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 //echo $orden->pago_id;
     ?>
     <?php //echo "xPagar".$orden->getxPagar()." SumxOrden".Detalle::model()->getSumxOrden($orden->id);  ?>
+    <style>
+    	#voucher div table{
+    		border:solid 1px #000;
+    		margin:0 auto;
+    	}
+    </style>
     <div class="container margin_top">
         <div class="row">
             <div class="span8 offset2">
@@ -40,8 +46,13 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         <td><h4><?php echo Yii::t('contentForm','currSym').'. ' . Yii::app()->numberFormatter->formatCurrency($orden->total, ''); ?></h4></td>
                         </tr>
                     </table>
-                    <hr/>
+                    <hr/> 
                     <p><?php echo Yii::t('contentForm','We have sent a summary of the purchase to your inbox');  ?>: <strong><?php echo $user->email; ?></strong> </p>          
+                   	<?php if($tipoPago == 2){ ?>
+	                    <p><?php echo Yii::t('contentForm','Reference').": ".$referencia; ?></p>	
+	                    <div style="margin: 0 auto; " id="voucher"><?php echo CHtml::decode($voucher); ?>
+	                    </div>
+                    <?php } ?>
                     <h3 class="margin_top"><?php echo Yii::t('contentForm','Order Details');  ?></h3>
                     <div>
                         <table class='table' width='100%' >

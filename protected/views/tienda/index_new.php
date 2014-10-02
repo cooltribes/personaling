@@ -357,7 +357,7 @@ if(isset($seo)){
   				<div class="dropdown">
 	  				<a href="#" class="dropdown-toggle" data-toggle="dropdown" class="color_b">
 	  					<?php echo Yii::t('contentForm','Color');?>: &nbsp
-	  					<span id="color_titulo"> <img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>		
+	  					<span id="color_titulo"> <img src="<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/colores/allcolors.png";?>" alt="Color" width="44"/>		
 	  					</span><b class="caret caretthumbs"></b>
 	  				</a>
 	  				<div class="dropdown-menu dropdown-colors">
@@ -378,7 +378,7 @@ if(isset($seo)){
 						}
 
 						foreach($colores as $color){
-							echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/colores/". $color->path_image.'"/></a></li>';
+							echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/".Yii::app()->language."/colores/". $color->path_image.'"/></a></li>';
 							
 						}  
 							 
@@ -782,7 +782,7 @@ if (!Yii::app()->user->isGuest && $completarPerfil){
     //$('#catalogo').remove();
     //$('#tienda_productos').html('');
     if($('#colorhid').val()==0){
-            $('#color_titulo').html('<img src="<?php echo Yii::app()->baseUrl."/images/colores/allcolors.png";?>" alt="Color" width="44"/>');
+            $('#color_titulo').html('<img src="<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/colores/allcolors.png";?>" alt="Color" width="44"/>');
             $('#summColor').html('');
     }
 
@@ -811,7 +811,7 @@ if (!Yii::app()->user->isGuest && $completarPerfil){
                     $('#chic_hid').val('0');
                     $('#banner100chic').fadeOut(3000);
                     preRefresh();
-                    $('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/>");
+                    $('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/080botonnegro.jpg";?>'/>");
     }		
 
     $(".hijo").click(function() { 

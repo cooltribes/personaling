@@ -4,7 +4,7 @@ $ima ='';
 
 echo"<tr>";
 
-	$ima = CHtml::image(Yii::app()->baseUrl.'/images/marca/'.$data->id.'_thumb.jpg', $data->nombre);
+	$ima = CHtml::image(Yii::app()->baseUrl.'/images/'.Yii::app()->language.'/marca/'.$data->id.'_thumb.jpg', $data->nombre);
 
 	if(isset($ima))
    		echo "<td>".$ima."</td>";

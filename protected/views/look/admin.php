@@ -1,4 +1,4 @@
-<?php echo Yii::app()->session['hell'];
+<?php 
 
 	$this->breadcrumbs=array(
 		'Look',
@@ -110,10 +110,11 @@
         }
     </style>
 <?php
-//         <th scope="col"><input name="check" type="checkbox" id="todos"></th>
+         
 $template = '{summary}
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
+            <th scope="col"><input name="check" type="checkbox" id="todos"></th>
             <th colspan="2" scope="col">Look</th>
             <th scope="col">Precio ('.Yii::t('contentForm','currSym').')</th>
             <th scope="col">Vendidos</th>
@@ -204,7 +205,8 @@ $template = '{summary}
 					alert('No ha seleccionado ninguna acción.');
 					
 					
-				if(data.status==3 || data.status==4){
+				if(data.status==3 || data.status==4 || data.status==5
+                                || data.status==6){
 					
 						ajaxUpdateTimeout = setTimeout(function () {
 						$.fn.yiiListView.update(

@@ -362,7 +362,7 @@
                 {
                   $colorUnico = Color::model()->findByPk($cantcolor[0]);             
                   echo "<div value='solo' id=".$colorUnico->id." style='cursor: pointer' 
-                      class='coloress active' title='".$colorUnico->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+                      class='coloress active' title='".$colorUnico->valor."'><img src='".Yii::app()->baseUrl."/images/".Yii::app()->language."/colores/".$color->path_image."'></div>"; 
 
                 }
                 else{
@@ -386,7 +386,7 @@
                                     }
                                 }                              
                               
-                                echo "<div id=".$color->id." style='cursor: pointer' class='coloress".$claseActive."' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/colores/".$color->path_image."'></div>"; 
+                                echo "<div id=".$color->id." style='cursor: pointer' class='coloress".$claseActive."' title='".$color->valor."'><img src='".Yii::app()->baseUrl."/images/".Yii::app()->language."/colores/".$color->path_image."'></div>"; 
                                 array_push($valores, $color->id);
                             }
                         }
@@ -466,7 +466,7 @@
                   <p class="margin_left_small"><strong><?php echo (null!==$marca)?$marca->nombre:'N/D'; ?></strong></p>                    
                   <?php
                   if (null!==$marca)
-                  echo CHtml::image(Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65","class" => "margin_left_small"));
+                  echo CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65","class" => "margin_left_small"));
                   ?>   
                   </div>
                   <div class="span6">
@@ -1293,7 +1293,8 @@ $('.imagen_principal').zoom({url: imgZ});
             
             if(data.status == 'ok')
             {
-              var base = "<?php echo Yii::app()->baseUrl; ?>";    
+              var base = "<?php echo Yii::app()->baseUrl; ?>";
+              var ruta=  "<?php echo "/images/".Yii::app()->language."/colores/"; ?>";   
               //alert(data.datos);
               var cont="";
               $.each(data.datos,function(clave,valor) {
@@ -1306,7 +1307,7 @@ $('.imagen_principal').zoom({url: imgZ});
                   cont = cont + "<div onclick='b("+valor[0]+")' id='"+valor[0]+
                           "' style='cursor: pointer' class='coloress"+
                           (parseInt(valor[0])==colorSeleccionado?" active":"")
-                          +"' title='"+valor[1]+"'><img src='"+ base +"/images/colores/"+valor[2]+"'></div>";
+                          +"' title='"+valor[1]+"'><img src='"+ base + ruta +valor[2]+"'></div>";
               
           });
           //alert(cont); 

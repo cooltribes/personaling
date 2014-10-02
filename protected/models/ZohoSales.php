@@ -219,6 +219,8 @@ class ZohoSales{
 			$response = curl_exec($ch);
 			curl_close($ch);
 			
+		//var_dump($response);
+
 		/* ===================== */ 	
 		
 		if($ordenhas->countLooks($order) > 0) // hay looks
@@ -241,7 +243,7 @@ class ZohoSales{
 					}
 					
 					if($look->tipoDescuento == 1){
-						$discount = $look-> getPrecioProductosFull() - $look->valorDescuento; 
+						$discount = $look->getPrecioProductosFull() - $look->valorDescuento; 
 						$dcto_looks += $discount; 
 					}
 						
@@ -256,6 +258,7 @@ class ZohoSales{
 		$xml2 .= '<FL val="Descuento Looks">'.(double)$dcto_looks.'</FL>';
 		$xml2 .= '<FL val="Descuento Total">'.(double)$dcto_total.'</FL>';
 		$xml2 .= '<FL val="Total Productos">'.(double)$totalProductos.'</FL>'; 
+		$xml2 .= '<FL val="Productos IVA">'.(double)$orden->getProductsValue().'</FL>'; 
 		
 		return $xml2; 
 	}
@@ -326,11 +329,14 @@ class ZohoSales{
 		
 		$response = curl_exec($ch);
 		curl_close($ch);
+		
+		//var_dump($response);
+		
 				
 		// $datos = simplexml_load_string($response);
 	}
 
-	function addAddress($id, $first, $last, $email, $rowOne, $rowTwo, $state, $city, $country, $zip){ // add the address to zoho client profile 
+	function addAddress($id, $first, $last, $email, $rowOne, $rowTwo, $state, $city, $country,$zip){ // add the address to zoho client profile 
 		
 		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= '<Contacts>';

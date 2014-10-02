@@ -1381,7 +1381,7 @@ class BolsaController extends Controller
 		$data_array = array(
 			"Amount"=>$monto, // MONTO DE LA COMPRA
 			"Description"=>"Tarjeta de Credito", // DESCRIPCION 
-			"CardHolder"=>$tarjeta->nombre, // NOMBRE EN TARJETA
+			"CardHolder"=>$tarjeta->nombre, // NOMBRE EN TARJETA 
 			"CardHolderID"=>$tarjeta->ci, // CEDULA
 			"CardNumber"=>$tarjeta->numero, // NUMERO DE TARJETA
 			"CVC"=>"".$tarjeta->codigo, //CODIGO DE SEGURIDAD
@@ -1718,7 +1718,7 @@ class BolsaController extends Controller
 					
 			        break;
 			    case 2: // TARJETA DE CREDITO
-			        $resultado = $this->cobrarTarjeta(Yii::app()->getSession()->get('idTarjeta'), $usuario, Yii::app()->getSession()->get('total_tarjeta'));
+			        $resultado = $this->cobrarTarjeta(Yii::app()->getSession()->get('idTarjeta'), $usuario, Yii::app()->getSession()->get('totalTarjeta'));
 					$global = $resultado;
 					
 					            if ($resultado['status'] == "ok") {
@@ -1728,7 +1728,7 @@ class BolsaController extends Controller
                                     $detalle->nTransferencia = $resultado["idOutput"];
                                     $detalle->nombre = $tarjeta->nombre;
                                     $detalle->cedula = $tarjeta->ci;
-                                    $detalle->monto = Yii::app()->getSession()->get('total_tarjeta');
+                                    $detalle->monto = Yii::app()->getSession()->get('totalTarjeta'); 
                                     $detalle->fecha = date("Y-m-d H:i:s");
                                     $detalle->banco = 'TDC';
                                     $detalle->estado = 1; // aceptado
@@ -1926,8 +1926,11 @@ class BolsaController extends Controller
                                 $this->agregarCupon($orden);
                                 
                                 $this->hacerCompra($bolsa->id,$orden->id);
-                                
-								/*===========================================*/
+                                					
+                               break;
+			} //FIN SWITCH
+			
+							/*===========================================*/
 								
 								$zoho = new ZohoSales;
 								
@@ -1950,14 +1953,11 @@ class BolsaController extends Controller
 									$datos = simplexml_load_string($respuesta);
 								
 									$id = $datos->result[0]->recorddetail->FL[0];
-									//echo $id;	
-								
+									
 									$orden->zoho_id = $id;
 									$orden->save(); 
-								}
-													
-                               break;
-			} //FIN SWITCH
+								}			
+			
 				// Generar factura
 			$factura = new Factura;
 			$factura->fecha = date('Y-m-d');

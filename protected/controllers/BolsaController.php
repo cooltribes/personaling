@@ -1930,7 +1930,7 @@ class BolsaController extends Controller
                                break;
 			} //FIN SWITCH
 			
-							/*===========================================*/
+			/*===========================================*/
 								
 								$zoho = new ZohoSales;
 								
@@ -1951,12 +1951,19 @@ class BolsaController extends Controller
 									$respuesta = $zoho->save_potential($orden);
 								
 									$datos = simplexml_load_string($respuesta);
-								
-									$id = $datos->result[0]->recorddetail->FL[0];
+									
+								//	if(isset($datos->result[0]->recorddetail->FL[0])){
+										$id = $datos->result[0]->recorddetail->FL[0]; 
+								/*	}
+									else{
+										var_dump($datos);
+										Yii::app()->end();
+									}*/
 									
 									$orden->zoho_id = $id;
 									$orden->save(); 
-								}			
+								}
+			
 			
 				// Generar factura
 			$factura = new Factura;

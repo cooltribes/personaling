@@ -281,7 +281,7 @@ class ColorController extends Controller
 	}
 	
 	public function actionPruebazoho()
-	{
+	{/*
 		$orden = Orden::model()->findByPk(1);
 		$xml = "";
 		
@@ -314,13 +314,24 @@ class ColorController extends Controller
 		echo htmlspecialchars($response)."<p><p>";
 
 		$datos = simplexml_load_string($response);
-		var_dump($datos);
+		var_dump($datos);*/
+		
+		//tengo los ptc de la orden
+		$orderhas = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>218));
+		$value = 0;
+		
+		foreach($orderhas as $ptc){
+			$product = $ptc->preciotallacolor->producto;
+			$value += $product->getPrecioImpuesto(false);
+		}
+		
+		echo $value;
 		
 	}
 	
 	public function actionPruebazohoproducto()
 	{ 		
-		$orden = Orden::model()->findByPk(213); 
+		$orden = Orden::model()->findByPk(221); 
 		
 		$user = User::model()->findByPk($orden->user->id);
 		$zoho = new ZohoSales;

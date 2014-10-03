@@ -1027,7 +1027,7 @@ class Orden extends CActiveRecord
 		
 		foreach($orderhas as $ptc){
 			$product = $ptc->preciotallacolor->producto;
-			$value += $product->getPrecioImpuesto();
+			$value += $product->getPrecioImpuesto(false);
 		}
 		
 		return $value;

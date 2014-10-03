@@ -6,7 +6,7 @@ $this->breadcrumbs=array(
 	Yii::t('contentForm' , 'Your Payments'),
 );
 
-$this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'My Payments'));
+$this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Your Payments'));
 
 
 ?>

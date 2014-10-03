@@ -483,7 +483,7 @@
           <div class="span3">
           <?php
           if (null!==$marca)
-                  echo CHtml::image(Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65"));
+                  echo CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/marca/'. str_replace(".","_thumb.",$marca->urlImagen), "Marca",array("width" => "65"));
           ?>   
           </div>               
                     <div class="span9">

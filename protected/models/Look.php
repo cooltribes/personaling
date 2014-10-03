@@ -1236,21 +1236,42 @@ class Look extends CActiveRecord
     public function countAvailableProducts(){
         $count=0;    
         foreach($this->lookhasproducto as $lhp){
-            $ptc=PrecioTallaColor::model()->findByAttributes(array('producto_id'=>$lhp->producto_id,'color_id'=>$lhp->color_id));
-            if($ptc->cantidad>0){
-                $count++;       
+            $ptcs=Preciotallacolor::model()->findAllByAttributes(array('producto_id'=>$lhp->producto_id,'color_id'=>$lhp->color_id));
+            if(isset($ptcs))
+            {
+                foreach($ptcs as $ptc){
+                    if($ptc->cantidad>0){
+                        $count++;
+                        break;
+                    }
+                }
             }
+                
         }
         return $count;
     }
     
     public function updateAvailability(){
+        $this->setScenario('availability');
+        $save=false;
         if($this->countAvailableProducts()<3)
-            $this->available=0;
-        else
-            $this->available=1;
-        return $this->save();
-        
+        {
+            if($this->available!=0){
+                 $this->available=0;
+                $save=true;                
+            }
+        }           
+        else{
+            if($this->available!=1){
+                 $this->available=1;
+                $save=true;                
+            }
+        }
+        if($save)
+            if($this->save())
+                return 1;
+            else 
+                return 0;
     }
 	
 }

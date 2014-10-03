@@ -87,7 +87,15 @@ $pagerParams = array(
                             </td>
                         </tr>
                     </table>
+                    <div class="span12 padding_top_medium">
+                        <?php $this->widget("bootstrap.widgets.TbButton", array(
+                            'label' => 'Solicitar Pago',
+                            'type' => 'success',                                
+                            'url' => $this->createUrl("../pago/solicitar"),
+                        )) ?> 
+                    </div>
                 </div>
+                
             </div>
 
         </div>

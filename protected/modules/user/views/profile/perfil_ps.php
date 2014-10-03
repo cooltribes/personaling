@@ -94,7 +94,11 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
         foreach($marcas->getData() as $cadauna) {
         	
         	$marca = Marca::model()->findByPk($cadauna['id']); // Look::model()->findByPk($record['look_id']);
+<<<<<<< HEAD
 			$ima = CHtml::image($marca->getImageUrl(true), $marca->nombre, array('width'=>84, 'height'=>84));
+=======
+			$ima = CHtml::image(Yii::app()->baseUrl.'/images/'.Yii::app()->language.'/marca/'.$marca->id.'_thumb.jpg', $marca->nombre, array('width'=>84, 'height'=>84));
+>>>>>>> acf3c4cd2b6f676cffd28a647e5d7317e1af02e1
  			
         
         	 echo '<li class="span4">'.$ima.'</li>'; 

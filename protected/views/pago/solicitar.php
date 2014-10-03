@@ -101,15 +101,55 @@ $this->breadcrumbs=array(
                     'hint' => 'Cuenta PayPal o Nro. de cuenta bancaria',
                     'required' => true,
                 ));
+                if(Yii::app()->language=='es_ve'){
+                ?> 
+               <div id="venezuela" class="hide">   
+               <div class="control-group<?php echo $model->hasErrors("accountType") ? " error" : ""; ?>">
+                    <label class="control-label required">
+                        <?php echo Yii::t('contentForm', 'accountType'); ?> <span class="required">*</span>
+                    </label>
+                    <div class="controls">                        
+                        <?php echo TbHtml::activeDropDownList($model, 'accountType',Pago::getTiposCuenta(),
+                                array('class' => 'span2',
+                                      'prompt' => '-Seleccionar-',
+                     
+                                    )); ?>
+                    </div>
+                </div>
+       <?php 
+                echo $form->textFieldRow($model, 'recipient', array(
+                    'class' => 'span3',
+                    'value' => $user->profile->first_name." ".$user->profile->last_name,
+                    //'hint' => 'Cuenta PayPal o Nro. de cuenta bancaria',
+                   // 'required' => true,
+                   'placeholder'=>'Escribe el nombre del titular de la cuenta'
+                ));
+                echo $form->textFieldRow($model, 'identification', array(
+                    'class' => 'span3',
+                   // 'hint' => 'Cuenta PayPal o Nro. de cuenta bancaria',
+                   // 'required' => true,
+                   'placeholder'=>'Escribe el RIF o cédula del titular de la cuenta'
+                ));
+                echo $form->textFieldRow($model, 'email', array(
+                    'class' => 'span3',
+                    'value' => $user->email,
+                    'placeholder'=>'Escribe el correo electrónico del titular de la cuenta'
+                  //  'hint' => 'Cuenta PayPal o Nro. de cuenta bancaria',
+                  //  'required' => true,
+                )); ?>
+                </div>     
+                      
+            <?php    }
+                
                 ?>	
                 <div class="control-group row">
                     <div class="controls pull-right">                          
-                        <button type="submit" name="Enviar" class="btn btn-danger">
+                        <button type="submit" name="Enviar" id="Enviar" class="btn btn-danger">
                             <i class="icon-envelope icon-white"></i> Enviar Solicitud
                         </button>
                     </div>
                 </div>
-                                
+                          
                 <?php } ?>
 
 
@@ -176,4 +216,69 @@ $this->breadcrumbs=array(
     
     
 </script>
+<?php   if(Yii::app()->language=='es_ve'){  ?> 
+    <script>
+   if( $('#Pago_tipo').val()==1)
+            $('#venezuela').show();
+    $('#Pago_cuenta').attr('placeholder','Veinte digitos numéricos');
+    //$('#Enviar').attr('disabled','disabled');
 
+    $('body').on('input','#Pago_cuenta', function() { 
+        console.log($(this).val());
+         var reg=/^[0-9]*$/;
+         if(reg.test($(this).val())){
+             $('#errorCuenta').hide();
+             $('#Enviar').attr('disabled',false);
+         }
+         else{
+             $('#Enviar').attr('disabled',true);
+             $('#errorCuenta').show();
+             if(!reg.test($(this).val().substring($(this).val().length-2,$(this).val().length-1)))
+                $(this).val($(this).val().substring(0, $(this).val().length- 1));
+         }
+        if($(this).val().length>20)
+            $(this).val($(this).val().substring(0, $(this).val().length- 1));    
+        
+     });
+     
+    $('#Pago_tipo').change(function() {
+ 
+        if($(this).val()==1)
+            $('#venezuela').show();
+        else
+            $('#venezuela').hide();
+    });
+    $( "#solicitud-form" ).submit(function( event ) {
+          
+          if(!validateVEN()){
+              $(".venError").show();
+              event.preventDefault();
+          }
+                
+        });
+    
+  
+    function validateVEN(){
+        var val=true;
+        var email = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  
+        if($('#Pago_tipo').val()==1){
+            if($('#Pago_accountType').val()=='')
+                val=false;
+            if($('#Pago_recipient').val()=='')
+                val=false;
+            if($('#Pago_identification').val()=='')
+                val=false;
+            if(!email.test($('#Pago_email').val()))
+                val=false;
+            if($('#Pago_cuenta').val().length!=20)
+                val=false;
+        }
+        
+        return val;
+               
+        
+    }
+
+    </script>
+<?php } ?>

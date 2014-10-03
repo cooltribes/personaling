@@ -6,15 +6,15 @@ if($data->type)
 else
 	$tipo="<div style='height:20%; width:100%; float:left; vertical-align:bottom'><small><b>Tienda Monomarca</b></small></div>";
 echo"<tr>"; 
-
-	$ima = CHtml::image(Yii::app()->baseUrl.'/images/tienda/'.$data->id.'_thumb.jpg', $data->name); 
+	$ruta=Yii::app()->baseUrl.'/images/'.Yii::app()->language.'/tienda/'.$data->id.'_thumb.jpg';
+	$ima = CHtml::image(Yii::app()->baseUrl.'/images/'.Yii::app()->language.'/tienda/'.$data->id.'_thumb.jpg', $data->name); 
 
 	if(isset($ima)) {
 		
-		 $tal=getimagesize(Yii::getPathOfAlias('webroot').'/images/tienda/'.$data->id.'_thumb.jpg'); 
+		 $tal=getimagesize(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/tienda/'.$data->id.'_thumb.jpg'); 
 		 $tal=explode('=',str_replace('"','',$tal[3]));
 		($tal[2]>25?$tal=$tal[2]-25:$tal=0);
-		 echo "<td>".$ima."</td>";
+		 echo "<td><img src='".$ruta."?".time()."' /></td>";
 		 
 	}
 	 		

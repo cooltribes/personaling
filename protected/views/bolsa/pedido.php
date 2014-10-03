@@ -12,8 +12,9 @@ $tipo_pago = $orden->getTipoPago();
 <?php //echo "xPagar".$orden->getxPagar()." SumxOrden".Detalle::model()->getSumxOrden($orden->id);?>
  <style>
     	#voucher div table{
-    		border:solid 1px #000;
-    		margin:0 auto;
+    		border: solid 25px #FFF;
+			margin: 0 auto;
+			outline: solid 1px;
     	}
     </style>
 <div class="container margin_top">

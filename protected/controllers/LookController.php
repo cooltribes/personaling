@@ -122,7 +122,7 @@ class LookController extends Controller
                'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
-				'users'=>array('*'),
+				'users'=>array('*'), 
 			), 
 		);
 	}
@@ -858,6 +858,7 @@ public function actionCategorias(){
 
 	public function actionPublicar($id)
 	{
+	    
 		$model = Look::model()->findByPk($id);
 		
 		$temporal = '';
@@ -885,6 +886,7 @@ public function actionCategorias(){
 	                if(!$model->sent_on){
 	                    $model->sent_on = date("Y-m-d H:i:s");
 	                }
+                    $this->enviarAprobadoPS($model->user, $model->title);
 	                
 
 	            }else{
@@ -2275,4 +2277,28 @@ public function actionCategorias(){
 			Yii::app()->end();
 		}   
         
+       function enviarAprobadoPS($user,$lookName) {
+            
+            $message = new YiiMailMessage;
+            //Opciones de Mandrill
+            $message->activarPlantillaMandrill();            
+            $subject = 'Cambio de status de Look';
+            
+            $body = Yii::t('contentForm', "<div style='font-size:14px'><p><b>Genial!</b></p>
+                <br>                    
+                 <br>
+                 Tu look <b style='font-size:18px'>{$lookName}</b> ha sido aprobado y está listo 
+                 para ser compartido en tus redes sociales, 
+                 que todos se enteren de tu talento como Personal Shopper!</div><br>                    
+                 <br>");                    
+                     
+            $destinatario = $user->email;                 
+            //$destinatario = "cruiz@upsidecorp.ch";  
+            $message->subject = $subject;
+            $message->setBody($body, 'text/html');
+            $message->addTo($destinatario);
+            Yii::app()->mail->send($message);
+        }
+
+
 }

@@ -88,8 +88,9 @@ class Curl extends CComponent {
 
 		$url = "https://api.instapago.com/payment/";
 		//$url = "http://personaling.com/payment/";
-			
-	/*	$data_keys = array(
+		
+		// datos reales
+	/*	$data_keys = array( 
 		"KeyId"=> "069C794A-6917-4283-B26F-2AFC7F685A96",
 		"PublicKeyId"=>"5274e829763cd383270512b87a6c947e",
 		);*/
@@ -101,6 +102,7 @@ class Curl extends CComponent {
 		
 		$data = array_merge($data_keys, $data);
 		//var_dump($data); 
+		
 		$data_string = http_build_query($data);
 		//echo $data_string;
 		//$f_response = fopen('/var/www/html/site/images/request.txt', 'w');

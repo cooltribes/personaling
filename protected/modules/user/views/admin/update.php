@@ -274,7 +274,8 @@ function getMonthsArray()
 					                    if (data.status == 'success'){
 					                    	$('#User_personal_shopper').val(data.personal_shopper);
                                                                 if(data.apply){
-                                                                    bootbox.alert(\"¡Se ha aprobado la solicitud para Personal Shopper!\");
+                                                                    $('#messagePS').html(data.alert);
+                                                                    $('#alertPS').show();
                                                                 }
                                                                        
                                                                 var text = data.personal_shopper == 1? 'Quitar Personal Shopper':'Hacer Personal Shopper';
@@ -440,4 +441,24 @@ function getMonthsArray()
     </div>
   </div>
 </div>
+
+<div id="alertPS" class="modal hide" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+ <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true">×</button>
+     <h3 ><?php echo Yii::t('contentForm','Done');?></h3>
+ 
+  </div>
+  <div class="modal-body">
+         <h4 id="messagePS"></h4>
+         
+  </div>
+  <!--<div class="modal-footer">   
+        <button class="btn closeModal" data-dismiss="modal" aria-hidden="true">Aceptar</button>
+  </div>-->
+</div>
+<script>
+    $('.closeModal').click(function(event) {
+            $('#alertPS').hide();
+        });
+</script>
 <!-- /container --> 

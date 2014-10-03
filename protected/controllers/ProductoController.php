@@ -696,12 +696,12 @@ public function actionReportexls(){
 		                $imagen->orden = 1 + Imagen::model()->count('`tbl_producto_id` = '.$_GET['id'].'');
 		                $imagen->save();
 		
-		                $nombre = Yii::getPathOfAlias('webroot').'/images/producto/'. $id .'/'. $imagen->id;
+		                $nombre = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/producto/'. $id .'/'. $imagen->id;
 		                $extension_ori = ".jpg";
 						$extension = '.'.$pic->extensionName;
 		                if ($pic->saveAs($nombre . $extension)) {
 		
-		                    $imagen->url = '/images/producto/'. $id .'/'. $imagen->id .$extension;
+		                    $imagen->url = $id .'/'. $imagen->id .$extension;
 		                    $imagen->save();
 							
 							Yii::app()->user->updateSession();
@@ -824,7 +824,7 @@ public function actionReportexls(){
 
 		$datos=$datos."<div class='modal-body'><div class='pull-left margin_right'>";
 		if($imagen){
-			$datos=$datos. CHtml::image(Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "200", "height" => "200",'class'=>'img-polaroid'));
+			$datos=$datos. CHtml::image(Yii::app()->baseUrl . '/images/' . Yii::app()->language . '/producto/' . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "200", "height" => "200",'class'=>'img-polaroid'));
 			$datos=$datos."</div>";
 		}else
 			$datos=$datos."<img src='http://placehold.it/200' class='img-polaroid'/></div>"; 

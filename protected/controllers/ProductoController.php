@@ -4821,7 +4821,7 @@ public function actionReportexls(){
 					if($cont >= 100) { 
 							
 						$xml .= '</Products>';
-					//	var_dump($xml."<br>");
+						//var_dump($xml."<br>"); 
 						
 						$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
 						$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&duplicateCheck=2&version=4&xmlData=".$xml;
@@ -4870,7 +4870,9 @@ public function actionReportexls(){
 										
 									}
 								}
-						}  
+						}else{
+							echo "error";
+						} 
 						
 						$posicion++;
 
@@ -4922,6 +4924,7 @@ public function actionReportexls(){
 						$xml .= '<FL val="Marca">'.$marca.'</FL>';
 						$xml .= '<FL val="Referencia">'.$producto->codigo.'</FL>';
 						
+						$estado="FALSE";
 						if($producto->estado==0)
 							$estado = "TRUE";
 						
@@ -5404,7 +5407,7 @@ public function actionReportexls(){
 			else{
 				$sumatoria++;
 			}
-			
+			 
 		} // foreach        
 	}  
 

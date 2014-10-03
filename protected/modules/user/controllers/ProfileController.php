@@ -1677,7 +1677,7 @@ class ProfileController extends Controller
 		$marca = Marca::model()->findByPk($producto->marca_id);
         $datos=$datos.'<h5>Marca</h5>';
         $datos=$datos.'<div class="thumbnails">';
-        $datos=$datos.'<img width="66px" height="66px" src="'.Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen).'"/>';
+        $datos=$datos.'<img width="66px" height="66px" src="'.Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/marca/'. str_replace(".","_thumb.",$marca->urlImagen).'"/>';
         $datos=$datos.'</div>';
         $datos=$datos.'</div></div></div>';
         $datos=$datos.'</div>';

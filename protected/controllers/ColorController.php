@@ -281,7 +281,7 @@ class ColorController extends Controller
 	}
 	
 	public function actionPruebazoho()
-	{
+	{/*
 		$orden = Orden::model()->findByPk(1);
 		$xml = "";
 		
@@ -314,211 +314,24 @@ class ColorController extends Controller
 		echo htmlspecialchars($response)."<p><p>";
 
 		$datos = simplexml_load_string($response);
-		var_dump($datos);
+		var_dump($datos);*/
+		
+		//tengo los ptc de la orden
+		$orderhas = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>218));
+		$value = 0;
+		
+		foreach($orderhas as $ptc){
+			$product = $ptc->preciotallacolor->producto;
+			$value += $product->getPrecioImpuesto(false);
+		}
+		
+		echo $value;
 		
 	}
 	
 	public function actionPruebazohoproducto()
-	{ 
-		/*
-		$zoho = New ZohoProductos; 
-		
-		$tallacolor = Preciotallacolor::model()->findByPk(7);
-		$producto = Producto::model()->findByPk($tallacolor->producto_id);
-		$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
-		
-		$zoho->nombre = $producto->nombre." - ".$tallacolor->sku;
-		$zoho->marca = $producto->mymarca->nombre;
-		$zoho->referencia = $producto->codigo;
-		
-		if($producto->estado==0)
-			$zoho->estado = "TRUE";
-		
-		$zoho->peso = $producto->peso;
-		$zoho->fecha = date("Y-m-d",strtotime($producto->fecha));
-		
-		$hascateg = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_producto_id'=>$producto->id));
-		$i=1;
-		foreach($hascateg as $each){
-			$cat = Categoria::model()->findByPk($each->tbl_categoria_id);	
-			
-			if($i==1)
-				$zoho->categoria = $cat->nombre;
-			if($i==2)
-				$zoho->subcategoria1 = $cat->nombre;
-			if($i==3)
-				$zoho->subcategoria2 = $cat->nombre;
-			
-			$i++;
-		}
-		
-		if($producto->tipo == 0)
-			$zoho->tipo = "Interno"; 
-		else{
-			$zoho->tienda = $producto->tienda->name;
-			$zoho->tipo = "Externo"; 
-			$zoho->url = $producto->url_externo;	
-		}	
-			
-		$zoho->descripcion = $producto->descripcion;
-		$zoho->costo = $precio->costo;
-		$zoho->precioVenta = $precio->precioVenta;
-		
-		if($precio->ahorro > 0){
-			$zoho->precioDescuento = $precio->precioDescuento;
-			$zoho->descuento = $precio->ahorro;
-		}
-		else{
-			$zoho->precioDescuento = $precio->precioImpuesto;
-			$zoho->descuento = 0;
-		}
-		$zoho->precioImpuesto = $precio->precioImpuesto;
-		
-		if($precio->tipoDescuento == 0) // descuento por porcentaje
-			$zoho->porcentaje = $precio->valorTipo;
-		else 	
-			$zoho->porcentaje = 0;
-		
-		$zoho->talla = $tallacolor->mytalla->valor;
-		$zoho->color = $tallacolor->mycolor->valor;
-		$zoho->SKU = $tallacolor->sku;
-		$zoho->cantidad = $tallacolor->cantidad;
-		
-		$zoho->titulo = $producto->seo->mTitulo;
-		$zoho->metaDescripcion = $producto->seo->mDescripcion;
-		$zoho->tags = $producto->seo->pClave;
-		
-		$respuesta = $zoho->save_potential();
-	
-		// var_dump($respuesta)."<br>";
-		echo htmlspecialchars($respuesta)."<p><p>";
-
-		$datos = simplexml_load_string($respuesta);
-		// var_dump($datos);
-
-		$id = $datos->result[0]->recorddetail->FL[0];
-		echo $id;	
-		
-		$tallacolor->zoho_id = $id;
-		if($tallacolor->save())
-			echo "<p>T BIEN";
-		
-
-		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
-		$xml .= '<Products>';
-			$xml .= '<row no="1">';
-			$xml .= '<FL val="Product Name">Prueba 1</FL>';
-			$xml .= '<FL val="Marca">Cherry Coco</FL>';
-			$xml .= '<FL val="Referencia">4455667788</FL>';
-			$xml .= '<FL val="Product Active">TRUE</FL>';
-			$xml .= '<FL val="Peso">0.5</FL>';
-			$xml .= '<FL val="Sales Start Date">2014-09-01</FL>';
-			$xml .= '<FL val="Categoria">Mujer</FL>';
-			$xml .= '<FL val="Subcategoría1">Accesorios</FL>';
-			$xml .= '<FL val="Subcategoria2"></FL>';
-			$xml .= '<FL val="Tipo">Externo</FL>';
-			$xml .= '<FL val="Tienda">Multimarca</FL>';
-			$xml .= '<FL val="url">http://personaling.es/producto/detalle/50</FL>';
-			$xml .= '<FL val="Description">Descripción de prueba</FL>';
-			$xml .= '<FL val="Costo">5.8</FL>'; 
-			$xml .= '<FL val="Unit Price">12</FL>';
-			$xml .= '<FL val="Precio Descuento">19</FL>';
-			$xml .= '<FL val="descuento">0</FL>';
-			$xml .= '<FL val="Precio Impuesto">19</FL>';
-			$xml .= '<FL val="Valor Venta en Look"></FL>';
-			$xml .= '<FL val="PorcentajeDescuento"></FL>';
-			$xml .= '<FL val="Talla">M</FL>';
-			$xml .= '<FL val="Color">Azul</FL>';
-			$xml .= '<FL val="SKU">44556677AM</FL>';
-			$xml .= '<FL val="Qty in Stock">1</FL>';
-			$xml .= '<FL val="Titulo">Prueba 1</FL>';
-			$xml .= '<FL val="Meta Descripcion">Descripcion de prueba</FL>';
-			$xml .= '<FL val="Tags">Prueba, descripcion</FL>';
-			$xml .= '</row>';
-			$xml .= '<row no="2">';
-			$xml .= '<FL val="Product Name">Prueba 2</FL>';
-			$xml .= '<FL val="Marca">Cherry Coco</FL>';
-			$xml .= '<FL val="Referencia">4455667788</FL>';
-			$xml .= '<FL val="Product Active">TRUE</FL>';
-			$xml .= '<FL val="Peso">0.5</FL>';
-			$xml .= '<FL val="Sales Start Date">2014-09-01</FL>';
-			$xml .= '<FL val="Categoria">Mujer</FL>';
-			$xml .= '<FL val="Subcategoría1">Accesorios</FL>';
-			$xml .= '<FL val="Subcategoria2"></FL>';
-			$xml .= '<FL val="Tipo">Externo</FL>';
-			$xml .= '<FL val="Tienda">Multimarca</FL>';
-			$xml .= '<FL val="url">http://personaling.es/producto/detalle/50</FL>';
-			$xml .= '<FL val="Description">Descripción de prueba</FL>';
-			$xml .= '<FL val="Costo">5.8</FL>'; 
-			$xml .= '<FL val="Unit Price">12</FL>';
-			$xml .= '<FL val="Precio Descuento">19</FL>';
-			$xml .= '<FL val="descuento">0</FL>';
-			$xml .= '<FL val="Precio Impuesto">19</FL>';
-			$xml .= '<FL val="Valor Venta en Look"></FL>';
-			$xml .= '<FL val="PorcentajeDescuento"></FL>';
-			$xml .= '<FL val="Talla">M</FL>';
-			$xml .= '<FL val="Color">Azul</FL>';
-			$xml .= '<FL val="SKU">44556677EE</FL>';
-			$xml .= '<FL val="Qty in Stock">1</FL>';
-			$xml .= '<FL val="Titulo">Prueba 1</FL>';
-			$xml .= '<FL val="Meta Descripcion">Descripcion de prueba</FL>';
-			$xml .= '<FL val="Tags">Prueba, descripcion</FL>';
-			$xml .= '</row>';
-			$xml .= '<row no="3">';
-			$xml .= '<FL val="Product Name">Prueba 3</FL>';
-			$xml .= '<FL val="Marca">Cherry Coco</FL>';
-			$xml .= '<FL val="Referencia">4455667788</FL>';
-			$xml .= '<FL val="Product Active">TRUE</FL>';
-			$xml .= '<FL val="Peso">0.5</FL>';
-			$xml .= '<FL val="Sales Start Date">2014-09-01</FL>';
-			$xml .= '<FL val="Categoria">Mujer</FL>';
-			$xml .= '<FL val="Subcategoría1">Accesorios</FL>';
-			$xml .= '<FL val="Subcategoria2"></FL>';
-			$xml .= '<FL val="Tipo">Externo</FL>';
-			$xml .= '<FL val="Tienda">Multimarca</FL>';
-			$xml .= '<FL val="url">http://personaling.es/producto/detalle/50</FL>';
-			$xml .= '<FL val="Description">Descripción de prueba</FL>';
-			$xml .= '<FL val="Costo">5.8</FL>'; 
-			$xml .= '<FL val="Unit Price">12</FL>';
-			$xml .= '<FL val="Precio Descuento">19</FL>';
-			$xml .= '<FL val="descuento">0</FL>';
-			$xml .= '<FL val="Precio Impuesto">19</FL>';
-			$xml .= '<FL val="Valor Venta en Look"></FL>';
-			$xml .= '<FL val="PorcentajeDescuento"></FL>';
-			$xml .= '<FL val="Talla">M</FL>';
-			$xml .= '<FL val="Color">Azul</FL>';
-			$xml .= '<FL val="SKU">44556677DD</FL>';
-			$xml .= '<FL val="Qty in Stock">1</FL>';
-			$xml .= '<FL val="Titulo">Prueba 1</FL>';
-			$xml .= '<FL val="Meta Descripcion">Descripcion de prueba</FL>';
-			$xml .= '<FL val="Tags">Prueba, descripcion</FL>';
-			$xml .= '</row>';
-		$xml .= '</Products>';
-	//	var_dump($xml);
-
-		$url ="https://crm.zoho.com/crm/private/xml/Products/insertRecords"; 
-		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=2&duplicateCheck=2&version=4&xmlData=".$xml;
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
-
-		//Execute cUrl session 
-		$response = curl_exec($ch);
-		curl_close($ch);
-	//	return $response;
-		var_dump( $response ); 
-
-		echo htmlspecialchars($response)."<p><p>";
-
-		$datos = simplexml_load_string($response);
-		var_dump($datos);
-		*/
-		
-		$orden = Orden::model()->findByPk(4); 
+	{ 		
+		$orden = Orden::model()->findByPk(221); 
 		
 		$user = User::model()->findByPk($orden->user->id);
 		$zoho = new ZohoSales;
@@ -533,7 +346,7 @@ class ColorController extends Controller
 			$user->zoho_id = $id;
 			$user->tipo_zoho = 1;
 									
-			$user->save();
+			$user->save(); 
 		}
 								
 		if($user->tipo_zoho == 1) // es ahora un contact
@@ -541,15 +354,18 @@ class ColorController extends Controller
 			$respuesta = $zoho->save_potential($orden);
 			$datos = simplexml_load_string($respuesta);
 			
+			var_dump($datos);
+			Yii::app()->end();
+			
 			$id = $datos->result[0]->recorddetail->FL[0];
 									
 			$orden->zoho_id = $id;
 			$orden->save(); 
 			
 			var_dump($datos); 
-			Yii::app()->end();
 		}	
-		
+	
+		Yii::app()->end();	
 	}
 	
 }

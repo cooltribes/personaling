@@ -209,7 +209,7 @@
 	   				<strong><?php echo Yii::t('contentForm','Weight'); ?></strong> <?php echo  $producto->peso; ?>
 	    		</div>
 	   			<div class="fifth">
-	   				<img width="66px" height="66px" src="<?php echo Yii::app()->baseUrl .'/images/marca/'. str_replace(".","_thumb.",$marca->urlImagen)?>"/>
+	   				<img width="66px" height="66px" src="<?php echo Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/marca/'. str_replace(".","_thumb.",$marca->urlImagen)?>"/>
 	    		</div> 
 	    	 
 	    	</div>

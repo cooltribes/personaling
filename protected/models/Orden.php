@@ -1019,5 +1019,19 @@ class Orden extends CActiveRecord
 	{
             return $this->cupon && $this->cupon->cupon_id == $idCupon;
 	}
+	
+	public function getProductsValue(){
+		//tengo los ptc de la orden
+		$orderhas = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>$this->id));
+		$value = 0;
+		
+		foreach($orderhas as $ptc){
+			$product = $ptc->preciotallacolor->producto;
+			$value += $product->getPrecioImpuesto(false);
+		}
+		
+		return $value;
+	}
+	
 
 }

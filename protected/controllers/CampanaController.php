@@ -576,13 +576,15 @@ class CampanaController extends Controller
              if($respuesta==1)
              {
                  Campana::model()->updateByPk($id, array('activo'=>'0'));
-                Look::model()->updateAll(array('activo'=>0,'campana_id=:campana_id',array('campana_id'=>$id)));
+                #Look::model()->updateAll(array('activo'=>0,'campana_id=:campana_id',array('campana_id'=>$id)));
+				Look::model()->updateAll(array('activo' => 0), 'campana_id=:campanas_id', array('campanas_id'=>$id));
                 echo "ok";
              }
              if($respuesta==3)
              {
                  Campana::model()->updateByPk($id, array('activo'=>1));
-                Look::model()->updateAll(array('activo'=>1,'campana_id=:campana_id',array('campana_id'=>$id)));
+                #Look::model()->updateAll(array('activo'=>1,'campana_id=:campana_id',array('campana_id'=>$id)));
+                Look::model()->updateAll(array('activo' => 1), 'campana_id=:campanas_id', array('campanas_id'=>$id));
                 echo "ok";
              }
             if($respuesta==2 || $respuesta==4)

@@ -255,11 +255,12 @@ class User extends CActiveRecord {
     }
 
     public function getAvatar() {
-        if ($this->avatar_url != '')
-            return Yii::app()->baseUrl . $this->avatar_url;
+        if ($this->avatar_url != ''){
+            return Yii::app()->baseUrl . '/images/'. Yii::app()->language .'/avatar/' . $this->avatar_url;
+        }
         if ($this->personal_shopper)
-            return Yii::app()->baseUrl . '/images/avatar_provisional_3.jpg';
-        return Yii::app()->baseUrl . '/images/avatar_provisional_2.jpg';
+            return Yii::app()->baseUrl . '/images/'. Yii::app()->language .'/avatar_provisional_3.jpg';
+        return Yii::app()->baseUrl . '/images/'. Yii::app()->language .'/avatar_provisional_2.jpg';
     }
 
     public function getBanner() {

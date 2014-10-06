@@ -272,7 +272,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
         //$img = imagecreatefromjpeg(Yii::getPathOfAlias('webroot').$model->getImageUrl(17,array('type'=>'thumb','ext'=>'jpg','baseUrl'=> false )));
         $image = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$_GET['producto'],'color_id'=>$_GET['color']),array('order'=>'orden','limit'=>1,'offset'=>0));
         $image_url = str_replace(".","_thumb.",$image->url);
-        $filename = Yii::getPathOfAlias('webroot').$image_url;
+        $filename = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/producto/'.$image_url;
         $image = Yii::app()->image->load($filename);
 		$image->resize($_GET['h'],$_GET['w']);
         $image->trim();

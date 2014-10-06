@@ -11,6 +11,7 @@ $this->breadcrumbs=array(
   </div>
   
   <?php
+  
   /*
     $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'action' => CController::createUrl('Producto/multi', array('id' => $model->id)),
@@ -41,7 +42,8 @@ $this->breadcrumbs=array(
           	if($model->urlImagen!="")
           	{
           		//echo CHtml::image(Yii::app()->baseUrl . $model->urlImagen, "categoria", array('id'=>'img-categoria'));
-				 $ruta=Yii::app()->baseUrl . $model->urlImagen;
+				$ruta='/images/'.Yii::app()->language.'/categorias/';
+				$ruta=Yii::app()->baseUrl .$ruta. $model->urlImagen;
 				echo "<img src=".$ruta."?" . time() . ">";
           	}
 			else{

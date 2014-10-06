@@ -5408,7 +5408,7 @@ public function actionReportexls(){
 			else{
 				$sumatoria++;
 			}
-			
+			 
 		} // foreach        
 	}  
 

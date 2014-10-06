@@ -253,12 +253,15 @@ class ZohoSales{
 		} 
 		$dcto_total = $dcto_productos + $dcto_looks; 
 		$totalProductos = $orden->total - $orden->envio; 
+		$prod_iva = $orden->getProductsValue();
+		$prod_resta_descuento = (double)$prod_iva-$dcto_productos;
 		
 		$xml2 .= '<FL val="Looks">'.$looks_orden.'</FL>';
 		$xml2 .= '<FL val="Descuento Looks">'.(double)$dcto_looks.'</FL>';
 		$xml2 .= '<FL val="Descuento Total">'.(double)$dcto_total.'</FL>';
 		$xml2 .= '<FL val="Total Productos">'.(double)$totalProductos.'</FL>'; 
 		$xml2 .= '<FL val="Productos IVA">'.(double)$orden->getProductsValue().'</FL>'; 
+		$xml2 .= '<FL val="Productos IVA Descuento">'.(double)$prod_resta_descuento.'</FL>';
 		
 		return $xml2; 
 	}

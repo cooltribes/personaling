@@ -1232,12 +1232,13 @@ class AdminController extends Controller
 //                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
                     $message->setBody($body, 'text/html');
                     $message->addTo($model->email);
-                    Yii::app()->mail->send($message);                    
+                    Yii::app()->mail->send($message);  
+                    $alert="¡Se ha aprobado la solicitud para Personal Shopper!";                  
                     
                 }else{
                     
                    $model->personal_shopper = 1-$model->personal_shopper; // hacer el toggle 
-                   
+                   $alert="El usuario ya no es Personal Shopper";  
                 }
 		
 		
@@ -1291,6 +1292,7 @@ class AdminController extends Controller
 		echo CJSON::encode(array(
 	            'status'=>'success',
 	            'personal_shopper'=>$model->personal_shopper,
+	            'alert'=>$alert,
                     'apply' => $apply,
 	     ));	
 	     }else{

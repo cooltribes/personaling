@@ -64,7 +64,7 @@ if (isset($categoria_padre) ){
 								echo '<li class="span4" > ';
 						?>
 							<div class=" column" draggable="true" id="div_producto<?php echo $producto->id."_".$tallacolor->color_id; ?>">
-								<div class="new" id="div<?php echo $producto->id."_".$tallacolor->color_id; ?>">
+								<div class="new" id="pro<?php echo $producto->id."_".$tallacolor->color_id; ?>">
 									<?php echo CHtml::image($producto->getThumbUrl($tallacolor->color_id,"png"), "Personaling - ".$producto->nombre, array("width" => "180", "height" => "180")); ?>
 									<input type="hidden" name="producto_id" value="<?php echo $producto->id; ?>">
 									<input type="hidden" name="color_id" value="<?php echo $tallacolor->color_id; ?>">
@@ -76,7 +76,7 @@ if (isset($categoria_padre) ){
 										element.addEventListener('dragover', handleDragOver, false);
 										element.addEventListener('dragend', handleDragEnd, false);
 							";
-							Yii::app()->clientScript->registerScript('drag'.$producto->id."_".$tallacolor->color_id,$script);
+							Yii::app()->clientScript->registerScript('drag_list'.$producto->id."_".$tallacolor->color_id,$script);
 							?>              	
 						</li>
 						<?php 

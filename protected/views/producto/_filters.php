@@ -20,6 +20,9 @@
     
     echo CHtml::dropDownList('marcas', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
                             array('style' => 'display:none'));
+							
+	echo CHtml::dropDownList('destacados', '', array('1'=>'Si', '0'=>'No' ),
+                            array('style' => 'display:none'));
     
     /*Filtro de tiendas*/
     $allBrands = CHtml::listData(Tienda::model()->findAll(), 'id', 'name');

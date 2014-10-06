@@ -824,6 +824,7 @@ public function actionReportexls(){
 
 		$datos=$datos."<div class='modal-body'><div class='pull-left margin_right'>";
 		if($imagen){
+
 			$datos=$datos. CHtml::image(Yii::app()->baseUrl . '/images/' . Yii::app()->language . '/producto/' . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "200", "height" => "200",'class'=>'img-polaroid'));
 			$datos=$datos."</div>";
 		}else
@@ -897,7 +898,7 @@ public function actionReportexls(){
 		$datos=$datos."<div class='modal-footer'>";
 		$datos=$datos."<a href='seo/".$producto->id."' title='Editar Detalles SEO' class='btn'><i class='icon-pencil'></i> SEO</a>";
 		$datos=$datos."<a href='delete/".$producto->id."' title='eliminar' class='btn'><i class='icon-trash'></i> Eliminar</a>";
-		$datos=$datos."<a href='#' title='Exportar' class='btn'><i class='icon-share-alt'></i> Exportar</a>";
+		#$datos=$datos."<a href='#' title='Exportar' class='btn'><i class='icon-share-alt'></i> Exportar</a>";
 		$datos=$datos."<a href='create/".$producto->id."' title='editar' class='btn'><i class='icon-edit'></i> Editar</a>";
 		$datos=$datos."<a href='detalle/".$producto->id."' title='ver' class='btn btn-info'><i class='icon-eye-open icon-white'></i> Ver</a> ";
 		$datos=$datos."</div>";	

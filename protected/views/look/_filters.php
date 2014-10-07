@@ -25,6 +25,48 @@
     
     echo CHtml::dropDownList('marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
                             array('style' => 'display:none'));
+							
+	    /*************      TIPO DE CUERPO ON   ****************/
+    //Para las alturas    
+	
+	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('altura', '', $valores,
+                            array('style' => 'display:none'));
+    //Para la contextura
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('contextura', '', $valores,
+                            array('style' => 'display:none'));
+    //Para cabello
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('pelo', '', $valores,
+                            array('style' => 'display:none'));
+    //Para ojos
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('ojos', '', $valores,
+                            array('style' => 'display:none'));
+    //Para piel
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('piel', '', $valores,
+                            array('style' => 'display:none'));
+    
+    //Para tipo_cuerpo
+    $field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  
+    $valores = Profile::range($field->range);    
+    $valores[0] = "Ninguno";
+    echo CHtml::dropDownList('tipo_cuerpo', '', $valores,
+                            array('style' => 'display:none'));
+	  /*************      TIPO DE CUERPO OFF        ****************/
+
     
     echo CHtml::dropDownList('user_id', '', CHtml::listData(User::model()->with(array(
                                'profile'=>array(),
@@ -33,6 +75,15 @@
     
     echo CHtml::dropDownList('destacado', '', array('1' => 'Sí',
     '0' => 'No',), array('style' => 'display:none'));
+	
+	
+	/*echo Chtml::dropDownList('ocasion', '', array('36' => '>', '37' => '>=',
+                            '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
+                                array('empty' => 'Operador',
+                                    'style' => 'display:none'));*/
+                                    
+    echo CHtml::dropDownList('ocasion', '', CHtml::listData(Categoria::model()->findAllByAttributes(array('urlImagen'=>NULL)), 'id', 'nombre'),
+                            array('style' => 'display:none'));
     
     
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/filters.js");
@@ -67,7 +118,10 @@
                                 'campana' => 'Campaña',
                                 'precio' => 'Precio',
                                 'prendas' => 'Cantidad de Prendas',
-                                'destacado' => 'Destacado'
+                                'destacado' => 'Destacado',
+                                'tipo_cuerpo' => 'Tipo de Cuerpo',
+                                'ocasion' => 'Ocasion'
+                                
                                 
                                 ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>

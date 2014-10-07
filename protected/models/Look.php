@@ -1033,14 +1033,27 @@ class Look extends CActiveRecord
                     .$comparator.' '.$value.'', $logicOp);
                    
                    continue;                   
-                }  
+                } 
+
+				if($column == 'ocasion')
+                {
+                	
+					$criteria->compare('categoriahaslook.categoria_id', $comparator." ".$value,
+	                        false, $logicOp);
+					$criteria->with[] = 'categoriahaslook';
+					
+					 continue;     
+				   
+                } 
                 
                 if($column == 'created_on')
                 {
                     $value = strtotime($value);
                     $value = date('Y-m-d H:i:s', $value);
                 }
-                
+
+
+
                 $criteria->compare("t.".$column, $comparator." ".$value,
                         false, $logicOp);
                 

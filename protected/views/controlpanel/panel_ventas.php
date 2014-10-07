@@ -291,15 +291,15 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
               </td>
             </tr>
             <tr>
-              <td><strong>Impuestos</strong>:</td>
+              <td><strong>Total de impuestos</strong>:</td>
               <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",Orden::model()->getStats("sum","completas","iva"))." ".Yii::t('contentForm','currSym'); ?></td>
             </tr>
             <tr>
-              <td><strong>Envíos</strong>:</td>
+              <td><strong>Total de envíos realizados</strong>:</td>
               <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",Orden::model()->getStats("sum","completas","envio"))." ".Yii::t('contentForm','currSym'); ?></td>
             </tr>
             <tr>
-              <td><strong>Numero de Productos envíos</strong>:</td>
+              <td><strong>Enviados</strong>:</td>
               <td><?php echo $productos_enviados; ?></td>
             </tr>
           </table>
@@ -321,17 +321,17 @@ $productos_pendientes = Yii::app()->db->createCommand($sql)->queryScalar();
 					 ?></td>
             </tr>
             <tr>
-              <td><strong>Impuestos:</strong></td>
+              <td><strong>Total de impuestos pendientes:</strong></td>
               <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",Orden::model()->getStats("sum","pendientes","iva"))." ".Yii::t('contentForm','currSym');
               	 ?></td>
             </tr>
             <tr>
-              <td><strong>Envios:</strong></td>
+              <td><strong>Envios pendientes:</strong></td>
               <td><?php echo Yii::app()->numberFormatter->format("#,##0.00",Orden::model()->getStats("sum","pendientes","envio"))." ".Yii::t('contentForm','currSym');
               	 ?></td>
             </tr>
             <tr>
-              <td><strong>Numero de Productos Pendientes:</strong></td>
+              <td><strong>Numero de Productos Pendientes por enviar:</strong></td>
               <td><?php echo $productos_pendientes; ?></td>
             </tr>
           </table>

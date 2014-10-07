@@ -4,7 +4,7 @@
 	$cats="";
 	
 echo"<tr>";
-   	echo "<td>".CHtml::image(Yii::app()->baseUrl.'/images/adorno/'.$data->id.'_thumb.jpg', $data->nombre)."</td>";
+   	echo "<td>".CHtml::image(Yii::app()->baseUrl.'/images/'.Yii::app()->language.'/adorno/'.$data->id.'_thumb.jpg', $data->nombre)."</td>";
    	echo "<td>".$data->nombre."</td>";
 	
 echo "<td>";

@@ -524,7 +524,7 @@ class LookController extends Controller
 			$ador = Adorno::model()->findByPk($lookhasadorno->adorno_id);
 		 	if (isset($image_url)){
 		 			$imagenes[$i] = new stdClass();
-				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/adorno/'.$ador->path_image;
+				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/adorno/'.$ador->path_image;
 					$imagenes[$i]->top = $lookhasadorno->top;
 					$imagenes[$i]->left = $lookhasadorno->left;
 					$imagenes[$i]->width = $lookhasadorno->width;
@@ -538,7 +538,7 @@ class LookController extends Controller
 		 
 		 
 		 $imagenes[$i] = new stdClass();
-				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/p70.png';
+				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/p70.png';
 					$imagenes[$i]->top = 5;
 					$imagenes[$i]->left = 5;
 					$imagenes[$i]->width = 70;

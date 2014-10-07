@@ -77,9 +77,13 @@
     <td>
         <?php 
         // if there is at least one payment in the table
-            echo $this->_lastDate ? $data->getLookReferredViewsByDate(
+        if($this->filter == TRUE){
+        	echo $data->getLookReferredViewsByDate($this->_first,$this->_last);
+        }
+		else {
+			echo $this->_lastDate ? $data->getLookReferredViewsByDate(
                     $this->_lastDate, date("Y-m-d")) : $data->getLookReferredViews();
-
+		}
         ?>
     </td>
     

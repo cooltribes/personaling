@@ -188,7 +188,7 @@ if(isset($seo)){
 <div id="deskfilters">
 <div id="banner100chic" style=" display:none; " class="margin_top ">
 	<div class="margin_bottom">
-		<img src="<?php echo Yii::app()->baseUrl; ?>/images/080banner.jpg" alt="Titina Penzini">
+		<img src="<?php echo Yii::app()->baseUrl; ?>/images/<?php echo Yii::app()->language; ?>/especial/080banner.jpg" alt="080">
 	</div>
 	<div class="">
 		<a href="#" onclick="unchic()" ><span class="entypo">&larr; </span>	<?php echo Yii::t('contentForm','Back to shop');?></a>
@@ -511,7 +511,7 @@ if(isset($seo)){
 				<div class="dropdown" id="dd080" >
 					<a href="#" class="dropdown-toggle a080" data-toggle="dropdown" >
 						<div class="dropdown080" >
-								<span id="100chic" name="1" ><img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/></span>
+								<span id="100chic" name="1" ><img src='<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/especial/080botonnegro.jpg";?>'/></span>
 							<?php if(isset(Yii::app()->session['100chic']))
 								echo CHtml::hiddenField('chic_hid','1');
 							else {
@@ -813,7 +813,7 @@ if (!Yii::app()->user->isGuest && $completarPerfil){
                     $('#chic_hid').val('0');
                     $('#banner100chic').fadeOut(3000);
                     preRefresh();
-                    $('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/080botonnegro.jpg";?>'/>");
+                    $('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/especial/080botonnegro.jpg";?>'/>");
     }		
 
     $(".hijo").click(function() { 
@@ -868,7 +868,7 @@ if (!Yii::app()->user->isGuest && $completarPerfil){
 
     $("body").click(function() { 
     if($( "#dd080" ).hasClass( "open" )&&!$('#chic_hid').val()){
-            $('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonnegro.jpg";?>'/>");       	
+            $('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/especial/080botonnegro.jpg";?>'/>");       	
     }
 
     });
@@ -939,7 +939,7 @@ if (!Yii::app()->user->isGuest && $completarPerfil){
 <script>
 
 function white080(){
-	$('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/080botonblanco.jpg";?>'/>");
+	$('#100chic').html("<img src='<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/especial/080botonblanco.jpg";?>'/>");
 }
 function encantar(id)
    	{

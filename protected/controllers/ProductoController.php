@@ -4864,8 +4864,9 @@ public function actionReportexls(){
 
 									if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
 											$precioTalla->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
-											$precioTalla->save();
-											
+											// $precioTalla->save();
+											$precioTalla->saveAttributes(array('zoho_id' => $datos->result[0]->row[$posicion]->success->details->FL[0] )); 
+																						
 											echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
 										}else{
 											echo "Error en posicion ".$posicion;
@@ -5108,7 +5109,8 @@ public function actionReportexls(){
 
 							if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
 								$precioTalla->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
-								$precioTalla->save(); 
+								//$precioTalla->save(); 
+								$precioTalla->saveAttributes(array('zoho_id' => $datos->result[0]->row[$posicion]->success->details->FL[0] )); 
 											
 								echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
 							}else{
@@ -5217,7 +5219,9 @@ public function actionReportexls(){
 
 								if(isset($datos->result[0]->row[$posicion]->success->details->FL[0])){
 									$precioTalla->zoho_id = $datos->result[0]->row[$posicion]->success->details->FL[0];
-									$precioTalla->save();
+									//$precioTalla->save();
+									
+									$precioTalla->saveAttributes(array('zoho_id' => $datos->result[0]->row[$posicion]->success->details->FL[0] )); 
 											
 									//echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
 								}else{

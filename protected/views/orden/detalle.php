@@ -607,7 +607,7 @@ $tracking=$orden->getTrackingInfo();
                                 $label = $color->valor;
                                 
                                 if(!is_null($ptclk->imagen))
-                                    $foto = CHtml::image(Yii::app()->baseUrl . 
+                                    $foto = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/producto/'.
                                     str_replace(".","_thumb.",$ptclk->imagen['url']), "Imagen ", 
                                     array("width" => "70", "height" => "70"));
                                 else {
@@ -658,7 +658,7 @@ $tracking=$orden->getTrackingInfo();
                             $label = $color->valor;
                              if(!is_null($ptc->imagen))
                               {
-                                 $foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "70", "height" => "70"));
+                                 $foto = CHtml::image(Yii::app()->baseUrl.'/images/'.Yii::app()->language.'/producto/'.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "70", "height" => "70"));
 
                               }
                                 else {

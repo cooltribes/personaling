@@ -67,9 +67,9 @@ class AdornoController extends Controller
 			$adorno->attributes=$_POST['Adorno'];
 			//$adorno->path_url = $_POST['path_image'];
 		
-			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/adorno/'))
+			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/adorno/'))
 				{
-	   				mkdir(Yii::getPathOfAlias('webroot').'/images/adorno/',0777,true);
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/adorno/',0777,true);
 	 			}
 			
 			//$rnd = rand(0,9999);  // generate random number between 0-9999
@@ -88,7 +88,7 @@ class AdornoController extends Controller
 						if($adorno->save()){
 		                
 		
-		                $nombre = Yii::getPathOfAlias('webroot').'/images/adorno/'.$adorno->id;
+		                $nombre = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/adorno/'.$adorno->id;
 		                $extension_ori = ".jpg";
 						$extension = '.'.$images->extensionName;
 		                if ($images->saveAs($nombre . $extension)) {

@@ -66,6 +66,7 @@ return CMap::mergeArray(
                 ),
                 'AzPayTerminal'=>'999',
                 'AzPaySecret'=> 'qwerty1234567890uiop',
+                'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
 
 
 		),

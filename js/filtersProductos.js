@@ -29,6 +29,10 @@ function changeFilter(e){
    {
        textFilter(column);       
         
+   }else if(column.val() === 'destacado') //Tienda del producto
+   {       
+       listFilter(column, 'destacados');
+
    }else //campo normal (numérico)
    {      
       valueFilter(column);       

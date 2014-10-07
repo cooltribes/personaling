@@ -656,18 +656,23 @@ class PagoController extends Controller
                 
             } //if $_POST
             
-            
-            /*Enviar a la vista el listado de todos los PS*/
-            $criteria = new CDbCriteria;
-            $criteria->compare("personal_shopper", 1);
-            
-            $dataProvider = new CActiveDataProvider('User', array(
-                'criteria' => $criteria,
-                'pagination' => array(
-                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
-                ),
-            ));
-                        
+            if(isset($_GET['first'])){
+				// si trae algo del filtrado de fechas
+				
+				
+				 
+            }else{	
+	            /*Enviar a la vista el listado de todos los PS*/
+	            $criteria = new CDbCriteria;
+	            $criteria->compare("personal_shopper", 1);
+	            
+	            $dataProvider = new CActiveDataProvider('User', array(
+	                'criteria' => $criteria,
+	                'pagination' => array(
+	                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+	                ),
+	            ));
+			}            
             $this->render("comision_afiliacion", array(
                 "dataProvider" => $dataProvider,
                 "lastPayment" => $lastPayment,

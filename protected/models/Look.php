@@ -757,7 +757,7 @@ class Look extends CActiveRecord
 			$ador = Adorno::model()->findByPk($lookhasadorno->adorno_id);
 		 	if (isset($image_url)){
 		 			$imagenes[$i] = new stdClass();
-				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/adorno/'.$ador->path_image;
+				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/adorno/'.$ador->path_image;
 					$imagenes[$i]->top = $lookhasadorno->top;
 					$imagenes[$i]->left = $lookhasadorno->left;
 					$imagenes[$i]->width = $lookhasadorno->width;
@@ -770,7 +770,7 @@ class Look extends CActiveRecord
 		 }	
 		 
 		  $imagenes[$i] = new stdClass();
-				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/p70.png';
+				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/p70.png';
 					$imagenes[$i]->top = 0;
 					$imagenes[$i]->left = 5;
 					$imagenes[$i]->width = 70;
@@ -796,7 +796,8 @@ class Look extends CActiveRecord
             $b_btm = 0;
             $b_lft = 0;
             $b_rt = 0;
-			 switch($ext) { 
+            //Yii::trace('product image path, Trace: ', 'registro');
+			 switch($ext) {
 			          case 'gif':
 			          $src = imagecreatefromgif($image->path);
 			          break;
@@ -861,7 +862,8 @@ class Look extends CActiveRecord
 					       
 						//Yii::trace('create a image look, Trace:'.$image->path, 'registro');  
 			          break;
-			      }			
+			      }
+			      //Yii::trace('product image src, Trace: '.print_r($src, true), 'registro');	
 
                 $img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h);
 
@@ -873,22 +875,24 @@ class Look extends CActiveRecord
     		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
     		//imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
 			//imagecopyresampled($img,$src,0,0,0,0,$b_lft, $b_top, imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
-            if ($look->id >= 638)
+            if ($look->id >= 638){
                 imagecopyresampled($img,$src,0,0,$b_lft, $b_top,imagesx($img), imagesy($img),imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
-            else
+            }else{
 			    imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
+			}
     		
     		//imagecopyresized($img,$src,0,0,0,0,imagesx($src),imagesy($src),imagesx($src), imagesy($src));
 			if ($image->angle){
-				//Yii::trace('create a image look,'.$image->angle.' Trace:'.$image->path, 'registro');  	
+				//Yii::trace('create a image look,'.$image->angle.' Trace:'.$image->path, 'registro');
 				$img = imagerotate($img,$image->angle*(-1),$pngTransparency);
 			}
 			imagecopy($canvas, $img, $image->left/$diff_w, $image->top/$diff_h, 0, 0, imagesx($img), imagesy($img));
 		}
-		//header('Content-Type: image/png'); 
-		//header('Cache-Control: max-age=86400, public');
-		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
-		Yii::trace('create images, Trace:'.Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png', 'registro');
+		header('Content-Type: image/png'); 
+		header('Cache-Control: max-age=86400, public');
+		//imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
+		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
+		Yii::trace('create images, Trace:'.Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$look->id.'.png', 'registro');
 		imagedestroy($canvas);		
 	}
 
@@ -1033,14 +1037,27 @@ class Look extends CActiveRecord
                     .$comparator.' '.$value.'', $logicOp);
                    
                    continue;                   
-                }  
+                } 
+
+				if($column == 'ocasion')
+                {
+                	
+					$criteria->compare('categoriahaslook.categoria_id', $comparator." ".$value,
+	                        false, $logicOp);
+					$criteria->with[] = 'categoriahaslook';
+					
+					 continue;     
+				   
+                } 
                 
                 if($column == 'created_on')
                 {
                     $value = strtotime($value);
                     $value = date('Y-m-d H:i:s', $value);
                 }
-                
+
+
+
                 $criteria->compare("t.".$column, $comparator." ".$value,
                         false, $logicOp);
                 

@@ -310,10 +310,12 @@ if(isset($seo)){
 					else {
 						echo CHtml::hiddenField('cathid',0);
 				} 
-			$i=0;	
+			$i=0;
+		    $ruta='/images/'.Yii::app()->language.'/categorias/';			
   			foreach($categorias as $padre){
+  				$ruta_padre=Yii::app()->baseUrl .$ruta. $padre->urlImagen;
   				echo '<li class="itemThumbnails tienda_iconos">
-		  			<img id="'.$padre->nombre.'" class="img-categoria padre" style="cursor:pointer" title="'.$padre->nombre.'" value="'.$padre->id.'" src="'.$padre->urlImagen.'">			  			
+		  			<img id="'.$padre->nombre.'" class="img-categoria padre" style="cursor:pointer" title="'.$padre->nombre.'" value="'.$padre->id.'" src="'.$ruta_padre.'">			  			
 	  				<div class="dropdown">
 		  				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 		  					<b class="caret caretthumbs"></b>	
@@ -321,10 +323,10 @@ if(isset($seo)){
 		  				<div class="dropdown-menu">
 						<ul class="thumbnails ">';
 						foreach($padre->subcategorias as $hijo){
-							
+							$ruta_hijo=Yii::app()->baseUrl .$ruta. $hijo->urlImagen;
 							echo '<li class=""> 
 			              		<a class="hijo" name="'.$padre->nombre.'" value="'.$hijo->id.'" href="#" >
-			              			<img src="'.Yii::app()->baseUrl.$hijo->urlImagen.'" width="60">
+			              			<img src="'.$ruta_hijo.'" width="60">
 				              		<div class="caption">
 				                  		<p>'.$hijo->nombre.'</p>
 					                </div>

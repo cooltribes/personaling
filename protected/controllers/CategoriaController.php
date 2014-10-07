@@ -97,7 +97,8 @@ class CategoriaController extends Controller
 		                if ($pic->saveAs($nombre."/img.jpg")) {
 							 	
 							Yii::app()->session['ma']=2;
-							 $model->urlImagen = '/images/'.Yii::app()->language.'/categorias/'. $model->id .'/img.jpg';
+							 #$model->urlImagen = '/images/'.Yii::app()->language.'/categorias/'. $model->id .'/img.jpg';
+							 $model->urlImagen = $model->id .'/img.jpg';
 							//$model->urlImagen = $_POST['Categoria']['urlImagen'];
 							$model->save();
 							

@@ -127,7 +127,7 @@
 
 <?php // $this->renderPartial("_filters"); ?>
 <!--<hr/>-->
-<?php
+<?php 
 $template = '{summary}
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped table-condensed">
     <tr>      
@@ -172,7 +172,7 @@ $this->widget('zii.widgets.CListView', array(
             	inicio = $('#first').attr('value');
 				final = $('#second').attr('value');
 					
-				alert(inicio+' '+final);	
+				// alert(inicio+' '+final);	
             	datos = $('#first, #second').serialize();
             	
             	ajaxUpdateTimeout = setTimeout(

@@ -10,6 +10,10 @@ class PagoController extends Controller
 
 
     var $_lastDate;
+	var $_first;
+	var $_last;
+	var $filter=FALSE;
+	
     public $_totallooksviews;
     
 	/**
@@ -656,23 +660,28 @@ class PagoController extends Controller
                 
             } //if $_POST
             
-            if(isset($_GET['first'])){
+            if(isset($_GET['first']) && $_GET['first']!=""){
 				// si trae algo del filtrado de fechas
-				
-				
-				 
-            }else{	
+				$this->filter = TRUE;
+				$this->_first = $_GET['first'];
+				$this->_last = $_GET['second'];
+            }	
 	            /*Enviar a la vista el listado de todos los PS*/
 	            $criteria = new CDbCriteria;
 	            $criteria->compare("personal_shopper", 1);
 	            
 	            $dataProvider = new CActiveDataProvider('User', array(
 	                'criteria' => $criteria,
+	                'sort' => array(
+					    'defaultOrder' => array(
+							'lookreferredviews' => "ASC", 
+						),
+					),
 	                'pagination' => array(
 	                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
 	                ),
 	            ));
-			}            
+			            
             $this->render("comision_afiliacion", array(
                 "dataProvider" => $dataProvider,
                 "lastPayment" => $lastPayment,

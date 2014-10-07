@@ -1952,13 +1952,7 @@ class BolsaController extends Controller
 								
 									$datos = simplexml_load_string($respuesta);
 									
-								//	if(isset($datos->result[0]->recorddetail->FL[0])){
-										$id = $datos->result[0]->recorddetail->FL[0]; 
-								/*	}
-									else{
-										var_dump($datos);
-										Yii::app()->end();
-									}*/
+									$id = $datos->result[0]->recorddetail->FL[0];
 									
 									$orden->zoho_id = $id;
 									$orden->save(); 

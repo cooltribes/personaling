@@ -43,7 +43,7 @@ class Adorno extends CActiveRecord
 		
 		$opciones['ext'] = isset($opciones['ext'])?$opciones['ext']:'jpg'; // valor por defecto
 		$opciones['type'] = isset($opciones['type'])?'_'.$opciones['type'].'.':'.'; // valor por defecto
-		$extra_path = '/images/adorno/';
+		$extra_path = '/images/'.Yii::app()->language.'/adorno/';
 		
 		$ext = pathinfo($this->path_image, PATHINFO_EXTENSION);
 		//echo $ext; 

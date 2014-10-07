@@ -154,8 +154,10 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
         $user = User::model()->findByPk(Yii::app()->user->id);
     $avatar ='';
     if($user){
-      $file = explode('.',$user->getAvatar());
-      $avatar = "<img  src='".$file[0]."_x30.".$file[1]."' class='img-circle avatar_menu' width='30' height='30' />   ";
+        $cache = !(Yii::app()->getController()->getId() == 'profile' && Yii::app()->getController()->getAction()->getId() == 'avatar' && !Yii::app()->getSession()->get('loadAvatar'));
+        $file = explode('.',$user->getAvatar($cache));
+        $avatar = "<img  src='".$file[0]."_x30.".$file[1]."' class='img-circle avatar_menu' width='30' height='30' />   ";
+        Yii::app()->getSession()->remove('loadAvatar');
     }
 
     $Arraynombre = explode(" ",$profile->first_name);
@@ -218,7 +220,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 $perfil->name = substr_replace($perfil->name, " ...", 15);
             }
 
-            $itemsUser[] = array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">'.$perfil->name,
+            $itemsUser[] = array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="'.Yii::app()->baseUrl.'/images/'.Yii::app()->language.'/avatar_provisional_2_x30.jpg">'.$perfil->name,
                 'url'=>'#',
                 'linkOptions' => array('class' => 'sub_perfil_item', 'id' => $perfil->id_filter),
                 //'itemOptions' => array('id' => $perfil->id_filter),
@@ -595,7 +597,7 @@ if(!Yii::app()->user->isGuest){
                     $producto = Producto::model()->findByPk($productotallacolor->preciotallacolor->producto_id);
                     $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id,'orden'=>'1'));
                     if($imagen){
-                        $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
+                        $htmlimage = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/producto/'. str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
                         echo '<div class="span2">'.$htmlimage.'</div>';
                     }
                 }
@@ -635,7 +637,7 @@ if(!Yii::app()->user->isGuest){
                 echo '<div class="row-fluid">';
                  
                 if($imagen){
-                    $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
+                    $htmlimage = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/producto/'. str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
                     echo '<div class="span2">'.$htmlimage.'</div>';
                 }                
                 echo '</div>';                

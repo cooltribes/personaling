@@ -103,7 +103,7 @@ class Imagen extends CActiveRecord
 		$ext = pathinfo($this->url, PATHINFO_EXTENSION);
 		//echo $ext; 
 		if ($ext == $opciones['ext'] )
-			return $baseUrl.str_replace(".",$opciones['type'],$this->url);
+			return $baseUrl.'/images/'.Yii::app()->language.'/producto/'.str_replace(".",$opciones['type'],$this->url);
 		
 		//$info = pathinfo($this->url);
 		//$new_file = $info['filename'] . '.' . $type;
@@ -115,10 +115,10 @@ class Imagen extends CActiveRecord
 		//clearstatcache();
 		if (file_exists ($new_file_path)){
 			//echo 'sip';  
-			return $baseUrl.str_replace(".",$opciones['type'],$new_file);
+			return $baseUrl.'/images/'.Yii::app()->language.'/producto/'.str_replace(".",$opciones['type'],$new_file);
 		}
 		//echo 'nop';
-		return $baseUrl.str_replace(".",$opciones['type'],$this->url);	
+		return $baseUrl.'/images/'.Yii::app()->language.'/producto/'.str_replace(".",$opciones['type'],$this->url);	
 		
 		
 	}

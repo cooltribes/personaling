@@ -1134,7 +1134,7 @@ class Look extends CActiveRecord
 	   //echo $this->birthday;
 	   return parent::beforeSave();
 	}
-	
+	 
 	public function getHas_100chic(){
 		if(is_array($this->productos))
 		{		
@@ -1251,27 +1251,27 @@ class Look extends CActiveRecord
         return $count;
     }
     
-    public function updateAvailability(){
+    public function updateAvailability()
+    {
         $this->setScenario('availability');
         $save=false;
         if($this->countAvailableProducts()<3)
         {
             if($this->available!=0){
                  $this->available=0;
-                $save=true;                
+                 $this->save();
+                 $save=true;                
             }
         }           
         else{
             if($this->available!=1){
                  $this->available=1;
-                $save=true;                
+                 $this->save();
+                 $save=true;                
             }
-        }
-        if($save)
-            if($this->save())
-                return 1;
-            else 
-                return 0;
+        } 
+        return $save;
+        
     }
 	
 }

@@ -796,8 +796,8 @@ class Look extends CActiveRecord
             $b_btm = 0;
             $b_lft = 0;
             $b_rt = 0;
-            Yii::trace('product image path, Trace: ', 'registro');
-			 switch($ext) { 
+            //Yii::trace('product image path, Trace: ', 'registro');
+			 switch($ext) {
 			          case 'gif':
 			          $src = imagecreatefromgif($image->path);
 			          break;
@@ -891,7 +891,7 @@ class Look extends CActiveRecord
 		header('Content-Type: image/png'); 
 		header('Cache-Control: max-age=86400, public');
 		//imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
-		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
+		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
 		Yii::trace('create images, Trace:'.Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$look->id.'.png', 'registro');
 		imagedestroy($canvas);		
 	}

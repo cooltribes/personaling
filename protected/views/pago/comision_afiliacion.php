@@ -90,6 +90,22 @@
             </fieldset>
         </div>
     </div>
+    <div class="row">
+	    <div class="span10">
+	    	<fieldset>
+	    		<legend>Filtrar por fechas</legend>
+	    	<div class="control-group margin_left_medium">
+	    		<div class="controls">
+	    	<?php
+	    		echo TbHtml::dateField('first', 0, array('class' => "",));
+				echo TbHtml::dateField('second', 0, array('class' => "margin_left_small",));
+				echo TbHtml::button('Filtrar', array('color' => TbHtml::BUTTON_COLOR_SUCCESS,'class' => "margin_left_small",'id'=>'filtrar','name'=>'filtrar')); 
+			?>
+				</div>
+			</div>
+			</fieldset>              		
+	    </div>
+	 </div>
     <div class="row margin_top margin_bottom ">
         <div class="span4">
             <?php
@@ -149,28 +165,29 @@ $this->widget('zii.widgets.CListView', array(
 ));
 
 
-Yii::app()->clientScript->registerScript('search', "
-            var ajaxUpdateTimeout;
-        var ajaxRequest;
-        $(document).keyup(function(e){
-                if(e.which == 13) {
-                    $('.crear-filtro').click();
-                    ajaxRequest = $('#textbox_buscar').serialize();
-                    clearTimeout(ajaxUpdateTimeout);
-                    
-                    ajaxUpdateTimeout = setTimeout(
+	Yii::app()->clientScript->registerScript('filtrar', "
+        var ajaxUpdateTimeout;
+
+        $('#filtrar').click(function(){
+            	inicio = $('#first').attr('value');
+				final = $('#second').attr('value');
+					
+				alert(inicio+' '+final);	
+            	datos = $('#first, #second').serialize();
+            	
+            	ajaxUpdateTimeout = setTimeout(
                     function () {
-                        $.fn.yiiListView.update(
+                		$.fn.yiiListView.update(
                         // this is the id of the CListView
                             'list-auth-items',
-                            {data: ajaxRequest}
+                            {data: datos}
                         )
-                    },
+					},
                     // this is the delay
-                    300);               
-                }               
+                    300); 
+                                 
         });"
-);
+	);
 ?> 
 
 </div>
@@ -197,6 +214,14 @@ function cambiarMontosEnTabla(e){
 
     });    
     
+}
+
+function filtrarFechas(){
+    
+//	inicio = $("#first").attr("value");
+//	final = $("#second").attr("value");
+	
+	alert("Va el otro alert");
 }
 
 /*Action when the form pago-form is submitted*/

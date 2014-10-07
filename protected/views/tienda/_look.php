@@ -10,6 +10,8 @@
 	<?php 
   $cont = 1;
   foreach($looks as $look): 
+    
+
 			// registrar impresión en google analytics
       Yii::app()->clientScript->registerScript('metrica_analytics_looks_'.$cont,"
         ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
@@ -114,7 +116,8 @@
           <div class="span2 hidden-tablet">
             <div class="avatar">
             <a href="<?php echo $look->user->profile->getUrl(); ?>">
-            	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" ?> </div>
+            	<?php echo CHtml::image($look->user->getAvatar(),'Avatar',array("width"=>"40", "class"=>"photo img-circle")); //,"height"=>"270" 
+            	?> </div>
           	</a>
           	</div>
           <div class="span4 namePs"> <span class="muted pseparadas"><?php echo Yii::t('contentForm','Look created by'); ?>: </span>

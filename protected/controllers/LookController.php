@@ -436,7 +436,7 @@ class LookController extends Controller
 	}
 	public function actionGetImage($id)
 	{ 
-		$filename = Yii::getPathOfAlias('webroot').'/images/look/'.$id.'.png'; 	   
+		$filename = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$id.'.png'; 	   
 		if (file_exists($filename)) {
 			//session_start(); 
 			header("Cache-Control: private, max-age=10800, pre-check=10800");
@@ -524,7 +524,7 @@ class LookController extends Controller
 			$ador = Adorno::model()->findByPk($lookhasadorno->adorno_id);
 		 	if (isset($image_url)){
 		 			$imagenes[$i] = new stdClass();
-				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/adorno/'.$ador->path_image;
+				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/adorno/'.$ador->path_image;
 					$imagenes[$i]->top = $lookhasadorno->top;
 					$imagenes[$i]->left = $lookhasadorno->left;
 					$imagenes[$i]->width = $lookhasadorno->width;
@@ -538,7 +538,7 @@ class LookController extends Controller
 		 
 		 
 		 $imagenes[$i] = new stdClass();
-				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/p70.png';
+				 	$imagenes[$i]->path = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/p70.png';
 					$imagenes[$i]->top = 5;
 					$imagenes[$i]->left = 5;
 					$imagenes[$i]->width = 70;
@@ -559,6 +559,10 @@ class LookController extends Controller
 		$inicio_x = 0;
 		foreach($imagenes as $image){
 			$ext = pathinfo($image->path, PATHINFO_EXTENSION);
+			$b_top = 0;
+            $b_btm = 0;
+            $b_lft = 0;
+            $b_rt = 0;
 			 switch($ext) { 
 			          case 'gif':
 			          $src = imagecreatefromgif($image->path);
@@ -567,9 +571,52 @@ class LookController extends Controller
 			          $src = imagecreatefromjpeg($image->path);
 			          break;
 			          case 'png':
-			          $src = imagecreatefrompng($image->path);
-						//Yii::trace('create a image look, Trace:'.$image->path, 'registro');  
-			          break;
+				          $src = imagecreatefrompng($image->path);
+				          //top
+					        for(; $b_top < imagesy($src); ++$b_top) {
+					            for($x = 0; $x < imagesx($src); ++$x) {
+					                $color        = imagecolorat($src, $x, $b_top);
+					                $transparency = ($color >> 24) & 0x7F;
+					                if(!$transparency) {
+					                    break 2; //out of the 'top' loop
+					                }
+					            }
+					        }
+					
+					        //bottom
+					        for(; $b_btm < imagesy($src); ++$b_btm) {
+					            for($x = 0; $x < imagesx($src); ++$x) {
+					                $color        = imagecolorat($src, $x, imagesy($src) - $b_btm-1);
+					                $transparency = ($color >> 24) & 0x7F;
+					                if(!$transparency) {
+					                    break 2; //out of the 'bottom' loop
+					                }
+					            }
+					        }
+					
+					        //left
+					        for(; $b_lft < imagesx($src); ++$b_lft) {
+					            for($y = 0; $y < imagesy($src); ++$y) {
+					                $color        = imagecolorat($src, $b_lft, $y);
+					                $transparency = ($color >> 24) & 0x7F;
+					                if(!$transparency) {
+					                    break 2; //out of the 'left' loop
+					                }
+					            }
+					        }
+					
+					        //right
+					        for(; $b_rt < imagesx($src); ++$b_rt) {
+					            for($y = 0; $y < imagesy($src); ++$y) {
+					                $color        = imagecolorat($src, imagesx($src) - $b_rt-1, $y);
+					                $transparency = ($color >> 24) & 0x7F;
+					                if(!$transparency) {
+					                    break 2; //out of the 'right' loop
+					                }
+					            }
+					        }
+							//Yii::trace('create a image look, Trace:'.$image->path, 'registro');  
+				          break;
 			      }			
 			$img = imagecreatetruecolor($image->width/$diff_w,$image->height/$diff_h);
 			
@@ -577,7 +624,13 @@ class LookController extends Controller
 			imagesavealpha( $img, true ); 
     		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
     		//imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
-			imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
+			//imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
+			if ($look->id >= 638){
+                imagecopyresampled($img,$src,0,0,$b_lft, $b_top,imagesx($img), imagesy($img),imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
+            }else{
+			    imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
+
+			}
     		//imagecopyresized($img,$src,0,0,0,0,imagesx($src),imagesy($src),imagesx($src), imagesy($src));
 			if ($image->angle){
 				//Yii::trace('create a image look,'.$image->angle.' Trace:'.$image->path, 'registro');  	
@@ -589,7 +642,7 @@ class LookController extends Controller
 		imageinterlace($canvas, 1);
 		header('Content-Type: image/png'); 
 		header('Cache-Control: max-age=86400, public');
-		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9);
+		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$look->id.'.png',9);
 		imagepng($canvas,null,9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
 		imagedestroy($canvas);
 		}

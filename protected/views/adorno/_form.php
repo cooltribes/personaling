@@ -39,7 +39,7 @@
 				              	if($model->isNewRecord)
 				              		echo '';
 								else {
-									echo CHtml::image(Yii::app()->request->baseUrl.'/images/adorno/'.$model->id.'_thumb.jpg',"image");
+									echo CHtml::image(Yii::app()->request->baseUrl.'/images/'.Yii::app()->language.'/adorno/'.$model->id.'_thumb.jpg',"image");
 								} 
 				              	?>
 				              </div>

@@ -796,8 +796,8 @@ class Look extends CActiveRecord
             $b_btm = 0;
             $b_lft = 0;
             $b_rt = 0;
-            Yii::trace('product image path, Trace: ', 'registro');
-			 switch($ext) { 
+            //Yii::trace('product image path, Trace: ', 'registro');
+			 switch($ext) {
 			          case 'gif':
 			          $src = imagecreatefromgif($image->path);
 			          break;
@@ -891,7 +891,7 @@ class Look extends CActiveRecord
 		header('Content-Type: image/png'); 
 		header('Cache-Control: max-age=86400, public');
 		//imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
-		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
+		imagepng($canvas,Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$look->id.'.png',9); // <------ se puso compresion 9 para mejorar la rapides al cargar la imagen
 		Yii::trace('create images, Trace:'.Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/look/'.$look->id.'.png', 'registro');
 		imagedestroy($canvas);		
 	}
@@ -1037,14 +1037,27 @@ class Look extends CActiveRecord
                     .$comparator.' '.$value.'', $logicOp);
                    
                    continue;                   
-                }  
+                } 
+
+				if($column == 'ocasion')
+                {
+                	
+					$criteria->compare('categoriahaslook.categoria_id', $comparator." ".$value,
+	                        false, $logicOp);
+					$criteria->with[] = 'categoriahaslook';
+					
+					 continue;     
+				   
+                } 
                 
                 if($column == 'created_on')
                 {
                     $value = strtotime($value);
                     $value = date('Y-m-d H:i:s', $value);
                 }
-                
+
+
+
                 $criteria->compare("t.".$column, $comparator." ".$value,
                         false, $logicOp);
                 
@@ -1138,7 +1151,7 @@ class Look extends CActiveRecord
 	   //echo $this->birthday;
 	   return parent::beforeSave();
 	}
-	
+	 
 	public function getHas_100chic(){
 		if(is_array($this->productos))
 		{		
@@ -1255,27 +1268,27 @@ class Look extends CActiveRecord
         return $count;
     }
     
-    public function updateAvailability(){
+    public function updateAvailability()
+    {
         $this->setScenario('availability');
         $save=false;
         if($this->countAvailableProducts()<3)
         {
             if($this->available!=0){
                  $this->available=0;
-                $save=true;                
+                 $this->save();
+                 $save=true;                
             }
         }           
         else{
             if($this->available!=1){
                  $this->available=1;
-                $save=true;                
+                 $this->save();
+                 $save=true;                
             }
-        }
-        if($save)
-            if($this->save())
-                return 1;
-            else 
-                return 0;
+        } 
+        return $save;
+        
     }
 	
 }

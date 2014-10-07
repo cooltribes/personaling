@@ -66,7 +66,7 @@
                     <?php
                     if($data->activo==1)
                     {
-                            echo CHtml::link('<i class="icon-pencil"></i>  Desactivar',
+                            echo CHtml::link('<i class="icon-pencil"></i>  Inactivar',
                             $this->createUrl('look/enabledLook',array('id'=>$data->id)), array(
                                 ));
                     }

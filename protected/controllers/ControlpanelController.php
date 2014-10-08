@@ -366,7 +366,29 @@ class ControlpanelController extends Controller
                     $response["message"] = "¡Se ha actualizado el tiempo de validez
                     en la bolsa para <b>$total</b> Personal Shoppers!";                        
                 }                    
-            }
+            } else if($_POST["action"] == 3){ //Cambiar pago por click
+                
+                foreach($resultados as $usuario) {                        
+                    
+                    $perfil = $usuario->profile;
+                    $perfil->profile_type = 5;
+                    $perfil->pago_click = $_POST["totalClick"];
+                    
+                    if(!$perfil->save()){
+                        $error = true;
+                    }  
+                }
+                
+                if($error){                        
+                    $response["status"] = "error";
+                    $response["message"] = "¡Hubo un error cambiando las comisiones!";
+                }else{                        
+                    $response["status"] = "success";
+                    $response["message"] = "¡Se ha actualizado la comisión de <b>$total</b>
+                            Personal Shoppers!";                        
+                }
+                
+            } 
             
             echo CJSON::encode($response); 
             Yii::app()->end();

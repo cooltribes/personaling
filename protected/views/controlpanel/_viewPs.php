@@ -69,6 +69,13 @@
             echo $data->getComision();
         ?>
     </td>
+
+    <!--PAGO POR CLICK-->
+    <td>
+        <?php 
+            echo $data->getPagoClick();
+        ?>
+    </td>
     
     <!--VALIDEZ EN BOLSA-->
     <td>

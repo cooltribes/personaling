@@ -41,7 +41,7 @@ class PagoController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete','view', 'detalle',
-                                    'comisionAfiliacion'),
+                                    'comisionAfiliacion','comisionClick'),
 				'expression'=>"UserModule::isAdmin()",
 			),
 			array('deny',  // deny all users
@@ -674,7 +674,7 @@ class PagoController extends Controller
 	                'criteria' => $criteria,
 	                'sort' => array(
 					    'defaultOrder' => array(
-							'lookreferredviews' => "ASC", 
+							'lookreferredviews' => "DESC", 
 						),
 					),
 	                'pagination' => array(
@@ -688,5 +688,132 @@ class PagoController extends Controller
             ));
             
         }
+	
+		 /**
+         * This action is used for paying the PersonalShoppers with the monthly
+         * earnings, distributed by monthly clicks and their value.
+         */
+        public function actionComisionClick() {
+            
+            // Get the last date of payment for computing the next period
+            $lastPayment = AffiliatePayment::findLastPayment();            
+            $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
+            // if doesn't exist any payment or if there is at least one of them
+            $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
+                ShoppingMetric::getAllViewsPs();                   
+
+            //Asign the totalViews attribute for optimize new queries
+            $this->_totallooksviews = $totalViews;
+            
+            /*Si viene el campo con el monto a pagar*/
+            if(isset($_POST["monthlyEarning"]) && $_POST["monthlyEarning"] > 0){                
+               
+                //Save the payment in the BD
+                $paymentPs = new AffiliatePayment();
+                $paymentPs->user_id = Yii::app()->user->id; //Admin who make the payment
+                $paymentPs->created_at = date("Y-m-d H:i:s"); //Datetime which the payment was made
+                $paymentPs->amount = $_POST["monthlyEarning"]; //Amount of the payment
+                $paymentPs->total_views = $totalViews; //Amount of the payment
+                            
+                if($paymentPs->save()){
+                    
+                    /*Recalculate the variables because the new payment*/
+                    //Asign the payment so it can be shown on the page
+                    $lastPayment = $paymentPs;
+                    
+                    $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
+                    // if doesn't exist any payment or if there is at least one of them
+                    $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
+                        ShoppingMetric::getAllViewsPs();                   
+
+                    //Asign the totalViews attribute for optimize new queries
+                    $this->_totallooksviews = $totalViews;                    
+                    
+                    //find all Personal Shoppers so they can be paid
+                    $allPs = User::model()->findAllByAttributes(array("personal_shopper" => 1));                
+                    $primera = true;
+                    foreach ($allPs as $userPs){
+
+                        // if the percentage is computed from the beginning or from 
+                        // one specific date
+                        $percent = $lastDate ? $userPs->getLookViewsPercentageByDate(
+                            $totalViews, date("Y-m-d"), false)
+                            : $userPs->getLookViewsPercentage($totalViews, false);
+
+                        $amountToPay = $_POST["monthlyEarning"] * $percent;
+
+                        if($amountToPay == 0){
+                            continue;
+                        }
+                        
+                        //Register maonthly payment to PS
+                        $payToPs = new PayPersonalShopper();
+                        $payToPs->user_id = $userPs->id;
+                        $payToPs->affiliatePay_id = $paymentPs->id;
+                        //Total monthly views gathered by PS
+                        $payToPs->total_views = $lastDate ? $userPs->getLookReferredViewsByDate(
+                        $lastDate, date("Y-m-d")) : $userPs->getLookReferredViews();
+                        $payToPs->percent = $percent;
+                        $payToPs->amount = $amountToPay;
+                        
+                        if($payToPs->save()){
+                            
+                            //Pasar para el saldo
+                            $saldo = new Balance();
+                            $saldo->total = $amountToPay;
+                            $saldo->orden_id = $paymentPs->id; //associated Payment
+                            $saldo->user_id = $userPs->id; //PS to be paid
+                            $saldo->admin_id = $paymentPs->user_id; //ADmin who made the payment
+                            $saldo->tipo = 10; //Type of payment specified in Balance model
+                            $saldo->fecha = date("Y-m-d H:i:s");
+                            if($saldo->save()){
+                                
+                                //enviar email a PS if not in Test or dev. 
+                                if(!Funciones::isDevTest()){
+                
+                                    $this->enviarNotificacionPagoAfiliacionPS($userPs);     
+                                    
+                                }
+                                
+                                Yii::app()->user->setFlash("success", "Se ha hecho el pago satisfactoriamente");
+
+                            }
+                            else
+                            {
+                                Yii::trace('Registrando el pago de la PS, Error:'.print_r($saldo->getErrors(), true), 'Pagos');
+                                Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                                                      
+                            }
+                            
+                        }else
+                        {
+                            Yii::trace('Registrando el pago de la PS, Error:'.print_r($saldo->getErrors(), true), 'Pagos');
+                            Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                                                      
+                        }
+
+
+                    } //End for
+                
+                } //if saved affiliate Payment
+                
+            } //if $_POST
+
+	            /*Enviar a la vista el listado de todos los PS*/
+	            $criteria = new CDbCriteria;
+	            $criteria->compare("personal_shopper", 1);
+	            
+	            $dataProvider = new CActiveDataProvider('User', array(
+	                'criteria' => $criteria,
+	                'pagination' => array(
+	                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+	                ),
+	            ));
+			            
+            $this->render("comision_click", array(
+                "dataProvider" => $dataProvider,
+                "lastPayment" => $lastPayment,
+            ));
+            
+        }
+		
 
 }

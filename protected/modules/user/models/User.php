@@ -900,6 +900,13 @@ class User extends CActiveRecord {
             return $comision;
         }
         
+		/*Obtiene el pago por click */
+        function getPagoClick() {
+           
+            $comision = $this->profile->pago_click . " ".Yii::t('contentForm', 'currSym');
+            
+            return $comision;
+        }
         
         /*Obtiene el tiempo de validez de productos en la bolsa*/
         function getValidezBolsa() {

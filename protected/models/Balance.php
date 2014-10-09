@@ -39,7 +39,8 @@
   * 7: Retiro de dinero por pago a PS
   * 8: Reintegro de dinero por pago rechazado a PS
   * 9: Saldo por cobro tipo "agregar al balance" para PS 
-  * 10: Saldo por pago de comision de productos externos para PS 
+  * 10: Saldo por pago de comision de productos externos para PS
+  * 11: Saldo por comisión (clics) 
   */
  
 class Balance extends CActiveRecord
@@ -151,6 +152,8 @@ class Balance extends CActiveRecord
 			return "Reintegro por pago rechazado";
 		if($balance->tipo==9)
 			return "Pago por cobro de comisión al balance";
+		if($balance->tipo==11)
+			return "Pago por comisión (clics)";
 		
 		return "Desconocido";  		
 	}        

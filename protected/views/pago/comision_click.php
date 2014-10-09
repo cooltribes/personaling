@@ -39,10 +39,10 @@
                     <li><strong>Fecha y hora: </strong>
                         <?php echo date("d-m-Y h:m:i a", strtotime($lastPayment->created_at)); ?>
                     </li>
-                    <li><strong>Monto pagado: </strong>
+                   <!-- <li><strong>Monto pagado: </strong>
                         <?php echo $lastPayment->getAmount() . " " .
                         Yii::t('contentForm', 'currSym'); ?>
-                    </li>                    
+                    </li> -->                   
                 </ul>
                <?php }else{ ?>
                <h4>No se ha hecho ningún pago hasta el momento</h4>

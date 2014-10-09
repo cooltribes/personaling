@@ -701,7 +701,9 @@ class PagoController extends Controller
             // if doesn't exist any payment or if there is at least one of them
             $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
                 ShoppingMetric::getAllViewsPs();                   
-
+			
+			$anterior = $this->_lastDate;
+			
             //Asign the totalViews attribute for optimize new queries
             $this->_totallooksviews = $totalViews;
             
@@ -733,9 +735,15 @@ class PagoController extends Controller
                     $allPs = User::model()->findAllByAttributes(array("personal_shopper" => 1));                
                     $primera = true;
                     foreach ($allPs as $userPs){
-
-                        $amountToPay = $userPs->getPagoClick() * ($lastDate ? $userPs->getLookReferredViewsByDate($lastDate, date("Y-m-d")) : $userPs->getLookReferredViews());
-
+						
+						if($anterior==0 && $anterior!=$this->_lastDate)
+							$amountToPay = $userPs->getPagoClick()*$userPs->getLookReferredViews();
+						else
+							$amountToPay = $userPs->getPagoClick() * ($userPs->getLookReferredViewsByDate($this->_lastDate, date("Y-m-d")));
+						
+						/*echo $amountToPay;
+						Yii::app()->end();*/
+						
                         if($amountToPay == 0){
                             continue;
                         }
@@ -745,19 +753,22 @@ class PagoController extends Controller
                         $payToPs->user_id = $userPs->id;
                         $payToPs->affiliatePay_id = $paymentPs->id;
                         //Total monthly views gathered by PS
-                        $payToPs->total_views = $lastDate ? $userPs->getLookReferredViewsByDate(
-                        $lastDate, date("Y-m-d")) : $userPs->getLookReferredViews();
+                        if($anterior==0 && $anterior!=$this->_lastDate)
+                        	$payToPs->total_views = $userPs->getLookReferredViews(); 
+						else
+							$payToPs->total_views = $lastDate ? $userPs->getLookReferredViewsByDate($lastDate, date("Y-m-d")) : $userPs->getLookReferredViews();
+						
                         $payToPs->amount = $amountToPay;
                         
                         if($payToPs->save()){
                             
-                            //Pasar para el saldo
+                            //Pasar para el saldo 
                             $saldo = new Balance();
                             $saldo->total = $amountToPay;
                             $saldo->orden_id = $paymentPs->id; //associated Payment
                             $saldo->user_id = $userPs->id; //PS to be paid
                             $saldo->admin_id = $paymentPs->user_id; //ADmin who made the payment
-                            $saldo->tipo = 10; //Type of payment specified in Balance model
+                            $saldo->tipo = 11; //Type of payment specified in Balance model
                             $saldo->fecha = date("Y-m-d H:i:s");
                             if($saldo->save()){
                                 
@@ -777,7 +788,7 @@ class PagoController extends Controller
                             
                         }else
                         {
-                            Yii::trace('Registrando el pago de la PS, Error:'.print_r($saldo->getErrors(), true), 'Pagos');
+                            Yii::trace('Registrando el pago de la PS, Error:'.print_r($payToPs->getErrors(), true), 'Pagos');
                             Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                                                      
                         }
 

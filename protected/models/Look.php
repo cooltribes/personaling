@@ -797,7 +797,7 @@ class Look extends CActiveRecord
             $b_lft = 0;
             $b_rt = 0;
             //Yii::trace('product image path, Trace: ', 'registro');
-			 switch($ext) {
+			 switch(strtolower($ext)) {
 			          case 'gif':
 			          $src = imagecreatefromgif($image->path);
 			          break;

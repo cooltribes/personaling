@@ -69,7 +69,8 @@
     <!--PRECIOPOR CLICK-->
     <td>
         <?php 
-            echo $data->getPagoClick();
+            $uno = $data->getPagoClick();
+        	echo $uno;
         ?>
     </td>
    
@@ -77,8 +78,9 @@
 <td>
         <?php 
         // if there is at least one payment in the table
-			echo $this->_lastDate ? $data->getLookReferredViewsByDate(
+			$dos = $this->_lastDate ? $data->getLookReferredViewsByDate(
                     $this->_lastDate, date("Y-m-d")) : $data->getLookReferredViews();
+        	echo $dos;
         ?>
     </td>
     
@@ -86,16 +88,11 @@
     <td style="text-align: center;">
        <?php 
        
-       echo CHtml::textField("amount-$data->id", 0, array(
+       echo CHtml::textField("amount-$data->id", $uno*$dos, array(
            "readonly" => true,
            "class" => "span1",
            "id" => $data->id,
        ));
-       //aqui va el porcentaje de comision
-       echo CHtml::hiddenField("percentage-$data->id", $this->_lastDate ?
-               $data->getLookViewsPercentageByDate($this->_totallooksviews,
-                       date("Y-m-d"), $this->_totallooksviews, false)
-               : $data->getLookViewsPercentage($this->_totallooksviews, false));
        
        ?>                    
     </td>     

@@ -706,15 +706,15 @@ class PagoController extends Controller
             $this->_totallooksviews = $totalViews;
             
             /*Si viene el campo con el monto a pagar*/
-            if(isset($_POST["monthlyEarning"]) && $_POST["monthlyEarning"] > 0){                
+            if(isset($_POST["pagar"]) && $_POST["pagar"]=="si"){                
                
                 //Save the payment in the BD
                 $paymentPs = new AffiliatePayment();
                 $paymentPs->user_id = Yii::app()->user->id; //Admin who make the payment
                 $paymentPs->created_at = date("Y-m-d H:i:s"); //Datetime which the payment was made
-                $paymentPs->amount = $_POST["monthlyEarning"]; //Amount of the payment
+                $paymentPs->amount = 0; //Amount of the payment
                 $paymentPs->total_views = $totalViews; //Amount of the payment
-                            
+                           
                 if($paymentPs->save()){
                     
                     /*Recalculate the variables because the new payment*/
@@ -734,26 +734,19 @@ class PagoController extends Controller
                     $primera = true;
                     foreach ($allPs as $userPs){
 
-                        // if the percentage is computed from the beginning or from 
-                        // one specific date
-                        $percent = $lastDate ? $userPs->getLookViewsPercentageByDate(
-                            $totalViews, date("Y-m-d"), false)
-                            : $userPs->getLookViewsPercentage($totalViews, false);
-
-                        $amountToPay = $_POST["monthlyEarning"] * $percent;
+                        $amountToPay = $userPs->getPagoClick() * ($lastDate ? $userPs->getLookReferredViewsByDate($lastDate, date("Y-m-d")) : $userPs->getLookReferredViews());
 
                         if($amountToPay == 0){
                             continue;
                         }
                         
-                        //Register maonthly payment to PS
+                        //Register monthly payment to PS
                         $payToPs = new PayPersonalShopper();
                         $payToPs->user_id = $userPs->id;
                         $payToPs->affiliatePay_id = $paymentPs->id;
                         //Total monthly views gathered by PS
                         $payToPs->total_views = $lastDate ? $userPs->getLookReferredViewsByDate(
                         $lastDate, date("Y-m-d")) : $userPs->getLookReferredViews();
-                        $payToPs->percent = $percent;
                         $payToPs->amount = $amountToPay;
                         
                         if($payToPs->save()){
@@ -769,10 +762,8 @@ class PagoController extends Controller
                             if($saldo->save()){
                                 
                                 //enviar email a PS if not in Test or dev. 
-                                if(!Funciones::isDevTest()){
-                
-                                    $this->enviarNotificacionPagoAfiliacionPS($userPs);     
-                                    
+                                if(!Funciones::isDevTest()){                
+                                    $this->enviarNotificacionPagoAfiliacionPS($userPs);
                                 }
                                 
                                 Yii::app()->user->setFlash("success", "Se ha hecho el pago satisfactoriamente");
@@ -791,11 +782,11 @@ class PagoController extends Controller
                         }
 
 
-                    } //End for
+                    } //End foreach
                 
                 } //if saved affiliate Payment
                 
-            } //if $_POST
+            } //if $_POST 
 
 	            /*Enviar a la vista el listado de todos los PS*/
 	            $criteria = new CDbCriteria;

@@ -818,7 +818,7 @@ class User extends CActiveRecord {
             //Balance tipo 5 = por commisiones
             $saldo = Yii::app()->db->createCommand(
                     "SELECT SUM(total) as total FROM tbl_balance WHERE tipo IN
-                     (5, 7, 8, 10)
+                     (5, 7, 8, 10, 11)
                      AND user_id = ".$this->id)
                     ->queryScalar();            
 
@@ -900,6 +900,13 @@ class User extends CActiveRecord {
             return $comision;
         }
         
+		/*Obtiene el pago por click */
+        function getPagoClick() {
+           
+            $comision = $this->profile->pago_click . " ".Yii::t('contentForm', 'currSym');
+            
+            return $comision;
+        }
         
         /*Obtiene el tiempo de validez de productos en la bolsa*/
         function getValidezBolsa() {

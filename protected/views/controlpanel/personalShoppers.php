@@ -72,11 +72,12 @@ $template = '{summary}
       <th colspan="3" rowspan="2" scope="col">Usuario</th>
       <th colspan="2" scope="col" style="text-align: center">Ventas</th>
       <th rowspan="2" scope="col" style="text-align: center">Comisión<br>Actual</th>
+      <th rowspan="2" scope="col" style="text-align: center">Pago por<br>Click</th>
       <th rowspan="2" scope="col" style="text-align: center">Validez<br>Bolsa</th>
       <th colspan="2" scope="col" style="text-align: center">Saldo ('.Yii::t('contentForm', 'currSym').')</th>
       <th rowspan="2" scope="col">Fecha de Registro</th>
       <th rowspan="2" scope="col">Detalle</th>
-    </tr>
+    </tr> 
         <tr>
       <th scope="col">Looks</th>
       <th scope="col">Productos</th>
@@ -137,7 +138,7 @@ Yii::app()->clientScript->registerScript('search', "
     <div class="span3">       
         <?php
         echo CHtml::dropDownList("Filtros", "", array("1" => "Cambiar comisión",
-            "2" => "Cambiar validez de la bolsa"), array('prompt' => '-- Seleccione una acción --', 'id' => 'listaAcciones'))
+            "2" => "Cambiar validez de la bolsa","3" => "Cambiar pago por click"), array('prompt' => '-- Seleccione una acción --', 'id' => 'listaAcciones'))
         ?>
     </div>
     <div class="span1">
@@ -309,6 +310,82 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 <?php $this->endWidget() ?>
 <!--MODAL CAMBIO TIEMPO EN BOLSA OFF-->
 
+
+<!--MODAL CAMBIO CLICK ON-->
+<?php
+	$this->beginWidget('bootstrap.widgets.TbModal', array(
+    	'id' => 'modalPagoClick',
+	    	), array(
+			    'class' => 'modal fade hide',
+			    'tabindex' => "-1",
+			    'role' => "dialog",
+			    'aria-labelledby' => "myModalLabel",
+			    'aria-hidden' => "true",
+	        //'style' => "display: none;",
+			))
+?>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Cambiar monto de comisión por click</h3>
+</div>
+<div class="modal-body">
+    <?php
+    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+        'id' => 'formCambiarComisionClick',
+        'htmlOptions' => array('enctype' => 'multipart/form-data'),
+        'type' => 'horizontal',
+        'enableAjaxValidation' => true,
+        'clientOptions' => array(
+            'validateOnSubmit' => true,
+        ),
+    ));
+    ?>
+    <fieldset>       
+        <div class="control-group">
+            <label class="control-label">Total por click:</label>
+            <div class="controls">
+                <?php echo TbHtml::textField("totalClick", 0, array("append" => Yii::t('backEnd', 'currSym'), "span" => "1"));
+                ?>
+            </div>
+        </div> 
+        <div class="control-group">            
+            <div class="controls">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type' => 'danger',
+                    'buttonType' => 'button',
+                    'label' => "Guardar",
+                    'htmlOptions' => array(
+                        'id' => 'btnClick',
+                    )
+                ));
+                ?>
+            </div>
+        </div>    
+        <?php echo CHtml::hiddenField("action", 3); ?> 
+    </fieldset>
+
+<?php $this->endWidget(); ?>
+
+    <div class="row-fluid">
+        <div class="span12 ">
+            <strong class="nroAfectados"><?php echo $dataProvider->getTotalItemCount(); ?></strong>
+            Personal Shoppers serán afectados <i class="icon-user"></i>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer text_align_left">
+    <h5 style="margin-top: 0">Descripción:</h5>
+    Cambiarás el valor de la comisión por click para cada Personal Shopper para todos los Personal Shopper seleccionados.
+    Este nuevo valor se aplicará en las próximas ventas.
+</div>                    
+
+<?php $this->endWidget() ?>
+<!--MODAL CAMBIO COMISION OFF-->
+
+
 <!-- /container -->
 <script >
 
@@ -326,6 +403,7 @@ function accionMasiva(parametros){
                     
                     $('#modalComision').modal("hide");
                     $('#modalTiempo').modal("hide");
+                    $('#modalPagoClick').modal("hide");
                     
                     if(!$('#filters-view').is(":visible")){
                         $('#filters-view').show();
@@ -335,6 +413,11 @@ function accionMasiva(parametros){
                     $('html,body').animate({
                         scrollTop: $(".page-header").first().next().offset().top
                     });
+                    
+                    /*$.fn.yiiListView.update(
+                        // this is the id of the CListView
+                            'list-auth-items',
+                   )*/
                     
                 },
                 error: function( jqXHR, textStatus, errorThrown){
@@ -371,6 +454,10 @@ $(document).ready(function(){
         } else if (accion == 2) {
             
             $('#modalTiempo').modal();            
+        } else if (accion == 3){
+        	//alert ("Colocar pagos distintos para cada click del toor");
+        	 $('#modalPagoClick').modal();
+            //cambiar click
         }
 
     });
@@ -416,6 +503,21 @@ $(document).ready(function(){
             accionMasiva(args);
         }
         
+    });
+    
+    /*Change click rate*/
+    $("#btnClick").click(function (e){
+        
+        var porClick = $("#totalClick").val();
+        var usuarios = $("strong.nroAfectados").first().text();        
+        
+        var res = confirm('¿Estás seguro de establecer '+porClick+' como comisión por click '+
+            'para "'+usuarios+'" Personal Shopper(s)?');
+        
+        if(res){
+            var args = $("#formCambiarComisionClick").serialize();
+            accionMasiva(args); 
+        }
     });
     
 });    

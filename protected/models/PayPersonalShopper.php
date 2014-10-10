@@ -43,7 +43,7 @@ class PayPersonalShopper extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, affiliatePay_id, total_views, percent, amount', 'required'),
+			array('user_id, affiliatePay_id, total_views, amount', 'required'),
 			array('user_id, affiliatePay_id, total_views', 'numerical', 'integerOnly'=>true),
 			array('percent, amount', 'numerical'),
 			// The following rule is used by search().

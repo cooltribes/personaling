@@ -27,7 +27,7 @@
     ?> 
 
     <div class="page-header">
-        <h1>Pago de comisiones por afiliación a productos de terceros</h1>
+        <h1>Pago de comisiones por afiliación - Clicks</h1>
     </div>    
     
     <div class="row">
@@ -39,10 +39,10 @@
                     <li><strong>Fecha y hora: </strong>
                         <?php echo date("d-m-Y h:m:i a", strtotime($lastPayment->created_at)); ?>
                     </li>
-                    <li><strong>Monto pagado: </strong>
+                   <!-- <li><strong>Monto pagado: </strong>
                         <?php echo $lastPayment->getAmount() . " " .
                         Yii::t('contentForm', 'currSym'); ?>
-                    </li>                    
+                    </li> -->                   
                 </ul>
                <?php }else{ ?>
                <h4>No se ha hecho ningún pago hasta el momento</h4>
@@ -50,9 +50,8 @@
             </fieldset>
         </div>
         <div class="span6">
-            
              <fieldset>                
-                <legend>Ingresa el monto para el periodo actual</legend>
+                <legend>Pagar por el periodo actual</legend>
                     <?php
                         $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                             'id'=>'pago-form',
@@ -63,25 +62,14 @@
                     ?>
                 
                     <div class="control-group input-prepend margin_left_small">                        
-                        <div class="controls">
-                            <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>                            
-                            
+                        <div class="controls">   
                             <?php
-                                echo TbHtml::numberField('monthlyEarning', 0, array(                                
-                                    'step' => 'any',
-                                    'min' => "1",
-                                    'max' => 25000,                                
-                                    'class' => "span2",                                
-                                ));
-                            
+ 								echo CHtml::hiddenField("pagar","no",array('id'=>'pagar'));
                                 echo TbHtml::submitbutton("Pagar", array(
                                     "id" => "pay",
                                     "color" => "warning",
-                                    "class" => "margin_left_small",
                                 ));   
-                               
                             ?>
-                            
                         </div>
                     </div>
                     <?php
@@ -90,33 +78,7 @@
             </fieldset>
         </div>
     </div>
-    <div class="row">
-	    <div class="span10">
-	    	<fieldset>
-	    		<legend>Filtrar por fechas</legend>
-	    	<div class="control-group margin_left_medium">
-	    		<div class="controls">
-	    	<?php
-	    		echo TbHtml::dateField('first', 0, array('class' => "",));
-				echo TbHtml::dateField('second', 0, array('class' => "margin_left_small",));
-				echo TbHtml::button('Filtrar', array('color' => TbHtml::BUTTON_COLOR_SUCCESS,'class' => "margin_left_small",'id'=>'filtrar','name'=>'filtrar')); 
-			?>
-				</div>
-			</div>
-			</fieldset>              		
-	    </div>
-	 </div>
-    <div class="row margin_top margin_bottom ">
-        <div class="span4">
-            <?php
-            
-//            echo CHtml::beginForm(CHtml::normalizeUrl(array('index')), 'get', array('id' => 'search-form'))
-//            . '<div class="input-prepend"> <span class="add-on"><i class="icon-search"></i></span>'
-//            . CHtml::textField('nombre', (isset($_GET['string'])) ? $_GET['string'] : '', array('id' => 'textbox_buscar', 'class' => 'span3', 'placeholder' => 'Buscar'))
-//            . CHtml::endForm();
-            ?>
-        </div>
-    </div>
+    
     <div class="span3">
         <?php // echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 8'), "id_filter", "name"), array('empty' => '-- Búsquedas avanzadas --', 'id' => 'all_filters'))
         ?>
@@ -124,22 +86,16 @@
     <!--<div class="span3 "><a href="#" class="btn  crear-filtro">Crear búsqueda avanzada</a></div>-->
     
 </div>
-
 <?php // $this->renderPartial("_filters"); ?>
-<!--<hr/>-->
+
 <?php 
 $template = '{summary}
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped table-condensed">
     <tr>      
-      <th colspan="3" rowspan="2" scope="col">Personal Shopper</th>
-      <th colspan="2" scope="col" style="text-align: center">Visitas Generadas</th>
-      <th rowspan="2" scope="col" style="text-align: center">Porcentaje<br>de<br>Comisión</th>
-      
-      <th rowspan="2" scope="col" style="text-align: center">Monto a pagar ('.Yii::t('contentForm', 'currSym').')</th>            
-    </tr>
-    <tr>
-      <th scope="col">Totales</th>
-      <th scope="col">Per. Actual</th>      
+      <th colspan="3" scope="col" height="40" >Personal Shopper</th>
+      <th scope="col" style="text-align: center">Precio por Click</th>
+      <th scope="col" style="text-align: center">Clicks totales</th>      
+      <th scope="col" style="text-align: center">Monto a pagar ('.Yii::t('contentForm', 'currSym').')</th>            
     </tr>
     {items}
     </table>
@@ -148,7 +104,7 @@ $template = '{summary}
 $this->widget('zii.widgets.CListView', array(
     'id' => 'list-auth-items',
     'dataProvider' => $dataProvider,
-    'itemView' => '_view_ps_comision',
+    'itemView' => '_view_ps_comision_click', 
     'template' => $template,
     'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',                
     'afterAjaxUpdate'=>" function(id, data) {
@@ -229,7 +185,9 @@ function formSubmit(e){
     
     if(!validSubmit){
         
-        e.preventDefault();    
+        e.preventDefault();   
+        $("#pagar").val("si");
+        
         bootbox.confirm("Se realizará el pago a todas las personal shoppers en\n\
             Personaling, ¿Deseas continuar?",
             function(result) {

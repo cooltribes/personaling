@@ -1,3 +1,4 @@
+<style type="text/css"> span.tab1 {padding-left: 1.3em;} span.tab2 {padding-left: 2.6em;} </style>
 <?php
 $this->breadcrumbs=array(
 	'Looks'=>array('mislooks'),
@@ -145,8 +146,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				
 				}"
 	),
-)); ?>      	
-        
+)); 
+
+ if($disabled=="0")
+ {
+ 	
+ 
+?>      	
+       
         <legend class="lead"><?php echo Yii::t('contentForm','Last step'); ?></legend>
         <div class="infoBanner margin_bottom_small">
            Completa la información de tu look. <br>
@@ -161,7 +168,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   <![endif]-->
   		<?php echo Yii::t('contentForm','What name would you give this Look?'); ?>
             <div class="controls">
-               <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45,'disabled'=>$disabled)); ?>
+               <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45)); ?>
                <?php echo $form->error($model,'title'); ?>
             </div>
           </div>
@@ -171,7 +178,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   <![endif]-->
       <?php echo Yii::t('contentForm','Type a description for this look'); ?>
             <div class="controls">
-  			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50,'class'=>'span5','disabled'=>$disabled)); ?>
+  			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50,'class'=>'span5')); ?>
   			<?php echo $form->error($model,'description'); ?>
             </div>
           </div>
@@ -262,14 +269,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
   		?>
           <div class="control-group">
           	
-          	<?php echo CHtml::checkBox($categoria->nombre,false,array('class'=>'select_todos_ocasiones', 'disabled'=>$disabled));  ?>
+          	<?php echo CHtml::checkBox($categoria->nombre,false,array('class'=>'select_todos_ocasiones'));  ?>
             <label class="control-label required"><?php echo $categoria->nombre; ?>:</label>
             <div class="controls">
               <?php $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               		'type' => '',
   				    'toggle' => 'checkbox', // 'checkbox' or 'radio'
-  				    'buttons' => $categoria->childrenButtons($model->getCategorias(),$disabled),
+  				    'buttons' => $categoria->childrenButtons($model->getCategorias()),
   				)); ?>
   				
             </div>
@@ -296,7 +303,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                <?php echo $form->radioButtonListInlineRow($model, 'tipo', array(
   			        1=>'Atrevida',
   			        2=>'Conservador',
-  			    ),array('disabled'=>$disabled)); ?> 
+  			    )); ?> 
   			    <div style="display:none" id="radioError" class="help-block error">Debes elegir un estilo para este look</div>
             </div>
           </div>
@@ -329,8 +336,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['bodyFavors']) && Yii::app()->params['multiLook']['bodyFavors']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->contextura,$disabled));
-                else $buttons = Profile::rangeButtons($field->range,$model->contextura,$disabled);
+                if (isset(Yii::app()->params['multiLook']['bodyFavors']) && Yii::app()->params['multiLook']['bodyFavors']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->contextura));
+                else $buttons = Profile::rangeButtons($field->range,$model->contextura);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               'type' => '',
@@ -348,8 +355,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             		
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['hairColor']) && Yii::app()->params['multiLook']['hairColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->pelo,$disabled));
-                else $buttons = Profile::rangeButtons($field->range,$model->pelo,$disabled);
+                if (isset(Yii::app()->params['multiLook']['hairColor']) && Yii::app()->params['multiLook']['hairColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->pelo));
+                else $buttons = Profile::rangeButtons($field->range,$model->pelo);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               'type' => '',
@@ -368,8 +375,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));  ?>
 
                   <?php
-                if (isset(Yii::app()->params['multiLook']['womanMeasure']) && Yii::app()->params['multiLook']['womanMeasure']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->altura,$disabled));
-                else $buttons = Profile::rangeButtons($field->range,$model->altura,$disabled);
+                if (isset(Yii::app()->params['multiLook']['womanMeasure']) && Yii::app()->params['multiLook']['womanMeasure']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->altura));
+                else $buttons = Profile::rangeButtons($field->range,$model->altura);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               'type' => '',
@@ -386,8 +393,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['eyesColor']) && Yii::app()->params['multiLook']['eyesColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->ojos,$disabled));
-                else $buttons = Profile::rangeButtons($field->range,$model->ojos,$disabled);
+                if (isset(Yii::app()->params['multiLook']['eyesColor']) && Yii::app()->params['multiLook']['eyesColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->ojos));
+                else $buttons = Profile::rangeButtons($field->range,$model->ojos);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               'type' => '',
@@ -404,8 +411,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['bodyType']) && Yii::app()->params['multiLook']['bodyType']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled));
-                else $buttons = Profile::rangeButtons($field->range,$model->tipo_cuerpo,$disabled);
+                if (isset(Yii::app()->params['multiLook']['bodyType']) && Yii::app()->params['multiLook']['bodyType']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->tipo_cuerpo));
+                else $buttons = Profile::rangeButtons($field->range,$model->tipo_cuerpo);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
                     'type' => '',
@@ -431,8 +438,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             <div class="controls">
               	<?php 	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));  ?>
                   <?php
-                if (isset(Yii::app()->params['multiLook']['skinColor']) && Yii::app()->params['multiLook']['skinColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->piel,$disabled));
-                else $buttons = Profile::rangeButtons($field->range,$model->piel,$disabled);
+                if (isset(Yii::app()->params['multiLook']['skinColor']) && Yii::app()->params['multiLook']['skinColor']) $buttons = array_merge($all,Profile::rangeButtons($field->range,$model->piel));
+                else $buttons = Profile::rangeButtons($field->range,$model->piel);
                 $this->widget('bootstrap.widgets.TbButtonGroup', array(
   				    'size' => 'small',
               'type' => '',
@@ -449,6 +456,125 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
           </div>
         
         </section >
+       <?php 
+		}
+		else
+		{
+			
+		?>
+        <section class="well"> 
+		
+		<strong> <?php echo Yii::t('contentForm','Name look:');?></strong> <br><p></p>
+		 <span class="tab2" style="font-style:italic;"><?php echo $model->title;?></span><br><p></p>
+		 
+		 <strong> <?php echo Yii::t('contentForm','Description of look:');?></strong> <br><p></p>
+		 <span class="tab2" style="font-style:italic;"><?php echo $model->description;?></span><br><p></p>
+		 
+		 <strong> <?php echo Yii::t('contentForm','Ocassions for this look:');?></strong> <br><p></p>
+		 	
+		<?php $padres = Categoria::model()->findAllByAttributes(array('padreId'=>'2')); ?>
+		 <?php $categorias = CategoriaHasLook::model()->findAllByAttributes(array('look_id'=>$model->id)); ?>
+		 
+		 <span class="tab2" style="font-style:italic;">
+		 <?php
+		 foreach($padres as $padre)
+		 {
+		 	$repeat=0;
+		 	foreach($categorias as $categoria)
+		 	{
+					$getCategory=Profile::getCategory($categoria->categoria_id, $padre->id, $categorias);	
+					if($getCategory==1 && $repeat==0)
+					{
+						echo $padre->nombre;
+						echo ": ";
+						$repeat=1;	
+					}
+				$hijo=$categoria->categoria_id;
+				$middle=Categoria::model()->findByPk($hijo);
+				$medio=$middle->padreId;
+				if($padre->id==$medio)
+				{
+					echo $middle->nombre;
+					echo ", ";
+				}	 			 
+		    }
+			$repeat=0;
+		 }
+		?>			
+		 </span><br><p></p> 
+		 
+		 <strong> <?php echo Yii::t('contentForm','Look style:');?></strong> <br><p></p>
+		 <span class="tab2" style="font-style:italic;"><?php echo $model->getTipo();?></span><br><p></p>
+		 
+		 <strong> <?php echo Yii::t('contentForm','Targeting ages');?></strong> <br><p></p>
+		 <?php if($model->edadMin=="")
+		 {?>
+			 <span class="tab2" style="font-style:italic;"><?php echo Yii::t('contentForm','For all ages');?></span><br><p></p>
+		 <?php
+		 }else
+		 {?>
+		 	 <span class="tab2" style="font-style:italic;"><?php echo $model->edadMin." a ".$model->edadMax." años";?></span><br><p></p>
+		 <?php
+		 }?>
+		
+		 <strong> <?php echo Yii::t('contentForm','Body');?></strong> <br><p></p>
+		 
+		 <span class="tab2" style="font-style:italic;"><?php
+			$w=Profile::getShape($model->contextura, "contextura");
+			foreach ( $w as $key ) {
+				echo $key.",   "; 
+			}
+		 ?></span><br><p></p>
+		 
+		 <strong> <?php echo Yii::t('contentForm','Hair Color');?></strong> <br><p></p>
+		 
+		 <span class="tab2" style="font-style:italic;"><?php
+			$w=Profile::getShape($model->pelo, "pelo");
+			foreach ( $w as $key ) {
+				echo $key.",   "; 
+			}
+		 ?></span><br><p></p>
+		 
+		  <strong> <?php echo Yii::t('contentForm','Height');?></strong> <br><p></p>
+		  
+		  <span class="tab2" style="font-style:italic;"><?php
+			$w=Profile::getShape($model->altura, "altura");
+			foreach ( $w as $key ) {
+				echo $key.",   "; 
+			}
+		 ?></span><br><p></p>
+		 
+		 <strong> <?php echo Yii::t('contentForm','Eye Color');?></strong> <br><p></p>
+		  
+		  <span class="tab2" style="font-style:italic;"><?php
+			$w=Profile::getShape($model->ojos, "ojos");
+			foreach ( $w as $key ) {
+				echo $key.",   "; 
+			}
+		 ?></span><br><p></p>
+		 
+		 <strong> <?php echo Yii::t('contentForm','Body shape');?></strong> <br><p></p>
+		  
+		  <span class="tab2" style="font-style:italic;"><?php
+			$w=Profile::getShape($model->tipo_cuerpo, "tipo_cuerpo");
+			foreach ( $w as $key ) {
+				echo $key.",   "; 
+			}
+		 ?></span><br><p></p>
+		 
+		 <strong> <?php echo Yii::t('contentForm','Skin Color');?></strong> <br><p></p>
+		  
+		  <span class="tab2" style="font-style:italic;"><?php
+			$w=Profile::getShape($model->piel, "piel");
+			foreach ( $w as $key ) {
+				echo $key.",   "; 
+			}
+		 ?></span><br><p></p>
+		  
+		</section>
+		<?php
+		}
+		?>
         <section class="well">
               <?php if ($model->status == Look::STATUS_CREADO || Yii::app()->user->isAdmin()){ ?>
               	<h4><strong>3.</strong> <?php echo Yii::t('contentForm','Finished, just press send');?>  </h4>
@@ -493,11 +619,24 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
          <?php } ?>
         
      <?php $this->endWidget(); ?>
-
-      
     </section>
+    <div align="center">    	
+    	<?php 
+     if($disabled!="0")
+	 {
+    	$this->widget('bootstrap.widgets.TbButton', array(
+    	'label'=>Yii::t('contentForm','Create more Looks'),
+    	'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+    	'size'=>'large', // null, 'large', 'small' or 'mini'
+    	'url' => $this->createUrl("create"),  
+    	));
+	 } 
+    	?>  	
+    </div>
   </div>
 </div>
+
+            	
 <?php 
 $script = "
 	$('.select_todos_ocasiones').on('click',function(e){

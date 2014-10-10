@@ -124,7 +124,7 @@
 /*<![CDATA[*/
    
    //Buscar      
-    $('#filter-search').click(function(e) {
+    $('#filter-search').click(function(e) { 
         
         e.preventDefault(); 
         

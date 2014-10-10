@@ -1,5 +1,4 @@
 <?php
-
 /* @var $form TbActiveForm */
 
 //$this->breadcrumbs=array(

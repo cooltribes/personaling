@@ -68,12 +68,22 @@ $this->breadcrumbs=array(
 
     <?php echo $form->textAreaRow($model,'body',array('rows'=>4, 'class'=>'span3')); ?>
 
-	<?php if(CCaptcha::checkRequirements()): ?>
-		<?php echo $form->captchaRow($model,'verifyCode',array(
-			'language'=>'es_ES',
-            'hint'=>'Por favor escriba las letras que se muestran aquí arriba. No importa si están en mayúscula o minúscula.',
-            'showRefreshButton' => true,
-        )); ?>
+			<?php if(CCaptcha::checkRequirements()): ?>
+			<?php echo $form->textFieldRow($model,'verifyCode'); ?>
+			
+		
+		
+		<?php #echo $form->textField($model,'verifyCode'); ?>
+		<div align="center">
+			<?php $this->widget('CCaptcha', array('imageOptions' => array('id' => 'yw0'),'showRefreshButton' => true,'buttonLabel' => 'Refrescar', 'buttonOptions' => '', 'buttonType' => 'button')); ?>
+			<div class="hint">Por favor, introduzca las letras como se muestra. 
+        <br/>Las letras no distinguen entre mayusculas y minusculas.</div>
+        
+		<?php echo $form->error($model,'verifyCode'); ?>
+			
+		</div>
+		
+	
 	<?php endif; ?>
 
 	<div class="form-actions">
@@ -94,4 +104,15 @@ $this->breadcrumbs=array(
   <!-- SIDEBAR ON -->
   <div class="span4"> <?php echo $this->renderPartial('_sidebar'); ?> </div>
   <!-- SIDEBAR ON --> </div>
-
+  
+  
+<script>  
+ 
+ $(document).on('ready', function (){
+ 	
+ 	document.getElementById( 'yw0' ).style.display = 'none';
+	$('#yw0_button').click(); 
+	document.getElementById( 'yw0' ).style.display = 'inline';
+   })
+	
+</script>

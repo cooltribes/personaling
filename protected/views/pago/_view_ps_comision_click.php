@@ -6,7 +6,7 @@
 ?>
 
 
-<?php if ($data->status == 0) { ?>
+<?php if ($data->status == 0) { ?> 
     <tr class="warning">
 <?php } else { ?>
     <tr class=" <?php echo ($data->personal_shopper == 2) ? 'info' : ''; ?> ">
@@ -66,33 +66,21 @@
         </small>
     </td>
     
-    <!--Visitas TOTALES-->
+    <!--PRECIOPOR CLICK-->
     <td>
-        <?php
-            echo $data->getLookReferredViews();
+        <?php 
+            $uno = $data->getPagoClick();
+        	echo $uno;
         ?>
     </td>
-    
-    <!--VISITAS MES ACTUAL-->
-    <td>
+   
+    <!--CLICK TOTALES-->
+<td>
         <?php 
         // if there is at least one payment in the table
-        if($this->filter == TRUE){
-        	echo $data->getLookReferredViewsByDate($this->_first,$this->_last);
-        }
-		else {
-			echo $this->_lastDate ? $data->getLookReferredViewsByDate(
+			$dos = $this->_lastDate ? $data->getLookReferredViewsByDate(
                     $this->_lastDate, date("Y-m-d")) : $data->getLookReferredViews();
-		}
-        ?>
-    </td>
-    
-    <!--PORCENTAJE COMISION-->
-    <td>
-        <?php 
-            echo $this->_lastDate ? $data->getLookViewsPercentageByDate($this->_lastDate,
-                    date("Y-m-d"), $this->_totallooksviews) : 
-                $data->getLookViewsPercentage($this->_totallooksviews);
+        	echo $dos;
         ?>
     </td>
     
@@ -100,18 +88,14 @@
     <td style="text-align: center;">
        <?php 
        
-       echo CHtml::textField("amount-$data->id", 0, array(
+       echo CHtml::textField("amount-$data->id", $uno*$dos, array(
            "readonly" => true,
            "class" => "span1",
            "id" => $data->id,
        ));
-       //aqui va el porcentaje de comision
-       echo CHtml::hiddenField("percentage-$data->id", $this->_lastDate ?
-               $data->getLookViewsPercentageByDate($this->_totallooksviews,
-                       date("Y-m-d"), $this->_totallooksviews, false)
-               : $data->getLookViewsPercentage($this->_totallooksviews, false));
        
        ?>                    
-    </td>    
+    </td>     
+    
 </tr>
 

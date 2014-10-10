@@ -57,13 +57,39 @@ class AdminController extends Controller
                 $model->attributes = $_GET['User'];
 
             $criteria = new CDbCriteria;
-
-            $dataProvider = new CActiveDataProvider('User', array(
+			if(isset($_GET['User_page']))
+			{
+				Yii::app()->session['sumolo']=$_GET['User_page'];
+			}
+			else {
+				if(isset($_GET['ajax']))
+					unset(Yii::app()->session['sumolo']);
+			}
+				
+			if(Yii::app()->session['sumolo']=="")
+			{
+				$dataProvider = new CActiveDataProvider('User', array(
                     'criteria' => $criteria,
                     'pagination' => array(
                         'pageSize' => Yii::app()->getModule('user')->user_page_size,
                     ),
                 ));
+			}
+			else
+			{
+				if(Yii::app()->session['sumolo']>=2)
+				{
+					$dataProvider = new CActiveDataProvider('User', array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                       'currentPage'=>Yii::app()->session['sumolo']-1,
+                    	),
+               		 ));
+				}
+				
+			}
+            
 
             //Modelos para el formulario de crear Usuario
             $modelUser = new User;

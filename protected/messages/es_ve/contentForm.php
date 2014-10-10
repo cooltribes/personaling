@@ -67,6 +67,7 @@ return array (
      'Brand' => 'Marca',
      'Brands' => 'Marcas',     
      'Bring front' => 'Traer al frente',
+     'Body' => 'Contextura',
      'Buy' => 'Comprar',
      'Buy Gift Card' => 'Comprar Gift Card',
      'Buyer' => 'Comprador',
@@ -89,6 +90,7 @@ return array (
      'Clear Filter' => 'Borrar Filtro',
      'Clean Filters' => 'Limpiar Filtros',
      'Create Look' => 'Crear Look',
+     'Create more Looks' => 'Crear más Looks',
      'Create new filter' => 'Crear nuevo filtro',
      'Create Gift Card' => 'Crear GiftCard',
      'Created for' => 'Creado por',
@@ -120,6 +122,7 @@ return array (
      'Details of your credit card' => 'Datos de tu tarjeta de crédito',
      'Details' => 'Detalles',
      'Description' => 'Descripción',
+     'Description of look:' => 'Descripción del look:',
      'Delivery' => 'Envío',
      'Decorations' => 'Adornos',
      'Discount' => 'Descuento',
@@ -136,7 +139,8 @@ return array (
      'Empty shopping bag' => 'Vaciar la Bolsa de Compras',
      'Eye Color' => 'Color de Ojos',
      'Expiration' => 'Vencimiento',
-
+	
+	 'For all ages'=>'Para todas las edades',
      'From' => 'De',
      'From1' => 'Desde',
      'From Our Magazine' => 'Desde Nuestra Magazine',
@@ -198,6 +202,7 @@ return array (
      'Name' => 'Nombre',
      'Name of items' => 'Nombre de productos',
      'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
+     'Name look:' => 'Nombre del look:',
      'Name printed on the credit card' => 'Nombre impreso en la tarjeta',
      'New order' => 'Nuevo Pedido',
      'Next' => 'Siguiente',
@@ -214,11 +219,12 @@ return array (
      'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
      'Look created by' => 'Look creado por',
      'Look description'  => 'Descripción del look',
+     'Look style:'  => 'Estilo del look',
      'Looks best sellers' => 'Looks más vendidos',
      "Looks in promotion" => 'Looks en promoción',
      'Like' => 'Me encanta',
 
-
+	 'Ocassions for this look:' => 'Ocasiones para este look',
      'Order' => 'Pedido',
      'Order Cancelled' => 'Orden Cancelada',
      'Order confirmation' => 'Confirmación del pedido',
@@ -345,7 +351,7 @@ return array (
      'Summary of the purchase' => 'Resumen de la compra',
      'Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com" title="Personaling">Personaling.com</a>',
 
-
+	 'Targeting ages' => 'Dirigido a edades',
      'Tax' => 'Impuesto',
      'The bag is empty' => 'La bolsa está vacia',
      'The order to <b>{name}</b> has successfully completed' => 'El pedido para <b>{name}</b> se ha realizado con éxito.',

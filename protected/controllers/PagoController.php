@@ -709,7 +709,8 @@ class PagoController extends Controller
             
             /*Si viene el campo con el monto a pagar*/
             if(isset($_POST["pagar"]) && $_POST["pagar"]=="si"){                
-               
+               	$total = 0;
+				
                 //Save the payment in the BD
                 $paymentPs = new AffiliatePayment();
                 $paymentPs->user_id = Yii::app()->user->id; //Admin who make the payment
@@ -759,7 +760,8 @@ class PagoController extends Controller
 							$payToPs->total_views = $lastDate ? $userPs->getLookReferredViewsByDate($lastDate, date("Y-m-d")) : $userPs->getLookReferredViews();
 						
                         $payToPs->amount = $amountToPay;
-                        
+                        $total += $amountToPay;
+					
                         if($payToPs->save()){
                             
                             //Pasar para el saldo 
@@ -772,6 +774,8 @@ class PagoController extends Controller
                             $saldo->fecha = date("Y-m-d H:i:s");
                             if($saldo->save()){
                                 
+								$paymentPs->saveAttributes(array('amount'=>$total)); // total payed by clicks 
+								
                                 //enviar email a PS if not in Test or dev. 
                                 if(!Funciones::isDevTest()){                
                                     $this->enviarNotificacionPagoAfiliacionPS($userPs);

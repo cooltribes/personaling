@@ -67,6 +67,7 @@ return array (
 	'Brand' => 'Marca',
 	'Brands' => 'Marcas',     
 	'Bring front' => 'Traer al frente',
+	'Body' => 'Contextura',
 	'Buy' => 'Comprar',
 	'Buy Gift Card' => 'Comprar Gift Card',
 	'Buyer' => 'Comprador',
@@ -92,6 +93,7 @@ return array (
 	'Close' => 'Cerrar',
 	'Create' => 'Crear',
 	'Create Look' => 'Crear Look',
+	'Create more Looks' => 'Crear más Looks',
 	'Create new filter' => 'Crear nuevo filtro',
 	'Create Gift Card' => 'Crear GiftCard',
 	'Created for' => 'Creado por',
@@ -126,6 +128,7 @@ return array (
 	'Details of your credit card' => 'Datos de tu tarjeta de crédito',
 	'Details' => 'Detalles',
 	'Description' => 'Descripción',
+	'Description of look:' => 'Descripción del look:',
 	'Delivery' => 'Envío',
 	'Decorations' => 'Adornos',
 	'Discount' => 'Descuento',
@@ -150,6 +153,8 @@ return array (
 	'Filter' => 'Filtrar',
 	'Filter by Colors' => 'Filtrar por Colores',
 	'First'=>'Primera',
+	'For all ages'=>'Para todas las edades',
+	
 
 
 	'Gift Card' => 'Gift Card',
@@ -212,6 +217,7 @@ return array (
 	'Name' => 'Nombre',
 	'Name of items' => 'Nombre de productos',
 	'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
+	'Name look:' => 'Nombre del look:',
 	'Name printed on the credit card' => 'Nombre impreso en la tarjeta',
 	'New order' => 'Nuevo pedido',
 	'New products' => 'Productos Nuevos',
@@ -231,11 +237,12 @@ return array (
 	'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
 	'Look created by' => 'Look creado por',
 	'Look description'  => 'Descripción del look',
+	'Look style:'  => 'Estilo del look',
 	'Looks best sellers' => 'Looks más vendidos',
 	"Looks in promotion" => 'Looks en promoción',
 	'Like' => 'Me encanta',
 
-
+	'Ocassions for this look:' => 'Ocasiones para este look',
 	'Order' => 'Pedido',
 	'Order Cancelled' => 'Orden Cancelada', 
 	'Only can be used alphanumeric characters, hyphen (-) and underscore (_).'=>'Sólo puedes usar letras, números, guión (-) o underscore (_).',
@@ -375,7 +382,7 @@ return array (
         'Start enjoying your Gift Card in <a href="https://www.personaling.es" title="Personaling">Personaling.es</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en cualquier producto de <a href="https://www.personaling.es" title="Personaling">Personaling.es</a>',
 
 
-
+	'Targeting ages' => 'Dirigido a edades',
 	'Tax' => 'Impuesto',
 	'Tax information code'=>'Codigo de Información Fiscal',
 	'The bag is empty' => 'La bolsa está vacia',

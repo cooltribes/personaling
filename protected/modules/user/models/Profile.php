@@ -492,4 +492,44 @@ class Profile extends UActiveRecord
 			
 	 }
 	 
+	 public function getShape($shape, $var)
+	 {
+	 	if($var=="contextura")
+			$str= ProfileField::model()->findByAttributes(array('varname'=>'contextura'))->range;
+		if($var=="pelo")
+			$str= ProfileField::model()->findByAttributes(array('varname'=>'pelo'))->range;
+		if($var=="altura")
+			$str= ProfileField::model()->findByAttributes(array('varname'=>'altura'))->range;
+		if($var=="ojos")
+			$str= ProfileField::model()->findByAttributes(array('varname'=>'ojos'))->range;
+		if($var=="tipo_cuerpo")
+			$str= ProfileField::model()->findByAttributes(array('varname'=>'tipo_cuerpo'))->range;
+		if($var=="piel")
+			$str= ProfileField::model()->findByAttributes(array('varname'=>'piel'))->range;
+		
+		$rules = explode(';',$str);
+		$array = array();
+		for ($i=0;$i<count($rules);$i++) {
+			$item = explode("==",$rules[$i]);
+			if (isset($item[0])){
+				if ((int)$item[0]&(int)$shape){ 
+					array_push($array, $item[1]);
+				}
+			} 
+		}
+		return $array;
+	 }
+	 
+	 public function getCategory($id, $padre_id, $categorias)
+	 {
+	 	foreach($categorias as $categoria)
+		{
+				$hijo=$id;
+				$middle=Categoria::model()->findByPk($hijo);
+				$medio=$middle->padreId;
+				if($padre_id==$medio)
+					return 1;
+		}
+		return 0;
+	 }
 }

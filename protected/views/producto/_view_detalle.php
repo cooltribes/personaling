@@ -157,7 +157,7 @@
 		  
 		   if($producto->mymarca->is_100chic){
 	
-				echo "<div class='text_align_center btn-block is_080chic'><img src='".Yii::app()->baseUrl."/images/080_566x34.jpg'/></div>";
+				echo "<div class='text_align_center btn-block is_080chic'><img src='".Yii::app()->baseUrl."/images/".Yii::app()->language."/especial/080_566x34.jpg'/></div>";
 				
 		  }
 		  
@@ -338,7 +338,7 @@
           if($producto->mymarca->is_100chic){
           	echo CHtml::hiddenField('chic',1);
 	       ?>
-            <img src="<?php echo Yii::app()->baseUrl; ?>/images/080minibanner.jpg" alt="Banner Titina Penzini" class="margin_top_medium_minus">
+            <img src="<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/especial/080minibanner.jpg";?>" alt="Banner Titina Penzini" class="margin_top_medium_minus">
 		  <?php
 		  }
 		  else
@@ -1228,7 +1228,7 @@ $('.imagen_principal').zoom({url: imgZ});
                             // cambiando la imagen principal :@
                             $(".imagen_principal").fadeOut("10",function(){
                             if($('#chic').val()==1){
-                                zona=zona+"<div class='text_align_center btn-block is_080chic'><img src='<?php echo Yii::app()->baseUrl; ?>/images/080_566x34.jpg'/></div>";
+                                zona=zona+"<div class='text_align_center btn-block is_080chic'><img src='<?php echo Yii::app()->baseUrl; ?>/images/<?php echo Yii::app()->language; ?>/especial/080_566x34.jpg'/></div>";
                             }
 
                             $(".imagen_principal").html(zona);

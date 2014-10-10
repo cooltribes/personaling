@@ -14,7 +14,7 @@ class TiendaController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
                                     'segunda','ocasiones','modal','doble', 'crearFiltro',
-                                    'getFilter','xmltest','rangoslook','bf080'),
+                                    'getFilter','xmltest','rangoslook','bf080','quickview'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1399,9 +1399,12 @@ public function actionCategorias2(){
 			
 		
 	}
+    public function actionQuickview($id) 
+    {
+        $this->renderPartial('quickview',array('id'=>$id));
+    }
 
-
-	public function actionModal($id) //todo: change the view, because its difficult to undertand
+	public function actionModal($id) //todo: change the view, because its difficult to understand
 	{ 
 		
 		$datos="";
@@ -1424,8 +1427,7 @@ public function actionCategorias2(){
 		}
 		
 		
-		//$datos=$datos."<div id='myModal' class='modal hide tienda_modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
-    	$datos=$datos."<div class='modal-header'>";
+		$datos=$datos."<div class='modal-header'>";
 		$datos=$datos."<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>";
 		$datos=$datos."<h3 id='myModalLabel'><a href='".$producto->getUrl()."' title='".$producto->nombre."'>".$producto->nombre."</a></h3></div>";
 		$datos=$datos."<div>";
@@ -1447,8 +1449,7 @@ public function actionCategorias2(){
 		       	$datos=$datos.'</ol>';
 	    }
         $datos=$datos.'<div class="carousel-inner" id="carruselImag">';
-       // $datos=$datos.'<div class="item">';
-		
+       
 	
 		
 		foreach ($ima as $img){
@@ -1481,18 +1482,7 @@ public function actionCategorias2(){
         $datos=$datos.'<div class="row-fluid call2action">';
        	$datos=$datos.'<div class="'.$left.'">';
 		
-		/*foreach ($producto->precios as $precio) {
-			if($precio->precioDescuento < $precio->precioImpuesto){
-				$porcentaje = 100 - (($precio->precioDescuento * 100) / $precio->precioImpuesto);
-				//$precio = "<span class='preciostrike strikethrough'>".Yii::t('contentForm', 'currSym')." ".$data->precio."</del></span> | ".Yii::t('contentForm', 'currSym')." ".$data->precioDescuento;
-			$datos=$datos.'<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto)."</span><span class='T_large'> |</span> <span class='pDescuento'> ".''.Yii::t('contentForm', 'currSym')." ".$precio->precioDescuento.'</span><br/> <span class="conDescuento">Con '.round($porcentaje).'% de descuento</span>';
-
-			}else{
-				$datos=$datos.''.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'';
-			}
-   			//$datos=$datos.'<h4 class="precio"><span>Subtotal</span> '.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio->precioImpuesto).'</h4>';
-   		}*/
-
+		
    		$precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 	    if($precio_producto){
 	        if(!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0){
@@ -1509,8 +1499,7 @@ public function actionCategorias2(){
 	          }
 	          $precio_mostrar = $precio_producto->precioImpuesto;
 	          $datos=$datos.'<span class="preciostrike strikethrough color9 T_mediumLarge">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->format("#,##0.00",$precio_mostrar)."</span><span class='T_large'>|</span><span class='pDescuento'>".''.Yii::t('contentForm', 'currSym')." ".Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioDescuento).'</span><br/> <span class="conDescuento">Con '.Yii::app()->numberFormatter->format("#",$porcentaje).'% de descuento</span>';
-	          //echo '<span class="preciostrike strikethrough">'.Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatDecimal($precio_mostrar).'</span> | '.''.Yii::t('contentForm', 'currSym')." ".$precio_producto->precioImpuesto.' Con '.round($porcentaje).'% de descuento';
-	        }else{
+	         }else{
 	        	$datos=$datos.'<div class="pDetalle"><span>'.Yii::t('contentForm', 'currSym').'</span>'.Yii::app()->numberFormatter->format("#,##0.00",$precio_producto->precioImpuesto).'</div>';
 			}
 	    }
@@ -1574,8 +1563,7 @@ public function actionCategorias2(){
 				
 			} // else 
 		
-		//$datos=$datos.'<div title="Rojo" class="coloress" style="cursor: pointer" id="8"><img src="/site/images/colores/C_Rojo.jpg"></div>              </div>';
-        $datos=$datos.'</div></div>';
+		$datos=$datos.'</div></div>';
 		
         $datos=$datos.'<div class="span6">';
         $datos=$datos.'<h5>Tallas</h5>';
@@ -1585,7 +1573,6 @@ public function actionCategorias2(){
 		$canttallas= Array();
         $cont2 = 0;
               	
-		// revisando cuantas tallas distintas hay
 		foreach ($producto->preciotallacolor as $talCol){ 
 			if($talCol->cantidad > 0){
 				$talla = Talla::model()->findByPk($talCol->talla_id);
@@ -1619,7 +1606,6 @@ public function actionCategorias2(){
 	   		}	
 	   	}// else
 		
-       // $datos=$datos.'<div title="talla" class="tallass" style="cursor: pointer" id="10">S</div>';         	     	
         $datos=$datos.'</div></div></div> <div class="row-fluid"> <hr/> ';
 		$marca = Marca::model()->findByPk($producto->marca_id);
         $datos=$datos.'<h5>Marca</h5>';
@@ -1693,7 +1679,6 @@ public function actionCategorias2(){
 		$datos=$datos."$('#alertRegister').hide();});";
 			$datos=$datos."$('.coloress').click(function(ev){"; // Click en alguno de los colores -> cambia las tallas disponibles para el color
 				$datos=$datos."ev.preventDefault();";
-				//$datos=$datos."alert($(this).attr('id'));";
 				
 				$datos=$datos.' var prueba = $("#vTa div.tallass.active").attr("value");';
 			$datos=$datos."if(prueba == 'solo'){";
@@ -1743,8 +1728,7 @@ public function actionCategorias2(){
 			
 		$datos=$datos.'$(".tallass").click(function(ev){ '; // click en tallas -> recarga los colores para esa talla
 			$datos=$datos."ev.preventDefault();";
-			//$datos=$datos."alert($(this).attr('id'));";
-		
+			
 			$datos=$datos.'var prueba = $("#vCo div.coloress.active").attr("value");';
 
    			$datos=$datos."if(prueba == 'solo'){";
@@ -1820,8 +1804,7 @@ public function actionCategorias2(){
 			$datos=$datos.'if(talla!=undefined && color!=undefined){';
 			 $datos.= 'if(bandera==true) return false; bandera = true; ';
 			$datos=$datos.'$("#agregar").click(function(e){e.preventDefault();});$("#agregar").addClass("disabled"); ';
-//			 $datos.= ' \n' ;
-                        $datos.= 'var isGuest = '.(Yii::app()->user->isGuest?"true":"false").'; ';
+                       $datos.= 'var isGuest = '.(Yii::app()->user->isGuest?"true":"false").'; ';
                         $datos.= 'if(isGuest)
                                 {                                   
                                 
@@ -1859,32 +1842,7 @@ public function actionCategorias2(){
 	echo $datos;
 	}
 
-	// Uncomment the following methods and override them if needed
-	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
 
-	public function actions()
-	{
-		// return external action classes, e.g.:
-		return array(
-			'action1'=>'path.to.ActionClass',
-			'action2'=>array(
-				'class'=>'path.to.AnotherActionClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-	*/
         
         
        public function actionGuardarFiltro() {

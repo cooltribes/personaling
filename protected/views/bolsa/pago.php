@@ -401,12 +401,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 
                     if($shipping){
                             if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
-                            {	          
-                                            $flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$total);
+                            {	            $declarado=$total<=50?51:$total;  
+                                            $flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$declarado);
 
                                             if(!is_null($flete)){
-
-
+                                                   
                                                     $envio=$flete->total-$flete->seguro;
                                                     $seguro=str_replace(',','.',$flete->seguro);
 

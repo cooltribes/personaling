@@ -54,10 +54,15 @@ class Ciudad extends CActiveRecord
 	 * @return array relational rules.
 	 */
 	public function relations()
-	{
+	{   if(Yii::app()->language=='es_es')
+            $array = array(self::HAS_MANY, 'CodigoPostal', 'ciudad_id');
+        if(Yii::app()->language=='es_ve')
+            $array = array(self::HAS_ONE, 'CodigoPostal', 'ciudad_id');
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+		
+		    'codigosPostales' => $array,
 			'provincia' => array(self::BELONGS_TO, 'Provincia', 'provincia_id'),
 			'ruta' => array(self::BELONGS_TO, 'Ruta', 'ruta_id'),
 		);

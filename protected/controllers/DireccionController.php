@@ -199,9 +199,12 @@ class DireccionController extends Controller
 		$direccion->attributes=$_POST;
         if(isset($_POST['codigo_postal_id']))
 		  $direccion->codigo_postal_id=$_POST['codigo_postal_id'];
+		else
+            $direccion->codigo_postal_id=CodigoPostal::model()->getCode($_POST['ciudad_id'],'id');
         if(is_numeric($direccion->pais))
 		  $direccion->pais=Pais::model()->getOficial($direccion->pais);
-
+          
+        
 		if($direccion->save()){
 			$direcciones = Direccion::model()->findAllByAttributes(array('user_id'=>$direccion->user_id));
 			echo '<legend >'

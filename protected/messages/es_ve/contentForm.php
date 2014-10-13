@@ -69,6 +69,7 @@ return array (
      'Bring front' => 'Traer al frente',
      'Body' => 'Contextura',
      'Buy' => 'Comprar',
+     'Buy at' => 'Comprar en',
      'Buy Gift Card' => 'Comprar Gift Card',
      'Buyer' => 'Comprador',
      'By email' => 'Por correo electrónico',

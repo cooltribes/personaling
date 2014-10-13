@@ -44,7 +44,8 @@ class BolsaController extends Controller
 	}
 	
 	public function actionIndex()
-	{		
+	{		Yii::app()->user->setFlash('info',
+                                UserModule::t("Tu bolsa se ha actualizado porque algunos productos no se encuentran disponibles."));
 		
             if(!Yii::app()->user->isGuest){
 

@@ -581,7 +581,20 @@ $total_productos_look = 0;
                       </tr>
                     </table>
                     
-                    
+                    <?php
+                    $url;
+
+                      if($total == 0){
+                        $deshabilitar = TRUE;
+                        $url = "#";
+                      }
+                      else{
+                        $deshabilitar = FALSE;
+                        $url = $this->createAbsoluteUrl('bolsa/compra',$params,'https'); // action ir 
+                      }
+
+                    ?>
+
                   </div>
                   <div class="text_align_center">
                     <?php
@@ -590,8 +603,9 @@ $total_productos_look = 0;
                           'label'=>Yii::t('contentForm', 'Complete purchase'),
                           'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                           'size'=>'large', // null, 'large', 'small' or 'mini'
-                          'url'=> $this->createAbsoluteUrl('bolsa/compra',$params,'https'), // action ir 
+                          'url'=> $url,
                           'icon'=>'lock white',
+                          'disabled' => $deshabilitar, 
                       ));          
 
                       ?>

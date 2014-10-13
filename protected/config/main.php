@@ -306,6 +306,6 @@ return array(
 				    'country'=>'Venezuela',
 				    'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
 				    'outlet'=>TRUE,
-				    'zohoActive' => FALSE,
+				    'zohoActive' => TRUE,
 	),
 );

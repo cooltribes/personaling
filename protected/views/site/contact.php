@@ -69,7 +69,7 @@ Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por 
 		<?php $this->widget('CCaptcha'); ?>
 		<?php echo $form->textField($model,'verifyCode'); ?>
 		</div>
-		<div class="hint">Please enter the letters as they are shown in the image above.
+		<div class="hint">Please enter the letters as they are shown in the image abov0e.
 		<br/>Letters are not case-sensitive.</div>
 		<?php echo $form->error($model,'verifyCode'); ?>
 	</div>

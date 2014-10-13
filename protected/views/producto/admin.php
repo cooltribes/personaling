@@ -275,6 +275,7 @@ $template = '{summary}
         <option>Descuentos</option>
         <option>Outlet</option>
         <option>Precio Especial</option>
+        <option>Destacar</option>
       </select>
     </div>
 
@@ -308,7 +309,7 @@ $template = '{summary}
 					alert('No ha seleccionado ninguna acción.');
 					
 					
-				if(data.status==3 || data.status==4){
+				if(data.status==3 || data.status==4 || data.status==9){
 					
 						ajaxUpdateTimeout = setTimeout(function () {
 						$.fn.yiiListView.update(

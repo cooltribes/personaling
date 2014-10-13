@@ -681,9 +681,9 @@ public function actionReportexls(){
 		else {
 				$id = $_GET['id'];
 			// make the directory to store the pic:
-				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/producto/'. $id))
+				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/producto/'. $id))
 				{
-	   				mkdir(Yii::getPathOfAlias('webroot').'/images/producto/'. $id,0777,true);
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/producto/'. $id,0777,true);
 	 			}
 	
 	        	$images = CUploadedFile::getInstancesByName('url');

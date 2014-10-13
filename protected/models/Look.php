@@ -1270,25 +1270,23 @@ class Look extends CActiveRecord
     
     public function updateAvailability()
     {
-        $this->setScenario('availability');
+
         $save=false;
         if($this->countAvailableProducts()<3)
         {
             if($this->available!=0){
-                 $this->available=0;
-                 $this->save();
+                 $this->saveAttributes(array('available'=>0));
                  $save=true;                
             }
         }           
         else{
-            if($this->available!=1){
-                 $this->available=1;
-                 $this->save();
+            if($this->available!=1){                 
+                 $this->saveAttributes(array('available'=>1));
                  $save=true;                
             }
         } 
         return $save;
         
-    }
+    }    
 	
 }

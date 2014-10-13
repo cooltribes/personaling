@@ -87,4 +87,16 @@ class CodigoPostal extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+    
+    public function getCode($ciudad, $attribute){
+        $code=$this->findAllByAttributes(array('ciudad_id'=>$ciudad));
+        if(isset($code)){
+            if(count($code)==1)
+                return $code[0]->$attribute;
+            else
+                return $code[0]->$attribute;
+        }
+        return null;   
+    }
+    
 }

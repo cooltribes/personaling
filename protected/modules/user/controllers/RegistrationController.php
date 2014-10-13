@@ -146,42 +146,45 @@ class RegistrationController extends Controller
                         $profile->user_id = $model->id;
                         $profile->save();
 
-                        // save user to zoho
-                        $zoho = new Zoho();
-                        $zoho->email = $model->email;
-                        $zoho->first_name = $profile->first_name;
-                        $zoho->last_name = $profile->last_name;
-                        $zoho->birthday = $profile->birthday;
-                        if($profile->sex == 1)
-                            $zoho->sex = 'Mujer';
-                        else if($profile->sex == 2)
-                            $zoho->sex = 'Hombre';
 
-                        $zoho->admin = 'No';
-                        $zoho->ps = 'No';
-                                                    $zoho->tipo = "Externo";
-                        $zoho->no_suscrito = true;
+                        if(Yii::app()->params["zohoActive"] == TRUE){ // Zoho Activo    
+                            // save user to zoho
+                            $zoho = new Zoho();
+                            $zoho->email = $model->email;
+                            $zoho->first_name = $profile->first_name;
+                            $zoho->last_name = $profile->last_name;
+                            $zoho->birthday = $profile->birthday;
+                            if($profile->sex == 1)
+                                $zoho->sex = 'Mujer';
+                            else if($profile->sex == 2)
+                                $zoho->sex = 'Hombre';
 
-                        if($model->superuser == 1){
-                            $zoho->admin = 'Si';
+                            $zoho->admin = 'No';
+                            $zoho->ps = 'No';
+                            $zoho->tipo = "Externo";
+                            $zoho->no_suscrito = true;
+
+                            if($model->superuser == 1){
+                                $zoho->admin = 'Si';
+                            }
+                            if($model->personal_shopper == 1){
+                                $zoho->ps = 'Si';
+                            }
+                            //$zoho->save_potential();
+
+                            $result = $zoho->save_potential();
+
+                            $xml = simplexml_load_string($result);
+                            $id = (int)$xml->result[0]->recorddetail->FL[0];
+                            $model->saveAttributes(array('zoho_id'=>$id));
+                            
+                            /*$model->zoho_id = $id;
+                            if($model->save()){
+                                //$success++;
+                            }else{
+                                //$error++;
+                            }*/
                         }
-                        if($model->personal_shopper == 1){
-                            $zoho->ps = 'Si';
-                        }
-                        //$zoho->save_potential();
-
-                        $result = $zoho->save_potential();
-
-                        $xml = simplexml_load_string($result);
-                        $id = (int)$xml->result[0]->recorddetail->FL[0];
-
-                        $model->zoho_id = $id;
-                        if($model->save()){
-                            //$success++;
-                        }else{
-                            //$error++;
-                        }
-
 
                         //if (Yii::app()->controller->module->sendActivationMail) {
 

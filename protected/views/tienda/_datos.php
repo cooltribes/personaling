@@ -241,7 +241,7 @@ $b='';
 						    $this->createUrl('modal',array('id'=>$data->id)),
 						    array(// for htmlOptions
 						      'onclick'=>' '.CHtml::ajax( array(
-						      'url'=>CController::createUrl('modal',array('id'=>$data->id)),
+						      'url'=>CController::createUrl('quickview',array('id'=>$data->id)),
 						           'success'=>"js:function(data){ $('#myModal').html(data);
 											$('#myModal').modal(); }")).
 						         'return false;',

@@ -694,6 +694,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 			$this->render('zohoCases');			 
 		}
 		
-		
+        
+       
 		
 }

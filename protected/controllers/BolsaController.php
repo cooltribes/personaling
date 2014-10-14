@@ -44,9 +44,8 @@ class BolsaController extends Controller
 	}
 	
 	public function actionIndex()
-	{		
-		
-            if(!Yii::app()->user->isGuest){
+	{ 
+	    if(!Yii::app()->user->isGuest){
 
                 /*Si es compra de admin para usuario*/
                 if(isset($_GET["user"]) && UserModule::isAdmin()){

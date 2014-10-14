@@ -327,10 +327,20 @@ class AdminController extends Controller
             }
             
             if (isset($_GET['nombre'])) {
-                
+               # echo $_GET['nombre'];
+				#break;
+				$palabras=explode( ' ',$_GET['nombre']);
                 unset($_SESSION["todoPost"]);
                 $criteria->alias = 'User';
-                $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
+				if (!isset($palabras[1]))
+				{
+					$criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';
+				}
+				else {																					  
+					$criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND ((p.first_name LIKE "%' . $palabras[0] . '%" AND p.last_name LIKE "%' . $palabras[1] . '%" ) OR
+																 					   (p.first_name LIKE "%' . $palabras[1] . '%" AND p.last_name LIKE "%' . $palabras[0] . '%" ))';
+					}
+                
                 
                 $dataProvider = new CActiveDataProvider('User', array(
                     'criteria' => $criteria,

@@ -6,7 +6,7 @@ $this->breadcrumbs=array(
 	'Detalle',
 );
 if($orden->getFlete())
-	print_r($orden->getFlete());// REVISION ZOOM 
+	//print_r($orden->getFlete());// REVISION ZOOM 
 	//echo "<br/>";
 //print_r($orden->calcularTarifa(17,1,0.4, 3290)); 
 //echo $orden->direccionEnvio->myciudad->cod_zoom." - ".$orden->nproductos." - ".$orden->peso." - ".$orden->total."<br/>"."17 - 1 - 0.4 - 3290";
@@ -283,7 +283,7 @@ $tracking=$orden->getTrackingInfo();
           </tr>
         </table>
         
-        <?php if(!is_null($tracking))
+        <?php if(is_array($tracking))
         { ?>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>

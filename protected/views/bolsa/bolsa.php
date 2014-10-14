@@ -582,6 +582,7 @@ $total_productos_look = 0;
                     </table>
                     
                     <?php
+                    $params = array();
                     $url;
 
                       if($total == 0){
@@ -598,7 +599,6 @@ $total_productos_look = 0;
                   </div>
                   <div class="text_align_center">
                     <?php
-                     $params = array();                    
                      $this->widget('bootstrap.widgets.TbButton', array(
                           'label'=>Yii::t('contentForm', 'Complete purchase'),
                           'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'

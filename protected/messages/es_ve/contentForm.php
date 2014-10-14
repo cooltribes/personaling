@@ -69,6 +69,7 @@ return array (
      'Bring front' => 'Traer al frente',
      'Body' => 'Contextura',
      'Buy' => 'Comprar',
+     'Buy at' => 'Comprar en',
      'Buy Gift Card' => 'Comprar Gift Card',
      'Buyer' => 'Comprador',
      'By email' => 'Por correo electrónico',
@@ -217,6 +218,7 @@ return array (
  
      'Last step' => 'Último paso',
      'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
+     'Load to shopping cart' => 'Cargar a la Bolsa',
      'Look created by' => 'Look creado por',
      'Look description'  => 'Descripción del look',
      'Look style:'  => 'Estilo del look',
@@ -285,6 +287,7 @@ return array (
      '<strong>Process Validation:</strong> usually takes 1 to 5 business days and is to validate your transfer or deposit with our bank. You can check the status of your purchase in your profile.' => '<strong>Proceso de validación:</strong> usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.',
      '<strong>Process Validation:</strong> usually takes 1 to 5 business days of validating your payment.' => '<strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.',
      'Promotion' => 'Promoción',
+     'Purchase confirmation' => 'Confirmación de la compra',
      
 
 
@@ -486,10 +489,10 @@ return array (
         </div>
         <p>Al registrarte o realizar una compra  en nuestra tienda <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">www.personaling.com</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
         <ol>
-          <li>Los envíos de Personaling.com se harán solamente dentro del  territorio venezolano, con excepción del Estado Nueva Esparta,  y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
+          <li>Los envíos de Personaling.com.ve se harán solamente dentro del  territorio venezolano, y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
           <li> El comprador tiene una única opción de envío, es decir sólo puede elegir una dirección para su envío.  </li>
           <li> El costo del envio corre por cuenta del comprador, y el mismo depende del destino y del contenido o volumen del envío mismo. En todo caso, el monto del costo del envío se calculará automáticamente en el sistema, previo al pago, en el momento de realizar el pedido. De esta manera podrás conocerlo  antes de tomar la decisión final de compra o cierre de la transacción. </li>
-          <li> El envió se llevará a cabo a través de un operador que gestionará su entrega por medio de Personaling.com </li>
+          <li> El envió se llevará a cabo a través de un operador que gestionará su entrega por medio de Personaling.com.ve </li>
           <li>Puedes elegir entre dos tipo de entregas:
             <ol class="margin_left_medium" style="list-style-type: none">
               <li >5.1 &nbsp;  Puerta: Cuando tu dirección es de fácil acceso, podremos llevar tu pedido hasta la puerta de tu domicilio u oficina.  </li>
@@ -497,7 +500,7 @@ return array (
             </ol>
           </li>
           <li>Para recibir tu pedido en cualquiera de las modalidades debes presentar tu cédula de identidad y firmar el acuse de recibo.  </li>
-          <li>Personaling.com se hace responsable de empaquetar correctamente tu compra y gestionar la entrega dentro de los plazos correspondientes. En caso de retraso en los plazos, el cliente recibirá un cupón con el 10% de descuento para su próxima compra.</li>
+          <li>Personaling.com.ve se hace responsable de empaquetar correctamente tu compra y gestionar la entrega dentro de los plazos correspondientes. En caso de retraso en los plazos, el cliente recibirá un cupón con el 10% de descuento para su próxima compra.</li>
         </ol>
         <p>&nbsp;</p>',
 

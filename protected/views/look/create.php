@@ -26,7 +26,7 @@ var dragSrcEl = '';
 function handleDragStart(e) {
 	
 $('.canvas').css('background',"white url('<?php echo Yii::app()->baseUrl.'/images/loading.gif'; ?>') center center no-repeat");
-  this.style.opacity = '0.4';  // this / e.target is the source node.
+  //this.style.opacity = '0.4';  // this / e.target is the source node.
    dragSrcEl = this;
  
   e.dataTransfer.effectAllowed = 'move';

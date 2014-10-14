@@ -1105,7 +1105,46 @@ public function actionReportexls(){
 
             $producto->status = 1;
 
-            $dataProvider = $producto->search();
+            #$dataProvider = $producto->search();
+            
+            $model = new Producto('search');
+            $model->unsetAttributes();  // clear any default values
+            if (isset($_GET['Producto']))
+                $model->attributes = $_GET['Producto'];
+			
+			$criteria = new CDbCriteria;
+			if(isset($_GET['Producto_page']))
+			{
+				Yii::app()->session['sumo']=$_GET['Producto_page'];
+			}
+			else {
+				if(isset($_GET['ajax']))
+					unset(Yii::app()->session['sumo']);
+			}
+				
+			if(Yii::app()->session['sumo']=="")
+			{
+				$dataProvider = new CActiveDataProvider('Producto', array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        #'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                    ),
+                ));
+			}
+			else
+			{
+				if(Yii::app()->session['sumo']>=2)
+				{
+					$dataProvider = new CActiveDataProvider('Producto', array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                       # 'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                       'currentPage'=>Yii::app()->session['sumo']-1,
+                    	),
+               		 ));
+				}
+				
+			}
 
             /**********************   Para Filtros   *************************/
             if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
@@ -1440,8 +1479,15 @@ public function actionReportexls(){
 					$datos=$datos."</div>";	
 				$datos .= '</form>';
 				$result['html'] = $datos;
-			}
+			}else if($accion=="Destacar") {
+				    foreach($checks as $id){
+                    $model = Producto::model()->findByPk($id);
+                    $model->destacado=1;
+                    Producto::model()->updateByPk($id, array('destacado'=>'1'));
 
+                }
+                $result['status'] = "9";
+			}
 		}
 		else {
 			//echo("1"); // no selecciono checks

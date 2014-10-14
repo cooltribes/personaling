@@ -1821,18 +1821,18 @@ public function actionReportexls(){
 										$zoho->titulo = $model->seo->mTitulo;
 										$zoho->metaDescripcion = $model->seo->mDescripcion;
 										$zoho->tags = $model->seo->pClave;
+									} 
+
+									if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
+										$respuesta = $zoho->save_potential();										
+										$datos = simplexml_load_string($respuesta);
+										
+										$id = $datos->result[0]->recorddetail->FL[0];
+
+										// guarda el id de zoho en el producto
+										//$tallacolor->zoho_id = $id;
+										$tallacolor->saveAttributes(array('zoho_id'=>$id)); 
 									}
-									$respuesta = $zoho->save_potential();
-									//var_dump($respuesta);
-									//Yii::app()->end();
-									$datos = simplexml_load_string($respuesta);
-									
-									$id = $datos->result[0]->recorddetail->FL[0];
-									//echo $id;	
-									// guarda el id de zoho en el producto
-									$tallacolor->zoho_id = $id;
-									$tallacolor->save(); 
-									
 									/* ========================================== */
 									
                                     //si este producto fue actualizado, guardar en el log

@@ -133,28 +133,29 @@ class AdminController extends Controller
                         Yii::app()->user->updateSession();
                         Yii::app()->user->setFlash('success', UserModule::t("El usuario ha sido creado."));
 
-                        // save user to zoho
-                        $zoho = new Zoho();
-                        $zoho->email = $modelUser->email;
-                        $zoho->first_name = $profile->first_name;
-                        $zoho->last_name = $profile->last_name;
-                        $zoho->birthday = $profile->birthday;
-                        if($profile->sex == 1)
-                            $zoho->sex = 'Mujer';
-                        else if($profile->sex == 2)
-                            $zoho->sex = 'Hombre';
+                        if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo        
+                            // save user to zoho
+                            $zoho = new Zoho();
+                            $zoho->email = $modelUser->email;
+                            $zoho->first_name = $profile->first_name;
+                            $zoho->last_name = $profile->last_name;
+                            $zoho->birthday = $profile->birthday;
+                            if($profile->sex == 1)
+                                $zoho->sex = 'Mujer';
+                            else if($profile->sex == 2)
+                                $zoho->sex = 'Hombre';
 
-                        $zoho->admin = 'No';
-                        $zoho->ps = 'No';
+                            $zoho->admin = 'No';
+                            $zoho->ps = 'No';
 
-                        if($modelUser->superuser == 1){
-                            $zoho->admin = 'Si';
+                            if($modelUser->superuser == 1){
+                                $zoho->admin = 'Si';
+                            }
+                            if($modelUser->personal_shopper == 1){
+                                $zoho->ps = 'Si';
+                            }
+                            $zoho->save_potential();
                         }
-                        if($modelUser->personal_shopper == 1){
-                            $zoho->ps = 'Si';
-                        }
-                        $zoho->save_potential();
-
 
                         //Enviar Correo
                         
@@ -1296,8 +1297,8 @@ class AdminController extends Controller
 		
 		if ($model->save()){
 			
+            if(Yii::app()->params['zohoActive'] == TRUE){ // Si Zoho Activo
 			/* Creando el caso */
-			
 				$ps = 'Si';
 				
 				$zoho = new Zoho();
@@ -1314,7 +1315,8 @@ class AdminController extends Controller
 				$zohoCase->Status = "Closed"; 
 									
 				$respuesta = $zohoCase->save_potential(); 
-			
+			} 
+
 		echo CJSON::encode(array(
 	            'status'=>'success',
 	            'personal_shopper'=>$model->personal_shopper,
@@ -1422,15 +1424,16 @@ class AdminController extends Controller
                     }
                 }
                 //var_dump($rangos);
-
-                $zoho->diario = Profile::range($rangos[0],$profile->coctel);
-                $zoho->fiesta = Profile::range($rangos[1],$profile->fiesta);
-                $zoho->vacaciones = Profile::range($rangos[2],$profile->playa);
-                $zoho->deporte = Profile::range($rangos[3],$profile->sport);
-                $zoho->oficina = Profile::range($rangos[4],$profile->trabajo);
-                
-                $result = $zoho->save_potential();
+                if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
+                    $zoho->diario = Profile::range($rangos[0],$profile->coctel);
+                    $zoho->fiesta = Profile::range($rangos[1],$profile->fiesta);
+                    $zoho->vacaciones = Profile::range($rangos[2],$profile->playa);
+                    $zoho->deporte = Profile::range($rangos[3],$profile->sport);
+                    $zoho->oficina = Profile::range($rangos[4],$profile->trabajo);
                         
+                    $result = $zoho->save_potential();
+                }
+
 				//$this->redirect(array('view','id'=>$model->id));
 				Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
@@ -1645,16 +1648,19 @@ class AdminController extends Controller
                             
                         }
                     }
+                    if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
 
-                    $zoho->altura = Profile::range($rangos[1],$profile->altura);
-                    $zoho->condicion_fisica = Profile::range($rangos[2],$profile->contextura);
-                    $zoho->color_piel = Profile::range($rangos[0],$profile->piel);
-                    $zoho->color_cabello = Profile::range($rangos[3],$profile->pelo);
-                    $zoho->color_ojos = Profile::range($rangos[4],$profile->ojos);
-                    $zoho->tipo_cuerpo = Profile::range($rangos[5],$profile->tipo_cuerpo);
-                    
-                    $result = $zoho->save_potential();
-    				//$this->redirect(array('view','id'=>$model->id));
+                        $zoho->altura = Profile::range($rangos[1],$profile->altura);
+                        $zoho->condicion_fisica = Profile::range($rangos[2],$profile->contextura);
+                        $zoho->color_piel = Profile::range($rangos[0],$profile->piel);
+                        $zoho->color_cabello = Profile::range($rangos[3],$profile->pelo);
+                        $zoho->color_ojos = Profile::range($rangos[4],$profile->ojos);
+                        $zoho->tipo_cuerpo = Profile::range($rangos[5],$profile->tipo_cuerpo);
+                        
+                        $result = $zoho->save_potential();
+    				}
+
+                    //$this->redirect(array('view','id'=>$model->id));
     				Yii::app()->user->updateSession();
     				Yii::app()->user->setFlash('success',UserModule::t("Los cambios han sido guardados."));
 				} else {
@@ -1708,32 +1714,33 @@ class AdminController extends Controller
 				
 					
 				$profile->save(); 
-
-                // update potential at zoho
-                $zoho = new Zoho();
-                $zoho->email = $model->email;
-                $zoho->first_name = $profile->first_name;
-                $zoho->last_name = $profile->last_name;
-                $zoho->birthday = $profile->birthday;
-                if($profile->sex == 1)
-                    $zoho->sex = 'Mujer';
-                else if($profile->sex == 2)
-                    $zoho->sex = 'Hombre';
-                $zoho->bio = $profile->bio;
-                $zoho->dni = $profile->cedula;
-                $zoho->tlf_casa = $profile->tlf_casa;
-                $zoho->tlf_celular = $profile->tlf_celular;
-                $zoho->pinterest = $profile->pinterest;
-                $zoho->twitter = $profile->twitter;
-                $zoho->facebook = $profile->facebook;
-                $zoho->url = $profile->url;
-				
-				if($_POST['User']['interno'] == 1)
-					$zoho->tipo = "Interno";
-				else if($_POST['User']['interno'] == 0)
-					$zoho->tipo = "Externo";
-						
-                $result = $zoho->save_potential();
+                if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
+                    // update potential at zoho
+                    $zoho = new Zoho();
+                    $zoho->email = $model->email;
+                    $zoho->first_name = $profile->first_name;
+                    $zoho->last_name = $profile->last_name;
+                    $zoho->birthday = $profile->birthday;
+                    if($profile->sex == 1)
+                        $zoho->sex = 'Mujer';
+                    else if($profile->sex == 2)
+                        $zoho->sex = 'Hombre';
+                    $zoho->bio = $profile->bio;
+                    $zoho->dni = $profile->cedula;
+                    $zoho->tlf_casa = $profile->tlf_casa;
+                    $zoho->tlf_celular = $profile->tlf_celular;
+                    $zoho->pinterest = $profile->pinterest;
+                    $zoho->twitter = $profile->twitter;
+                    $zoho->facebook = $profile->facebook;
+                    $zoho->url = $profile->url;
+    				
+    				if($_POST['User']['interno'] == 1)
+    					$zoho->tipo = "Interno";
+    				else if($_POST['User']['interno'] == 0)
+    					$zoho->tipo = "Externo";
+    						
+                    $result = $zoho->save_potential();
+                }
 				
 				//$this->redirect(array('view','id'=>$model->id));
 				

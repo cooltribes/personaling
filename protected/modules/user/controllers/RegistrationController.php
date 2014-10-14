@@ -147,7 +147,7 @@ class RegistrationController extends Controller
                         $profile->save();
 
 
-                        if(Yii::app()->params["zohoActive"] == TRUE){ // Zoho Activo    
+                        if(Yii::app()->params["zohoActive"] == TRUE) {// Zoho Activo    
                             // save user to zoho
                             $zoho = new Zoho();
                             $zoho->email = $model->email;
@@ -563,8 +563,9 @@ class RegistrationController extends Controller
 //                                else if ($profile->sex == 2) // hombre
 //                                    $this->redirect(array('/tienda/look'));
                                 
-                                 /* REGISTRAR PERSONAL SHOPPER EN ZOHO */
+                                 /* REGISTRAR PERSONAL SHOPPER EN ZOHO */ 
             					
+                                if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
 	            					$user=User::model()->findByPk($model->id);
 									
 									$rangos = array();
@@ -628,10 +629,11 @@ class RegistrationController extends Controller
 									$zohoCase->internal = "Sin revisar";
 									$zohoCase->Origin = "Email";
 									$zohoCase->Status = "Nuevo";
-									$zohoCase->type = "Solicitud de Peticion"; 
+									$zohoCase->type = "Solicitud de Peticion";
 									
 									$respuesta = $zohoCase->save_potential(); 
-                                
+
+                                }
                                 /** Redireccionar a la p{agina de información **/
                                      $this->redirect(array('/site/afterApply'));
                                 

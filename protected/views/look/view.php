@@ -10,11 +10,11 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
   Yii::app()->clientScript->registerMetaTag('Personaling.com', null, null, array('property' => 'og:site_name'), null); 
 
   //Metas de Twitter CARD ON
-
   Yii::app()->clientScript->registerMetaTag('product', 'twitter:card', null, null, null);
   Yii::app()->clientScript->registerMetaTag('@personaling', 'twitter:site', null, null, null);
   Yii::app()->clientScript->registerMetaTag($model->title, 'twitter:title', null, null, null);
   Yii::app()->clientScript->registerMetaTag($model->description, 'twitter:description', null, null, null);
+  Yii::app()->clientScript->registerMetaTag(Yii::app()->getBaseUrl(true)."/look/getImage/".$model->id, 'twitter:image', null, null, null); //IMAGEN DE TWITTER CARD, QUITAR EN CASO DE QUE NO FUNCIONE EN PRODUCCION
   Yii::app()->clientScript->registerMetaTag($model->getPrecio().' '.Yii::t('contentForm', 'currSym'), 'twitter:data1', null, null, null);
   Yii::app()->clientScript->registerMetaTag('Subtotal', 'twitter:label1', null, null, null);
   Yii::app()->clientScript->registerMetaTag($model->user->profile->first_name.' '.$model->user->profile->last_name, 'twitter:data2', null, null, null);  

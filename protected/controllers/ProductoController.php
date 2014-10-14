@@ -3171,11 +3171,16 @@ public function actionReportexls(){
                         $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre.$extension); 
                         
                         foreach ($sheetArray as $row) {
+                            
+                            if($row["A"] == "Referencia" || $row["A"] == ""){
+                                continue;
+                            }
+                            
                             //Transformar la columna del porcentaje
-                            $row['E'] = strval($row['E']);
-                            $porcentaje = $row["E"];
+                            $row['I'] = strval($row['I']);
+                            $porcentaje = $row["I"];
                             $total++; //sumar el total de prods en el archivo
-                            //
+                            
                             //solo si ingresaron un porcentaje
                             if($porcentaje != ""){
                                 
@@ -3194,7 +3199,7 @@ public function actionReportexls(){
                                     }                                        
                                 }
                             
-                            }//fin si no esta vacia la columna E
+                            }//fin si no esta vacia la columna I
                             
                         }
                         

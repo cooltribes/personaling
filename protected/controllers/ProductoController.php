@@ -1867,18 +1867,18 @@ public function actionReportexls(){
 										$zoho->titulo = $model->seo->mTitulo;
 										$zoho->metaDescripcion = $model->seo->mDescripcion;
 										$zoho->tags = $model->seo->pClave;
+									} 
+
+									if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
+										$respuesta = $zoho->save_potential();										
+										$datos = simplexml_load_string($respuesta);
+										
+										$id = $datos->result[0]->recorddetail->FL[0];
+
+										// guarda el id de zoho en el producto
+										//$tallacolor->zoho_id = $id;
+										$tallacolor->saveAttributes(array('zoho_id'=>$id)); 
 									}
-									$respuesta = $zoho->save_potential();
-									//var_dump($respuesta);
-									//Yii::app()->end();
-									$datos = simplexml_load_string($respuesta);
-									
-									$id = $datos->result[0]->recorddetail->FL[0];
-									//echo $id;	
-									// guarda el id de zoho en el producto
-									$tallacolor->zoho_id = $id;
-									$tallacolor->save(); 
-									
 									/* ========================================== */
 									
                                     //si este producto fue actualizado, guardar en el log
@@ -3171,11 +3171,16 @@ public function actionReportexls(){
                         $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre.$extension); 
                         
                         foreach ($sheetArray as $row) {
+                            
+                            if($row["A"] == "Referencia" || $row["A"] == ""){
+                                continue;
+                            }
+                            
                             //Transformar la columna del porcentaje
-                            $row['E'] = strval($row['E']);
-                            $porcentaje = $row["E"];
+                            $row['I'] = strval($row['I']);
+                            $porcentaje = $row["I"];
                             $total++; //sumar el total de prods en el archivo
-                            //
+                            
                             //solo si ingresaron un porcentaje
                             if($porcentaje != ""){
                                 
@@ -3194,7 +3199,7 @@ public function actionReportexls(){
                                     }                                        
                                 }
                             
-                            }//fin si no esta vacia la columna E
+                            }//fin si no esta vacia la columna I
                             
                         }
                         

@@ -135,6 +135,7 @@ div.infoBanner {
 <?php /** @var BootActiveForm $form */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id'=>'PublicarForm',
+     #'focus'=>array($model,'description'),
     //'type'=>'horizontal',
     'htmlOptions'=>array('class'=>' personaling_form'),
     //'type'=>'stacked',
@@ -143,9 +144,12 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
 		'afterValidate'=>"js:function(form, data, hasError) {
-				
+					if(hasError)
+						$(window).scrollTop(Math.ceil($('.error:visible').first().offset().top)-80);
+				 		
 				}"
 	),
+	# 'focus'=>($model->hasErrors()) ? '.error:first' : array($model, 'title'),
 )); 
 
  if($disabled=="0")
@@ -726,6 +730,7 @@ $script = "
 	 	if($('#Look_tipo_0').is(':checked')||$('#Look_tipo_1').is(':checked')){
 	 		$('#PublicarForm').submit();
 	 	}
+	 	$(window).scrollTop(Math.ceil($('.error:visible').first().offset().top)-80);
     		
 	 });
 	 

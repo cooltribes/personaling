@@ -47,6 +47,11 @@ return CMap::mergeArray(
                         'banco' => true,
                         'saldo' => true,
                     ),
+                'metodosPago'=> array(
+                    'bkCard' => true,
+                    'paypal' => true, 
+                    'prueba' => true,
+                ),
                 'multiLook'=> array(
                     'bodyType' => false,
                     'eyesColor' => false,
@@ -57,7 +62,7 @@ return CMap::mergeArray(
                 ),
                 'AzPayTerminal'=>'999',
                 'AzPaySecret'=> 'qwerty1234567890uiop',
-                'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa',
+                'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
 
 
 		),

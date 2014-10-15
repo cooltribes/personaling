@@ -584,6 +584,7 @@ $total_productos_look = 0;
                     <?php
                     $params = array();
                     $url;
+                    $params = array(); 
 
                       if($total == 0){
                         $deshabilitar = TRUE;

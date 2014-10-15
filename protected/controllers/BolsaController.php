@@ -1931,31 +1931,33 @@ class BolsaController extends Controller
 			
 			/*===========================================*/
 								
-								$zoho = new ZohoSales;
-								
-								//transformando Lead a posible cliente.
-								if($user->tipo_zoho == 0){ 
-									$conv = $zoho->convertirLead($user->zoho_id, $user->email);
-									$datos = simplexml_load_string($conv);
+								if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
+									$zoho = new ZohoSales;
 									
-									$id = $datos->Contact;
-									$user->zoho_id = $id;
-									$user->tipo_zoho = 1;
+									//transformando Lead a posible cliente.
+									if($user->tipo_zoho == 0){ 
+										$conv = $zoho->convertirLead($user->zoho_id, $user->email);
+										$datos = simplexml_load_string($conv);
+										
+										$id = $datos->Contact;
+										$user->zoho_id = $id;
+										$user->tipo_zoho = 1;
+										
+										$user->save(); 
+									}
 									
-									$user->save(); 
-								}
-								
-								if($user->tipo_zoho == 1) // es ahora un contact
-								{
-									$respuesta = $zoho->save_potential($orden);
-								
-									$datos = simplexml_load_string($respuesta);
+									if($user->tipo_zoho == 1) // es ahora un contact
+									{
+										$respuesta = $zoho->save_potential($orden);
 									
-									$id = $datos->result[0]->recorddetail->FL[0];
-									
-									$orden->zoho_id = $id;
-									$orden->save(); 
-								}
+										$datos = simplexml_load_string($respuesta);
+										
+										$id = $datos->result[0]->recorddetail->FL[0];
+										
+										$orden->zoho_id = $id;
+										$orden->save(); 
+									}
+								} 
 			
 			
 				// Generar factura
@@ -3491,35 +3493,35 @@ class BolsaController extends Controller
             
             
             /*===========================================*/
+	    	if(Yii::app()->params['zohoActive'] == TRUE){ // Si Zoho Activo    
+	            $zoho = new ZohoSales;
 
-            $zoho = new ZohoSales;
+	            //transformando Lead a posible cliente.
+	            if($usuario->tipo_zoho == 0){ 
+	                    $conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email);
+	                    $datos = simplexml_load_string($conv);
 
-            //transformando Lead a posible cliente.
-            if($usuario->tipo_zoho == 0){ 
-                    $conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email);
-                    $datos = simplexml_load_string($conv);
+	                    $id = $datos->Contact;
+	                    $usuario->zoho_id = $id;
+	                    $usuario->tipo_zoho = 1;
 
-                    $id = $datos->Contact;
-                    $usuario->zoho_id = $id;
-                    $usuario->tipo_zoho = 1;
+	                    $usuario->save(); 
+	            }
 
-                    $usuario->save(); 
+	            if($usuario->tipo_zoho == 1) // es ahora un contacto
+	            {
+	                    $respuesta = $zoho->save_potential($orden);
+
+	                    $datos = simplexml_load_string($respuesta);
+
+	                    $id = $datos->result[0]->recorddetail->FL[0];
+	                    //echo $id;	 
+
+	                    $orden->zoho_id = $id;
+	                    $orden->save(); 
+	            }
+	            /*===========================================*/
             }
-
-            if($usuario->tipo_zoho == 1) // es ahora un contact
-            {
-                    $respuesta = $zoho->save_potential($orden);
-
-                    $datos = simplexml_load_string($respuesta);
-
-                    $id = $datos->result[0]->recorddetail->FL[0];
-                    //echo $id;	 
-
-                    $orden->zoho_id = $id;
-                    $orden->save(); 
-            }
-            /*===========================================*/
-            
 			
             /*Enviar correo OPERACIONES (operaciones@personaling.com*/
             /*Solo enviar correos cuando no este en develop*/

@@ -237,9 +237,9 @@ public function actionReportexls(){
             header('Content-Disposition: attachment; filename="Inventario.csv"');
             $fp = fopen('php://output', 'w');
             fputcsv($fp,array(  'SKU','Referencia','Marca','Nombre',
-                                'Color','Talla','Cantidad','Costo ('.utf8_decode(Yii::t('contentForm','currSym')).')',
-                                'Precio de Venta sin IVA ('.utf8_decode(Yii::t('contentForm','currSym')).')',
-                                 'Precio de Venta con IVA ('.utf8_encode(Yii::t('contentForm','currSym')).')'));
+                                'Color','Talla','Cantidad','Costo',
+                                'Precio de Venta sin IVA',
+                                 'Precio de Venta con IVA'),";",'"');
             
             
             
@@ -252,8 +252,8 @@ public function actionReportexls(){
              
                     $I=number_format($data['Precio'],2,',','.'); 
                     $J=number_format($data['pIVA'],2,',','.');
-                    $vals=array($data['SKU'], $data['Referencia'], $data['Marca'],
-                                $data['Nombre'], $data['Color'], $data['Talla'],
+                    $vals=array($data['SKU'], $data['Referencia'], utf8_decode($data['Marca']),
+                                utf8_decode($data['Nombre']), utf8_decode($data['Color']), $data['Talla'],
                                 $data['Cantidad'], number_format($data['Costo'],2,',','.'),
                                 trim($I), trim($J));
                     fputcsv($fp,$vals,";",'"');

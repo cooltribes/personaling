@@ -186,6 +186,7 @@ return array (
      'Keep buying'  => 'Seguir comprando',
 
      '<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
+     'Manage' => 'Administrar',
      'Manage my Looks' => 'Administrar mis Looks',
      'Manage Gift Card' => 'Administrar Gift Cards',
      'Massive Export' => 'Exportación Masiva',
@@ -256,6 +257,7 @@ return array (
      'Payment method' => 'Método de Pago',
      'Payment Method Selected' => 'Método de Pago Seleccionado',
      'Payment <br> method' => 'Método <br> de Pago',
+     'Payment Type' => 'Tipo de Pago',
      'Pending payment' => 'Pendientes por pagar',
      'Personal Shopper URL'=>'Url de Personal Shopper',
      'Pending confirmation' => 'Pendientes por confirmar',
@@ -303,8 +305,9 @@ return array (
      'Returned' => 'Devuelto',
      'Recommended Looks with this product' => 'Looks recomendados con este producto',
      'Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.' => '¡Upsss! El pago que realizaste no cubre el monto de tu pedido, faltan {amout} {currSym} para pagar toda la orden y comenzar el procesar el envío de tu compra.<br/><br/>',
-
-
+	 'Request Date' => 'Fecha de Solicitud',
+	 'Response Date' => 'Fecha de Respuesta',
+	 
      'Save' => 'Guardar',
      'Save draft' => 'Guardar borrador',
      'Save Filter' => 'Guardar Filtro',

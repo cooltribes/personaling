@@ -20,7 +20,7 @@ RewriteCond %{REMOTE_ADDR} !174\.23\.154\.49
 RewriteCond %{REMOTE_ADDR} !205\.124\.145\.253
 
 #Oficina
-RewriteCond %{REMOTE_ADDR} !190\.78\.63\.97
+RewriteCond %{REMOTE_ADDR} !190\.78\.57\.135
 #RewriteCond %{REMOTE_HOST} !\.cooltribes\.no-ip\.info$
 #Rafa
 RewriteCond %{REMOTE_ADDR} !186\.88\.71\.244
@@ -46,3 +46,5 @@ RewriteCond %{REMOTE_ADDR} !201\.210\.217\.1
 
 RewriteRule (.*) http://www.personaling.com/$1 [R=301,L]
 
+RewriteCond %{HTTP_HOST} !^www\.
+RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/develop/$1 [R=301,L]

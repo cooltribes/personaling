@@ -1032,6 +1032,20 @@ class Orden extends CActiveRecord
 		
 		return $value;
 	}
+    
+    public function updateEstado($estado, $userId, $ordenId, $observacion = null){
+        $model= new Estado;
+        $model->estado = $estado;
+        $model->user_id = $userId;
+        $model->fecha = date('Y-m-d');
+        $model->orden_id=$ordenId;
+        $model->observacion=$observacion;
+        if($model->save()){
+            $this->estado=$estado;
+            return($this->save());
+        }
+        return false;
+    }
 	
 
 }

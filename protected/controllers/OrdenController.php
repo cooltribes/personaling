@@ -266,7 +266,7 @@ public function actionReportexls(){
 		$orden=new Orden;
 		$ordenes = $orden->vendidas(false); 
 		header( "Content-Type: text/csv;charset=utf-8" );
-		header('Content-Disposition: attachment; filename="Vendidos.csv"');
+		header('Content-Disposition: attachment; filename="Reporte de Ventas.csv"');
 		$fp = fopen('php://output', 'w');
         // creando el encabezado
         fputcsv($fp,
@@ -293,9 +293,9 @@ public function actionReportexls(){
 				if($data['look']!=0){
 				    $look = Look::model()->findByPk($data['look']);
 				    $orden = Orden::model()->findByPk($data['Orden']);
-				    if($look && $orden){
-				        if(!is_null($look->tipoDescuento) && $look->valorDescuento > 0){
-				            if($orden->getLookProducts($look->id) == $look->countItems()){
+				    if(isset($look) && isset($orden)){
+				        if(!is_null($look->tipoDescuento)){
+				            if($orden->getLookProducts($look->id) == $look->countItems() && $look->valorDescuento > 0){
 				                //echo 'Precio: '.$look->getPrecio(false).' - Precio desc: '.$look->getPrecioDescuento(false);
 				                $descuento_look = $look->getPrecio(false) - $look->getPrecioDescuento(false);
 				                $porcentaje = ($descuento_look * 100) / $look->getPrecio(false);

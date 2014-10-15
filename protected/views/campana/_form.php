@@ -84,11 +84,11 @@
                 </select>
                 <select class="span1" type="text" id="recepcion_inicio_year">
                   <option value="-1">Año</option>
-                  <option value="2013">2013</option>
                   <option value="2014">2014</option>
                   <option value="2015">2015</option>
                   <option value="2016">2016</option>
                   <option value="2017">2017</option>
+                  <option value="2018">2018</option>
                 </select>
                 <?php echo $form->hiddenField($model,'recepcion_inicio'); ?>
                 <?php echo $form->error($model,'recepcion_inicio'); ?>
@@ -151,11 +151,11 @@
                 </select>
                 <select class="span1" type="text" id="recepcion_fin_year">
                   <option value="-1">Año</option>
-                  <option value="2013">2013</option>
                   <option value="2014">2014</option>
                   <option value="2015">2015</option>
                   <option value="2016">2016</option>
                   <option value="2017">2017</option>
+                  <option value="2018">2018</option>
                 </select>
                 
                 <?php echo $form->hiddenField($model,'recepcion_fin'); ?>
@@ -226,11 +226,11 @@
                 </select>
                 <select class="span1" type="text" id="ventas_inicio_year">
                   <option value="-1">Año</option>
-                  <option value="2013">2013</option>
                   <option value="2014">2014</option>
                   <option value="2015">2015</option>
                   <option value="2016">2016</option>
                   <option value="2017">2017</option>
+                   <option value="2018">2018</option>
                 </select>
                 
                 <?php echo $form->hiddenField($model,'ventas_inicio'); ?>
@@ -294,11 +294,11 @@
                 </select>
                 <select class="span1" type="text" id="ventas_fin_year">
                   <option value="-1">Año</option>
-                  <option value="2013">2013</option>
                   <option value="2014">2014</option>
                   <option value="2015">2015</option>
                   <option value="2016">2016</option>
                   <option value="2017">2017</option>
+                   <option value="2018">2018</option>
                 </select>
                 
                 <?php echo $form->hiddenField($model,'ventas_fin'); ?>

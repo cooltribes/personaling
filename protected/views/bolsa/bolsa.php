@@ -28,10 +28,10 @@ $precios = array();
 $descuentos = array();
 $cantidades = array();
 $total_look = 0;
-$total_productos_look = 0;
+$total_productos_look = 0; 
 ?>
 
-<div class="container margin_top_large_minus" id="carrito_compras">
+<div class="container margin_top_medium_minus" id="carrito_compras">
   <div class="row margin_bottom_large">
 	
     <div class="span12"> 
@@ -71,7 +71,7 @@ $total_productos_look = 0;
   				 
   		  	?>
           <!-- Look ON -->
-          <h3 class="braker_bottom margin_top"><?php echo $look->title; ?><small><a class="pull-right" style='cursor: pointer; margin-top: 1em; padding-right: 1.2em; text-decoration: none;' onclick="toDeleteLook('<?php echo $look->id; ?>')" id='elim_look<?php echo $look->id; ?>'>&times;</a></small></h3>
+          <h3 class="braker_bottom"><?php echo $look->title; ?><small><a class="pull-right" style='cursor: pointer; margin-top: 1em; padding-right: 1.2em; text-decoration: none;' onclick="toDeleteLook('<?php echo $look->id; ?>')" id='elim_look<?php echo $look->id; ?>'>&times;</a></small></h3>
           <div class="padding_left">
             <table class="table" width="100%" >
               <thead>
@@ -467,10 +467,10 @@ $total_productos_look = 0;
           </script>
           <div id="scroller-anchor"></div>
           <div id="scroller">
-            <div class="well margin_top_large well_personaling_big">
+            <div class="well margin_top_medium_minus well_personaling_big">
                 <?php 
-            	
-
+            	 
+ 
             	//$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
 				//$look = Yii::app()->db->createCommand($sql)->queryScalar();	
 
@@ -581,17 +581,32 @@ $total_productos_look = 0;
                       </tr>
                     </table>
                     
-                    
+                    <?php
+                    $params = array();
+                    $url;
+                    $params = array(); 
+
+                      if($total == 0){
+                        $deshabilitar = TRUE;
+                        $url = "#";
+                      }
+                      else{
+                        $deshabilitar = FALSE;
+                        $url = $this->createAbsoluteUrl('bolsa/compra',$params,'https'); // action ir 
+                      }
+
+                    ?>
+
                   </div>
                   <div class="text_align_center">
                     <?php
-                     $params = array();                    
                      $this->widget('bootstrap.widgets.TbButton', array(
                           'label'=>Yii::t('contentForm', 'Complete purchase'),
                           'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                           'size'=>'large', // null, 'large', 'small' or 'mini'
-                          'url'=> $this->createAbsoluteUrl('bolsa/compra',$params,'https'), // action ir 
+                          'url'=> $url,
                           'icon'=>'lock white',
+                          'disabled' => $deshabilitar, 
                       ));          
 
                       ?>

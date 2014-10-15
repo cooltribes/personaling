@@ -681,9 +681,9 @@ public function actionReportexls(){
 		else {
 				$id = $_GET['id'];
 			// make the directory to store the pic:
-				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/producto/'. $id))
+				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/producto/'. $id))
 				{
-	   				mkdir(Yii::getPathOfAlias('webroot').'/images/producto/'. $id,0777,true);
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/producto/'. $id,0777,true);
 	 			}
 	
 	        	$images = CUploadedFile::getInstancesByName('url');
@@ -1105,7 +1105,46 @@ public function actionReportexls(){
 
             $producto->status = 1;
 
-            $dataProvider = $producto->search();
+            #$dataProvider = $producto->search();
+            
+            $model = new Producto('search');
+            $model->unsetAttributes();  // clear any default values
+            if (isset($_GET['Producto']))
+                $model->attributes = $_GET['Producto'];
+			
+			$criteria = new CDbCriteria;
+			if(isset($_GET['Producto_page']))
+			{
+				Yii::app()->session['sumo']=$_GET['Producto_page'];
+			}
+			else {
+				if(isset($_GET['ajax']))
+					unset(Yii::app()->session['sumo']);
+			}
+				
+			if(Yii::app()->session['sumo']=="")
+			{
+				$dataProvider = new CActiveDataProvider('Producto', array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        #'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                    ),
+                ));
+			}
+			else
+			{
+				if(Yii::app()->session['sumo']>=2)
+				{
+					$dataProvider = new CActiveDataProvider('Producto', array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                       # 'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                       'currentPage'=>Yii::app()->session['sumo']-1,
+                    	),
+               		 ));
+				}
+				
+			}
 
             /**********************   Para Filtros   *************************/
             if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
@@ -1440,8 +1479,15 @@ public function actionReportexls(){
 					$datos=$datos."</div>";	
 				$datos .= '</form>';
 				$result['html'] = $datos;
-			}
+			}else if($accion=="Destacar") {
+				    foreach($checks as $id){
+                    $model = Producto::model()->findByPk($id);
+                    $model->destacado=1;
+                    Producto::model()->updateByPk($id, array('destacado'=>'1'));
 
+                }
+                $result['status'] = "9";
+			}
 		}
 		else {
 			//echo("1"); // no selecciono checks
@@ -1821,18 +1867,18 @@ public function actionReportexls(){
 										$zoho->titulo = $model->seo->mTitulo;
 										$zoho->metaDescripcion = $model->seo->mDescripcion;
 										$zoho->tags = $model->seo->pClave;
+									} 
+
+									if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
+										$respuesta = $zoho->save_potential();										
+										$datos = simplexml_load_string($respuesta);
+										
+										$id = $datos->result[0]->recorddetail->FL[0];
+
+										// guarda el id de zoho en el producto
+										//$tallacolor->zoho_id = $id;
+										$tallacolor->saveAttributes(array('zoho_id'=>$id)); 
 									}
-									$respuesta = $zoho->save_potential();
-									//var_dump($respuesta);
-									//Yii::app()->end();
-									$datos = simplexml_load_string($respuesta);
-									
-									$id = $datos->result[0]->recorddetail->FL[0];
-									//echo $id;	
-									// guarda el id de zoho en el producto
-									$tallacolor->zoho_id = $id;
-									$tallacolor->save(); 
-									
 									/* ========================================== */
 									
                                     //si este producto fue actualizado, guardar en el log
@@ -2262,6 +2308,7 @@ public function actionReportexls(){
             $tabla = "";
             $totalInbound = 0;
             $actualizadosInbound = 0;
+			$showRender = true;
 
 
             if (isset($_POST['valido'])) { // enviaron un archivo
@@ -2858,6 +2905,8 @@ public function actionReportexls(){
                     }else{
                         
                         $this->exportarExcelInbound($_POST["Marca"]);
+                        $showRender = false;
+                        //Yii::app()->end();
                         
                     }
                     //Cuarto paso - Subir Inbound
@@ -2886,7 +2935,7 @@ public function actionReportexls(){
                                     'totalInbound' => $totalInbound,
                                     'actualizadosInbound' => $actualizadosInbound,
                                 ));
-                                Yii::app()->end();                                
+                                // Yii::app()->end();                                
                             }
                         }
                     }
@@ -3031,14 +3080,14 @@ public function actionReportexls(){
                 
                 
             }// isset
-
-            $this->render('importar_productos', array(
-                'tabla' => $tabla,
-                'total' => $total,
-                'actualizar' => $actualizar,
-                'totalInbound' => $totalInbound,
-                'actualizadosInbound' => $actualizadosInbound,
-            ));
+			if ($showRender)
+	            $this->render('importar_productos', array(
+	                'tabla' => $tabla,
+	                'total' => $total,
+	                'actualizar' => $actualizar,
+	                'totalInbound' => $totalInbound,
+	                'actualizadosInbound' => $actualizadosInbound,
+	            ));
 
 	}
 
@@ -3122,11 +3171,16 @@ public function actionReportexls(){
                         $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre.$extension); 
                         
                         foreach ($sheetArray as $row) {
+                            
+                            if($row["A"] == "Referencia" || $row["A"] == ""){
+                                continue;
+                            }
+                            
                             //Transformar la columna del porcentaje
-                            $row['E'] = strval($row['E']);
-                            $porcentaje = $row["E"];
+                            $row['I'] = strval($row['I']);
+                            $porcentaje = $row["I"];
                             $total++; //sumar el total de prods en el archivo
-                            //
+                            
                             //solo si ingresaron un porcentaje
                             if($porcentaje != ""){
                                 
@@ -3145,7 +3199,7 @@ public function actionReportexls(){
                                     }                                        
                                 }
                             
-                            }//fin si no esta vacia la columna E
+                            }//fin si no esta vacia la columna I
                             
                         }
                         
@@ -3908,21 +3962,47 @@ public function actionReportexls(){
 //            $objPHPExcel->setActiveSheetIndex(0);
 
             // Redirect output to a clientâ€™s web browser (Excel5)
+            /*
             header('Content-Type: application/vnd.ms-excel');
-            header('Content-Disposition: attachment;filename="Inbound '.$marca->nombre.'.xls"');
+            header('Content-Disposition: attachment;filename="Inbound '.$marca->nombre.'.xlsx"');
             header('Cache-Control: max-age=0');
+            
             // If you're serving to IE 9, then the following may be needed
+            
             header('Cache-Control: max-age=1');
 
             // If you're serving to IE over SSL, then the following may be needed
+            
             header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
             header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
             header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
             header ('Pragma: public'); // HTTP/1.0                        
+*/
+            //$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            //$objWriter->save('php://output');
+            //$objWriter->save("/var/www/html/develop/docs/xlsOutbound/Inbound ".$marca->nombre.".xlsx");
+            //Yii::app()->end();
+            // Redirect output to a client’s web browser (Excel2007)
 
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-            $objWriter->save('php://output');
-            Yii::app()->end();
+			
+			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+			ob_end_clean();
+			
+			header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+			header('Content-Disposition: attachment;filename="Inbound '.$marca->nombre.'.xlsx"');
+			//header('Content-Length: '.size($objWriter));
+			header('Cache-Control: max-age=0');
+			// If you're serving to IE 9, then the following may be needed
+			header('Cache-Control: max-age=1');
+			
+			// If you're serving to IE over SSL, then the following may be needed
+			header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+			header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+			header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+			header ('Pragma: public'); // HTTP/1.0
+			
+			$objWriter->save('php://output');
+			
 				  
 	}
         

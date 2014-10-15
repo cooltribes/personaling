@@ -511,8 +511,8 @@ $(document).ready(function(){
         var porClick = $("#totalClick").val();
         var usuarios = $("strong.nroAfectados").first().text();        
         
-        var res = confirm('¿Estás seguro de establecer "'+porClick+' como comisión por click '+
-            'para "'+usuarios+'" Personal Shoppers?');
+        var res = confirm('¿Estás seguro de establecer '+porClick+' como comisión por click '+
+            'para "'+usuarios+'" Personal Shopper(s)?');
         
         if(res){
             var args = $("#formCambiarComisionClick").serialize();

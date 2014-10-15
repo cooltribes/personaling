@@ -217,9 +217,16 @@ function getMonthsArray()
               <li><a href="#" title="Limpiar Formulario" id="limpiar"><i class="icon-repeat"></i> Limpiar Formulario</a></li>
               <li>
               	<?php
-              	
+              	if($model->superuser==1)
+				{
+					$message="<i class='icon-user'></i> Quitar Administrador";
+				}
+              	else{
+              		$message="<i class='icon-user'></i> Hacer Administrador";
+              	} 
+
 				echo CHtml::ajaxLink(
-					  "<i class='icon-user'></i> Hacer Administrador",
+					  $message,
 					  Yii::app()->createUrl( 'user/admin/toggle_admin' ,array('id'=>$model->id)),
 					  array( // ajaxOptions
 					    'type' => 'POST',
@@ -233,13 +240,33 @@ function getMonthsArray()
 					                    // handle return data
 					                   // alert( data.status );
 					                   // alert(data.admin);
-					                    if (data.status == 'success')
+					                    if (data.status == 'success'){
 					                    	$('#User_superuser').val(data.admin);
+					                    	 var text;
+											 var msj;
+					                    	 if(data.admin==1)
+					                    	 {		
+					                    	 	 text='Quitar Administrador';
+												 msj='Es Administrador';
+					                    	 }
+											 else 
+											 {
+												text='Hacer Administrador';
+												msj='Ya no es Administrador'; 
+											 }
+					                    	 $('#messagePS').html(''+msj);
+											$('#alertPS').show();
+											               
+                                             var child = $('#ps_admi').children(); 
+                                            $('#ps_admi').html(child).append(' '+text);
+					                    }
+					                    	
 					                  }",
 					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
 					  ),
 					  array( //htmlOptions
 					    'href' => Yii::app()->createUrl( 'user/admin/toggle_admin' ),
+					    'id' => "ps_admi",
 					    //'class' => $class
 					  )
 					);
@@ -255,6 +282,7 @@ function getMonthsArray()
                         $titulo = 'Aprobar como Personal Shopper';
                     }else{
                         $titulo = 'Hacer Personal Shopper';
+
                     }
 				echo CHtml::ajaxLink(
 					  "<i class='icon-user'></i> {$titulo}",
@@ -273,16 +301,24 @@ function getMonthsArray()
 					                   // alert(data.personal_shopper);
 					                    if (data.status == 'success'){
 					                    	$('#User_personal_shopper').val(data.personal_shopper);
-                                                                if(data.apply){
-                                                                    $('#messagePS').html(data.alert);
-                                                                    $('#alertPS').show();
-                                                                }
-                                                                       
-                                                                var text = data.personal_shopper == 1? 'Quitar Personal Shopper':'Hacer Personal Shopper';
-                                                                
-                                                                var child = $('#ps_link').children(); 
-                                                                $('#ps_link').html(child).append(' '+text);
-                                                                }
+					                    	
+					                    	var text;
+											 var msj;
+					                    	 if(data.personal_shopper == 1)
+					                    	 {		
+					                    	 	 text='Quitar Personal Shopper';
+												 msj='Es Personal Shopper';
+					                    	 }
+											 else 
+											 {
+												text='Hacer Personal Shopper';
+												msj='Ya no es Personal Shopper'; 
+											 }
+					                    	 $('#messagePS').html(''+msj);
+											 $('#alertPS').show();                       
+                                            var child = $('#ps_link').children(); 
+                                            $('#ps_link').html(child).append(' '+text);
+                                         }
 					                  }",
 					  //  'data' => array( 'val1' => '1', 'val2' => '2' )
 					  ),
@@ -459,6 +495,7 @@ function getMonthsArray()
 <script>
     $('.closeModal').click(function(event) {
             $('#alertPS').hide();
+           // javascript:location.reload();
         });
 </script>
 <!-- /container --> 

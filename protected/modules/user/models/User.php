@@ -818,7 +818,7 @@ class User extends CActiveRecord {
             //Balance tipo 5 = por commisiones
             $saldo = Yii::app()->db->createCommand(
                     "SELECT SUM(total) as total FROM tbl_balance WHERE tipo IN
-                     (5, 7, 8, 10)
+                     (5, 7, 8, 10, 11)
                      AND user_id = ".$this->id)
                     ->queryScalar();            
 
@@ -1013,6 +1013,17 @@ class User extends CActiveRecord {
             
             return  $fechaOrden >= $haceUnMinuto;            
             
+        }
+        
+        
+        public function countSoldLooks(){
+            if(!$this->is_personalshopper($this->id))
+                return 0;
+            else{
+                $sql="select look_id from tbl_orden_has_productotallacolor where look_id IN (select id from tbl_look where user_id = {$this->id}) group by tbl_orden_id";
+                $num = Yii::app()->db->createCommand($sql)->queryColumn();
+                return count($num);
+            }
         }
 		
 		

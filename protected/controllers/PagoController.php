@@ -701,20 +701,23 @@ class PagoController extends Controller
             // if doesn't exist any payment or if there is at least one of them
             $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
                 ShoppingMetric::getAllViewsPs();                   
-
+			
+			$anterior = $this->_lastDate;
+			
             //Asign the totalViews attribute for optimize new queries
             $this->_totallooksviews = $totalViews;
             
             /*Si viene el campo con el monto a pagar*/
-            if(isset($_POST["monthlyEarning"]) && $_POST["monthlyEarning"] > 0){                
-               
+            if(isset($_POST["pagar"]) && $_POST["pagar"]=="si"){                
+               	$total = 0;
+				
                 //Save the payment in the BD
                 $paymentPs = new AffiliatePayment();
                 $paymentPs->user_id = Yii::app()->user->id; //Admin who make the payment
                 $paymentPs->created_at = date("Y-m-d H:i:s"); //Datetime which the payment was made
-                $paymentPs->amount = $_POST["monthlyEarning"]; //Amount of the payment
+                $paymentPs->amount = 0; //Amount of the payment
                 $paymentPs->total_views = $totalViews; //Amount of the payment
-                            
+                           
                 if($paymentPs->save()){
                     
                     /*Recalculate the variables because the new payment*/
@@ -733,46 +736,49 @@ class PagoController extends Controller
                     $allPs = User::model()->findAllByAttributes(array("personal_shopper" => 1));                
                     $primera = true;
                     foreach ($allPs as $userPs){
-
-                        // if the percentage is computed from the beginning or from 
-                        // one specific date
-                        $percent = $lastDate ? $userPs->getLookViewsPercentageByDate(
-                            $totalViews, date("Y-m-d"), false)
-                            : $userPs->getLookViewsPercentage($totalViews, false);
-
-                        $amountToPay = $_POST["monthlyEarning"] * $percent;
-
+						
+						if($anterior==0 && $anterior!=$this->_lastDate)
+							$amountToPay = $userPs->getPagoClick()*$userPs->getLookReferredViews();
+						else
+							$amountToPay = $userPs->getPagoClick() * ($userPs->getLookReferredViewsByDate($this->_lastDate, date("Y-m-d")));
+						
+						/*echo $amountToPay;
+						Yii::app()->end();*/
+						
                         if($amountToPay == 0){
                             continue;
                         }
                         
-                        //Register maonthly payment to PS
+                        //Register monthly payment to PS
                         $payToPs = new PayPersonalShopper();
                         $payToPs->user_id = $userPs->id;
                         $payToPs->affiliatePay_id = $paymentPs->id;
                         //Total monthly views gathered by PS
-                        $payToPs->total_views = $lastDate ? $userPs->getLookReferredViewsByDate(
-                        $lastDate, date("Y-m-d")) : $userPs->getLookReferredViews();
-                        $payToPs->percent = $percent;
+                        if($anterior==0 && $anterior!=$this->_lastDate)
+                        	$payToPs->total_views = $userPs->getLookReferredViews(); 
+						else
+							$payToPs->total_views = $lastDate ? $userPs->getLookReferredViewsByDate($lastDate, date("Y-m-d")) : $userPs->getLookReferredViews();
+						
                         $payToPs->amount = $amountToPay;
-                        
+                        $total += $amountToPay;
+					
                         if($payToPs->save()){
                             
-                            //Pasar para el saldo
+                            //Pasar para el saldo 
                             $saldo = new Balance();
                             $saldo->total = $amountToPay;
                             $saldo->orden_id = $paymentPs->id; //associated Payment
                             $saldo->user_id = $userPs->id; //PS to be paid
                             $saldo->admin_id = $paymentPs->user_id; //ADmin who made the payment
-                            $saldo->tipo = 10; //Type of payment specified in Balance model
+                            $saldo->tipo = 11; //Type of payment specified in Balance model
                             $saldo->fecha = date("Y-m-d H:i:s");
                             if($saldo->save()){
                                 
+								$paymentPs->saveAttributes(array('amount'=>$total)); // total payed by clicks 
+								
                                 //enviar email a PS if not in Test or dev. 
-                                if(!Funciones::isDevTest()){
-                
-                                    $this->enviarNotificacionPagoAfiliacionPS($userPs);     
-                                    
+                                if(!Funciones::isDevTest()){                
+                                    $this->enviarNotificacionPagoAfiliacionPS($userPs);
                                 }
                                 
                                 Yii::app()->user->setFlash("success", "Se ha hecho el pago satisfactoriamente");
@@ -786,16 +792,16 @@ class PagoController extends Controller
                             
                         }else
                         {
-                            Yii::trace('Registrando el pago de la PS, Error:'.print_r($saldo->getErrors(), true), 'Pagos');
+                            Yii::trace('Registrando el pago de la PS, Error:'.print_r($payToPs->getErrors(), true), 'Pagos');
                             Yii::app()->user->setFlash("error", "No se pudo registrar el pago.");                                                      
                         }
 
 
-                    } //End for
+                    } //End foreach
                 
                 } //if saved affiliate Payment
                 
-            } //if $_POST
+            } //if $_POST 
 
 	            /*Enviar a la vista el listado de todos los PS*/
 	            $criteria = new CDbCriteria;

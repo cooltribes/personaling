@@ -65,7 +65,7 @@ $pagerParams = array(
                             </td>
                             <td class="td-relative"><p class="T_xlarge margin_top_xsmall text-error">
                                     <?php
-                                    echo 0;
+                                    echo $personalShopper->countSoldLooks();
                                     ?>
                                 </p>
                                 Looks vendidos

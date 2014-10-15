@@ -333,8 +333,21 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 					$zoho = New Zoho;
 					$zoho->email = $_POST['ContactForm']['email'];
 					$varios = explode(" ", $_POST['ContactForm']['name']);
-					$zoho->first_name = $varios[0];
-					$zoho->last_name = $varios[1];
+				
+							if(!isset($varios[1])){ 
+								$zoho->last_name = $varios[0];
+								$nombre = $varios[0];
+							}
+							else{
+								$zoho->first_name = $varios[0];
+								$zoho->last_name = $varios[1];
+								
+								$nombre = $varios[0]." ".$varios[1];
+							}
+					
+					
+					#$zoho->first_name = $varios[0];
+					#$zoho->last_name = $varios[1];
 					$zoho->estado = "TRUE";
 					$zoho->tipo = "Interno";
 					
@@ -347,7 +360,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 					$user->save();
 					*/
 					
-					$zohoCase->posible = $varios[0]." ".$varios[1];
+					$zohoCase->posible = $nombre;
 					$zohoCase->posible_id = $id;
 				}
 									
@@ -681,6 +694,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 			$this->render('zohoCases');			 
 		}
 		
-		
+        
+       
 		
 }

@@ -310,7 +310,7 @@ if(isset($seo)){
 					else {
 						echo CHtml::hiddenField('cathid',0);
 				} 
-			$i=0;
+			$i=0; 
 		    $ruta='/images/'.Yii::app()->language.'/categorias/';			
   			foreach($categorias as $padre){
   				$ruta_padre=Yii::app()->baseUrl .$ruta. $padre->urlImagen;
@@ -674,9 +674,15 @@ if (!Yii::app()->user->isGuest && $completarPerfil){
      
 <?php } ?>
 		
-    $(".precio").click(function() { 
-
-            $('#precio_titulo').html($(this).html());
+    $(".precio").click(function() {  
+            
+            if($(this).html().length>50){
+                var arr=$(this).html().split('<span');
+                console.log(arr.toString()); 
+                $('#precio_titulo').html(arr[0]);
+            }else
+                $('#precio_titulo').html($(this).html());
+            
 
             $('#preciohid').val($(this).attr('id'));
             if($('#preciohid').val()!='0'){

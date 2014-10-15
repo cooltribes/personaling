@@ -39,10 +39,10 @@
                     <li><strong>Fecha y hora: </strong>
                         <?php echo date("d-m-Y h:m:i a", strtotime($lastPayment->created_at)); ?>
                     </li>
-                    <li><strong>Monto pagado: </strong>
+                   <!-- <li><strong>Monto pagado: </strong>
                         <?php echo $lastPayment->getAmount() . " " .
                         Yii::t('contentForm', 'currSym'); ?>
-                    </li>                    
+                    </li> -->                   
                 </ul>
                <?php }else{ ?>
                <h4>No se ha hecho ningún pago hasta el momento</h4>
@@ -50,9 +50,8 @@
             </fieldset>
         </div>
         <div class="span6">
-            
              <fieldset>                
-                <legend>Ingresa el monto para el periodo actual</legend>
+                <legend>Pagar por el periodo actual</legend>
                     <?php
                         $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                             'id'=>'pago-form',
@@ -63,25 +62,14 @@
                     ?>
                 
                     <div class="control-group input-prepend margin_left_small">                        
-                        <div class="controls">
-                            <span class="add-on"><?php echo Yii::t('contentForm', 'currSym'); ?></span>                            
-                            
+                        <div class="controls">   
                             <?php
-                                echo TbHtml::numberField('monthlyEarning', 0, array(                                
-                                    'step' => 'any',
-                                    'min' => "1",
-                                    'max' => 25000,                                
-                                    'class' => "span2",                                
-                                ));
-                            
+ 								echo CHtml::hiddenField("pagar","no",array('id'=>'pagar'));
                                 echo TbHtml::submitbutton("Pagar", array(
                                     "id" => "pay",
                                     "color" => "warning",
-                                    "class" => "margin_left_small",
                                 ));   
-                               
                             ?>
-                            
                         </div>
                     </div>
                     <?php
@@ -197,7 +185,9 @@ function formSubmit(e){
     
     if(!validSubmit){
         
-        e.preventDefault();    
+        e.preventDefault();   
+        $("#pagar").val("si");
+        
         bootbox.confirm("Se realizará el pago a todas las personal shoppers en\n\
             Personaling, ¿Deseas continuar?",
             function(result) {

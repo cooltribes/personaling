@@ -368,7 +368,7 @@ class ControlpanelController extends Controller
                 }                    
             } else if($_POST["action"] == 3){ //Cambiar pago por click
                 
-                foreach($resultados as $usuario) {                        
+                foreach($resultados as $usuario) {        
                     
                     $perfil = $usuario->profile;
                     $perfil->profile_type = 5;

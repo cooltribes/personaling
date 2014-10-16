@@ -467,10 +467,10 @@ $total_productos_look = 0;
           </script>
           <div id="scroller-anchor"></div>
           <div id="scroller">
-            <div class="well margin_top_medium well_personaling_big">
+            <div class="well margin_top_medium_minus well_personaling_big">
                 <?php 
-            	
-
+            	 
+ 
             	//$sql = "select count( * ) as total from tbl_bolsa_has_productotallacolor where look_id != 0 and bolsa_id = ".$bolsa->id."";
 				//$look = Yii::app()->db->createCommand($sql)->queryScalar();	
 
@@ -584,6 +584,7 @@ $total_productos_look = 0;
                     <?php
                     $params = array();
                     $url;
+                    $params = array(); 
 
                       if($total == 0){
                         $deshabilitar = TRUE;

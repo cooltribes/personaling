@@ -237,9 +237,9 @@ public function actionReportexls(){
             header('Content-Disposition: attachment; filename="Inventario.csv"');
             $fp = fopen('php://output', 'w');
             fputcsv($fp,array(  'SKU','Referencia','Marca','Nombre',
-                                'Color','Talla','Cantidad','Costo ('.utf8_decode(Yii::t('contentForm','currSym')).')',
-                                'Precio de Venta sin IVA ('.utf8_decode(Yii::t('contentForm','currSym')).')',
-                                 'Precio de Venta con IVA ('.utf8_encode(Yii::t('contentForm','currSym')).')'));
+                                'Color','Talla','Cantidad','Costo',
+                                'Precio de Venta sin IVA',
+                                 'Precio de Venta con IVA'),";",'"');
             
             
             
@@ -252,8 +252,8 @@ public function actionReportexls(){
              
                     $I=number_format($data['Precio'],2,',','.'); 
                     $J=number_format($data['pIVA'],2,',','.');
-                    $vals=array($data['SKU'], $data['Referencia'], $data['Marca'],
-                                $data['Nombre'], $data['Color'], $data['Talla'],
+                    $vals=array($data['SKU'], $data['Referencia'], utf8_decode($data['Marca']),
+                                utf8_decode($data['Nombre']), utf8_decode($data['Color']), $data['Talla'],
                                 $data['Cantidad'], number_format($data['Costo'],2,',','.'),
                                 trim($I), trim($J));
                     fputcsv($fp,$vals,";",'"');
@@ -1867,18 +1867,18 @@ public function actionReportexls(){
 										$zoho->titulo = $model->seo->mTitulo;
 										$zoho->metaDescripcion = $model->seo->mDescripcion;
 										$zoho->tags = $model->seo->pClave;
+									} 
+
+									if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
+										$respuesta = $zoho->save_potential();										
+										$datos = simplexml_load_string($respuesta);
+										
+										$id = $datos->result[0]->recorddetail->FL[0];
+
+										// guarda el id de zoho en el producto
+										//$tallacolor->zoho_id = $id;
+										$tallacolor->saveAttributes(array('zoho_id'=>$id)); 
 									}
-									$respuesta = $zoho->save_potential();
-									//var_dump($respuesta);
-									//Yii::app()->end();
-									$datos = simplexml_load_string($respuesta);
-									
-									$id = $datos->result[0]->recorddetail->FL[0];
-									//echo $id;	
-									// guarda el id de zoho en el producto
-									$tallacolor->zoho_id = $id;
-									$tallacolor->save(); 
-									
 									/* ========================================== */
 									
                                     //si este producto fue actualizado, guardar en el log
@@ -2310,12 +2310,9 @@ public function actionReportexls(){
             $actualizadosInbound = 0;
 			$showRender = true;
 
-
             if (isset($_POST['valido'])) { // enviaron un archivo
-               
                 /*Primer paso - Validar el archivo*/
                 if(isset($_POST["validar"])){
-                    
                     $archivo = CUploadedFile::getInstancesByName('validar');
                     
                     //Guardarlo en el servidor para luego abrirlo y revisar
@@ -2341,17 +2338,17 @@ public function actionReportexls(){
                             }
                         }
                     }                    
-                    
+
                     //Si no hubo errores
                     if(is_array($resValidacion = $this->validarArchivo($nombre . $extension))){
-                        
+
                         Yii::app()->user->updateSession();
                         Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
                                                     Puede continuar con el siguiente paso.<br><br>
                                                     Este archivo contiene <b>{$resValidacion['nProds']}
                                                     </b> productos.");                    
                     }                    
-                    
+
                     $this->render('importar_productos', array(
                         'tabla' => $tabla,
                         'total' => $total,
@@ -2861,7 +2858,9 @@ public function actionReportexls(){
                     }// foreach 
                     
                     // Enviando todo lo importado a Zoho
-                    $this->actionExternToZoho($ids);                    
+                    if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
+                    	$this->actionExternToZoho($ids); 
+                    }         
                     
                     //Insertar nuevo MasterData                   
                     $masterDataBD->prod_actualizados = $actualizar;
@@ -3171,11 +3170,16 @@ public function actionReportexls(){
                         $sheetArray = Yii::app()->yexcel->readActiveSheet($nombre.$extension); 
                         
                         foreach ($sheetArray as $row) {
+                            
+                            if($row["A"] == "Referencia" || $row["A"] == ""){
+                                continue;
+                            }
+                            
                             //Transformar la columna del porcentaje
-                            $row['E'] = strval($row['E']);
-                            $porcentaje = $row["E"];
+                            $row['I'] = strval($row['I']);
+                            $porcentaje = $row["I"];
                             $total++; //sumar el total de prods en el archivo
-                            //
+                            
                             //solo si ingresaron un porcentaje
                             if($porcentaje != ""){
                                 
@@ -3194,7 +3198,7 @@ public function actionReportexls(){
                                     }                                        
                                 }
                             
-                            }//fin si no esta vacia la columna E
+                            }//fin si no esta vacia la columna I
                             
                         }
                         
@@ -3268,12 +3272,12 @@ public function actionReportexls(){
             
             $linea = 1;
             $lineaProducto = 0;            
-
+            
             //Revisar cada fila de la hoja de excel.
             foreach ($sheet_array as $row) {
 
                 if ($row['A'] != "") {
-
+                	//var_dump(memory_get_usage());	
                     if ($linea == 1) { // revisar los nombres / encabezados de las columnas
                         if ($row['A'] != "SKU")
                             $falla = "SKU";
@@ -3322,14 +3326,13 @@ public function actionReportexls(){
                     /*si pasa las columnas entonces revisar
                     Marcas, categorias, tallas y colores.. y todo lo demas.*/                          
                     if($linea > 1){
-                        
                         $categoriasRepetidas = array();
                         $cantCategorias = 0;
                         
                         $row['K'] = str_replace(",", ".", $row['K']);
                         $row['L'] = str_replace(",", ".", $row['L']);
                         $row['M'] = str_replace(",", ".", $row['M']);                        
-                        
+
                         /*Columnas Vacias*/
                         foreach ($row as $col => $valor){
                             
@@ -3342,7 +3345,7 @@ public function actionReportexls(){
                                 break;
                             }
                         }       
-
+                        //var_dump(memory_get_usage());
                         //Peso
                         if(isset($row['K']) && $row['K'] != "" && !is_numeric($row['K'])){
                             $erroresPeso = "<li> <b>" . $row['K'] . "</b>, en la línea <b>" . $linea."</b></li>";                                                        
@@ -4698,9 +4701,11 @@ public function actionReportexls(){
 
                         }
                     }// foreach
-					
-				$this->actionExternToZoho($ids);
-				
+
+				if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo   	
+					$this->actionExternToZoho($ids);
+				}
+
 				Yii::app()->user->setFlash("success", "Se ha cargado con éxito el archivo.
                                 Puede ver los detalles de la carga a continuación.<br>"); 
                 
@@ -5202,7 +5207,7 @@ public function actionReportexls(){
 								//$precioTalla->save(); 
 								$precioTalla->saveAttributes(array('zoho_id' => $datos->result[0]->row[$posicion]->success->details->FL[0] )); 
 											
-								echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
+								//echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
 							}else{
 								echo "Error en posicion ".$posicion;
 							}

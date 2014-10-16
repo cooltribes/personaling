@@ -88,9 +88,9 @@
               
               <div class="controls">
               	<?php // echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
-              		$pais=Pais::model()->findByPk($dir->ciudad->provincia->pais_id);
-              		if($pais->grupo==0)
-              			echo ' <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="'.$pais->nombre.'" />';
+              		$pais=Pais::model()->findByAttributes(array('idioma'=>Yii::app()->getLanguage()));
+                 if($pais->grupo==0)
+              			echo ' <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="'.$pais->id.'" />';
 					else{
 						echo '<p>España Exenta de IVA: Ceuta, Melilla, Canarias y Andorra</p>';
 						 echo $form->dropDownListRow(

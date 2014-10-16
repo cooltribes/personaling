@@ -4077,7 +4077,8 @@ public function actionReportexls(){
                 $categorias = substr($categorias, 0, -3);
                 
                 //Extraer precio, para evitar error cuando no tengan precios asignados
-                $precio = $producto->precios ? $producto->precios[0]:"-Sin Precio-";                
+                //$precio = $producto->precios ? $producto->precios[0]:"-Sin Precio-";                
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 //                echo "<pre>";
 //                print_r($precio);
 //                echo "</pre><br>";
@@ -4086,13 +4087,27 @@ public function actionReportexls(){
 //                echo "</pre><br>";
 //                Yii::app()->end();
 
-
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('D'.($i), $categorias) 
-                    ->setCellValue('E'.($i), $producto->descripcion) 
-                    ->setCellValue('F'.($i), $precio->costo)
-                    ->setCellValue('G'.($i), $precio->precioVenta)
-                    ->setCellValue('H'.($i), $precio->precioImpuesto);
+	                    ->setCellValue('D'.($i), $categorias) 
+	                    ->setCellValue('E'.($i), $producto->descripcion);
+
+	                    //var_dump($precio->costo);
+
+                if(isset($precio)){
+	                	$objPHPExcel->setActiveSheetIndex(0)
+	                    ->setCellValue('F'.($i), $precio->costo)
+	                    ->setCellValue('G'.($i), $precio->precioVenta)
+	                    ->setCellValue('H'.($i), $precio->precioImpuesto);
+	                
+	                
+                }else{
+                	$objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('F'.($i), "-Sin Precio-")
+                    ->setCellValue('G'.($i), "-Sin Precio-")
+                    ->setCellValue('H'.($i), "-Sin Precio-");
+                }
+
+                
                 
                 $i++;
             }

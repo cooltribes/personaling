@@ -57,12 +57,12 @@ return CMap::mergeArray(
                     ),	
                  
                 'multiLook'=> array(
-                    'bodyType' => false,
-                    'eyesColor' => false,
-                    'hairColor' => false,
-                    'womanMeasure' => false,
-                    'bodyFavors' => false,
-                    'skinColor' => false,
+                    'bodyType' => true,
+                    'eyesColor' => true,
+                    'hairColor' => true,
+                    'womanMeasure' => true,
+                    'bodyFavors' => true,
+                    'skinColor' => true,
                 ),
                 'AzPayTerminal'=>'999',
                 'AzPaySecret'=> 'qwerty1234567890uiop',

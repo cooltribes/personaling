@@ -3039,8 +3039,10 @@ public function actionReportexls(){
                     } // foreach
                     
                     //enviando inbounds a zoho
-                    $this->actionUpdateZohoQty($combinaciones);               
-                    
+                    if(Yii::app()->params['zohoActive'] == TRUE){ // Zoho Activo    
+                    	$this->actionUpdateZohoQty($combinaciones);                
+                    }
+
                     //Totales
                     $totalInbound = $fila - 2;
                     

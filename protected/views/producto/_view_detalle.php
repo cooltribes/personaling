@@ -547,7 +547,14 @@
                          <div align="right">
                   <?php
                   // link to share
-
+                  
+				$imagep= Imagen::model()->findByAttributes(array('tbl_producto_id'=>$producto->id, 'orden'=>1));
+				#echo '/producto/'.$imagep->url;
+				#echo Yii::app()->getBaseUrl(true);
+				#echo Yii::app()->language.'/producto/'.$imagep->url;
+				#echo Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/producto/'.$imagep->url;
+				#echo Yii::app()->getBaseUrl(true).''.$url;
+				#echo Yii::app()->getBaseUrl(true).'/producto/'.$producto->id;
 
                   echo CHtml::link(
                       CHtml::image(Yii::app()->baseUrl.'/images/icon_compartir_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),'#',array('data-toggle'=>'modal',
@@ -567,7 +574,8 @@
                   CHtml::image(Yii::app()->baseUrl.'/images/icon_facebook_2.png', 'Compartir en facebook', array('width'=>30, 'height'=>30, 'class'=>'social')),
                   Yii::app()->getBaseUrl(true).'/producto/detalle/'.$producto->id,
                   array(
-                    'data-image'=>'/producto/'.$producto->id.'.png',
+                    #'data-image'=>'/producto/'.$producto->id.'.png',
+                    'data-image'=>Yii::app()->language.'/producto/'.$imagep->url,
                     'data-title'=>$producto->nombre,
                     'data-desc'=>$producto->descripcion,
                     'class'=>'facebook_share'
@@ -577,7 +585,7 @@
                  //pinterest
                  echo CHtml::link(
                   CHtml::image(Yii::app()->baseUrl.'/images/icon_pinterest_2.png', 'Compartir en pinterest', array('width'=>30, 'height'=>30, 'class'=>'social')),
-                  '//pinterest.com/pin/create/button/?url='.Yii::app()->getBaseUrl(true).'/producto/detalle/'.$producto->id.'&description='.$producto->descripcion.'&media='.Yii::app()->getBaseUrl(true).'/images/producto/'.$producto->id.'.png',
+                  '//pinterest.com/pin/create/button/?url='.Yii::app()->getBaseUrl(true).'/producto/detalle/'.$producto->id.'&description='.$producto->descripcion.'&media='.Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/producto/'.$imagep->url,
                   array(
                     'target'=>'_blank'
                   )
@@ -587,13 +595,14 @@
 				//polyvore
 				  echo CHtml::link(
                   CHtml::image(Yii::app()->baseUrl.'/images/icon_polyvore_2.png', 'Compartir en polyvore', array('width'=>30, 'height'=>30, 'class'=>'social')),
-                  'http://www.polyvore.com?url='.Yii::app()->getBaseUrl(true).'/l/'.Yii::app()->getBaseUrl(true).'/producto/detalle/'.$producto->id.'&description='.$producto->descripcion.'&media='.Yii::app()->getBaseUrl(true).'/images/producto/'.$producto->id.'.png',
+                  'http://www.polyvore.com?url='.Yii::app()->getBaseUrl(true).'/l/'.Yii::app()->getBaseUrl(true).'/producto/detalle/'.$producto->id.'&description='.$producto->descripcion.
+                  '&media='.Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/producto/'.$imagep->url,
                   array(
                     'target'=>'_blank',
                     'name'=>'addToPolyvore',
                     'id'=>'addToPolyvore',
                     'data-product-url'=>Yii::app()->getBaseUrl(true).'/producto/'.$producto->id,
-                    'data-image-url'=>Yii::app()->getBaseUrl(true).''.$url,
+                    'data-image-url'=>Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/producto/'.$imagep->url,
                     'data-name'=>$producto->descripcion,
                     //'data-price'=>$look->getPrecioDescuento(),
                   )
@@ -1567,13 +1576,16 @@ $('.imagen_principal').zoom({url: imgZ});
     });
 <?php } ?>
 
+var ruta= "<?php echo Yii::app()->getBaseUrl(true);?>";
 window.fbAsyncInit = function(){
     FB.init({
         appId: '323808071078482', status: true, cookie: true, xfbml: true }); 
   };
   (function(d, debug){var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];if   (d.getElementById(id)) {return;}js = d.createElement('script'); js.id = id; js.async = true;js.src = "//connect.facebook.net/es_ES/all" + (debug ? "/debug" : "") + ".js";ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
   function postToFeed(title, desc, url, image){
-    var obj = {method: 'feed',link: url, picture: 'http://www.personaling.es/images/'+image,name: title,description: desc};
+  	
+    var obj = {method: 'feed',link: url, picture: ruta+'/images/'+image,name: title,description: desc};
+    
     function callback(response){}
   FB.ui(obj, callback);
   }

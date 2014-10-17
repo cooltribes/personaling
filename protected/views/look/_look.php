@@ -100,7 +100,7 @@
                   CHtml::image(Yii::app()->baseUrl.'/images/icon_facebook_2.png', 'Compartir en facebook', array('width'=>30, 'height'=>30, 'class'=>'social')),
                   Yii::app()->getBaseUrl(true).'/l/'.$look->encode_url("123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"),
                   array(
-                    'data-image'=>'/look/'.$look->id.'.png',
+                    'data-image'=>Yii::app()->language.'/look/'.$look->id.'.png'."?v=".time(),
                     'data-title'=>$look->title,
                     'data-desc'=>$look->description,
                     'class'=>'facebook_share'
@@ -110,7 +110,7 @@
                 // pinterest button
                 echo CHtml::link(
                   CHtml::image(Yii::app()->baseUrl.'/images/icon_pinterest_2.png', 'Compartir en pinterest', array('width'=>30, 'height'=>30, 'class'=>'social')),
-                  '//pinterest.com/pin/create/button/?url='.Yii::app()->getBaseUrl(true).'/l/'.$look->encode_url("123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ").'&description='.$look->title.'&media='.Yii::app()->getBaseUrl(true).'/images/look/'.$look->id.'.png',
+                  '//pinterest.com/pin/create/button/?url='.Yii::app()->getBaseUrl(true).'/l/'.$look->encode_url("123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ").'&description='.$look->title.'&media='.Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/look/'.$look->id.'.png',
                   array(
                     'target'=>'_blank'
                   )
@@ -125,7 +125,7 @@
                     'name'=>'addToPolyvore',
                     'id'=>'addToPolyvore',
                     'data-product-url'=>Yii::app()->getBaseUrl(true).'/look/'.$look->id,
-                    'data-image-url'=>Yii::app()->getBaseUrl(true).'/images/look/'.$look->id.'.png',
+                    'data-image-url'=>Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/look/'.$look->id.'.png',
                     'data-name'=>$look->title,
                     //'data-price'=>$look->getPrecioDescuento(),
                   )
@@ -157,6 +157,7 @@
         
 	<?php endforeach; ?>
 	<script>
+	var ruta= "<?php echo Yii::app()->getBaseUrl(true);?>";
 	$('.imglook').on("load",function(){
 		//console.log('clicking');
 		$(this).parent().prev("img").hide();
@@ -172,7 +173,7 @@
   };
   (function(d, debug){var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];if   (d.getElementById(id)) {return;}js = d.createElement('script'); js.id = id; js.async = true;js.src = "//connect.facebook.net/es_ES/all" + (debug ? "/debug" : "") + ".js";ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
   function postToFeed(title, desc, url, image){
-    var obj = {method: 'feed',link: url, picture: 'http://www.personaling.es/images/'+image,name: title,description: desc};
+    var obj = {method: 'feed',link: url, picture: ruta+'/images/'+image,name: title,description: desc};
     function callback(response){}
   FB.ui(obj, callback);
   }

@@ -5,7 +5,7 @@
  * 1:Cuenta
  * 2:Agregar al balance
  */
-
+ 
 /*
  * Estados del pago
  * 0:Solicitado
@@ -101,7 +101,7 @@ class Pago extends CActiveRecord
                 ),
             array('cuenta', 'length', 'max'=>140),
             array('fecha_solicitud, fecha_respuesta', 'safe'),
-            array('email', 'email', 'message'=>'Introduzca un correo electronico valido.'),
+           // array('email', 'email', 'message'=>'Introduzca un correo electronico valido.'),
            
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
@@ -144,7 +144,7 @@ class Pago extends CActiveRecord
             'accountType'=>'Tipo de cuenta',
             'recipient'=>'Beneficiario',
             'identification'=>'Cédula o RIF',
-            'email'=>'E-mail del Beneficiario',
+           // 'email'=>'E-mail del Beneficiario',
         );
     }
 

@@ -414,10 +414,15 @@ function accionMasiva(parametros){
                         scrollTop: $(".page-header").first().next().offset().top
                     });
                     
-                    /*$.fn.yiiListView.update(
+                    $.fn.yiiListView.update('list-auth-items'); 
+                    
+                   /* function () {
+                        $.fn.yiiListView.update(
                         // this is the id of the CListView
                             'list-auth-items',
-                   )*/
+                            {}
+                        )
+                    }*/
                     
                 },
                 error: function( jqXHR, textStatus, errorThrown){

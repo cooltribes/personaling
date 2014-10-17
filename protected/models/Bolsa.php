@@ -384,9 +384,7 @@ class Bolsa extends CActiveRecord
                                 $imagen = Imagen::model()->findByAttributes(array('tbl_producto_id' =>
                                     $producto->id, 'orden' => '1'));
                                 if ($imagen) {
-                                    $htmlimage = CHtml::image(Yii::app()->baseUrl . 
-                                    str_replace(".", "_x30.", $imagen->url), "Imagen ",
-                                            array("width" => "30", "height" => "30"));
+                                    $htmlimage = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/producto/'. str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
                                     $textoLooks .= '<div class="span2">' . $htmlimage . '</div>';
                                 }
                             }
@@ -419,7 +417,7 @@ class Bolsa extends CActiveRecord
                                 '</a><div class="row-fluid">';
 
                         if($imagen){
-                            $htmlimage = CHtml::image(Yii::app()->baseUrl . str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
+                            $htmlimage = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/producto/'. str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
                             $textoProds .= '<div class="span2">'.$htmlimage.'</div>';
                         }  
                         

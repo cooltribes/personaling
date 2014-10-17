@@ -640,8 +640,8 @@ if(!Yii::app()->user->isGuest){
                 if($imagen){
                     $htmlimage = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/producto/'. str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
                     echo '<div class="span2">'.$htmlimage.'</div>';
-                }                
-                echo '</div>';                
+                }
+                echo '</div>';
                 echo "</li>";
                 $contadorItems ++;
 

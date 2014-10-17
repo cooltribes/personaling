@@ -310,7 +310,6 @@ class ControlpanelController extends Controller
             $response = array();
             //Obtener el criteria guardado de la ultima busqueda
             $resultados = Yii::app()->getSession()->get("resultado");
-            
             $resultados->select = "t.*";
             
             $resultados = new CActiveDataProvider('User', array(
@@ -318,11 +317,12 @@ class ControlpanelController extends Controller
             ));
             
 	$resultados->setPagination(false);
-            
+             
             //$resultados->getData();
             $resultados = $resultados->getData();                
             $total = count($resultados);
             $error = false;
+
             if($_POST["action"] == 1){ //Cambiar comisión
                 
                 foreach($resultados as $usuario) {                        
@@ -446,9 +446,8 @@ class ControlpanelController extends Controller
         
         /*********************** Para los filtros *********************/
         Filter::procesarFiltros(8, $dataProvider, $model, 'nombre');
-        
-        if (isset($_GET['nombre'])) {
 
+        if (isset($_GET['nombre'])) {       
             unset($_SESSION["todoPost"]);
             $criteria->alias = 'User';
             $criteria->join = 'JOIN tbl_profiles p ON User.id = p.user_id AND (p.first_name LIKE "%' . $_GET['nombre'] . '%" OR p.last_name LIKE "%' . $_GET['nombre'] . '%" OR User.email LIKE "%' . $_GET['nombre'] . '%")';                                

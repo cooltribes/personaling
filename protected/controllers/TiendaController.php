@@ -1220,6 +1220,7 @@ public function actionCategorias2(){
                     //$userTmp = User::model()->findByPk(Yii::app()->user->id);
 
                     $looks = new Look();
+                    
                     $ids = $looks->match($userTmp);
                     $ids = $ids->getData();
 
@@ -1232,9 +1233,10 @@ public function actionCategorias2(){
                             $inValues[] = $row["id"];
                         }
                     }
+                    
 
                     $criteria->addInCondition('t.id', $inValues);
-
+                  
                     //Looks recomendados para un perfil   
                 } 
                 else if ($filtroPerfil) {

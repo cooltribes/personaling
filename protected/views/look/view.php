@@ -471,7 +471,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                           'data-target'=>'#dialogLook'.$model->id)
 
                   );
-
+#echo Yii::app()->getBaseUrl(true)."/look/".$model->id;
                 // twitter button
                 echo CHtml::link(
                   CHtml::image(Yii::app()->baseUrl.'/images/icon_twitter_2.png', 'Compartir en twitter', array('width'=>30, 'height'=>30, 'class'=>'social')),
@@ -482,7 +482,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                   CHtml::image(Yii::app()->baseUrl.'/images/icon_facebook_2.png', 'Compartir en facebook', array('width'=>30, 'height'=>30, 'class'=>'social')),
                   Yii::app()->getBaseUrl(true)."/look/".$model->id,
                   array(
-                    'data-image'=>'/look/'.$model->id.'.png',
+                    'data-image'=>Yii::app()->language.'/look/'.$model->id.'.png',
                     'data-title'=>$model->title,
                     'data-desc'=>$model->description,
                     'class'=>'facebook_share'
@@ -491,7 +491,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
                   echo CHtml::link(
                   CHtml::image(Yii::app()->baseUrl.'/images/icon_pinterest_2.png', 'Compartir en pinterest', array('width'=>30, 'height'=>30, 'class'=>'social')),
-                  '//pinterest.com/pin/create/button/?url='.Yii::app()->getBaseUrl(true)."/look/".$model->id.'&description='.$model->title.'&media='.Yii::app()->getBaseUrl(true).'/images/look/'.$model->id.'.png',
+                  '//pinterest.com/pin/create/button/?url='.Yii::app()->getBaseUrl(true)."/look/".$model->id.'&description='.$model->title.'&media='.Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/look/'.$model->id.'.png',
                   array(
                     'target'=>'_blank'
                   )
@@ -505,7 +505,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                     'name'=>'addToPolyvore',
                     'id'=>'addToPolyvore',
                     'data-product-url'=>Yii::app()->getBaseUrl(true).'/look/'.$model->id,
-                    'data-image-url'=>Yii::app()->getBaseUrl(true).'/images/look/'.$model->id.'.png',
+                    'data-image-url'=>Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/look/'.$model->id.'.png',
                     'data-name'=>$model->title,
                     //'data-price'=>$look->getPrecioDescuento(),
                   )
@@ -727,13 +727,14 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
 
 <!-- // Modal Window -->
 <script>
+var ruta= "<?php echo Yii::app()->getBaseUrl(true);?>";
     window.fbAsyncInit = function(){
     FB.init({
         appId: '323808071078482', status: true, cookie: true, xfbml: true });
   };
   (function(d, debug){var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];if   (d.getElementById(id)) {return;}js = d.createElement('script'); js.id = id; js.async = true;js.src = "//connect.facebook.net/es_ES/all" + (debug ? "/debug" : "") + ".js";ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
   function postToFeed(title, desc, url, image){
-    var obj = {method: 'feed',link: url, picture: 'http://www.personaling.es/images/'+image,name: title,description: desc};
+    var obj = {method: 'feed',link: url, picture: ruta+'/images/'+image,name: title,description: desc};
     function callback(response){}
   FB.ui(obj, callback);
   }

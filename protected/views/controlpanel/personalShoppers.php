@@ -111,8 +111,8 @@ $this->widget('zii.widgets.CListView', array(
 Yii::app()->clientScript->registerScript('search', "
             var ajaxUpdateTimeout;
 	    var ajaxRequest;
-	    $(document).keyup(function(e){
-                if(e.which == 13) {
+	    $('#textbox_buscar').keyup(function(e){
+                if(e.which == 13) { 
                     $('.crear-filtro').click();
                     ajaxRequest = $('#textbox_buscar').serialize();
                     clearTimeout(ajaxUpdateTimeout);

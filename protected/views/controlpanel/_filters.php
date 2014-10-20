@@ -119,6 +119,13 @@
         search('<?php echo CController::createUrl('') ?>');
         
     });
+
+    //Buscar      
+    $('#form_filtros').submit(function(e) {
+        
+        e.preventDefault(); 
+        //search('<?php echo CController::createUrl('') ?>');    
+    });
     
     //Buscar y guardar nuevo
     $('#filter-save').click(function(e) {

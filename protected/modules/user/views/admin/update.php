@@ -93,8 +93,34 @@ function getMonthsArray()
               <div style="display:none" class="help-inline">Ingrese una contraseña</div>
             </div>
           </div> -->
-          <div class="control-group"> <?php echo $form->dropDownListRow($model,'superuser',array(0=>'No',1=>'Si'),array('class'=>'span2')); ?> </div>
-          <div class="control-group"> <?php echo $form->dropDownListRow($model,'personal_shopper',array(0=>'No', 1=>'Si', 2 => "Aplicante"),array('class'=>'span2')); ?> 
+          
+          
+          <div class="control-group"> 
+              <label for="" class="control-label ">Administrador</label>  
+              <div class="controls"> 
+        <?php   echo CHtml::textField('superuser', 
+          $model->superuser == 1?"Si":"No" ,
+                        array('disabled'=>'disabled',
+                              'id' => 'User_status',
+                              'class' => 'span2')); ?> 
+               </div>               
+                              
+          
+          </div>
+          
+          
+          
+          
+          <div class="control-group"> 
+              <label for="" class="control-label ">Personal Shopper</label>  
+              <div class="controls"> 
+        <?php   echo CHtml::textField('personal_shopper', 
+          $model->personal_shopper == 1?"Si":($model->personal_shopper == 2?"Aplicante":"No") ,
+                        array('disabled'=>'disabled',
+                              'id' => 'User_status',
+                              'class' => 'span2')); ?> 
+               </div>               
+                              
               <?php if($model->personal_shopper == 1){ ?>
               <span class="label label-warning" 
                     style="margin-left: 180px;padding: 4px 10px;font-size: 12px;
@@ -106,7 +132,7 @@ function getMonthsArray()
               <?php } ?>
           </div>
           <div class="control-group">
-            <label for="" class="control-label ">Estado: </label>  
+            <label for="" class="control-label ">Estado </label>  
             <div class="controls">  
                 <?php echo CHtml::textField('Status', User::getStatus($model->status),
                         array('disabled'=>'disabled',

@@ -7,7 +7,7 @@
   else
   	$usid=0;
 ?>
-<div class="container margin_top">
+<div class="container margin_to_small">
   <div class="page-header">
     <h1>Editar Avatar</h1>
   </div>
@@ -49,7 +49,7 @@
     		</div>
    -->          	
 
-    	 <div class="braker_horz_top_1 ">
+    	 <div class="braker_horz_top margin_top ">
       <label for="fileToUpload">Elige la imagen que deseas subir</label><br />
            <!--
       <input type="file" name="filesToUpload[]" id="filesToUpload" multiple="multiple" />

@@ -4006,7 +4006,62 @@ public function actionReportexls(){
 				  
 	}
         
-        public function actionPlantillaDescuentos(){
+     public function actionPlantillaDescuentos(){
+                
+         
+            
+            
+            
+            ini_set('memory_limit','256M'); 
+            
+
+            $criteria = Yii::app()->getSession()->get("productosCriteria");
+            $arrayProductos = Producto::model()->findAll($criteria);
+            
+               header( "Content-Type: text/csv;charset=utf-8" );
+            header('Content-Disposition: attachment; filename="Plantilla.csv"');
+            $fp = fopen('php://output', 'w');    
+            
+            fputcsv($fp,array(
+             'Referencia', 'Nombre', 'Marca',  utf8_decode('Categorías'),
+              utf8_decode('Descripción'),'Costo', 'Precio sin IVA', 
+             'Precio con IVA', '% Descuento', 'Precio con IVA y Descuento'),";",'"');
+          
+         
+            foreach ($arrayProductos as $producto) {
+                
+                //Agregar la fila al documento xls
+          
+                
+                //Concatenar las categorias en un solo campo
+                $categorias = "";
+                foreach($producto->categorias as $categoria){
+                    $categorias .= "$categoria->nombre / ";
+                }                
+                $categorias = substr($categorias, 0, -3);
+                
+                //Extraer precio, para evitar error cuando no tengan precios asignados
+                $precio = $producto->precios ? $producto->precios[0]:"-Sin Precio-";                
+//            
+            $vals=array($producto->codigo,  utf8_decode($producto->nombre), utf8_decode($producto->mymarca->nombre), 
+                         utf8_decode($categorias),  utf8_decode($producto->descripcion),
+                       $precio->costo,$precio->precioVenta, $precio->precioImpuesto); 
+                        
+             fputcsv($fp,$vals,";",'"');             
+
+            }
+            fclose($fp); 
+            ini_set('memory_limit','128M'); 
+            Yii::app()->end();  
+         
+     }
+        
+        
+        
+        
+        
+        
+        public function actionPlantillaDescuentosXLS(){
         
             ini_set('memory_limit','256M'); 
 

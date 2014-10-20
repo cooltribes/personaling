@@ -101,8 +101,22 @@
     
     <!--VER DETALLES-->
     <td style="text-align: center">
-       <?php echo CHtml::link('<i class="icon-eye-open"></i>',
-               array("controlpanel/misventas", "id" => $data->id)); ?>            
+        <div class="dropdown"> <a class="dropdown-toggle btn btn-block" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" title="Acciones"> <i class="icon-cog"></i></a> 
+            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
+            <li>
+                <?php echo CHtml::link('<i class="icon-eye-open"></i> Mis Ventas',array("controlpanel/misventas", "id" => $data->id)); ?>            
+            </li> 
+            <li>
+                <?php echo CHtml::link('<i class="icon-edit"></i> Comisión por Afiliación',array("admin/update","id"=>$data->id)); ?>
+            </li>
+            <li>
+                <?php echo CHtml::link('<i class="icon-eye-open"></i> Comisión por Clic',array("controlpanel/comisionesClic", "id" => $data->id)); ?>
+            <li>
+                <?php echo CHtml::link('<i class="icon-refresh"></i> Historial de pagos',array("pago/index")); ?>
+            </li>
+          </ul>
+        </div>
+
     </td>
 </tr>
 

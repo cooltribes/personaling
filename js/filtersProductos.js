@@ -29,9 +29,17 @@ function changeFilter(e){
    {
        textFilter(column);       
         
-   }else if(column.val() === 'destacado') //Tienda del producto
+   }else if(column.val() === 'destacado') 
    {       
        listFilter(column, 'destacados');
+
+   }else if(column.val() === '080') //si es 080 barcelona
+   {       
+       listFilter(column, '080');
+
+   }else if(column.val() === '100') //si es 100%
+   {       
+       listFilter(column, '100');
 
    }else //campo normal (numérico)
    {      

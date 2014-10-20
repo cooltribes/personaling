@@ -22,7 +22,7 @@ class ControlpanelController extends Controller
                             'actions'=>array('index','delete','ventas',
                                 'pedidos','usuarios', 'looks', 'productos','ingresos',
                                 'remuneraciones', 'personalshoppers','seo','createSeo',
-                                'deleteSeo', 'misventas'),
+                                'deleteSeo', 'misventas','comisionesClic'),
                             //'users'=>array('admin'),
                             'expression' => 'UserModule::isAdmin()',
 			),
@@ -500,6 +500,26 @@ class ControlpanelController extends Controller
                     'dataProvider'=>$dataProvider,
         ));	
         
+    }
+
+    /* Ver el listado de comisiones pagadas por clic de un PS determinado */
+    public function actioncomisionesClic($id) {
+        
+        $personalShopper = User::model()->findByPk($id); 
+        //Que solo puedan entrar los admin y el propietario PS
+        if($personalShopper===null)
+                throw new CHttpException(404,'The requested page does not exist.');
+        
+        $balance = New Balance;
+        $balance->user_id = $id;
+        $balance->tipo = 11;
+
+        $dataProvider = $balance->search();
+        
+        $this->render('comisionesClic',array(
+                    'personalShopper' => $personalShopper, 
+                    'dataProvider'=>$dataProvider,
+        ));         
     }
 
     public function actionSeo(){

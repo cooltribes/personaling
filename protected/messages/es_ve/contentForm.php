@@ -130,6 +130,7 @@ return array (
      'Document' => 'Documento',
      'Do you really want to pull this look out from your cart?'=>'Realmente deseas eliminar este look de tu carrito?',
      'Documents' => 'Documentos',
+     'Done' => 'Terminado',
 
      'Edit' => 'Editar',
      'Edit shipping address' => 'Editar dirección de envío',
@@ -199,9 +200,11 @@ return array (
      'Missing' => 'que faltan',
      'Must select at least one item' => 'Debes seleccionar por lo menos una prenda',
      'My Gift Cards' => 'Mis Gift Cards',
+     'My Payments' => 'Mis Pagos',
 
      
      'Name' => 'Nombre',
+     'Name look:' => 'Nombre del look:',
      'Name of items' => 'Nombre de productos',
      'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
      'Name look:' => 'Nombre del look:',
@@ -280,6 +283,7 @@ return array (
      'Print these instructions' => 'Imprime estas instrucciones',
      'Printed' => 'Impresa',
      'Price' => 'Precio',
+     'Prices are subject to change. You can check the final price on the web sales.'=> 'Los precios están sujetos a cambios. Puedes revisar el precio final en la web de venta.',
      'Price in' => 'Precio en',
      'Product' => 'Producto',
      'Province' => 'Estado',
@@ -301,6 +305,7 @@ return array (
      'Recently viewed' => 'Vistos recientemente',
      'Redeem Gift Card' => 'Canjear Gift Card',
      'Reference' => 'Referencia',
+     'Remember'=>'Recuerda',
      'Returned items' => 'Productos devueltos',
      'Returned' => 'Devuelto',
      'Recommended Looks with this product' => 'Looks recomendados con este producto',
@@ -404,6 +409,7 @@ return array (
      'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',
      'You must select all sizes' => 'Debes seleccionar todas las tallas',
      'You should select a Billing Address.'=>'Debes seleccionar una dirección de facturación',
+     'You should add six items at least.'=>'Debes incluir al menos seis prendas',
      'Your bag' =>'Tu bolsa',
      'Your Payments'=>'Tus Pagos',
      'Your Purchases' => 'Tus Compras',

@@ -731,7 +731,8 @@ $script = "
 	 			$('#radioError').show();	 			
 	 	}
 	 	if($('#Look_tipo_0').is(':checked')||$('#Look_tipo_1').is(':checked')){
-	 		$('#PublicarForm').submit();
+	 		//$('#PublicarForm').submit();
+            $('#radioError').hide();
 	 	}
 	 	$(window).scrollTop(Math.ceil($('.error:visible').first().offset().top)-80);
     		

@@ -1089,12 +1089,6 @@ public function actionCategorias2(){
             $orden[8]="destacado DESC, t.id ASC";
             
             if (isset($userTmp)) {
-                
-                //echo "user".$userTmp->status_register;
-                //echo "status".$userTmp->status;
-                //echo "destacado".$userTmp->ps_destacado;
-                //echo "email".$userTmp->email;
-                
                // $perfil_propio = null;
 				//if (isset($_POST['perfil_propio']))
                 if (($userTmp->status_register != User::STATUS_REGISTER_ESTILO) && !isset($_POST['perfil_propio'])) {

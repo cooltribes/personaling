@@ -286,6 +286,7 @@ return array (
      'Prices are subject to change. You can check the final price on the web sales.'=> 'Los precios están sujetos a cambios. Puedes revisar el precio final en la web de venta.',
      'Price in' => 'Precio en',
      'Product' => 'Producto',
+     'Prices are subject to change. You can check the final price on the web sales.'=> 'Los precios están sujetos a cambios. Puedes revisar el precio final en la web de venta.',
      'Province' => 'Estado',
      'Products' => 'Productos',
      'Products that make the Looks' => 'Productos que componen los Looks',

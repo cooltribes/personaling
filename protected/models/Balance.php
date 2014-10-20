@@ -153,7 +153,7 @@ class Balance extends CActiveRecord
 		if($balance->tipo==9)
 			return "Pago por cobro de comisión al balance";
 		if($balance->tipo==11)
-			return "Pago por comisión (clics)";
+			return "Pago por comisión (clic)";
 		
 		return "Desconocido";  		
 	}        

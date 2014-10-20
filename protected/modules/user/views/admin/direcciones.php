@@ -13,7 +13,7 @@
   <div class="row margin_top">
     <div class="span9">
       <div class="">
-        <form method="post" action="/aiesec/user/registration?template=1" id="registration-form"   class="form-stacked personaling_form" enctype="multipart/form-data">
+        <form method="post" id="registration-form"   class="form-stacked personaling_form" enctype="multipart/form-data">
           
             <legend >Direcciones de envio: </legend>
             
@@ -28,12 +28,24 @@
 					
 						echo '<div class="well well-small clearfix">';
 						echo '<div class="pull-right">';
-				        echo '<a class="btn" href="#myModal" role="button" data-toggle="modal" >
-				          		<i class="icon-edit"></i></a>
-				          	<a href="#" title="borrar" class="btn btn-link">
+                        echo CHtml::link("<i class='icon-edit'></i>",
+                            $this->createUrl('editAddress',array('id'=>$dir->id)),
+                            array(// for htmlOptions
+                              'onclick'=>' '.CHtml::ajax( array(
+                              'url'=>CController::createUrl('editAddress',array('id'=>$dir->id)),
+                                   'success'=>"js:function(data){ $('#myModal').html(data);
+                                            $('#myModal').modal(); }")).
+                                 'return false;',
+                            'class'=>'btn',
+                            'id'=>'prodencanta')
+                        );
+                        
+                        
+                        
+				        echo '<a href="#" title="borrar" class="btn btn-link">
 				          		<i class="icon-remove"></i></a>
 				          </div>';
-						echo '<h4 class="braker_bottom padding_bottom_xsmall"> Dirección '.($key+1).'</h4>';
+						echo '<h4 class="braker_bottom padding_bottom_xsmall"> Dirección '.($key+1)." ".$dir->id.'</h4>';
 				      
 				        echo '<div class="vcard">';
 				        echo '<div class="adr">';
@@ -97,6 +109,9 @@
     </div>
   </div>
 </div>
+ <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
+ 
+    <?php $this->endWidget(); ?>
 <!-- /container -->
 
 <script>
@@ -105,97 +120,5 @@
   });  
 </script>
 
-<!------------------- MODAL WINDOW ON -----------------> 
 
-<!-- Modal 1 -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Editar dirección</h3>
-  </div>
-  <div class="modal-body">
-   
-   <fieldset>
-            <div class="control-group"> 
-              <!--[if lte IE 7]>
-            <label for="RegistrationForm_email" class="control-label required">Nombre de la persona a la que envias <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" class="span5" name="RegistrationForm[email]" placeholder="Nombre de la persona a la que envias" id="RegistrationForm_email" maxlength="128">
-                <div class="help-inline" id="RegistrationForm_email_em_" style="display:none"></div>
-              </div>
-            </div>
-            <div class="control-group"> 
-              <!--[if lte IE 7]>
-            <label for="RegistrationForm_email" class="control-label required">Apellido de la persona a la que envias tu compra<span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" class="span5" name="RegistrationForm[email]" placeholder="Apellido de la persona a la que envias tu compra" id="RegistrationForm_email" maxlength="128">
-                <div class="help-inline" id="RegistrationForm_email_em_" style="display:none"></div>
-              </div>
-            </div>
-            <div class="control-group"> 
-              <!--[if lte IE 7]>
-            <label for="RegistrationForm_email" class="control-label required">Cedula de Identidad de la persona a la que envias<span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" class="span5" name="RegistrationForm[email]" placeholder="Cedula de Identidad de la persona a la que envias" id="RegistrationForm_email" maxlength="128">
-                <div class="help-inline" id="RegistrationForm_email_em_" style="display:none"></div>
-              </div>
-            </div>
-            <div class="control-group"> 
-              <!--[if lte IE 7]>
-            <label for="RegistrationForm_email" class="control-label required">Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.) <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" class="span5" name="RegistrationForm[email]" placeholder="Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)" id="RegistrationForm_email" maxlength="128">
-                <div class="help-inline" id="RegistrationForm_email_em_" style="display:none"></div>
-              </div>
-            </div>
-            <div class="control-group"> 
-              <!--[if lte IE 7]>
-            <label for="RegistrationForm_email" class="control-label required">Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc) </label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" class="span5" name="RegistrationForm[email]" placeholder="Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)" id="RegistrationForm_email" maxlength="128">
-                <div class="help-inline" id="RegistrationForm_email_em_" style="display:none"></div>
-              </div>
-            </div>
-            <div class="control-group"> 
-              <!--[if lte IE 7]>
-            <label for="RegistrationForm_email" class="control-label required">Ciudad <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" class="span5" name="RegistrationForm[email]" placeholder="Ciudad" id="RegistrationForm_email" maxlength="128">
-                <div class="help-inline" id="RegistrationForm_email_em_" style="display:none"></div>
-              </div>
-            </div>
-            <div class="control-group"> 
-              <!--[if lte IE 7]>
-            <label for="RegistrationForm_email" class="control-label required">Estado <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <input type="text" class="span5" name="RegistrationForm[email]" placeholder="Estado" id="RegistrationForm_email" maxlength="128">
-                <div class="help-inline" id="RegistrationForm_email_em_" style="display:none"></div>
-              </div>
-            </div>
-            <div class="control-group"> 
-              <!--[if lte IE 7]>
-            <label for="RegistrationForm_email" class="control-label required">País <span class="required">*</span></label>
-<![endif]-->
-              <div class="controls">
-                <select>
-                  <option>Venezuela</option>
-                  <option>Colombia</option>
-                  <option>USA</option>
-                </select>
-                <div class="help-inline" id="RegistrationForm_email_em_" style="display:none"></div>
-              </div>
-            </div>
-          </fieldset>
-   
-  </div>
-  <div class="modal-footer"> <a href="#" title="eliminar">Cancelar</a> <a href="" title="ver" class="btn btn-danger">Guardar</a> </div>
-</div>
-<!------------------- MODAL WINDOW OFF ----------------->
 

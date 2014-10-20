@@ -1773,5 +1773,22 @@ public function multipleColor2($idColor, $idact)
 		}	
 		
 	}
+    
+    public function getAvailableSizes($id = null , $colorId = 0){
+        if(is_null($id))
+            $id = $this->id;
+        if($colorId==0)
+            $sql="select distinct talla_id from tbl_precioTallaColor where cantidad > 0 AND producto_id = ".$id;
+        else
+            $sql="select distinct talla_id from tbl_precioTallaColor where cantidad > 0 AND producto_id = ".$id." AND color_id =".$colorId;
+         $idsTalla = Yii::app()->db->createCommand($sql)->queryColumn();
+         $criteria=new CDbCriteria;
+         $criteria->addInCondition('t.id',$idsTalla);
+         $criteria->order="t.orden";
+         $dp= new CActiveDataProvider('Talla', array(
+            'criteria'=>$criteria,
+        ));
+         return $dp->getData();
+    }
 		 
 }

@@ -701,13 +701,16 @@ $script = "
              if ($(this).parent().attr('data-toggle')=='buttons-checkbox'){
                  var ids = 0;
                      $(this).siblings('.active').each(function(){
-                        ids += parseInt($(this).attr('href').substring(1));
+                     	if (!($(this).hasClass('select_todos')))
+                        	ids += parseInt($(this).attr('href').substring(1));
                      });
 
                  if (!($(this).hasClass('active')))
-                    ids += parseInt($(this).attr('href').substring(1));
+				 	if (!($(this).hasClass('select_todos')))
+                    	ids += parseInt($(this).attr('href').substring(1));
             } else {
-                ids = parseInt($(this).attr('href').substring(1));
+            	if (!($(this).hasClass('select_todos')))
+                	ids = parseInt($(this).attr('href').substring(1));
             }
 
 			 $(this).parent().next('input').val(ids);

@@ -41,7 +41,7 @@ class PagoController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete','view', 'detalle',
-                                    'comisionAfiliacion','comisionClick'),
+                                    'comisionAfiliacion','comisionClick','index'), 
 				'expression'=>"UserModule::isAdmin()",
 			),
 			array('deny',  // deny all users

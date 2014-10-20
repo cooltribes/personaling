@@ -219,20 +219,15 @@
            </div>
             <?php    }
         else{               
-            foreach ($producto->preciotallacolor as $talCol) {
-                if($talCol->cantidad > 0){ // que haya disp
-                    $talla = Talla::model()->findByPk($talCol->talla_id);
-        
-                    if(in_array($talla->id, $valores)){ // no hace nada para que no se repita el valor          
-                    }
-                    else{ ?>
+          
+     foreach ($producto->availableSizes as $talla) {
+            
+                ?>
                         <div id="<?php echo $talla->id;?>" style='cursor: pointer' class='tallass' title='talla'>
                             <?php echo $talla->valor; ?>                            
                         </div>
-  <?php   array_push($valores, $talla->id);
-                    }
-                }
-            }   
+<?php         }   
+               
         }// else
   ?>                        
                         

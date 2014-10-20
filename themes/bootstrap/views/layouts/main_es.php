@@ -417,9 +417,13 @@ if(!Yii::app()->user->isGuest){
                                 </script></div></div>
       </div>
       <div class="span3 offset1 ">
-        <div class="banner-envio">
-          <h2 class="text_align_center margin_bottom_small margin_top_xsmall color14 ">Envíos y<br/>devoluciones<br/><strong>gratis*</strong><br/><span class="tPrecio">*Excepto Canarias, Ceuta, Melilla y Baleares.</span></h2>
-        </div>
+      <div class="banner-envio">
+            <h2 class="text_align_center margin_bottom_small margin_top_xsmall color14 ">
+         <?php if(Yii::app()->params['noShipping']){ ?> 
+             Envíos y<br/>devoluciones<br/><strong>gratis*</strong><br/><span class="tPrecio">*Excepto Canarias, Ceuta, Melilla y Baleares.</span>
+         <?php }?>          
+            </h2>
+       </div>
         <div class="braker_top text_align_center padding_top_xsmall padding_bottom_xsmall">
           <h3 class="">¡Síguenos! </h3>
           <div class="textwidget social-icons"> <a title="Personaling en Facebook" href="https://www.facebook.com/Personaling" target="_blank"><img width="40" height="40" title="Personaling en Facebook" src="<?php echo Yii::app()->baseUrl ?>/images/icon_facebook.png"></a> <a title="Personaling en Twitter" href="https://twitter.com/personaling" target="_blank"> <img width="40" height="40" title="Personaling en Twitter" src="<?php echo Yii::app()->baseUrl ?>/images/icon_twitter.png"></a> <a title="Pinterest" href="https://pinterest.com/personaling/" target="_blank"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_pinterest.png"></a> <a title="Personaling en Instagram" href="http://instagram.com/personaling" target="_blank"><img width="40" height="40" title="Personaling en Instagram" src="<?php echo Yii::app()->baseUrl ?>/images/icon_instagram.png"></a>
@@ -640,8 +644,8 @@ if(!Yii::app()->user->isGuest){
                 if($imagen){
                     $htmlimage = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/producto/'. str_replace(".","_x30.",$imagen->url), "Imagen ", array("width" => "30", "height" => "30"));
                     echo '<div class="span2">'.$htmlimage.'</div>';
-                }                
-                echo '</div>';                
+                }
+                echo '</div>';
                 echo "</li>";
                 $contadorItems ++;
 

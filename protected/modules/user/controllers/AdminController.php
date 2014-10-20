@@ -34,7 +34,7 @@ class AdminController extends Controller
                             'credito','editardireccion',
                             'eliminardireccion','comprafin','mensajes','displaymsj',
                             'invitaciones','porcomprar','seguimiento','balance',
-                            'reporteCSV','usuariosZoho', 'suscritosNl', 'historial','enviarzoho','saveUrl'),                                         
+                            'reporteCSV','usuariosZoho', 'suscritosNl', 'historial','enviarzoho','saveUrl','editAddress'),                                         
                          
                         'expression' => 'UserModule::isAdmin()',
 
@@ -2766,6 +2766,37 @@ class AdminController extends Controller
 		
 		
 	}
+
+    public function actionEditAddress($id){
+        $model=Direccion::model()->findByPk($id);
+         if(isset($_POST['idDireccion'])){
+                $dirEdit = $model;
+                
+                $dirEdit->nombre = $_POST['Direccion']['nombre'];
+                $dirEdit->apellido = $_POST['Direccion']['apellido'];
+                $dirEdit->cedula = $_POST['Direccion']['cedula'];
+                $dirEdit->dirUno = $_POST['Direccion']['dirUno'];
+                $dirEdit->dirDos = $_POST['Direccion']['dirDos'];
+                $dirEdit->telefono = $_POST['Direccion']['telefono'];
+                $dirEdit->ciudad_id = $_POST['Direccion']['ciudad_id'];
+                $dirEdit->provincia_id = $_POST['Direccion']['provincia_id'];
+                
+                $dirEdit->pais=Pais::model()->getOficial($_POST['Direccion']['pais']);
+                
+                if($dirEdit->save())
+                      Yii::app()->user->setFlash('success', UserModule::t("Direccion Actualizada"));
+                else {
+                      Yii::app()->user->setFlash('error', UserModule::t("Error al actualizar direccion"));
+                }
+                    $this->redirect(array('admin/direcciones/id/'.$dirEdit->user_id));           
+                
+            }
+         
+         
+         $this->renderPartial('direccionesForm',array(
+            'dir'=>$model,                
+        ));
+    }
 
 	public function clonarDireccion($direccion){
 		$dirEnvio = new DireccionEnvio;

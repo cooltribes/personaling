@@ -134,7 +134,7 @@ class Look extends CActiveRecord
 			// Please remove those attributes that should not be searched. 
 			array('id, title, description, altura, contextura, pelo, ojos, 
                             tipo_cuerpo, piel, created_on, tipo,destacado, status, user_id, 
-                            campana_id, view_counter, url_amigable, sent_on, approved_on, modified_on, tipoDescuento, valorDescuento, activo', 'safe', 'on'=>'search'),
+                            campana_id, view_counter, url_amigable, sent_on, approved_on, modified_on, tipoDescuento, valorDescuento, activo, available', 'safe', 'on'=>'search'),
 		);
 	}
 

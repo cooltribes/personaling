@@ -2234,13 +2234,11 @@ public function actionReportexls(){
 		
 		$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
 		
-		foreach($ptc as $p)
+		foreach(Producto::model()->getAvailableSizes($_POST['idProd'],$_POST['idTalla']) as $ta)
 		{
-			if($p->cantidad>0) // que haya disponibilidad para mostrarlo
-			{
-				$ta = Talla::model()->findByPk($p->talla_id);
+		
 				$div = $div."<div onclick='a(".$ta->id.")' id='".$ta->id."' style='cursor: pointer' class='tallass' title='talla'>".$ta->valor."</div>";
-			}
+			
 		}
 		
 		$imagenes = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$_POST['idProd'],'color_id'=>$_POST['idTalla']),array('order'=>'orden ASC'));
@@ -4006,7 +4004,62 @@ public function actionReportexls(){
 				  
 	}
         
-        public function actionPlantillaDescuentos(){
+     public function actionPlantillaDescuentos(){
+                
+         
+            
+            
+            
+            ini_set('memory_limit','256M'); 
+            
+
+            $criteria = Yii::app()->getSession()->get("productosCriteria");
+            $arrayProductos = Producto::model()->findAll($criteria);
+            
+               header( "Content-Type: text/csv;charset=utf-8" );
+            header('Content-Disposition: attachment; filename="Plantilla.csv"');
+            $fp = fopen('php://output', 'w');    
+            
+            fputcsv($fp,array(
+             'Referencia', 'Nombre', 'Marca',  utf8_decode('Categorías'),
+              utf8_decode('Descripción'),'Costo', 'Precio sin IVA', 
+             'Precio con IVA', '% Descuento', 'Precio con IVA y Descuento'),";",'"');
+          
+         
+            foreach ($arrayProductos as $producto) {
+                
+                //Agregar la fila al documento xls
+          
+                
+                //Concatenar las categorias en un solo campo
+                $categorias = "";
+                foreach($producto->categorias as $categoria){
+                    $categorias .= "$categoria->nombre / ";
+                }                
+                $categorias = substr($categorias, 0, -3);
+                
+                //Extraer precio, para evitar error cuando no tengan precios asignados
+                $precio = $producto->precios ? $producto->precios[0]:"-Sin Precio-";                
+//            
+            $vals=array($producto->codigo,  utf8_decode($producto->nombre), utf8_decode($producto->mymarca->nombre), 
+                         utf8_decode($categorias),  utf8_decode($producto->descripcion),
+                       $precio->costo,$precio->precioVenta, $precio->precioImpuesto); 
+                        
+             fputcsv($fp,$vals,";",'"');             
+
+            }
+            fclose($fp); 
+            ini_set('memory_limit','128M'); 
+            Yii::app()->end();  
+         
+     }
+        
+        
+        
+        
+        
+        
+        public function actionPlantillaDescuentosXLS(){
         
             ini_set('memory_limit','256M'); 
 
@@ -4082,7 +4135,8 @@ public function actionReportexls(){
                 $categorias = substr($categorias, 0, -3);
                 
                 //Extraer precio, para evitar error cuando no tengan precios asignados
-                $precio = $producto->precios ? $producto->precios[0]:"-Sin Precio-";                
+                //$precio = $producto->precios ? $producto->precios[0]:"-Sin Precio-";                
+                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 //                echo "<pre>";
 //                print_r($precio);
 //                echo "</pre><br>";
@@ -4091,13 +4145,27 @@ public function actionReportexls(){
 //                echo "</pre><br>";
 //                Yii::app()->end();
 
-
                 $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('D'.($i), $categorias) 
-                    ->setCellValue('E'.($i), $producto->descripcion) 
-                    ->setCellValue('F'.($i), $precio->costo)
-                    ->setCellValue('G'.($i), $precio->precioVenta)
-                    ->setCellValue('H'.($i), $precio->precioImpuesto);
+	                    ->setCellValue('D'.($i), $categorias) 
+	                    ->setCellValue('E'.($i), $producto->descripcion);
+
+	                    //var_dump($precio->costo);
+
+                if(isset($precio)){
+	                	$objPHPExcel->setActiveSheetIndex(0)
+	                    ->setCellValue('F'.($i), $precio->costo)
+	                    ->setCellValue('G'.($i), $precio->precioVenta)
+	                    ->setCellValue('H'.($i), $precio->precioImpuesto);
+	                
+	                
+                }else{
+                	$objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('F'.($i), "-Sin Precio-")
+                    ->setCellValue('G'.($i), "-Sin Precio-")
+                    ->setCellValue('H'.($i), "-Sin Precio-");
+                }
+
+                
                 
                 $i++;
             }

@@ -2234,13 +2234,11 @@ public function actionReportexls(){
 		
 		$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
 		
-		foreach($ptc as $p)
+		foreach(Producto::model()->getAvailableSizes($_POST['idProd'],$_POST['idTalla']) as $ta)
 		{
-			if($p->cantidad>0) // que haya disponibilidad para mostrarlo
-			{
-				$ta = Talla::model()->findByPk($p->talla_id);
+		
 				$div = $div."<div onclick='a(".$ta->id.")' id='".$ta->id."' style='cursor: pointer' class='tallass' title='talla'>".$ta->valor."</div>";
-			}
+			
 		}
 		
 		$imagenes = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$_POST['idProd'],'color_id'=>$_POST['idTalla']),array('order'=>'orden ASC'));

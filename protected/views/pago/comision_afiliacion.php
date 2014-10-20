@@ -52,7 +52,7 @@
         <div class="span6">
             
              <fieldset>                
-                <legend>Ingresa el monto para el periodo actual</legend>
+                <legend>Ingresa el monto para el mes actual</legend>
                     <?php
                         $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                             'id'=>'pago-form',

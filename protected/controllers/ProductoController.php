@@ -372,6 +372,12 @@ public function actionReportexls(){
 		{
 			$exist = Producto::model()->findByAttributes(array('codigo'=>$_POST['Producto']['codigo']));
 			//var_dump($_POST['Producto']['tipo']);
+			if (isset($_POST['ajax']) && $_POST['ajax'] === 'producto-form') {
+                    echo CActiveForm::validate($model);
+                     Yii::app()->end();
+            }
+			
+			
 			
 			if(isset($exist)) // si existe
 			{
@@ -380,8 +386,8 @@ public function actionReportexls(){
 					 	'marca_id'=>$_POST['marcas'],
 					 	'descripcion'=>$_POST['Producto']['descripcion'],
 					 	'estado'=>$_POST['Producto']['estado'],
-					 	'fInicio'=>$_POST['Producto']['fInicio'],
-						'fFin'=>$_POST['Producto']['fFin'],
+					 	'fInicio'=>date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])),
+						'fFin'=>date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])),
 						'destacado' => $_POST['Producto']['destacado'],
 						'peso' => $_POST['Producto']['peso'],
 						'almacen' => $_POST['Producto']['almacen'],

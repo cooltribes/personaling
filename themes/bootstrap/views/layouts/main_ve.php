@@ -199,7 +199,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Tus Compras', 'url'=>array('/orden/listado')),
                     array('label'=>'Tus Ventas', 'url'=>array('/user/profile/misventas'),
                                             'visible' => UserModule::isPersonalShopper()),   
-                    array('label'=>'Tus Pagos', 'url'=>array('/pago/solicitar'), 'visible' => UserModule::isPersonalShopper()),
+                    array('label'=>'Tus Pagos', 'url'=>array('/pago/index'), 'visible' => UserModule::isPersonalShopper()),
                     array('label'=>'Looks Favoritos', 'url'=>array('/user/profile/looksencantan')),
                     array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
                     array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),

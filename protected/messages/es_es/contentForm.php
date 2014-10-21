@@ -137,6 +137,7 @@ return array (
 	'Document' => 'Documento',
 	'Documents' => 'Documentos',
 	'Do you really want to pull this look out from your cart?'=>'Realmente deseas eliminar este look de tu carrito?',
+	'Done' => 'Terminado',
 
 	'Edit' => 'Editar',
 	'Edit shipping address' => 'Editar dirección de envío',

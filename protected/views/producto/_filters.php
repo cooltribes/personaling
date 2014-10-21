@@ -23,6 +23,12 @@
 							
 	echo CHtml::dropDownList('destacados', '', array('1'=>'Si', '0'=>'No' ),
                             array('style' => 'display:none'));
+							
+	echo CHtml::dropDownList('080', '', array('1'=>'Si', '0'=>'No' ),
+                            array('style' => 'display:none'));
+	
+	echo CHtml::dropDownList('100', '', array('1'=>'Si', '0'=>'No' ),
+                            array('style' => 'display:none'));
     
     /*Filtro de tiendas*/
     $allBrands = CHtml::listData(Tienda::model()->findAll(), 'id', 'name');
@@ -40,8 +46,18 @@
     'htmlOptions' => array('class' => 'form-stacked span12'),
     'id' => 'form_filtros'
     ));
-
-		
+	
+	if(Yii::app()->language=="es_es")
+	{
+		$var='080';	
+		$var_name='080 Barcelona';	
+	}
+	else 
+	{
+		$var='100';	
+		$var_name='100% Chic';	
+	}
+	
 ?>
     
     <h4>Nuevo Filtro:</h4>
@@ -68,6 +84,7 @@
                                 'tienda_id' => 'Tienda',
                                 'view_counter' => 'Visitas',
                                 'destacado' => 'Destacados',
+                                $var=> $var_name,
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>

@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Looks'=>array('mislooks'),
+	'Looks'=>array('admin'),
 	'Información General',
 );
 ?>

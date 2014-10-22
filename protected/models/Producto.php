@@ -1432,8 +1432,7 @@ public function multipleColor2($idColor, $idact)
                 
                 if($column == 'disponible')
                 {
-                    
-                    $criteria->addCondition('
+                   /* $criteria->addCondition('
                         IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)
                           - 
                           IFNULL(
@@ -1441,6 +1440,10 @@ public function multipleColor2($idColor, $idact)
                           where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
                           orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
                          0) '
+                            .$comparator.' '.$value.'', $logicOp);*/
+                            
+                    $criteria->addCondition('
+                       IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id),0)'
                             .$comparator.' '.$value.'', $logicOp);
                     
                     
@@ -1570,7 +1573,16 @@ public function multipleColor2($idColor, $idact)
                     
                     continue;
                 }
-                
+                if($column == 'outlet') // 
+                 {
+                        //si es el comparador igual o diferente
+                     $value = ($comparator == '=') ? $value : 1-$value;
+
+                        $criteria->addCondition("t.".$column." = ".$value,
+                                $logicOp);
+                        
+                    continue;
+                }
                 if($column == 'fecha')
                 {
                     $value = strtotime($value);

@@ -50,7 +50,7 @@
             if($img->orden!=1){
                 if($colorPredet == $img->color_id)
                 {
-                    echo '<div class="item">$color';
+                    echo '<div class="item">';
                     echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "Personaling - ".$producto->nombre, array("width" => "450", "height" => "450"));
                     echo '</div>';
                 }

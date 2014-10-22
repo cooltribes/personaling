@@ -41,6 +41,11 @@ function changeFilter(e){
    {       
        listFilter(column, '100');
 
+   }
+   else if(column.val() === 'outlet') //si es Outlet
+   {       
+       listFilter(column, 'outlet');
+
    }else //campo normal (numérico)
    {      
       valueFilter(column);       

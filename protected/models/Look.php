@@ -1060,7 +1060,27 @@ class Look extends CActiveRecord
 					
 					 continue;     
 				   
-                } 
+                }
+
+				if($column == 'activo')
+                {	 
+					   	 $criteria->compare("t.activo", $comparator.$value, 
+	                        false, $logicOp);
+					   				
+					 continue;     
+				   
+                }
+				
+				if($column == 'inactivo')
+                {
+					$value = ($value == 1) ? 0 : 1; // el contrario
+					
+					  $criteria->compare("t.activo", $comparator.$value, 
+	                        false, $logicOp);
+					
+					 continue;     
+				   
+                }  
                 
                 if($column == 'created_on')
                 {

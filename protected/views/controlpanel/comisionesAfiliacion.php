@@ -111,6 +111,9 @@ $pagerParams = array(
     ?>
 
     <hr/>
+
+    <div class="span2"><a href="<?php echo Yii::app()->baseUrl."/controlpanel/exportarAfiliacionCSV"; ?>" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
+
 </div>
 <?php
 

@@ -22,7 +22,7 @@ class ControlpanelController extends Controller
                             'actions'=>array('index','delete','ventas',
                                 'pedidos','usuarios', 'looks', 'productos','ingresos',
                                 'remuneraciones', 'personalshoppers','seo','createSeo',
-                                'deleteSeo', 'misventas','comisionesClic','comisionAfiliacion','exportarClicCSV'), 
+                                'deleteSeo', 'misventas','comisionesClic','comisionAfiliacion','exportarClicCSV','ExportarAfiliacionCSV'), 
                             //'users'=>array('admin'),
                             'expression' => 'UserModule::isAdmin()',
 			),
@@ -523,6 +523,7 @@ class ControlpanelController extends Controller
         ));         
     }
 
+    /* Permite expotar a CSV el contenido del Listview de comisiones por clic */
         public function actionExportarClicCSV(){
             ini_set('memory_limit','256M'); 
 
@@ -547,6 +548,31 @@ class ControlpanelController extends Controller
             Yii::app()->end(); 
         }
 
+        /* Permite expotar a CSV el contenido del Listview de comisiones por afiliacion */
+        public function actionExportarAfiliacionCSV(){ 
+            ini_set('memory_limit','256M'); 
+
+            $criteria = Yii::app()->getSession()->get("comisionesAfiliacion");
+            $arrayBalances = Balance::model()->findAll($criteria);
+            header( "Content-Type: text/csv;charset=utf-8" );
+            header('Content-Disposition: attachment; filename="Historial-Afiliacion.csv"');
+            $fp = fopen('php://output', 'w');          
+       
+            fputcsv($fp,array('Fecha', 'Comision', 'Total de Visitas', 'N. Pago Afiliado'),";",'"');
+            
+            foreach ($arrayBalances as $balance) {
+
+                $payps = PayPersonalShopper::model()->findByAttributes(array('affiliatePay_id'=>$balance->orden_id,'user_id'=>$balance->user_id));
+                
+                $vals = array( date("d-m-Y H:i:s",strtotime($balance->fecha)) , $balance->total, $payps->total_views, $payps->affiliatePay_id);
+                fputcsv($fp,$vals,";",'"'); 
+            }
+
+            fclose($fp); 
+            ini_set('memory_limit','128M'); 
+            Yii::app()->end(); 
+        }        
+
     /* Ver el listado de comisiones pagadas a un PS determinado */
     public function actioncomisionAfiliacion($id) {
         
@@ -561,6 +587,9 @@ class ControlpanelController extends Controller
 
         $dataProvider = $balance->search();
         
+        /*Agregar el criteria a la sesion para cuando se pida exportar*/
+        Yii::app()->getSession()->add("comisionesAfiliacion", $dataProvider->getCriteria());
+
         $this->render('comisionesAfiliacion',array(
                     'personalShopper' => $personalShopper, 
                     'dataProvider'=>$dataProvider,

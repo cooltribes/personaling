@@ -14,6 +14,13 @@
  * @property Users $user
  * @property PayPersonalShopper[] $payPersonalShoppers
  */
+
+/*
+TIPO:
+1 - Default. Pago por comisiones por afiliacion a productos de terceros
+2 - Pago por afiliacion. Clic.
+*/
+
 class AffiliatePayment extends CActiveRecord
 {
 	/**
@@ -47,7 +54,7 @@ class AffiliatePayment extends CActiveRecord
 			array('amount', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, user_id, created_at, amount, total_views', 'safe', 'on'=>'search'),
+			array('id, user_id, created_at, amount, total_views, tipo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -75,6 +82,7 @@ class AffiliatePayment extends CActiveRecord
 			'created_at' => 'Created At',
 			'amount' => 'Amount',
 			'total_views' => 'Total Views',
+			'tipo' => 'Tipo',
 		);
 	}
 
@@ -94,6 +102,7 @@ class AffiliatePayment extends CActiveRecord
 		$criteria->compare('created_at',$this->created_at,true);
 		$criteria->compare('amount',$this->amount);
 		$criteria->compare('total_views',$this->total_views);
+		$criteria->compare('tipo',$this->tipo);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -105,10 +114,10 @@ class AffiliatePayment extends CActiveRecord
          * know from what date we need to compute the views and commissions.
          */
         
-        public static function findLastPayment(){
+        public static function findLastPayment($tipoComision){
             
-            $payment = self::model()->find(array('order' => 'created_at DESC'));           
-            
+            $payment = self::model()->find(array('order' => 'created_at DESC','condition'=>'tipo=:tipoCom','params'=>array(':tipoCom'=>$tipoComision)));            
+
             return $payment ? $payment : null;
         }
         

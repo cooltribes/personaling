@@ -409,6 +409,8 @@ return array (
      'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Zoom: http://www.grupozoom.com con el siguiente número de seguimiento: {number}',
      'Your phone is pending for passing, Thanks' => 'Tu look esta pendiente por aprobar, Gracias',
      'You must select all sizes' => 'Debes seleccionar todas las tallas',
+     'You should set the sizes for the items.'=>'Debes seleccionar las tallas de los productos.',
+     'You should not add repeated items.'=>'No es posible incluir prendas repetidas.',
      'You should select a Billing Address.'=>'Debes seleccionar una dirección de facturación',
      'You should add six items at least.'=>'Debes incluir al menos seis prendas',
      'Your bag' =>'Tu bolsa',

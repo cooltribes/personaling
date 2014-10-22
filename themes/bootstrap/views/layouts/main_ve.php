@@ -565,6 +565,8 @@ if(!Yii::app()->user->isGuest){
     var listaCarrito;
 
     //------------Generar html para poner en Popover ON---------------//
+
+    //TODO: Optimization of this function
     <?php if(!Yii::app()->user->isGuest){
 
       $contadorItems = 0 ;

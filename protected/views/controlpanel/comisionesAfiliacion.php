@@ -1,9 +1,9 @@
 <?php 
 
-$this->pageTitle=Yii::app()->name . ' - Historial por clic'; 
+$this->pageTitle=Yii::app()->name . ' - Historial por afiliación'; 
 
 //$this->breadcrumbs=array(
-//	'Productos',
+//	'Productos', 
 //);
 $pagerParams = array(
     'header' => '',
@@ -17,7 +17,7 @@ $pagerParams = array(
 
 <div class="container margin_top">
     <div class="page-header">
-        <h1>Historial de comisiones por clic</h1>       
+        <h1>Historial de pagos de comisiones por afiliación</h1>       
     </div>
     <div class="row">
         <div class="span12 box_shadow bg_color13">
@@ -37,7 +37,7 @@ $pagerParams = array(
                     </h2>
                     <h4>Comisión por clic actual:
                         <strong>
-                            <?php echo $personalShopper->getPagoClick(); ?>                            
+                            <?php echo $personalShopper->getComision(); ?>                            
                         </strong>
                     </h4>
                     <h4>Saldo en comisiones:
@@ -89,7 +89,7 @@ $pagerParams = array(
     $this->widget('zii.widgets.CListView', array(
         'id' => 'list-auth-items',
         'dataProvider' => $dataProvider,
-        'itemView' => '_viewComisionClic',
+        'itemView' => '_viewComisionAfiliacion', 
         'template' => $template,
         'summaryText' => "Mostrando {start} - {end} de {count} Resultados",
         'enableSorting' => 'true',
@@ -111,9 +111,6 @@ $pagerParams = array(
     ?>
 
     <hr/>
-
-    <div class="span2"><a href="<?php ECHO Yii::app()->baseUrl."/controlpanel/exportarClicCSV"; ?>" title="Exportar a excel" class="btn btn-info">Exportar a excel</a></div>
-
 </div>
 <?php
 

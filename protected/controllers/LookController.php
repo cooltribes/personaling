@@ -113,12 +113,12 @@ class LookController extends Controller
                                 'publicar','marcas','mislooks','softdelete','descuento',
                                 'calcularPrecioDescuento', 'exportarCSV',
                                 'plantillaDescuentos', 'importarDescuentos',
-                                'enabledLook', 'varias', 'informacion'),
+                                'enabledLook', 'varias', 'informacion', 'autocomplete'),
                             //'users'=>array('admin'),
                             'expression' => 'UserModule::isAdmin()',
 			),
 			array('allow', // acciones validas para el personal Shopper
-               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete','listarLooks', 'setVar'),
+               'actions' => array('create','publicar','precios','categorias','view','colores','edit','marcas','mislooks','detalle','softdelete','listarLooks', 'setVar', 'autocomplete'),
                'expression' => 'UserModule::isPersonalShopper()'
             ),
 			array('deny',  // deny all users
@@ -838,8 +838,23 @@ public function actionCategorias(){
         $criteria->with = $with;
         $criteria->offset    = $offset;
         $criteria->limit     = $limit;
-		if(isset($_POST['marcas'])){
+		
+		if(isset($_POST['marcas']))
+		{
+			
             $marcas = $_POST['marcas'];
+			#Yii::app()->session["igual"]=$_POST['marcas'];
+			
+			if(Marca::model()->findByAttributes(array('nombre'=>$marcas)))
+			{
+				$co=Marca::model()->findByAttributes(array('nombre'=>$marcas));
+				$_POST['marcas']=$co->id;
+			}
+			else 
+			{
+				$_POST['marcas']='Todas las Marcas';
+			}
+
 			if ($_POST['marcas']!='Todas las Marcas')	{
 
                // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),$criteria);
@@ -2354,6 +2369,20 @@ public function actionCategorias(){
             $message->addTo($destinatario);
             Yii::app()->mail->send($message);
         }
+
+		public function actionAutocomplete()
+		{
+	    	$res =array();
+	    	if (isset($_GET['term'])) 
+			{
+				$qtxt ="SELECT nombre FROM tbl_marca WHERE nombre LIKE :nombre";
+				$command =Yii::app()->db->createCommand($qtxt);
+				$command->bindValue(":nombre", '%'.$_GET['term'].'%', PDO::PARAM_STR);
+				$res =$command->queryColumn();
+	    	}
+	     	echo CJSON::encode($res);
+	    	Yii::app()->end();
+		}
 
 
 }

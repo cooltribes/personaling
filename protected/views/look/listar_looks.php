@@ -23,6 +23,7 @@ Yii::app()->clientScript->registerScriptFile('http://akwww.polyvorecdn.com/rsrc/
     </div>
     <div>
     <?php
+    /*
     $ps = User::model()->findByPk(Yii::app()->user->id);
     echo $ps->lookreferredviews;
     echo $ps->getLookReferredViewsByDate('2014-09-05','2014-09-17');
@@ -31,7 +32,7 @@ Yii::app()->clientScript->registerScriptFile('http://akwww.polyvorecdn.com/rsrc/
         'data LIKE :match',
         array(':match' => "%$match%")
     );
-
+*/
     ?>
 
 

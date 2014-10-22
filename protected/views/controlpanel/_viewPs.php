@@ -107,7 +107,7 @@
                 <?php echo CHtml::link('<i class="icon-eye-open"></i> Mis Ventas',array("controlpanel/misventas", "id" => $data->id)); ?>            
             </li> 
             <li>
-                <?php echo CHtml::link('<i class="icon-edit"></i> Comisión por Afiliación',array("admin/update","id"=>$data->id)); ?>
+                <?php echo CHtml::link('<i class="icon-edit"></i> Comisión por Afiliación',array("controlpanel/comisionAfiliacion","id"=>$data->id)); ?>
             </li>
             <li>
                 <?php echo CHtml::link('<i class="icon-eye-open"></i> Comisión por Clic',array("controlpanel/comisionesClic", "id" => $data->id)); ?>

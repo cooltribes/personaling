@@ -22,7 +22,7 @@ class ControlpanelController extends Controller
                             'actions'=>array('index','delete','ventas',
                                 'pedidos','usuarios', 'looks', 'productos','ingresos',
                                 'remuneraciones', 'personalshoppers','seo','createSeo',
-                                'deleteSeo', 'misventas','comisionesClic'),
+                                'deleteSeo', 'misventas','comisionesClic','comisionAfiliacion','exportarClicCSV'), 
                             //'users'=>array('admin'),
                             'expression' => 'UserModule::isAdmin()',
 			),
@@ -302,8 +302,7 @@ class ControlpanelController extends Controller
      * relacionados a las comisiones
      */
     public function actionPersonalshoppers() {
-        
-        
+
         //Para hacer cambios masivas
         if(isset($_POST["action"])){                
             
@@ -316,7 +315,7 @@ class ControlpanelController extends Controller
                 'criteria' => $resultados,
             ));
             
-	$resultados->setPagination(false);
+	       $resultados->setPagination(false);
              
             //$resultados->getData();
             $resultados = $resultados->getData();                
@@ -515,12 +514,58 @@ class ControlpanelController extends Controller
         $balance->tipo = 11;
 
         $dataProvider = $balance->search();
-        
+        /*Agregar el criteria a la sesion para cuando se pida exportar*/
+        Yii::app()->getSession()->add("comisionesclic", $dataProvider->getCriteria()); 
+
         $this->render('comisionesClic',array(
                     'personalShopper' => $personalShopper, 
                     'dataProvider'=>$dataProvider,
         ));         
     }
+
+        public function actionExportarClicCSV(){
+            ini_set('memory_limit','256M'); 
+
+            $criteria = Yii::app()->getSession()->get("comisionesclic");
+            $arrayBalances = Balance::model()->findAll($criteria);
+            header( "Content-Type: text/csv;charset=utf-8" );
+            header('Content-Disposition: attachment; filename="Historial-Clic.csv"');
+            $fp = fopen('php://output', 'w');          
+       
+            fputcsv($fp,array('Fecha', 'Comision', 'Total de Visitas', 'N. Pago Afiliado'),";",'"');
+            
+            foreach ($arrayBalances as $balance) {
+
+                $payps = PayPersonalShopper::model()->findByAttributes(array('affiliatePay_id'=>$balance->orden_id,'user_id'=>$balance->user_id));
+                
+                $vals = array( date("d-m-Y H:i:s",strtotime($balance->fecha)) , $balance->total, $payps->total_views, $payps->affiliatePay_id);
+                fputcsv($fp,$vals,";",'"');
+            }
+
+            fclose($fp); 
+            ini_set('memory_limit','128M'); 
+            Yii::app()->end(); 
+        }
+
+    /* Ver el listado de comisiones pagadas a un PS determinado */
+    public function actioncomisionAfiliacion($id) {
+        
+        $personalShopper = User::model()->findByPk($id); 
+        //Que solo puedan entrar los admin y el propietario PS
+        if($personalShopper===null)
+                throw new CHttpException(404,'The requested page does not exist.');
+        
+        $balance = New Balance;
+        $balance->user_id = $id;
+        $balance->tipo = 10;
+
+        $dataProvider = $balance->search();
+        
+        $this->render('comisionesAfiliacion',array(
+                    'personalShopper' => $personalShopper, 
+                    'dataProvider'=>$dataProvider,
+        ));         
+    } 
 
     public function actionSeo(){
         $model = new SeoStatic;

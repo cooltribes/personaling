@@ -1,15 +1,3 @@
-<script type="text/javascript">
-
-//bloquear el enter
-function stopRKey(evt) {
-  var evt = (evt) ? evt : ((event) ? event : null);
-  var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
-  if ((evt.keyCode == 13) && (node.type=="text")) {return false;}
-}
-
-document.onkeypress = stopRKey;
-
-</script>
 <?php  
 //$this->breadcrumbs=array(
 //	'Looks'=>array('admin'),
@@ -836,13 +824,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                   <?php
 	Yii::app()->clientScript->registerScript('marca',
 		"
-		$('#marcas').focusout(function(){
+		$('#marcas').keypress(function( event ) {
+		
+			if ( event.which == 13 ) {
+	    		
 				
-			
+	     		event.preventDefault();
 				
-			
-				
-			". CHtml::ajax(
+				". CHtml::ajax(
 						 
 			array( // ajaxOptions
 				'url'=>Yii::app()->createUrl( 'look/categorias'),
@@ -868,8 +857,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					'draggable'=>"false",
 				)
 			)."
+				
+	  			}
 		});
-		
 		",CClientScript::POS_READY
 	);
 	

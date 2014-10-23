@@ -1576,7 +1576,7 @@ public function actionValidar()
 	public function actionEnviar()
 	{
 		$orden = Orden::model()->findByPK($_POST['id']);
-		
+		$response=array();
 		$orden->tracking = $_POST['guia'];
 		$orden->estado=4; // enviado
 		
@@ -1615,9 +1615,12 @@ public function actionValidar()
 
                         Yii::app()->user->setFlash('success', 'Se ha enviado la orden.');
 
-                        echo "ok";
+                        $response['status']="ok";
                     }
-		}	
+		}else{
+		    $response['status']="error";
+		}
+       echo json_encode($response);
 		
 	}
 

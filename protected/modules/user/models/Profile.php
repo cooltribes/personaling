@@ -319,8 +319,8 @@ class Profile extends UActiveRecord
 	}
 	/* Obtener el nombre del ususario */
 	public function getNombre($id = null){
-		if(!is_null($id))
-		{
+		if(!is_null($id)) 
+		{ 
 			$null=$this->findByPk($id);	
 			return $null->first_name.' '.$null->last_name; 		
 		}

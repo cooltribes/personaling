@@ -100,7 +100,7 @@
     </td>
     
     <!--VER DETALLES-->
-    <td style="text-align: center">
+    <td>
         <div class="dropdown"> <a class="dropdown-toggle btn btn-block" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" title="Acciones"> <i class="icon-cog"></i></a> 
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
             <li>

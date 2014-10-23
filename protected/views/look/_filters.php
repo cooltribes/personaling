@@ -77,6 +77,15 @@
     '0' => 'No',), array('style' => 'display:none'));
 	
 	
+	 echo CHtml::dropDownList('activo', '', array('1' => 'Sí',
+    '0' => 'No',), array('style' => 'display:none'));
+	
+	 echo CHtml::dropDownList('inactivo', '', array('1' => 'Sí',
+    '0' => 'No',), array('style' => 'display:none'));
+	
+	
+	
+	
 	/*echo Chtml::dropDownList('ocasion', '', array('36' => '>', '37' => '>=',
                             '=' => '=', '<' => '<', '<=' => '<=', '<>' => '<>'), 
                                 array('empty' => 'Operador',
@@ -120,7 +129,10 @@
                                 'prendas' => 'Cantidad de Prendas',
                                 'destacado' => 'Destacado',
                                 'tipo_cuerpo' => 'Tipo de Cuerpo',
-                                'ocasion' => 'Ocasion'
+                                'ocasion' => 'Ocasion',
+                                'activo' => 'Activo',
+                                'inactivo' => 'Inactivo',
+                                
                                 
                                 
                                 ), array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 

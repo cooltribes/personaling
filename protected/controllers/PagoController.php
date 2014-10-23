@@ -311,6 +311,7 @@ class PagoController extends Controller
             
             $this->render('index',array(
                 'dataProvider'=>$dataProvider,
+                'user_id' => Yii::app()->user->id,
             ));
 	}
 
@@ -559,11 +560,13 @@ class PagoController extends Controller
         public function actionComisionAfiliacion() {
             
             // Get the last date of payment for computing the next period
-            $lastPayment = AffiliatePayment::findLastPayment();            
+            $lastPayment = AffiliatePayment::findLastPayment(1);            
             $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
             // if doesn't exist any payment or if there is at least one of them
             $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
                 ShoppingMetric::getAllViewsPs();                   
+
+            $anterior = $this->_lastDate;
 
             //Asign the totalViews attribute for optimize new queries
             $this->_totallooksviews = $totalViews;
@@ -577,7 +580,8 @@ class PagoController extends Controller
                 $paymentPs->created_at = date("Y-m-d H:i:s"); //Datetime which the payment was made
                 $paymentPs->amount = $_POST["monthlyEarning"]; //Amount of the payment
                 $paymentPs->total_views = $totalViews; //Amount of the payment
-                            
+                $paymentPs->tipo = 1; // Por afiliacion
+
                 if($paymentPs->save()){
                     
                     /*Recalculate the variables because the new payment*/
@@ -598,10 +602,19 @@ class PagoController extends Controller
                     foreach ($allPs as $userPs){
 
                         // if the percentage is computed from the beginning or from 
-                        // one specific date
-                        $percent = $lastDate ? $userPs->getLookViewsPercentageByDate(
+                      /*  // one specific date
+                        $percent = $lastDate ? $userPs->getLookViewsPercentageByDate( 
                             $totalViews, date("Y-m-d"), false)
                             : $userPs->getLookViewsPercentage($totalViews, false);
+*/
+                        if($anterior==0 && $anterior!=$this->_lastDate){
+                            $percent = $userPs->getLookViewsPercentage(ShoppingMetric::getAllViewsPs(), false); 
+                            $total = $userPs->getLookReferredViews();
+                        }
+                        else{
+                            $percent = $userPs->getLookViewsPercentageByDate($totalViews, date("Y-m-d"), false);
+                            $total = $userPs->getLookReferredViewsByDate($lastDate, date("Y-m-d"));
+                        }
 
                         $amountToPay = $_POST["monthlyEarning"] * $percent;
 
@@ -614,8 +627,7 @@ class PagoController extends Controller
                         $payToPs->user_id = $userPs->id;
                         $payToPs->affiliatePay_id = $paymentPs->id;
                         //Total monthly views gathered by PS
-                        $payToPs->total_views = $lastDate ? $userPs->getLookReferredViewsByDate(
-                        $lastDate, date("Y-m-d")) : $userPs->getLookReferredViews();
+                        $payToPs->total_views = $total;
                         $payToPs->percent = $percent;
                         $payToPs->amount = $amountToPay;
                         
@@ -696,7 +708,7 @@ class PagoController extends Controller
         public function actionComisionClick() {
             
             // Get the last date of payment for computing the next period
-            $lastPayment = AffiliatePayment::findLastPayment();            
+            $lastPayment = AffiliatePayment::findLastPayment(2);            
             $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
             // if doesn't exist any payment or if there is at least one of them
             $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
@@ -717,7 +729,8 @@ class PagoController extends Controller
                 $paymentPs->created_at = date("Y-m-d H:i:s"); //Datetime which the payment was made
                 $paymentPs->amount = 0; //Amount of the payment
                 $paymentPs->total_views = $totalViews; //Amount of the payment
-                           
+                $paymentPs->tipo = 2; // Por clic
+
                 if($paymentPs->save()){
                     
                     /*Recalculate the variables because the new payment*/
@@ -738,7 +751,7 @@ class PagoController extends Controller
                     foreach ($allPs as $userPs){
 						
 						if($anterior==0 && $anterior!=$this->_lastDate)
-							$amountToPay = $userPs->getPagoClick()*$userPs->getLookReferredViews();
+							$amountToPay = $userPs->getPagoClick() * $userPs->getLookReferredViews();
 						else
 							$amountToPay = $userPs->getPagoClick() * ($userPs->getLookReferredViewsByDate($this->_lastDate, date("Y-m-d")));
 						

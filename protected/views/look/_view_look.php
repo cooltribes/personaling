@@ -77,12 +77,12 @@
                                 ));
                     }
 
-
+					
                     ?>
                 </li>
                 <li>
                     <?php echo CHtml::link('<i class="icon-eye-open"></i>  Ver en tienda',
-                            '../'.$data->id, array(
+                            Yii::app()->baseUrl.'/look/'.$data->id, array(
 //                        
                     )); ?>            
                 </li>

@@ -388,6 +388,7 @@ return array (
 	'Tax information code'=>'Codigo de Información Fiscal',
 	'The bag is empty' => 'La bolsa está vacia',
 	'The order to <b><{name}</b> has successfully completed' => 'El pedido para <b><{name}</b> se ha realizado con éxito.',
+	'There are not any results to show'=>'No existen resultados para mostrar',
 	'This transaction will be processed securely through the platform:' => 'Esta transacción será procesada de forma segura gracias a la plataforma de:',
 	'To' => 'Hasta',
 	'To1' => 'Para',

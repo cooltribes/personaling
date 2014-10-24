@@ -45,6 +45,30 @@ $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Your Payme
     </style>
     
     <?php
+        $pagosTotales = Pago::model()->countByAttributes(array('user_id'=>$user_id));
+        $pagosAprobados = Pago::model()->countByAttributes(array('user_id'=>$user_id,'estado'=>1));
+        $pagosEspera = Pago::model()->countByAttributes(array('user_id'=>$user_id,'estado'=>0));
+        $pagosRechazados = Pago::model()->countByAttributes(array('user_id'=>$user_id,'estado'=>2));  
+    ?>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
+        <tr>
+          <th scope="col" colspan="6"> Totales </th> 
+        </tr>
+        <tr>
+          <td><p class="T_xlarge margin_top_xsmall"><?php echo $pagosTotales; ?></p>
+            Total de Pagos</td>
+          <td><p class="T_xlarge margin_top_xsmall"><?php echo $pagosAprobados; ?></p>
+            Total Aprobados</td>
+          <td><p class="T_xlarge margin_top_xsmall"><?php echo $pagosEspera; ?></p>
+            Total en Espera</td>
+          <td><p class="T_xlarge margin_top_xsmall"><?php echo $pagosRechazados; ?></p> 
+            Total Rechazados</td>
+        </tr>
+      </table>
+
+    <hr>
+    <?php
     $pagerParams=array(
         'header'=>'',
         'prevPageLabel' => Yii::t('contentForm','Previous'),
@@ -78,6 +102,7 @@ $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Your Payme
             'itemView' => '_viewPs',
             'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
             'template' => $template,
+            'emptyText'=>Yii::t('contentForm','There are not any results to show'),
             'afterAjaxUpdate' => " function(id, data) {						    	
                             $('#todos').click(function() { 
                                 inputs = $('table').find('input').filter('[type=checkbox]');

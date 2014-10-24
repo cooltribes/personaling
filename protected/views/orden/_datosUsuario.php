@@ -49,7 +49,7 @@
         . "</li>";
     }
    
-    if ($data->estado == 1) {
+    if ($data->estado == 1 && Yii::app()->language=="es_es") {
         echo "<li class='divider'></li>
                         <li>" .
         CHtml::link("<i class='icon-ban-circle'></i> ".Yii::t('backEnd', 'Cancel Order')."", $this->createUrl('orden/cancelar', array('id' => $data->id)), array(

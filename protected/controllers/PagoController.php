@@ -311,6 +311,7 @@ class PagoController extends Controller
             
             $this->render('index',array(
                 'dataProvider'=>$dataProvider,
+                'user_id' => Yii::app()->user->id,
             ));
 	}
 

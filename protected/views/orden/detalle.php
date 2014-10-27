@@ -1062,9 +1062,10 @@ Yii::app()->clientScript->registerScript(
 		$.ajax({
 	        type: "post", 
 	        url: "../enviar", // action 
-	        data: { 'guia':guia, 'id':id}, 
+	        dataType: 'json',
+	        data: { 'guia':guia, 'id':id}, 	        
 	        success: function (data) {
-				if(data=="ok")
+				if(data.status=="ok")
 				{
 					window.location.reload();
 				}

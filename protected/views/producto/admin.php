@@ -245,6 +245,7 @@ $template = '{summary}
 	    'itemView'=>'_authitem',
 	    'template'=>$template,
 	    'summaryText' => "Mostrando {start} - {end} de {count} Resultados",
+	    'emptyText'=>Yii::t('contentForm','There are not any results to show'),
 
 	    'enableSorting'=>'true',
 	    'afterAjaxUpdate'=>" function(id, data) {

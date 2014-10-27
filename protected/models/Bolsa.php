@@ -262,13 +262,13 @@ class Bolsa extends CActiveRecord
                 ));
 
             //revisar si está o no en el carrito
-            $esta = false;
+            $esta = FALSE;
             foreach ($carrito as $producto){
                 if($producto->preciotallacolor_id == $ptcolor->id 
                         && $producto->look_id == $look_id){
 
                     $producto->cantidad++;
-                    $esta = true;
+                    $esta = TRUE;
                 }
             }
 

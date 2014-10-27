@@ -24,6 +24,18 @@
         ),
             )
     );
+
+    $total = 0;
+
+    foreach($dataProvider->getData() as $cadauno){
+        $amount = $cadauno->getPagoClick();
+        $arreglo = explode(" ",$amount);
+
+        $dos = $this->_lastDate ? $cadauno->getLookReferredViewsByDate($this->_lastDate, date("Y-m-d")) : $cadauno->getLookReferredViews();
+
+        $total += ($arreglo[0] * $dos);
+    }
+
     ?> 
 
     <div class="page-header">
@@ -53,6 +65,7 @@
              <fieldset>                
                 <legend>Pagar por el periodo actual</legend>
                     <?php
+
                         $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                             'id'=>'pago-form',
                             "htmlOptions" => array(
@@ -60,17 +73,20 @@
                             )
                         ));     
                     ?>
-                
-                    <div class="control-group input-prepend margin_left_small">                        
-                        <div class="controls">   
-                            <?php
- 								echo CHtml::hiddenField("pagar","no",array('id'=>'pagar'));
-                                echo TbHtml::submitbutton("Pagar", array(
-                                    "id" => "pay",
-                                    "color" => "warning",
-                                ));   
-                            ?>
-                        </div>
+                    <div class="margin_left_small"> 
+                    <span class="pull-left">
+                    <?php
+                         echo "Total a pagar: ".$total." ".Yii::t('contentForm', 'currSym');
+                    ?>
+                    </span>
+
+                    <?php 
+                        echo CHtml::hiddenField("pagar","no",array('id'=>'pagar'));
+                        echo TbHtml::submitbutton("Pagar", array(
+                                "id" => "pay",
+                                "color" => "warning",
+                        ));   
+                    ?>
                     </div>
                     <?php
                         $this->endWidget();
@@ -144,6 +160,8 @@ $this->widget('zii.widgets.CListView', array(
                                  
         });"
 	);
+
+
 ?> 
 
 </div>
@@ -152,6 +170,21 @@ $this->widget('zii.widgets.CListView', array(
 <script>
 
 var validSubmit = false;
+var total=0;
+
+$( document ).ready(function() {
+
+    $("input[name ^= 'amount']").each(function(index, element){
+
+        var id = $(element).attr("id");
+        var value = $("#"+id).val();
+        /* add it to other variable*/
+        //parseInt(total) += parseInt(value);
+        //alert(parseInt(value));
+    });   
+    //alert(total);
+    $("#total").val(total);    
+});
 
 /* Funcion para cambiar los montos que le corresponden a cada PS de acuerdo al 
  * monto ingresado en el campo #monthlyEarning

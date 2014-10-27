@@ -30,6 +30,9 @@
 	echo CHtml::dropDownList('100', '', array('1'=>'Si', '0'=>'No' ),
                             array('style' => 'display:none'));
     
+    echo CHtml::dropDownList('outlet', '', array('1'=>'Si', '0'=>'No' ),
+                            array('style' => 'display:none'));
+    
     /*Filtro de tiendas*/
     $allBrands = CHtml::listData(Tienda::model()->findAll(), 'id', 'name');
     $allBrands['NULL'] = "Personaling";
@@ -84,6 +87,7 @@
                                 'tienda_id' => 'Tienda',
                                 'view_counter' => 'Visitas',
                                 'destacado' => 'Destacados',
+                                'outlet'=>'Outlet',
                                 $var=> $var_name,
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 

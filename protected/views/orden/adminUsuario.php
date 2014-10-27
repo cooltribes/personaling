@@ -201,17 +201,13 @@ $template = '{summary}
 
     } // enviar
 
-
+<?php if(Yii::app()->language=='es_es'){ ?>
 
 
         $("a[id^='linkCancelar']").click(function (e){
             e.preventDefault();
-            //console.log("click");
+
             var urlCancel = $(this).attr('href');
-            //console.log(urlCancel);
-            
-            console.log("Hola");
-            return;
 
             $("#mensajeCancel").focus();
 
@@ -230,14 +226,14 @@ $template = '{summary}
                     "class" : "btn-danger",
                     "callback": function() {
                        // console.log($("#mensajeCancel").val());
-                        $("#hiddenMensaje").val($("#mensajeCancel").val().trim());
+                    var mensaje=    $("#hiddenMensaje").val($("#mensajeCancel").val().trim());
                         //window.location = urlCancel;
                         var vect = urlCancel.split("cancelar/");
                         //console.log(vect);
                         $.ajax({
                             type: 'GET',
                             url: 'cancelar',
-                            data: {id: vect[1], mensaje: $("#hiddenMensaje").val()},
+                            data: {id: vect[1], mensaje: mensaje},
                             success: function(data){
 
                                window.location = "<?php echo CController::createUrl('orden/listado'); ?>";
@@ -254,6 +250,6 @@ $template = '{summary}
 
         });
 
-
+<?php } ?>
 
 </script>

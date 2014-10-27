@@ -1,7 +1,7 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'producto-form',
-	'enableAjaxValidation'=>false,
-	'enableClientValidation'=>true,
+	'enableAjaxValidation'=>true,
+	'enableClientValidation'=>false,
 	'type'=>'horizontal',
 )); ?>
 <?php echo $form->errorSummary($model); ?>

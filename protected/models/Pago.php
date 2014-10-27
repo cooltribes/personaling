@@ -5,14 +5,6 @@
  * 1:Cuenta
  * 2:Agregar al balance
  */
- 
-/*
- * Estados del pago
- * 0:Solicitado
- * 1:Aprobado
- * 2:Rechazado
- */
-
 
 /**
  * This is the model class for table "{{pago}}".
@@ -224,7 +216,7 @@ class Pago extends CActiveRecord
         switch ($this->estado){
             case 0: $status = "En espera"; break;
             case 1: $status = "Pagado"; break;
-            case 2: $status = "Rechazado"; break;
+            case 2: $status = "Rechazado"; break; 
         }
         return $status;
     }

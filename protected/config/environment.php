@@ -401,6 +401,32 @@
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
+                        'log' => array(
+                                    'class' => 'CLogRouter',
+                                    'routes' => array(
+                                        'class' => 'ext.phpconsole.PhpConsoleLogRoute',
+                                        /* Default options:
+                                        'isEnabled' => true,
+                                        'handleErrors' => true,
+                                        'handleExceptions' => true,
+                                        'sourcesBasePath' => $_SERVER['DOCUMENT_ROOT'],
+                                        'phpConsolePathAlias' => 'application.vendors.PhpConsole.src.PhpConsole',
+                                        'registerHelper' => true,
+                                        'serverEncoding' => null,
+                                        'headersLimit' => null,
+                                        'password' => null,
+                                        'enableSslOnlyMode' => false,
+                                        'ipMasks' => array(),
+                                        'dumperLevelLimit' => 5,
+                                        'dumperItemsCountLimit' => 100,
+                                        'dumperItemSizeLimit' => 5000,
+                                        'dumperDumpSizeLimit' => 500000,
+                                        'dumperDetectCallbacks' => true,
+                                        'detectDumpTraceAndSource' => true,
+                                        'isEvalEnabled' => false,
+                                        */
+                                    )
+                                )                        
                     ),
                     'params'=>array(
                     // this is used in contact page
@@ -587,6 +613,17 @@
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
+                         'less'=>array(
+                                      'class'=>'ext.less.components.Less',
+                                      'mode'=>'client',
+                                      'files'=>array(
+                                        'less/style.less'=>'css/style.less',
+                                      ),
+                                          'options'=>array('watch'=>false),
+                                    ),
+                        'urlManager'=>array(
+                            'baseUrl'=>'/test62',
+                            ),                        
                     ),
                     'params'=>array(
                     // this is used in contact page
@@ -651,6 +688,17 @@
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
+                         'less'=>array(
+                                      'class'=>'ext.less.components.Less',
+                                      'mode'=>'client',
+                                      'files'=>array(
+                                        'less/style.less'=>'css/style.less',
+                                      ),
+                                          'options'=>array('watch'=>false),
+                                    ),
+                        'urlManager'=>array(
+                            'baseUrl'=>'/test62',
+                            ),                        
                     ),
                     'params'=>array(
                     // this is used in contact page
@@ -815,15 +863,18 @@
                     'language' => 'es_es',
                     'timeZone' => 'Europe/Madrid',
                     'components'=>array(
-                                    'db'=>array(
-                                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
-                                               dbname=db_personalingT52',
-                                            'emulatePrepare' => true,
-                                            'username' => 'personaling',
-                                            'password' => 'Perso123Naling',
-                                            'charset' => 'utf8',
-                                            'tablePrefix' => 'tbl_',
-                                    ),
+                        'db'=>array(
+                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
+                               dbname=db_personalingT52',
+                            'emulatePrepare' => true,
+                            'username' => 'personaling',
+                            'password' => 'Perso123Naling',
+                            'charset' => 'utf8',
+                            'tablePrefix' => 'tbl_',
+                        ),
+                        'urlManager'=>array(
+                            'baseUrl'=>'',
+                            ),
                     ),
                     'params'=>array(
                         // this is used in contact page

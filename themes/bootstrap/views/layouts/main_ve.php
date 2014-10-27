@@ -1,3 +1,11 @@
+<?php 
+// log using Yii methods
+Yii::log('There is some debug message');
+ 
+// log using PHP Console debug method
+PC::debug('Short way to debug directly in PHP Console', 'some,debug,tags');
+echo $undefinedVar;
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
 <head>

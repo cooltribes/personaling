@@ -22,12 +22,25 @@ Yii::createWebApplication($config)->run();
 */
 //RAFA
 // Change the following paths if necessary
- 
+	if (strstr($_SERVER['HTTP_HOST'],"personaling.es")) 
+		$country='es_es';
+	else if  (strstr($_SERVER['HTTP_HOST'],"personaling.com.ve"))
+	    $country='es_ve';
+	else
+	    $country='es_es'; 
+	
+	$country = 'es_ve'; // FOR TESTING
+    
     $yii = dirname(__FILE__).'/../../yii-1.1.13.e9e4a0/framework/yii.php';
     require_once($yii);
     require_once(dirname(__FILE__).'/protected/config/environment.php');
     Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/protected/extensions/bootstrap');
-    $environment = new Environment(Environment::DEVELOPMENT,'es_ve') ;
+    
+    if (strstr($_SERVER["REQUEST_URI"],"test62"))
+    	$environment = new Environment(Environment::STAGE,$country);
+    elseif (strstr($_SERVER["REQUEST_URI"],"rpalma"))
+    	$environment = new Environment(Environment::DEVELOPMENT,$country);
+    
     defined('YII_DEBUG') or define('YII_DEBUG',$environment->getDebug());
     defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', $environment->getTraceLevel());
     Yii::createWebApplication($environment->getConfig())->run();

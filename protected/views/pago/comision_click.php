@@ -24,6 +24,18 @@
         ),
             )
     );
+
+    $total = 0;
+
+    foreach($dataProvider->getData() as $cadauno){
+        $amount = $cadauno->getPagoClick();
+        $arreglo = explode(" ",$amount);
+
+        $dos = $this->_lastDate ? $cadauno->getLookReferredViewsByDate($this->_lastDate, date("Y-m-d")) : $cadauno->getLookReferredViews();
+
+        $total += ($arreglo[0] * $dos);
+    }
+
     ?> 
 
     <div class="page-header">
@@ -53,6 +65,7 @@
              <fieldset>                
                 <legend>Pagar por el periodo actual</legend>
                     <?php
+
                         $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                             'id'=>'pago-form',
                             "htmlOptions" => array(
@@ -60,17 +73,20 @@
                             )
                         ));     
                     ?>
-                
-                    <div class="control-group input-prepend margin_left_small">                        
-                        <div class="controls">   
-                            <?php
- 								echo CHtml::hiddenField("pagar","no",array('id'=>'pagar'));
-                                echo TbHtml::submitbutton("Pagar", array(
-                                    "id" => "pay",
-                                    "color" => "warning",
-                                ));   
-                            ?>
-                        </div>
+                    <div class="margin_left_small"> 
+                    <span class="pull-left">
+                    <?php
+                         echo "Total a pagar: ".$total." ".Yii::t('contentForm', 'currSym');
+                    ?>
+                    </span>
+
+                    <?php 
+                        echo CHtml::hiddenField("pagar","no",array('id'=>'pagar'));
+                        echo TbHtml::submitbutton("Pagar", array(
+                                "id" => "pay",
+                                "color" => "warning",
+                        ));   
+                    ?>
                     </div>
                     <?php
                         $this->endWidget();
@@ -95,7 +111,8 @@ $template = '{summary}
       <th colspan="3" scope="col" height="40" >Personal Shopper</th>
       <th scope="col" style="text-align: center">Precio por Click</th>
       <th scope="col" style="text-align: center">Clicks totales</th>      
-      <th scope="col" style="text-align: center">Monto a pagar ('.Yii::t('contentForm', 'currSym').')</th>            
+      <th scope="col" style="text-align: center">Monto a pagar ('.Yii::t('contentForm', 'currSym').')</th>
+      <th scope="col" style="text-align: center">Acciones</th>            
     </tr>
     {items}
     </table>
@@ -144,14 +161,108 @@ $this->widget('zii.widgets.CListView', array(
                                  
         });"
 	);
+
+
 ?> 
 
 </div>
+
+<!--MODAL CAMBIO CLICK ON-->
+<?php
+    $this->beginWidget('bootstrap.widgets.TbModal', array(
+        'id' => 'modalPagoClick',
+            ), array(
+                'class' => 'modal fade hide',
+                'tabindex' => "-1",
+                'role' => "dialog",
+                'aria-labelledby' => "myModalLabel",
+                'aria-hidden' => "true",
+            //'style' => "display: none;",
+            ))
+?>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Cambiar monto de comisión por click</h3>
+</div>
+<div class="modal-body">
+    <?php
+    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+        'id' => 'formCambiarComisionClick',
+        'htmlOptions' => array('enctype' => 'multipart/form-data'),
+        'type' => 'horizontal',
+        'enableAjaxValidation' => true,
+        'clientOptions' => array(
+            'validateOnSubmit' => true,
+        ),
+    ));
+    ?>
+    <fieldset>       
+        <div class="control-group">
+            <label class="control-label">Total por click:</label>
+            <div class="controls">
+                <?php echo TbHtml::textField("totalClick", 0, array("append" => Yii::t('backEnd', 'currSym'), "span" => "1"));
+                ?>
+            </div>
+        </div> 
+        <div class="control-group">            
+            <div class="controls">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type' => 'danger',
+                    'buttonType' => 'button',
+                    'label' => "Guardar",
+                    'htmlOptions' => array(
+                        'id' => 'btnClick',
+                    )
+                ));
+                ?>
+            </div>
+        </div>    
+        <?php echo CHtml::hiddenField("ps"); ?> 
+    </fieldset>
+
+<?php $this->endWidget(); ?>
+
+    <div class="row-fluid">
+        <div class="span12 ">
+            <strong class="nroAfectados">1</strong>
+            Personal Shopper será afectado <i class="icon-user"></i>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer text_align_left">
+    <h5 style="margin-top: 0">Descripción:</h5>
+    Cambiarás el valor de la comisión por click para el Personal Shopper seleccionado.
+    Este nuevo valor se aplicará en las próximas ventas.
+</div>                    
+
+<?php $this->endWidget() ?>
+<!--MODAL CAMBIO COMISION OFF-->
 
 <!-- /container -->
 <script>
 
 var validSubmit = false;
+var total=0;
+
+$(document).ready(function() {
+    
+    /*Boton de acciones masivas, para cambiar comision y tiempo*/
+    $(".btnProcesar").click(function() {
+            
+            var id = $(this).attr("id");
+           // alert(id);
+
+            /* change hidden PS value */
+            $("#ps").val(id);
+
+            /* Show Modal */
+            $('#modalPagoClick').modal();
+    });
+  
+});
 
 /* Funcion para cambiar los montos que le corresponden a cada PS de acuerdo al 
  * monto ingresado en el campo #monthlyEarning
@@ -209,6 +320,50 @@ function formSubmit(e){
         
 }
 
+    /*Change click rate*/
+    $("#btnClick").click(function (e){
+        
+        var porClick = $("#totalClick").val();     
+        
+        var res = confirm('¿Estás seguro de establecer '+porClick+' como comisión por click');
+        
+        if(res){
+            var args = $("#formCambiarComisionClick").serialize();
+            accionMasiva(args); 
+        }
+    });
+
+function accionMasiva(parametros){
+    $.ajax(
+            "<?php echo CController::createUrl('CambiarComisionClic'); ?>",
+            {
+                type: 'POST',
+                dataType: 'json',
+                data: parametros,
+                beforeSend: function(){
+                    
+                },
+                success: function(data){                  
+                    
+                    $('#modalPagoClick').modal("hide");
+                    
+                    showAlert(data.status, data.message);
+                    
+                    $('html,body').animate({
+                        scrollTop: $(".page-header").first().next().offset().top
+                    }); 
+                    
+                    $.fn.yiiListView.update('list-auth-items'); 
+                },
+
+                error: function( jqXHR, textStatus, errorThrown){
+                    console.log("Error ejecutando el ajax");
+                    console.log(jqXHR);
+                }
+            }
+        );
+ $.fn.yiiListView.update('list-auth-items');
+}
 
 $(document).ready(function(){
 

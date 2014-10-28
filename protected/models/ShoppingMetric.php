@@ -120,6 +120,7 @@ class ShoppingMetric extends CActiveRecord
 		$criteria->compare('step',$this->step);
 		$criteria->compare('tipo_compra',$this->step);
 		$criteria->compare('created_on',$this->created_on,true);
+		$criteria->order = 'id DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

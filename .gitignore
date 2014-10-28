@@ -21,3 +21,4 @@ nbproject
 /images/es_es/*
 /images/es_ve/*
 */protected/config/*
+protected/config/main.php

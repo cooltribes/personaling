@@ -11,10 +11,13 @@ _svn
 svn-commit*.tmp
 .DS_store
 *.xml
+*.htaccess
 
 sftp-config.json
 /nbproject/private/
 nbproject
 /magazine/
 /test48/
-
+/images/es_es/*
+/images/es_ve/*
+*/protected/config/*

@@ -41,7 +41,7 @@ class PagoController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete','view', 'detalle',
-                                    'comisionAfiliacion','comisionClick','index'), 
+                                    'comisionAfiliacion','comisionClick','index','cambiarComisionClic'), 
 				'expression'=>"UserModule::isAdmin()",
 			),
 			array('deny',  // deny all users
@@ -700,7 +700,37 @@ class PagoController extends Controller
             ));
             
         }
-	
+
+	    public function actionCambiarComisionClic(){
+
+            if(isset($_POST["ps"])){
+                $user = User::model()->findByPk($_POST["ps"]);
+
+                $error=FALSE;
+
+                $perfil = $user->profile;
+                $perfil->profile_type = 5;
+                $perfil->pago_click = $_POST["totalClick"];
+                   
+                if(!$perfil->save()){
+                    $error = true;
+                }
+                
+                if($error){                        
+                    $response["status"] = "error";
+                    $response["message"] = "¡Hubo un error cambiando las comisiones!";
+                }else{                        
+                    $response["status"] = "success";
+                    $response["message"] = "¡Se ha actualizado la comisión del Personal Shopper!";                        
+                }
+
+            }
+ 
+            echo CJSON::encode($response); 
+            Yii::app()->end();
+        }
+
+
 		 /**
          * This action is used for paying the PersonalShoppers with the monthly
          * earnings, distributed by monthly clicks and their value.

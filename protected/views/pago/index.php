@@ -25,9 +25,20 @@ $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Your Payme
         ); ?>	
         <!-- FLASH OFF --> 
         <div class="row">
-            <div class="span10">
+            <div class="span4">
                 <h1><?php echo Yii::t('contentForm' , 'My Payments'); ?></h1>            
             </div>
+
+            <h4>
+            <div class="span6 padding_top_small">Saldo en comisiones:
+                <strong>
+                        <?php 
+                            $personalShopper = User::model()->findByPk($user_id);
+                            echo $personalShopper->getSaldoPorComisiones()." ".Yii::t('backEnd', 'currSym'); ?>                            
+                    </strong>
+            </div>
+            </h4>
+
             <div class="span2 padding_top_small">
                 <?php $this->widget("bootstrap.widgets.TbButton", array(
                     'label' => 'Nueva solicitud',
@@ -37,12 +48,6 @@ $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Your Payme
             </div>
         </div>
     </div>    
-    <style>
-        .table th{
-            vertical-align: middle;
-            text-align: center;
-        }
-    </style>
     
     <?php
         $pagosTotales = Pago::model()->countByAttributes(array('user_id'=>$user_id));

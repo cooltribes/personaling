@@ -155,7 +155,7 @@ return array(
 			'urlFormat'=>'path',
 			 'showScriptName'=>false,
      			//'caseSensitive'=>false, 
-     			'baseUrl'=>'/rpalma/sandbox/personaling',
+     			'baseUrl'=>'/develop',
 
 			'rules'=>array(
                 array(

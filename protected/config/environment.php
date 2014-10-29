@@ -22,6 +22,7 @@
         private $_trace_level;
         private $_config;
         private $_country;
+        private $_baseUrl;
  
  
         /**
@@ -54,9 +55,10 @@
          * Initilizes the Environment class with the given mode
          * @param constant $mode
          */
-        function __construct($mode,$country) {
+        function __construct($mode,$country,$baseUrl) {
             $this->_mode = $mode;
             $this->_country = $country;
+            $this->_baseUrl = $baseUrl
             $this->setConfig();
         }
  
@@ -241,7 +243,7 @@
                         'urlFormat'=>'path',
                         'showScriptName'=>false,
                         //'caseSensitive'=>false, 
-                        'baseUrl'=>'/rpalma/sandbox/personaling',
+                        'baseUrl'=>$this->_baseUrl,
 
                         'rules'=>array(
                             array(
@@ -630,9 +632,7 @@
                                       ),
                                           'options'=>array('watch'=>false),
                                     ),
-                        'urlManager'=>array(
-                            'baseUrl'=>'/test62',
-                            ),                        
+                       
                     ),
                     'params'=>array(
                     // this is used in contact page
@@ -705,9 +705,7 @@
                                       ),
                                           'options'=>array('watch'=>false),
                                     ),
-                        'urlManager'=>array(
-                            'baseUrl'=>'/test62',
-                            ),                        
+                      
                     ),
                     'params'=>array(
                     // this is used in contact page
@@ -792,9 +790,7 @@
                                           ),
                                               'options'=>array('watch'=>false),
                                         ),
-                            'urlManager'=>array(
-                                'baseUrl'=>'',
-                                ),
+
  
                             // Application Log
                             'log'=>array(
@@ -881,9 +877,7 @@
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
-                        'urlManager'=>array(
-                            'baseUrl'=>'',
-                            ),
+
                     ),
                     'params'=>array(
                         // this is used in contact page

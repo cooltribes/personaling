@@ -37,9 +37,13 @@ Yii::createWebApplication($config)->run();
     Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/protected/extensions/bootstrap');
     
     if (strstr($_SERVER["REQUEST_URI"],"test62"))
-    	$environment = new Environment(Environment::STAGE,$country);
+    	$environment = new Environment(Environment::STAGE,$country,'/test62');
     elseif (strstr($_SERVER["REQUEST_URI"],"rpalma"))
-    	$environment = new Environment(Environment::DEVELOPMENT,$country);
+    	$environment = new Environment(Environment::DEVELOPMENT,$country,'/rpalma/sandbox/personaling');
+     elseif (strstr($_SERVER["REQUEST_URI"],"yroa"))
+        $environment = new Environment(Environment::DEVELOPMENT,$country,'/yroa/site/personaling');
+     else      
+        $environment = new Environment(Environment::PRODUCTION,$country,'');
     
     defined('YII_DEBUG') or define('YII_DEBUG',$environment->getDebug());
     defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', $environment->getTraceLevel());

@@ -96,6 +96,12 @@
        
        ?>                    
     </td>     
+
+    <td>
+    <?php
+        echo '<a href="#" class="btn btn-mini btnProcesar" id="'.$data->id.'"><i class="icon-cog"></i>Cambiar comisión</a></td>';
+    ?>
+    </td>
     
 </tr>
 

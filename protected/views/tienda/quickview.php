@@ -50,7 +50,7 @@
             if($img->orden!=1){
                 if($colorPredet == $img->color_id)
                 {
-                    echo '<div class="item">$color';
+                    echo '<div class="item">';
                     echo CHtml::image($img->getUrl(array('ext'=>'jpg')), "Personaling - ".$producto->nombre, array("width" => "450", "height" => "450"));
                     echo '</div>';
                 }
@@ -219,20 +219,15 @@
            </div>
             <?php    }
         else{               
-            foreach ($producto->preciotallacolor as $talCol) {
-                if($talCol->cantidad > 0){ // que haya disp
-                    $talla = Talla::model()->findByPk($talCol->talla_id);
-        
-                    if(in_array($talla->id, $valores)){ // no hace nada para que no se repita el valor          
-                    }
-                    else{ ?>
+          
+     foreach ($producto->availableSizes as $talla) {
+            
+                ?>
                         <div id="<?php echo $talla->id;?>" style='cursor: pointer' class='tallass' title='talla'>
                             <?php echo $talla->valor; ?>                            
                         </div>
-  <?php   array_push($valores, $talla->id);
-                    }
-                }
-            }   
+<?php         }   
+               
         }// else
   ?>                        
                         
@@ -447,7 +442,7 @@ function c(){
         var isGuest =<?php echo(Yii::app()->user->isGuest?"true":"false");?>;
         if(isGuest)
         {
-            agregarBolsaGuest('.$id.', talla, color);
+            agregarBolsaGuest(<?php echo $id; ?>, talla, color);
         }
         else{
 <?php       echo CHtml::ajax(array(

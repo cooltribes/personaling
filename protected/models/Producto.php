@@ -1336,6 +1336,8 @@ public function multipleColor2($idColor, $idact)
          * Buscar por todos los filtros dados en el array $filters
          */
         public function buscarPorFiltros($filters) {
+        	
+		$co=ClasificacionMarca::model()->findByAttributes(array('clasificacion'=>1));
 //            echo "<pre>";
 //            print_r($filters);
 //            echo "</pre>";
@@ -1430,8 +1432,7 @@ public function multipleColor2($idColor, $idact)
                 
                 if($column == 'disponible')
                 {
-                    
-                    $criteria->addCondition('
+                   /* $criteria->addCondition('
                         IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id), 0)
                           - 
                           IFNULL(
@@ -1439,6 +1440,10 @@ public function multipleColor2($idColor, $idact)
                           where ptc.id = o_ptc.preciotallacolor_id and orden.id = o_ptc.tbl_orden_id and 
                           orden.estado IN (3, 4, 8) and t.id = ptc.producto_id), 
                          0) '
+                            .$comparator.' '.$value.'', $logicOp);*/
+                            
+                    $criteria->addCondition('
+                       IFNULL((select SUM(ptc.cantidad) from tbl_precioTallaColor ptc where ptc.producto_id = t.id),0)'
                             .$comparator.' '.$value.'', $logicOp);
                     
                     
@@ -1492,7 +1497,92 @@ public function multipleColor2($idColor, $idact)
                     continue;
                     
                 }
-                
+                if($column == '080') // para comparar 080 barcelona, solo en espana
+                {
+                   $value = ($comparator == '=') ? "=".$value."" : $value;	
+                   if(isset($co))
+				   {
+	                   if(($comparator=='=' && $value=="=1") || ($comparator!='=' && $value=="0"))
+					   {
+					   	 $comparator="=";	// la negacion de no. Si
+					   	 $criteria->compare("t.marca_id", $comparator.$co->marca_id, //cambia
+	                        false, $logicOp);
+					   }
+					   if(($comparator=='=' && $value=="=0") || ($comparator!='=' && $value=="1"))
+					   {
+					   	 $comparator="<>";	// la negacion de no. Si
+					   	 $criteria->compare("t.marca_id", $comparator.$co->marca_id, //cambia
+	                        false, $logicOp);
+					   }
+				   }
+				   else 
+				   {
+	                   if(($comparator=='=' && $value=="=1") || ($comparator!='=' && $value=="0"))
+					   {
+					   	 $comparator="=";	// la negacion de no. Si
+					   	 $criteria->compare("t.marca_id", $comparator."NULL", //cambia
+	                        false, $logicOp);
+					   }
+					   if(($comparator=='=' && $value=="=0") || ($comparator!='=' && $value=="1"))
+					   {
+					   	 $comparator="<>";	// la negacion de no. Si
+					   	 $criteria->compare("t.marca_id", $comparator."NULL", //cambia
+	                        false, $logicOp);
+					   } 
+				   }
+                   
+                    
+                    continue;
+                }
+				 if($column == '100') // solo en venezuela
+                 {
+                   $value = ($comparator == '=') ? "=".$value."" : $value;	
+                   if(isset($co))
+				   {
+	                   if(($comparator=='=' && $value=="=1") || ($comparator!='=' && $value=="0"))
+					   {
+					   	 $comparator="=";	// la negacion de no. Si
+					   	 $criteria->compare("t.marca_id", $comparator.$co->marca_id, //cambia
+	                        false, $logicOp);
+					   }
+					   if(($comparator=='=' && $value=="=0") || ($comparator!='=' && $value=="1"))
+					   {
+					   	 $comparator="<>";	// la negacion de no. Si
+					   	 $criteria->compare("t.marca_id", $comparator.$co->marca_id, //cambia
+	                        false, $logicOp);
+					   }
+				   }
+				   else 
+				   {
+	                   if(($comparator=='=' && $value=="=1") || ($comparator!='=' && $value=="0"))
+					   {
+					   	 $comparator="=";	// la negacion de no. Si
+					   	 $criteria->compare("t.marca_id", $comparator."NULL", //cambia
+	                        false, $logicOp);
+					   }
+					   if(($comparator=='=' && $value=="=0") || ($comparator!='=' && $value=="1"))
+					   {
+					   	 $comparator="<>";	// la negacion de no. Si
+					   	 $criteria->compare("t.marca_id", $comparator."NULL", //cambia
+	                        false, $logicOp);
+					   } 
+				   }
+				   
+                	
+                   
+                    
+                    continue;
+                }
+                if($column == 'outlet') // 
+                 {
+                        //si es el comparador igual o diferente
+                     $value = ($comparator == '=') ? $value : 1-$value;
+
+                        $criteria->addCondition("t.".$column." = ".$value,
+                                $logicOp);
+                        
+                    continue;
+                }
                 if($column == 'fecha')
                 {
                     $value = strtotime($value);
@@ -1695,5 +1785,22 @@ public function multipleColor2($idColor, $idact)
 		}	
 		
 	}
+    
+    public function getAvailableSizes($id = null , $colorId = 0){
+        if(is_null($id))
+            $id = $this->id;
+        if($colorId==0)
+            $sql="select distinct talla_id from tbl_precioTallaColor where cantidad > 0 AND producto_id = ".$id;
+        else
+            $sql="select distinct talla_id from tbl_precioTallaColor where cantidad > 0 AND producto_id = ".$id." AND color_id =".$colorId;
+         $idsTalla = Yii::app()->db->createCommand($sql)->queryColumn();
+         $criteria=new CDbCriteria;
+         $criteria->addInCondition('t.id',$idsTalla);
+         $criteria->order="t.orden";
+         $dp= new CActiveDataProvider('Talla', array(
+            'criteria'=>$criteria,
+        ));
+         return $dp->getData();
+    }
 		 
 }

@@ -34,8 +34,8 @@ return CMap::mergeArray(
                 'country'=>'Venezuela',
                 'codigoPostal'=>false,
                 'pais'=>'espana',
-                'clientName'=>'Personaling Enterprise S.L ',
-                'clientIdentification'=>'B66202383',
+                'clientName'=>'PERSONALING C.A.',
+                'clientIdentification'=>'J-40236088-6',
                 'clientAddress'=>'Sant Pere Mes Baix, Nº 63 Principal B ',
                 'clientCity'=>'Barcelona',
                 'clientZIP'=>'08003',
@@ -66,7 +66,7 @@ return CMap::mergeArray(
                 ),
                 'AzPayTerminal'=>'999',
                 'AzPaySecret'=> 'qwerty1234567890uiop',
-                'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
+                'zohoToken' => 'a029ff6d9be39da6bddbd54f89ed15a1', 
 
 
 		),

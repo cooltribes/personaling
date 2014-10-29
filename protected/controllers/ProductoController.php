@@ -372,6 +372,12 @@ public function actionReportexls(){
 		{
 			$exist = Producto::model()->findByAttributes(array('codigo'=>$_POST['Producto']['codigo']));
 			//var_dump($_POST['Producto']['tipo']);
+			if (isset($_POST['ajax']) && $_POST['ajax'] === 'producto-form') {
+                    echo CActiveForm::validate($model);
+                     Yii::app()->end();
+            }
+			
+			
 			
 			if(isset($exist)) // si existe
 			{
@@ -380,8 +386,8 @@ public function actionReportexls(){
 					 	'marca_id'=>$_POST['marcas'],
 					 	'descripcion'=>$_POST['Producto']['descripcion'],
 					 	'estado'=>$_POST['Producto']['estado'],
-					 	'fInicio'=>$_POST['Producto']['fInicio'],
-						'fFin'=>$_POST['Producto']['fFin'],
+					 	'fInicio'=>date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])),
+						'fFin'=>date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])),
 						'destacado' => $_POST['Producto']['destacado'],
 						'peso' => $_POST['Producto']['peso'],
 						'almacen' => $_POST['Producto']['almacen'],
@@ -1638,7 +1644,7 @@ public function actionReportexls(){
 		//}	
 		
 		if(isset($_POST['tallas'])){
-			$tallas = explode('#',$_POST['tallas']);
+			$tallas = explode(',',$_POST['tallas']);
 			$colores = explode(',',$_POST['colores']);
 			
 		}
@@ -1650,7 +1656,8 @@ public function actionReportexls(){
 					$preciotallacolor = '';
 					$color_tmp = Color::model()->findByAttributes(array('valor'=>$color));
 					if (isset($color_tmp)){
-						$preciotallacolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$model->id,'talla_id'=>$talla,'color_id'=>$color_tmp->id));
+						$modelado=Talla::model()->findByAttributes(array('valor'=>$talla));
+						$preciotallacolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$model->id,'talla_id'=>$modelado->id,'color_id'=>$color_tmp->id));
 						if (!isset($preciotallacolor)){
 							$tallacolor[$i]= new Preciotallacolor;	
 							$tallacolor[$i]->color_id = $color_tmp->id;
@@ -1658,7 +1665,7 @@ public function actionReportexls(){
 						}
 					}
 					if (!isset($preciotallacolor)){
-						$talla_tmp = Talla::model()->findByPk($talla);
+						$talla_tmp = Talla::model()->findByPk($modelado->id);
 						if (isset($talla_tmp)){
 							$tallacolor[$i]->talla_id = $talla_tmp->id;
 							$tallacolor[$i]->talla = $talla_tmp->valor;
@@ -2234,13 +2241,11 @@ public function actionReportexls(){
 		
 		$ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$_POST['idTalla'],'producto_id'=>$_POST['idProd']));
 		
-		foreach($ptc as $p)
+		foreach(Producto::model()->getAvailableSizes($_POST['idProd'],$_POST['idTalla']) as $ta)
 		{
-			if($p->cantidad>0) // que haya disponibilidad para mostrarlo
-			{
-				$ta = Talla::model()->findByPk($p->talla_id);
+		
 				$div = $div."<div onclick='a(".$ta->id.")' id='".$ta->id."' style='cursor: pointer' class='tallass' title='talla'>".$ta->valor."</div>";
-			}
+			
 		}
 		
 		$imagenes = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$_POST['idProd'],'color_id'=>$_POST['idTalla']),array('order'=>'orden ASC'));

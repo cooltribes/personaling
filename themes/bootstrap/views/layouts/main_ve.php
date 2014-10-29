@@ -199,7 +199,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     array('label'=>'Tus Compras', 'url'=>array('/orden/listado')),
                     array('label'=>'Tus Ventas', 'url'=>array('/user/profile/misventas'),
                                             'visible' => UserModule::isPersonalShopper()),   
-                    array('label'=>'Tus Pagos', 'url'=>array('/pago/solicitar'), 'visible' => UserModule::isPersonalShopper()),
+                    array('label'=>'Tus Pagos', 'url'=>array('/pago/index'), 'visible' => UserModule::isPersonalShopper()),
                     array('label'=>'Looks Favoritos', 'url'=>array('/user/profile/looksencantan')),
                     array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
                     array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
@@ -407,7 +407,7 @@ if(!Yii::app()->user->isGuest){
       <div class="span5 ">
         <h3> Sobre Personaling </h3>
         <p class="lead"><?php echo Yii::t('contentForm','Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.') ?></p>
-        <span class="tPrecio">*<?php echo Yii::t('contentForm','Prices are subject to change. You can check the final price on the web sales.'); ?> </span> <p></p>
+    <!--    <span class="tPrecio">*<?php echo Yii::t('contentForm','Prices are subject to change. You can check the final price on the web sales.'); ?> </span> <p></p> -->
         <div class="row-fluid"><div class="span8"><img class="margin_top_medium_minus at_exclude" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/es_es/logos_seguridad.png" alt="Logos de Seguridad">
                         </div><div class="span4"><script type="text/JavaScript">
                                 //<![CDATA[
@@ -416,10 +416,10 @@ if(!Yii::app()->user->isGuest){
                                 </script></div></div>
       </div>
       <div class="span3 offset1 ">
-        <div class="banner-envio">
+      <!--  <div class="banner-envio">
           <h2 class="text_align_center margin_bottom_small margin_top_xsmall color14 ">Envíos y<br/>devoluciones<br/><strong>gratis*</strong><br/><span class="tPrecio">*Excepto Canarias, Ceuta, Melilla y Baleares.</span></h2>
-        </div>
-        <div class="braker_top text_align_center padding_top_xsmall padding_bottom_xsmall">
+        </div>-->
+        <div class=" text_align_center padding_top_xsmall padding_bottom_xsmall">
           <h3 class="">¡Síguenos! </h3>
           <div class="textwidget social-icons"> <a title="Personaling en Facebook" href="https://www.facebook.com/Personaling" target="_blank"><img width="40" height="40" title="Personaling en Facebook" src="<?php echo Yii::app()->baseUrl ?>/images/icon_facebook.png"></a> <a title="Personaling en Twitter" href="https://twitter.com/personaling" target="_blank"> <img width="40" height="40" title="Personaling en Twitter" src="<?php echo Yii::app()->baseUrl ?>/images/icon_twitter.png"></a> <a title="Pinterest" href="https://pinterest.com/personaling/" target="_blank"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_pinterest.png"></a> <a title="Personaling en Instagram" href="http://instagram.com/personaling" target="_blank"><img width="40" height="40" title="Personaling en Instagram" src="<?php echo Yii::app()->baseUrl ?>/images/icon_instagram.png"></a>
           <a title="Personaling en Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ" target="_blank"><img width="40" height="40" title="Personaling en Youtube" src="<?php echo Yii::app()->baseUrl ?>/images/icon_youtube.png"></a>
@@ -436,7 +436,7 @@ if(!Yii::app()->user->isGuest){
     </div>
     <hr/>  
     <div class="row">
-      <div class="span12 text_align_center creditos">Personaling Enterprise S.L. Nuestro NIF B66202383 | Todos los derechos reservados<br/>
+      <div class="span12 text_align_center creditos"><?php echo Yii::app()->params['clientName']; ?> Nuestro RIF <?php echo Yii::app()->params['clientIdentification']; ?> | Todos los derechos reservados<br/>
        Desarrollado por: <br/>
        <!-- <a class="to_add" href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> -->
         <a  href="http://cooltribes.com" title="Connecting true fans" target="_blank">
@@ -565,6 +565,8 @@ if(!Yii::app()->user->isGuest){
     var listaCarrito;
 
     //------------Generar html para poner en Popover ON---------------//
+
+    //TODO: Optimization of this function
     <?php if(!Yii::app()->user->isGuest){
 
       $contadorItems = 0 ;

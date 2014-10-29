@@ -205,6 +205,7 @@ $pagerParams = array(
         'template' => $template,
         'summaryText' => "Mostrando {start} - {end} de {count} Resultados",
         'enableSorting' => 'true',
+        'emptyText'=>Yii::t('contentForm','There are not any results to show'),
         'afterAjaxUpdate' => " function(id, data) {
 						    	
 							$('#todos').click(function() { 

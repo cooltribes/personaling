@@ -1,4 +1,4 @@
-<?php 
+<?php  
 //$this->breadcrumbs=array(
 //	'Looks'=>array('admin'),
 //	'Crear',
@@ -792,20 +792,46 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                   
                   <!-- marcas -->
                   <div class="margin_top_small margin_bottom_small">
-                    <select id="marcas" class="span12" name="marcas">
+                  	<?php 
+                  	echo CHtml::label(Yii::t('contentForm', 'Brands') ,''); 
+                  	$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+					    'id'=>'marcas',
+						'name'=>'marcas',
+					    'source'=>$this->createUrl('Look/autocomplete'),
+						'htmlOptions'=>array(
+					          'size'=>22,
+							  'placeholder'=>'Introduzca la marca',
+							  'class'=>'span12',
+					          //'maxlength'=>45,
+					        ),
+					    // additional javascript options for the autocomplete plugin
+					    'options'=>array(
+					            'showAnim'=>'fold',
+					    ),
+						));	
+                  	
+                  	?>
+                    <?php /*<select id="marcas" class="span12" name="marcas">
                       <option selected><?php echo Yii::t('contentForm', 'All Brands'); ?></option>
                       <?php
         			foreach($marcas as $uno){
         				echo "<option value='".$uno->id."'> ".$uno->nombre." </option>";
         			}
         		?>
-                    </select>
+                    </select> */ ?>
                   </div>
 
                   <?php
 	Yii::app()->clientScript->registerScript('marca',
 		"
-		$('#marcas').change(function(){". CHtml::ajax(
+		$('#marcas').keypress(function( event ) {
+		
+			if ( event.which == 13 ) {
+	    		
+				
+	     		event.preventDefault();
+				
+				". CHtml::ajax(
 						 
 			array( // ajaxOptions
 				'url'=>Yii::app()->createUrl( 'look/categorias'),
@@ -830,10 +856,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					
 					'draggable'=>"false",
 				)
-			).
-			
-		"return false;
-		});",CClientScript::POS_READY
+			)."
+				
+	  			}
+		});
+		",CClientScript::POS_READY
 	);
 	
 	?>

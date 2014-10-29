@@ -316,7 +316,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 	            'label'=>Yii::t('contentForm','Next'),
 	            //'url'=>'confirmar', // action
 	            'icon'=>'lock white',
-	            'buttonType'=>'submit',
+	            'buttonType'=>'submit', 
 	            'htmlOptions'=>array('id'=>'btn-siguiente',),
 	        ));
         
@@ -394,7 +394,7 @@ $("input[name='optionsRadios']").change(function(e){
 //Boton siguiente - General para todos los metodos de pago        
 $("#btn-siguiente").click(function(e){
     
-    $("#pagos-form").submit();
+    $("#tarjeta-form").submit();
 });
 
 ////***** RAFA ******///////

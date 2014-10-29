@@ -20,7 +20,6 @@ nbproject
 images/es_es
 images/es_ve
 .htaccess
-protected/config/main.php
 
 ### Yii ###
 assets/*

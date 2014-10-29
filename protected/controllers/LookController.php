@@ -338,7 +338,7 @@ class LookController extends Controller
 		// si el look tiene prendas externas no se puede aplicar descuento
 		if($model->hasProductosExternos()){
 			Yii::app()->user->setFlash('error',UserModule::t("Este look no puede tener descuento"));
-			$this->redirect(array('mislooks'));
+			$this->redirect(array('admin'));
 		}
 
 		if(isset($_POST['Look'])){

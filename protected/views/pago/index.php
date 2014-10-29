@@ -25,9 +25,20 @@ $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Your Payme
         ); ?>	
         <!-- FLASH OFF --> 
         <div class="row">
-            <div class="span10">
+            <div class="span4">
                 <h1><?php echo Yii::t('contentForm' , 'My Payments'); ?></h1>            
             </div>
+
+            <h4>
+            <div class="span6 padding_top_small">Saldo en comisiones:
+                <strong>
+                        <?php 
+                            $personalShopper = User::model()->findByPk($user_id);
+                            echo $personalShopper->getSaldoPorComisiones()." ".Yii::t('backEnd', 'currSym'); ?>                            
+                    </strong>
+            </div>
+            </h4>
+
             <div class="span2 padding_top_small">
                 <?php $this->widget("bootstrap.widgets.TbButton", array(
                     'label' => 'Nueva solicitud',
@@ -37,13 +48,31 @@ $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Your Payme
             </div>
         </div>
     </div>    
-    <style>
-        .table th{
-            vertical-align: middle;
-            text-align: center;
-        }
-    </style>
     
+    <?php
+        $pagosTotales = Pago::model()->countByAttributes(array('user_id'=>$user_id));
+        $pagosAprobados = Pago::model()->countByAttributes(array('user_id'=>$user_id,'estado'=>1));
+        $pagosEspera = Pago::model()->countByAttributes(array('user_id'=>$user_id,'estado'=>0));
+        $pagosRechazados = Pago::model()->countByAttributes(array('user_id'=>$user_id,'estado'=>2));  
+    ?>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table ">
+        <tr>
+          <th scope="col" colspan="6"> Totales </th> 
+        </tr>
+        <tr>
+          <td><p class="T_xlarge margin_top_xsmall"><?php echo $pagosTotales; ?></p>
+            Total de Pagos</td>
+          <td><p class="T_xlarge margin_top_xsmall"><?php echo $pagosAprobados; ?></p>
+            Total Aprobados</td>
+          <td><p class="T_xlarge margin_top_xsmall"><?php echo $pagosEspera; ?></p>
+            Total en Espera</td>
+          <td><p class="T_xlarge margin_top_xsmall"><?php echo $pagosRechazados; ?></p> 
+            Total Rechazados</td>
+        </tr>
+      </table>
+
+    <hr>
     <?php
     $pagerParams=array(
         'header'=>'',
@@ -78,6 +107,7 @@ $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Your Payme
             'itemView' => '_viewPs',
             'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
             'template' => $template,
+            'emptyText'=>Yii::t('contentForm','There are not any results to show'),
             'afterAjaxUpdate' => " function(id, data) {						    	
                             $('#todos').click(function() { 
                                 inputs = $('table').find('input').filter('[type=checkbox]');

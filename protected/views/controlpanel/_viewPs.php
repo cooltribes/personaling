@@ -100,11 +100,11 @@
     </td>
     
     <!--VER DETALLES-->
-    <td style="text-align: center">
+    <td>
         <div class="dropdown"> <a class="dropdown-toggle btn btn-block" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" title="Acciones"> <i class="icon-cog"></i></a> 
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
             <li>
-                <?php echo CHtml::link('<i class="icon-eye-open"></i> Mis Ventas',array("controlpanel/misventas", "id" => $data->id)); ?>            
+                <?php echo CHtml::link('<i class="icon-eye-open"></i> Ventas PS',array("controlpanel/misventas", "id" => $data->id)); ?>            
             </li> 
             <li>
                 <?php echo CHtml::link('<i class="icon-edit"></i> Comisión por Afiliación',array("controlpanel/comisionAfiliacion","id"=>$data->id)); ?>

@@ -44,6 +44,16 @@ if(isset($seo)){
 	'Tienda',
 	);
         $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Tienda Personalizada'));
+        
+        print_r($_SERVER);
+        echo "<br/><br/><br/><br/>";
+        print_r($_REQUEST);
+        echo "<br/><br/><br/><br/>";
+        print_r($_ENV);
+        echo "<br/><br/><br/><br/>";
+        print_r("a");
+        echo "<br/><br/><br/><br/>";
+        print_r("");
 ?>
 <?php $stopSales = false; ?>
 <?php if ($stopSales): ?>
@@ -564,8 +574,10 @@ if (!Yii::app()->user->isGuest && $completarPerfil){
             
             if($(this).html().length>50){
                 var arr=$(this).html().split('<span');
-                console.log(arr.toString()); 
-                $('#precio_titulo').html(arr[0]);
+                arr=arr[0].split('De');
+                $('#precio_titulo').html(arr[1]);
+         
+                
             }else
                 $('#precio_titulo').html($(this).html());
             

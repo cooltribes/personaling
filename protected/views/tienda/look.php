@@ -496,7 +496,7 @@ $("#mobFiltrar").click(function() {
 
         <div class="navbar-inner sub_menu hide">
             <div id="div_ocasiones"></div>
-            <div id="div_shopper" style="display: none">
+            <div id="div_shopper">
                 <form id="form_shopper">
                     <nav class="  ">
                         <ul class="nav">
@@ -860,6 +860,9 @@ $this->beginWidget('bootstrap.widgets.TbModal', array(
 
 
     function show_shopper() {
+        
+        
+            
         $('#div_ocasiones').hide();
         $('#div_shopper').show();
     }
@@ -1087,11 +1090,17 @@ if (isset(Yii::app()->session["modalOn"])) {
 
         $("#btnShoppers").click(function(e) {
             e.preventDefault();
-            $('.sub_menu').removeClass('hide');
-        });
+            if( $('.sub_menu').hasClass('hide'))
+                $('.sub_menu').removeClass('hide');
+            else
+                $('.sub_menu').addClass('hide')
+        }); 
         
         
         $(window).scroll(function() {
+                $('.sub_menu').addClass('hide');
+
+                
 				if ($(this).scrollTop() > 200&&$(this).scrollTop()+200<$('#wrapper_footer').offset().top) {
 					
 					$('.go-top').fadeIn(600);

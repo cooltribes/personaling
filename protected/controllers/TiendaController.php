@@ -147,7 +147,7 @@ class TiendaController extends Controller
 		$lims=Precio::model()->getLimites();
 
 		$dif=$lims['maximo']-$lims['minimo'];
-	
+	/*
 		$orden[0]="destacado DESC, t.fecha DESC";
 		$orden[1]="destacado DESC, t.fecha ASC";
 		$orden[2]="destacado DESC, t.descripcion DESC";
@@ -156,7 +156,7 @@ class TiendaController extends Controller
 		$orden[5]="destacado DESC, t.peso ASC";
 		$orden[6]="destacado DESC, t.peso DESC";
 		$orden[7]="destacado DESC, t.id DESC";
-		$orden[8]="destacado DESC, t.id ASC";
+		$orden[8]="destacado DESC, t.id ASC";*/
 		
 		$rangos[0]['min']=0;
 		$rangos[0]['max']=($dif*.25)+$lims['minimo'];
@@ -367,12 +367,12 @@ class TiendaController extends Controller
 			PC::debug('Execute Time (before nueva2):'.(microtime(true)-$time_start), 'debug,time');
 			$criteria = $producto->nueva2($a);
 
-			if (isset($_GET['page'])&&
+		/*	if (isset($_GET['page'])&&
 			(!isset(Yii::app()->session['f_cat'])&&
 			!isset(Yii::app()->session['f_text'])&&
 			!isset(Yii::app()->session['f_color'])&&
 			!isset(Yii::app()->session['chic'])))
-				$criteria->order=$orden[Yii::app()->session['order']];
+				$criteria->order=$orden[Yii::app()->session['order']];*/
 			$total=Producto::model()->count($criteria);
 			if($total>0){
 			
@@ -468,7 +468,7 @@ class TiendaController extends Controller
 		PC::debug('Execute Time (before nueva2 otra):'.(microtime(true)-$time_start), 'debug,time'); 
 		$criteria = $producto->nueva2($a);
 		PC::debug('Execute Time (after nueva2 otra):'.(microtime(true)-$time_start), 'debug,time'); 
-		$criteria->order=$orden[Yii::app()->session['order']];
+		//$criteria->order=$orden[Yii::app()->session['order']];
 		$total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);
 		$pages->pageSize = 12;
@@ -2059,5 +2059,13 @@ public function actionCategorias2(){
 		Yii::app()->session['080']=1;
 		$this->redirect(array('index'));
 	}
+    
+    public function fromProductoDetail(){ 
+        if(isset($_SERVER['HTTP_REFERER'])){
+            if(strpos($_SERVER['HTTP_REFERER'],'/productos/')||strpos($_SERVER['HTTP_REFERER'],'/producto/detalle/'))
+                return true;
+        }
+        return false;
+    }
         
 }

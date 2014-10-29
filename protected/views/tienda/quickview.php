@@ -442,7 +442,7 @@ function c(){
         var isGuest =<?php echo(Yii::app()->user->isGuest?"true":"false");?>;
         if(isGuest)
         {
-            agregarBolsaGuest('.$id.', talla, color);
+            agregarBolsaGuest(<?php echo $id; ?>, talla, color);
         }
         else{
 <?php       echo CHtml::ajax(array(

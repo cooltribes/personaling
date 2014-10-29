@@ -7,10 +7,10 @@
     <td>
         <?php echo $data->id; ?>
     </td>
-    
+
     <!--Usuario-->
     <td>
-        <h5 class="no_margin_bottom no_margin_top"> <?php echo $data->user->profile->getNombre();?></h5>
+        <h5 class="no_margin_bottom no_margin_top"> <?php echo $data->user->profile->getNombre(); ?></h5>
         <small>
             <?php            
                echo $data->user->email;            

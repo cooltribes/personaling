@@ -8,21 +8,21 @@
  * It uses javascript to load and parse the new pages, but gracefully degrade
  * in cases where javascript is disabled and the users will still be able to
  * access all the pages.
- *
+ * 
  * @author davi_alexandre
  */
 class YiinfiniteScroller extends CBasePager {
 
     public $contentSelector = '#content';
     public $navigationLinkText = 'next';
+    public $contentLoadedCallback = null;
 
     private $_options = array(
-        'loadingImg'    => null,
-        'loadingText'   => null,
-        'donetext'      => null,
-        'itemSelector'  => null,
-        'errorCallback' => null,
-        'debug' => null,
+        'loadingImg'            => null,
+        'loadingText'           => null,
+        'donetext'              => null,
+        'itemSelector'          => null,
+        'errorCallback'         => null,
     );
 
     private $_default_options = array(
@@ -33,21 +33,14 @@ class YiinfiniteScroller extends CBasePager {
 
     public function init() {
         $this->getPages()->validateCurrentPage = false;
-        
         parent::init();
     }
 
     public function run() {
-//    	echo "TOTAL ";
-//		echo $this->pageCount;
-//		echo "<br>Actual";
-//		echo $this->currentPage;
-//        if($this->currentPage == $this->pageCount)
-//            return;
-        if($this->pageCount > 1) {
+        if($this->getPageCount() > 1) {
             $this->registerClientScript();
             $this->createInfiniteScrollScript();
-            $this->renderNavigation();
+            echo $this->renderNavigation();
         }
 
         if($this->currentPageDoesntExists()) {
@@ -72,19 +65,17 @@ class YiinfiniteScroller extends CBasePager {
     }
 
     public function registerClientScript() {
-        //$url = CHtml::asset(Yii::getPathOfAlias('ext.yiinfinite-scroll.assets').'/jquery.infinitescroll.min.js');
-		//echo "HOLA";
-		$url = CHtml::asset(Yii::getPathOfAlias('ext.yiinfinite-scroll.assets').'/jquery.infinitescroll.js');
+        $url = CHtml::asset(Yii::getPathOfAlias('ext.yiinfinite-scroll.assets').'/jquery.infinitescroll.min.js');
         Yii::app()->clientScript->registerScriptFile($url);
     }
 
     private function createInfiniteScrollScript() {
-    	//echo "RAFA";
+        $options = $this->buildInifiniteScrollOptions();
+        $contentLoadedCallback = CJavascript::encode($this->contentLoadedCallback);
         Yii::app()->clientScript->registerScript(
             uniqid(),
-            "$('{$this->contentSelector}').infinitescroll(".$this->buildInifiniteScrollOptions().");"
+            "$('{$this->contentSelector}').infinitescroll($options, $contentLoadedCallback);"
         );
-		//echo "$('{$this->contentSelector}').infinitescroll(".$this->buildInifiniteScrollOptions().");";
     }
 
     private function buildInifiniteScrollOptions() {
@@ -94,19 +85,26 @@ class YiinfiniteScroller extends CBasePager {
         return $options;
     }
 
-    private function renderNavigation() {
-        $next_link = CHtml::link($this->navigationLinkText, $this->createPageUrl($this->currentPage+1));
-        //$next_link = CHtml::link($this->navigationLinkText, $this->createPageUrl($this->currentPage));
-        echo '<div class="infinite_navigation">'.$next_link.'</div>';
+    public function renderNavigation() {
+        if($this->isntTheLastPage()) {
+            $next_link = CHtml::link($this->navigationLinkText, $this->createPageUrl($this->getCurrentPage() + 1));
+            return '<div class="infinite_navigation">'.$next_link.'</div>';
+        }
+
+        return '';
     }
 
-    private function currentPageDoesntExists() {
-    	//echo $this->currentPage.'/'.$this->pageCount;
-        if($this->pageCount > 1) {
-            return $this->currentPage >= $this->pageCount;
+    public function currentPageDoesntExists() {
+        if($this->getPageCount() > 1) {
+            return $this->getCurrentPage() >= $this->getPageCount();
         } else {
-            return $this->currentPage > 0;
+            return $this->getCurrentPage() > 0;
         }
+    }
+
+    private function isntTheLastPage()
+    {
+        return $this->getCurrentPage() < $this->getPageCount() - 1;
     }
 
 }

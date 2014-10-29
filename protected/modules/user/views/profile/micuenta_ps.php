@@ -176,9 +176,11 @@ $looks_recomendados = $look->match($model);
            <ul class="nav nav-stacked nav-tabs">
               <!-- <li><a href="#" title="Tus Looks Publicados">Tus Looks Publicados</a></li> -->
               <!-- <li><a href="#" title="Tus Looks Pendientes por aprobació">Tus Looks Pendientes por aprobación</a></li> -->
-              <li><a href="#" title="Tus Looks Pendientes por aprobació">Mis looks</a></li>
+              <li><a href="<?php echo Yii::app()->request->baseUrl."/look/listarLooks";?>" title="Tus Looks Pendientes por aprobació">Ver Looks creados</a></li>
               
               <li><a href="<?php echo Yii::app()->request->baseUrl ?>/docs/manual_CreaciondeLooks.pdf" title="Crear look">Manual para crear un Look</a></li>
+              
+              <li><a href="<?php echo Yii::app()->request->baseUrl."/look/mislooks";?>" title="Administrar Looks">Administrar Looks</a></li>
             </ul>
           
           </div>

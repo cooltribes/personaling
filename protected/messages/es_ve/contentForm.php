@@ -368,6 +368,7 @@ return array (
      'The bag is empty' => 'La bolsa está vacia',
      'The order to <b>{name}</b> has successfully completed' => 'El pedido para <b>{name}</b> se ha realizado con éxito.',
      'This transaction will be processed securely through the platform:' => 'Esta transacción será procesada de forma segura gracias a la plataforma de:',
+     'There are not any results to show'=>'No existen resultados para mostrar',
      'To' => 'Hasta',
      'To1' => 'Para',
      'To what age girls should focus this clothes?' => '¿A chicas de que edad va dirigido este look?',

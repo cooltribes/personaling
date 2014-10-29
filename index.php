@@ -31,7 +31,7 @@ Yii::createWebApplication($config)->run();
 	
 	$country = 'es_ve'; // FOR TESTING
     
-    $yii = dirname(__FILE__).'/../../yii-1.1.13.e9e4a0/framework/yii.php';
+    $yii = dirname(__FILE__).'/../../yii-1.1.13.e9e4a0/framework/yiilite.php';
     require_once($yii);
     require_once(dirname(__FILE__).'/protected/config/environment.php');
     Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/protected/extensions/bootstrap');

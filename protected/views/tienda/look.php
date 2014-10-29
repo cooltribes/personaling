@@ -129,7 +129,8 @@ if (isset($user)){
 		</div>
 
 </div>
-
+<?php PC::debug('Execute Time (before filter):'.(microtime(true)-$time_start), 'debug,time'); ?>
+<?php //TODO: Mejorar estos filtros ?>
 <div class="navbar navbar-fixed-top" id="mobilefilters-expanded">
 
 	<div class="container">
@@ -211,15 +212,11 @@ if (isset($user)){
 		</div>
 	</div>
 </div>
-
+<?php PC::debug('Execute Time (end filter):'.(microtime(true)-$time_start), 'debug,time'); ?>
 
 
 
 <?php
-
-
-
-
 $this->breadcrumbs = array(
     'Looks',
 );
@@ -263,82 +260,73 @@ $("#mobFiltrar").click(function() {
 
 	
 </script>
-
+<?php PC::debug('Execute Time (before filter guest):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <div id="deskfilters">
-<div class="container" id="scroller-anchor">
-	
-	
-    <div class="container" id="scroller">
-        
-    
-  
-    <div class="container">
-        <div class="alert in" id="alert-msg" style="display: none">
-            <button type="button" class="close">&times;</button> 
-            
-            <div class="msg"></div>
-        </div>
-        
-        <?php
-        // este bloque no se debe mostrar si el usuario es hombre
-        if((isset($user) && $user->profile->sex == 1) || !isset($user)){
-            ?>
-            <div class="margin_top_medium botones" style="width:100%">
-                <div class="btlooks">
-                    <?php
-                    //var_dump(Yii::app()->getRequest()->getUrlReferrer());
-                    $this->widget('bootstrap.widgets.TbButton', array(
-                        'label' => 'Todos los looks',
-                        'buttonType' => 'button',
-                        //'type' => $todosLosLooks?'danger':'',
-                        //'size' => 'large',
-                        //'disabled' => true,
-                        'htmlOptions' => array(
-                            'id' => 'btnTodos',
-                            'onclick' => 'js:clickTodos()',
-                            'role' => 'button',
-                            'class' => $todosLosLooks?'all btn-large btn-danger':'all btn-large lighted',
-                            'data-toggle' => 'modal',
-                            
-                        ),
-                    ));
-                    ?>
-                </div>
-                <div  class="btmatch" style="float:left; width:20%">
-                    <?php
+    <div class="container" id="scroller-anchor">
+	   <div class="container" id="scroller">
+            <div class="container">
+                <div class="alert in" id="alert-msg" style="display: none">
+                    <button type="button" class="close">&times;</button> 
                     
-                    $this->widget('bootstrap.widgets.TbButton', array(
-                        'label' => 'Looks para ti',
-                        'buttonType' => 'button',
-                        
-                        //'type' => $todosLosLooks?'':'danger',
-                        //'size' => 'large',
-                        'htmlOptions' => array(
-                            'id' => 'btnMatch', 
-                            'onclick' => 'js:clickPersonal('.$status_register.',"'.
-                            Yii::app()->createUrl("/user/profile/tuestilo", $params).'","'.
-                            Yii::app()->createUrl("/user/profile/tutipo", $params).'")',
-                            'class' => $todosLosLooks?'match btn-large lighted':'match btn-large btn-danger',
-                        ),
-                    ));
-                    ?>
+                    <div class="msg"></div>
                 </div>
-                <div class="spacerlook">&nbsp;
-  				</div>
+                
+                <?php
+                // este bloque no se debe mostrar si el usuario es hombre
+                if((isset($user) && $user->profile->sex == 1) || !isset($user)){
+                    ?>
+                    <div class="margin_top_medium botones" style="width:100%">
+                        <div class="btlooks">
+                            <?php
+                            //var_dump(Yii::app()->getRequest()->getUrlReferrer());
+                            $this->widget('bootstrap.widgets.TbButton', array(
+                                'label' => 'Todos los looks',
+                                'buttonType' => 'button',
+                                //'type' => $todosLosLooks?'danger':'',
+                                //'size' => 'large',
+                                //'disabled' => true,
+                                'htmlOptions' => array(
+                                    'id' => 'btnTodos',
+                                    'onclick' => 'js:clickTodos()',
+                                    'role' => 'button',
+                                    'class' => $todosLosLooks?'all btn-large btn-danger':'all btn-large lighted',
+                                    'data-toggle' => 'modal',
+                                    
+                                ),
+                            ));
+                            ?>
+                        </div>
+                        <div  class="btmatch" style="float:left; width:20%">
+                            <?php
+                            
+                            $this->widget('bootstrap.widgets.TbButton', array(
+                                'label' => 'Looks para ti',
+                                'buttonType' => 'button',
+                                
+                                //'type' => $todosLosLooks?'':'danger',
+                                //'size' => 'large',
+                                'htmlOptions' => array(
+                                    'id' => 'btnMatch', 
+                                    'onclick' => 'js:clickPersonal('.$status_register.',"'.
+                                    Yii::app()->createUrl("/user/profile/tuestilo", $params).'","'.
+                                    Yii::app()->createUrl("/user/profile/tutipo", $params).'")',
+                                    'class' => $todosLosLooks?'match btn-large lighted':'match btn-large btn-danger',
+                                ),
+                            ));
+                            ?>
+                        </div>
+                        <div class="spacerlook">&nbsp;
+          				</div>
+                    </div>
+
+                    <?php
+                }
+                ?>
             </div>
-
-            <?php
-        }
-        ?>
-
-
-  
-    
-</div>
 
 <!-- SUBMENU ON -->
 
-    <div class="container margin_top_medium">
+<div class="container margin_top_medium">
     <div class="navbar  nav-inverse barra-margen">
         <div class="navbar-inner" id="barraFiltros">
             <nav class="  ">
@@ -541,6 +529,7 @@ foreach ($personal_shopper as $shopper) {
 </div>
 
 <!-- SUBMENU OFF -->
+<?php PC::debug('Execute Time (end filter guest):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <div class="container" id="tienda_looks">
     <?php if(empty($looks)){ ?>
     <p>
@@ -559,6 +548,7 @@ $this->renderPartial('_look', array(
 </div>
 
 <!-- /container -->
+<?php PC::debug('Execute Time (end look):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <?php
 
 function replace_accents($string) {

@@ -4,57 +4,33 @@
         display:none;
     }
 </style>
-
-			<?php //echo "paginas".$pages->pageCount; ?> 
-			<?php //echo "items".$pages->itemCount; ?> 
-			<?php //echo "page".$pages->currentPage; ?>
-			<?php //echo "size".$pages->pageSize; ?>
-
 <div class="items" id="catalogo">
-   
-      	 
 <?php
 $cont = 1;
-
 foreach($prods as $data): 
+	$category = $data->categorias[0];
+    if (isset($category)){
+		// registrar impresión en google analytics
+		Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
+			//console.log('tales');
 
-	
-	
-	$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
-   if(isset($category_product))
-   {
-    $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
+			ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
+			  'id': '".$data->id."',                   // Product ID (string).
+			  'name': '".addslashes ($data->nombre)."', // Product name (string).
+			  'category': '".addslashes ($category->nombre)."',   // Product category (string).
+			  'brand': '".addslashes ($data->mymarca->nombre)."',                // Product brand (string).
+			  //'variant': 'Black',               // Product variant (string).
+			  'list': 'Product impression',         // Product list (string).
+			  'position': ".$cont.",                    // Product position (number).
+			  //'dimension1': 'Member'            // Custom dimension (string).
+			});
+			
+			ga('send', 'pageview');              // Send product impressions with initial pageview.
+		", CClientScript::POS_END);	
 
-   
-    ?>
-
-    <?php
-
-	// registrar impresión en google analytics
-	Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
-		//console.log('tales');
-
-		ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
-		  'id': '".$data->id."',                   // Product ID (string).
-		  'name': '".addslashes ($data->nombre)."', // Product name (string).
-		  'category': '".addslashes ($category->nombre)."',   // Product category (string).
-		  'brand': '".addslashes ($data->mymarca->nombre)."',                // Product brand (string).
-		  //'variant': 'Black',               // Product variant (string).
-		  'list': 'Product impression',         // Product list (string).
-		  'position': ".$cont.",                    // Product position (number).
-		  //'dimension1': 'Member'            // Custom dimension (string).
-		});
-		
-		ga('send', 'pageview');              // Send product impressions with initial pageview.
-	", CClientScript::POS_END);	
-
-}
-	if($data->tipo){
-		$tienda=Tienda::model()->findByPk($data->tienda_id);
 	}
-		
-	else
-		$tienda=null;
+	if($data->tipo)	$tienda=Tienda::model()->findByPk($data->tienda_id);
+	else $tienda=null;
 ?>
 	<div class="div_productos">
 		<div class="json_product" style="display:none;">
@@ -70,33 +46,21 @@ foreach($prods as $data):
 	    	));
 	    	?>
 	    </div>
-	<?php
+<?php
 	
-$id=0;
-$entro=0;
-$con=0;
-$prePub="";
-$a='';
-$b='';
-	
-	$ims = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$data->id),array('order'=>'orden asc'));
-
-	
-	
+	$id=0;
+	$entro=0;
+	$con=0;
+	$prePub="";
+	$a='';
+	$b='';
+	//$ims = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$data->id),array('order'=>'orden asc'));
+	$ims = $data->imagenes;
 	$ima=$ims[0];
-	if(isset($ims[1]))
-		$segunda=$ims[1];
-	else
-		$segunda=$ims[0];
-	
-	
-	
+	$segunda = isset($ims[1])?$ims[1]:$ims[0];
 	if(isset(Yii::app()->session['f_color'])){
-					
 		if(Yii::app()->session['f_color']!=0){
-			
 			$ims = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$data->id,'color_id'=>Yii::app()->session['f_color']),array('order'=>'orden asc'));
-						
 			if(count($ims)>0){
 				$ima=$ims[0];
 			}
@@ -122,7 +86,8 @@ $b='';
                 
                 //Icono de descuento - Color Negro
 				$iconoDescuento = '';
-				$precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
+				//$precio_producto = Precio::model()->findByAttributes(array('tbl_producto_id'=>$data->id));
+				$precio_producto = $data->precios[0];
 				if($precio_producto){
 					if(!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0){
 						switch ($precio_producto->tipoDescuento) {
@@ -147,7 +112,8 @@ $b='';
 				}
 				
 				$var=0;
-				foreach (Preciotallacolor::model()->findAllByAttributes(array('producto_id'=>$data->id)) as $talCol)
+				foreach ($data->preciotallacolor as $talCol)
+				//foreach (Preciotallacolor::model()->findAllByAttributes(array('producto_id'=>$data->id)) as $talCol)
 				{ 	
 					if($talCol->cantidad>0)
 					{

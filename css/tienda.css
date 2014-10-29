@@ -1,0 +1,83 @@
+.bard_tienda .dropinput #precio_titulo {
+    width: 130px;
+}
+
+
+/*Para el filtro de marcas*/
+.item.item-marcas{
+    vertical-align: top;
+}
+.container-marcas {    
+    width: 165px;
+}
+
+.container-marcas .select2-choice{
+    background-image: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border: 1px solid #ddd;
+    padding: 5px 5px 5px 10px;
+    height: 21px;
+    display: block;    
+}
+
+.container-marcas.select2-dropdown-open .select2-choice,
+.container-marcas.select2-container-active .select2-choice{
+    -webkit-box-shadow: none; 
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+    background: none;
+}
+
+.select2-container .select2-choice span{
+    line-height: 21px;
+    width: 118px;
+    display: inline-block;
+    margin-right: 0; 
+}
+.select2-container .select2-choice div{
+    background-image: none;    
+    -webkit-border-radius: 0 ;
+    -moz-border-radius: 0;
+    border-radius: 0; 
+    border: 0; 
+    background: #dfdfdf;
+    padding: 3px 1px;
+    height: auto;
+    display: inline-block;
+    position: initial;
+}
+.select2-container .select2-choice div b{
+    background-image: none;    
+    width: 0;
+    height: 0;
+    vertical-align: top;
+    border-top: 4px solid #000000;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    content: "";     
+    display: block;
+    margin: 5px;
+}
+
+.dropdown-marcas{
+    border: none;
+    margin-top: 2px;
+}
+.dropdown-marcas .select2-results{
+    padding: 0;
+}
+
+.dropdown-marcas li.select2-results-dept-0.select2-result.select2-result-selectable {
+    border-bottom: 1px solid #ddd;
+    padding: .5em 0;
+}
+.dropdown-marcas li.select2-results-dept-0.select2-result.select2-result-selectable:last-child {
+    border-bottom: 0;    
+}
+.dropdown-marcas li.select2-highlighted {
+    background: #ddd;
+    color: #333;
+}

@@ -67,29 +67,29 @@
         private function setConfig() {
             switch($this->_mode) {
                 case self::DEVELOPMENT:
-                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_development());
                     $this->_debug       = TRUE;
                     $this->_trace_level = 3;
+                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_development());
                     break;
                 case self::TEST:
-                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_test());
                     $this->_debug       = FALSE;
                     $this->_trace_level = 0;
+                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_test());
                     break;
                 case self::STAGE:
-                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_stage());
                     $this->_debug       = TRUE;
                     $this->_trace_level = 0;
+                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_stage());
                     break;
                 case self::PRODUCTION:
-                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_production());
                     $this->_debug       = FALSE;
                     $this->_trace_level = 0;
+                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_production());
                     break;
                 default:
-                    $this->_config      = $this->_main();
                     $this->_debug       = TRUE;
                     $this->_trace_level = 0;
+                    $this->_config      = $this->_main();
                     break;
             }
         }
@@ -176,6 +176,15 @@
 
                 // application components
                 'components'=>array(
+                    'clientScript' => array(
+                           'class' => 'application.vendors.yii-EClientScript.EClientScript',
+                           'combineScriptFiles' => ! $this->_debug, // By default this is set to true, set this to true if you'd like to combine the script files
+                           'combineCssFiles' => ! $this->_debug, // By default this is set to true, set this to true if you'd like to combine the css files
+                           'optimizeScriptFiles' => ! $this->_debug, // @since: 1.1
+                           'optimizeCssFiles' => ! $this->_debug, // @since: 1.1
+                           'optimizeInlineScript' => false, // @since: 1.6, This may case response slower
+                           'optimizeInlineCss' => false, // @since: 1.6, This may case response slower
+                         ),
                     'assetManager' => array(
                         //'linkAssets' => true,
                        // 'forceCopy'=> false,

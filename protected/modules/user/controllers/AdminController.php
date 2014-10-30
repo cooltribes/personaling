@@ -872,7 +872,10 @@ class AdminController extends Controller
         $success = 0;
         $error = 0;
         $message = '';
-		
+		//echo "entro";
+       // var_dump($dataProvider->getData());
+        //Yii::app()->end();
+
 		$acumulador = 1;
 		$sumatoria = 1; // Usuarios hasta el momento
 		$cont = 1; // Contador para el ciclo
@@ -880,12 +883,11 @@ class AdminController extends Controller
 		$ids = array(); // arreglo para comparar
 					
 		$usuariosTotal = sizeof($dataProvider->getData());
-		
+
 		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= '<Leads>';
 		
         foreach($dataProvider->getData() as $data){
-            
 			if($cont >= 100) { 
 				$xml .= '</Leads>';
 					
@@ -1037,7 +1039,7 @@ class AdminController extends Controller
 					$xml .= '<FL val="Street">'.$direccion->dirUno.'</FL>';
 					$xml .= '<FL val="City">'.$direccion->ciudad->nombre.'</FL>';
 					$xml .= '<FL val="State">'.$direccion->provincia->nombre.'</FL>';
-					$xml .= '<FL val="Zip Code">'.$direccion->codigopostal->codigo.'</FL>';
+					//$xml .= '<FL val="Zip Code">'.$direccion->codigopostal->codigo.'</FL>';
 					$xml .= '<FL val="Country">'.$direccion->pais.'</FL>';
 					$xml .= '<FL val="Lead Status">'.$user->getStatus($user->status).'</FL>';
 				}

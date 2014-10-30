@@ -44,16 +44,7 @@ if(isset($seo)){
 	'Tienda',
 	);
         $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Tienda Personalizada'));
-        
-        print_r($_SERVER);
-        echo "<br/><br/><br/><br/>";
-        print_r($_REQUEST);
-        echo "<br/><br/><br/><br/>";
-        print_r($_ENV);
-        echo "<br/><br/><br/><br/>";
-        print_r("a");
-        echo "<br/><br/><br/><br/>";
-        print_r("");
+
 ?>
 <?php $stopSales = false; ?>
 <?php if ($stopSales): ?>

@@ -17,8 +17,8 @@ if(isset($seo)){
 		
 		    	<img class="margin_top_medium" src="<?php echo Yii::app()->theme->baseUrl.'/images/logocompleto.png' ?>" alt="Personaling - Tu Personal Shopper Online " width="320" height="325">
 		    	<p class="lead margin_top_xsmall text_align_center slongan">Tu Personal Shopper Online</p>
-		    	<div id="excuses" class="hide text_center_align margin_medium" style:"width:80%">
-		    		Discúlpanos, nuestro website en <b>Venezuela</b> está temporalmente fuera de servicio. <br/> Te invitamos a visitar nuestro portal de <b>España</b>
+		    	<div id="excuses" class="hide text_center_align margin_medium" style="width:80%">
+		    		Próximamente volveremos a estar Online.<br/>Siguenos en nuestras redes y te mantendremos informado.
 		    	</div>
 	
 		

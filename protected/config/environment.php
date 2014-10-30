@@ -58,7 +58,7 @@
         function __construct($mode,$country,$baseUrl) {
             $this->_mode = $mode;
             $this->_country = $country;
-            $this->_baseUrl = $baseUrl
+            $this->_baseUrl = $baseUrl;
             $this->setConfig();
         }
  
@@ -309,6 +309,29 @@
                                 'categories' => 'registro,compra,tienda,admin,otro',
 
                         ),
+                        array(
+                                        'class' => 'ext.phpconsole.PhpConsoleLogRoute',
+                                        /* Default options:
+                                        'isEnabled' => true,
+                                        'handleErrors' => true,
+                                        'handleExceptions' => true,
+                                        'sourcesBasePath' => $_SERVER['DOCUMENT_ROOT'],
+                                        'phpConsolePathAlias' => 'application.vendors.PhpConsole.src.PhpConsole',
+                                        'registerHelper' => true,
+                                        'serverEncoding' => null,
+                                        'headersLimit' => null,
+                                        'password' => null,
+                                        'enableSslOnlyMode' => false,
+                                        'ipMasks' => array(),
+                                        'dumperLevelLimit' => 5,
+                                        'dumperItemsCountLimit' => 100,
+                                        'dumperItemSizeLimit' => 5000,
+                                        'dumperDumpSizeLimit' => 500000,
+                                        'dumperDetectCallbacks' => true,
+                                        'detectDumpTraceAndSource' => true,
+                                        'isEvalEnabled' => false,
+                                        */
+                                    ),
                         ),
                     ),
                     'ePdf' => array(
@@ -412,32 +435,7 @@
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
-                        'log' => array(
-                                    'class' => 'CLogRouter',
-                                    'routes' => array(
-                                        'class' => 'ext.phpconsole.PhpConsoleLogRoute',
-                                        /* Default options:
-                                        'isEnabled' => true,
-                                        'handleErrors' => true,
-                                        'handleExceptions' => true,
-                                        'sourcesBasePath' => $_SERVER['DOCUMENT_ROOT'],
-                                        'phpConsolePathAlias' => 'application.vendors.PhpConsole.src.PhpConsole',
-                                        'registerHelper' => true,
-                                        'serverEncoding' => null,
-                                        'headersLimit' => null,
-                                        'password' => null,
-                                        'enableSslOnlyMode' => false,
-                                        'ipMasks' => array(),
-                                        'dumperLevelLimit' => 5,
-                                        'dumperItemsCountLimit' => 100,
-                                        'dumperItemSizeLimit' => 5000,
-                                        'dumperDumpSizeLimit' => 500000,
-                                        'dumperDetectCallbacks' => true,
-                                        'detectDumpTraceAndSource' => true,
-                                        'isEvalEnabled' => false,
-                                        */
-                                    )
-                                )                        
+                     
                     ),
                     'params'=>array(
                     // this is used in contact page

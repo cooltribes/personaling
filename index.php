@@ -36,16 +36,19 @@ Yii::createWebApplication($config)->run();
     require_once(dirname(__FILE__).'/protected/config/environment.php');
     Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/protected/extensions/bootstrap');
     
-    if (strstr($_SERVER["REQUEST_URI"],"test62"))
+    if (isset($_SERVER["HTTP_APPLICATION_ENV"])&&$_SERVER["HTTP_APPLICATION_ENV"]=="production")
+        $environment = new Environment(Environment::PRODUCTION,$country,'');
+    elseif (strstr($_SERVER["REQUEST_URI"],"test62"))
     	$environment = new Environment(Environment::STAGE,$country,'/test62');
     elseif (strstr($_SERVER["REQUEST_URI"],"rpalma"))
     	$environment = new Environment(Environment::DEVELOPMENT,$country,'/rpalma/sandbox/personaling');
-     elseif (strstr($_SERVER["REQUEST_URI"],"yroa"))
+    elseif (strstr($_SERVER["REQUEST_URI"],"yroa"))
         $environment = new Environment(Environment::DEVELOPMENT,$country,'/yroa/site/personaling');
-     else      
-        $environment = new Environment(Environment::PRODUCTION,$country,'');
-    
+  
+        
+//$environment = new Environment(Environment::DEVELOPMENT,$country,'/rpalma/sandbox/personaling');
     defined('YII_DEBUG') or define('YII_DEBUG',$environment->getDebug());
     defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', $environment->getTraceLevel());
     Yii::createWebApplication($environment->getConfig())->run();
+
 

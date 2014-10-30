@@ -8,10 +8,11 @@
     <meta name="language" content="es" />
    
     <meta charset="utf-8">
+    <?php Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css?v=1',null); ?>
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <?php 
     
-    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css?v=1',null);
+    
     // Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
     Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico?v=3',null,null);  
     Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );

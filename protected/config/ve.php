@@ -55,7 +55,7 @@ return CMap::mergeArray(
                         'banco' => true,
                         'saldo' => true,
                     ),	
-                 
+                 'clientZoom'=>'404687',
                 'multiLook'=> array(
                     'bodyType' => true,
                     'eyesColor' => true,

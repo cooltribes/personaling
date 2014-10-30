@@ -291,7 +291,8 @@ return array(
 			'clientZIP'=>'08003',
 			'clientPhone'=>'934 344 634',
 			'clientEmail'=>'info@personaling.com', 
-		
+		     
+		    
 					
                   'PRONUNCIACION' => 'Venezolana', 
 				    'currSym'=>'Bs',

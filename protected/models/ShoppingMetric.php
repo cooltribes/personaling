@@ -120,6 +120,7 @@ class ShoppingMetric extends CActiveRecord
 		$criteria->compare('step',$this->step);
 		$criteria->compare('tipo_compra',$this->step);
 		$criteria->compare('created_on',$this->created_on,true);
+		$criteria->order = 'id DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -137,7 +138,7 @@ class ShoppingMetric extends CActiveRecord
 		$this->HTTP_REFERER = (!empty($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:'AJAX';
 		return parent::beforeValidate();
 	}
-	public function registro($step,$data=array()){
+	public static function registro($step,$data=array()){
 			$metric = new ShoppingMetric();
             $metric->user_id = Yii::app()->user->id;
 			

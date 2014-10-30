@@ -1,4 +1,5 @@
 <?php #echo Yii::app()->session['outlet'];
+PC::debug('Execute Time (start view):'.(microtime(true)-$time_start), 'debug,time');
 $seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
 if(isset($seo)){
     $this->pageTitle = $seo->title;
@@ -20,34 +21,9 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 
 ?>
 
-<script src="<?php echo Yii::app()->baseUrl; ?>/js/jquery.tabSlideOut.v1.3.js" type="text/javascript"></script>
- <script type="text/javascript">
-    $(function(){
-        $('.slide-out-div').tabSlideOut({
-            tabHandle: '.handle',                     //class of the element that will become your tab
-          //  pathToTabImage: '<?php echo Yii::app()->baseUrl; ?>/images/icon_twitter_2.png', //path to the image for the tab //Optionally can be set using css
-            imageHeight: '210px',                     //height of tab image           //Optionally can be set using css
-           // imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
-            tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
-            speed: 300,                               //speed of animation
-            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
-            topPos: '244px',                          //position from the top/ use if tabLocation is left or right
-            leftPos: '20px',                          //position from left/ use if tabLocation is bottom or top
-            fixedPosition: false                      //options: true makes it stick(fixed position) on scroll
-        });
 
-    });
- 	 $(function() {
-    	$( "#accordion" ).accordion({
-    		collapsible:true,
-    		active:false,
-    		icons: { "header": "ui-icon-carat-1-e", "activeHeader": "ui-icon-carat-1-n" },
-    		autoHeight: false,
-   			navigation: true
-    	});
-  	});
 
-    </script>
+
 
     
     
@@ -70,21 +46,23 @@ if(isset($seo)){
         $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Tienda Personalizada'));
 
 ?>
-
-<!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  ON-->
-<!--   <div id="ModalSuspencion" class="modal fade in"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-body">
-      <h3>Disculpa los inconvenientes...</h3>
-      <p>Por razones de mantenimiento,<br>
-        las compras están temporalmente suspendidas.
-      </p>
-      <p class="pull-right">¡Volveremos Pronto!</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" id="cerrarModalSuspencion" class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-    </div>
-  </div>   -->
-<!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  OFF-->
+<?php $stopSales = false; ?>
+<?php if ($stopSales): ?>
+	<!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  ON-->
+	<div id="ModalSuspencion" class="modal fade in"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-body">
+	      <h3>Disculpa los inconvenientes...</h3>
+	      <p>Por razones de mantenimiento,<br>
+	        las compras están temporalmente suspendidas.
+	      </p>
+	      <p class="pull-right">¡Volveremos Pronto!</p>
+	    </div>
+	    <div class="modal-footer">
+	      <button type="button" id="cerrarModalSuspencion" class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+	    </div>
+	  </div>   
+	<!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  OFF-->
+<?php endif; ?>
 <div class="navbar navbar-fixed-top mobilefilters" id="mobilefilters">
 
 		<div class="container">
@@ -104,7 +82,8 @@ if(isset($seo)){
 			
 			</div>
 
-	</div>
+</div>
+<?php 	PC::debug('Execute Time (start filter):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <div class="navbar navbar-fixed-top" id="mobilefilters-expanded">
 
 	<div class="container">
@@ -196,163 +175,99 @@ if(isset($seo)){
 	</div>
 </div>
 <!-- BAR ON -->
-<?php if(Yii::app()->user->isGuest&&Yii::app()->params['registerGift']) {?>
-<div class="slide-out-div">
-            <div class="handle" href="#"><div class="rotate">Gana un bono de 5 <?php echo Yii::t('contentForm','currSym');?>&nbsp;&nbsp;&nbsp;<img src="<?php echo Yii::app()->baseUrl; ?>/images/backtopWhite.png" width="20px" height="20px"> </div></div>
-           <div class="row-fluid margin_top_medium">
-           		<div class="span12">
-           				Al registrarte y completar tu perfil.<br/><br/>
-           				Disfruta ya de la primera Shopping Experience única<br/>y repetible.<br/>
-           				<a class="span8 offset2 margin_top_small btn btn-danger regYa" href="<?php echo Yii::app()->baseUrl;?>/user/registration">¡Registrate YA!</a>
-           		</div>
-           	
-           </div>
-</div><?php }?>
 
-<style>
-.bard_tienda .dropinput #precio_titulo {
-    width: 130px;
-}
+<?php if(Yii::app()->user->isGuest&&Yii::app()->params['registerGift']):?>
+	<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/jquery.tabSlideOut.v1.3.js', CClientScript::POS_HEAD); ?>
+	<?php $script = "
+	        $('.slide-out-div').tabSlideOut({
+	            tabHandle: '.handle',                     //class of the element that will become your tab
+	          //  pathToTabImage: '<?php echo Yii::app()->baseUrl; ?>/images/icon_twitter_2.png', //path to the image for the tab //Optionally can be set using css
+	            imageHeight: '210px',                     //height of tab image           //Optionally can be set using css
+	           // imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
+	            tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
+	            speed: 300,                               //speed of animation
+	            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
+	            topPos: '244px',                          //position from the top/ use if tabLocation is left or right
+	            leftPos: '20px',                          //position from left/ use if tabLocation is bottom or top
+	            fixedPosition: false                      //options: true makes it stick(fixed position) on scroll
+	        });
 
-
-/*Para el filtro de marcas*/
-.item.item-marcas{
-    vertical-align: top;
-}
-.container-marcas {    
-    width: 165px;
-}
-
-.container-marcas .select2-choice{
-    background-image: none;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-    border: 1px solid #ddd;
-    padding: 5px 5px 5px 10px;
-    height: 21px;
-    display: block;    
-}
-
-.container-marcas.select2-dropdown-open .select2-choice,
-.container-marcas.select2-container-active .select2-choice{
-    -webkit-box-shadow: none; 
-    -moz-box-shadow: none;
-    -o-box-shadow: none;
-    box-shadow: none;
-    background: none;
-}
-
-.select2-container .select2-choice span{
-    line-height: 21px;
-    width: 118px;
-    display: inline-block;
-    margin-right: 0; 
-}
-.select2-container .select2-choice div{
-    background-image: none;    
-    -webkit-border-radius: 0 ;
-    -moz-border-radius: 0;
-    border-radius: 0; 
-    border: 0; 
-    background: #dfdfdf;
-    padding: 3px 1px;
-    height: auto;
-    display: inline-block;
-    position: initial;
-}
-.select2-container .select2-choice div b{
-    background-image: none;    
-    width: 0;
-    height: 0;
-    vertical-align: top;
-    border-top: 4px solid #000000;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-    content: "";     
-    display: block;
-    margin: 5px;
-}
-
-.dropdown-marcas{
-    border: none;
-    margin-top: 2px;
-}
-.dropdown-marcas .select2-results{
-    padding: 0;
-}
-
-.dropdown-marcas li.select2-results-dept-0.select2-result.select2-result-selectable {
-    border-bottom: 1px solid #ddd;
-    padding: .5em 0;
-}
-.dropdown-marcas li.select2-results-dept-0.select2-result.select2-result-selectable:last-child {
-    border-bottom: 0;    
-}
-.dropdown-marcas li.select2-highlighted {
-    background: #ddd;
-    color: #333;
-}
-</style>
+	    	$( '#accordion' ).accordion({
+	    		collapsible:true,
+	    		active:false,
+	    		icons: { 'header': 'ui-icon-carat-1-e', 'activeHeader': 'ui-icon-carat-1-n' },
+	    		autoHeight: false,
+	   			navigation: true
+	    	});
+	";
+	?>
+	<?php Yii::app()->clientScript->registerScript("tabslideout",$script,CClientScript::POS_READY); ?>	
+	<div class="slide-out-div">
+	            <div class="handle" href="#"><div class="rotate">Gana un bono de 5 <?php echo Yii::t('contentForm','currSym');?>&nbsp;&nbsp;&nbsp;<img src="<?php echo Yii::app()->baseUrl; ?>/images/backtopWhite.png" width="20px" height="20px"> </div></div>
+	           <div class="row-fluid margin_top_medium">
+	           		<div class="span12">
+	           				Al registrarte y completar tu perfil.<br/><br/>
+	           				Disfruta ya de la primera Shopping Experience única<br/>y repetible.<br/>
+	           				<a class="span8 offset2 margin_top_small btn btn-danger regYa" href="<?php echo Yii::app()->baseUrl;?>/user/registration">¡Registrate YA!</a>
+	           		</div>
+	           	
+	           </div>
+	</div>
+<?php endif; ?>
+<?php 	PC::debug('Execute Time (end filter):'.(microtime(true)-$time_start), 'debug,time'); ?>
 
 <section class="bard_tienda">
 
 	 	<ul class="nav unstyled">
   			<li class="item">	<?php echo Yii::t('contentForm','Filter');?>:</li>
   		<?php 
-  			if(isset(Yii::app()->session['f_padre']))
-						echo CHtml::hiddenField('padrehid',Yii::app()->session['f_padre']);
-					else {
-						echo CHtml::hiddenField('padrehid',0);
-				}
-  			  			
-			if(isset(Yii::app()->session['f_cat']))
-						echo CHtml::hiddenField('cathid',Yii::app()->session['f_cat']);
-					else {
-						echo CHtml::hiddenField('cathid',0);
-				} 
+			echo CHtml::hiddenField('padrehid',isset(Yii::app()->session['f_padre'])?Yii::app()->session['f_padre']:0);
+			echo CHtml::hiddenField('cathid',isset(Yii::app()->session['f_cat'])?Yii::app()->session['f_cat']:0);	
 			$i=0; 
 		    $ruta='/images/'.Yii::app()->language.'/categorias/';			
   			foreach($categorias as $padre){
   				$ruta_padre=Yii::app()->baseUrl .$ruta. $padre->urlImagen;
   				echo '<li class="itemThumbnails tienda_iconos">
-		  			<img id="'.$padre->nombre.'" class="img-categoria padre" style="cursor:pointer" title="'.$padre->nombre.'" value="'.$padre->id.'" src="'.$ruta_padre.'">			  			
-	  				<div class="dropdown">
-		  				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		  					<b class="caret caretthumbs"></b>	
-		  				</a>
-		  				<div class="dropdown-menu">
-						<ul class="thumbnails ">';
-						foreach($padre->subcategorias as $hijo){
-							$ruta_hijo=Yii::app()->baseUrl .$ruta. $hijo->urlImagen;
-							echo '<li class=""> 
-			              		<a class="hijo" name="'.$padre->nombre.'" value="'.$hijo->id.'" href="#" >
-			              			<img src="'.$ruta_hijo.'" width="60">
-				              		<div class="caption">
-				                  		<p>'.$hijo->nombre.'</p>
-					                </div>
-			              		</a>                	
-		              			</li>';
-							
-						}
-						echo '</ul>
-						<a name="'.$padre->nombre.'" href="#" class="todos allhijos CAPS" value="'.strtoupper($padre->id).'">&nbsp';
-						switch (strtoupper($padre->nombre)) {
-							case 'ROPA':
-								echo Yii::t('contentForm','All the')." ".strtoupper($padre->nombre);
-								break;
-							
-							default:
-								echo Yii::t('contentForm','All the1')." ".strtoupper($padre->nombre);							
-								break;
-						}
-						echo '</a>
-					</div>   				
-  			</li>';
+			  			<img id="'.$padre->nombre.'" class="img-categoria padre" style="cursor:pointer" title="'.$padre->nombre.'" value="'.$padre->id.'" src="'.$ruta_padre.'">			  			
+		  				<div class="dropdown">
+			  				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+			  					<b class="caret caretthumbs"></b>	
+			  				</a>
+			  				<div class="dropdown-menu">
+							<ul class="thumbnails ">';
+							foreach($padre->subcategorias as $hijo){
+								$ruta_hijo=Yii::app()->baseUrl .$ruta. $hijo->urlImagen;
+								echo '<li class=""> 
+				              		<a class="hijo" name="'.$padre->nombre.'" value="'.$hijo->id.'" href="#" >
+				              			<img src="'.$ruta_hijo.'" width="60">
+					              		<div class="caption">
+					                  		<p>'.$hijo->nombre.'</p>
+						                </div>
+				              		</a>                	
+			              			</li>';
+								
+							}
+							echo '</ul>
+							<a name="'.$padre->nombre.'" href="#" class="todos allhijos CAPS" value="'.strtoupper($padre->id).'">&nbsp';
+							switch (strtoupper($padre->nombre)) {
+								case 'ROPA':
+									echo Yii::t('contentForm','All the')." ".strtoupper($padre->nombre);
+									break;
+								
+								default:
+									echo Yii::t('contentForm','All the1')." ".strtoupper($padre->nombre);							
+									break;
+							}
+							echo '</a>
+						</div>   				
+  					</li>';
+  				/*
 				$i++;
 				if($i>=3){
 					break;
 				}
+				*/
+				if(++$i > 2) break;
   			}  		
   		?>
                         
@@ -367,24 +282,11 @@ if(isset($seo)){
 						<ul class=" thumbnails ">
 							
 						<?php 
-						if(isset(Yii::app()->session['f_color']))
-							echo CHtml::hiddenField('colorhid',Yii::app()->session['f_color']);
-						else {
-							echo CHtml::hiddenField('colorhid',0);
-						}
+						echo CHtml::hiddenField('colorhid',isset(Yii::app()->session['f_color'])?Yii::app()->session['f_color']:0);
+						echo CHtml::hiddenField('outlet',isset(Yii::app()->session['outlet'])?Yii::app()->session['outlet']:0);
 
-						// reviso outlet para ver si se incluye en el filtro
-						if(isset(Yii::app()->session['outlet']))
-							echo CHtml::hiddenField('outlet',Yii::app()->session['outlet']);
-						else {
-							echo CHtml::hiddenField('outlet','false');
-						}
-
-						foreach($colores as $color){
+						foreach($colores as $color)
 							echo '<li class="colors"><a href="#" value="'.$color->id.'" title="'.$color->valor.'" class="scolor"><img width="44" src="'.Yii::app()->baseUrl ."/images/".Yii::app()->language."/colores/". $color->path_image.'"/></a></li>';
-							
-						}  
-							 
 						?>        			          			          			          			          				          				   	          				          				          				          			  				          			                			         			            			      			              																
 						</ul>  
 						<a href="#" value="0" class="todos scolor CAPS" ><?php echo Yii::t('contentForm','All colors');?></a>
@@ -404,13 +306,7 @@ if(isset($seo)){
 					<ul class="dropdown-menu" >
 						
 					<?php
-							if(isset(Yii::app()->session['p_index'])){
-								echo CHtml::hiddenField('preciohid',Yii::app()->session['p_index']);
-								}
-							else {
-								echo CHtml::hiddenField('preciohid',5);
-								}
-
+							echo CHtml::hiddenField('preciohid',isset(Yii::app()->session['p_index'])?Yii::app()->session['p_index']:5);
 							echo'<li><a class="precio" href="#" id="0">Hasta '.number_format($rangos[0]["max"],0,",",".").' '.Yii::t('contentForm', 'currSym').' <span class="color12">('.$rangos[0]['count'].')</span></a></li>';
 							echo'<li><a class="precio" href="#" id="1">De '.number_format($rangos[1]["min"],0,",",".").' a '
 							.number_format($rangos[1]["max"],0,",",".").' '.Yii::t('contentForm', 'currSym').' <span class="color12">('.$rangos[1]['count'].')</span></a></li>';
@@ -423,8 +319,8 @@ if(isset($seo)){
 				</div>	
 			</li>
 
-			<?php if (Yii::app()->params['mostrarMarcas']){ ?>
-			<li class="item item-marcas">
+			<?php if (Yii::app()->params['mostrarMarcas']): ?>
+				<li class="item item-marcas">
                             <?php 
                             //Agregar la opcion de Todas las marcas al listado existente
                             $marcasListData = CHtml::listData($marcas, "id" , "nombre");
@@ -445,16 +341,7 @@ if(isset($seo)){
                                         'placeholder'=> Yii::t('contentForm','By brand'),
                                         'containerCssClass'=> "container-marcas",
                                         'dropdownCssClass'=> "drop-down-menu dropdown-marcas",
-//                                        'dropdownAutoWidth'=> true,
 
-
-////                                             'multiple'=>true,
-//                                             'tags' => $marcasListData,
-//
-//                                             ////'data'=>array(array('id'=>1,'text'=>'rafa'),array('id'=>2,'text'=>'lore')),
-//                                            // 'data'=> CHtml::listData(Color::model()->findAll(),'id', 'valor'),
-////                                             'width' => '40%',
-//                                            'tokenSeparators' => array(',', ' ')
                                         ),
                                     )
                                 );
@@ -463,9 +350,9 @@ if(isset($seo)){
                             echo CHtml::hiddenField('marcahid',0);
 
                             ?>
-                            
-                            
-<!--                        <div class="dropdown">
+						<?php $mostrarMarcaTitulo = false; ?>                           
+						<?php if ($mostrarMarcaTitulo):   ?>                         
+                        	<div class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <div class="dropinput">
                                         <span id="marca_titulo" ><?php echo Yii::t('contentForm','By brand');?></span>
@@ -494,17 +381,15 @@ if(isset($seo)){
                                     ?>
                                     <li><a class="marca" value="0" href="#"><?php echo Yii::t('contentForm','All Brands');?></a></li>											
                                 </ul>  	
-                            </div>	-->
+                            </div>
+						<?php endif; ?>
 
-			</li>
-			<?php }else{
-				if(isset(Yii::app()->session['f_marca']))
-								echo CHtml::hiddenField('marcahid',Yii::app()->session['f_marca']); 
-							else {
-								echo CHtml::hiddenField('marcahid',0);
-							}
+				</li>
+			<?php else: ?>
+
+				<?php echo CHtml::hiddenField('marcahid',isset(Yii::app()->session['f_marca'])?Yii::app()->session['f_marca']:0); ?>
 				
-			} ?>
+			<?php endif; ?>
 					
 	
 	<li class="item" id="li_chic">
@@ -513,11 +398,17 @@ if(isset($seo)){
 					<a href="#" class="dropdown-toggle a080" data-toggle="dropdown" >
 						<div class="dropdown080" >
 								<span id="100chic" name="1" ><img src='<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/especial/080botonnegro.jpg";?>'/></span>
-							<?php if(isset(Yii::app()->session['100chic']))
+							<?php 
+/*
+							if(isset(Yii::app()->session['100chic']))
 								echo CHtml::hiddenField('chic_hid','1');
 							else {
 								echo CHtml::hiddenField('chic_hid','0');
-							}?>
+							}*/
+							?>
+
+							<?php echo CHtml::hiddenField('chic_hid',isset(Yii::app()->session['100chic'])?'1':'0'); ?>
+
 							
 							<!--<small> 
 								<b class="caret"></b>
@@ -569,62 +460,58 @@ if(isset($seo)){
 <div></div>
 
 <!-- BAR OFF -->
+<?php PC::debug('Execute Time (start produto):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <!-- PRODUCTOS ON -->
 
 <div  class="tienda_productos">
       <div class="row" id="tienda_productos">
-
- 
 			<?php
 					$this->renderPartial('_datos',array(
-					'prods'=>$dataProvider,'pages'=>$pages),false,false);
-				
-				
-			
+							'prods'=>$dataProvider,
+							'pages'=>$pages,
+						),false,false);
 			?>																						
 
     </div>
 </div>
-
- <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal_grande hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
- 
-	<?php $this->endWidget(); ?>
+<?php PC::debug('Execute Time (after renderPartial):'.(microtime(true)-$time_start), 'debug,time'); ?>
+<?php $this->beginWidget('bootstrap.widgets.TbModal', array(
+				'id'=>'myModal',
+				'htmlOptions'=>array(
+						'class'=>'modal_grande hide fade',
+						'tabindex'=>'-1',
+						'role'=>'dialog',
+						'aria-labelleby'=>'myModalLabel',
+						'aria-hidden'=>'true'
+						)
+				)
+			); 
+?>
+<?php $this->endWidget(); ?>
 <a href="#" id="gotop" class="go-top" title="<?php echo Yii::t('contentForm','Back to top'); ?>"><img src="<?php echo Yii::app()->baseUrl."/images/backtop.png"; ?>" /></a>
-
-
 <?php 
 //Mostrar un Modal si no ha completado el perfil y solo si es mujer
 $completarPerfil = false;
 if (!Yii::app()->user->isGuest){
-    
-$user = User::model()->findByPk(Yii::app()->user->id);
-$completarPerfil = $user->profile->sex == Profile::G_FEMENINO && ($user->status_register == User::STATUS_REGISTER_NEW || 
+	$user = User::model()->findByPk(Yii::app()->user->id);
+	$completarPerfil = $user->profile->sex == Profile::G_FEMENINO && ($user->status_register == User::STATUS_REGISTER_NEW || 
             $user->status_register == User::STATUS_REGISTER_TIPO);
-
-
-    if ($completarPerfil){
-       if($user->status_register == User::STATUS_REGISTER_NEW) 
-       {
-           $url =  Yii::app()->createUrl("/user/profile/tutipo");
-           
-       }elseif($user->status_register == User::STATUS_REGISTER_TIPO) 
-       {
-           $url =  Yii::app()->createUrl("/user/profile/tuestilo");
-       }
-           
+	if ($completarPerfil){
+       if($user->status_register == User::STATUS_REGISTER_NEW) $url =  Yii::app()->createUrl("/user/profile/tutipo");
+       elseif($user->status_register == User::STATUS_REGISTER_TIPO) $url =  Yii::app()->createUrl("/user/profile/tuestilo");
 ?>
 
-    <?php
-    $this->beginWidget('bootstrap.widgets.TbModal', array(
-        'id' => 'modalCompletarPerfil',
-            ), array(
-        'class' => 'modal fade hide',
-        'tabindex' => "-1",
-        'role' => "dialog",
-        'aria-labelledby' => "myModalLabel",
-        'aria-hidden' => "true", 
-    ))
-    ?>
+<?php
+	$this->beginWidget('bootstrap.widgets.TbModal', array(
+	    'id' => 'modalCompletarPerfil',
+	        ), array(
+	    'class' => 'modal fade hide',
+	    'tabindex' => "-1",
+	    'role' => "dialog",
+	    'aria-labelledby' => "myModalLabel",
+	    'aria-hidden' => "true", 
+	));
+?>
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3>¡Tu perfil es tu ADN Personaling!</h3>
@@ -647,9 +534,7 @@ $completarPerfil = $user->profile->sex == Profile::G_FEMENINO && ($user->status_
                         "class" => "btn btn-danger",
                         )); ?>                    
                 </div>
-<!--                <div class="span6">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
-                </div>-->
+
             </div>
             
             
@@ -657,7 +542,7 @@ $completarPerfil = $user->profile->sex == Profile::G_FEMENINO && ($user->status_
 
                          
 
-    <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
 
 
 <?php }
@@ -666,6 +551,7 @@ $completarPerfil = $user->profile->sex == Profile::G_FEMENINO && ($user->status_
 
 
 <!-- PRODUCTOS OFF -->
+<?php PC::debug('Execute Time (end produto):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <script>
 
 <?php /*Mostrar el Modal*/

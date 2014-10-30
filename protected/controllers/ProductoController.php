@@ -1644,7 +1644,7 @@ public function actionReportexls(){
 		//}	
 		
 		if(isset($_POST['tallas'])){
-			$tallas = explode('#',$_POST['tallas']);
+			$tallas = explode(',',$_POST['tallas']);
 			$colores = explode(',',$_POST['colores']);
 			
 		}
@@ -1656,7 +1656,8 @@ public function actionReportexls(){
 					$preciotallacolor = '';
 					$color_tmp = Color::model()->findByAttributes(array('valor'=>$color));
 					if (isset($color_tmp)){
-						$preciotallacolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$model->id,'talla_id'=>$talla,'color_id'=>$color_tmp->id));
+						$modelado=Talla::model()->findByAttributes(array('valor'=>$talla));
+						$preciotallacolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$model->id,'talla_id'=>$modelado->id,'color_id'=>$color_tmp->id));
 						if (!isset($preciotallacolor)){
 							$tallacolor[$i]= new Preciotallacolor;	
 							$tallacolor[$i]->color_id = $color_tmp->id;
@@ -1664,7 +1665,7 @@ public function actionReportexls(){
 						}
 					}
 					if (!isset($preciotallacolor)){
-						$talla_tmp = Talla::model()->findByPk($talla);
+						$talla_tmp = Talla::model()->findByPk($modelado->id);
 						if (isset($talla_tmp)){
 							$tallacolor[$i]->talla_id = $talla_tmp->id;
 							$tallacolor[$i]->talla = $talla_tmp->valor;

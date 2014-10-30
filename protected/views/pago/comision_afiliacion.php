@@ -257,7 +257,6 @@ $(document).ready(function(){
     $('#monthlyEarning').change(cambiarMontosEnTabla).keypress(cambiarMontosEnTabla);            
 //    $('button#pay').click(accionBotonPagar);
     $('form#pago-form').submit(formSubmit);
-    
-    
+ 
 });    
 </script>

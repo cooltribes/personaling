@@ -120,6 +120,7 @@ class TiendaController extends Controller
 	{
 		$time_start = microtime(true);
 		PC::debug('Execute Time (start action):'.(microtime(true)-$time_start), 'debug,time');
+
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados

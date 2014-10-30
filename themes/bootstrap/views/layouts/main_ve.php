@@ -393,6 +393,7 @@ if(!Yii::app()->user->isGuest){
   <!-- breadcrumbs -->
   <?php endif?>
   <?php PC::debug('Execute Time (end header):'.(microtime(true)-$time_start), 'debug,time'); ?>
+  <?php PC::debug('Database:'.Yii::app()->db->connectionString,'debug,enviroment'); ?>
   <?php echo $content; ?> </div>
   <?php PC::debug('Execute Time (end content):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <!-- page -->

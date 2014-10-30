@@ -5,14 +5,16 @@ $this->breadcrumbs=array(
 	'Pedidos'=>array('admin'),
 	'Detalle',
 );
-if($orden->getFlete())
+//if($orden->getFlete())
 	//print_r($orden->getFlete());// REVISION ZOOM 
 	//echo "<br/>";
 //print_r($orden->calcularTarifa(17,1,0.4, 3290)); 
 //echo $orden->direccionEnvio->myciudad->cod_zoom." - ".$orden->nproductos." - ".$orden->peso." - ".$orden->total."<br/>"."17 - 1 - 0.4 - 3290";
+$tracking=$orden->trackingInfo;
+
 $usuario = User::model()->findByPk($orden->user_id); 
 
-$tracking=$orden->getTrackingInfo();
+
 
 
 ?>
@@ -283,7 +285,9 @@ $tracking=$orden->getTrackingInfo();
           </tr>
         </table>
         
-        <?php if(is_array($tracking))
+        <?php 
+     
+        if(is_array($tracking))
         { ?>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
           <tr>

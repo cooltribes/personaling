@@ -118,7 +118,6 @@ class TiendaController extends Controller
 	}
 	public function actionIndex()
 	{
-		
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados

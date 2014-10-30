@@ -27,7 +27,7 @@ class DireccionController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','municipiosZoom'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -509,5 +509,41 @@ class DireccionController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-	}
+	} 
+     
+    public function actionMunicipiosZoom(){
+        
+        $cliente = new ZoomService;
+        $ciudades=Ciudad::model()->findAllByAttributes(array(),array('condition'=>'cod_zoom IS NOT NULL'));
+        foreach($ciudades as $key=>$ciudad){
+            $array=array('codciudad'=>$ciudad->cod_zoom,'remitente'=>NULL);
+            $municipios=$cliente->call('getMunicipios',$array);
+            echo $ciudad->nombre.": ".count($municipios)." Municipios<br/><br/>";
+            foreach($municipios as $municipio){
+               echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; 
+                
+               $parroquias=$cliente->call('getParroquias',array('codciudad'=>$ciudad->cod_zoom,'codmunicipio'=>$municipio->codigo_municipio,'remitente'=>NULL));
+               echo $municipio->nombre_municipio." - ".count($parroquias)." Parroquias <br/><br/>";
+               foreach($parroquias as $parroquia){
+                  echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                  echo $parroquia->nombre_parroquia." [".$parroquia->codigo_parroquia."] ".$parroquia->codigo_postal."<br/><br/>";  
+               }
+               
+            }
+            
+            echo "<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OFICINAS:<br/>";
+            $oficinas=$cliente->call('getOficinas',array('codigo_ciudad_destino'=>$ciudad->cod_zoom,'tipo_tarifa'=>1));
+            foreach($oficinas as $oficina)
+            {
+                 echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";     
+                print_r($oficina);
+                echo "<br/>";
+            }     
+            echo "<br/><br/><br/>";
+            if($key>6)
+                break;
+        }
+        
+        
+    }
 }

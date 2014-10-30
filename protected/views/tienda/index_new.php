@@ -68,16 +68,7 @@ if(isset($seo)){
 	'Tienda',
 	);
         $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Tienda Personalizada'));
-        
-        print_r($_SERVER);
-        echo "<br/><br/><br/><br/>";
-        print_r($_REQUEST);
-        echo "<br/><br/><br/><br/>";
-        print_r($_ENV);
-        echo "<br/><br/><br/><br/>";
-        print_r("a");
-        echo "<br/><br/><br/><br/>";
-        print_r("");
+
 ?>
 
 <!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  ON-->

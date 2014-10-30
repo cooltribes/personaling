@@ -670,7 +670,7 @@ class Orden extends CActiveRecord
 		$guia=$orden->tracking;
 		if($orden->shipCarrier=='ZOOM'){
 			$cliente = new ZoomService;
-		 	return $cliente->call("getInfoTracking", array("tipo_busqueda"=>"1", "codigo"=>$guia,"codigo_cliente"=>"400933"));
+		 	return $cliente->call("getInfoTracking", array("tipo_busqueda"=>"1", "codigo"=>$guia,"codigo_cliente"=>Yii::app()->params['clientZoom']));
 		//Devuelve array de tracking si lo consigue o null si no
 		}
 		else
@@ -897,12 +897,8 @@ class Orden extends CActiveRecord
 		}
 		if(Yii::app()->language=="es_es")
 			return "SEUR";
-		if(Yii::app()->language=="es_ve"){
-			if($orden->peso>5)
-				return "DHL";
-			else {
-				return "ZOOM";
-			}
+		if(Yii::app()->language=="es_ve"){			
+				return "ZOOM";			
 		}
 	}
 	

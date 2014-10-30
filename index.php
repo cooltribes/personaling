@@ -29,14 +29,15 @@ Yii::createWebApplication($config)->run();
 	else
 	    $country='es_es'; 
 	
-	$country = 'es_ve'; // FOR TESTING
+    if (isset($_SERVER['HTTP_APPLICATION_LANG']))
+	   $country = $_SERVER['HTTP_APPLICATION_LANG']; //htaccess SetEnv HTTP_APPLICATION_LANG "es_ve"
     
     $yii = dirname(__FILE__).'/../../yii-1.1.13.e9e4a0/framework/yiilite.php';
     require_once($yii);
     require_once(dirname(__FILE__).'/protected/config/environment.php');
     Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/protected/extensions/bootstrap');
     
-    if (isset($_SERVER["HTTP_APPLICATION_ENV"])&&$_SERVER["HTTP_APPLICATION_ENV"]=="production")
+    if (isset($_SERVER["HTTP_APPLICATION_ENV"])&&$_SERVER["HTTP_APPLICATION_ENV"]=="production") //htaccess SetEnv HTTP_APPLICATION_ENV "production"
         $environment = new Environment(Environment::PRODUCTION,$country,'');
     elseif (strstr($_SERVER["REQUEST_URI"],"test62"))
     	$environment = new Environment(Environment::STAGE,$country,'/test62');

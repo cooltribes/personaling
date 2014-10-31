@@ -4,6 +4,7 @@
         display:none;
     }
 </style>
+<?php //PC::debug("APPLICATION_ENV: ".$_SERVER['HTTP_APPLICATION_ENV'],'debug'); ?>
 <div class="items" id="catalogo">
 <?php
 $cont = 1;
@@ -71,16 +72,6 @@ foreach($prods as $data):
 						
 	}
 
-
-	
-
-	   	/*if($data->precios){
-	   	foreach ($data->precios as $precio) {
-	   		$prePub = Yii::app()->numberFormatter->format("#,##0.00",$precio->precioImpuesto);
-	   		//$prePub = Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento);
-			}
-		}*/ 
-		//var_dump($data);
 		$prePub=$data->precio;
 		echo ' <input id="productos" value="'.$data->id.'" name="ids" class="ids" type="hidden" >';
                 
@@ -126,24 +117,11 @@ foreach($prods as $data):
 					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 2.6em;">Agotado</span></div>';
 				}
 	
-						
-					 
-					
-				
 
-				//var_dump($data->tipoDescuento);
-				/*if($data->precioVenta < $data->getPrecioImpuesto()){
-					$porcentaje = (($data->getPrecioImpuesto() - $data->precioVenta) * 100) / $data->getPrecioImpuesto();
-					$iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
-				}*/
-                
-//                $iconoDescuento = '';
                 
 		if(isset($ima)){
 			
-			//if($prePub!=""){
-			
-				//echo"<tr>";
+
 				$like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$data->id));
             	
             	if(isset($like)) // le ha dado like
@@ -167,8 +145,6 @@ foreach($prods as $data):
 						$style="<span class='btn-block is_080'><img src='".Yii::app()->baseUrl."/images/080_270x34.jpg'/></span> ";
 					}
 					if(isset($segunda))
-						//echo "<input id='img2-".$data->id."' value='".$segunda->getUrl()."' type='hidden' >";
-						//$b = CHtml::image($segunda->ge     tUrl(), "Segunda ", array("width" => "270", "height" => "270",'display'=>'none','id'=>'img2-'.$data->id));
 						$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Personaling - ".addslashes($data->nombre), array("class"=>"img_hover_out bg_color3","style"=>"display:none","width" => "270", "height" => "270"));
 
 					//reviso si tiene descuento para mostrarlo
@@ -240,43 +216,7 @@ foreach($prods as $data):
 						$con=$id;
 					
 				
-				/*	$a = CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Imagen ", array("class"=>"img_hover","width" => "270", "height" => "270",'id'=>'img-'.$data->id));	
-					$b = '';
-					$style='';
-					if($data->mymarca->is_100chic){
-						$style="<div class='is_100chic'> </div> ";
-					}
-					if(isset($segunda))
-					{	$b = CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Imagen ", array("class"=>"img_hover_out","style"=>"display:none","width" => "270", "height" => "270"));
-					}
-					echo("<article class='span3'><div  onmouseover='javascript:over(".$data->id.");' onmouseout='javascript:out(".$data->id.");' class='producto articulo' id='prod".$data->id."'>".$style."
-					<input id='idprod' value='".$data->id."' type='hidden' ><a href='".$data->getUrl()."'>
-					".$a.$b." 
-						
-					".CHtml::link("Vista Rápida",
-					    $this->createUrl('modal',array('id'=>$data->id)),
-					    array(// for htmlOptions
-					      'onclick'=>' {'.CHtml::ajax( array(
-					      'url'=>CController::createUrl('modal',array('id'=>$data->id)),
-					           'success'=>"js:function(data){ $('#myModal').html(data);
-										$('#myModal').modal(); }")).
-					         'return false;}',
-					    'class'=>'btn btn-block btn-small vista_rapida hidden-phone',
-					    'id'=>'pago')
-					)."		
-						 
-					</a>
-					<header><h3><a href='".$data->getUrl()."' title='".$data->nombre."'>".$data->nombre."</a></h3>
-					<a href='".$data->getUrl()."' class='ver_detalle  icon_lupa' title='Ver detalle'></a></header>
-					<span class='precio'>Bs. ".$prePub."</span>
-					<a id='like".$data->id."' onclick='encantar(".$data->id.")' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big'>&#9825;</a></div></article>");
-					
-					$con=$id;*/
-						
-				  
-				
-				//echo("</tr>");
-			//}
+
 		
 		}
 
@@ -289,10 +229,7 @@ $cont++;
 endforeach;?>
 </div>
 <script>	
-//mixpanel.track_links(".link_producto", "Clicked Productos",function(ele) { 
-    //alert('asd');
-    //return { type: $(ele).attr('href')}
-    //});
+
 function over(id){
 		
 
@@ -312,27 +249,6 @@ function out(id){
 		}
 }
 
-/*$('.detalle_producto').on('click', function(e){
-	e.preventDefault();
-	//console.log(e);
-	ga('ec:addProduct', {
-	    'id': 'P12345',
-	    'name': 'Android Warhol T-Shirt',
-	    'category': 'Apparel',
-	    'brand': 'Google',
-	    'variant': 'black',
-	    'position': 1
-	  });
-	 ga('ec:setAction', 'click', {list: 'Search Results'});
-
-	  // Send click with an event, then send user to product page.
-	  ga('send', 'event', 'UX', 'click', 'Results', {
-	      'hitCallback': function() {
-	        document.location = '/product_details?id=P12345';
-	      }
-	  });
-	window.location.href = e.currentTarget.href;
-});*/
 
 function detalle_producto(product){
 	ga('ec:addProduct', {

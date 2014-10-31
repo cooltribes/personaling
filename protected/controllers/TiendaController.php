@@ -2,7 +2,7 @@
  
 class TiendaController extends Controller
 {
-	
+	 
 		/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -109,7 +109,7 @@ class TiendaController extends Controller
 				
 
 		));	
-			
+			 
 	}
 	public function actionRangoslook(){
 		
@@ -117,10 +117,20 @@ class TiendaController extends Controller
 		$this->renderPartial('_rangos',array('rangos'=>$rangosArray));
 	}
 	public function actionIndex()
-	{
+	{  /*    
+	       if(isset($_SERVER['HTTP_REFERER'])){
+	       var_dump($_SERVER['HTTP_REFERER']);
+           var_dump(strpos($_SERVER['HTTP_REFERER'],'/productos/'));
+           var_dump(strpos($_SERVER['HTTP_REFERER'],'/producto/detalle/'));
+        
+	   }   
+		$fromDetail=isset($_SERVER['HTTP_REFERER'])?$this->fromProductoDetail($_SERVER['HTTP_REFERER']):false;
+        if($fromDetail)
+            break;
+		   */
 		$time_start = microtime(true);
 		PC::debug('Execute Time (start action):'.(microtime(true)-$time_start), 'debug,time');
-
+        
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
@@ -2061,9 +2071,9 @@ public function actionCategorias2(){
 		$this->redirect(array('index'));
 	}
     
-    public function fromProductoDetail(){ 
-        if(isset($_SERVER['HTTP_REFERER'])){
-            if(strpos($_SERVER['HTTP_REFERER'],'/productos/')||strpos($_SERVER['HTTP_REFERER'],'/producto/detalle/'))
+    public function fromProductoDetail($httpReferer = null){ 
+        if(!is_null($httpReferer)){
+            if(strpos($httpReferer,'/productos/')>0||strpos($httpReferer,'/producto/detalle/')>0)
                 return true;
         }
         return false;

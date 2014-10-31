@@ -414,6 +414,7 @@ return array (
      'You should not add repeated items.'=>'No es posible incluir prendas repetidas.',
      'You should select a Billing Address.'=>'Debes seleccionar una dirección de facturación',
      'You should add six items at least.'=>'Debes incluir al menos seis prendas',
+     'You should add four items at least.'=>'Debes incluir al menos cuatro prendas',
      'Your bag' =>'Tu bolsa',
      'Your Payments'=>'Tus Pagos',
      'Your Purchases' => 'Tus Compras',

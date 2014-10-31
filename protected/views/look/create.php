@@ -1338,10 +1338,10 @@ function addPublicar(tipo)
             //alert(productos_id);
             //count = count + count_a;
             console.log(count);
-            if (count >= 6){
+            if (count >= 4){
                 $("#form_productos").submit();
             } else {
-                $('#alertText').html('<?php echo Yii::t('contentForm','You should add six items at least.')?>');
+                $('#alertText').html('<?php echo Yii::t('contentForm','You should add four items at least.')?>');
                 $('#alertLook').show();
             }
 

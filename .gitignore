@@ -20,6 +20,7 @@ nbproject
 /images/es_es/*
 /images/es_ve/*
 /.htaccess
+/images/es_ve
 
 ### Yii ###
 assets/*

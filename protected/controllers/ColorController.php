@@ -281,22 +281,27 @@ class ColorController extends Controller
 	}
 	
 	public function actionPruebazoho()
-	{/*
-		$orden = Orden::model()->findByPk(1);
-		$xml = "";
-		
-		$xml .= "<Products>";
-
-		foreach($orden->productos as $combinacion){
-			$xml .= "<row no='1'>";
-			$xml .= "<FL val='PRODUCTID'>".(int)$combinacion->zoho_id."</FL>";
-       		$xml .= "</row>"; 
-		}
-		
-		$xml .= "</Products>";
-		
-		$url ="https://crm.zoho.com/crm/private/xml/Contacts/updateRelatedRecords"; 
-		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&relatedModule=Products&id=1245508000000078223&xmlData=".$xml;
+	{
+		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml .= '<Cases>';
+		$xml .= '<row no="1">';
+		$xml .= '<FL val="Subject"> Caso numero 3 </FL>';
+		$xml .= '<FL val="Priority">Alta</FL>';
+		$xml .= '<FL val="Status">Nuevo</FL>'; 
+		$xml .= '<FL val="Case Origin">Web</FL>'; 
+		$xml .= '<FL val="Type">Problema</FL>'; 
+        $xml .= '<FL val="Email">prueba@korn.com.co</FL>';
+		$xml .= '<FL val="Phone">445566778998</FL>';
+		$xml .= '<FL val="Case Reason">Devoluciones</FL>';
+		$xml .= '<FL val="Description">Nueva Descripcion</FL>';
+		$xml .= '<FL val="Add Comment">Nuevo comentario</FL>';
+		$xml .= '<FL val="Solution">Aun sin solucion</FL>';
+		$xml .= '<FL val="Internal Comments">interno</FL>';
+		$xml .= '</row>';
+		$xml .= '</Cases>';
+ 
+		$url ="https://crm.zoho.com/crm/private/xml/Cases/insertRecords";
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&wfTrigger=true&xmlData=".$xml;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -305,28 +310,11 @@ class ColorController extends Controller
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
 
-		//Execute cUrl session 
+		//Execute cUrl session
 		$response = curl_exec($ch);
-		curl_close($ch);
-	//	return $response;
+		curl_close($ch); 
 		var_dump( $response ); 
-
-		echo htmlspecialchars($response)."<p><p>";
-
-		$datos = simplexml_load_string($response);
-		var_dump($datos);*/
-		
-		//tengo los ptc de la orden
-		$orderhas = OrdenHasProductotallacolor::model()->findAllByAttributes(array('tbl_orden_id'=>218));
-		$value = 0;
-		
-		foreach($orderhas as $ptc){
-			$product = $ptc->preciotallacolor->producto;
-			$value += $product->getPrecioImpuesto(false);
-		}
-		
-		echo $value;
-		
+		Yii::app()->end();
 	}
 	
 	public function actionPruebazohoproducto()

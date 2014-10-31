@@ -563,23 +563,28 @@ if (!Yii::app()->user->isGuest && $completarPerfil){
 		
     $(".precio").click(function() {  
             
-            if($(this).html().length>50){
-                var arr=$(this).html().split('<span');
+            var html=$(this).html();
+            $('#precio_titulo').html(html);  
+            if(html.length>45){
+                if(html.length>50)
+                    $('#precio_titulo').css('font-size','12px');
+
+                var arr=html.split('<span');
                 arr=arr[0].split('De');
+                html=arr[1];
+                
                 $('#precio_titulo').html(arr[1]);
          
-                
-            }else
-                $('#precio_titulo').html($(this).html());
+                 
+            }else{
+                 $('#precio_titulo').css('font-size','14px');
+            }
+            $('#precio_titulo').html(html);    
             
 
             $('#preciohid').val($(this).attr('id'));
-            if($('#preciohid').val()!='0'){
-                    $('#summPrecio').html($(this).html());
-            }else{
-                    $('#summPrecio').html('');
-            }
-            //$('#catalogo').remove(); 
+            $('#summPrecio').html('');
+                        //$('#catalogo').remove(); 
             //$('#tienda_productos').html(''); 
             $('.text_search').val(''); 
             preRefresh();

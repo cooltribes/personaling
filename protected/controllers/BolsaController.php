@@ -1150,20 +1150,23 @@ class BolsaController extends Controller
 	                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$bp->preciotallacolor->producto_id));
 
 	                //echo $bp->preciotallacolor->producto->nombre.'</br>';
-        			Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
-						ga('ec:addProduct', {
-						  'id': '".$bp->preciotallacolor->producto->id."',
-						  'name': '".$bp->preciotallacolor->producto->nombre."',
-						  'category': '".$category->nombre."',
-						  'brand': '".$bp->preciotallacolor->producto->mymarca->nombre."',
-						  'variant': '".$ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor."',
-						  'price': '".$precio->precioImpuesto."',
-						  'quantity': '".$bp->cantidad."',
-						});
-						
-	  					ga('ec:setAction', 'detail');       // Detail action.
-	 					ga('send', 'pageview');       // Send product details view with the initial pageview.
-					");	
+        		
+                    Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,'
+                        ga("ec:addProduct", {
+                          "id": "'.$bp->preciotallacolor->producto->id.'",
+                          "name": "'.$bp->preciotallacolor->producto->nombre.'",
+                          "category": "'.$category->nombre.'",
+                          "brand": "'.$bp->preciotallacolor->producto->mymarca->nombre.'",
+                          "variant": "'.$ptcolor->mycolor->valor.' '.$ptcolor->mytalla->valor.'",
+                          "price": "'.$precio->precioImpuesto.'",
+                          "quantity": "'.$bp->cantidad.'",
+                        });
+                        
+                        ga("ec:setAction", "detail");       // Detail action.
+                        ga("send", "pageview");       // Send product details view with the initial pageview.
+                    '); 
+                    
+                    
         			$cont++;
         		}
 

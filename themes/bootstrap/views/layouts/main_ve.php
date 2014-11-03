@@ -1047,6 +1047,9 @@ if(!Yii::app()->user->isGuest){
 
 </script>
 
-<?php PC::debug('Execute Time (end footer):'.(microtime(true)-$time_start), 'debug,time'); ?>
+<?php PC::debug('Execute Time (end footer):'.(microtime(true)-$time_start), 'debug,time'); 
+  
+?>
+
 </body>
 </html>

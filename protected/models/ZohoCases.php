@@ -49,7 +49,7 @@ class ZohoCases{
 		$xml .= '</Cases>';
  
 		$url ="https://crm.zoho.com/crm/private/xml/Cases/insertRecords";
-		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&xmlData=".$xml;
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&wfTrigger=true&xmlData=".$xml;  
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -62,7 +62,7 @@ class ZohoCases{
 		$response = curl_exec($ch);
 		curl_close($ch);
 		return $response; 
-		// var_dump( $response ); 
+		// var_dump( $response );  
 		 
 	}
 }

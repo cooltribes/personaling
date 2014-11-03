@@ -50,6 +50,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                             array('label'=>'Acciones', 'url'=>array('/adorno/index')),
                                             array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
                                             array('label'=>'SEO', 'url'=>array('/controlpanel/seo')),
+                                            array('label'=>'Metricas', 'url'=>array('/shoppingMetric/admin')),
 //                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
 					)),
 
@@ -1031,7 +1032,8 @@ if(!Yii::app()->user->isGuest){
         
     }
 
-<?php } ?>
+<?php }
+?>
 
 </script>
 

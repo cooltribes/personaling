@@ -14,7 +14,7 @@ class TiendaController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
                                     'segunda','ocasiones','modal','doble', 'crearFiltro',
-                                    'getFilter','xmltest','rangoslook','bf080','quickview'),
+                                    'getFilter','xmltest','rangoslook','bf080','quickview','rangoslookmobile'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -114,8 +114,13 @@ class TiendaController extends Controller
 	public function actionRangoslook(){
 		
 		$rangosArray = Look::model()->getRangosPrecios();
-		$this->renderPartial('_rangos',array('rangos'=>$rangosArray));
+		$this->renderPartial('_rangos',array('rangos'=>$rangosArray,'tipo'=>'normal'));
 	}
+    public function actionRangoslookMobile(){
+
+        $rangosArray = Look::model()->getRangosPrecios();
+        $this->renderPartial('_rangos',array('rangos'=>$rangosArray,'tipo'=>'mobile'));
+    }
 	public function actionIndex()
 	{
 		$time_start = microtime(true);
@@ -470,7 +475,8 @@ class TiendaController extends Controller
 		$criteria = $producto->nueva2($a);
 		PC::debug('Execute Time (after nueva2 otra):'.(microtime(true)-$time_start), 'debug,time'); 
 		//$criteria->order=$orden[Yii::app()->session['order']];
-		$total=Producto::model()->count($criteria);
+
+        $total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);
 		$pages->pageSize = 12;
 		$pages->applyLimit($criteria);
@@ -1309,6 +1315,7 @@ public function actionCategorias2(){
                         'gift' => false,
                        // 'rangos' => $rangosArray,
                         'todosLosLooks' => $todosLosLooks,
+                        'time_start'=>$time_start,
                     ));
                 } 
                 else {

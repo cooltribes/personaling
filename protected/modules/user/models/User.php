@@ -1025,6 +1025,12 @@ class User extends CActiveRecord {
                 return count($num);
             }
         }
+
+        public function getHasLooks(){
+            $looks = Look::model()->findByAttributes(array("user_id"=>$this->id,'status'=>Look::STATUS_APROBADO));
+            //$looks = true;
+            return isset($looks);
+        }
 		
 		
 	

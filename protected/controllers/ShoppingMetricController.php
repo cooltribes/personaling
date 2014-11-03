@@ -139,17 +139,99 @@ class ShoppingMetricController extends Controller
 		if(isset($_GET['ShoppingMetric']))
 			$model->attributes=$_GET['ShoppingMetric'];
 		
-
-					$criteria = new CDbCriteria;
-					$criteria->condition = 'data like "%look%"';
-					$criteria->order = 'id DESC';
-					$dataProvider = new CActiveDataProvider('ShoppingMetric', array(
+			$criteria = new CDbCriteria;
+			$criteria->condition = 'data like "%look_id%"';
+			$criteria->order = 'id DESC';
+			$dataProvider = new CActiveDataProvider('ShoppingMetric', array(
                     'criteria' => $criteria,
                     'pagination' => array(
                         #'pageSize' => Yii::app()->getModule('user')->user_page_size,
-                    ),
-                ));
+                    	),
+                	));
+	
+		        
+		        if((isset($_SESSION['todoPost']) && !isset($_GET['ajax'])))
+	            {
+	                unset($_SESSION['todoPost']);
+	            }
+            
+	            if((isset($_SESSION['searchBox']) && !isset($_POST['query']) && !isset($_GET['ajax'])))
+	            {
+	                unset($_SESSION['searchBox']);
+	            }
+				
+		        if(isset($_GET['ajax']) && !isset($_POST['dropdown_filter']) && isset($_SESSION['todoPost'])
+               && !isset($_POST['query']))
+               {
+              		$_POST = $_SESSION['todoPost'];
+           		 }
+				
+		        
+		        if((isset($_SESSION['searchBox']) && !isset($_POST['query']) && !isset($_GET['ajax'])))
+	            {
+	                unset($_SESSION['searchBox']);
+	            }
+		       
+		       if(isset($_GET['ajax']) && isset($_SESSION['searchBox'])  && !isset($_POST['query']))
+               {
+              		$_POST['query'] = $_SESSION['searchBox'];
+               }
+            
+			
 
+			   
+			   if(isset($_POST['dropdown_filter']))
+			   {   
+                
+                unset($_SESSION['searchBox']);
+                $_SESSION['todoPost'] = $_POST;
+                //Validar y tomar sólo los filtros válidos
+                for($i=0; $i < count($_POST['dropdown_filter']); $i++)
+                {
+                    if($_POST['dropdown_filter'][$i] && $_POST['dropdown_operator'][$i]
+                            && trim($_POST['textfield_value'][$i]) != '' && $_POST['dropdown_relation'][$i])
+                            {
+
+	                        $filters['fields'][] = $_POST['dropdown_filter'][$i];
+	                        $filters['ops'][] = $_POST['dropdown_operator'][$i];
+	                        $filters['vals'][] = $_POST['textfield_value'][$i];
+	                        $filters['rels'][] = $_POST['dropdown_relation'][$i];                    
+
+                           }
+                }
+				if (isset($filters['fields'])) {                    
+                    
+                    $dataProvider = $model->buscarPorFiltros($filters); 
+				}     
+			   
+			   }
+			   
+			      
+			   if (isset($_POST['query'])) 
+               {
+                    //echo($_POST['query']);	
+                    $_SESSION['searchBox'] = $_POST['query'];
+                   # unset($_SESSION["todoPost"]);
+                   # $producto->nombre = $_POST['query'];
+                   # $dataProvider = $producto->busquedaNombreReferencia($_POST['query']);
+                   
+                   $match=$_POST['query'];
+                     if(Look::model()->findAll('title LIKE :match',array(':match' => "%$match%"))!="")
+					 {
+					 	#$var=Look::model()->findByPk($_POST['query']);
+					 	$var = Look::model()->find('title LIKE :match',array(':match' => "%$match%"));
+						$dataProvider=$model->buscarFiltro($var->id);
+					 }
+					 else 
+					 {
+						$dataProvider=$model->buscarFiltro(""); 
+						
+					 }
+      
+                 }
+	
+		
+		
 		$this->render('admin',array(
 			'model'=>$model,
 			'dataProvider'=>$dataProvider,

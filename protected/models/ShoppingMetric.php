@@ -296,5 +296,210 @@ class ShoppingMetric extends CActiveRecord
             )
         );
     }
+	
+	public function getBrowser($navegador)
+	{
+				$browser = 'Desconocido';
+				if(strstr($navegador, 'MSIE'))
+					$browser = 'Internet explorer';
+				elseif(strstr($navegador, 'Trident'))
+					$browser = 'Internet explorer';
+				elseif(strstr($navegador, 'Firefox'))
+					$browser = 'Mozilla Firefox';
+				elseif(strstr($navegador, 'Chrome'))
+					$browser = 'Google Chrome';
+				elseif(strstr($navegador, 'Opera'))
+					$browser = "Opera";
+				elseif(strstr($navegador, 'Safari'))
+					$browser = "Safari";
+				elseif(strstr($navegador, 'Firefox')){
+					$browser = "Mozilla Firefox";
+				}
+                //$http=explode(' ',$this->$field);
+                                
+                //return $http[0]; 
+                return $browser; 
+	}
+	
+	public function buscarFiltro($keyword)
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+		
+		#$word='%"ps_id":'.$keyword.'}%';
+		$word='%{"look_id":"'.$keyword.'"%';
+		$criteria->condition = "data like '".$word."'";
+		$criteria->order = 'id DESC';
+
+		
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+	public function buscarPorFiltros($filters) 
+	{
+			
+		
+		$criteria = new CDbCriteria;
+            
+            $criteria->with = array();
+
+            for ($i = 0; $i < count($filters['fields']); $i++) 
+            {
+                
+                $column = $filters['fields'][$i];
+                $value = $filters['vals'][$i];
+                $comparator = $filters['ops'][$i];
+                
+                if($i == 0){
+                   $logicOp = 'AND'; 
+                }else{                
+                    $logicOp = $filters['rels'][$i-1];                
+                }                  
+			}
+			
+			
+			 if($column == 'id')
+              {
+                 
+                 $word='%{"look_id":"'.$value.'"%';
+				 if($comparator=="=")
+			     	$criteria->condition = "data like '".$word."'"; 
+	
+               }
+			  
+			  
+			  if($column == 'nombre_look')
+              {
+                 if($modelado=Look::model()->find('title LIKE :match',array(':match' => "%$value%")))	
+                 {
+                 	$modelado=Look::model()->find('title LIKE :match',array(':match' => "%$value%"));
+					$word='%{"look_id":"'.$modelado->id.'"%';	
+                 }
+				else
+				{
+					$fa=NULL;	
+					$word='%{"look_id":"'.$fa.'"%';
+					
+				}
+				 
+				 if($comparator=="=")
+			     	$criteria->condition = "data like '".$word."'";	
+                 
+     
+               }
+			  
+			  
+			  if($column == 'ps_id')
+              {
+				if(strlen($value)<5)
+				{
+					$ceros=5-strlen($value);
+					for($i=0; $i<$ceros;$i++)
+					{
+						$value="0".$value;
+					}
+
+				}
+				$word='%"ps_id":"'.$value.'"}%';
+				if($comparator=="=")
+			     	$criteria->condition = "data like '".$word."'";	
+     
+               }
+			  
+  
+			  
+			  if($column == 'ps_nombre')
+              {
+				if(strpos($value, " ")==TRUE)
+				{
+					$partir=explode(" ", $value);	
+					$nombre=$partir[0];
+					$apellido=$partir[1];
+					$modelado=Profile::model()->find('(first_name LIKE :match AND last_name LIKE :match2) OR 
+													  (first_name LIKE :match2 AND last_name LIKE :match)  
+													  ',array(':match' => "%$nombre%", ':match2' => "%$apellido%"));
+					$busqueda=$modelado->user_id;
+						if(strlen($busqueda)<5)
+						{
+							$ceros=5-strlen($busqueda);
+							for($i=0; $i<$ceros;$i++)
+							{
+								$busqueda="0".$busqueda;
+							}
+						
+						}
+					
+					$word='%"ps_id":"'.$busqueda.'"}%';					
+				}
+				else
+				{
+					if(Profile::model()->find('first_name LIKE :match OR last_name LIKE :match',array(':match' => "%$value%")))
+					{
+						
+						$modelado=Profile::model()->find('first_name LIKE :match OR last_name LIKE :match',
+														array(':match' => "%$value%"));
+						$busqueda=$modelado->user_id;
+						if(strlen($busqueda)<5)
+						{
+							$ceros=5-strlen($busqueda);
+							for($i=0; $i<$ceros;$i++)
+							{
+								$busqueda="0".$busqueda;
+							}
+						
+						}
+					
+					$word='%"ps_id":"'.$busqueda.'"}%';
+					}
+					else 
+					{
+						$fa=NULL;	
+						$word='%{"look_id":"'.$fa.'"%';
+					}
+				}	
+
+				if($comparator=="=")
+			     	$criteria->condition = "data like '".$word."'";	
+     
+               }
+
+
+			  if($column == 'fuente')
+              {
+              	if($value=="Provino desde Pagina no localizada")
+				{
+					$value="AJAX";
+				}	
+              	
+					
+              	$criteria->condition = "HTTP_REFERER like '".$value."'";	
+              }
+			  
+			  if($column == 'fuente')
+              {
+              	if($value=="Provino desde Pagina no localizada")
+				{
+					$value="AJAX";
+				}	
+              	
+					
+              	$criteria->condition = "HTTP_REFERER like '".$value."'";	
+              }
+
+				    
+	
+			
+			
+			#$criteria->together = true;
+			 $criteria->order = 'id DESC';  
+			return new CActiveDataProvider($this, array(
+                'criteria' => $criteria,
+            ));
         
+	}
+
 }
+	

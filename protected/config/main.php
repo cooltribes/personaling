@@ -291,7 +291,8 @@ return array(
 			'clientZIP'=>'08003',
 			'clientPhone'=>'934 344 634',
 			'clientEmail'=>'info@personaling.com', 
-		
+		     
+		    
 					
                   'PRONUNCIACION' => 'Venezolana', 
 				    'currSym'=>'Bs',
@@ -306,6 +307,6 @@ return array(
 				    'country'=>'Venezuela',
 				    //'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
 				    'outlet'=>TRUE,
-				    'zohoActive' => FALSE,
+				    'zohoActive' => TRUE, 
 	),
 );

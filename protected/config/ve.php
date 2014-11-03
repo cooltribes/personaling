@@ -5,8 +5,10 @@ return CMap::mergeArray(
     //'timeZone' => 'CEST',
         'timeZone' => 'America/Caracas',
         'language' => 'es_ve',
+        'preload' => array('log'),
 	// 'sourceLanguage'=>'es_ES',
         'components'=>array(
+            
 			'db'=>array(
 				'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
                                     dbname=db_personalingDEV_VE',
@@ -16,6 +18,35 @@ return CMap::mergeArray(
 				'charset' => 'utf8',
 				'tablePrefix' => 'tbl_',
 			),
+			 'log' => array(
+                                   'class' => 'CLogRouter',
+                                   'routes' => array(
+                                       'class' => 'ext.phpconsole.PhpConsoleLogRoute',
+                                       /* Default options:
+                                       'isEnabled' => true,
+                                       'handleErrors' => true,
+                                       'handleExceptions' => true,
+                                       'sourcesBasePath' => $_SERVER['DOCUMENT_ROOT'],
+                                       'phpConsolePathAlias' => 'application.vendors.PhpConsole.src.PhpConsole',
+                                       'registerHelper' => true,
+                                       'serverEncoding' => null,
+                                       'headersLimit' => null,
+                                       'password' => null,
+                                       'enableSslOnlyMode' => false,
+                                       'ipMasks' => array(),
+                                       'dumperLevelLimit' => 5,
+                                       'dumperItemsCountLimit' => 100,
+                                       'dumperItemSizeLimit' => 5000,
+                                       'dumperDumpSizeLimit' => 500000,
+                                       'dumperDetectCallbacks' => true,
+                                       'detectDumpTraceAndSource' => true,
+                                       'isEvalEnabled' => false,
+                                       */
+                                   )
+                               )
+            
+            
+            
         ),
         'params'=>array(
 		// this is used in contact page
@@ -55,7 +86,7 @@ return CMap::mergeArray(
                         'banco' => true,
                         'saldo' => true,
                     ),	
-                 
+                 'clientZoom'=>'404687',
                 'multiLook'=> array(
                     'bodyType' => true,
                     'eyesColor' => true,
@@ -66,7 +97,7 @@ return CMap::mergeArray(
                 ),
                 'AzPayTerminal'=>'999',
                 'AzPaySecret'=> 'qwerty1234567890uiop',
-                'zohoToken' => 'a029ff6d9be39da6bddbd54f89ed15a1', 
+                'zohoToken' => 'a029ff6d9be39da6bddbd54f89ed15a1',
 
 
 		),

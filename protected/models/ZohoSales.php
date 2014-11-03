@@ -116,7 +116,7 @@ class ZohoSales{
 		//Yii::app()->end();
 		
 		$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
-		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&xmlData=".$xml;
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&wfTrigger=true&xmlData=".$xml; 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);

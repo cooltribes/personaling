@@ -1,3 +1,8 @@
+<?php 
+$time_start = microtime(true);
+PC::debug('Execute Time (start):'.(microtime(true)-$time_start), 'debug,time'); 
+
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
 <head>
@@ -5,11 +10,18 @@
          <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <meta name="language" content="es" />
     <meta charset="utf-8">
+    
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <?php 
     
-    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css?v=3',null);
+    
     // Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
+    Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css?v=3',null);
+    if (($this->id=='tienda')&&($this->action->id=='index'))
+        Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/tienda.css');
+
+
+
     Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico?v=3',null,null);  
     Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
     ?>
@@ -380,7 +392,10 @@ if(!Yii::app()->user->isGuest){
         )); ?>
   <!-- breadcrumbs -->
   <?php endif?>
+  <?php PC::debug('Execute Time (end header):'.(microtime(true)-$time_start), 'debug,time'); ?>
+  <?php PC::debug('Database:'.Yii::app()->db->connectionString,'debug,enviroment'); ?>
   <?php echo $content; ?> </div>
+  <?php PC::debug('Execute Time (end content):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <!-- page -->
 <div id="modalAjax"></div>
 <div id="wrapper_footer">
@@ -1032,6 +1047,9 @@ if(!Yii::app()->user->isGuest){
 
 </script>
 
+<?php PC::debug('Execute Time (end footer):'.(microtime(true)-$time_start), 'debug,time'); 
+  
+?>
 
 </body>
 </html>

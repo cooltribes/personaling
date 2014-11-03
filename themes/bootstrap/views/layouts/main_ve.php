@@ -325,11 +325,11 @@ if(Yii::app()->user->isGuest){
   
   
 <!-- Mensaje Cookies ON -->
-<div class="header_notification" id="cookies_notification" style="margin-top: 88px; display: none;">
+<!--<div class="header_notification" id="cookies_notification" style="margin-top: 88px; display: none;">
     Esta web utiliza <strong>cookies</strong> para mejorar tu experiencia de usuario y para recopilar información estadística sobre tu navegación. Si continúas navegando, consideramos que aceptas su uso. <a href="<?php echo Yii::app()->baseUrl; ?>/site/politicas_de_cookies" style="color: #0000FF">Más información</a> | <a id="accept_cookies" href="#" style="color: #0000FF">No mostrar de nuevo</a>
     <button id="buttomCookies" type="button" class="close" aria-hidden="true">&times;</button>
 
-</div>
+</div>-->
 <!-- Mensaje Cookies OFF -->
 
 <?php

@@ -5,7 +5,6 @@
 $this->breadcrumbs=array(
 	'Shopping Metrics',
 );
-
 $pagerParams=array(
 			'header'=>'',
 			'prevPageLabel' => Yii::t('contentForm','Previous'),
@@ -43,7 +42,7 @@ $pagerParams=array(
 					'list-auth-items',
 					{
 					type: 'POST',	
-					url: '" . CController::createUrl('producto/admin') . "',
+					url: '" . CController::createUrl('ShoppingMetric/admin') . "',
 					data: ajaxRequest}
 					
 					)
@@ -71,7 +70,7 @@ $pagerParams=array(
 						'list-auth-items',
 						{
 						type: 'POST',	
-						url: '" . CController::createUrl('producto/admin') . "',
+						url: '" . CController::createUrl('ShoppingMetric/admin') . "',
 						data: ajaxRequest}
 						
 						)
@@ -93,31 +92,13 @@ $pagerParams=array(
 
 	    </div>
     	<div class="span3"><a href="#" class="btn crear-filtro">Crear búsqueda avanzada</a></div>
-	    <div class="span1">
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
-		    'buttonType' => 'link',
-		    'label'=>'Importar',
-		    'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-		    'size'=>'normal', // null, 'large', 'small' or 'mini'
-		    'url' => 'importar',
-		)); ?>    	
-	    </div>
-	    <div class="span2">
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
-		    'buttonType' => 'link',
-		    'label'=>'Añadir producto',
-		    'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-		    'size'=>'normal', // null, 'large', 'small' or 'mini'
-		    'url' => 'create',
-		)); ?>
-	    </div>
 
     </div>
 </div>
 
   <hr/>
   
-  <?php #$this->renderPartial('_filters'); ?>
+  <?php $this->renderPartial('_filters'); ?>
   <hr/>
 
 <?php /*$this->widget('zii.widgets.grid.CGridView', array(
@@ -144,19 +125,18 @@ $template = '{summary}
       
       <th rowspan="2" scope="col">Look</th>
       <th rowspan="2" scope="col">Noombre del Look</th>
-      <th rowspan="2" scope="col">id  de Referido</th>
-      <th rowspan="2" scope="col">Nombre del Referido</th>
-     <th rowspan="2" scope="col">Nasdasdasd</th>
-      <th rowspan="2" scope="col">Ventas '.Yii::t('contentForm','currSym').'</th>
-      <th rowspan="2" scope="col">Estado</th>
-      <th rowspan="2" scope="col">Fecha de Carga</th>
-      <th rowspan="2" scope="col">Progreso de la campaña</th>
-      <th rowspan="2" scope="col">Acción</th>
-      <th rowspan="2" scope="col">Acción</th>
-      <th rowspan="2" scope="col">Acción</th>
+      <th colspan="2" scope="col">Referido</th>
+      <th colspan="2" scope="col">Visitado por</th>
+      <th rowspan="2" scope="col">Direccion IP</th>
+      <th rowspan="2" scope="col">Navegador</th>
+      <th rowspan="2" scope="col">Fecha</th>
+      <th rowspan="2" scope="col">Fuente</th>
     </tr>
     <tr>
-      
+            <th scope="col">id</th>
+      		<th scope="col">Nombre</th>
+      		<th scope="col">id</th>
+      		<th scope="col">Nombre</th>
     </tr>
     {items}
     </table>

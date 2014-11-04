@@ -297,8 +297,10 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                               echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,'0',array(),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas')); 
     
                             }
-                        else
-                             echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,array_shift(array_keys($lookhasproducto->producto->getTallas($color_id))),$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas'));
+                        else{
+                          $keys = array_keys($lookhasproducto->producto->getTallas($color_id));
+                            echo CHtml::dropDownList('talla'.$lookhasproducto->producto_id.'_'.$color_id,array_shift($keys),$lookhasproducto->producto->getTallas($color_id),array('onchange'=>'js:updateCantidad(this);','prompt'=>Yii::t('contentForm' , 'Size'),'class'=>'span5 tallas'));
+                          }
                       /*}else{
                         echo $lookhasproducto->producto->tienda->name;
                       }*/

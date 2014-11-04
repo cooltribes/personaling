@@ -260,7 +260,7 @@ return array (
 	'Outstanding Looks' => 'Looks destacados',
 	'Outstanding Items' => 'Productos destacados',
 	'Only can be used alphanumeric characters, hyphen (-) and underscore (_).'=>'SOlo puedes usar letras, números y guión (-) o underscore (_).',
-
+	'or Paypal'=>' o Paypal',
 	'P.S' => 'P.S',
 	'Paid' => 'Ya pagados',
 	'Parcial Returned' => 'Devolución Parcial',

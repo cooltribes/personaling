@@ -45,6 +45,8 @@ Yii::createWebApplication($config)->run();
     	$environment = new Environment(Environment::DEVELOPMENT,$country,'/rpalma/sandbox/personaling');
     elseif (strstr($_SERVER["REQUEST_URI"],"yroa"))
         $environment = new Environment(Environment::DEVELOPMENT,$country,'/yroa/site/personaling');
+    elseif (strstr($_SERVER["REQUEST_URI"],"cruiz"))
+        $environment = new Environment(Environment::DEVELOPMENT,$country,'/cruiz/sites/personaling');
   
         
 //$environment = new Environment(Environment::DEVELOPMENT,$country,'/rpalma/sandbox/personaling');

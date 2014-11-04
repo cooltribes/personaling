@@ -396,7 +396,7 @@ class LookController extends Controller
 		Yii::app()->clientScript->registerScript('metrica_analytics',"
 			ga('ec:addProduct', {               // Provide product details in an productFieldObject.
 			  'id': '".$model->id."',                   // Product ID (string).
-			  'name': '".$model->title."', // Product name (string).
+			  'name': '".addslashes($model->title)."', // Product name (string).
 			  'category': 'Looks',   // Product category (string).
 			  'brand': 'Personaling',                // Product brand (string).
 			});

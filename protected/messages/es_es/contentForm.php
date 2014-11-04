@@ -456,6 +456,7 @@ return array (
 	'You should set the sizes for the items.'=>'Debes seleccionar las tallas de los productos.',
 	'You should not add repeated items.'=>'No es posible incluir prendas repetidas.',
 	'You should add six items at least.'=>'Debes incluir al menos seis prendas',
+	'You should add four items at least.'=>'Debes incluir al menos cuatro prendas',
 	
 	
 	'Watch all the looks created by the best Personal Shoppers from *country*'=>

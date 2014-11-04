@@ -1,49 +1,130 @@
 <?php
-	$es="";
-   	$r="";
-	$cats="";
-	
+
 echo"<tr>";
 
+	$validacion=false;
 	#echo "<td><input name='check' type='checkbox' id='".$data->id."' /></td>";
-	$partir=explode(",", $data->data);
-	$partir[0]; // tendria algo como {"look_id":"770"
+	$decode = json_decode($data->data, true);
 	
-	$close=explode(":", $partir[0]);
-	$look_id=str_replace('"', '', $close[1]);
+	if($decode = json_decode($data->data, true))
+	{
+		$look_id=$decode['look_id'];
+		$referenciado_id=$decode['ps_id'];
+		$validacion=true;
+	}
+	else
+	{
+		$validacion2=false;
+	}
 	
-   	echo "<td>".$look_id."</td>";
-   	echo "<td>".$data->data."</td>";
-	echo "<td>".$look_id."</td>"; 
-	echo "<td>".$data->id."</td>";
-	echo "<td>tota</td>"; 
-	echo "<td>dispo</td>"; 
-	echo "<td>fsdfsdf</td>"; 
-   	echo "<td>ventas bs</td>"; 
-	echo "<td> Inactivo </td>";   	
-	echo "<td>".$data->data."</td>";	
-	echo "<td> Sin rango de fechas.</td>";
-	echo "<td> Sin rango de fechas.</td>";
-	/*echo "<td>";
 
-	 
-echo CHtml::link("<i class='icon-eye-open'></i>",
-    $this->createUrl('producto/detalles',array('id'=>$data->id)),
-    array(// for htmlOptions
-      'onclick'=>' {'.CHtml::ajax( array(
-      'url'=>CController::createUrl('producto/detalles',array('id'=>$data->id)),
-          // 'beforeSend'=>'js:function(){if(confirm("Are you sure you want to delete?"))return true;else return false;}',
-           'success'=>"js:function(data){ $('#myModal').html(data);
-					$('#myModal').modal(); }")).
-         'return false;}',// returning false prevents the default navigation to another url on a new page 
-   // 'class'=>'delete-icon',
-    'id'=>'link'.$data->id)
-);		
+	if($validacion==true)
+	{
+		$model=Look::model()->findByPk($look_id);
 
-	echo "</td>";*/
-  // 	echo "<td><a href='#myModal' role='button' class='btn btn-mini' data-toggle='modal'><i class='icon-eye-open'></i></a></td>";
 	
-echo"</tr>";
+	$navegador=ShoppingMetric::getBrowser($data->HTTP_USER_AGENT);
+	
+	
+	echo "<td>".$look_id."</td>";  //id del look
+	echo "<td>".$model->title."</td>"; // nombre del look	
 
+	
+	
+	if($referenciado_id!="0")
+	{
+		#$referenciado_id=(string)(int)$referenciado_id;	
+		echo "<td>".$referenciado_id."</td>"; // id del referenciado
+		$modelado=Profile::model()->findByAttributes( array('user_id'=>$referenciado_id));
+		echo "<td>".$modelado->first_name." ".$modelado->last_name."</td>"; //nombre del referenciado
+	}
+		
+	else 
+	{
+		echo "<td>No fue referenciado</td>";	// no fue referenciado
+		echo "<td>No fue referenciado</td>"; // no fue referenciado
+	}
+	
+	if($data->user_id==0)
+	{
+		echo "<td>Usuario No Registrado</td>";	// no fue referenciado
+		echo "<td>Usuario No Registrado</td>"; // no fue referenciado
+	}
+	else
+	{
+		echo "<td>".$data->user_id."</td>";
+		$visitor=Profile::model()->findByAttributes( array('user_id'=>$data->user_id));
+		echo "<td>".$visitor->first_name." ".$visitor->last_name."</td>"; //nombre del referenciado
+	}
+	
+	
+	echo "<td>".$data->REMOTE_ADDR."</td>"; //direccion IP
+	echo "<td>".$navegador."</td>"; //navegador
+	echo "<td>".$data->created_on."</td>"; //navegador
+	if($data->HTTP_REFERER=="AJAX")
+	{
+		echo "<td>Provino desde Pagina no localizada</td>"; 
+	}
+	else 
+	{
+		echo "<td>".$data->HTTP_REFERER."</td>";
+	}
+	}
 
-?>
+	
+
+/*echo"<tr>";
+
+	#echo "<td><input name='check' type='checkbox' id='".$data->id."' /></td>";
+	$decode = json_decode($data->data, true);
+	
+	$look_id=$decode['look_id'];
+	$referenciado_id=$decode['ps_id'];
+
+	
+	$model=Look::model()->findByPk($look_id);
+	
+	$navegador=ShoppingMetric::getBrowser($data->HTTP_USER_AGENT);
+	
+	
+   	echo "<td>".$look_id."</td>";  //id del look
+	echo "<td>".$model->title."</td>"; // nombre del look
+	if($referenciado_id!="0")
+	{
+		#$referenciado_id=(string)(int)$referenciado_id;	
+		echo "<td>".$referenciado_id."</td>"; // id del referenciado
+		$modelado=Profile::model()->findByAttributes( array('user_id'=>$referenciado_id));
+		echo "<td>".$modelado->first_name." ".$modelado->last_name."</td>"; //nombre del referenciado
+	}
+		
+	else 
+	{
+		echo "<td>No fue referenciado</td>";	// no fue referenciado
+		echo "<td>No fue referenciado</td>"; // no fue referenciado
+	}
+	
+	if($data->user_id==0)
+	{
+		echo "<td>Usuario No Registrado</td>";	// no fue referenciado
+		echo "<td>Usuario No Registrado</td>"; // no fue referenciado
+	}
+	else
+	{
+		echo "<td>".$data->user_id."</td>";
+		$visitor=Profile::model()->findByAttributes( array('user_id'=>$data->user_id));
+		echo "<td>".$visitor->first_name." ".$visitor->last_name."</td>"; //nombre del referenciado
+	}
+	
+	
+	echo "<td>".$data->REMOTE_ADDR."</td>"; //direccion IP
+	echo "<td>".$navegador."</td>"; //navegador
+	echo "<td>".$data->created_on."</td>"; //navegador
+	if($data->HTTP_REFERER=="AJAX")
+	{
+		echo "<td>Provino desde Pagina no localizada</td>"; 
+	}
+	else 
+	{
+		echo "<td>".$data->HTTP_REFERER."</td>";
+	}*/
+	

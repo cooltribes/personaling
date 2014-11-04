@@ -2545,7 +2545,10 @@ class BolsaController extends Controller
 					$estado->orden_id = $orden->id;
 					
 					if($estado->save())
-					{
+					{	
+						$zoho = new ZohoSales;
+						$zoho->updateStatus($orden->id); 
+
 						Yii::app()->user->setFlash('success', 'Hemos recibido tu pago y está en espera de confirmación');
 						echo "ok";	
 					}	

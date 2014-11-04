@@ -1,4 +1,6 @@
 <?php
+$personal_shopper = User::model()->findAll(array('condition' => 'personal_shopper=1'));
+$categorias = Categoria::model()->findAllByAttributes(array('padreId' => '2'));
 if(isset($seo)){
     $this->pageTitle = $seo->title;
     Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
@@ -135,67 +137,49 @@ if (isset($user)){
 
 	<div class="container">
 		<div id="accordion" class="hide">
-			<?php  $categorias = Categoria::model()->findAllByAttributes(array('padreId' => '2'));
+			<?php
 					if (count($categorias))
-                                foreach ($categorias as $categoria) {
-                                	echo '<h3>'.$categoria->nombre.'</h3><div>';
-                                    foreach($categoria->subcategorias as $child){
-                                   ?> <label>
-							              <input type="checkbox" name="check_ocasiones[]" value="<?php echo $child->id; ?>" id="check_ocasion<?php echo $child->id;?>" onclick="js:refresh()" class="check_ocasiones">
-							              <?php echo $child->nombre; ?>
-							              </label><?php
-                                    }	
-									
-                                	
-									
-                                	
-									 echo "</div>";
-                                        
-                                }
-						$rangos= Look::model()->getRangosPrecios();
-						echo '<h3>Precios</h3><div>';
-						
-						 foreach ($rangos as $key => $rango) { ?>
-                                <a class="btn-link price-mobile" id="<?php echo "{$rango['start']}-{$rango['end']}"; ?>">
-                                        <?php
-                                        if (!$key) {
-                                            echo "Hasta ".Yii::app()->numberFormatter->format("#,##0.00",$rango['end'])." "
-                                            .Yii::t('contentForm', 'currSym');
-                                        } else {
-                                            if ($key < 3) {
-                                                echo "De ".Yii::app()->numberFormatter->format("#,##0.00",$rango['start'])." 
-                                                    a ".Yii::app()->numberFormatter->format("#,##0.00",$rango['end'])." "
-                                                        .Yii::t('contentForm', 'currSym');
-                                            } else {
-                                                echo "Más de ".Yii::app()->numberFormatter->format("#,##0.00",$rango['start']).
-                                                        " ".Yii::t('contentForm', 'currSym');
-                                            }
-                                        }
-                                        ?>
-                                        <span class="color12">
-                                <?php echo "({$rango['count']})"; ?>
-                                        </span>
-                                    </a><br/>
-							<?php } ?>
-                        <?php if(!empty($rangos)){ ?>
-                            <a class="btn-link price-filter" id="<?php echo "{$rangos[0]['start']}-{$rangos[3]['end']}" ?>">Todos <span class="color12"></span></a>
-                        <?php } 
-                        echo "</div>"; ?>  
-						
-						
-						
-						
+                                foreach ($categorias as $categoria): ?>
+                                	<h3><?php echo $categoria->nombre; ?></h3>
+                                    <div>
+                                        <?php foreach($categoria->subcategorias as $child): ?>
+                                            <label>
+                                            <input type="checkbox" name="check_ocasiones[]" value="<?php echo $child->id; ?>" id="check_ocasion<?php echo $child->id;?>" onclick="js:refresh()" class="check_ocasiones">
+                                              <?php echo $child->nombre; ?>
+                                              </label>
+                                        <?php endforeach; ?>
+									</div>
+                                <?php endforeach; ?>
+
+						<?php //$rangos= Look::model()->getRangosPrecios(); ?>
+
+            <?php PC::debug('Execute Time (before precios):'.(microtime(true)-$time_start), 'debug,time'); ?>
+            <h3>Precios</h3>
+                        <div id="div_rangos"></div>
+            <?php Yii::app()->clientScript->registerScript('rangoprecios_mobile', "
+						$.get('".Yii::app()->createUrl('tienda/rangoslookmobile')."',function(data){
+
+							$('#div_rangos').append(data);
+
+
+						})
+						"); ?>
+
+
+            <?php PC::debug('Execute Time (before personal shopper):'.(microtime(true)-$time_start), 'debug,time'); ?>
 				<h3>Personal Shoppers</h3>	
 				<div>
 						
 					<form id="form_shopper">
 	                    <nav class="  ">
 	                        
-							<?php $personal_shopper = User::model()->findAll(array('condition' => 'personal_shopper=1')); ?>
+
 							<?php
 							foreach ($personal_shopper as $shopper) {
-							    if (count($shopper->looks)) {
+							    //if (count($shopper->looks)) {
+                                if ($shopper->haslooks){
 							        ?>
+                                }
 							<label>
 							        <input type="checkbox" name="check_shopper[]" value="<?php echo $shopper->id; ?>" id="check_ocasion<?php echo $shopper->id; ?>" onclick="js:refresh()" class="check_shopper"><?php echo $shopper->profile->first_name . ' ' . $shopper->profile->last_name; ?>
 							</label>
@@ -334,7 +318,7 @@ $("#mobFiltrar").click(function() {
                     <li class="filtros-header">Filtrar por: <?php echo Yii::app()->session['registerStep']; ?></li>
                     <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ocasiones <b class="caret"></b></a>
                         <ul class="dropdown-menu ">
-                            <?php $categorias = Categoria::model()->findAllByAttributes(array('padreId' => '2')); ?>
+                            <?php //$categorias = Categoria::model()->findAllByAttributes(array('padreId' => '2')); ?>
                             <?php
                             if (count($categorias))
                                 foreach ($categorias as $categoria) {
@@ -500,7 +484,7 @@ $("#mobFiltrar").click(function() {
                 <form id="form_shopper">
                     <nav class="  ">
                         <ul class="nav">
-<?php $personal_shopper = User::model()->findAll(array('condition' => 'personal_shopper=1')); ?>
+<?php //$personal_shopper = User::model()->findAll(array('condition' => 'personal_shopper=1')); ?>
 <?php
 foreach ($personal_shopper as $shopper) {
     if (count($shopper->looks)) {

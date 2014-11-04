@@ -9,6 +9,8 @@
     <?php 
     
     Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/style.css?v=3',null);
+    if (($this->id=='tienda')&&($this->action->id=='index'))
+        Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/tienda.css');    
     // Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
     Yii::app()->clientScript->registerLinkTag('shortcut icon','image/x-icon',Yii::app()->getBaseUrl().'/favicon.ico?v=3',null,null);  
     Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
@@ -50,6 +52,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                             array('label'=>'Acciones', 'url'=>array('/adorno/index')),
                                             array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
                                             array('label'=>'SEO', 'url'=>array('/controlpanel/seo')),
+                                            array('label'=>'Metricas', 'url'=>array('/shoppingMetric/admin')),
 //                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
 					)),
 
@@ -591,7 +594,7 @@ if(!Yii::app()->user->isGuest){
               $look = Look::model()->findByPk($look_id);
         if (isset($look)){
                 echo '<li>';
-                echo '<a class="btn-link" href="'.$look->getUrl().'" >'.$look->title.'</a>';
+                echo '<a class="btn-link" href="'.$look->getUrl().'" >'.addslashes($look->title).'</a>';
                 echo '<div class="row-fluid">';
   
                 //invertir array para mostrar en orden cronológico de compras
@@ -1030,8 +1033,9 @@ if(!Yii::app()->user->isGuest){
         
         
     }
-    
-<?php } ?>
+
+<?php }
+?>
 
 </script>
 

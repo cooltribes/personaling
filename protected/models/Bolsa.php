@@ -262,13 +262,13 @@ class Bolsa extends CActiveRecord
                 ));
 
             //revisar si está o no en el carrito
-            $esta = false;
+            $esta = FALSE;
             foreach ($carrito as $producto){
                 if($producto->preciotallacolor_id == $ptcolor->id 
                         && $producto->look_id == $look_id){
 
                     $producto->cantidad++;
-                    $esta = true;
+                    $esta = TRUE;
                 }
             }
 
@@ -366,7 +366,7 @@ class Bolsa extends CActiveRecord
                         if (isset($look)) {
 
                             $textoLooks .= '<li><a class="btn-link" href="' . 
-                                    $look->getUrl() . '" >'. $look->title . 
+                                    $look->getUrl() . '" >'. addslashes($look->title) . 
                                     '</a><div class="row-fluid">';                       
                             
                             foreach ($carrito as $elementoCarrito) {
@@ -413,7 +413,7 @@ class Bolsa extends CActiveRecord
                             'tbl_producto_id'=>$producto->id,'orden'=>'1'));
                         
                         $textoProds .= '<li><a class="btn-link" href="'.
-                                $producto->getUrl().'" >'.$producto->nombre.
+                                $producto->getUrl().'" >'.addslashes($producto->nombre).
                                 '</a><div class="row-fluid">';
 
                         if($imagen){
@@ -445,7 +445,7 @@ class Bolsa extends CActiveRecord
          * que inicia sesion
          */
         
-        public function pasarBolsaGuest($bolsaGuest){
+        public static function pasarBolsaGuest($bolsaGuest){
             
             $userId = Yii::app()->user->id;
             

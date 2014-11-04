@@ -66,7 +66,7 @@ $this->breadcrumbs = array(
                         <li><strong>Entidad Bancaria: </strong>
                             <?php echo $model->entidad; ?>
                         </li>
-                        <li><strong>Cuenta (Nro. o PayPal): </strong>
+                        <li><strong>Cuenta (Nro. <?php echo Yii::t('contentForm','or Paypal');?>): </strong>
                             <?php echo $model->cuenta; ?> 
                         </li>
                         <li><strong>ID de Transacción: </strong>
@@ -150,7 +150,7 @@ $this->breadcrumbs = array(
                     <div class="row-fluid">
                         <div class="span12">
                             <h4>Ingresa el ID de Transacción:</h4>
-                            <label class="muted">Sólo para pagos con Paypal o Cuenta Bancaria</label>
+                            <label class="muted">Sólo para pagos con Cuenta Bancaria<?php echo Yii::t('contentForm','or Paypal');?></label>
                             <?php 
                             //Campo para idTransaccion, solo permitir ingresar
                             //datos cuando sea por Cuenta Bancaria o Paypal

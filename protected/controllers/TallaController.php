@@ -35,7 +35,7 @@ class TallaController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete', 'getTallas'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -49,6 +49,25 @@ class TallaController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	
+	public function actionGetTallas()
+	{
+		if (isset($_GET['search'])){
+			$search = 	$_GET['search'];
+			
+			$tallas = Talla::model()->findAll(
+				"valor LIKE :talla",
+				array(':talla'=>"$search%")); // ordena alfeticamente por nombre			
+		} else {
+			$tallas = Talla::model()->findAll(array('order'=>'valor')); // ordena alfeticamente por nombre
+		}
+				 foreach($tallas as $i => $row){
+					$data[$i]['text']= $row->valor;
+					$data[$i]['id'] = $row->id;
+				 }
+		echo CJSON::encode($data);
+	}
+	
 	public function actionView($id)
 	{
 		$this->render('view',array(

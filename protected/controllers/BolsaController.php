@@ -496,9 +496,9 @@ class BolsaController extends Controller
         			Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
 						ga('ec:addProduct', {
 						  'id': '".$bp->preciotallacolor->producto->id."',
-						  'name': '".$bp->preciotallacolor->producto->nombre."',
-						  'category': '".$category->nombre."',
-						  'brand': '".$bp->preciotallacolor->producto->mymarca->nombre."',
+						  'name': '".addslashes($bp->preciotallacolor->producto->nombre)."',
+						  'category': '".addslashes($category->nombre)."',
+						  'brand': '".addslashes($bp->preciotallacolor->producto->mymarca->nombre)."',
 						  'variant': '".$ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor."',
 						  'price': '".$precio->precioImpuesto."',
 						  'quantity': '".$bp->cantidad."',
@@ -848,8 +848,6 @@ class BolsaController extends Controller
                     /*ID del usuario propietario de la bolsa*/
                     $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                         : Yii::app()->user->id;
-			
-
 
                     $bolsa = Bolsa::model()->findByAttributes(array(
                             'user_id' => $usuario,
@@ -873,9 +871,9 @@ class BolsaController extends Controller
 		        			Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
 								ga('ec:addProduct', {
 								  'id': '".$bp->preciotallacolor->producto->id."',
-								  'name': '".$bp->preciotallacolor->producto->nombre."',
-								  'category': '".$category->nombre."',
-								  'brand': '".$bp->preciotallacolor->producto->mymarca->nombre."',
+								  'name': '".addslashes($bp->preciotallacolor->producto->nombre)."',
+								  'category': '".addslashes($category->nombre)."',
+								  'brand': '".addslashes($bp->preciotallacolor->producto->mymarca->nombre)."',
 								  'variant': '".$ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor."',
 								  'price': '".$precio->precioImpuesto."',
 								  'quantity': '".$bp->cantidad."',
@@ -1150,20 +1148,23 @@ class BolsaController extends Controller
 	                $precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$bp->preciotallacolor->producto_id));
 
 	                //echo $bp->preciotallacolor->producto->nombre.'</br>';
-        			Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
-						ga('ec:addProduct', {
-						  'id': '".$bp->preciotallacolor->producto->id."',
-						  'name': '".$bp->preciotallacolor->producto->nombre."',
-						  'category': '".$category->nombre."',
-						  'brand': '".$bp->preciotallacolor->producto->mymarca->nombre."',
-						  'variant': '".$ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor."',
-						  'price': '".$precio->precioImpuesto."',
-						  'quantity': '".$bp->cantidad."',
-						});
-						
-	  					ga('ec:setAction', 'detail');       // Detail action.
-	 					ga('send', 'pageview');       // Send product details view with the initial pageview.
-					");	
+        		
+                    Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,'
+                        ga("ec:addProduct", {
+                          "id": "'.$bp->preciotallacolor->producto->id.'",
+                          "name": "'.addslashes($bp->preciotallacolor->producto->nombre).'",
+                          "category": "'.addslashes($category->nombre).'",
+                          "brand": "'.addslashes($bp->preciotallacolor->producto->mymarca->nombre).'",
+                          "variant": "'.$ptcolor->mycolor->valor.' '.$ptcolor->mytalla->valor.'",
+                          "price": "'.$precio->precioImpuesto.'",
+                          "quantity": "'.$bp->cantidad.'",
+                        });
+                        
+                        ga("ec:setAction", "detail");       // Detail action.
+                        ga("send", "pageview");       // Send product details view with the initial pageview.
+                    '); 
+                    
+                    
         			$cont++;
         		}
 
@@ -1262,6 +1263,7 @@ class BolsaController extends Controller
             if(Bolsa::isEmpty()){
                 $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
             }
+
             if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
 
                 /* Si es compra de admin para usuario */
@@ -1320,9 +1322,9 @@ class BolsaController extends Controller
                 			Yii::app()->clientScript->registerScript('metrica_analytics_'.$cont,"
 								ga('ec:addProduct', {
 								  'id': '".$bp->preciotallacolor->producto->id."',
-								  'name': '".$bp->preciotallacolor->producto->nombre."',
-								  'category': '".$category->nombre."',
-								  'brand': '".$bp->preciotallacolor->producto->mymarca->nombre."',
+								  'name': '".addslashes($bp->preciotallacolor->producto->nombre)."',
+								  'category': '".addslashes($category->nombre)."',
+								  'brand': '".addslashes($bp->preciotallacolor->producto->mymarca->nombre)."',
 								  'variant': '".$ptcolor->mycolor->valor." ".$ptcolor->mytalla->valor."',
 								  'price': '".$precio->precioImpuesto."',
 								  'quantity': '".$bp->cantidad."',
@@ -2391,9 +2393,9 @@ class BolsaController extends Controller
                         $addItem .= "
                                 ga('ec:addProduct', {               // Provide product details in an productFieldObject.
                                   'id': '".$producto->preciotallacolor->sku."',                   // Product ID (string).
-                                  'name': '".$producto->preciotallacolor->producto->nombre."', // Product name (string).
-                                  'category': '".$category->nombre."',            // Product category (string).
-                                  'brand': '".$producto->preciotallacolor->producto->mymarca->nombre."',                // Product brand (string).
+                                  'name': '".addslashes($producto->preciotallacolor->producto->nombre)."', // Product name (string).
+                                  'category': '".addslashes($category->nombre)."',            // Product category (string).
+                                  'brand': '".addslashes($producto->preciotallacolor->producto->mymarca->nombre)."',                // Product brand (string).
                                   'variant': '".$producto->preciotallacolor->mycolor->valor."',               // Product variant (string).
                                   'price': '".$producto->precio."',                 // Product price (currency).
                                   'quantity': ".$producto->cantidad."                     // Product quantity (number).
@@ -2542,7 +2544,10 @@ class BolsaController extends Controller
 					$estado->orden_id = $orden->id;
 					
 					if($estado->save())
-					{
+					{	
+						$zoho = new ZohoSales;
+						$zoho->updateStatus($orden->id); 
+
 						Yii::app()->user->setFlash('success', 'Hemos recibido tu pago y está en espera de confirmación');
 						echo "ok";	
 					}	
@@ -3425,8 +3430,7 @@ class BolsaController extends Controller
          */
         public function compraAztive($codigoTransaccion){            
            
-            $admin = Yii::app()->getSession()->contains("bolsaUser");                    
-                
+            $admin = Yii::app()->getSession()->contains("bolsaUser");
              
             /*ID del usuario propietario de la bolsa*/
             $userId = $admin ? Yii::app()->getSession()->get("bolsaUser")

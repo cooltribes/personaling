@@ -22,6 +22,7 @@
         private $_trace_level;
         private $_config;
         private $_country;
+        private $_baseUrl;
  
  
         /**
@@ -54,9 +55,10 @@
          * Initilizes the Environment class with the given mode
          * @param constant $mode
          */
-        function __construct($mode,$country) {
+        function __construct($mode,$country,$baseUrl) {
             $this->_mode = $mode;
             $this->_country = $country;
+            $this->_baseUrl = $baseUrl;
             $this->setConfig();
         }
  
@@ -67,29 +69,29 @@
         private function setConfig() {
             switch($this->_mode) {
                 case self::DEVELOPMENT:
-                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_development());
                     $this->_debug       = TRUE;
                     $this->_trace_level = 3;
+                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_development());
                     break;
                 case self::TEST:
-                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_test());
                     $this->_debug       = FALSE;
                     $this->_trace_level = 0;
+                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_test());
                     break;
                 case self::STAGE:
-                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_stage());
                     $this->_debug       = TRUE;
                     $this->_trace_level = 0;
+                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_stage());
                     break;
                 case self::PRODUCTION:
-                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_production());
                     $this->_debug       = FALSE;
                     $this->_trace_level = 0;
+                    $this->_config      = CMap::mergeArray  ($this->_main(), $this->_production());
                     break;
                 default:
-                    $this->_config      = $this->_main();
                     $this->_debug       = TRUE;
                     $this->_trace_level = 0;
+                    $this->_config      = $this->_main();
                     break;
             }
         }
@@ -176,6 +178,15 @@
 
                 // application components
                 'components'=>array(
+                    'clientScript' => array(
+                           'class' => 'application.vendors.yii-EClientScript.EClientScript',
+                           'combineScriptFiles' => ! $this->_debug, // By default this is set to true, set this to true if you'd like to combine the script files
+                           'combineCssFiles' => ! $this->_debug, // By default this is set to true, set this to true if you'd like to combine the css files
+                           'optimizeScriptFiles' => ! $this->_debug, // @since: 1.1
+                           'optimizeCssFiles' => ! $this->_debug, // @since: 1.1
+                           'optimizeInlineScript' => false, // @since: 1.6, This may case response slower
+                           'optimizeInlineCss' => false, // @since: 1.6, This may case response slower
+                         ),
                     'assetManager' => array(
                         //'linkAssets' => true,
                        // 'forceCopy'=> false,
@@ -232,7 +243,7 @@
                         'urlFormat'=>'path',
                         'showScriptName'=>false,
                         //'caseSensitive'=>false, 
-                        'baseUrl'=>'/rpalma/sandbox/personaling',
+                        'baseUrl'=>$this->_baseUrl,
 
                         'rules'=>array(
                             array(
@@ -298,6 +309,29 @@
                                 'categories' => 'registro,compra,tienda,admin,otro',
 
                         ),
+                        array(
+                                        'class' => 'ext.phpconsole.PhpConsoleLogRoute',
+                                        /* Default options:
+                                        'isEnabled' => true,
+                                        'handleErrors' => true,
+                                        'handleExceptions' => true,
+                                        'sourcesBasePath' => $_SERVER['DOCUMENT_ROOT'],
+                                        'phpConsolePathAlias' => 'application.vendors.PhpConsole.src.PhpConsole',
+                                        'registerHelper' => true,
+                                        'serverEncoding' => null,
+                                        'headersLimit' => null,
+                                        'password' => null,
+                                        'enableSslOnlyMode' => false,
+                                        'ipMasks' => array(),
+                                        'dumperLevelLimit' => 5,
+                                        'dumperItemsCountLimit' => 100,
+                                        'dumperItemSizeLimit' => 5000,
+                                        'dumperDumpSizeLimit' => 500000,
+                                        'dumperDetectCallbacks' => true,
+                                        'detectDumpTraceAndSource' => true,
+                                        'isEvalEnabled' => false,
+                                        */
+                                    ),
                         ),
                     ),
                     'ePdf' => array(
@@ -401,6 +435,7 @@
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
+                     
                     ),
                     'params'=>array(
                     // this is used in contact page
@@ -587,6 +622,15 @@
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
+                         'less'=>array(
+                                      'class'=>'ext.less.components.Less',
+                                      'mode'=>'client',
+                                      'files'=>array(
+                                        'less/style.less'=>'css/style.less',
+                                      ),
+                                          'options'=>array('watch'=>false),
+                                    ),
+                       
                     ),
                     'params'=>array(
                     // this is used in contact page
@@ -651,6 +695,15 @@
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
+                         'less'=>array(
+                                      'class'=>'ext.less.components.Less',
+                                      'mode'=>'client',
+                                      'files'=>array(
+                                        'less/style.less'=>'css/style.less',
+                                      ),
+                                          'options'=>array('watch'=>false),
+                                    ),
+                      
                     ),
                     'params'=>array(
                     // this is used in contact page
@@ -735,9 +788,7 @@
                                           ),
                                               'options'=>array('watch'=>false),
                                         ),
-                            'urlManager'=>array(
-                                'baseUrl'=>'',
-                                ),
+
  
                             // Application Log
                             'log'=>array(
@@ -815,15 +866,16 @@
                     'language' => 'es_es',
                     'timeZone' => 'Europe/Madrid',
                     'components'=>array(
-                                    'db'=>array(
-                                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
-                                               dbname=db_personalingT52',
-                                            'emulatePrepare' => true,
-                                            'username' => 'personaling',
-                                            'password' => 'Perso123Naling',
-                                            'charset' => 'utf8',
-                                            'tablePrefix' => 'tbl_',
-                                    ),
+                        'db'=>array(
+                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
+                               dbname=db_personalingT52',
+                            'emulatePrepare' => true,
+                            'username' => 'personaling',
+                            'password' => 'Perso123Naling',
+                            'charset' => 'utf8',
+                            'tablePrefix' => 'tbl_',
+                        ),
+
                     ),
                     'params'=>array(
                         // this is used in contact page

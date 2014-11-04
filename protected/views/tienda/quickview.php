@@ -111,7 +111,7 @@
 <?php       if(is_null($tienda)) { ?>
             <a class="btn btn-warning btn-block"  style="width:85px" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>
 <?php       }else{ ?>
-            <a class="btn btn-warning btn-block" style="width:167px" target="_blank" href="'.$producto->url_externo.'" title="'.$msj.'" ><?php echo $msj;?></a>
+            <a class="btn btn-warning btn-block" style="width:167px" target="_blank" href="<?php echo $producto->url_externo; ?>" title="<?php echo $msj; ?>" ><?php echo $msj;?></a>
             <?php }?>
                 </div>
             
@@ -442,7 +442,7 @@ function c(){
         var isGuest =<?php echo(Yii::app()->user->isGuest?"true":"false");?>;
         if(isGuest)
         {
-            agregarBolsaGuest('.$id.', talla, color);
+            agregarBolsaGuest(<?php echo $id; ?>, talla, color);
         }
         else{
 <?php       echo CHtml::ajax(array(

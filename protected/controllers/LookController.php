@@ -338,7 +338,7 @@ class LookController extends Controller
 		// si el look tiene prendas externas no se puede aplicar descuento
 		if($model->hasProductosExternos()){
 			Yii::app()->user->setFlash('error',UserModule::t("Este look no puede tener descuento"));
-			$this->redirect(array('mislooks'));
+			$this->redirect(array('admin'));
 		}
 
 		if(isset($_POST['Look'])){
@@ -396,7 +396,7 @@ class LookController extends Controller
 		Yii::app()->clientScript->registerScript('metrica_analytics',"
 			ga('ec:addProduct', {               // Provide product details in an productFieldObject.
 			  'id': '".$model->id."',                   // Product ID (string).
-			  'name': '".$model->title."', // Product name (string).
+			  'name': '".addslashes($model->title)."', // Product name (string).
 			  'category': 'Looks',   // Product category (string).
 			  'brand': 'Personaling',                // Product brand (string).
 			});
@@ -1205,16 +1205,10 @@ public function actionCategorias(){
 //            }
             //Yii::app()->end();
             
-
-            
-
-            
-            
-            
-            if (isset($_GET['id']))
-		$model= Look::model()->findByPk($_GET['id']);
+        if (isset($_GET['id']))
+			$model= Look::model()->findByPk($_GET['id']);
 		else
-		$model=new Look;
+			$model=new Look;
 		
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));	
 		//echo $_POST['productos_id'];

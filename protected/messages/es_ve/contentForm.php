@@ -246,6 +246,7 @@ return array (
      'Our deliveries through' => 'Nuestros envíos se realizan a través de',
      'Only can be used alphanumeric characters, hyphen (-) and underscore (_).'=>'Sólo puedes usar letras, números, guión (-) o underscore (_).',
      'On this look' => 'En este look', 
+     'or Paypal'=>'',
      
      'P.S' => 'P.S',
      'Paid' => 'Ya pagados',

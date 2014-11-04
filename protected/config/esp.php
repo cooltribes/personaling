@@ -58,7 +58,7 @@ return CMap::mergeArray(
                 'registro' => false,	
                 'mostrarMarcas'=>true,
                 'codigoPostal'=>true,
-                'mostrarChic'=>false, 
+                'mostrarChic'=>true, 
                 'country'=>'España',
                 'pais'=>'espana',
                 'clientName'=>'Personaling Enterprise S.L ',

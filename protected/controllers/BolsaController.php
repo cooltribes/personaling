@@ -848,8 +848,6 @@ class BolsaController extends Controller
                     /*ID del usuario propietario de la bolsa*/
                     $usuario = $admin ? Yii::app()->getSession()->get("bolsaUser")
                                         : Yii::app()->user->id;
-			
-
 
                     $bolsa = Bolsa::model()->findByAttributes(array(
                             'user_id' => $usuario,
@@ -1265,6 +1263,7 @@ class BolsaController extends Controller
             if(Bolsa::isEmpty()){
                 $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
             }
+
             if (!Yii::app()->user->isGuest) { // que esté logueado para llegar a esta acción
 
                 /* Si es compra de admin para usuario */
@@ -3431,8 +3430,7 @@ class BolsaController extends Controller
          */
         public function compraAztive($codigoTransaccion){            
            
-            $admin = Yii::app()->getSession()->contains("bolsaUser");                    
-                
+            $admin = Yii::app()->getSession()->contains("bolsaUser");
              
             /*ID del usuario propietario de la bolsa*/
             $userId = $admin ? Yii::app()->getSession()->get("bolsaUser")

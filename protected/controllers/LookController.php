@@ -1205,16 +1205,10 @@ public function actionCategorias(){
 //            }
             //Yii::app()->end();
             
-
-            
-
-            
-            
-            
-            if (isset($_GET['id']))
-		$model= Look::model()->findByPk($_GET['id']);
+        if (isset($_GET['id']))
+			$model= Look::model()->findByPk($_GET['id']);
 		else
-		$model=new Look;
+			$model=new Look;
 		
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));	
 		//echo $_POST['productos_id'];

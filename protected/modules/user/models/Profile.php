@@ -492,7 +492,7 @@ class Profile extends UActiveRecord
 			
 	 }
 	 
-	 public function getShape($shape, $var)
+	 public static function getShape($shape, $var)
 	 {
 	 	if($var=="contextura")
 			$str= ProfileField::model()->findByAttributes(array('varname'=>'contextura'))->range;
@@ -520,7 +520,7 @@ class Profile extends UActiveRecord
 		return $array;
 	 }
 	 
-	 public function getCategory($id, $padre_id, $categorias)
+	 public static function getCategory($id, $padre_id, $categorias)
 	 {
 	 	foreach($categorias as $categoria)
 		{

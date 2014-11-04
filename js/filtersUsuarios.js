@@ -5,6 +5,7 @@
 
 
 function changeFilter(e){
+
    var column = $(this);
    
    var fecha = ['lastvisit_at', 'lastorder_at', 'create_at', 'create_at_2', 'birthday'];
@@ -21,6 +22,7 @@ function changeFilter(e){
                     'sport' , 
                     'trabajo', 
                     'sex', 
+                    'interno',
                ];
    var texto = ['first_name', 'first_name_2', 'last_name', 'last_name_2', 'email', 'email_2', 'telefono', 'ciudad'];
                

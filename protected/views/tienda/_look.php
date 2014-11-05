@@ -16,7 +16,7 @@
       Yii::app()->clientScript->registerScript('metrica_analytics_looks_'.$cont,"
         ga('ec:addImpression', {            // Provide product details in an impressionFieldObject.
           'id': '".$look->id."',                   // Product ID (string).
-          'name': '".$look->title."', // Product name (string).
+          'name': '".addslashes($look->title)."', // Product name (string).
           'category': 'Looks',   // Product category (string).
           'brand': 'Personaling',                // Product brand (string).
           'list': 'Look impression',         // Product list (string).
@@ -43,7 +43,7 @@
     // hidden div con json para la función que se ejecuta con el scroll infinito
     echo json_encode(array(
       'id' => $look->id,
-      'name' => $look->title,
+      'name' => addslashes($look->title),
       'category' => 'Looks',
       'brand' => 'Personaling',
       'list' => 'Look impression',

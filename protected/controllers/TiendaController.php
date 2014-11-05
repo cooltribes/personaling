@@ -1,3 +1,4 @@
+
 <?php
  
 class TiendaController extends Controller

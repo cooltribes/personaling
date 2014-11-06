@@ -16,6 +16,8 @@ $this->widget('bootstrap.widgets.TbAlert', array(
     ),
         )
 );
+
+
 ?>	
 <!-- FLASH OFF --> 
 
@@ -51,7 +53,11 @@ $this->widget('bootstrap.widgets.TbAlert', array(
             
             ?>
             <fieldset>
-                <legend>1.- Realizar la validación previa del archivo:</legend>
+                <legend>1.- Realizar la validación previa del archivo: <?php echo " (".
+   CHtml::link("Descargar plantilla MasterData",Yii::app()->getBaseUrl()."/docs/PlantillaMasterData.xlsx",
+      array('class'=>'donwload_link')
+   )
+  .")";?></legend>
                 
                 <div class="well span5">
                     

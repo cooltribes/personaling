@@ -18,14 +18,14 @@ echo"<tr>";
 	}
 	
 
-	if($validacion==true)
+	if($validacion==true && $look_id!=0) 
 	{
 		$model=Look::model()->findByPk($look_id);
 
 	
 	$navegador=ShoppingMetric::getBrowser($data->HTTP_USER_AGENT);
 	
-	
+	#echo "<td>".$data->id."</td>";  //id del look
 	echo "<td>".$look_id."</td>";  //id del look
 	echo "<td>".$model->title."</td>"; // nombre del look	
 

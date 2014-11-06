@@ -341,7 +341,7 @@ class ShoppingMetric extends CActiveRecord
 	public function buscarPorFiltros($filters) 
 	{
 			
-		
+		#$condicion_final=' AND data like "%look_id%"';
 		$criteria = new CDbCriteria;
             
             $criteria->with = array();
@@ -358,16 +358,21 @@ class ShoppingMetric extends CActiveRecord
                 }else{                
                     $logicOp = $filters['rels'][$i-1];                
                 }                  
-			}
+			
 			
 			
 			 if($column == 'id')
               {
                  
-                 $word='%{"look_id":"'.$value.'"%';
-				 if($comparator=="=")
-			     	$criteria->condition = "data like '".$word."'"; 
-	
+                 $word='{"look_id":"'.$value.'"'; // $word='%{"look_id":"'.$value.'"%';
+				 /*if($comparator=="=")
+			     	$criteria->condition = "data like '".$word."'".$condicion_final;*/
+				if($comparator=="=")
+				{
+					$criteria->compare("data", $word,
+                        true, $logicOp);
+				}		 
+				 continue;
                }
 			  
 			  
@@ -376,18 +381,24 @@ class ShoppingMetric extends CActiveRecord
                  if($modelado=Look::model()->find('title LIKE :match',array(':match' => "%$value%")))	
                  {
                  	$modelado=Look::model()->find('title LIKE :match',array(':match' => "%$value%"));
-					$word='%{"look_id":"'.$modelado->id.'"%';	
+					#$word='%{"look_id":"'.$modelado->id.'"%';
+					$word='{"look_id":"'.$modelado->id.'"';		
                  }
 				else
 				{
 					$fa=NULL;	
-					$word='%{"look_id":"'.$fa.'"%';
+					#$word='%{"look_id":"'.$fa.'"%';
+					$word='{"look_id":"'.$fa.'"';
 					
 				}
 				 
 				 if($comparator=="=")
-			     	$criteria->condition = "data like '".$word."'";	
-                 
+				 {
+				 	#$criteria->condition = "data like '".$word."'".$condicion_final;
+				 	$criteria->compare("data", $word,true, $logicOp);
+				 }
+			     			
+                 continue;
      
                }
 			  
@@ -403,10 +414,15 @@ class ShoppingMetric extends CActiveRecord
 					}
 
 				}
-				$word='%"ps_id":"'.$value.'"}%';
+				#$word='%"ps_id":"'.$value.'"}%';
+				$word='"ps_id":"'.$value.'"}';
 				if($comparator=="=")
-			     	$criteria->condition = "data like '".$word."'";	
-     
+				{
+					#$criteria->condition = "data like '".$word."'".$condicion_final;
+					$criteria->compare("data", $word,true, $logicOp);
+				}
+			     			
+     			 continue;
                }
 			  
   
@@ -432,7 +448,8 @@ class ShoppingMetric extends CActiveRecord
 						
 						}
 					
-					$word='%"ps_id":"'.$busqueda.'"}%';					
+					#$word='%"ps_id":"'.$busqueda.'"}%';
+					$word='"ps_id":"'.$busqueda.'"}';					
 				}
 				else
 				{
@@ -452,18 +469,24 @@ class ShoppingMetric extends CActiveRecord
 						
 						}
 					
-					$word='%"ps_id":"'.$busqueda.'"}%';
+					#$word='%"ps_id":"'.$busqueda.'"}%';
+					$word='"ps_id":"'.$busqueda.'"}';
 					}
 					else 
 					{
 						$fa=NULL;	
-						$word='%{"look_id":"'.$fa.'"%';
+						#$word='%{"look_id":"'.$fa.'"%';
+						$word='{"look_id":"'.$fa.'"';
 					}
 				}	
 
 				if($comparator=="=")
-			     	$criteria->condition = "data like '".$word."'";	
-     
+				{
+					$criteria->compare("data", $word,true, $logicOp);	
+					#$criteria->condition = "data like '".$word."'".$condicion_final;
+				}
+			     			
+     			continue;
                }
 
 
@@ -475,25 +498,86 @@ class ShoppingMetric extends CActiveRecord
 				}	
               	
 					
-              	$criteria->condition = "HTTP_REFERER like '".$value."'";	
+              	#$criteria->condition = "HTTP_REFERER like '".$value."'".$condicion_final;
+				$criteria->compare("HTTP_REFERER", $value,true, $logicOp);	
+				continue;	
               }
 			  
-			  if($column == 'fuente')
+			  if($column == 'navegador')
               {
-              	if($value=="Provino desde Pagina no localizada")
-				{
-					$value="AJAX";
-				}	
-              	
+				#$value="%".$value."%";
+				#$criteria->condition = "HTTP_USER_AGENT like '".$value."'".$condicion_final;
+				$criteria->compare("HTTP_USER_AGENT", $value,true, $logicOp);	
+				continue;		
+              }
 					
-              	$criteria->condition = "HTTP_REFERER like '".$value."'";	
+			 if($column == 'ip')
+              {
+				#$criteria->condition = "REMOTE_ADDR = '".$value."'".$condicion_final;
+				$criteria->compare("REMOTE_ADDR", $value,true, $logicOp);
+				continue;		
+              }
+			  
+			  if($column == 'vis_id')
+              {
+				#$criteria->condition = "user_id = '".$value."'".$condicion_final;
+				$criteria->compare("user_id", $value,true, $logicOp);
+				continue;			
+              }
+			  
+			  if($column == 'vis_nombre')
+              {
+				if(strpos($value, " ")==TRUE)
+				{
+					$partir=explode(" ", $value);	
+					$nombre=$partir[0];
+					$apellido=$partir[1];
+					$modelado=Profile::model()->find('(first_name LIKE :match AND last_name LIKE :match2) OR 
+													  (first_name LIKE :match2 AND last_name LIKE :match)  
+													  ',array(':match' => "%$nombre%", ':match2' => "%$apellido%"));
+					
+					$word=$modelado->user_id;					
+				}
+				else
+				{
+					if(Profile::model()->find('first_name LIKE :match OR last_name LIKE :match',array(':match' => "%$value%")))
+					{
+						
+						$modelado=Profile::model()->find('first_name LIKE :match OR last_name LIKE :match',
+														array(':match' => "%$value%"));
+						$word=$modelado->user_id;
+					}
+					else 
+					{
+						$word=NULL;
+					}
+				}	
+
+				if($comparator=="=")
+				{
+					$criteria->compare("user_id", $word,true, $logicOp);		
+					#$criteria->condition = "user_id like '".$word."'".$condicion_final;
+				}
+			     continue;			
               }
 
-				    
+			  if($column == 'fecha') // FALTA LA FECHA
+              {
+				$date=explode('-',$value);
+				$value=$date[2]."-".$date[1]."-".$date[0];	
+				$sql = "created_on ".$comparator."'".$value."'";
+				$criteria->addCondition($sql, $logicOp);
+				
+				#$criteria->compare("created_on", $comparator." ".$value,true, $logicOp);		
+              }
+
+			}	    
 	
 			
 			
 			#$criteria->together = true;
+			 //$criteria->condition = 'data like "%look_id%"';
+			 $criteria->compare("data", 'look_id',true);
 			 $criteria->order = 'id DESC';  
 			return new CActiveDataProvider($this, array(
                 'criteria' => $criteria,

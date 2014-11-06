@@ -373,5 +373,33 @@ class ZohoSales{
 		//Yii::app()->end();
 		
 	}
+
+	function updateStatus($id){ // update status when a payment is registered
+
+		$orden = Orden::model()->findByPk($id);
+
+		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml .= '<Invoices>';
+		$xml .= '<row no="1">';
+		$xml .= '<FL val="Subject">Orden '.$orden->id.'</FL>';
+		$xml .= '<FL val="Status">'.$orden->getTextEstado().'</FL>'; 
+		$xml .= '<FL val="Email">'.$orden->user->email.'</FL>';
+		$xml .= '</row>'; 
+		$xml .= '</Invoices>';
+		
+		$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&wfTrigger=true&xmlData=".$xml; 
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+
+		//Execute cUrl session
+		$response = curl_exec($ch);
+		curl_close($ch);
+	}
 	
 }

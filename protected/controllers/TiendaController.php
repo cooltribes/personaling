@@ -1,8 +1,9 @@
+
 <?php
  
 class TiendaController extends Controller
 {
-	 
+	
 		/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -14,11 +15,11 @@ class TiendaController extends Controller
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','filtrar','categorias','imageneslooks',
                                     'segunda','ocasiones','modal','doble', 'crearFiltro',
-                                    'getFilter','xmltest','rangoslook','bf080','quickview'),
+                                    'getFilter','xmltest','rangoslook','bf080','quickview','rangoslookmobile'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index', 'look', 'redirect', 'modalAjax'), //Se cambió el action look de * para acá.
+				'actions'=>array('index','store', 'look', 'redirect', 'modalAjax'), //Se cambió el action look de * para acá.
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -109,33 +110,129 @@ class TiendaController extends Controller
 				
 
 		));	
-			 
+			
 	}
 	public function actionRangoslook(){
 		
 		$rangosArray = Look::model()->getRangosPrecios();
-		$this->renderPartial('_rangos',array('rangos'=>$rangosArray));
+		$this->renderPartial('_rangos',array('rangos'=>$rangosArray,'tipo'=>'normal'));
 	}
+    public function actionRangoslookMobile(){
+
+        $rangosArray = Look::model()->getRangosPrecios();
+        $this->renderPartial('_rangos',array('rangos'=>$rangosArray,'tipo'=>'mobile'));
+    }
+    public function actionStore(){
+		if (isset($_GET['page'])){
+			$producto = new Producto;	
+			$producto->status = 1; // no borrados
+			$producto->estado = 0; // solo productos activos
+			$criteria = $producto->nueva2("a");
+	        $total=Producto::model()->count($criteria);
+			$pages = new CPagination($total);
+			$pages->pageSize = 12;
+			$pages->applyLimit($criteria);
+	        $dataProvider = Producto::model()->findAll($criteria);
+		    Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+			Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
+			Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap-responsive.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap-yii.css'] = false;
+			Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
+			Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	        
+		    echo CJSON::encode(array(  
+            'status' => 'success',
+            'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
+                'pages' => $pages, 'total'=>$total), true,true)));
+
+	    } else {
+			//////******** INICIALIZACIONES ********/////////
+			$time_start = microtime(true);
+			$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
+			$seo = SeoStatic::model()->findByAttributes(array('name'=>'Tienda'));
+			//$a ="a"; 
+
+			$array_post = array('colorhid','cathid','padrehid','marcahid');
+			$array_session = array('f_color','f_cat','f_padre','f_marca','chic','max','min','p_index','f_text');		
+			
+			///***** SESSION FOR OUTLET ******////////
+			if(isset($_POST['outlet'])){
+				if($_POST['outlet'] == 'true'){
+					$producto->outlet = 1; // productos en el outlet
+					Yii::app()->session['outlet'] = $_POST['outlet'];
+				}
+			}else if(isset($_GET['outlet'])){
+				if($_GET['outlet'] == 'true'){
+					$producto->outlet = 1; // productos en el outlet
+					Yii::app()->session['outlet'] = $_GET['outlet'];
+				}
+			}else{
+				Yii::app()->session['outlet'] ='false';
+			}
+			
+			//////******* RANGOS DE PRECIOS *******/////////	
+			$lims=Precio::model()->getLimites();
+			$dif=$lims['maximo']-$lims['minimo'];
+			$rangos[0]['min']=0;
+			$rangos[0]['max']=($dif*.25)+$lims['minimo'];
+			$rangos[1]['min']=$rangos[0]['max']+0.01;
+			$rangos[1]['max']=($dif*.50)+$lims['minimo'];
+			$rangos[2]['min']=$rangos[1]['max']+0.01;
+			$rangos[2]['max']=($dif*.75)+$lims['minimo'];
+			$rangos[3]['min']=$rangos[2]['max']+0.01;
+			$rangos[3]['max']=$lims['maximo']+0.01;
+			
+			if($rangos[0]['max']>100){
+				$rangos[0]['max']=round($rangos[0]['max']/100, 0)*100;
+				$rangos[1]['max']=round($rangos[1]['max']/100, 0)*100;
+				$rangos[2]['max']=round($rangos[2]['max']/100, 0)*100;
+			}
+			for($i=0;$i<4;$i++){
+				$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);
+			}
+
+			unset(Yii::app()->session['bandera']);
+			foreach ($array_session as $session)
+				if (isset(Yii::app()->session[$session])) unset(Yii::app()->session[$session]);
+			if(!isset($_GET['page'])){ 
+				if(Yii::app()->session['order']=="") // se agrego nuevo porque pidieron que en una misma session se mantenga la misma vista de la tienda
+					Yii::app()->session['order']=rand(0,8);
+			
+
+			$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
+			$colores=Color::model()->findAllByAttributes(array('padreID'=>'0'));
+			ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);
+			$this->render('index_new',
+				array(
+					//'index'=>$producto,
+					//'dataProvider'=>$dataProvider,
+					'categorias'=>$categorias, 
+					'colores'=>$colores,
+					'marcas'=>$marcas,
+					'rangos'=>$rangos,
+					//'pages'=>$pages,
+					//'total'=>$total,
+					'seo' => $seo,
+					'time_start' => $time_start,
+				));
+			}
+		}
+    }
 	public function actionIndex()
-	{  /*    
-	       if(isset($_SERVER['HTTP_REFERER'])){
-	       var_dump($_SERVER['HTTP_REFERER']);
-           var_dump(strpos($_SERVER['HTTP_REFERER'],'/productos/'));
-           var_dump(strpos($_SERVER['HTTP_REFERER'],'/producto/detalle/'));
-        
-	   }   
-		$fromDetail=isset($_SERVER['HTTP_REFERER'])?$this->fromProductoDetail($_SERVER['HTTP_REFERER']):false;
-        if($fromDetail)
-            break;
-		   */
+	{
 		$time_start = microtime(true);
 		PC::debug('Execute Time (start action):'.(microtime(true)-$time_start), 'debug,time');
-        
+
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>1),array('order'=>'nombre ASC'));
 		$producto = new Producto;		
 		$producto->status = 1; // no borrados
 		$producto->estado = 0; // solo productos activos
-
+		$array_post = array('colorhid','cathid','padrehid','marcahid');
+		$array_session = array('f_color','f_cat','f_padre','f_marca','chic','max','min','p_index','f_text');
 		if(isset($_POST['outlet'])){
 			if($_POST['outlet'] == 'true'){
 				$producto->outlet = 1; // productos en el outlet
@@ -214,8 +311,6 @@ class TiendaController extends Controller
 				
 				} else {
 
-					$array_post = array('colorhid','cathid','padrehid','marcahid');
-					$array_session = array('f_color','f_cat','f_padre','f_marca','chic','max','min','p_index','f_text');
 					foreach ($array_post as $key => $post)
 						if (isset($_POST[$post]) && $_POST[$post]!=0) Yii::app()->session[$array_session[$key]] = $_POST[$post];
 						elseif (isset(Yii::app()->session[$array_session[$key]])) unset(Yii::app()->session[$array_session[$key]]);
@@ -230,7 +325,7 @@ class TiendaController extends Controller
 					}
 					if (isset($_POST['resethid']) && $_POST['resethid']==1)
 						foreach ($array_session as $session)
-							if (isset(Yii::app()->session[$array_session])) unset(Yii::app()->session['f_color']);
+							if (isset(Yii::app()->session[$session])) unset(Yii::app()->session[$session]);
 							
 				
 
@@ -386,52 +481,41 @@ class TiendaController extends Controller
 				$criteria->order=$orden[Yii::app()->session['order']];*/
 			$total=Producto::model()->count($criteria);
 			if($total>0){
-			
-		
-			$pages = new CPagination($total);
-			
-			$pages->pageSize = 12;
-			
-			$pages->applyLimit($criteria);
-			 
-			$dataProvider = Producto::model()->findAll($criteria);
-			PC::debug('Execute Time (before if):'.(microtime(true)-$time_start), 'debug,time');
-			if ((isset($_GET['page']))){
-				
-				$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
-				$colores=Color::model()->findAll();
-				ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);//METRICAS
-
-				$this->render('index_new',
-						array('index'=>$producto,
-						'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
-						'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
-						'pages'=>$pages,
-						'total'=>$total,
-						'seo' => $seo,
-						));	
-			} else {
-					
-				   
-				    echo CJSON::encode(array(  
-                    'status' => 'success',
-         
-                    'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
-                        'pages' => $pages, 'total'=>$total), true,true)));
-			}			 
+				$pages = new CPagination($total);
+				$pages->pageSize = 12;
+				$pages->applyLimit($criteria);
+				$dataProvider = Producto::model()->findAll($criteria);
+				PC::debug('Execute Time (before if):'.(microtime(true)-$time_start), 'debug,time');
+				if ((isset($_GET['page']))){
+					$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
+					$colores=Color::model()->findAll();
+					ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);//METRICAS
+					$this->render('index_new',
+							array('index'=>$producto,
+							'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
+							'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
+							'pages'=>$pages,
+							'total'=>$total,
+							'seo' => $seo,
+							));	
+				} else {
+					    echo CJSON::encode(array(  
+	                    'status' => 'success',
+	         
+	                    'div' => $this->renderPartial('_datos', array('prods' => $dataProvider,
+	                        'pages' => $pages, 'total'=>$total), true,true)));
+				}			 
 			}
 			else{
-					
 				echo CJSON::encode(array(  
                     'status' => 'success',
-            
                     'div' => "<span class='empty'>No se encontraron resultados para esta búsqueda.  </span>")); 
-				 
 			}
 		}
 		else{
 
 			unset(Yii::app()->session['bandera']);
+		/*
 		if(isset(Yii::app()->session['f_color'])){
 			unset(Yii::app()->session['f_color']);
 			
@@ -470,17 +554,20 @@ class TiendaController extends Controller
 		if(isset(Yii::app()->session['f_padre'])){
 			unset(Yii::app()->session['f_padre']);
 			
-		}
-		if(!isset($_GET['page'])){ 
-			if(Yii::app()->session['order']=="") // se agrego nuevo porque pidieron que en una misma session se mantenga la misma vista de la tienda
-				Yii::app()->session['order']=rand(0,8);
+		}*/
+			foreach ($array_session as $session)
+				if (isset(Yii::app()->session[$session])) unset(Yii::app()->session[$session]);
+			if(!isset($_GET['page'])){ 
+				if(Yii::app()->session['order']=="") // se agrego nuevo porque pidieron que en una misma session se mantenga la misma vista de la tienda
+					Yii::app()->session['order']=rand(0,8);
 			
 		}
 		PC::debug('Execute Time (before nueva2 otra):'.(microtime(true)-$time_start), 'debug,time'); 
 		$criteria = $producto->nueva2($a);
 		PC::debug('Execute Time (after nueva2 otra):'.(microtime(true)-$time_start), 'debug,time'); 
 		//$criteria->order=$orden[Yii::app()->session['order']];
-		$total=Producto::model()->count($criteria);
+
+        $total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);
 		$pages->pageSize = 12;
 		$pages->applyLimit($criteria);
@@ -495,8 +582,11 @@ class TiendaController extends Controller
 		 
 		$this->render('index_new',
 			array('index'=>$producto,
-				'dataProvider'=>$dataProvider,'categorias'=>$categorias, 
-				'colores'=>$colores,'marcas'=>$marcas,'rangos'=>$rangos,
+				'dataProvider'=>$dataProvider,
+				'categorias'=>$categorias, 
+				'colores'=>$colores,
+				'marcas'=>$marcas,
+				'rangos'=>$rangos,
 				'pages'=>$pages,
 				'total'=>$total,
 				'seo' => $seo,
@@ -1319,6 +1409,7 @@ public function actionCategorias2(){
                         'gift' => false,
                        // 'rangos' => $rangosArray,
                         'todosLosLooks' => $todosLosLooks,
+                        'time_start'=>$time_start,
                     ));
                 } 
                 else {
@@ -2071,9 +2162,9 @@ public function actionCategorias2(){
 		$this->redirect(array('index'));
 	}
     
-    public function fromProductoDetail($httpReferer = null){ 
-        if(!is_null($httpReferer)){
-            if(strpos($httpReferer,'/productos/')>0||strpos($httpReferer,'/producto/detalle/')>0)
+    public function fromProductoDetail(){ 
+        if(isset($_SERVER['HTTP_REFERER'])){
+            if(strpos($_SERVER['HTTP_REFERER'],'/productos/')||strpos($_SERVER['HTTP_REFERER'],'/producto/detalle/'))
                 return true;
         }
         return false;

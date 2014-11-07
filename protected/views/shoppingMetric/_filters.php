@@ -9,10 +9,7 @@
   </div>
 </div>          
     
-<?php /*$nombre="sho"; $apellido="personal"; $modelado=Profile::model()->find('(first_name LIKE :match AND last_name LIKE :match2) OR 
-													  (first_name LIKE :match2 AND last_name LIKE :match)  
-													  ',array(':match' => "%$nombre%", ':match2' => "%$apellido%"));
-													  echo $modelado->user_id;*/
+<?php 
     echo CHtml::dropDownList('estados', '', array('0' => 'Activo',
     '1' => 'Inactivo'), array('style' => 'display:none'));
     
@@ -24,8 +21,8 @@
     echo CHtml::dropDownList('marcas', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
                             array('style' => 'display:none'));
 							
-	echo CHtml::dropDownList('navegador', '', array('0'=>'Chrome', '1'=>'Firefox','2'=>'Internet Explorer' ,'3'=>'Safari',
-													 '4'=>'Opera' ),
+	echo CHtml::dropDownList('navegador', '', array('Chrome'=>'Chrome', 'Firefox'=>'Firefox','MSIE'=>'Internet Explorer' ,'Safari'=>'Safari',
+													 'Opera'=>'Opera' ),
                             array('style' => 'display:none'));
 							
     
@@ -140,7 +137,7 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('producto/admin') ?>', true);
+        searchAndSave('<?php echo CController::createUrl('shoppingMetric/admin') ?>', true);
             
     });
     
@@ -149,7 +146,7 @@
         
         e.preventDefault(); 
         
-        searchAndSave('<?php echo CController::createUrl('producto/admin') ?>', false);
+        searchAndSave('<?php echo CController::createUrl('shoppingMetric/admin') ?>', false);
             
     });
     

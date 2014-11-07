@@ -1026,9 +1026,10 @@ Yii::app()->clientScript->registerScript(
  		$.ajax({
 	        type: "post", 
 	        url: "<?php echo CController::createUrl('orden/validar'); ?>",
+	        dataType: 'json', 
 	        data: { 'accion':uno, 'id':id}, 
 	        success: function (data) {
-				if(data=="ok")
+				if(data.status=="ok")
 				{
 					window.location.reload();
 					//alert("guardado"); 
@@ -1045,10 +1046,11 @@ Yii::app()->clientScript->registerScript(
 		
  		$.ajax({
 	        type: "post", 
-	        url: "../validar", // action 
+	        url: "../validar", // action
+	        dataType: 'json', 
 	        data: { 'accion':uno, 'id':id}, 
 	        success: function (data) {
-				if(data=="ok")
+				if(data.status=="ok")
 				{
 					window.location.reload();
 					//alert("guardado"); 

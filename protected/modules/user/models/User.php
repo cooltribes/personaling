@@ -50,6 +50,12 @@ class User extends CActiveRecord {
 	 * @var integer $interno
      * */
 
+    /*
+    Interno:
+    0: No
+    1: Si
+    */
+
     /**
      * Returns the static model of the specified AR class.
      * @return CActiveRecord the static model class
@@ -448,8 +454,7 @@ class User extends CActiveRecord {
                 
             }
             
-            if($column === 'fuenteR')
-            {   
+            if($column === 'fuenteR'){   
                 if($value === 'face')
                 {
                    $comparator = $comparator === '=' ? 'NOT ' : '';                   
@@ -465,14 +470,19 @@ class User extends CActiveRecord {
                 
             }
 
+            if($column === 'interno'){
+                $criteria->compare("interno", $comparator.$value, false, $logicOp);
+                continue;
+            }
+
             if($column == 'monto')
             { 
                  $criteria->addCondition('(IFNULL((select SUM(orden.total) 
-		from tbl_orden orden 
-		where orden.user_id = user.id 
-			AND 
-		(orden.estado = 3 OR orden.estado = 4 OR orden.estado = 8)), 0))  '
-                                        . $comparator . ' ' . $value . '', $logicOp);                        
+            		from tbl_orden orden 
+            		where orden.user_id = user.id 
+            			AND 
+            		(orden.estado = 3 OR orden.estado = 4 OR orden.estado = 8)), 0))  '
+                                                    . $comparator . ' ' . $value . '', $logicOp);                        
                 continue;
             }
             /*Saldo disponible*/
@@ -1024,6 +1034,12 @@ class User extends CActiveRecord {
                 $num = Yii::app()->db->createCommand($sql)->queryColumn();
                 return count($num);
             }
+        }
+
+        public function getHasLooks(){
+            $looks = Look::model()->findByAttributes(array("user_id"=>$this->id,'status'=>Look::STATUS_APROBADO));
+            //$looks = true;
+            return isset($looks);
         }
 		
 		

@@ -155,7 +155,7 @@ return array(
 			'urlFormat'=>'path',
 			 'showScriptName'=>false,
      			//'caseSensitive'=>false, 
-     			'baseUrl'=>'/develop',
+     			'baseUrl'=>'/yroa/sites/personaling',
 
 			'rules'=>array(
                 array(
@@ -191,10 +191,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		
 		'db'=>array(
-			'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingDEV',
-			'emulatePrepare' => true,
-			'username' => 'personaling',
-			'password' => 'Perso123Naling',
+			'connectionString' => 'mysql:host=localhost; dbname=db_personalingT1',
+           	'emulatePrepare' => true,
+           	'username' => 'root',
+           	'password' => '',
 			'charset' => 'utf8',
 			'tablePrefix' => 'tbl_',
 		),
@@ -291,8 +291,7 @@ return array(
 			'clientZIP'=>'08003',
 			'clientPhone'=>'934 344 634',
 			'clientEmail'=>'info@personaling.com', 
-		     
-		    
+		
 					
                   'PRONUNCIACION' => 'Venezolana', 
 				    'currSym'=>'Bs',
@@ -307,6 +306,6 @@ return array(
 				    'country'=>'Venezuela',
 				    //'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
 				    'outlet'=>TRUE,
-				    'zohoActive' => TRUE, 
+				    'zohoActive' => FALSE,
 	),
 );

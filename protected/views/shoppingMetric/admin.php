@@ -55,7 +55,7 @@ $pagerParams=array(
 		
 		// Codigo para actualizar el list view cuando presionen ENTER
 		
-		Yii::app()->clientScript->registerScript('query',
+		/*Yii::app()->clientScript->registerScript('query',
 			"var ajaxUpdateTimeout;
 			var ajaxRequest; 
 			
@@ -80,15 +80,15 @@ $pagerParams=array(
 				return false;
 			    }
 			});",CClientScript::POS_READY
-		);	
+		);	*/
 		
 		?>	
 		
 		</div>
 	    <div class="span3">   
 	        
-	        <?php echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 2'),
-	                "id_filter", "name"), array('empty' => '-- Búsquedas avanzadas --', 'id' => 'all_filters')) ?>
+	        <?php /*echo CHtml::dropDownList("Filtros", "", Chtml::listData(Filter::model()->findAll('type = 2'),
+	                "id_filter", "name"), array('empty' => '-- Búsquedas avanzadas --', 'id' => 'all_filters')) */?>
 
 	    </div>
     	<div class="span3"><a href="#" class="btn crear-filtro">Crear búsqueda avanzada</a></div>

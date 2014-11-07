@@ -35,6 +35,10 @@
                                'profile'=>array(),
                             ))->findAll('personal_shopper = 1'), 'id', 'profile.first_name'),
                             array('style' => 'display:none'));
+
+    echo CHtml::dropDownList('interno', '', array(0 => 'No',
+                                                    1 => 'Si',),
+                            array('style' => 'display:none'));
     
     /*************      TIPO DE CUERPO ON   ****************/
     //Para las alturas    
@@ -179,6 +183,7 @@
                                 'prendas' => 'Prendas compradas',  
                                 'zoho_id' => 'Zoho ID',
                                 'birthday' => 'Fecha de nacimiento',
+                                'interno' => 'Interno',
                                  );
                                  asort($opcionesFiltros);
                                  

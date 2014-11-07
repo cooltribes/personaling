@@ -88,7 +88,26 @@ if(isset($seo)){
 
 	<div class="container">
 		<div id="accordion" class="hide">
-		<?php foreach($categorias as $padre){
+		<?php foreach($categorias as $padre): ?>
+            <h3><?php echo $padre->nombre; ?><span id='summ<?php echo $padre->nombre; ?>' class='summ summCat'></span><h3/><div class='paraFiltrar'>
+            <?php foreach($padre->subcategorias as $hijo): ?>
+                <a class='hijo' name='<?php echo $padre->nombre; ?>' value='<?php echo $hijo->id; ?>'><?php $hijo->nombre; ?></a><br/>
+            <?php endforeach; ?>
+            <a name="<?php echo $padre->nombre; ?>" href="#" class="todos allhijos" value="<?php echo strtoupper($padre->id); ?>">&nbsp
+            <?php
+            switch (strtoupper($padre->nombre)) {
+                case 'ROPA':
+                    echo Yii::t('contentForm','All the')." ".$padre->nombre;
+                    break;
+                default:
+                    echo Yii::t('contentForm','All the1')." ".$padre->nombre;
+                    break;
+            }
+            ?>
+            </a></div>
+        <?php endforeach; ?>
+        <?php
+        /*foreach($categorias as $padre){
 				echo "<h3>".$padre->nombre."<span id='summ".$padre->nombre."' class='summ summCat'></span><h3/><div class='paraFiltrar'>";
 				foreach($padre->subcategorias as $hijo){
 					echo "<a class='hijo' name='".$padre->nombre."' value='".$hijo->id."'>".$hijo->nombre."</a><br/>";
@@ -104,17 +123,40 @@ if(isset($seo)){
 								break;
 						}
 						echo '</a></div>';
-		}?>
-			  
-		<?php echo "<h3>".Yii::t('contentForm','Color')."<span id='summColor' class='summ'></span></h3><div><div class='paraFiltrar'>"; 
+		}*/
+        ?>
+        <h3><?php echo Yii::t('contentForm','Color'); ?><span id='summColor' class='summ'></span></h3><div><div class='paraFiltrar'>
+        <?php foreach($colores as $color): ?>
+            <a value="<?php echo $color->id; ?>" title="<?php echo $color->valor; ?>" class="scolor"><?php echo $color->valor; ?></a></br>
+        <?php endforeach; ?>
+        <a href="#" value="0" class="todos scolor" ><?php echo Yii::t('contentForm','All colors'); ?></a></div></div>
+        <h3><?php echo Yii::t('contentForm','By price'); ?> <span id='summPrecio' class='summ'></span></h3> <div class='paraFiltrar'>
+        <a class="precio"  id="0">Hasta <?php echo number_format($rangos[0]["max"],0,",",".").' '.Yii::t('contentForm', 'currSym'); ?>
+            <span class="color4">(<?php echo $rangos[0]['count']; ?>)</span>
+        </a></br>
+        <a class="precio"  id="1">De <?php echo number_format($rangos[1]["min"],0,",",".").' a '.number_format($rangos[1]["max"],0,",",".").' '.Yii::t('contentForm', 'currSym');?>
+            <span class="color4">(<?php echo $rangos[1]['count']; ?>)</span>
+        </a></br>
+        <a class="precio"  id="2">De <?php echo number_format($rangos[2]["min"],0,",",".").' a '.number_format($rangos[2]["max"],0,",",".").' '.Yii::t('contentForm', 'currSym'); ?>
+            <span class="color4">(<?php echo $rangos[2]['count']; ?>)</span>
+        </a></br>
+        <a class="precio"  id="3">Más de <?php echo number_format($rangos[3]["min"],0,",",".").' '.Yii::t('contentForm', 'currSym'); ?>
+            <span class="color4">(<?php echo $rangos[3]['count']; ?>)</span>
+        </a></br>
+        <a class="precio"  id="5"><?php echo Yii::t('contentForm','All price'); ?></a>
+
+        </div>
+
+		<?php
+
+        /*echo "<h3>".Yii::t('contentForm','Color')."<span id='summColor' class='summ'></span></h3><div><div class='paraFiltrar'>";
 		
 			foreach($colores as $color){ 
 				echo '<a value="'.$color->id.'" title="'.$color->valor.'" class="scolor">'.$color->valor.'</a></br>'; 
 			}
 							
-				echo '<a href="#" value="0" class="todos scolor" >'.Yii::t('contentForm','All colors').'</a></div></div>';		?>
-				
-		<?php echo "<h3>".Yii::t('contentForm','By price')." <span id='summPrecio' class='summ'></span></h3> <div class='paraFiltrar'>"; 
+				echo '<a href="#" value="0" class="todos scolor" >'.Yii::t('contentForm','All colors').'</a></div></div>';
+        echo "<h3>".Yii::t('contentForm','By price')." <span id='summPrecio' class='summ'></span></h3> <div class='paraFiltrar'>";
 		
 			echo'<a class="precio"  id="0">Hasta '.number_format($rangos[0]["max"],0,",",".").' '.Yii::t('contentForm', 'currSym').' <span class="color4">('.$rangos[0]['count'].')</span></a></br>';
 			echo'<a class="precio"  id="1">De '.number_format($rangos[1]["min"],0,",",".").' a '
@@ -124,26 +166,32 @@ if(isset($seo)){
 			echo'<a class="precio"  id="3">Más de '.number_format($rangos[3]["min"],0,",",".").' '.Yii::t('contentForm', 'currSym').' <span class="color4">('.$rangos[3]['count'].')</span></a></br>';
 			echo'<a class="precio"  id="5">'.Yii::t('contentForm','All price').'</a>';
 							
-				echo "</div>";		?>
-		
-		
+				echo "</div>";	*/	?>
 
-			<h3><?php echo Yii::t('contentForm','By brand')."<span id='summMarca' class='summ'></span>";?></h3>
 
-			  <?php
-			  echo "<div><div class='paraFiltrar'>";
-			  foreach($marcas as $marca){
-								$cien="not_cien";
+<?php 	PC::debug('Execute Time (by brand):'.(microtime(true)-$time_start), 'debug,time'); ?>
+			<h3><?php echo Yii::t('contentForm','By brand') ?><span id='summMarca' class='summ'></span></h3>
+            <div><div class='paraFiltrar'>
+<?php
+            foreach($marcas as $marca):
+                   $cien = "not cien";
+								/*$cien="not_cien";
 								if($marca->is_100chic){
 									$cien="cien";
 								}
-								
+
 								echo'<a class="marca '.$cien.'" value='.$marca->id.' >'.$marca->nombre.'</a><br/>';
-								 
-							}
-				echo '<a class="marca" value="0" href="#">'.Yii::t('contentForm','All Brands').'</a></div></div>';
+								*/
+			?>
+				<a class="marca <?php echo $cien; ?>" href="#" value='<?php echo $marca->id; ?>'><?php echo $marca->nombre; ?></a><br/>
+<?php
+			endforeach;
+
+			//	echo '<a class="marca" value="0" href="#">'.Yii::t('contentForm','All Brands').'</a></div></div>';
 			  
 			  ?>
+                <a class="marca" value="0" href="#"><?php echo Yii::t('contentForm','All Brands'); ?></a></div></div>
+            <?php 	PC::debug('Execute Time (by brand):'.(microtime(true)-$time_start), 'debug,time'); ?>
 			   <h3 class="mobReset" id="reset"><?php echo Yii::t('contentForm','Clean Filters');?></h3>
 		</div>
 	</div>
@@ -164,7 +212,7 @@ if(isset($seo)){
 
 
 
-
+<?php 	PC::debug('Execute Time (deskfilters):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <div id="deskfilters">
 <div id="banner100chic" style=" display:none; " class="margin_top ">
 	<div class="margin_bottom">
@@ -270,7 +318,7 @@ if(isset($seo)){
 				if(++$i > 2) break;
   			}  		
   		?>
-                        
+            <?php 	PC::debug('Execute Time (end categorias):'.(microtime(true)-$time_start), 'debug,time'); ?>
   			<li class="itemThumbnails tienda_iconos itemcolor">
   				<div class="dropdown">
 	  				<a href="#" class="dropdown-toggle" data-toggle="dropdown" class="color_b">
@@ -292,7 +340,8 @@ if(isset($seo)){
 						<a href="#" value="0" class="todos scolor CAPS" ><?php echo Yii::t('contentForm','All colors');?></a>
 					</div>
 				</div>
-  			</li>  					  			
+  			</li>
+            <?php 	PC::debug('Execute Time (end color):'.(microtime(true)-$time_start), 'debug,time'); ?>
 			<li class="item">
 				<div class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
@@ -318,7 +367,7 @@ if(isset($seo)){
 					</ul>  
 				</div>	
 			</li>
-
+            <?php 	PC::debug('Execute Time (end precio):'.(microtime(true)-$time_start), 'debug,time'); ?>
 			<?php if (Yii::app()->params['mostrarMarcas']): ?>
 				<li class="item item-marcas">
                             <?php 
@@ -390,7 +439,7 @@ if(isset($seo)){
 				<?php echo CHtml::hiddenField('marcahid',isset(Yii::app()->session['f_marca'])?Yii::app()->session['f_marca']:0); ?>
 				
 			<?php endif; ?>
-					
+            <?php 	PC::debug('Execute Time (end marcas):'.(microtime(true)-$time_start), 'debug,time'); ?>
 	
 	<li class="item" id="li_chic">
 
@@ -416,7 +465,9 @@ if(isset($seo)){
 						</div>
 					</a>
 	</li>
-		<!--			<ul class="dropdown-menu" >
+<?php $params_100chic = false; ?>
+<?php if ($params_100chic): ?>
+			<ul class="dropdown-menu" >
 						<?php
 						if(isset(Yii::app()->session['100chic']))
 								echo CHtml::hiddenField('chic_hid','1');
@@ -437,15 +488,17 @@ if(isset($seo)){
 						}
 						?>
 					</ul>  
-				</div>			
-			</li> -->
+				</div>
+			</li> 
+<?php else: ?>
 			<li class="item itemInput">
 				<div class="contenedorInput">
 					<input type="text" class="input-medium text_search" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="deskText" maxlength="50" > 
 					<button class="btn btn-danger btn-buscar" id="btn_search" type="button"><i class="icon-search"></i></button>	
 				</div>
 			</li>	
-		</ul>	 
+		</ul>
+<?php endif; ?>	 
 
 </section>
 <div class="row ">
@@ -474,6 +527,17 @@ if(isset($seo)){
 
     </div>
 </div>
+
+<?php 
+/*
+Yii::app()->clientScript->registerScript('list_productos', "
+						$.get('".Yii::app()->createUrl('tienda/store')."',{'page':1},function(data){
+							$('#tienda_productos').append(data.div);
+						},'json')
+						"); 
+*/
+?>
+
 <?php PC::debug('Execute Time (after renderPartial):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <?php $this->beginWidget('bootstrap.widgets.TbModal', array(
 				'id'=>'myModal',

@@ -402,7 +402,7 @@ if(!Yii::app()->user->isGuest){
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de">Acerca de Personaling</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li>
+         <!-- <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li> -->
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/sitemap" title="Site Map">Site map</a></li>          
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
           
@@ -410,7 +410,7 @@ if(!Yii::app()->user->isGuest){
       </div>
       <div class="span5 ">
         <h3> Sobre Personaling </h3>
-        <p class="lead"><?php echo Yii::t('contentForm','Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.') ?></p>
+        <p class="lead"><?php echo Yii::t('contentForm','Personaling.es is the first of Spain Online Personal Shopper, an online store where you can get the best fashion brands with which experts will advise you to buy looks tailored to your body type and style. In Personaling want you to inspire, discover and conquer, buying clothes that make you to enhance your figure, be comfortable and feel powerful. So we are your Personal Shopper Online.') ?></p>
         <span class="tPrecio">*<?php echo Yii::t('contentForm','Prices are subject to change. You can check the final price on the web sales.'); ?> </span> <p></p>
         <div class="row-fluid"><div class="span8"><img class="margin_top_medium_minus at_exclude" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/es_es/logos_seguridad.png" alt="Logos de Seguridad">
                         </div><div class="span4"><script type="text/JavaScript">

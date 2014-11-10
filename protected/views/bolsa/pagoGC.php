@@ -104,7 +104,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 //DEPOSITO O TRANSFERENCIA
                 if(Yii::app()->params['metodosPago']['depositoTransferencia']){                
                 ?>
-                <div class="accordion-group">
+                <!-- <div class="accordion-group">
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" id="btn_deposito">
                                 <label class="radio">
@@ -118,7 +118,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                 <?php echo Yii::t('contentForm', 'Bank information'); ?>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 <?php } ?>
                 
                 <?php 

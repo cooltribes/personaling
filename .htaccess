@@ -4,7 +4,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)\?*$ index.php/$1 [L,QSA]
 #RedirectMatch 301 ^/develop/$ http://personaling.com/
-#RewriteCond %{REQUEST_URI} ^/develop/
+#RewriteCond %{REQUEST_URI} ^/develop/ 
 #RewriteRule (.*) / [R=301,L]
 #RewriteRule ^develop/(.*)$ http://www.personaling.com [R=301,L]
 #RewriteCond %{REMOTE_ADDR} !99\.198\.108\.116

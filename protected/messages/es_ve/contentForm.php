@@ -152,7 +152,7 @@ return array (
      'Gift Card' => 'Gift Card',
      'Go to Store' => 'Ir a la tienda',
      '<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>' =>  '<h2>¡Genial! Tu pago ha sido aceptado.</h2>Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra.<br/><br/>',
-
+     
      'Hair Color' => 'Color de Cabello',
      'Height' => 'Altura',
      'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
@@ -388,6 +388,8 @@ return array (
      'Unit price' => 'Precio unitario',
      'Until' => 'Hasta',
      'User' => 'Usuario',
+     'Used Balance:'=>'Balance utilizado:',
+     'Used balance'=>'Balance utilizado',
      'Use this address' => 'Usar esta dirección',
      'Use this shipping address' => 'Usar esta dirección de envío',
      'Use this as billing address' => 'Utilizar esta como dirección de facturación',
@@ -416,6 +418,8 @@ return array (
      'You should add four items at least.'=>'Debes incluir al menos cuatro prendas',
      'Your bag' =>'Tu bolsa',
      'Your Payments'=>'Tus Pagos',
+     '<h2>Your payment has been accepted.</h2> Your payment did not reach the total of your order, we will wait for the next payment to send your order.<br/><br/>'=>
+        '<h2>Tu pago fué aceptado.</h2> Tu pago no completó el total de tu orden, esperaremos tu próximo pago para enviar tu orden.',
      'Your Purchases' => 'Tus Compras',
      'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
      'Your order has been successfully completed.' => 'Tu compra se ha realizado con éxito.',

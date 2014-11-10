@@ -3264,6 +3264,7 @@ public function actionReportexls(){
             
             $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
 
+            $skuRepetidos = array();
             $falla = "";
             $erroresMarcas = "";
             $erroresCategorias = "";
@@ -3276,7 +3277,8 @@ public function actionReportexls(){
             $erroresPrecio = "";
             $erroresColumnasVacias = "";
             $erroresSku = "";
-            
+            $erroresSkuRepetidos= "";
+			
             $linea = 1;
             $lineaProducto = 0;            
             
@@ -3333,8 +3335,12 @@ public function actionReportexls(){
                     /*si pasa las columnas entonces revisar
                     Marcas, categorias, tallas y colores.. y todo lo demas.*/                          
                     if($linea > 1){
+                        	
                         $categoriasRepetidas = array();
                         $cantCategorias = 0;
+                        
+                         
+						 
                         
                         $row['K'] = str_replace(",", ".", $row['K']);
                         $row['L'] = str_replace(",", ".", $row['L']);
@@ -3352,6 +3358,19 @@ public function actionReportexls(){
                                 break;
                             }
                         }       
+                        if($skuRepetidos!="")
+						{
+							$entro=0;	
+							foreach($skuRepetidos as $skuLocal)
+							{
+								if($skuLocal==$row['A'] && $entro==0)
+								{
+									$erroresSkuRepetidos .= "<li> <b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+									$entro=1;
+								}
+							}
+						}
+						array_push($skuRepetidos, $row['A']);
                         //var_dump(memory_get_usage());
                         //Peso
                         if(isset($row['K']) && $row['K'] != "" && !is_numeric($row['K'])){
@@ -3530,12 +3549,17 @@ public function actionReportexls(){
                                  {$erroresSku}
                                  </ul><br>";
             }
+            if($erroresSkuRepetidos != ""){
+                $erroresSkuRepetidos = "Los siguientes SKU estan repetidos:<br><ul>
+                                 {$erroresSkuRepetidos}
+                                 </ul><br>";
+            }
 
                 
             $errores = $erroresTallas .$erroresColores . $erroresMarcas .
                     $erroresCatRepetidas. $erroresCategorias . $erroresCatVacias.
                     $erroresPrecio . $erroresCosto . $erroresPeso .
-                    $erroresColumnasVacias . $erroresSku;
+                    $erroresColumnasVacias . $erroresSku . $erroresSkuRepetidos;
             
             if($errores != ""){
                 

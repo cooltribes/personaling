@@ -527,6 +527,17 @@ if(isset($seo)){
 
     </div>
 </div>
+
+<?php 
+/*
+Yii::app()->clientScript->registerScript('list_productos', "
+						$.get('".Yii::app()->createUrl('tienda/store')."',{'page':1},function(data){
+							$('#tienda_productos').append(data.div);
+						},'json')
+						"); 
+*/
+?>
+
 <?php PC::debug('Execute Time (after renderPartial):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <?php $this->beginWidget('bootstrap.widgets.TbModal', array(
 				'id'=>'myModal',

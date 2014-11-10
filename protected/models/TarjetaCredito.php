@@ -22,6 +22,7 @@ class TarjetaCredito extends CActiveRecord
 {
 	public $month;
 	public $year;
+	public $check;
 	
 	/**
 	 * Returns the static model of the specified AR class.
@@ -130,8 +131,9 @@ class TarjetaCredito extends CActiveRecord
 	}
 	
 	protected function beforeValidate()
-	{
-	   $this->vencimiento = $this->month .'/'. $this->year;
+	{	
+		$this->vencimiento = $this->month .'/'. $this->year;
+
 	   //echo $this->birthday;
 	   return parent::beforeValidate();
 	}

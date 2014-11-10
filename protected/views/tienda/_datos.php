@@ -32,19 +32,21 @@ foreach($prods as $data):
 	}
 	if($data->tipo)	$tienda=Tienda::model()->findByPk($data->tienda_id);
 	else $tienda=null;
+	$json_detalle_producto = json_encode(array(
+							    		'id' => $data->id,
+							    		'name' => addslashes($data->nombre),
+							    		'category' => addslashes($category->nombre),
+							    		'brand' => addslashes($data->mymarca->nombre),
+							    		'list' => 'Product clicks',
+							    		'position' => $cont,
+							    		'url' => $data->getUrl()
+									));	
 ?>
 	<div class="div_productos">
 		<div class="json_product" style="display:none;">
 	    	<?php
 	    	// hidden div con json para la función que se ejecuta con el scroll infinito
-	    	echo json_encode(array(
-	    		'id' => $data->id,
-	    		'name' => addslashes ($data->nombre),
-	    		'category' => addslashes ($category->nombre),
-	    		'brand' => addslashes ($data->mymarca->nombre),
-	    		'list' => 'Product impression',
-	    		'position' => $cont
-	    	));
+	    	echo $json_detalle_producto;
 	    	?>
 	    </div>
 <?php
@@ -117,8 +119,72 @@ foreach($prods as $data):
 					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 2.6em;">Agotado</span></div>';
 				}
 	
+	if (isset($ima)): 
 
-                
+ 		$like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$data->id)); ?>	
+ 		<article class='span3'>
+ 			<div onmouseover='javascript:over(<?php echo $data->id; ?>);' onmouseout='javascript:out(<?php echo $data->id; ?>);' class='producto articulo' id='prod<?php echo $data->id; ?>'> 	
+	 			<input id='idprod' value='".$data->id."' type='hidden' >
+	 			<a class='detalle_producto' 
+	 				href='#' 
+	 				onclick='event.preventDefault(); detalle_producto(<?php echo $json_detalle_producto; ?>)'>
+					<?php 
+					echo CHtml::image(str_replace(".","_thumb.",$ima->getUrl()), "Personaling - ".addslashes($data->nombre),
+								 array("class"=>"img_hover bg_color3",
+								 	"width" => "270", 
+								 	"height" => "270",
+								 	'id'=>'img-'.$data->id
+								 )); 
+					if(isset($segunda))
+						echo CHtml::image(str_replace(".","_thumb.",$segunda->getUrl()), "Personaling - ".addslashes($data->nombre), 
+									array("class"=>"img_hover_out bg_color3",
+										"style"=>"display:none",
+										"width" => "270",
+										"height" => "270"
+									));
+					echo CHtml::link("Vista Rápida",
+								    $this->createUrl('modal',array('id'=>$data->id)),
+								    array(// for htmlOptions
+								      'onclick'=>' '.CHtml::ajax( array(
+								      'url'=>CController::createUrl('quickview',array('id'=>$data->id)),
+								           'success'=>"js:function(data){ $('#myModal').html(data);
+													$('#myModal').modal(); }")).
+								         'return false;',
+								    'class'=>'btn btn-block btn-small vista_rapida hidden-phone',
+								    'id'=>'prodencanta')
+								);
+					if($data->mymarca->is_100chic):
+					?>
+						<span class='btn-block is_080'><img src='<?php echo Yii::app()->baseUrl; ?>/images/080_270x34.jpg'/></span>
+					<?php endif; ?>
+				</a>
+				<header>
+					<h3>
+						<a class='link_producto detalle_producto' href='#' title='<?php echo $data->nombre; ?>' onclick='event.preventDefault(); detalle_producto(<?php echo $json_detalle_producto; ?>)'><?php echo $data->nombre; ?></a>
+					</h3>
+					<a href='#' class='ver_detalle icon_lupa detalle_producto' title='Ver detalle' onclick='event.preventDefault(); detalle_producto(<?php echo $json_detalle_producto; ?>)'></a>
+				</header>
+				<?php if(!is_null($tienda)): ?>
+					<span class='precio' style='display:inline'><?php echo Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto(); ?></span>&nbsp;&nbsp;&nbsp;
+					<span>
+						<a class='detalle_producto' href='#' style='color:#3286A5; cursor:pointer' onclick='event.preventDefault(); detalle_producto(<?php echo $json_detalle_producto; ?>)'><?php echo $data->mymarca->nombre; //echo Marca::model()->findByPk($data->marca_id)->nombre; ?></a>
+					</span>
+				<?php elseif (!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0 && $precio_producto):	?>
+					<span class='preciostrike strikethrough'><small><?php echo Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto(); ?></small></span> | <?php echo Yii::t('contentForm', 'currSym')." ".$data->getPrecioDescuento(); ?>					
+				<?php else: ?>
+					<span class='precio'><?php Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto(); ?></span>
+				<?php endif; ?>	
+				<?php echo "{$iconoDescuento}"; ?>
+				<?php if(!Yii::app()->user->isGuest): ?> 
+					<a id='like".$data->id."' onclick='encantar(<?php echo $data->id; ?>)' style='cursor:pointer' title='Me encanta' class='entypo like icon_personaling_big <?php echo isset($like)?"like-active":"";?>'><?php echo isset($like)?"&hearts;":"&#9825;";?></a>	 
+				<?php endif; ?>	
+			</div>
+		</article>
+	<?php $con=$id; ?>
+	<?php endif; ?>
+
+	<?php			
+        /*        
 		if(isset($ima)){
 			
 
@@ -218,7 +284,7 @@ foreach($prods as $data):
 				
 
 		
-		}
+		}*/
 
 ?>
 </div>

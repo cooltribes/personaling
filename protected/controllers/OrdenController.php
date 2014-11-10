@@ -1032,254 +1032,196 @@ public function actionReportexls(){
 	                                                                    
                                              
 public function actionValidar()
-	{ 
-		
-		// Elementos para enviar el correo, depende del estado en que quede la orden
-		$message            = new YiiMailMessage;
-		$message->view = "mail_template";
-		 
-		$detalle = Detalle::model()->findByPk($_POST['id']);
-		$orden = Orden::model()->findByAttributes(array('id'=>$detalle->orden_id));
-		$acumulado=$detalle->getSumxOrden();
-		
-		$factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
-		
-		$user = User::model()->findByPk($orden->user_id);
-		//$subject = 'Recupera tu contraseña de Personaling';
-		//$body = '<h2>Has solicitado cambiar tu contraseña de Personaling.</h2> Para recibir una nueva contraseña haz clic en el seiguiente link:<br/><br/> '.$activation_url;
-		$porpagar=$orden->getxPagar();
-			
-		if($_POST['accion']=="aceptar"){
-			
-			$detalle->estado = 1; // aceptado
-			
-			if($detalle->save()){
-				/*
-				 * Revisando si lo depositado es > o = al total de la orden. 
-				 * */
-				$diferencia_pago = round(($detalle->monto - $porpagar),3,PHP_ROUND_HALF_DOWN);
-				if( $diferencia_pago >= 0){
-					/*
-					 * Hacer varias cosas, si es igual que haga el actual proceso, si es mayor ponerlo como positivo
-					 * Si es menor aceptarlo pero ponerle saldo negativo y no cambiar el estado de la orden
-					 * 
-					 * */
-					$orden->estado = 3;
-					
-					if($orden->save()){
-						if($factura){
-							$factura->estado = 2;
-							$factura->save();
-							$estado = new Estado;
-													
-							$estado->estado = 3; // pago recibido
-							$estado->user_id = Yii::app()->user->id;
-							$estado->fecha = date("Y-m-d");
-							$estado->orden_id = $orden->id;
-									
-							if($estado->save())
-							{
-								echo "ok";
-							} else {
-								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
-							}
-						}
-						// Subject y body para el correo
-						$subject = 'Pago aceptado';
-						$body = Yii::t('contentForm','<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>');
-						
-						$usuario = Yii::app()->user->id;
-						//$excede = ($detalle->monto-$porpagar);	
-						if(($diferencia_pago) > 0.5)
-						{
-							
-						
-							$balance = new Balance;
-							$balance->orden_id = $orden->id;
-							$balance->user_id = $orden->user_id;
-							$balance->total = $diferencia_pago;
-							
-							$balance->save();
-							$body .=  Yii::t('contentForm','We have good news, you have a balance available for {balance}',array('{balance}' => Yii::app()->numberFormatter->formatCurrency($excede, '')))." ".Yii::t('contentForm','currSym');
-
-						} // si es mayor hace el balance
-						
-						/*Pagar comision a las PS involucradas en la venta*/
-                                                //Orden::model()->pagarComisiones($orden); 
-                                                
-							// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-					
-					}//orden save
-				}// si el pago realizado es mayor o igual
-				else{
-					
-					$diferencia_pago = 0-$diferencia_pago;
-					$saldo = Profile::model()->getSaldo($orden->user_id);
-					if($saldo>0){
-
-						$det_bal=new Detalle;
-						//$pag_bal=new Pago;
-						if($saldo>$diferencia_pago){
-							
-							$det_bal->monto=$diferencia_pago;
-							$det_bal->fecha=date("Y-m-d H:m:s");
-							$det_bal->comentario="Saldo para completar";
-							$det_bal->estado=1;
-							$det_bal->orden_id=$orden->id;
-							$det_bal->tipo_pago = 3;
-							if($det_bal->save()){
-								//$pag_bal->tbl_detalle_id=$det_bal->id;
-								//$pag_bal->tipo=3;
-								$estado = new Estado;
-													
-								$estado->estado = 3; // pago recibido
-								$estado->user_id = Yii::app()->user->id;
-								$estado->fecha = date("Y-m-d");
-								$estado->orden_id = $orden->id;
-										
-								if($estado->save())
-								{
-									//$pag_det->save();
-									echo "ok";	
-								}	else {
-								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
-							}
-							}
-												
-							
-							$orden->estado = 3;
-							if($orden->save()){
-								
-								$subject = 'Pago aceptado';
-								$body = Yii::t('contentForm','<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>');
-								
-								$usuario = Yii::app()->user->id;
-								
-								if($factura){
-									$factura->estado = 2;
-									$factura->save();
-								}
-								$balance = new Balance;
-								$balance->orden_id = $orden->id;
-								$balance->user_id = $orden->user_id;
-								$balance->total = 0-$diferencia_pago;
-								$balance->tipo=1;
-								
-								$balance->save();
-                                                                
-                                                                /*Pagar comision a las PS involucradas en la venta*/
-                                                                //Orden::model()->pagarComisiones($orden); 
-									
-								
-							}
-								
-						}else{//Saldo no cubre la deuda
-								
-							$orden->estado = 7;
-							
-							if($orden->save()){
-								$balance = new Balance;
-								$balance->orden_id = $orden->id;
-								$balance->user_id = $orden->user_id;
-								$balance->total = 0-$saldo;
-								$balance->tipo=1;								
-								if($balance->save()){
-									$subject = 'Pago insuficiente';
-									$body = Yii::t('contentForm','Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.', array('{amount}'=>Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''),'{currSym}' => Yii::t('contentForm','currSym')));
-									$estado = new Estado;
-																
-									
-									$det_bal->monto=$saldo;
-									$det_bal->fecha=date("Y-m-d H:m:s");
-									$det_bal->comentario="Uso Saldo Falta Pago ";
-									$det_bal->estado=1;
-									$det_bal->orden_id=$orden->id;
-									if($det_bal->save()){
-										$estado->estado = 7; // pago insuficiente
-									$estado->user_id = Yii::app()->user->id;
-									$estado->fecha = date("Y-m-d");
-									$estado->orden_id = $orden->id;
-									
-									if($estado->save())
-									{
-										echo "ok";
-									} else {
-								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
-							}
-									}	
-								}
-								
-							}
-						}//Saldo no cubrio la deuda
-						
-						
-					}//Saldo positivo
-					else{
-						
-							$subject = 'Pago insuficiente';
-							$body = Yii::t('contentForm','Receiving this email Because your payment for the purchase you made ​​in Personaling.com is Insufficient. You must pay to process your order {amount} {currSym}.', array('{amount}'=>Yii::app()->numberFormatter->formatCurrency($orden->getxPagar(), ''),'{currSym}' => Yii::t('contentForm','currSym')));							
-							$estado = new Estado;
-																	
-							$estado->estado = 7; // pago insuficiente
-							$estado->user_id = Yii::app()->user->id;
-							$estado->fecha = date("Y-m-d");
-							$estado->orden_id = $orden->id;
-							if($estado->save())
-									{
-										echo "ok";	
-									}else {
-								Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
-							}
-							//if($estado->save())
-							//{
-								//$pag_bal->tbl_detalle_id=$det_bal->id;
-								//$pag_bal->tipo=3;
-								//$pag_det->save();
-							//}
-						
-					}	
-				}	
-							
-			}// detalle
-		}else if($_POST['accion']=="rechazar"){
-			$detalle = Detalle::model()->findByPk($_POST['id']);
-			$detalle->estado = 2; // rechazado
-			
-			$orden = Orden::model()->findByPk($detalle->orden_id);
-			$orden->estado = 1; // regresa a "En espera de pago"
-			
-			if($detalle->save()){
-				if($orden->save()){
-					$subject = 'Pago rechazado';
-					$body = 'El pago que realizaste fue rechazado. Por favor procesa el pago nuevamente a través del sistema.<br/><br/> ';
-					
-					$usuario = Yii::app()->user->id; 
-						
-						// agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
-						$estado = new Estado;
-											
-						$estado->estado = 6; // pago rechazado
-						$estado->user_id = Yii::app()->user->id;
-						$estado->fecha = date("Y-m-d");
-						$estado->orden_id = $orden->id;
-							
-						if($estado->save())
-						{
-							echo "ok";	
-						}
-				}
-			}
-		}
-		$params              = array('subject'=>$subject, 'body'=>$body);
-		$message->subject    = $subject;
-		$message->setBody($params, 'text/html');                
-		$message->addTo($user->email);
-		$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
-		Yii::app()->mail->send($message);
+	{
+        $message            = new YiiMailMessage;
+        $message->view = "mail_template";
+        $response=array();
+        $detalle = Detalle::model()->findByPk($_POST['id']);
+        $orden = Orden::model()->findByAttributes(array('id'=>$detalle->orden_id));
+        $acumulado=$detalle->getSumxOrden();
+        $factura = Factura::model()->findByAttributes(array('orden_id'=>$orden->id));
+        $user = User::model()->findByPk($orden->user_id);
+        $porpagar=$orden->getxPagar();
+        if($_POST['accion']=="aceptar"&&$detalle->estado!=1){
+            $detalle->estado = 1; // aceptado
+            if($detalle->save()){
+                $diferencia_pago = round(($detalle->monto - $porpagar),3,PHP_ROUND_HALF_DOWN);
+                
+                
+                if( $diferencia_pago >= 0){ //Pago cubrio y/o excedio el total
+                    //si es igual que haga el actual proceso, si es mayor ponerlo como positivo. Si es menor aceptarlo que la orden quede en espera de pago
+                    $orden->estado = 3;                    
+                    if($orden->save()){
+                        if($factura){
+                            $factura->estado = 2;
+                            $factura->save();
+                            $estado = new Estado;
+                                                    
+                            $estado->estado = 3; // pago recibido
+                            $estado->user_id = Yii::app()->user->id;
+                            $estado->fecha = date("Y-m-d");
+                            $estado->orden_id = $orden->id;
+                                    
+                            if($estado->save())
+                            {
+                                $response['status']="ok";
+                            } else {
+                                Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
+                            }
+                        }
+                        $subject = 'Pago aceptado';
+                        $body = Yii::t('contentForm','<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>');
+                        
+                        $usuario = Yii::app()->user->id;
+                        if(($diferencia_pago) > 0.5)
+                        {
+                            $balance = new Balance;
+                            $balance->orden_id = $orden->id;
+                            $balance->user_id = $orden->user_id;
+                            $balance->total = $diferencia_pago;
+                            
+                            $balance->save();
+                            $body .=  Yii::t('contentForm','We have good news, you have a balance available for {balance}',array('{balance}' => Yii::app()->numberFormatter->formatCurrency($diferencia_pago, '')))." ".Yii::t('contentForm','currSym');
+                            $response['status']="ok";
+                        }
+                    }
+                }
+                
+                
+                else{
+                    $diferencia_pago = $diferencia_pago*(-1);
+                    $saldo = Profile::model()->getSaldo($orden->user_id);
+                   
+                        
+                        if($saldo>$diferencia_pago){ //saldo cubre la deuda
+                            $det_bal=new Detalle;
+                            $det_bal->monto=$diferencia_pago;
+                            $det_bal->fecha=date("Y-m-d H:m:s");
+                            $det_bal->comentario="Saldo para completar";
+                            $det_bal->estado=1;
+                            $det_bal->orden_id=$orden->id;
+                            $det_bal->tipo_pago = 3;
+                            if($det_bal->save()){
+                                $estado = new Estado;
+                                                    
+                                $estado->estado = 3; // pago recibido
+                                $estado->user_id = Yii::app()->user->id;
+                                $estado->fecha = date("Y-m-d");
+                                $estado->orden_id = $orden->id;
+                                        
+                                if(!$estado->save())
+                                    Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
+                                
+                            }
+                            
+                            $orden->estado = 3;
+                            if($orden->save()){
+                                
+                                $subject = 'Pago aceptado';
+                                $body = Yii::t('contentForm','<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>');
+                                
+                                $usuario = Yii::app()->user->id;
+                                
+                                if($factura){
+                                    $factura->estado = 2;
+                                    $factura->save();
+                                }
+                                $balance = new Balance;
+                                $balance->orden_id = $orden->id;
+                                $balance->user_id = $orden->user_id;
+                                $balance->total = 0-$diferencia_pago;
+                                $balance->tipo=1;
+                                $balance->fecha=date("Y-m-d H:i:s");
+                                
+                                $balance->save();
+                                $status="ok";                               
+                                /*Pagar comision a las PS involucradas en la venta*/
+                                //Orden::model()->pagarComisiones($orden); 
+                                    
+                                
+                            }
+                            else{
+                                $status="error";
+                            };
+                            
+                            
+                        }
+                        
+                        
+                        
+                        
+                        else{
+                            $estado= new Estado;    
+                            $estado->estado = 7; // pago insuficiente
+                            $estado->user_id = Yii::app()->user->id;
+                            $estado->fecha = date("Y-m-d");
+                            $estado->orden_id = $orden->id;
+                            $estado1= new Estado;    
+                            $estado1->estado = 1; // espera de pago
+                            $estado1->user_id = Yii::app()->user->id;
+                            $estado1->fecha = date("Y-m-d");
+                            $estado1->orden_id = $orden->id;
+                            $orden->estado=1;
+                                    
+                            if($estado->save()&&$estado1->save()&&$orden->save())
+                            {
+                                $response['status']="ok";
+                            } else {
+                                Yii::trace('user id:'.Yii::app()->user->id.' Validar error:'.print_r($estado->getErrors(),true), 'registro');
+                                $response['status']="error";
+                            }
+                                                       
+                            $subject = 'Pago aceptado';
+                            $body = Yii::t('contentForm','<h2>Your payment has been accepted.</h2> Your payment did not reach the total of your order, we will wait for the next payment to send your order.<br/><br/>');
+                                           
+                                                       
+                        }
+                        
+                    
+                    
+                }
+                
+            }
+        }
+        else if($_POST['accion']=="rechazar"){
+            $detalle = Detalle::model()->findByPk($_POST['id']);
+            $detalle->estado = 2; // rechazado
+            
+            $orden = Orden::model()->findByPk($detalle->orden_id);
+            $orden->estado = 1; // regresa a "En espera de pago"
+            
+            if($detalle->save()){
+                if($orden->save()){
+                    $subject = 'Pago rechazado';
+                    $body = 'El pago que realizaste fue rechazado. Por favor procesa el pago nuevamente a través del sistema.<br/><br/> ';
+                    
+                    $usuario = Yii::app()->user->id; 
+                        
+                        // agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
+                        $estado = new Estado;
+                                            
+                        $estado->estado = 6; // pago rechazado
+                        $estado->user_id = Yii::app()->user->id;
+                        $estado->fecha = date("Y-m-d");
+                        $estado->orden_id = $orden->id;
+                            
+                        if($estado->save())
+                        {
+                            $response['status']="ok";   
+                        }
+                }
+            }
+        }
+        $params              = array('subject'=>$subject, 'body'=>$body);
+        $message->subject    = $subject;
+        $message->setBody($params, 'text/html');                
+        $message->addTo($user->email);
+        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+        Yii::app()->mail->send($message);
+        echo json_encode($response);
 
 
-
-	}
+    }
 
 	/*
 	 * Modal del listado

@@ -442,6 +442,9 @@ return array (
 	'You should select the destination of this expenditure'=>'Selecciona el destino de este egreso',
 	'Your bag' =>'Tu bolsa',
 	'Your Payments'=>'Tus Pagos',
+     '<h2>Your payment has been accepted.</h2> Your payment did not reach the total of your order, we will wait for the next payment to send your order.<br/><br/>'=>
+        '<h2>Tu pago fué aceptado.</h2> Tu pago no completó el total de tu orden, esperaremos tu próximo pago para enviar tu orden.',
+    
     'Your Purchases' => 'Tus Compras',	
 	'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
 	'Your order has been successfully completed.' => 'Tu compra se ha realizado con éxito.',

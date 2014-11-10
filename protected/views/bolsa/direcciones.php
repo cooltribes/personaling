@@ -241,6 +241,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     'size'=>'large',
                     'label'=>'Guardar en mis direcciones',
                     'id'=>'agregar',
+                    'htmlOptions'=>array('class'=>'controls'),
                  
                     ));                 
                     ?> 

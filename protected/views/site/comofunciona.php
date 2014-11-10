@@ -32,7 +32,7 @@ $pais=Pais::model()->findByAttributes(array('idioma'=>Yii::app()->getLanguage())
 		<div class="container"><div class="row-fluid">
 			<div class="span6 "><div class="padding_large"><h1>Una nueva manera de<br/> hacer shopping</h1>
 				<p class="lead">
-					Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.
+					Personaling es una tienda online donde podrás conseguir las mejores marcas de moda, con las que expertos te asesorarán para comprar looks adaptados a tu tipo de cuerpo y estilo en un solo click, directo a tu casa u oficina. En Personaling queremos que te inspires, descubras y conquistes, comprando las prendas que te hagan realzar tu figura, estar cómoda y sentirte poderosa. Por eso somos tu Personal Shopper Online.
 				</p>
 				</div>
 			</div>

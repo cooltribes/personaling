@@ -62,6 +62,7 @@ return CMap::mergeArray(
                 'registro' => false,	
                 'mostrarMarcas'=>true,
                 'mostrarChic'=>false,
+                'chicBrands'=>true,
                 'country'=>'Venezuela',
                 'codigoPostal'=>false,
                 'pais'=>'espana',

@@ -214,14 +214,16 @@ if(isset($seo)){
 
 <?php 	PC::debug('Execute Time (deskfilters):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <div id="deskfilters">
-<div id="banner100chic" style=" display:none; " class="margin_top ">
-	<div class="margin_bottom">
-		<img src="<?php echo Yii::app()->baseUrl; ?>/images/<?php echo Yii::app()->language; ?>/especial/080banner.jpg" alt="080">
+<?php if(Yii::app()->params['mostrarChic']): ?>	
+	<div id="banner100chic" style=" display:none; " class="margin_top ">
+		<div class="margin_bottom">
+			<img src="<?php echo Yii::app()->baseUrl; ?>/images/<?php echo Yii::app()->language; ?>/especial/080banner.jpg" alt="080">
+		</div>
+		<div class="">
+			<a href="#" onclick="unchic()" ><span class="entypo">&larr; </span>	<?php echo Yii::t('contentForm','Back to shop');?></a>
+		</div>
 	</div>
-	<div class="">
-		<a href="#" onclick="unchic()" ><span class="entypo">&larr; </span>	<?php echo Yii::t('contentForm','Back to shop');?></a>
-	</div>
-</div>
+<?php endif; ?>
 <!-- BAR ON -->
 
 <?php if(Yii::app()->user->isGuest&&Yii::app()->params['registerGift']):?>
@@ -441,32 +443,34 @@ if(isset($seo)){
 			<?php endif; ?>
             <?php 	PC::debug('Execute Time (end marcas):'.(microtime(true)-$time_start), 'debug,time'); ?>
 	
-	<li class="item" id="li_chic">
+	
+
+<?php if(Yii::app()->params['mostrarChic']):
+		if(Yii::app()->params['chicBrands']): ?>
+		<li class="item" id="li_chic">
 
 				<div class="dropdown" id="dd080" >
 					<a href="#" class="dropdown-toggle a080" data-toggle="dropdown" >
 						<div class="dropdown080" >
 								<span id="100chic" name="1" ><img src='<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/especial/080botonnegro.jpg";?>'/></span>
 							<?php 
-/*
+
 							if(isset(Yii::app()->session['100chic']))
 								echo CHtml::hiddenField('chic_hid','1');
 							else {
 								echo CHtml::hiddenField('chic_hid','0');
-							}*/
+							}
 							?>
 
 							<?php echo CHtml::hiddenField('chic_hid',isset(Yii::app()->session['100chic'])?'1':'0'); ?>
 
 							
-							<!--<small> 
+							<small> 
 								<b class="caret"></b>
-							</small>-->
+							</small>
 						</div>
 					</a>
-	</li>
-<?php $params_100chic = false; ?>
-<?php if ($params_100chic): ?>
+	</li>	
 			<ul class="dropdown-menu" >
 						<?php
 						if(isset(Yii::app()->session['100chic']))
@@ -491,15 +495,26 @@ if(isset($seo)){
 				</div>
 			</li> 
 <?php else: ?>
-			<li class="item itemInput">
+	<li class="item" id="li_chic">
+
+				<div class="dropdown" id="dd080" >
+					<a href="#" class="dropdown-toggle a080" data-toggle="dropdown" >
+						<div class="dropdown080" >
+								<span id="100chic" name="1" ><img src='<?php echo Yii::app()->baseUrl."/images/".Yii::app()->language."/especial/080botonnegro.jpg";?>'/></span>
+
+						</div>
+					</a>
+	</li>		
+<?php endif;
+endif; 
+<?php echo CHtml::hiddenField('chic_hid',isset(Yii::app()->session['100chic'])?'1':'0'); ?> ?>	 
+<li class="item itemInput">
 				<div class="contenedorInput">
 					<input type="text" class="input-medium text_search" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="deskText" maxlength="50" > 
 					<button class="btn btn-danger btn-buscar" id="btn_search" type="button"><i class="icon-search"></i></button>	
 				</div>
 			</li>	
 		</ul>
-<?php endif; ?>	 
-
 </section>
 <div class="row ">
 <?php	echo CHtml::hiddenField('texthid','');

@@ -507,7 +507,7 @@ if(isset($seo)){
 	</li>		
 <?php endif;
 endif; 
-<?php echo CHtml::hiddenField('chic_hid',isset(Yii::app()->session['100chic'])?'1':'0'); ?> ?>	 
+echo CHtml::hiddenField('chic_hid',isset(Yii::app()->session['100chic'])?'1':'0'); ?>	 
 <li class="item itemInput">
 				<div class="contenedorInput">
 					<input type="text" class="input-medium text_search" placeholder="<?php echo Yii::t('contentForm','Search');?>" id="deskText" maxlength="50" > 

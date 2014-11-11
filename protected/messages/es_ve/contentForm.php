@@ -361,8 +361,9 @@ return array (
      'Sumary' => 'Resumen',
      'Summary of the purchase' => 'Resumen de la compra',
      'Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com" title="Personaling">Personaling.com</a>',
+     'Start enjoying your Gift Card in <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a>',
 
-	 'Targeting ages' => 'Dirigido a edades',
+     'Targeting ages' => 'Dirigido a edades',
      'Tax' => 'Impuesto',
      'The bag is empty' => 'La bolsa está vacia',
      'The order to <b>{name}</b> has successfully completed' => 'El pedido para <b>{name}</b> se ha realizado con éxito.',

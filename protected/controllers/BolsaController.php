@@ -3166,11 +3166,20 @@ class BolsaController extends Controller
                     //Opciones de Mandrill
                     $message->activarPlantillaMandrill("plantilla-correos-no-footer");
                     $subject = 'Gift Card de Personaling';
-                    $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
-    	                    <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.es" title="Personaling">Personaling.es</a> using it.')."
-    	                    <br/>
-                            (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";
                     
+                    if(Yii::app()->language == "es_ve"){ 
+                                        $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
+                        	                    <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a> using it.')."
+                        	                    <br/>
+                                                (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";
+                                        }
+                                        else{
+                                        $body = "¡Hola <strong>{$envio->nombre}</strong>!<br><br> {$saludo} 
+                        	                    <br/>".Yii::t('contentForm','Start enjoying your Gift Card in <a href="https://www.personaling.es" title="Personaling">Personaling.es</a> using it.')."
+                        	                    <br/>
+                                                (Para ver la Gift Card permite mostrar las imagenes de este correo) <br/><br/>";	
+                                        }
+
                     $body = $this->renderPartial("//mail/_giftcard",
                             array('body' => $body,'envio' => $envio,
                                 'model'=> $model), true);

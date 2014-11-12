@@ -808,10 +808,12 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		foreach ($looks_producto as $lp) {
 			//echo $lp->look_id.'</br>';
 			$look = Look::model()->findByPk($lp->look_id);
-			$look->scenario = 'draft';
-			$look->tipoDescuento = NULL;
-			$look->valorDescuento = NULL;
-			$look->save();
+			if(isset($look)){
+				$look->scenario = 'draft';
+				$look->tipoDescuento = NULL;
+				$look->valorDescuento = NULL;
+				$look->save();
+			}
 		}
 	}
 	

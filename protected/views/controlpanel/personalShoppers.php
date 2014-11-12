@@ -39,12 +39,10 @@
                 Total generado<br>en comsiones</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $prodsVendidosComision; ?></p>
                 Productos vendidos<br>(con comisión)</td>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo 34; ?></p>
-                Looks vendidos<br>(con comisión)</td>
             <td><p class="T_xlarge margin_top_xsmall"><?php echo $psConVentas; ?></p>
                 PS con ventas</td>
-            <td><p class="T_xlarge margin_top_xsmall"><?php echo 56; ?> </p>
-                PS sin ventas</td>
+            <!-- <td><p class="T_xlarge margin_top_xsmall"><?php echo 56; ?> </p>
+                PS sin ventas</td> -->
         </tr>
     </table>
     <hr/>

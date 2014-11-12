@@ -1056,10 +1056,13 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		}
 		
 		//Filtro por categoria
+		PC::debug('Antes de cat - test', 'filter,cat');
 		if(isset(Yii::app()->session['f_cat'])){
+			PC::debug('f_cat: '.Yii::app()->session['f_cat'], 'filter,cat');
 			$criteria->addCondition('tbl_categoria_id  = '.Yii::app()->session['f_cat']);
 		}else{
 			if(isset(Yii::app()->session['f_padre'])){
+				PC::debug('f_padre: '.Yii::app()->session['f_padre'], 'filter,cat');
 				$criteria->addCondition('categorias.padreId = '.Yii::app()->session['f_padre']);
 			}
 		}

@@ -253,7 +253,7 @@ $script = "
 <?php if ($errorValidando): ?>
 <?php 
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/joyride-2.1.css',null);
-Yii::app()->clientScript->registerScriptFile('/js/jquery.joyride-2.1.js',null,null); 
+Yii::app()->clientScript->registerScriptFile('/js/jquery.joyride-2.1.js',null,array()); 
 ?>
 <script type="text/javascript">
 function joyRidePerfil(){
@@ -292,7 +292,9 @@ function joyRidePerfil(){
 $(window).load(function() {
        
 //    $(".tu_perfil").css("margin-top", "+=58");     
-    joyRidePerfil();
+    <?php if ($errorValidando): ?>    
+        joyRidePerfil();
+    <?php endif; ?>
 //    $(".tu_perfil").before('<div style="height: 48px"></div>');     
 });
 

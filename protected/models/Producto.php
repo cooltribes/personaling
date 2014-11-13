@@ -1182,7 +1182,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 				$criteria->order = "precioDescuento ASC";
 			}
 			else
-				$criteria->order = "fecha DESC";
+				$criteria->order = "t.destacado DESC, t.fecha DESC, t.view_counter ASC";
 
 		$criteria->addCondition('t.estado = 0'); 
         $criteria->addCondition('t.status = 1');

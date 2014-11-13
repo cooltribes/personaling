@@ -155,7 +155,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
               
               <div class="controls">
               	<?php // echo $form->dropDownListRow($dir, 'pais', array('Seleccione el País', 'Venezuela', 'Colombia', 'Estados Unidos')); 
-              		$pais=Pais::model()->findByAttributes(array('idioma'=>Yii::app()->getLanguage()));
+              		$pais=Pais::model()->findByAttributes(array('idioma'=>Yii::app()->language));
               		if($pais->grupo==0)
               			echo ' <input name="Direccion[pais]" id="Direccion_pais" type="hidden" value="'.$pais->nombre.'" />';
 					else{

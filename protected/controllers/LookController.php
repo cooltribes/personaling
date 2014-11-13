@@ -350,7 +350,7 @@ class LookController extends Controller
 				}else{
 					Yii::app()->user->setFlash('error',UserModule::t("No se pudo guardar el descuento"));
 				}
-				$this->redirect(array('mislooks'));
+				$this->redirect(array('admin')); 
 			}else{
 				Yii::app()->user->setFlash('error',UserModule::t("Debe ingresar un valor para el descuento"));
 			}

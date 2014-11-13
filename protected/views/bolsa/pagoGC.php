@@ -55,7 +55,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 ?>
                 
           <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-                                        'id'=>'tarjeta-form',
+                                        'id'=>'tarjeta-form', 
                                         'enableAjaxValidation'=>false,
                                         'enableClientValidation'=>true,
                                         'clientOptions'=>array(
@@ -104,7 +104,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 //DEPOSITO O TRANSFERENCIA
                 if(Yii::app()->params['metodosPago']['depositoTransferencia']){                
                 ?>
-                <div class="accordion-group">
+                <!-- <div class="accordion-group">
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" id="btn_deposito">
                                 <label class="radio">
@@ -118,7 +118,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                                 <?php echo Yii::t('contentForm', 'Bank information'); ?>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 <?php } ?>
                 
                 <?php 
@@ -393,7 +393,7 @@ $("input[name='optionsRadios']").change(function(e){
 
 //Boton siguiente - General para todos los metodos de pago        
 $("#btn-siguiente").click(function(e){
-    
+    //alert("merwe");
     $("#tarjeta-form").submit();
 });
 
@@ -430,6 +430,7 @@ $('#TarjetaCredito_year').change(function(){
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
             
         });
         
@@ -449,6 +450,7 @@ $('#TarjetaCredito_year').change(function(){
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento'); 
             
         });
         
@@ -468,6 +470,7 @@ $('#TarjetaCredito_year').change(function(){
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+            enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
             
         });
         
@@ -495,6 +498,7 @@ $('#TarjetaCredito_year').change(function(){
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento'); 
         });
         
         $("#btn_tarjeta").click(function() {
@@ -513,6 +517,7 @@ $('#TarjetaCredito_year').change(function(){
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
         	enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+            enableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
         	
         });
 

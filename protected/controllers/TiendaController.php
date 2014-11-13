@@ -310,10 +310,15 @@ class TiendaController extends Controller
 					Yii::app()->session['f_text'] = $_POST['texthid'];
 				
 				} else {
-
 					foreach ($array_post as $key => $post)
-						if (isset($_POST[$post]) && $_POST[$post]!=0) Yii::app()->session[$array_session[$key]] = $_POST[$post];
-						elseif (isset(Yii::app()->session[$array_session[$key]])) unset(Yii::app()->session[$array_session[$key]]);
+						if (isset($_POST[$post]) && $_POST[$post]!=0){ 
+							PC::debug('Save session: '.$key.'=>'.$_POST[$post], 'debug,time');
+							Yii::app()->session[$array_session[$key]] = $_POST[$post];
+						}
+						elseif (isset(Yii::app()->session[$array_session[$key]])){
+							PC::debug('Unset session: '.$key.'=>'.Yii::app()->session[$array_session[$key]], 'debug,time');
+							//unset(Yii::app()->session[$array_session[$key]]);
+						}
 					if (isset($_POST['chic_hid']) && $_POST['chic_hid']==1) Yii::app()->session['chic'] = $_POST['chic_hid'];
 					elseif (isset(Yii::app()->session['chic'])) unset(Yii::app()->session['chic']);
 					if (isset($_POST['preciohid']) && $_POST['preciohid']<4){	
@@ -480,6 +485,7 @@ class TiendaController extends Controller
 			!isset(Yii::app()->session['chic'])))
 				$criteria->order=$orden[Yii::app()->session['order']];*/
 			$total=Producto::model()->count($criteria);
+			PC::debug('Total products:'.$total, 'criteria');
 			if($total>0){
 				$pages = new CPagination($total);
 				$pages->pageSize = 12;
@@ -497,6 +503,7 @@ class TiendaController extends Controller
 							'pages'=>$pages,
 							'total'=>$total,
 							'seo' => $seo,
+							'time_start' => $time_start,
 							));	
 				} else {
 					    echo CJSON::encode(array(  

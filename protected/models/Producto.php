@@ -808,10 +808,12 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		foreach ($looks_producto as $lp) {
 			//echo $lp->look_id.'</br>';
 			$look = Look::model()->findByPk($lp->look_id);
-			$look->scenario = 'draft';
-			$look->tipoDescuento = NULL;
-			$look->valorDescuento = NULL;
-			$look->save();
+			if(isset($look)){
+				$look->scenario = 'draft';
+				$look->tipoDescuento = NULL;
+				$look->valorDescuento = NULL;
+				$look->save();
+			}
 		}
 	}
 	
@@ -1054,10 +1056,13 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 		}
 		
 		//Filtro por categoria
+		PC::debug('Antes de cat - test', 'filter,cat');
 		if(isset(Yii::app()->session['f_cat'])){
+			PC::debug('f_cat: '.Yii::app()->session['f_cat'], 'filter,cat');
 			$criteria->addCondition('tbl_categoria_id  = '.Yii::app()->session['f_cat']);
 		}else{
 			if(isset(Yii::app()->session['f_padre'])){
+				PC::debug('f_padre: '.Yii::app()->session['f_padre'], 'filter,cat');
 				$criteria->addCondition('categorias.padreId = '.Yii::app()->session['f_padre']);
 			}
 		}
@@ -1182,7 +1187,7 @@ $ptc = Preciotallacolor::model()->findAllByAttributes(array('color_id'=>$color,'
 				$criteria->order = "precioDescuento ASC";
 			}
 			else
-				$criteria->order = "fecha DESC";
+				$criteria->order = "t.destacado DESC, t.fecha DESC, t.view_counter ASC";
 
 		$criteria->addCondition('t.estado = 0'); 
         $criteria->addCondition('t.status = 1');

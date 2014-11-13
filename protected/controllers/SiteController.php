@@ -159,7 +159,7 @@ class SiteController extends Controller
 		elseif (UserModule::isPersonalShopper()) 
 			$this->redirect(array('site/top'));//$this->render('personal_shopper');
 		elseif (Yii::app()->user->isGuest) 
-			$this->render('index');
+			$this->render('newIndex');
 		else 
 			//$this->redirect(array('site/personal'));//$this->render('personal_shopper');
                     /*Unificacion de la tienda de looks con tu personal shopper*/

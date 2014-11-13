@@ -16,7 +16,8 @@ return array (
 	                       </ul>',
 	'List ID Mailchimp' => '43ddd18a56',
 
-     'About us text' => '<p align="justify"> Personaling.es es el primer Personal Shopper Online de España, una plataforma que conecta a expertos en moda con clientes, democratizando un servicio que hasta ahora solo estaba destinado a unos pocos afortunados, haciéndolo gratuito y a la distancia de un click. A partir de la definición de su perfil corporal, la usuaria descubre una gran variedad de looks personalizados con una diversidad de marcas aliadas que le permitirán lucir estupenda.<br/><br/>  <a href="/user/registration" > Regístrate ya! </a>  …y comienza a disfrutar de Personaling. </p>',   
+     'About us text' => '<p align="justify">Personaling.es es el primer Personal Shopper Online de España, una tienda online donde podrás conseguir las mejores marcas de moda con las que expertos te asesorarán para comprar looks adaptados a tu tipo de cuerpo y estilo. En Personaling queremos que te inspires, descubras y conquistes, comprando las prendas que te hagan realzar tu figura, estar cómoda y sentirte poderosa. Por eso somos tu Personal Shopper Online.
+<br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.</p>',   
 	'Action' => 'Acción',
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',
@@ -282,7 +283,7 @@ return array (
 	    <b>Atrás</b> en tu navegador',
 	'Please complete your registration to make a purchase on Personaling.'=>'Por favor completa tu registro para realizar una compra en Personaling.',
 	'Personal Shoppers outstanding' => 'Personal shoppers destacados',
-    'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling.es es el primer Personal Shopper Online de España, una plataforma que conecta a expertos en moda con clientes, democratizando un servicio que hasta ahora solo estaba destinado a unos pocos afortunados, haciéndolo gratuito y a la distancia de un click. A partir de la definición de su perfil corporal, la usuaria descubre una gran variedad de looks personalizados con una diversidad de marcas aliadas que le permitirán lucir estupenda. <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',	
+    'Personaling.es is the first of Spain Online Personal Shopper, an online store where you can get the best fashion brands with which experts will advise you to buy looks tailored to your body type and style. In Personaling want you to inspire, discover and conquer, buying clothes that make you to enhance your figure, be comfortable and feel powerful. So we are your Personal Shopper Online.' => 'Personaling.es es el primer Personal Shopper Online de España, una tienda online donde podrás conseguir las mejores marcas de moda con las que expertos te asesorarán para comprar looks adaptados a tu tipo de cuerpo y estilo. En Personaling queremos que te inspires, descubras y conquistes, comprando las prendas que te hagan realzar tu figura, estar cómoda y sentirte poderosa. Por eso somos tu Personal Shopper Online. <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',	
     'Personaling has a Gift Card as a gift for you.' => 'Personaling tiene una Gift Card para ti.',    
 	'Personaling C.A RIF: J-40236088-6' => 'Personaling Enterprise S.L.',
     'Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Posiblemente lo que quieres preguntar está en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no lo encuentras allí, llena el formulario a continuación y te contáctaremos lo más pronto posible. <strong>¡Gracias!</strong>',	
@@ -442,6 +443,9 @@ return array (
 	'You should select the destination of this expenditure'=>'Selecciona el destino de este egreso',
 	'Your bag' =>'Tu bolsa',
 	'Your Payments'=>'Tus Pagos',
+     '<h2>Your payment has been accepted.</h2> Your payment did not reach the total of your order, we will wait for the next payment to send your order.<br/><br/>'=>
+        '<h2>Tu pago fué aceptado.</h2> Tu pago no completó el total de tu orden, esperaremos tu próximo pago para enviar tu orden.',
+    
     'Your Purchases' => 'Tus Compras',	
 	'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
 	'Your order has been successfully completed.' => 'Tu compra se ha realizado con éxito.',

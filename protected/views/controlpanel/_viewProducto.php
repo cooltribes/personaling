@@ -31,7 +31,7 @@
         
         if(isset($imagen)){
             
-            $source = Yii::app()->baseUrl . str_replace(".","_thumb.",$imagen->url);
+            $source = Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/producto/'. str_replace(".","_thumb.",$imagen->url); 
             
         }        
         echo CHtml::image($source, 'Imagen ', array("width" => "70", "height" => "70"));

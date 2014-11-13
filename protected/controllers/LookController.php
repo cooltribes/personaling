@@ -350,7 +350,7 @@ class LookController extends Controller
 				}else{
 					Yii::app()->user->setFlash('error',UserModule::t("No se pudo guardar el descuento"));
 				}
-				$this->redirect(array('mislooks'));
+				$this->redirect(array('admin')); 
 			}else{
 				Yii::app()->user->setFlash('error',UserModule::t("Debe ingresar un valor para el descuento"));
 			}
@@ -2377,6 +2377,12 @@ public function actionCategorias(){
 	     	echo CJSON::encode($res);
 	    	Yii::app()->end();
 		}
-
+        
+        public function actionUpdateAvailability(){
+            $looks=Look::model()->findAllByAttributes(array('activo'=>1));
+            foreach($looks as $look){
+                $look->updateAvailability();
+            }
+        }
 
 }

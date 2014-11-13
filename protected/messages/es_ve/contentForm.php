@@ -17,9 +17,7 @@ return array (
                                </ul>',
      'List ID Mailchimp' => '2bcdb716e8',                               
 
-     'About us text' => '<p class="lead color1">¡Tu personal shopper digital!</p>
-     <p><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> es el canal online de prestigiosas y conocidas marcas de moda internacional, donde no solo podrás comprar prendas y accesorios de tus tiendas favoritas, también tendrás a disposición de forma gratuita el servicio exclusivo de asesoria e inspiración de especialistas, conocedores en moda (personal shoppers) y hasta celebridades; quienes crearán atuendos adecuándolos a tu perfil, gusto, necesidades y ocasiones personales, permitiendo adquirir en un solo clic los productos y recibirlos en la comodidad de tu hogar u oficina.  </p>
-     <p> <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, tenía que nacer en Venezuela, capital mundial de la mujer. </p>',
+     'About us text' => 'Personaling es una tienda online donde podrás conseguir las mejores marcas de moda, con las que expertos te asesorarán para comprar looks adaptados a tu tipo de cuerpo y estilo en un solo click, directo a tu casa u oficina. En Personaling queremos que te inspires, descubras y conquistes, comprando las prendas que te hagan realzar tu figura, estar cómoda y sentirte poderosa. Por eso somos tu Personal Shopper Online <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',
      'Action' => 'Acción',
      'Actions' => 'Acciones',
      'Account Number:' => 'Cuenta Corriente Nº',
@@ -154,7 +152,7 @@ return array (
      'Gift Card' => 'Gift Card',
      'Go to Store' => 'Ir a la tienda',
      '<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>' =>  '<h2>¡Genial! Tu pago ha sido aceptado.</h2>Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra.<br/><br/>',
-
+     
      'Hair Color' => 'Color de Cabello',
      'Height' => 'Altura',
      'Here are the instructions to complete your purchase. (Also we have sent to your email: <strong class="alert-success">{email}</strong>)' => 'A continuación encontrarás las instrucciones para completar tu compra. (También las hemos enviado a tu correo electrónico: <strong class="alert-success">{email}</strong>)',
@@ -268,7 +266,7 @@ return array (
      'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser' => 'Por favor <span>NO PRESIONES</span> los botones de <b>Actualizar</b>, <b>Detener</b> ni
                 <b>Atrás</b> en tu navegador',
      'Personal Shoppers outstanding' => 'Personal shoppers destacados',
-     'Personaling, is a fashion and beauty website where you have the opportunity to purchase clothes and accessories for a portfolio of prestigious brands, products and combined according to your taste, preferences, needs and characteristics without you moving your home or office.' => 'Personaling, es un portal de moda y belleza en donde tendrás la oportunidad de adquirir prendas y accesorios de un portafolio de marcas prestigiosas, personalizadas y combinadas conforme a tu gusto, preferencias, necesidades y características personales sin que te muevas de tu casa u oficina.',
+     'Personaling is an online store where you can get the best fashion brands with which experts will advise you to buy looks tailored to your body type and style in a single click, directly to your home or office. In Personaling want you to inspire, discover and conquer, buying clothes that make you to enhance your figure, be comfortable and feel powerful. So we are your Personal Shopper Online.' => 'Personaling es una tienda online donde podrás conseguir las mejores marcas de moda, con las que expertos te asesorarán para comprar looks adaptados a tu tipo de cuerpo y estilo en un solo click, directo a tu casa u oficina. En Personaling queremos que te inspires, descubras y conquistes, comprando las prendas que te hagan realzar tu figura, estar cómoda y sentirte poderosa. Por eso somos tu Personal Shopper Online <br/> <br/>¡Regístrate ya!   ...y comienza a disfrutar de Personaling.',
      'Personaling has a Gift Card as a gift for you.' => 'Personaling tiene una Gift Card como obsequio para tí.',
      'Personaling C.A RIF: J-40236088-6' => 'Personaling C.A RIF: J-40236088-6',
      'Phone' => 'Teléfono',
@@ -363,8 +361,9 @@ return array (
      'Sumary' => 'Resumen',
      'Summary of the purchase' => 'Resumen de la compra',
      'Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com" title="Personaling">Personaling.com</a>',
+     'Start enjoying your Gift Card in <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a>',
 
-	 'Targeting ages' => 'Dirigido a edades',
+     'Targeting ages' => 'Dirigido a edades',
      'Tax' => 'Impuesto',
      'The bag is empty' => 'La bolsa está vacia',
      'The order to <b>{name}</b> has successfully completed' => 'El pedido para <b>{name}</b> se ha realizado con éxito.',
@@ -390,6 +389,8 @@ return array (
      'Unit price' => 'Precio unitario',
      'Until' => 'Hasta',
      'User' => 'Usuario',
+     'Used Balance:'=>'Balance utilizado:',
+     'Used balance'=>'Balance utilizado',
      'Use this address' => 'Usar esta dirección',
      'Use this shipping address' => 'Usar esta dirección de envío',
      'Use this as billing address' => 'Utilizar esta como dirección de facturación',
@@ -418,6 +419,8 @@ return array (
      'You should add four items at least.'=>'Debes incluir al menos cuatro prendas',
      'Your bag' =>'Tu bolsa',
      'Your Payments'=>'Tus Pagos',
+     '<h2>Your payment has been accepted.</h2> Your payment did not reach the total of your order, we will wait for the next payment to send your order.<br/><br/>'=>
+        '<h2>Tu pago fué aceptado.</h2> Tu pago no completó el total de tu orden, esperaremos tu próximo pago para enviar tu orden.',
      'Your Purchases' => 'Tus Compras',
      'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
      'Your order has been successfully completed.' => 'Tu compra se ha realizado con éxito.',
@@ -523,22 +526,40 @@ return array (
           <div class="page-header">
              <h1>Políticas de devoluciones</h1>
            </div>
-           <p class="lead">A continuación te detallamos las políticas de  devoluciones de <a href="http://www.personaling.com">www.personaling.com</a> la cual rige a partir de tu registro o cuando compras en nuestra  plataforma, por lo que es muy importante que te asegures de leerlas y entenderlas con antelación. Cualquier cambio en su contenido o alcance, sea por requerimientos legislativos o corporativos, serán notificados a nuestros usuarios  mediante sus correos electrónicos. </p>
+           <p class="lead">A continuación te detallamos las políticas de devoluciones de www.personaling.com; es muy importante que te asegures de leerlas y entenderlas con antelación antes de realizar una compra. Cualquier cambio en su contenido o alcance, sea por requerimientos legislativos o corporativos, serán notificados a nuestros usuarios mediante sus correos electrónicos. </p>
            <ol>
              <li> Solo  se aceptarán devoluciones bajo los siguientes términos. 
                <ol type="a">
-                 <br/><li >El plazo de devolución del artículo es de tres (3) días contados a partir de la recepción del envío del mismo. </li><br/>
-                 <li>Previo a la devolución, deberás enviar un correo  a <a href="mailto:devoluciones@personaling.com"><em>devoluciones@personaling.com</em></a> indicando la razón por la cual devuelves tu pedido y el número de seguimiento del mismo para el control de la empresa. Si el motivo de la devolución fuese daño a la prenda deberás anexar una foto explícita de la prenda dañada.  </li><br/>
-                 <li>El producto devuelto deberá estar en perfectas condiciones de venta con sus etiquetas y en su caja  sin haber sido usado, a menos que sea el caso del apartado “b”.  </li><br/>
-                 <li>El costo de re-envío corre por cuenta del cliente. Salvo que la devolución se deba a responsabilidad de <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a>, en cuyo caso la empresa correrá con dichos gastos y repondrá el artículo u ofrecerá un vale por el monto de la compra más el monto del envio, que podrás aplicar en posteriores compras. </li><br/>
-                 <li>El envío únicamente corre por cuenta de la compañía cuando se ha cometido un error en cuanto a la talla o si te enviamos el pedido equivocado.</li><br/>
-                 <li>Al momento de devolver el pedido debes cuidar enviarlo  en las mismas condiciones de empaque y embalaje en que fue recibido a fin de que esté protegido de daño.  </li>
+                 <br/><li >El plazo de devolución del artículo es de tres (3) días contados a partir de la recepción del envío.  </li><br/>
+                 <li>Previo a la devolución, deberás enviar un correo a devoluciones@personaling.com indicando la razón por la cual devuelves tu pedido y el número de seguimiento del mismo para el control de la empresa. Si el motivo de la devolución fuese daño a la prenda deberás anexar una foto explícita de la prenda dañada.   </li><br/>
+                 <li>El producto devuelto deberá estar en perfectas condiciones: sin uso, ni lavado y con sus etiquetas, excepto que sea el caso del apartado “b”. Las prendas deben tener todas las etiquetas, incluyendo cualquier etiqueta que Personaling incluya.  </li><br/>
+                 <li> El costo de re-envío corre por cuenta del cliente. Salvo que la devolución se deba a responsabilidad de Personaling.com, en cuyo caso la empresa correrá con dichos gastos y repondrá el artículo u ofrecerá un vale por el monto de la compra más el monto del envío, que podrás aplicar en posteriores compras.  </li><br/>
+                 <li>El envío únicamente corre por cuenta de Personaling.com cuando se ha cometido un error en cuanto a la talla o si te enviamos el pedido equivocado.</li><br/>
+                 <li>Cualquier prenda marcada como “descuento” o “rebajas” no puede ser devuelta, excepto en el caso del apartado “b”.</li><br/>
+                 <li> Los accesorios para el cabello, gorros, ropa íntima, aretes, bodies y maquillaje, una vez abierto, no pueden ser devueltos.</li><br/>
+                 <li>Todos los zapatos tienen que ser devueltos en su caja y condición original. </li><br/>
+                 <li> Todos los trajes de baños tienen que tener la etiqueta de higiene intacta para su devolución.</li><br/>
+                 <li>  Al momento de devolver el pedido debes cuidar enviarlo en las mismas condiciones de empaque y embalaje en que fue recibido, a fin de protegerlo de daños. </li><br/>
+                 <li>  Personaling.com no realizará devoluciones de dinero. A beneficio de nuestros clientes entregaremos un vale de consumo por el monto del pedido devuelto que tiene validez por un año a partir de la fecha de expedición. </li><br/>
+                 <li>  Personaling.com se compromete a la revisión detallada de cada uno de sus pedidos antes de la salida de su almacén; esforzándonos por un servicio certero y de calidad. </li><br/>
+               	 <li> Otras condiciones aplican</li> <br/>
                </ol>
              </li> <br/>
-             <li>Personaling.com no realizará devoluciones de dinero bajo ningún concepto. A beneficio de nuestros clientes entregaremos un vale de consumo por el monto del pedido devuelto que tiene validez por un año a partir de la fecha de expedición.  </li><br/>
-             <li>Personaling.com se compromete a la revisión detallada de cada uno de sus pedidos antes de la salida de su almacén; esforzándonos por un servicio certero y de calidad.</li><br/>
-             <li>Otras condiciones aplican.</li>
-           </ol>',
+             <li> Sobre el vale de devolución:
+			    <ol type="a">
+			     <br/><li>El vale de consumo podrá ser usado solo en nuestra pagina www.personaling.com</li><br/>
+            	 <li>El vale de consumo no puede ser transferido a otra persona o cuenta.</li><br/>
+             	 <li>Recuerda tratar el vale de consumo como dinero.</li><br/>
+             	 <li>El vale de consumo no puede ser vendido. Solo se aplica cuando se trata de un pedido hecho y que ha sido devuelto. </li><br/>
+             	 <li>Cualquier compra que pase del valor del crédito tendrá que usar un método valido de pago para completar el total de la compra.</li><br/>
+             	 <li> El valor de este vale es en Bsf. </li><br/>
+             	 <li>Para poder ver tu crédito de tienda acumulado, debes ingresar a tu cuenta en Personaling. Tu credito de tienda acumulado se podrá ver en el apartado “Mi cuenta”.</li><br/>   	 
+			 	</ol>
+             </li> <br/>
+			  </li>
+           </ol>
+            Para más información contacta a servicio al cliente o por clientes@personaling.com.ve
+           ',
      'Copy Formas de Pago' => '        
         <div class="page-header">
           <h1>Formas de Pago: Personaling</h1>

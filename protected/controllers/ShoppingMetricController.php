@@ -216,17 +216,26 @@ class ShoppingMetricController extends Controller
                    # $dataProvider = $producto->busquedaNombreReferencia($_POST['query']);
                    
                    $match=$_POST['query'];
-                     if(Look::model()->findAll('title LIKE :match',array(':match' => "%$match%"))!="")
+                     if(is_numeric($match))
 					 {
 					 	#$var=Look::model()->findByPk($_POST['query']);
-					 	$var = Look::model()->find('title LIKE :match',array(':match' => "%$match%"));
+					 	$var = Look::model()->find('id LIKE :match',array(':match' => "%$match%"));
 						$dataProvider=$model->buscarFiltro($var->id);
 					 }
 					 else 
 					 {
-						$dataProvider=$model->buscarFiltro(""); 
+						if(Look::model()->findAll('title LIKE :match',array(':match' => "%$match%"))!="")
+						{
+							$var = Look::model()->find('title LIKE :match',array(':match' => "%$match%"));
+							$dataProvider=$model->buscarFiltro($var->id);
+						}
+						else 
+						{
+							$dataProvider=$model->buscarFiltro(""); 
 						
+					 	} 
 					 }
+					 
       
                  }
 	

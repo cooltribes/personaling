@@ -2881,8 +2881,9 @@ public function actionReportexls(){
                     /*Enviar MasterData a logisFashion guardar respaldo del xml
                      *  y mostrar notificacion*/
                     $subido = MasterData::subirArchivoFtp($masterData, 1, $masterDataBD->id);
-                    $mensajeLF = "El archivo <b>MasterData.xml</b> se ha enviado
-                        satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";
+                   /* $mensajeLF = "El archivo <b>MasterData.xml</b> se ha enviado
+                        satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";*/
+                    $mensajeLF="";     
 
                     Yii::app()->user->updateSession();
                     //Si hubo error conectandose al ftp logisfashion
@@ -3068,8 +3069,9 @@ public function actionReportexls(){
                     /*Enviar Inbound a logisFashion, guardar respaldo del xml
                      *  y mostrar notificacion*/
                     $subido = MasterData::subirArchivoFtp($inbound, 2, $inboundRow->id);
-                    $mensajeLF = "El archivo <b>Inbound.xml</b> se ha enviado
-                        satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";                    
+                   /*$mensajeLF = "El archivo <b>Inbound.xml</b> se ha enviado
+                        satisfactoriamente a LogisFashion. <i class='icon icon-thumbs-up'></i>";*/
+					$mensajeLF="";                   
 
                     Yii::app()->user->updateSession();
                     //Si hubo error conectandose al ftp logisfashion
@@ -3081,19 +3083,23 @@ public function actionReportexls(){
 
                     }
                     Yii::app()->user->setFlash("success", $mensajeSuccess.$mensajeLF);
-                    
+                   Yii::app()->session['contar']=Inbound::model()->count();	
                 }
-                
+               
                 
             }// isset
 			if ($showRender)
-	            $this->render('importar_productos', array(
+			{
+				 
+				$this->render('importar_productos', array(
 	                'tabla' => $tabla,
 	                'total' => $total,
 	                'actualizar' => $actualizar,
 	                'totalInbound' => $totalInbound,
 	                'actualizadosInbound' => $actualizadosInbound,
 	            ));
+			}
+	            
 
 	}
 

@@ -32,11 +32,13 @@ foreach($prods as $data):
 	}
 	if($data->tipo)	$tienda=Tienda::model()->findByPk($data->tienda_id);
 	else $tienda=null;
+	$string= $data->mymarca->nombre;
+	$string=str_replace("'","/",$string);
 	$json_detalle_producto = json_encode(array(
 							    		'id' => $data->id,
 							    		'name' => addslashes($data->nombre),
 							    		'category' => addslashes($category->nombre),
-							    		'brand' => addslashes($data->mymarca->nombre),
+							    		'brand' => $string,
 							    		'list' => 'Product clicks',
 							    		'position' => $cont,
 							    		'url' => $data->getUrl()

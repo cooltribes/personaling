@@ -1,4 +1,5 @@
 <?php
+
 $this->breadcrumbs = array(
     'Productos' => array('admin'),
     'Importar',
@@ -17,6 +18,13 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         )
 );
 
+
+
+if(isset( Yii::app()->session['contar']))
+{
+	 echo CHtml::link('Ver detalle de Inbound', $this->createUrl('/inbound/detalle/'.Yii::app()->session['contar']), array('class'=>'btn btn-success', 'role'=>'button'));
+	 unset(Yii::app()->session['contar']);  
+}
 
 ?>	
 <!-- FLASH OFF --> 

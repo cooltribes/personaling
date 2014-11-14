@@ -39,7 +39,7 @@ $usuario = User::model()->findByPk($orden->user_id);
       </div></th>
     </tr>
     <tr>
-   	<td><p class="T_xlarge margin_top_xsmall color1">
+   	<td><p class="T_large margin_top_xsmall color1">
 <?php
 //----------------------Estado
 	echo $orden->textestado;

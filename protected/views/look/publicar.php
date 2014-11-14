@@ -643,7 +643,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             	
 <?php 
 $script = "
+
+	var selector;
 	$('.select_todos_ocasiones').on('click',function(e){
+			selector=$(this);
 		if ($(this).is(':checked')){
 			$(this).parent().find('.btn').addClass('active');
 		}
@@ -660,6 +663,7 @@ $script = "
 	});
 
 	$('.select_todos').on('click',function(e){
+		
 		//if ($(this).is(':checked')){
 
 		if (!$(this).hasClass('active')){
@@ -682,7 +686,7 @@ $script = "
 	});
 
 	$('#div_ocasiones').on('click', 'a', function(e) {
-
+		var padre;
 		 var ids = '';
 		 var selected = $(this).attr('href');
 		 $('#div_ocasiones .active').each(function(){
@@ -691,6 +695,12 @@ $script = "
 		 });
 		 if (!($(this).hasClass('active')))
 		 	ids += $(this).attr('href');
+		 
+		  if (($(this).hasClass('active')))
+		  {
+			selector.removeAttr('checked');
+		  }
+		 
 		 $('#categorias').val(ids.substring(1));
 		 $('#Look_has_ocasiones').val(ids.substring(1));
 		 e.preventDefault();

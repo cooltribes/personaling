@@ -2377,6 +2377,12 @@ public function actionCategorias(){
 	     	echo CJSON::encode($res);
 	    	Yii::app()->end();
 		}
-
+        
+        public function actionUpdateAvailability(){
+            $looks=Look::model()->findAllByAttributes(array('activo'=>1));
+            foreach($looks as $look){
+                $look->updateAvailability();
+            }
+        }
 
 }

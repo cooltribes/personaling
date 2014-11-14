@@ -615,7 +615,7 @@
                     'components'=>array(
                         'db'=>array(
                             'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
-                                                dbname=db_personalingDEV_VE',
+                                                dbname=db_personalingNUEVA_VE',
                             'emulatePrepare' => true,
                             'username' => 'personaling',
                             'password' => 'Perso123Naling',
@@ -688,7 +688,7 @@
                     'timeZone' => 'Europe/Madrid', 
                     'components'=>array(
                         'db'=>array(
-                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingDEV',
+                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingTEST',
                             'emulatePrepare' => true,
                             'username' => 'personaling',
                             'password' => 'Perso123Naling',
@@ -747,7 +747,7 @@
                             'bodyFavors' => false,
                             'skinColor' => false,
                         ),
-                        'AzPayTerminal'=>'999',
+                        'AzPayTerminal'=>'997',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
                     ),

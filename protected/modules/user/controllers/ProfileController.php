@@ -814,8 +814,9 @@ class ProfileController extends Controller
 
                             $this->redirect(array('/user/profile/tuestilo'));
                         }
-                        else
+                        else{
                             Yii::trace('username:' . $model->username . ' Error:' . implode('|', $model->getErrors()), 'registro');
+                        }
                     } else {
                         Yii::trace('username:' . $model->username . ' Error:' . implode('|', $profile->getErrors()), 'registro');
                     }

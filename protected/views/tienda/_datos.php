@@ -103,18 +103,7 @@ foreach($prods as $data):
 				{
 					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 1.2em;">Precio especial</span></div>';
 				}
-				
-				$var=0;
-				foreach ($data->preciotallacolor as $talCol)
-				//foreach (Preciotallacolor::model()->findAllByAttributes(array('producto_id'=>$data->id)) as $talCol)
-				{ 	
-					if($talCol->cantidad>0)
-					{
-						$var=1;
-					}		
-				}
-				
-				if($var=="0") //si no quedan productos, no mostrar ofertas; si no decir que el producto esta agotado.
+				if($data->preciotallacolorSum<1) //si no quedan productos, no mostrar ofertas; si no decir que el producto esta agotado.
 				{
 					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 2.6em;">Agotado</span></div>';
 				}

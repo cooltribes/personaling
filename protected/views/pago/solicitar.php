@@ -128,12 +128,12 @@ $this->breadcrumbs=array(
                     'class' => 'span3',
                    // 'hint' => 'Cuenta PayPal o Nro. de cuenta bancaria',
                    // 'required' => true,
-                   'placeholder'=>'Escribe el RIF o cédula del titular de la cuenta'
+                   'placeholder'=>'Escribe el RIF o cédula del titular'
                 ));
                 echo $form->textFieldRow($model, 'email', array(
                     'class' => 'span3',
                     'value' => $user->email,
-                    'placeholder'=>'Escribe el correo electrónico del titular de la cuenta'
+                    'placeholder'=>'Escribe el correo electrónico del titular'
                   //  'hint' => 'Cuenta PayPal o Nro. de cuenta bancaria',
                   //  'required' => true,
                 )); ?>
@@ -218,21 +218,25 @@ $this->breadcrumbs=array(
 </script>
 <?php   if(Yii::app()->language=='es_ve'){  ?> 
     <script>
-   if( $('#Pago_tipo').val()==1)
+   
+   tooltips();
+   
+           
+            
+    if( $('#Pago_tipo').val()==1)
             $('#venezuela').show();
     $('#Pago_cuenta').attr('placeholder','Veinte digitos numéricos');
-    //$('#Enviar').attr('disabled','disabled');
 
     $('body').on('input','#Pago_cuenta', function() { 
-        console.log($(this).val());
+    
          var reg=/^[0-9]*$/;
          if(reg.test($(this).val())){
-             $('#errorCuenta').hide();
+             $('#Pago_cuenta').tooltip('hide');
              $('#Enviar').attr('disabled',false);
          }
          else{
+             $('#Pago_cuenta').tooltip('show'); 
              $('#Enviar').attr('disabled',true);
-             $('#errorCuenta').show();
              if(!reg.test($(this).val().substring($(this).val().length-2,$(this).val().length-1)))
                 $(this).val($(this).val().substring(0, $(this).val().length- 1));
          }
@@ -263,21 +267,69 @@ $this->breadcrumbs=array(
         var email = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   
         if($('#Pago_tipo').val()==1){
-            if($('#Pago_accountType').val()=='')
+            if($('#Pago_accountType').val()==''){
                 val=false;
-            if($('#Pago_recipient').val()=='')
+                $('#Pago_accountType').tooltip('show');
+            }
+                
+            if($('#Pago_recipient').val().length<5){
                 val=false;
-            if($('#Pago_identification').val()=='')
+                $('#Pago_recipient').tooltip('show');
+            }
+                
+            if($('#Pago_identification').val().length<7){
                 val=false;
-            if(!email.test($('#Pago_email').val()))
+                $('#Pago_identification').tooltip('show');
+            }
+                
+            if(!email.test($('#Pago_email').val())){
                 val=false;
-            if($('#Pago_cuenta').val().length!=20)
+                $('#Pago_email').tooltip('show');
+            }
+                
+            if($('#Pago_cuenta').val().length!=20){
+                $('#Pago_cuenta').tooltip('show'); 
                 val=false;
+            }
+               
         }
         
         return val;
                
         
+    }
+    function tooltips(){
+        $('#Pago_cuenta').tooltip({
+                title:"Introduce 20 dígitos numéricos",
+                trigger:"manual",
+                placement:"right"
+                
+            });
+    $('#Pago_recipient').tooltip({
+                title:"Introduce el nombre del titular de la cuenta",
+                trigger:"manual",
+                placement:"right"
+                
+            });
+    
+    $('#Pago_identification').tooltip({
+                title:"Introduce RIF o cedula del titular de la cuenta",
+                trigger:"manual",
+                placement:"right"
+                
+            });
+    $('#Pago_email').tooltip({
+                title:"Introduce el correo electrónico del titular de la cuenta",
+                trigger:"manual",
+                placement:"right"
+                
+            });
+     $('#Pago_accountType').tooltip({
+                title:"Selecciona un tipo de cuenta",
+                trigger:"manual",
+                placement:"right"
+                
+            });
     }
 
     </script>

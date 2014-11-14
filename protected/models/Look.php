@@ -1294,7 +1294,7 @@ class Look extends CActiveRecord
             if(isset($ptcs))
             {
                 foreach($ptcs as $ptc){
-                    if($ptc->cantidad>0){
+                    if($ptc->cantidad>0&&$ptc->producto->estado==0&&$ptc->producto->status==1){
                         $count++;
                         break;
                     }

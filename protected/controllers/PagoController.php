@@ -468,7 +468,7 @@ class PagoController extends Controller
             
             if(Funciones::isDev()){
                 
-                $destinatario = "nramirez@upsidecorp.ch";               
+                $destinatario = "lcasanova@upsidecorp.ch";               
             }     
                      
 //            $params = array('subject'=>$subject, 'body'=>$body);

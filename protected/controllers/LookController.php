@@ -113,7 +113,7 @@ class LookController extends Controller
                                 'publicar','marcas','mislooks','softdelete','descuento',
                                 'calcularPrecioDescuento', 'exportarCSV',
                                 'plantillaDescuentos', 'importarDescuentos',
-                                'enabledLook', 'varias', 'informacion', 'autocomplete'),
+                                'enabledLook', 'varias', 'informacion', 'autocomplete','updateAvailability'),
                             //'users'=>array('admin'),
                             'expression' => 'UserModule::isAdmin()',
 			),
@@ -2382,7 +2382,10 @@ public function actionCategorias(){
             $looks=Look::model()->findAllByAttributes(array('activo'=>1));
             foreach($looks as $look){
                 $look->updateAvailability();
+                echo $look->id." - ".$look->available."<br/>";
             }
         }
+        
+        
 
 }

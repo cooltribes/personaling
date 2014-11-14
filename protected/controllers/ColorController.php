@@ -207,14 +207,17 @@ class ColorController extends Controller
 	 * Manages all models.
 	 */
 	public function actionAdmin()
-	{ 
-		$model=new Color('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Color']))
-			$model->attributes=$_GET['Color'];
-
+	{
+		$model=new Color;
+        $criteria= new CDbCriteria;
+        if (isset($_POST['query']))
+            $criteria->addCondition('valor LIKE "%'.$_POST['query'].'%"');
+        $dP=new CActiveDataProvider($model, array(
+            'criteria'=>$criteria,
+        ));
 		$this->render('admin',array(
 			'model'=>$model,
+			'dP'=>$dP
 		));
 	}
 	/**

@@ -22,10 +22,10 @@
  * @property string $cuenta
  * @property integer $id_transaccion
  * @property integer $observacion
- * @property string recipient
- * @property string identification
- * @property string accountType
- * @property string email
+ * @property string $recipient
+ * @property string $identification
+ * @property string $accountType
+ * @property string $email
  *
  * The followings are the available model relations:
  * @property Users $user

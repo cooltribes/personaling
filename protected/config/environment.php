@@ -679,7 +679,8 @@
                         ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
+                        'zohoToken' => '3999a1f3cb9f2efc652651f94b82ff84',
+                        'zohoActive' => TRUE,
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -749,7 +750,8 @@
                         ),
                         'AzPayTerminal'=>'997',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
+                        'zohoToken'=>'db303d2e324bda57cfd72e89640dc5bb',
+                        'zohoActive' => TRUE,
                     ),
                 );
         }

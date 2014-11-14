@@ -29,7 +29,7 @@ class SiteController extends Controller
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',
                                     'preguntas_frecuentes', 'equipo_personaling','captcha',
                                     'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos',
-                                    'tienda', 'conversion','ProductoImagenpng'),
+                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -133,6 +133,11 @@ class SiteController extends Controller
 	{
 		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Landing'));
 		$this->render('landingpage', array('seo'=>$seo));
+	}
+	public function actionLandingpage_ve()
+	{
+		$seo = SeoStatic::model()->findByAttributes(array('name'=>'Landing'));
+		$this->render('landingpage_ve', array('seo'=>$seo));
 	}
 	public function actionVe()
 	{
@@ -410,6 +415,36 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+	
+	public function actionRevi()
+	{
+		
+			Yii::app()->session['email'] = $_POST['email'];
+			Yii::app()->session['pais'] = $_POST['pais'];
+			Yii::app()->end();	
+		
+		
+	}
+	
+	public function actionLanding()
+	{
+		#var_dump(Yii::app()->session['email'])	;
+		$modelado= new Nuevos;
+		$modelado->email=Yii::app()->session['email'];
+		$modelado->save();
+		if(Yii::app()->session['pais']=="es")
+		{
+			$this->render('landingpage');
+		}
+			
+		else
+		{
+			$this->render('landingpage_ve');
+		} 
+			
+		
+	}
+	
 	
 	
 	/**

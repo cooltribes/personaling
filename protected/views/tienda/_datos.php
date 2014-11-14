@@ -330,6 +330,7 @@ function detalle_producto(product){
 
 <?php 
 //echo "LORE"; 
+//PC::debug('Pages: '.print_r($pages), 'scroll');
 $this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
 	    'contentSelector' => '#catalogo',
 	    'itemSelector' => 'div.div_productos',

@@ -681,7 +681,7 @@ $script = "
 
 		}
 		else {
-			alert('sapa');
+			
 			$(this).parent().find('.btn').not('.select_todos').removeClass('active');
 			$(this).parent().find('.btn').not('.select_todos').parent().next('input').val(0);
 

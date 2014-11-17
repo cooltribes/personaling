@@ -414,7 +414,7 @@ return array (
 
      'Year' => 'Año',
      'Yes, I do'=>'Si, por favor',
-     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => 'Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.com<br/> Valida tu cuenta haciendo click en el enlace que aparece a continuación:',   
+     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/><br/>{{link}}<br/>' => 'Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.com<br/> Valida tu cuenta haciendo click en el enlace que aparece a continuación: <br/><br/><a href="{{link}}">Haz Click aquí</a>.',
      'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
      'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Zoom: http://www.grupozoom.com con el siguiente número de seguimiento: {number}',
@@ -475,7 +475,7 @@ return array (
      // Copys de paginas estaticas
      'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?  </h3>
       <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación.  </p>
-      <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>      
+      <iframe width="560" height="315" src="//www.youtube.com/embed/wRP91tMMcH4" frameborder="0" allowfullscreen></iframe>      
       <hr/>
       <h3>¿Debo pagar por mi envío?</h3>
       <p>Si, Personaling.com hace sus envíos a través de operadores de envios  y cada envío la cancela el cliente al momento de la cancelación de su compra. Las tarifas cambiarán dependiendo del destino final del envío.  </p>

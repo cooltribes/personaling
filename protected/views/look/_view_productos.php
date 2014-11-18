@@ -21,7 +21,8 @@ if (isset($categoria_padre) ){
 		array( //htmlOptions
 			'href' => Yii::app()->createUrl( 'look/categorias' ),
 			'class' => 'thumbnail btn btn-block',
-			'id' => 'categoria'.$categoria_padre,
+			//'id' => 'categoria'.$categoria_padre,
+            'id' => 'categoria'.uniqid(),
 			'draggable'=>"false",
 		)
 	);

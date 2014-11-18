@@ -1950,9 +1950,9 @@ public function actionReportexls(){
 				Yii::app()->clientScript->registerScript('metrica_analytics',"
 					ga('ec:addProduct', {               // Provide product details in an productFieldObject.
 					  'id': '".$producto->id."',                   // Product ID (string).
-					  'name': '".$producto->nombre."', // Product name (string).
-					  'category': '".$category->nombre."',   // Product category (string).
-					  'brand': '".$producto->mymarca->nombre."',                // Product brand (string).
+					  'name': '".addslashes($producto->nombre)."', // Product name (string).
+					  'category': '".addslashes($category->nombre)."',   // Product category (string).
+					  'brand': '".addslashes($producto->mymarca->nombre)."',                // Product brand (string).
 					});
 					
   					ga('ec:setAction', 'detail');       // Detail action.

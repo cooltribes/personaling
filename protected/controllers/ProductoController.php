@@ -1924,6 +1924,7 @@ public function actionReportexls(){
  */
 	public function actionDetalle()
 	{
+        Yii::trace('ProductoController.php:1927, Entro Producto', 'registro');
             if (isset($_GET['alias'])) {
                 $seo = Seo::model()->findByAttributes(array('urlAmigable' => $_GET['alias']));
     //			$producto = Producto::model()->activos()->noeliminados()->findByPk($seo->tbl_producto_id);

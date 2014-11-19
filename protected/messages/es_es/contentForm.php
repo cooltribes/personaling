@@ -22,6 +22,7 @@ return array (
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',
 	'Account holder:' => 'Titular de la cuenta:',
+	'accountType ' => 'Tipo de Cuenta',
 	'<strong>Add your payment:</strong> through the link sent to your email or login to Your Account -> Your Orders, select the order you want to pay and Save Pay option.' => '<strong>Registra tu pago:</strong> a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Tus Pedidos, selecciona el pedido que deseas Pagar y la opción Registrar Pago.',
 	'Address' => 'Dirección',
 	'Addresses used above' => 'Las direcciones utilizadas anteriormente',

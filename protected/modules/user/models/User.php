@@ -1,9 +1,9 @@
 <?php
-
+ 
 class User extends CActiveRecord {
 
     const STATUS_NOACTIVE = 0;
-    const STATUS_ACTIVE = 1;
+    const STATUS_ACTIVE = 1; 
     const STATUS_BANNED = -1;
     const STATUS_DELETED = 2; 
 
@@ -12,7 +12,7 @@ class User extends CActiveRecord {
     const STATUS_REGISTER_NEW = 0;
     const STATUS_REGISTER_TIPO = 1;
     const STATUS_REGISTER_ESTILO = 2;
-    const STATUS_REGISTER_DONE = 3;
+    const STATUS_REGISTER_DONE = 3; 
 
     // PRIVACIDAD
     const PRIVACIDAD_DATOS_BASICOS = 1;
@@ -206,7 +206,19 @@ class User extends CActiveRecord {
 
         )); 
     }
+    public function psDestacados($limit = 6) 
+    {
+        
+        $criteria=new CDbCriteria;          
+        $criteria->limit = $limit;
+        $criteria->order='ps_destacado DESC, fecha_destacado DESC';
+        $criteria->addCondition('status = 1');
 
+        
+        return $this->findAll($criteria);   
+            
+           
+    }
     public static function itemAlias($type, $code = NULL) {
         $_items = array(
             'UserStatus' => array(

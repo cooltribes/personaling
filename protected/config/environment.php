@@ -69,27 +69,27 @@
         private function setConfig() {
             switch($this->_mode) {
                 case self::DEVELOPMENT:
-                    $this->_debug       = TRUE;
+                    $this->_debug       = true;
                     $this->_trace_level = 3;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_development());
                     break;
                 case self::TEST:
-                    $this->_debug       = FALSE;
+                    $this->_debug       = false;
                     $this->_trace_level = 0;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_test());
                     break;
                 case self::STAGE:
-                    $this->_debug       = TRUE;
+                    $this->_debug       = true;
                     $this->_trace_level = 0;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_stage());
                     break;
                 case self::PRODUCTION:
-                    $this->_debug       = FALSE;
+                    $this->_debug       = false;
                     $this->_trace_level = 0;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_production());
                     break;
                 default:
-                    $this->_debug       = TRUE;
+                    $this->_debug       = true;
                     $this->_trace_level = 0;
                     $this->_config      = $this->_main();
                     break;
@@ -305,7 +305,7 @@
                                 'connectionID' => 'db',
                                 'autoCreateLogTable' => false,
                                 'logTableName' => 'tbl_logger',
-                                'levels' => 'trace',
+                                'levels' => 'trace,error,warning',
                                 'categories' => 'registro,compra,tienda,admin,otro',
 
                         ),
@@ -407,6 +407,7 @@
                     //'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
                     'outlet'=>TRUE,
                     'zohoActive' => FALSE,
+                    'id_look_switch' => 638,
                 ),
             );
         }
@@ -427,11 +428,10 @@
                     'language' => 'es_ve',
                     'components'=>array(
                         'db'=>array(
-                            'connectionString' => 'mysql:host=localhost;
-                                                dbname=db_personalingT1',
+                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingDEV_VE',
                             'emulatePrepare' => true,
-                            'username' => 'root',
-                            'password' => '',
+                            'username' => 'personaling',
+                            'password' => 'Perso123Naling',
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
@@ -444,12 +444,13 @@
                         'currSym'=>'Bs',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.12',
-                        'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
+                        'registerGift'=>'0', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
                         'askId'=>false, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
                         'IVAtext' => '12%',
                         'registro' => false,    
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
                         'pais'=>'espana',
@@ -514,7 +515,8 @@
                         'registro' => false,    
                         'mostrarMarcas'=>true,
                         'codigoPostal'=>true,
-                        'mostrarChic'=>false, 
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true), 
                         'country'=>'España',
                         'pais'=>'espana',
                         'clientName'=>'Personaling Enterprise S.L ',
@@ -533,7 +535,7 @@
                         'metodosPago'=> array(
                             'bkCard' => true,
                             'paypal' => true, 
-                            'prueba' => true,
+                            'prueba' => true, 
                         ),
                         'multiLook'=> array(
                             'bodyType' => false,
@@ -639,12 +641,13 @@
                         'currSym'=>'Bs',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.12',
-                        'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
+                        'registerGift'=>'0', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
                         'askId'=>false, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
                         'IVAtext' => '12%',
                         'registro' => false,    
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
                         'pais'=>'espana',
@@ -681,6 +684,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => '3999a1f3cb9f2efc652651f94b82ff84',
                         'zohoActive' => TRUE,
+                        'id_look_switch' => 0,
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -719,7 +723,8 @@
                         'registro' => false,    
                         'mostrarMarcas'=>true,
                         'codigoPostal'=>true,
-                        'mostrarChic'=>false, 
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'España',
                         'pais'=>'espana',
                         'clientName'=>'Personaling Enterprise S.L ',
@@ -823,7 +828,8 @@
                         'IVAtext' => '12%',
                         'registro' => false,
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
                         'pais'=>'espana',
@@ -850,16 +856,17 @@
                             ),
 
                         'multiLook'=> array(
-                            'bodyType' => false,
-                            'eyesColor' => false,
-                            'hairColor' => false,
-                            'womanMeasure' => false,
-                            'bodyFavors' => false,
-                            'skinColor' => false,
+                            'bodyType' => true,
+                            'eyesColor' => true,
+                            'hairColor' => true,
+                            'womanMeasure' => true,
+                            'bodyFavors' => true,
+                            'skinColor' => true,
                             ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'f298def0f5eae649aa473c7db3092dc3',
+                        'id_look_switch' => 0,
                         ),
 
                 );
@@ -892,7 +899,8 @@
                         'IVAtext' => '21%',
                         'registro' => false,
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'EspaÃ±a',
                         'pais'=>'espana',
                         'clientName'=>'Personaling Enterprise S.L ',

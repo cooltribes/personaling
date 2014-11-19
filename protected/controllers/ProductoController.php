@@ -386,8 +386,8 @@ public function actionReportexls(){
 					 	'marca_id'=>$_POST['marcas'],
 					 	'descripcion'=>$_POST['Producto']['descripcion'],
 					 	'estado'=>$_POST['Producto']['estado'],
-					 	'fInicio'=>date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])),
-						'fFin'=>date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])),
+					 	'fInicio'=>isset($_POST['Producto']['fInicio'])?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])):NULL,
+						'fFin'=>isset($_POST['Producto']['fFin'])?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])):NULL,
 						'destacado' => $_POST['Producto']['destacado'],
 						'peso' => $_POST['Producto']['peso'],
 						'almacen' => $_POST['Producto']['almacen'],
@@ -1920,6 +1920,7 @@ public function actionReportexls(){
  */
 	public function actionDetalle()
 	{
+        Yii::trace('ProductoController.php:1927, Entro Producto', 'registro');
             if (isset($_GET['alias'])) {
                 $seo = Seo::model()->findByAttributes(array('urlAmigable' => $_GET['alias']));
     //			$producto = Producto::model()->activos()->noeliminados()->findByPk($seo->tbl_producto_id);
@@ -1946,9 +1947,9 @@ public function actionReportexls(){
 				Yii::app()->clientScript->registerScript('metrica_analytics',"
 					ga('ec:addProduct', {               // Provide product details in an productFieldObject.
 					  'id': '".$producto->id."',                   // Product ID (string).
-					  'name': '".$producto->nombre."', // Product name (string).
-					  'category': '".$category->nombre."',   // Product category (string).
-					  'brand': '".$producto->mymarca->nombre."',                // Product brand (string).
+					  'name': '".addslashes($producto->nombre)."', // Product name (string).
+					  'category': '".addslashes($category->nombre)."',   // Product category (string).
+					  'brand': '".addslashes($producto->mymarca->nombre)."',                // Product brand (string).
 					});
 					
   					ga('ec:setAction', 'detail');       // Detail action.

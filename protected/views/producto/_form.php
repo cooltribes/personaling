@@ -232,7 +232,13 @@
     </div>
 </div>
 <script>
-
+        function limpiarFechas(){
+            $('#Producto_fInicio').val('');
+             $('#Producto_fFin').val('');
+             $('#Producto_horaInicio').val('');
+             $('#Producto_horaFin').val('');
+             
+        }
 		$('a#limpiar').on('click', function() {
 			
 			$('#producto-form').each (function(){
@@ -359,6 +365,10 @@
 	
 $("#abrirFechas").click(function () {
   $("#fechas").toggle("slow");
+  if(!$(this).is(':checked'))
+        limpiarFechas();
+  
+  
 });
 
 /*$("#Producto_tipo_0").click(function () {

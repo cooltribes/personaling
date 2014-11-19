@@ -91,38 +91,38 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         <fieldset>
           <div id="numero1">
 
-            <div class="control-group offset2 margin_top_small" >
+            <div class="control-group margin_top_small" >
               <div class="controls row-fluid" id="caracteristicas">
-                <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
-                <?php $clase2 = (isset($editar) && $editar)?'span10':'span8'; ?>
-                <div class="<?php echo $clase; ?>">
+                <?php $clase = (isset($editar) && $editar)?'span3':'span3'; ?>
+                <?php $clase2 = (isset($editar) && $editar)?'span8':'span6'; ?>
+                <div class="span2">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span8','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="<?php echo $clase; ?>">
+                <div class="span3">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="<?php echo $clase; ?>">
+                <div class="span3">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="<?php echo $clase; ?>">
+                <div class="span3">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="<?php echo $clase; ?>">
+                <div class="span3">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
               </div>

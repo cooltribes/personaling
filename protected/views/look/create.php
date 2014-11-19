@@ -520,7 +520,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					//echo $hasproducto->width.'/'.$hasproducto->height;
 			?>
 
-              <?php if ($model->id >= 638){
+              <?php if ($model->id >= Yii::app()->params["id_look_switch"]){
                   echo CHtml::image( Yii::app()->createUrl('site/productoImagenPng').'/producto/'.$producto->id.'/color/'.$hasproducto->color_id.'/w/270/h/270', "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
               } else {
                   echo CHtml::image($producto->getImageUrl($hasproducto->color_id,array('ext'=>'png')), "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));

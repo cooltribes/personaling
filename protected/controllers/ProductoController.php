@@ -1059,6 +1059,7 @@ public function actionReportexls(){
 			$model=Producto::model()->findByPk($id);
 			$model->status = 0;
 			Producto::model()->updateByPk($id, array('status'=>'0'));
+			Yii::app()->user->setFlash('success',UserModule::t("Producto Eliminado"));
 			$this->redirect(array('admin'));
 			
 		}
@@ -1371,15 +1372,10 @@ public function actionReportexls(){
 				foreach($checks as $id){
 					$model = Producto::model()->findByPk($id);
 					$model->status=0;
-					Producto::model()->updateByPk($id, array('status'=>'0'));
-					/*if($model->save())
-						echo("guarda");
-					else {
-						print_r($model->getErrors());
-					}*/				
+					Producto::model()->updateByPk($id, array('status'=>'0'));		
 				}
 				//echo("5");
-				$result['status'] = "2";
+				$result['status'] = "10";
 			}
 			else if($accion=="Descuentos") {
 				$result['status'] = "6";

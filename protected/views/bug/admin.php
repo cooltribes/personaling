@@ -5,25 +5,60 @@
 $this->breadcrumbs=array(
 	'Falla Tecnica',
 );
-
-
+  
 ?>
 
-<h1>Manage Bugs</h1>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
+<div class="container margin_top">
+	
+    <div class="page-header">
+        <h1>Administrar Fallas Tecnicas</h1>
+    </div>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
-<div class="search-form" style="display:none">
-<?php $this->renderPartial('_search',array(
-	'model'=>$model,
-)); ?>
-</div><!-- search-form -->
+ <div class="row margin_top margin_bottom ">
+         <div class="pull-right">
+        <?php
+        	echo CHtml::link('Crear nueva Falla Tecnica', $this->createUrl('create'), array('class'=>'btn btn-success', 'role'=>'button'));
+        ?>
+		</div>
+ </div>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php 
+$template = '{summary}
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Url</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Detalles</th>
+        </tr>
+    {items}
+    </table>
+    {pager}
+	';
+
+		$this->widget('zii.widgets.CListView', array(
+	    'id'=>'list-auth-marcas',
+	    'dataProvider'=>$dataProvider,
+	    'itemView'=>'_view',
+	    'template'=>$template,
+	    'enableSorting'=>'true',
+	     'summaryText' => "Mostrando {start} - {end} de {count} Resultados",
+	    'emptyText'=>Yii::t('contentForm','There are not any results to show'),
+	    'afterAjaxUpdate'=>" function(id, data) {
+						   
+							} ",
+		'pager'=>array(
+			'header'=>'',
+			'htmlOptions'=>array(
+			'class'=>'pagination pagination-right',
+		)
+		),					
+	));  
+
+/* $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'bug-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
@@ -34,11 +69,13 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'image',
 		'url',
 		'estado',
-		/*
-		'date',
-		*/
 		array(
 			'class'=>'CButtonColumn',
 		),
 	),
-)); ?>
+)); */
+
+
+?>
+
+</div>

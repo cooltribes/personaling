@@ -167,6 +167,7 @@ return array (
      'ID Transaction' => 'ID de Transaccion',
      'Identity card' => 'Cédula de Identidad',
      'If you\'ve made ​​your deposit' => 'Si ya has realizado el depósito',
+     'Inbound details' => 'Detalles del Inbound',
      'Inactive' => 'Inactivo',
      'Include a new shipping address' => 'Incluir una nueva dirección de envío',
      'Individual items' => 'Prendas individuales',
@@ -215,6 +216,7 @@ return array (
      'Nro. looks' => 'No. de looks',
      'Nro. items' => 'No. de Prendas',
      'No, thanks.' => 'No, gracias.',
+     'No. of SKU' => 'Cantidad de SKU',
      'No elements to show'=>'No existen elementos para mostrar',
      'Number' => 'Número',
  
@@ -322,6 +324,7 @@ return array (
      'Shipping address' => 'Dirección de envío',
      'Shipping cost' => 'Costo de envío',
      'State' => 'Estado',
+     'Status' => 'Estado',
      'Start by dragging the panel items right up here. Just click on them and move them to this box.' => 'Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro.',
      'Style' => 'Estilo',
      'Size' => 'Talla',
@@ -357,6 +360,7 @@ return array (
      'Skin Color' =>'Color de Piel',
      'Sold' => 'Vendidos',
      'Sold out' => 'Agotado',
+     'Status' => 'Estado',
      'Subject' => 'Asunto',
      'Sumary' => 'Resumen',
      'Summary of the purchase' => 'Resumen de la compra',
@@ -376,6 +380,8 @@ return array (
      'To approve' => 'Por aprobar',
      'To send' => 'Por enviar',
      'Total' => 'Total',
+     'Total sent amount' => 'Cant. Total Enviada',
+     'Total acknowledged amount' => 'Cant. Total Confirmada', 
      'Totals' => 'Totales',
      'Total Gift Cards' => 'Total de Gift Cards',
      'Total returned' => 'Total devuelto',
@@ -396,6 +402,7 @@ return array (
      'Use this as billing address' => 'Utilizar esta como dirección de facturación',
      'Update all' => 'Actualizar todo',
      'Update date' => 'Fecha de carga',
+     'Upload date' => 'Fecha de carga',
      'To all of us has broken a heel ever, refreshes the screen tu try more later.' => 'A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
      '¡Upss! To all of us has broken a heel ever, refreshes the screen tu try more later.' => '¡Upss! A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
      'Use Balance available:' => 'Usar balance disponible',
@@ -407,7 +414,7 @@ return array (
 
      'Year' => 'Año',
      'Yes, I do'=>'Si, por favor',
-     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => 'Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.com<br/> Valida tu cuenta haciendo click en el enlace que aparece a continuación:',   
+     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/><br/>{{link}}<br/>' => 'Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.com<br/> Valida tu cuenta haciendo click en el enlace que aparece a continuación: <br/><br/><a href="{{link}}">Haz Click aquí</a>.',
      'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
      'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Zoom: http://www.grupozoom.com con el siguiente número de seguimiento: {number}',
@@ -468,7 +475,7 @@ return array (
      // Copys de paginas estaticas
      'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?  </h3>
       <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación.  </p>
-      <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>      
+      <iframe width="560" height="315" src="//www.youtube.com/embed/wRP91tMMcH4" frameborder="0" allowfullscreen></iframe>      
       <hr/>
       <h3>¿Debo pagar por mi envío?</h3>
       <p>Si, Personaling.com hace sus envíos a través de operadores de envios  y cada envío la cancela el cliente al momento de la cancelación de su compra. Las tarifas cambiarán dependiendo del destino final del envío.  </p>

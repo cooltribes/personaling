@@ -277,14 +277,17 @@ $tipo_pago = $orden->getTipoPago();
               // mostrar solo productos internos
               if($producto->tipo == 0){
   							echo('<tr>');
-  							
-  							if($imagen){					  	
+  							$entro=false;
+  							if($imagen){
+  								$entro=true;					  	
   								$aaa = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/producto/'. str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "150", "height" => "150",'class'=>'margin_bottom'));
   								echo "<td>".$aaa."</td>";
   							}else{
   								echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
   							}
-  	
+							if($entro==false)
+  								echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+							
   							echo('<td><strong>'.$producto->nombre.'</strong> <br/>
   		                  		<strong>'.Yii::t('contentForm', 'Color').'</strong>: '.$color->valor.'<br/>
   		                  		<strong>'.Yii::t('contentForm', 'Size').'</strong>: '.$talla->valor.'</td>
@@ -381,10 +384,11 @@ $tipo_pago = $orden->getTipoPago();
 				$contador=0;
 								
 				echo "<tr>";		
-							
+				$enter=false;			
 				if(isset($imagen)){
 					foreach($imagen as $img) {
-						if($contador==0){		 
+						if($contador==0){
+							$enter=true;		 
 							$aaa = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/producto/'. str_replace(".","_thumb.",$img->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
 							echo "<td>".$aaa."</td>";
 							$contador++;
@@ -393,8 +397,11 @@ $tipo_pago = $orden->getTipoPago();
 						
 				
 				}else
-					echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
-
+					{	
+						echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
+					}
+					if($enter==false)
+						echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
 				echo "
 					<td>
 					<strong>".$producto->nombre."</strong> <br/>

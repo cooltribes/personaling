@@ -427,11 +427,10 @@
                     'language' => 'es_ve',
                     'components'=>array(
                         'db'=>array(
-                            'connectionString' => 'mysql:host=localhost;
-                                                dbname=db_personalingT1',
+                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingDEV_VE',
                             'emulatePrepare' => true,
-                            'username' => 'root',
-                            'password' => '',
+                            'username' => 'personaling',
+                            'password' => 'Perso123Naling',
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
@@ -535,7 +534,7 @@
                         'metodosPago'=> array(
                             'bkCard' => true,
                             'paypal' => true, 
-                            'prueba' => true,
+                            'prueba' => true, 
                         ),
                         'multiLook'=> array(
                             'bodyType' => false,

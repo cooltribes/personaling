@@ -645,6 +645,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 $script = "
 
 	var selector;
+	var selector2;
 	$('.select_todos_ocasiones').on('click',function(e){
 			selector=$(this);
 		if ($(this).is(':checked')){
@@ -664,6 +665,7 @@ $script = "
 
 	$('.select_todos').on('click',function(e){
 		
+		selector2=$(this);
 		//if ($(this).is(':checked')){
 
 		if (!$(this).hasClass('active')){
@@ -679,6 +681,7 @@ $script = "
 
 		}
 		else {
+			
 			$(this).parent().find('.btn').not('.select_todos').removeClass('active');
 			$(this).parent().find('.btn').not('.select_todos').parent().next('input').val(0);
 
@@ -707,7 +710,9 @@ $script = "
 	 });
 
 	$('#div_tipo .btn-group').on('click', 'a', function(e) {
+		
 		 if (!($(this).hasClass('select_todos'))){
+		 	
              if ($(this).parent().attr('data-toggle')=='buttons-checkbox'){
                  var ids = 0;
                      $(this).siblings('.active').each(function(){
@@ -718,6 +723,13 @@ $script = "
                  if (!($(this).hasClass('active')))
 				 	if (!($(this).hasClass('select_todos')))
                     	ids += parseInt($(this).attr('href').substring(1));
+				  
+				  if (($(this).hasClass('active')))
+				  {
+					
+					selector2.removeClass('active');
+				  }
+				
             } else {
             	if (!($(this).hasClass('select_todos')))
                 	ids = parseInt($(this).attr('href').substring(1));
@@ -726,6 +738,9 @@ $script = "
 			 $(this).parent().next('input').val(ids);
 			 e.preventDefault();
 		}
+		 if (($(this).hasClass('select_todos'))){
+		 	$(this).hasClass('select_todos');
+		 }
 		 
 	 });
 ";

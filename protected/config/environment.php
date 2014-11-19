@@ -444,12 +444,13 @@
                         'currSym'=>'Bs',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.12',
-                        'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
+                        'registerGift'=>'0', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
                         'askId'=>false, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
                         'IVAtext' => '12%',
                         'registro' => false,    
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
                         'pais'=>'espana',
@@ -514,7 +515,8 @@
                         'registro' => false,    
                         'mostrarMarcas'=>true,
                         'codigoPostal'=>true,
-                        'mostrarChic'=>false, 
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true), 
                         'country'=>'España',
                         'pais'=>'espana',
                         'clientName'=>'Personaling Enterprise S.L ',
@@ -639,12 +641,13 @@
                         'currSym'=>'Bs',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.12',
-                        'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
+                        'registerGift'=>'0', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
                         'askId'=>false, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
                         'IVAtext' => '12%',
                         'registro' => false,    
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
                         'pais'=>'espana',
@@ -720,7 +723,8 @@
                         'registro' => false,    
                         'mostrarMarcas'=>true,
                         'codigoPostal'=>true,
-                        'mostrarChic'=>false, 
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'España',
                         'pais'=>'espana',
                         'clientName'=>'Personaling Enterprise S.L ',
@@ -824,7 +828,8 @@
                         'IVAtext' => '12%',
                         'registro' => false,
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
                         'pais'=>'espana',
@@ -894,7 +899,8 @@
                         'IVAtext' => '21%',
                         'registro' => false,
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'EspaÃ±a',
                         'pais'=>'espana',
                         'clientName'=>'Personaling Enterprise S.L ',

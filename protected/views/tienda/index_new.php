@@ -214,7 +214,7 @@ if(isset($seo)){
 
 <?php 	PC::debug('Execute Time (deskfilters):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <div id="deskfilters">
-<?php if(Yii::app()->params['mostrarChic']): ?>	
+<?php if(Yii::app()->params['chic']['show']): ?>	
 	<div id="banner100chic" style=" display:none; " class="margin_top ">
 		<div class="margin_bottom">
 			<img src="<?php echo Yii::app()->baseUrl; ?>/images/<?php echo Yii::app()->language; ?>/especial/080banner.jpg" alt="080">
@@ -445,8 +445,8 @@ if(isset($seo)){
 	
 	
 
-<?php if(Yii::app()->params['mostrarChic']):
-		if(Yii::app()->params['chicBrands']): ?>
+<?php if(Yii::app()->params['chic']['show']):
+		if(Yii::app()->params['chic']['brands']): ?>
 		<li class="item" id="li_chic">
 
 				<div class="dropdown" id="dd080" >

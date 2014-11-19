@@ -462,6 +462,20 @@ class Look extends CActiveRecord
 			),	
 		));		
 	}
+    
+    public function destacadosHome($limit = 6) 
+    {
+        
+        $criteria=new CDbCriteria;          
+        
+        $criteria->limit=$limit;
+        $criteria->order="destacado DESC, approved_on DESC";
+        $criteria->addCondition('status = 2');
+
+
+        
+        return $this->findAll($criteria);   
+    }
 	/* look para el admin por aprobar o aprobados */
 	public function lookAdminAprobar()
 	{

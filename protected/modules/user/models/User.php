@@ -884,10 +884,29 @@ class User extends CActiveRecord {
         }
 	 
         /*Todos los productos vendidos como parte de looks de una PS*/
-        function getLooksVendidos() {
-            
-           
-            $total = 0;
+        function getLooksVendidos($id) {
+        	$total = 0;
+			 $looks= look::model()->findAllByAttributes(array('user_id'=>$id));
+			 
+			 foreach($looks as $lks)
+			 {
+			 	$total_producto=LookHasProducto::model()->countByAttributes(array('look_id'=>$lks->id));	//busco todos los productos de ese look
+			 	
+			 	$ordenes=OrdenHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$lks->id));
+			 	$equal=0;
+			 	foreach($ordenes as $orders)
+				{
+					if($equal!=$orders->tbl_orden_id)
+					{
+						$equal=$orders->tbl_orden_id;	
+						$total_ordenes=OrdenHasProductotallacolor::model()->countByAttributes(array('look_id'=>$lks->id, 'tbl_orden_id'=>$orders->tbl_orden_id));
+						if($total_ordenes>=$total_producto)
+						{
+							$total++;
+						}
+					}	
+				}
+			 } 
             return $total;
         }
         

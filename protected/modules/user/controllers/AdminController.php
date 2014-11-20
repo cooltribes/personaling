@@ -1557,16 +1557,16 @@ class AdminController extends Controller
 		if (isset($_POST['valido'])&&isset($_POST['user'])){
 				$id = $_POST['user'];
 			// make the directory to store the pic:
-				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id))
+				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/avatar/'. $id))
 				{
-	   				mkdir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id,0777,true);
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/avatar/'. $id,0777,true);
 	 			}	 
 				$images = CUploadedFile::getInstancesByName('filesToUpload');
 				 if (isset($images) && count($images) > 0) {
 		            foreach ($images as $image => $pic) {
-		            	$nombre = Yii::getPathOfAlias('webroot').'/images/avatar/'. $id .'/'. $image;
+		            	$nombre = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/avatar/'. $id .'/'. $image;
 						$extension = '.'.$pic->extensionName;
-		            	$model->avatar_url = '/images/avatar/'. $id .'/'. $image .$extension;
+		            	$model->avatar_url = $id .'/'. $image .$extension;
 		            	if (!$model->save())	
 							Yii::trace('username:'.$model->username.' Crear Avatar Error:'.print_r($model->getErrors(),true), 'registro');
 						if ($pic->saveAs($nombre ."_orig". $extension)) {

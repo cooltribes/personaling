@@ -28,11 +28,11 @@ class BugController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				#'actions'=>array('index','view'),
+				'actions'=>array(''),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				#'actions'=>array('create','update'),
+				'actions'=>array('index'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -164,9 +164,20 @@ class BugController extends Controller
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Bug']))
 			$model->attributes=$_GET['Bug'];
+		
+			$criteria = new CDbCriteria;
+			//$criteria->condition = 'data like "%look_id%"';
+			$criteria->order = 'id DESC';
+			$dataProvider = new CActiveDataProvider('Bug', array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        #'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                    	),
+                	));
 
 		$this->render('admin',array(
 			'model'=>$model,
+			'dataProvider'=>$dataProvider,
 		));
 	}
 

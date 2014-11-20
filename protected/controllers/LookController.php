@@ -113,7 +113,7 @@ class LookController extends Controller
                                 'publicar','marcas','mislooks','softdelete','descuento',
                                 'calcularPrecioDescuento', 'exportarCSV',
                                 'plantillaDescuentos', 'importarDescuentos',
-                                'enabledLook', 'varias', 'informacion', 'autocomplete'),
+                                'enabledLook', 'varias', 'informacion', 'autocomplete','updateAvailability'),
                             //'users'=>array('admin'),
                             'expression' => 'UserModule::isAdmin()',
 			),
@@ -625,7 +625,7 @@ class LookController extends Controller
     		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
     		//imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
 			//imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
-			if ($look->id >= 638){
+			if ($look->id >= Yii::app()->params["id_look_switch"]){
 				// para vzla probablemente haya que cambiar esto, los ids no son iguales y algunas imágenes se ven estiradas
                 imagecopyresampled($img,$src,0,0,$b_lft, $b_top,imagesx($img), imagesy($img),imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
                 //imagecopyresampled($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src)); // <----- Se cambio a sampled para mejorar la calidad de las imagenes
@@ -752,6 +752,7 @@ public function actionCategorias(){
 	if(isset($_POST['padreId'])){
 		switch ($_POST['padreId']) {
 			case 'Complementos':
+            case 'Accesorios':
 				$categoria_padre = Categoria::model()->findByAttributes(array('nombre'=>$_POST['padreId']));
 				break;
 
@@ -779,7 +780,7 @@ public function actionCategorias(){
 	Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
 	Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 	Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
-	if ($_POST['padreId']!=0 && $_POST['padreId']!='Complementos' && $_POST['padreId']!='Ropa' && $_POST['padreId']!='Zapatos'){ 
+	if ($_POST['padreId']!=0 && $_POST['padreId']!='Complementos' && $_POST['padreId']!='Ropa' && $_POST['padreId']!='Zapatos' && $_POST['padreId']!='Accesorios'){
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
 	}
 	if ($categorias){
@@ -791,6 +792,7 @@ public function actionCategorias(){
             $padreId = $_POST['padreId'];
 			switch ($_POST['padreId']) {
 				case 'Complementos':
+                case 'Accesorios':
 					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id,'together'=>true);
 					break;
 
@@ -2382,7 +2384,10 @@ public function actionCategorias(){
             $looks=Look::model()->findAllByAttributes(array('activo'=>1));
             foreach($looks as $look){
                 $look->updateAvailability();
+                echo $look->id." - ".$look->available."<br/>";
             }
         }
+        
+        
 
 }

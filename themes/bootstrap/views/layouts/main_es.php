@@ -387,12 +387,14 @@ if(!Yii::app()->user->isGuest){
   <?php echo $content; ?> </div>
 <!-- page -->
 <div id="modalAjax"></div>
-<div id="wrapper_footer">
+<div id="wrapper_footer" style="background: #eee; border: 0px;">
   <footer class="container">
     <div class="row hidden-phone">
+      
       <div class="span3">
-        <h3>Links rápidos</h3>
+        <h4>Información de Interés</h4>
         <ul>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de">Acerca de Personaling</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/formas-de-pago" title="Formas de Pago">Formas de Pago</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/envios" title="Envíos y Encomiendas">Envíos</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
@@ -400,58 +402,80 @@ if(!Yii::app()->user->isGuest){
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de">Acerca de Personaling</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
-         <!-- <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/equipo_personaling" title="El Equipo Personaling">El Equipo Personaling</a></li> -->
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/sitemap" title="Site Map">Site map</a></li>          
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
+           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
+        </ul>
+      </div>
+      <div class="span3">
+        <h4>Lo que encontrarás</h4>
+        <ul>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/looks-personalizados" title="Looks Personalizados">Looks</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Ropa</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Zapatos</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Accesorios</a></li>
+          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/profile/listado" title="Personal Shoppers">Personal Shoppers</a></li>
+        </ul>
+      </div>
+      <div class="span3">
+        <h4>Sigue nuestras redes sociales</h4>
+            <ul>
+               <li>  <a title="Facebook" href="https://www.facebook.com/Personaling">Facebook</a></li>  
+               <li>  <a title="Instagram" href="http://instagram.com/personaling">Instagram </a></li>  
+               <li>  <a title="Twitter" href="https://twitter.com/personaling">Twitter </a></li>  
+               <li>  <a title="Pinterest" href="https://pinterest.com/personaling/">Pinterest   </a></li>  
+               <li> <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ">Youtube </a> </li>  
           
         </ul>
       </div>
-      <div class="span5 ">
-        <h3> Sobre Personaling </h3>
-        <p class="lead"><?php echo Yii::t('contentForm','Personaling.es is the first of Spain Online Personal Shopper, an online store where you can get the best fashion brands with which experts will advise you to buy looks tailored to your body type and style. In Personaling want you to inspire, discover and conquer, buying clothes that make you to enhance your figure, be comfortable and feel powerful. So we are your Personal Shopper Online.') ?></p>
-        <span class="tPrecio">*<?php echo Yii::t('contentForm','Prices are subject to change. You can check the final price on the web sales.'); ?> </span> <p></p>
-        <div class="row-fluid"><div class="span8"><img class="margin_top_medium_minus at_exclude" src=" <?php echo Yii::app()->getBaseUrl(); ?>/images/es_es/logos_seguridad.png" alt="Logos de Seguridad">
-                        </div><div class="span4"><script type="text/JavaScript">
+      <div class="span3">
+        <h4>Métodos de Pago</h4>
+        <div class="row-fluid">
+            <a class="span3">
+                <img alt="MasterCard" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/mc.png';?>" height="25px"/>
+            </a>
+            <a class="span3">
+                <img style="margin-top:7px" alt="Visa" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/visa.png';?>" height="25px"/>
+            </a>
+            <a class="span3">
+                <img style="margin-top:12px" alt="Paypal" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/pp.png';?>" height="25px"/>
+            </a>
+        </div>
+        
+              
+               
+          
+        
+        <h4 class="margin_top">Seguridad de Datos</h4>
+       <div class="row-fluid">
+           <a class="span2">
+                                 <img alt="SSL Security" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/ssl.png';?>" height="25px"/>
+                            </a>
+                            <div class="span8">
+                                <script type="text/JavaScript">
                                 //<![CDATA[
                                 var sealServer=document.location.protocol+"//seals.websiteprotection.com/sealws/525d3892-d158-46f3-aacd-5777cbdd56cb.gif";var certServer=document.location.protocol+"//certs.websiteprotection.com/sealws/?sealId=525d3892-d158-46f3-aacd-5777cbdd56cb";var hostName="personaling.com";document.write(unescape('<div style="text-align:center;margin:0 auto;"><a target="_blank" href="'+certServer+'&pop=true" style="display:inline-block;"><img src="'+sealServer+'" alt="Website Protection&#153; Site Scanner protects this website from security threats." title="This Website Protection site seal is issued to '+ hostName +'. Copyright &copy; 2013, all rights reserved."oncontextmenu="alert(\'Copying Prohibited by Law\'); return false;" border="0" /></a><div id="bannerLink"><a href="https://www.godaddy.com/" target="_blank">Go Daddy</a></div></div>'));
                                 //]]>
-                                </script></div></div>
-      </div>
-      <div class="span3 offset1 ">
-      <div class="banner-envio">
-            <h2 class="text_align_center margin_bottom_small margin_top_xsmall color14 ">
-         <?php if(Yii::app()->params['noShipping']){ ?> 
-             Envíos y<br/>devoluciones<br/><strong>gratis*</strong><br/><span class="tPrecio">*Excepto Canarias, Ceuta, Melilla y Baleares.</span>
-         <?php }?>          
-            </h2>
+                                </script>
+                         
+                            </div>
+           
        </div>
-        <div class="braker_top text_align_center padding_top_xsmall padding_bottom_xsmall">
-          <h3 class="">¡Síguenos! </h3>
-          <div class="textwidget social-icons"> <a title="Personaling en Facebook" href="https://www.facebook.com/Personaling" target="_blank"><img width="40" height="40" title="Personaling en Facebook" src="<?php echo Yii::app()->baseUrl ?>/images/icon_facebook.png"></a> <a title="Personaling en Twitter" href="https://twitter.com/personaling" target="_blank"> <img width="40" height="40" title="Personaling en Twitter" src="<?php echo Yii::app()->baseUrl ?>/images/icon_twitter.png"></a> <a title="Pinterest" href="https://pinterest.com/personaling/" target="_blank"><img width="40" height="40" title="Personaling en Pinterest" src="<?php echo Yii::app()->baseUrl ?>/images/icon_pinterest.png"></a> <a title="Personaling en Instagram" href="http://instagram.com/personaling" target="_blank"><img width="40" height="40" title="Personaling en Instagram" src="<?php echo Yii::app()->baseUrl ?>/images/icon_instagram.png"></a>
-          <a title="Personaling en Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ" target="_blank"><img width="40" height="40" title="Personaling en Youtube" src="<?php echo Yii::app()->baseUrl ?>/images/icon_youtube.png"></a>
-          </div>
-        </div>
-        <hr/>
-        <p>Nos Avalan</p>
-        <a href="http://ve.wayra.org/es/startup/personaling" target="_blank" ><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_wayra.png" alt="Wayra" title="Personaling en Wayra" width="74"></a>
-        <a href="http://www.startupchile.org/congrats-welcome-to-start-up-chiles-9th-gen/" target="_blank" ><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_startupchile.png" alt="Start-Up Chile"  title="Personaling en Start-Up Chile"></a>
-        <a href="http://wiki.ideas.org.ve/index.php/Portal_e-commerce_Personaling_gana_Concurso_Ideas_2013" target="_blank" ><img  src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logo_ideas.png" alt="Ideas" title=="Personaling en Ideas" width="83"></a>
-<!--         <p class="margin_top_small">Afiliados a</p>
-        <img class="margin_top_small_minus" src="<?php echo Yii::app()->getBaseUrl(); ?>/images/logos_partners.png" alt="Logos de Partners"> -->
+               
+          
+       
       </div>
     </div>
-    <hr/>  
-    <div class="row">
-      <div class="span12 text_align_center creditos">Personaling Enterprise S.L. Nuestro NIF B66202383 | Todos los derechos reservados<br/>
+</div>
+<div id="wrapper_footer no_margin_top no_padding_top" style="border: 0px;">
+    <div class="row-fluid margin_top_medium padding_bottom">
+      <div class="span12 text_align_center creditos"><?php echo Yii::app()->params['clientName']; ?> Nuestro RIF <?php echo Yii::app()->params['clientIdentification']; ?> | Todos los derechos reservados<br/>
        Desarrollado por: <br/>
        <!-- <a class="to_add" href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> -->
         <a  href="http://cooltribes.com" title="Connecting true fans" target="_blank">
             <img src="<?php echo Yii::app()->baseUrl ?>/images/cooltribes100.png" width="100" />
-        </a>  
+            
+        </a> 
        </div>
-    </div>
+    </div>    
   </footer>
 </div>
 

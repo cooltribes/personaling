@@ -22,6 +22,7 @@ return array (
 	'Actions' => 'Acciones',
 	'Account Number:' => 'Cuenta Corriente Nº',
 	'Account holder:' => 'Titular de la cuenta:',
+	'Account Type' => 'Tipo de Cuenta',
 	'<strong>Add your payment:</strong> through the link sent to your email or login to Your Account -> Your Orders, select the order you want to pay and Save Pay option.' => '<strong>Registra tu pago:</strong> a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Tus Pedidos, selecciona el pedido que deseas Pagar y la opción Registrar Pago.',
 	'Address' => 'Dirección',
 	'Addresses used above' => 'Las direcciones utilizadas anteriormente',
@@ -502,7 +503,7 @@ return array (
 
         <div class="video">
 
-            <iframe id="preguntas_frecuentes" src="http://www.youtube.com/embed/oAKyeeTng1U"></iframe>
+            <iframe id="preguntas_frecuentes" src="http://www.youtube.com/embed/wRP91tMMcH4"></iframe>
 
         </div>
     </div>

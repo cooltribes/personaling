@@ -10,7 +10,7 @@ if(isset($seo)){
 	Yii::app()->clientScript->registerMetaTag($seo->title, null, null, array('property' => 'og:title'), null); 
 	Yii::app()->clientScript->registerMetaTag($seo->description, null, null, array('property' => 'og:description'), null);
 }
-else{
+else{ 
 	Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST']."/tienda-ropa-personalizada", null, null, array('property' => 'og:title'), null); 
 	Yii::app()->clientScript->registerMetaTag('La primera shopping experience con las mejores marcas de ropa y complementos.', null, null, array('property' => 'og:description'), null);
 }
@@ -22,7 +22,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 ?>
 
 
-
+ 
 
 
     
@@ -214,7 +214,7 @@ if(isset($seo)){
 
 <?php 	PC::debug('Execute Time (deskfilters):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <div id="deskfilters">
-<?php if(Yii::app()->params['mostrarChic']): ?>	
+<?php if(Yii::app()->params['chic']['show']): ?>	
 	<div id="banner100chic" style=" display:none; " class="margin_top ">
 		<div class="margin_bottom">
 			<img src="<?php echo Yii::app()->baseUrl; ?>/images/<?php echo Yii::app()->language; ?>/especial/080banner.jpg" alt="080">
@@ -445,8 +445,8 @@ if(isset($seo)){
 	
 	
 
-<?php if(Yii::app()->params['mostrarChic']):
-		if(Yii::app()->params['chicBrands']): ?>
+<?php if(Yii::app()->params['chic']['show']):
+		if(Yii::app()->params['chic']['brands']): ?>
 		<li class="item" id="li_chic">
 
 				<div class="dropdown" id="dd080" >

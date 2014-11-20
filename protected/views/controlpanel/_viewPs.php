@@ -51,7 +51,7 @@
     <!--LOOKS COMPLETOS-->
     <td class="error">
         <?php
-            echo $data->getLooksVendidos();
+            echo $data->getLooksVendidos($data->id);
         ?>
     </td>
     

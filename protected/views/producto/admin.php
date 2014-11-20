@@ -23,7 +23,20 @@ $pagerParams=array(
             'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
         ),
     )
-); ?>
+); 
+
+	 if(Yii::app()->user->hasFlash('success')){?>
+	    <div class="alert in alert-block fade alert-success text_align_center">
+	        <?php echo Yii::app()->user->getFlash('success'); ?>
+	    </div>
+	<?php } ?>
+	<?php if(Yii::app()->user->hasFlash('error')){?>
+	    <div class="alert in alert-block fade alert-error text_align_center">
+	        <?php echo Yii::app()->user->getFlash('error'); ?>
+	    </div>
+	<?php } ?>
+
+
   <!-- FLASH OFF -->
   <div class="page-header">
     <h1>Administrar Productos</small></h1>
@@ -344,6 +357,9 @@ $template = '{summary}
 					$('#myModal').html(data.html);
 					$('#myModal').modal();
 				}
+				
+				if(data.status==10)
+					alert('Producto ha sido borrado satisfactoriamente.');
 				
 			}",
 			), 

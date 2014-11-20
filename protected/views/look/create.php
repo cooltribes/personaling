@@ -74,7 +74,13 @@ function handleDragLeave(e) {
   return false;
 }
 function handleDrop(e) {
-	
+
+    $("#ul_productos").fadeTo('fast',0.2)
+    $("#ul_productos li").attr("draggable","false");
+    $("#ul_productos li img").attr("draggable","false");
+    $("#ul_productos li div").attr("draggable","false");
+
+
   if (e.preventDefault) {
     e.preventDefault(); // Necessary. Allows us to drop.
   }
@@ -105,6 +111,8 @@ function handleDrop(e) {
     // Set the source column's HTML to the HTML of the column we dropped on.
     //dragSrcEl.innerHTML = this.innerHTML; 
     var contenedor = this;
+    // $(contenedor).droppable( "option", "disabled", true );
+
     if (e.dataTransfer.getData('color_id')){
     	var color_id = e.dataTransfer.getData('color_id');
     	var producto_id = e.dataTransfer.getData('producto_id');
@@ -218,8 +226,12 @@ function handleDrop(e) {
 		  	$('.canvas').css('z-index',"0");
 		  	$('.eliminar',contenedor).removeClass('ocultar');
 		  	$('.rotar',contenedor).removeClass('ocultar');
-		  	
-		};
+///////********** REESTABLECER EL DRAGGABLE *******///////////
+            $("#ul_productos li").attr("draggable","true");
+            $("#ul_productos li img").attr("draggable","true");
+            $("#ul_productos li div").attr("draggable","true");
+            $("#ul_productos").fadeTo('fast',1);
+        };
 		//img.src = '/develop/'+json[0].url;
 		img.src = urlVar;
 		//
@@ -339,6 +351,7 @@ $(window).load(function(){
 });
 $(document).ready(function() {
 	$('#div_invisible').show();
+    $( ".canvas" ).droppable();
 
 
 /*
@@ -520,7 +533,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					//echo $hasproducto->width.'/'.$hasproducto->height;
 			?>
 
-              <?php if ($model->id >= 638){
+              <?php if ($model->id >= Yii::app()->params["id_look_switch"]){
                   echo CHtml::image( Yii::app()->createUrl('site/productoImagenPng').'/producto/'.$producto->id.'/color/'.$hasproducto->color_id.'/w/270/h/270', "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));
               } else {
                   echo CHtml::image($producto->getImageUrl($hasproducto->color_id,array('ext'=>'png')), "Imagen", array("width" => $hasproducto->width, "height" => $hasproducto->height));

@@ -462,6 +462,20 @@ class Look extends CActiveRecord
 			),	
 		));		
 	}
+    
+    public function destacadosHome($limit = 6) 
+    {
+        
+        $criteria=new CDbCriteria;          
+        
+        $criteria->limit=$limit;
+        $criteria->order="destacado DESC, approved_on DESC";
+        $criteria->addCondition('status = 2');
+
+
+        
+        return $this->findAll($criteria);   
+    }
 	/* look para el admin por aprobar o aprobados */
 	public function lookAdminAprobar()
 	{
@@ -887,7 +901,7 @@ class Look extends CActiveRecord
     		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
     		//imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
 			//imagecopyresampled($img,$src,0,0,0,0,$b_lft, $b_top, imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
-            if ($look->id >= 638){
+            if ($look->id >= Yii::app()->params["id_look_switch"]){
                 imagecopyresampled($img,$src,0,0,$b_lft, $b_top,imagesx($img), imagesy($img),imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
             }else{
             	if(Yii::app()->language == 'es_es'){
@@ -1294,7 +1308,7 @@ class Look extends CActiveRecord
             if(isset($ptcs))
             {
                 foreach($ptcs as $ptc){
-                    if($ptc->cantidad>0){
+                    if($ptc->cantidad>0&&$ptc->producto->estado==0&&$ptc->producto->status==1){
                         $count++;
                         break;
                     }

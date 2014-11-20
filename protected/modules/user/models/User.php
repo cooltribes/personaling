@@ -1,18 +1,18 @@
 <?php
-
+ 
 class User extends CActiveRecord {
 
     const STATUS_NOACTIVE = 0;
-    const STATUS_ACTIVE = 1;
+    const STATUS_ACTIVE = 1; 
     const STATUS_BANNED = -1;
     const STATUS_DELETED = 2; 
 
     //TODO: Delete for next version (backward compatibility)
     //const STATUS_BANED=-1;
     const STATUS_REGISTER_NEW = 0;
-    const STATUS_REGISTER_TIPO = 1;
+    const STATUS_REGISTER_TIPO = 1; 
     const STATUS_REGISTER_ESTILO = 2;
-    const STATUS_REGISTER_DONE = 3;
+    const STATUS_REGISTER_DONE = 3;  
 
     // PRIVACIDAD
     const PRIVACIDAD_DATOS_BASICOS = 1;
@@ -20,7 +20,7 @@ class User extends CActiveRecord {
     const PRIVACIDAD_LOOKS = 4;
     const PRIVACIDAD_SHOPPERS = 8;
     
-    //Tipo de Usuario
+    //Tipo de Usuario 
     const TYPE_PSAPPLY = 2;
     
 
@@ -206,7 +206,19 @@ class User extends CActiveRecord {
 
         )); 
     }
+    public function psDestacados($limit = 6) 
+    {
+        
+        $criteria=new CDbCriteria;          
+        $criteria->limit = $limit;
+        $criteria->order='ps_destacado DESC, fecha_destacado DESC';
+        $criteria->addCondition('status = 1');
 
+        
+        return $this->findAll($criteria);   
+            
+           
+    }
     public static function itemAlias($type, $code = NULL) {
         $_items = array(
             'UserStatus' => array(
@@ -884,10 +896,29 @@ class User extends CActiveRecord {
         }
 	 
         /*Todos los productos vendidos como parte de looks de una PS*/
-        function getLooksVendidos() {
-            
-           
-            $total = 0;
+        function getLooksVendidos($id) { 
+        	$total = 0;
+			 $looks= look::model()->findAllByAttributes(array('user_id'=>$id));
+			 
+			 foreach($looks as $lks)
+			 {
+			 	$total_producto=LookHasProducto::model()->countByAttributes(array('look_id'=>$lks->id));	//busco todos los productos de ese look
+			 	
+			 	$ordenes=OrdenHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$lks->id));
+			 	$equal=0;
+			 	foreach($ordenes as $orders)
+				{
+					if($equal!=$orders->tbl_orden_id)
+					{
+						$equal=$orders->tbl_orden_id;	
+						$total_ordenes=OrdenHasProductotallacolor::model()->countByAttributes(array('look_id'=>$lks->id, 'tbl_orden_id'=>$orders->tbl_orden_id));
+						if($total_ordenes>=$total_producto)
+						{
+							$total++;
+						}
+					}	
+				}
+			 } 
             return $total;
         }
         

@@ -123,7 +123,7 @@ $template = '{summary}
 
 		$this->widget('zii.widgets.CListView', array(
 	    'id'=>'list-auth-marcas',
-	    'dataProvider'=>$model->search(),
+	    'dataProvider'=>$dP,
 	    'itemView'=>'_view',
 	    'template'=>$template,
 	    'enableSorting'=>'true',

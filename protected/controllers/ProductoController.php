@@ -442,6 +442,9 @@ public function actionReportexls(){
 				$model->peso = $_POST['Producto']['peso'];
 				$model->marca_id = $_POST['marcas'];
 				$model->status=1;
+                $model->fInicio=isset($_POST['Producto']['fInicio'])?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])):NULL;
+                $model->fFin=isset($_POST['Producto']['fFin'])?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])):NULL;
+                                        
 				$model->almacen = $_POST['Producto']['almacen'];
 				$model->temporada = $_POST['Producto']['temporada'];
 				$model->outlet = $_POST['Producto']['outlet'];

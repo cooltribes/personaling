@@ -486,6 +486,7 @@
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
+                        'zohoActive' => FALSE,
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -547,7 +548,8 @@
                         ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
+                        'zohoToken'=>'f24c0524a7999cf951cc1f2ccb32b288', 
+                        'zohoActive' => FALSE,
                     ),
                 );
         }

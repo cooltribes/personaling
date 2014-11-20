@@ -69,27 +69,27 @@
         private function setConfig() {
             switch($this->_mode) {
                 case self::DEVELOPMENT:
-                    $this->_debug       = TRUE;
+                    $this->_debug       = true;
                     $this->_trace_level = 3;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_development());
                     break;
                 case self::TEST:
-                    $this->_debug       = FALSE;
+                    $this->_debug       = false;
                     $this->_trace_level = 0;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_test());
                     break;
                 case self::STAGE:
-                    $this->_debug       = TRUE;
+                    $this->_debug       = true;
                     $this->_trace_level = 0;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_stage());
                     break;
                 case self::PRODUCTION:
-                    $this->_debug       = FALSE;
+                    $this->_debug       = false;
                     $this->_trace_level = 0;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_production());
                     break;
                 default:
-                    $this->_debug       = TRUE;
+                    $this->_debug       = true;
                     $this->_trace_level = 0;
                     $this->_config      = $this->_main();
                     break;
@@ -305,7 +305,7 @@
                                 'connectionID' => 'db',
                                 'autoCreateLogTable' => false,
                                 'logTableName' => 'tbl_logger',
-                                'levels' => 'trace',
+                                'levels' => 'trace,error,warning',
                                 'categories' => 'registro,compra,tienda,admin,otro',
 
                         ),
@@ -407,6 +407,7 @@
                     //'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
                     'outlet'=>TRUE,
                     'zohoActive' => FALSE,
+                    'id_look_switch' => 638,
                 ),
             );
         }
@@ -485,6 +486,7 @@
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
+                        'zohoActive' => FALSE,
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -546,7 +548,8 @@
                         ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
+                        'zohoToken'=>'f24c0524a7999cf951cc1f2ccb32b288', 
+                        'zohoActive' => FALSE,
                     ),
                 );
         }
@@ -683,6 +686,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => '3999a1f3cb9f2efc652651f94b82ff84',
                         'zohoActive' => TRUE,
+                        'id_look_switch' => 0,
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -854,16 +858,17 @@
                             ),
 
                         'multiLook'=> array(
-                            'bodyType' => false,
-                            'eyesColor' => false,
-                            'hairColor' => false,
-                            'womanMeasure' => false,
-                            'bodyFavors' => false,
-                            'skinColor' => false,
+                            'bodyType' => true,
+                            'eyesColor' => true,
+                            'hairColor' => true,
+                            'womanMeasure' => true,
+                            'bodyFavors' => true,
+                            'skinColor' => true,
                             ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'f298def0f5eae649aa473c7db3092dc3',
+                        'id_look_switch' => 0,
                         ),
 
                 );

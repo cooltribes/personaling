@@ -386,8 +386,8 @@ public function actionReportexls(){
 					 	'marca_id'=>$_POST['marcas'],
 					 	'descripcion'=>$_POST['Producto']['descripcion'],
 					 	'estado'=>$_POST['Producto']['estado'],
-					 	'fInicio'=>isset($_POST['Producto']['fInicio'])?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])):NULL,
-						'fFin'=>isset($_POST['Producto']['fFin'])?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])):NULL,
+                        'fInicio'=>isset($_POST['Producto']['fInicio'])&&$_POST['Producto']['fInicio']!=""?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])):NULL,
+                        'fFin'=>isset($_POST['Producto']['fFin'])&&$_POST['Producto']['fFin']!=""?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])):NULL,
 						'destacado' => $_POST['Producto']['destacado'],
 						'peso' => $_POST['Producto']['peso'],
 						'almacen' => $_POST['Producto']['almacen'],
@@ -442,9 +442,8 @@ public function actionReportexls(){
 				$model->peso = $_POST['Producto']['peso'];
 				$model->marca_id = $_POST['marcas'];
 				$model->status=1;
-                $model->fInicio=isset($_POST['Producto']['fInicio'])?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])):NULL;
-                $model->fFin=isset($_POST['Producto']['fFin'])?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])):NULL;
-                                        
+                $model->fInicio=isset($_POST['Producto']['fInicio'])&&$_POST['Producto']['fInicio']!=""?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])):NULL;
+                $model->fFin=isset($_POST['Producto']['fFin'])&&$_POST['Producto']['fFin']!=""?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])):NULL;
 				$model->almacen = $_POST['Producto']['almacen'];
 				$model->temporada = $_POST['Producto']['temporada'];
 				$model->outlet = $_POST['Producto']['outlet'];
@@ -1060,6 +1059,7 @@ public function actionReportexls(){
 			$model=Producto::model()->findByPk($id);
 			$model->status = 0;
 			Producto::model()->updateByPk($id, array('status'=>'0'));
+			Yii::app()->user->setFlash('success',UserModule::t("Producto Eliminado"));
 			$this->redirect(array('admin'));
 			
 		}
@@ -1372,15 +1372,10 @@ public function actionReportexls(){
 				foreach($checks as $id){
 					$model = Producto::model()->findByPk($id);
 					$model->status=0;
-					Producto::model()->updateByPk($id, array('status'=>'0'));
-					/*if($model->save())
-						echo("guarda");
-					else {
-						print_r($model->getErrors());
-					}*/				
+					Producto::model()->updateByPk($id, array('status'=>'0'));		
 				}
 				//echo("5");
-				$result['status'] = "2";
+				$result['status'] = "10";
 			}
 			else if($accion=="Descuentos") {
 				$result['status'] = "6";
@@ -1927,6 +1922,7 @@ public function actionReportexls(){
  */
 	public function actionDetalle()
 	{
+        Yii::trace('ProductoController.php:1927, Entro Producto', 'registro');
             if (isset($_GET['alias'])) {
                 $seo = Seo::model()->findByAttributes(array('urlAmigable' => $_GET['alias']));
     //			$producto = Producto::model()->activos()->noeliminados()->findByPk($seo->tbl_producto_id);
@@ -1953,9 +1949,9 @@ public function actionReportexls(){
 				Yii::app()->clientScript->registerScript('metrica_analytics',"
 					ga('ec:addProduct', {               // Provide product details in an productFieldObject.
 					  'id': '".$producto->id."',                   // Product ID (string).
-					  'name': '".$producto->nombre."', // Product name (string).
-					  'category': '".$category->nombre."',   // Product category (string).
-					  'brand': '".$producto->mymarca->nombre."',                // Product brand (string).
+					  'name': '".addslashes($producto->nombre)."', // Product name (string).
+					  'category': '".addslashes($category->nombre)."',   // Product category (string).
+					  'brand': '".addslashes($producto->mymarca->nombre)."',                // Product brand (string).
 					});
 					
   					ga('ec:setAction', 'detail');       // Detail action.

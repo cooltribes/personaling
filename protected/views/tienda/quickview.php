@@ -16,7 +16,7 @@
             $left="span7";
             $right="span5";
         }
-        
+      
 ?>   
 
 
@@ -108,11 +108,24 @@
                 </div>
             
                 <div class="<?php echo $right; ?> margin_top_xsmall">
-<?php       if(is_null($tienda)) { ?>
-            <a class="btn btn-warning btn-block"  style="width:85px" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>
-<?php       }else{ ?>
+<?php       if(is_null($tienda)) 
+			{
+				$avaible=$producto->getDisponibilidad($producto->id);
+				if($avaible>0)
+				{
+	 ?>
+           			 <a class="btn btn-warning btn-block"  style="width:85px" title="agregar a la bolsa" id="agregar" onclick="c()"> Comprar </a>
+<?php           }
+				else 
+				{?>
+					 <a title="Producto agotado" class="btn btn-warning btn-block" style="cursor: default" disabled><i class="icon-ban-circle icon-white"></i> <?php echo Yii::t('contentForm','Sold out'); ?> </a>
+<?php 		
+				}
+			}
+		else{ ?>
             <a class="btn btn-warning btn-block" style="width:167px" target="_blank" href="<?php echo $producto->url_externo; ?>" title="<?php echo $msj; ?>" ><?php echo $msj;?></a>
-            <?php }?>
+            <?php 
+			}?>
                 </div>
             
                 

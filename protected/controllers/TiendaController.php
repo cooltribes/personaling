@@ -312,12 +312,14 @@ class TiendaController extends Controller
 				
 				} else {
 					foreach ($array_post as $key => $post)
-						if (isset($_POST[$post]) && $_POST[$post]!=0){ 
-							Yii::app()->session[$array_session[$key]] = $_POST[$post];
-						}
-						elseif (isset(Yii::app()->session[$array_session[$key]])){
-							unset(Yii::app()->session[$array_session[$key]]);
-						}
+						if (isset($_POST[$post])){
+                            if ($_POST[$post]!=0){
+							    Yii::app()->session[$array_session[$key]] = $_POST[$post];
+						    }
+						    elseif (isset(Yii::app()->session[$array_session[$key]])){
+							    unset(Yii::app()->session[$array_session[$key]]);
+						    }
+                        }
 					if (isset($_POST['chic_hid']) && $_POST['chic_hid']==1) Yii::app()->session['chic'] = $_POST['chic_hid'];
 					elseif (isset(Yii::app()->session['chic'])) unset(Yii::app()->session['chic']);
 					if (isset($_POST['preciohid']) && $_POST['preciohid']<4){	

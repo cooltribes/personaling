@@ -901,7 +901,7 @@ class Look extends CActiveRecord
     		$pngTransparency = imagecolorallocatealpha($img , 0, 0, 0, 127); 
     		//imagecopyresized($img,$src,0,0,0,0,$image->width/$diff_w,$image->height/$diff_h,imagesx($src), imagesy($src));
 			//imagecopyresampled($img,$src,0,0,0,0,$b_lft, $b_top, imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
-            if ($look->id >= 638){
+            if ($look->id >= Yii::app()->params["id_look_switch"]){
                 imagecopyresampled($img,$src,0,0,$b_lft, $b_top,imagesx($img), imagesy($img),imagesx($src)-($b_lft+$b_rt), imagesy($src)-($b_top+$b_btm));
             }else{
             	if(Yii::app()->language == 'es_es'){

@@ -36,13 +36,15 @@ foreach($prods as $data):
 	$string=str_replace("'","/",$string);
 	$json_detalle_producto = json_encode(array(
 							    		'id' => $data->id,
-							    		'name' => addslashes($data->nombre),
-							    		'category' => addslashes($category->nombre),
-							    		'brand' => $string,
+							    		'name' => $data->nombre,
+							    		'category' => $category->nombre,
+							    		//'brand' => str_replace("'","\'",$data->mymarca->nombre),
+                                        'brand' => $data->mymarca->nombre,
 							    		'list' => 'Product clicks',
 							    		'position' => $cont,
 							    		'url' => $data->getUrl()
-									));	
+									), JSON_HEX_APOS);
+
 ?>
 	<div class="div_productos">
 		<div class="json_product" style="display:none;">
@@ -163,7 +165,7 @@ foreach($prods as $data):
 				<?php elseif (!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0 && $precio_producto):	?>
 					<span class='preciostrike strikethrough'><small><?php echo Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto(); ?></small></span> | <?php echo Yii::t('contentForm', 'currSym')." ".$data->getPrecioDescuento(); ?>					
 				<?php else: ?>
-					<span class='precio'><?php Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto(); ?></span>
+					<span class='precio'><?php echo Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto(); ?></span>
 				<?php endif; ?>	
 				<?php echo "{$iconoDescuento}"; ?>
 				<?php if(!Yii::app()->user->isGuest): ?> 

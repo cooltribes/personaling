@@ -896,7 +896,7 @@ class User extends CActiveRecord {
         }
 	 
         /*Todos los productos vendidos como parte de looks de una PS*/
-        function getLooksVendidos($id) {
+        function getLooksVendidos($id) { 
         	$total = 0;
 			 $looks= look::model()->findAllByAttributes(array('user_id'=>$id));
 			 

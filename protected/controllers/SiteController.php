@@ -1,5 +1,5 @@
 <?php
-
+include(__DIR__."/../modules/user/controllers/MailChimp.php");
 class SiteController extends Controller
 {
 
@@ -160,27 +160,33 @@ class SiteController extends Controller
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		
-		/*if(isset($_POST['email'])){
+		if(isset($_POST['email'])){
+			$group = array(
+                array(
+                    'name' => 'Personaling Newsletter',
+                    'groups' => array('Suscrito'),
+                )
+            );
 		    $MailChimp = new MailChimp('c95c8ab0290d2e489425a2257e89ea58-us5');
             $result = $MailChimp->call('lists/subscribe', array(
                             'id' => Yii::t('contentForm','List ID Mailchimp'),
                             'email' => array('email' => $_POST['email']),
                             'merge_vars' => array(),
-                            'birthday' => '',
+                            //'birthday' => '',
                             'mc_language' => 'es',
-                            'update_existing' => false,
+                            'update_existing' => true,
                             'replace_interests' => false,
                             'double_optin' => false,
                             'send_welcome' => false,
                         ));
-            $this->render('new');
-		}*/
+            //$this->render('new');
+		}
 		if (UserModule::isAdmin())
 			$this->redirect(array('/controlpanel/index'));
 		elseif (UserModule::isPersonalShopper()) 
 			$this->redirect(array('site/top'));//$this->render('personal_shopper');
 		elseif (Yii::app()->user->isGuest) 
-			$this->render('index');
+			$this->render('new');
 		else 
 			//$this->redirect(array('site/personal'));//$this->render('personal_shopper');
                     /*Unificacion de la tienda de looks con tu personal shopper*/

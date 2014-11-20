@@ -10,9 +10,9 @@ class User extends CActiveRecord {
     //TODO: Delete for next version (backward compatibility)
     //const STATUS_BANED=-1;
     const STATUS_REGISTER_NEW = 0;
-    const STATUS_REGISTER_TIPO = 1;
+    const STATUS_REGISTER_TIPO = 1; 
     const STATUS_REGISTER_ESTILO = 2;
-    const STATUS_REGISTER_DONE = 3; 
+    const STATUS_REGISTER_DONE = 3;  
 
     // PRIVACIDAD
     const PRIVACIDAD_DATOS_BASICOS = 1;
@@ -20,7 +20,7 @@ class User extends CActiveRecord {
     const PRIVACIDAD_LOOKS = 4;
     const PRIVACIDAD_SHOPPERS = 8;
     
-    //Tipo de Usuario
+    //Tipo de Usuario 
     const TYPE_PSAPPLY = 2;
     
 
@@ -896,7 +896,7 @@ class User extends CActiveRecord {
         }
 	 
         /*Todos los productos vendidos como parte de looks de una PS*/
-        function getLooksVendidos($id) {
+        function getLooksVendidos($id) { 
         	$total = 0;
 			 $looks= look::model()->findAllByAttributes(array('user_id'=>$id));
 			 

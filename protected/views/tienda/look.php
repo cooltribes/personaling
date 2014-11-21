@@ -12,6 +12,14 @@ $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Looks Pers
 
 ?>
 <?php 
+if(Yii::app()->language=='es_ve'): ?>
+    <style>
+        .pDoble{
+            font-size:1em;
+            font-weight:500;
+        }
+    </style>
+<?php endif;
 if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
     Yii::app()->clientScript->registerScript('script1', "<!-- Facebook Conversion Code for Leads España -->
     var fb_param = {};

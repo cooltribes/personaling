@@ -492,9 +492,7 @@ if(isset($seo)){
 						}
 						?>
 					</ul>  
-				</div>
-			</li> 
-<?php else: ?>
+				<?php else: ?>
 	<li class="item" id="li_chic">
 
 				<div class="dropdown" id="dd080" >

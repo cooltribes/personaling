@@ -27,7 +27,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 
 if(Yii::app()->language=='es_es'){
     $links=array(
-        'banner'=>"http://www.personaling.es/develop/registro-personaling",
+        'banner'=>Yii::app()->baseUrl."/registro-personaling",
         'slider'=>"http://www.personaling.es/nightnonstop",
         'art1'=>"http://personaling.com/magazine/como-llevar-la-clasica-camisa-vaquera-segun-mi-tipo-de-cuerpo/",
         'art2'=>"http://www.personaling.es/outlet",
@@ -45,7 +45,7 @@ if(Yii::app()->language=='es_es'){
     
 }else{
     $links=array(
-        'banner'=>"http://www.personaling.es/develop/registro-personaling",
+        'banner'=>Yii::app()->baseUrl."/registro-personaling",
         'slider'=>"http://www.personaling.com.ve/looks-personalizados",
         'art1'=>"http://www.personaling.com.ve/producto/detalle/658",
         'art2'=>"http://www.personaling.com.ve/look/307",
@@ -135,10 +135,15 @@ if(Yii::app()->language=='es_es'){
                                         <?php echo CHtml::link('<span class="fn">'.$look->user->profile->getNombre().'</span>',$look->user->profile->getUrl()); ?>
                                         </h5>
                                     </div>
+                                    <?php if(Yii::app()->language=='es_es'): ?>
                                     <div class="span4 no_margin_left price">
-                                        <?php echo Yii::t('contentForm', 'currSym').''.$look->getPrecioDescuento(); ?>
+                                        <?php echo "<small>".Yii::t('contentForm', 'currSym').'</small>'.$look->getPrecioDescuento(); ?>
                                     </div>
-                                    
+                                    <?php else: ?>
+                                    <div class="span4 no_margin_left no_margin_top text_right_align">
+                                        <small class="muted"><?php echo Yii::t('contentForm','currSym'); ?></small><?php echo $look->getPrecioDescuento(); ?>
+                                    </div>
+                                    <?php endif; ?>
                                 </div>
                                 
                             </a>
@@ -386,38 +391,19 @@ if(Yii::app()->language=='es_es'){
     </div>
     
 </div>
-
-<?php
-    /* $this->renderPartial(Yii::app()->language);
-	
-	if(Yii::app()->user->isGuest){
-		echo'<div class="margin_top_large"></div><div class="braker_horz_top_less_space no_margin_bottom"></div>';
-		
-		
-		$user = User::model()->findByPk(Yii::app()->user->id);
-		$looks = new Look;
-		$productos = new Producto;
-		$psDestacados = new User;
-                
-                
-                $psDestacados = User::model()->findAllByAttributes(array('ps_destacado' => '1'), new CDbCriteria(array(
-                    'limit' => 4,
-                    'order' => 'fecha_destacado DESC'
-                )));
-                
-		$this->renderPartial('/site/top',array(
-					'dataProvider' => $looks->masvendidos(3),
-					'destacados' => $productos->destacados(6),
-					'dataProvider_destacados' => $looks->lookDestacados(3),
-					'user'=>$user,
-                                        'psDestacados' => $psDestacados,
-                                        'seo'=>$seo//->getPsDestacados(4),
-				));	
-		
-		
-	}*/
-?>
-
+<?php if($result): ?>
+<div id="confirmLook" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
+ <div class="modal-header">
+    <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true" onclick="$('#confirmLook').hide();">×</button>
+     <h3 >¡Felicidades!</h3>
+ 
+  </div>
+  <div class="modal-body">
+         <h4>Te has suscrito a nuestro newsletter, recibirás en tu correo electrónico todas nuestras noticias y promociones</h4>
+         
+  </div>  
+</div>
+<?php endif;?>
 <script type="text/javascript">
 $('#sliderHome').carousel({
   interval: 6000,

@@ -3270,6 +3270,7 @@ public function actionReportexls(){
             $sheet_array = Yii::app()->yexcel->readActiveSheet($archivo);
 
             $skuRepetidos = array();
+			$combinacionesRepetidas= array();
             $falla = "";
             $erroresMarcas = "";
             $erroresCategorias = "";
@@ -3282,7 +3283,9 @@ public function actionReportexls(){
             $erroresPrecio = "";
             $erroresColumnasVacias = "";
             $erroresSku = "";
+			$erroresSkuTodaAplicacion = "";
             $erroresSkuRepetidos= "";
+			$erroresTallaColorRepetidos="";
 			
             $linea = 1;
             $lineaProducto = 0;            
@@ -3362,7 +3365,22 @@ public function actionReportexls(){
                             if($col == "P"){
                                 break;
                             }
-                        }       
+                        }
+						
+						$sku_revisar=$row['A'];
+						$referencia_revisar=$row['B'] ;
+						
+						if(Preciotallacolor::model()->findByAttributes(array('sku'=>$sku_revisar)))
+						{
+							$mode=Preciotallacolor::model()->findByAttributes(array('sku'=>$sku_revisar));
+							$mop=Producto::model()->findByPk($mode->producto_id);
+							if($mop->codigo!=$referencia_revisar)
+							{
+								$erroresSkuTodaAplicacion .= "<li> <b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+							}
+						}
+						 
+						       
                         if($skuRepetidos!="")
 						{
 							$entro=0;	
@@ -3376,6 +3394,23 @@ public function actionReportexls(){
 							}
 						}
 						array_push($skuRepetidos, $row['A']);
+						
+						
+						if($combinacionesRepetidas!="")
+						{
+							$entro2=0;	
+							foreach($combinacionesRepetidas as $repetidos)
+							{
+								$arreglo = explode("/",$repetidos);
+								if($row['B']==$arreglo[0] && $row['I']==$arreglo[1] && $row['J']==$arreglo[2] && $entro2==0)
+								{
+									$erroresTallaColorRepetidos	.= "<li> <b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+									$entro2=1;
+								}
+							}
+						}
+						
+						array_push($combinacionesRepetidas, $row['B']."/".$row['I']."/".$row['J']);
                         //var_dump(memory_get_usage());
                         //Peso
                         if(isset($row['K']) && $row['K'] != "" && !is_numeric($row['K'])){
@@ -3559,12 +3594,23 @@ public function actionReportexls(){
                                  {$erroresSkuRepetidos}
                                  </ul><br>";
             }
+            if($erroresSkuTodaAplicacion != ""){
+               					 $erroresSkuTodaAplicacion = "Los siguientes SKU no corresponden a las Referencias:<br><ul>
+                                 {$erroresSkuTodaAplicacion}
+                                  </ul><br>";
+            }
+             if($erroresTallaColorRepetidos != ""){
+               					 $erroresTallaColorRepetidos = "Las Siguientes Combinaciones de Referencia Talla y Color ya estan repetidas :<br><ul>
+                                 {$erroresTallaColorRepetidos}
+                                  </ul><br>";
+            }
+            
 
                 
             $errores = $erroresTallas .$erroresColores . $erroresMarcas .
                     $erroresCatRepetidas. $erroresCategorias . $erroresCatVacias.
                     $erroresPrecio . $erroresCosto . $erroresPeso .
-                    $erroresColumnasVacias . $erroresSku . $erroresSkuRepetidos;
+                    $erroresColumnasVacias . $erroresSku . $erroresSkuRepetidos. $erroresSkuTodaAplicacion. $erroresTallaColorRepetidos;
             
             if($errores != ""){
                 

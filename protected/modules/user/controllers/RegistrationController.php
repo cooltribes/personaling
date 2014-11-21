@@ -207,6 +207,7 @@ class RegistrationController extends Controller
                             $message->subject = $subject;
                             $message->setBody($body, 'text/html');
                             $message->addTo($model->email);
+                            Yii::app()->mail->send($message);  
 
 //                                $message->view = "mail_template";
 //                                $subject = 'Registro Personaling';

@@ -346,7 +346,7 @@ if(!Yii::app()->user->isGuest){
             <?php
             echo CHtml::ajaxLink(
                 'Reenviar correo de validación.', 
-                $this->createUrl('user/registration/sendValidationEmail'), 
+                $this->createUrl('registration/sendValidationEmail'), 
                 array('success'=>'function(data){
                     $("#notificacion_validar").html(data);
                     $("#notificacion_validar").removeClass();

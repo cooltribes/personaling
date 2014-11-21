@@ -752,6 +752,7 @@ public function actionCategorias(){
 	if(isset($_POST['padreId'])){
 		switch ($_POST['padreId']) {
 			case 'Complementos':
+            case 'Accesorios':
 				$categoria_padre = Categoria::model()->findByAttributes(array('nombre'=>$_POST['padreId']));
 				break;
 
@@ -779,7 +780,7 @@ public function actionCategorias(){
 	Yii::app()->clientScript->scriptMap['jquery-ui-bootstrap.css'] = false;
 	Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 	Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;	
-	if ($_POST['padreId']!=0 && $_POST['padreId']!='Complementos' && $_POST['padreId']!='Ropa' && $_POST['padreId']!='Zapatos'){ 
+	if ($_POST['padreId']!=0 && $_POST['padreId']!='Complementos' && $_POST['padreId']!='Ropa' && $_POST['padreId']!='Zapatos' && $_POST['padreId']!='Accesorios'){
 		$categorias = Categoria::model()->findAllByAttributes(array("padreId"=>$_POST['padreId']),array('order'=>'nombre ASC'));
 	}
 	if ($categorias){
@@ -791,6 +792,7 @@ public function actionCategorias(){
             $padreId = $_POST['padreId'];
 			switch ($_POST['padreId']) {
 				case 'Complementos':
+                case 'Accesorios':
 					$with['categorias'] = array('condition'=>'tbl_categoria_id='.$categoria_padre->id,'together'=>true);
 					break;
 

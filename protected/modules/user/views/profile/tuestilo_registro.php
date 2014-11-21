@@ -12,11 +12,11 @@
             if($field->title == 'Fiesta')
                 $return .='<legend>¿Con cuál de estos looks te irias de fiesta? </legend>';
             if($field->title == 'Vacaciones')
-                $return .='<legend>Para ir a la playa, ¿Con cuál de estos looks te pondrías? </legend>';                            		
+                $return .='<legend>Para ir a la playa, ¿Cuál de estos looks te pondrías? </legend>';                            		
             if($field->title == 'Haciendo Deporte')
                 $return .='<legend>¿Con cuál estilo te identificas más para hacer deporte? </legend>';            
             if($field->title == 'Oficina')
-                $return .='<legend>¿Con cuál de estos looks te irias a la oficina? </legend>';             
+                $return .='<legend>¿Con cuál de estos looks írias a la oficina? </legend>';             
              $return .='<ul class="thumbnails">';
 			//<img alt="'.$value.'" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
             foreach (Profile::range($field->range) as $key => $value){

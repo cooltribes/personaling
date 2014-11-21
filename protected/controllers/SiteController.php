@@ -159,8 +159,9 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		
+		$result=false;
 		if(isset($_POST['email'])){
+			    
 			$group = array(
                 array(
                     'name' => 'Personaling Newsletter',
@@ -178,7 +179,7 @@ class SiteController extends Controller
                             'replace_interests' => false,
                             'double_optin' => false,
                             'send_welcome' => false,
-                        ));
+                        ));                       
             //$this->render('new');
 		}
 		if (UserModule::isAdmin())
@@ -186,7 +187,7 @@ class SiteController extends Controller
 		elseif (UserModule::isPersonalShopper()) 
 			$this->redirect(array('site/top'));//$this->render('personal_shopper');
 		elseif (Yii::app()->user->isGuest) 
-			$this->render('index');
+			$this->render('new',array('result'=>$result));
 		else 
 			//$this->redirect(array('site/personal'));//$this->render('personal_shopper');
                     /*Unificacion de la tienda de looks con tu personal shopper*/

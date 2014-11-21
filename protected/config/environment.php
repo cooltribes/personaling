@@ -487,6 +487,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
                         'zohoActive' => FALSE,
+                        'fb_appId' => '386830111475859',
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -550,6 +551,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken'=>'f24c0524a7999cf951cc1f2ccb32b288', 
                         'zohoActive' => FALSE,
+                        'fb_appId' => '323808071078482',
                     ),
                 );
         }
@@ -781,7 +783,7 @@
  
                             // Database
                             'db'=>array(
-                                    'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingT61',
+                                    'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingSTAGE_VE',
                                     'emulatePrepare' => true,
                                     'username' => 'personaling',
                                     'password' => 'Perso123Naling',
@@ -846,7 +848,7 @@
                         'metodosPago'=> array(
                                 'bkCard' => false,
                                 'paypal' => false,
-                                'prueba' => true,
+                                'prueba' => false,
                                 'depositoTransferencia' => true,
                                 'instapago' => true,
                                                 ),

@@ -71,7 +71,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
     <h1>Tu tipo<small> - <?php echo $mensajeH1; ?></small>
     <?php if (isset($ref)){
         echo TbHtml::tag("h2", array(),
-            "Al llenar los datos de tu perfil disfrutaras de un maravilloso
+            "Al llenar los datos de tu perfil disfrutarás de un maravilloso
                 mundo de looks adaptados para ti.");
     } ?>    
         

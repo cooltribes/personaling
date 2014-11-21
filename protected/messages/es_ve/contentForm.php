@@ -161,7 +161,7 @@ return array (
      'Help' => 'Ayuda',
      'Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>' => '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>{name}.</strong>
      <br/><br/><i>{message}</i><br/><br/>Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas. <br/> Puedes registrarte haciendo click en el enlace que aparece a continuación: <br/><br/><a href="{registration_url}">Click aquí</a>',
-	'How does Personaling.com works?'=>'¿Cómo funciona Personaling.es?',
+	'How does Personaling.com works?'=>'¿Cómo funciona Personaling?',
 
      'ID' => 'ID',
      'ID of the person to whom you send' => 'Cédula de Identidad de la persona a la que envias',
@@ -177,7 +177,7 @@ return array (
      'Instructions have been sent and email summary: {email}' => ' Se han enviado las instrucciones y el resumen al correo electrónico: {email}',
      'In 10 seconds this page will be redirected to the Shopping Bag' => 'En 10 segundos esta página será redirigida a la Bolsa de Compras',
      'In <b id="segundos">10</b> seconds this page will be redirected to the Shopping Bag' => 'En <b id="segundos">10</b> segundos serás redirigid@ al proceso de compra nuevamente',     
-     'In which occasion you think this Look could be used?' => '¿En que ocasión se puede usar este look?',
+     'In which occasion you think this Look could be used?' => '¿En qué ocasión se puede usar este look?',
      'Items' => 'Prendas',
      'It was not possible to continue with the order.' => 'No ha sido posible continuar con el pedido.',
      'I.V.A' => 'I.V.A',
@@ -379,7 +379,7 @@ return array (
      'There are not any results to show'=>'No existen resultados para mostrar',
      'To' => 'Hasta',
      'To1' => 'Para',
-     'To what age girls should focus this clothes?' => '¿A chicas de que edad va dirigido este look?',
+     'To what age girls should focus this clothes?' => '¿A chicas de qué edad va dirigido este look?',
      'To complete your purchase you must:' => 'Para completar tu comprar debes:',
      'To approve' => 'Por aprobar',
      'To send' => 'Por enviar',
@@ -390,7 +390,7 @@ return array (
      'Total Gift Cards' => 'Total de Gift Cards',
      'Total returned' => 'Total devuelto',
      'Type' => 'Tipo',
-     'Type a description for this look' => 'Escriba una descripción para este look',
+     'Type a description for this look' => 'Escribe una descripción para este look',
      'Tracking' => 'Número de seguimiento',
      'Try again' => 'Intentar nuevamente',
 
@@ -462,7 +462,7 @@ return array (
      'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
      'What name would you give this Look?' => '¿Qué nombre le pondrías a este look?',
      'What style suits this Look?' => '¿Qué estilo se adapta a este Look?',
-     'What type of body you favors?' => '¿A qué tipo de cuerpo le favorece más?',
+     'What type of body you favors?' => '¿A cuál contextura favorece?',
      'What hair color would look better?' => '¿Con qué color de cabello quedaría mejor?',
      'What eye color is look better?' => '¿Con qué color de ojos queda mejor?',
      'What body type should I use?' => '¿Qué tipo de cuerpo debería usarlo?',
@@ -505,7 +505,7 @@ return array (
       <div class="page-header">
         <h1>Política de privacidad o privacidad de datos</h1>
       </div>
-      <p class="lead">A continuación te indicamos los terminos y politicas de privacidad de   <a href="http://www.personaling.com">www.personaling.com</a>  las cuales rigen y son aceptadas automáticamente por nuestros usuarios, a partir de su registro y compra en nuestro portal, razón por la cual es sumamente importante te asegures de leerlas y entenderlas con antelación. En caso de algún cambio en las mismas, sea por razones legales o corporativas, cada uno de nuestros usuarios serán notificados vía correo electrónico.  </p>
+      <p>A continuación te indicamos los terminos y politicas de privacidad de   <a href="http://www.personaling.com">personaling</a>  las cuales rigen y son aceptadas automáticamente por nuestros usuarios, a partir de su registro y compra en nuestro portal, razón por la cual es sumamente importante te asegures de leerlas y entenderlas con antelación. En caso de algún cambio en las mismas, sea por razones legales o corporativas, cada uno de nuestros usuarios serán notificados vía correo electrónico.  </p>
       <ol>
         <li>La información que facilites a la hora del registro será debidamente guardada en un fichero de datos destinado solamente al uso de nuestra plataforma y no será facilitada a terceros sin tu previa autorización. </li>
         <li> Si haces conexión con alguna red social, es posible que tengamos acceso a alguna información como fotografías, fecha de nacimiento, teléfono, etc. Será tratada esta información de la misma manera que en el punto uno (1), es decir, para el uso exclusivo de nuestra página web y en caso de ser compartida será sólo bajo tu previa autorización.</li>

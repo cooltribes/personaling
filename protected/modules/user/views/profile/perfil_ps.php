@@ -164,6 +164,7 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 	    'id'=>'list-looks',
 	    'dataProvider'=>$datalooks,
 	    'itemView'=>'_datoslooks',
+	    'emptyText'=>Yii::t('contentForm','There are not any results to show'),
 	    'afterAjaxUpdate'=>" function(id, data) {
 						} ",
 	    'template'=>$template,
@@ -262,6 +263,7 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 							} ",
 		    'template'=>$template2,
 		    'pager'=>$pagerParams,
+		    'emptyText'=>Yii::t('contentForm','There are not any results to show'),
 		));   
 	?>
 

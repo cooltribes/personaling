@@ -22,7 +22,16 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
           <tr>
             <td width="50%">
             				<strong>Nombre de Empresa:</strong> <?php echo Yii::app()->params['clientName'];?><br/>
-							<strong>NIF:</strong> <?php echo Yii::app()->params['clientIdentification'];?> <br/>
+							<?php if(Yii::app()->language=="es_ve")
+							{
+								?><strong>RIF:</strong>
+								 <?php 
+							}else
+							{
+								?><strong>NIF:</strong>
+								 <?php 
+							} 
+							echo Yii::app()->params['clientIdentification'];?> <br/> 
 			   		
 							<strong>Dirección Fiscal:</strong> <?php echo Yii::app()->params['clientAddress'];?> <br/>
 								<?php echo Yii::app()->params['clientCity']." - ".Yii::app()->params['clientZIP']; ?><br/>

@@ -1018,8 +1018,9 @@ function refresh(reset)
             {
            		/*console.log(data.div);	
            		alert(data.status);*/
-           		
-           		
+           		console.log(data.status);
+           		console.log(data.div);
+
                 if (data.status == 'failure')
                 {
                     $('#dialogColor div.divForForm').html(data.div);
@@ -1032,6 +1033,8 @@ function refresh(reset)
                    		
        
                    	$('#tienda_productos').html(data.div);
+
+
              		
 		
                 }

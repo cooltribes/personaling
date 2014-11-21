@@ -403,8 +403,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
                             {	            $declarado=$total<=50?51:$total;  
                                             $flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$declarado);
-
-                                            if(!is_null($flete)){
+                                            
+                                            if(!is_null($flete)&&$flete->total!=0){
                                                    
                                                     $envio=$flete->total-$flete->seguro;
                                                     $seguro=str_replace(',','.',$flete->seguro);
@@ -440,7 +440,22 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             $envio=0;
                             $seguro=0;
                     }			
-                        
+                     $cliente = new ZoomService;
+                     
+                     
+                      $array=array(  "tipo_tarifa"=>2,
+                    "modalidad_tarifa"=>2,
+                    "ciudad_remitente"=>"15",
+                    "ciudad_destinatario"=>$ciudad_destino->cod_zoom,
+                    NULL,
+                    "cantidad_piezas"=>count($bolsa->bolsahasproductos), 
+                    "peso"=>$peso_total,
+                    NULL,
+                    "valor_declarado"=>$declarado);
+                    print_r($array);echo "<br/><br/>";
+       print_r($cliente->call("CalcularTarifa", $array));
+                     
+                     
                 //Sumar el ENVIO
                 $total += $envio;
                 

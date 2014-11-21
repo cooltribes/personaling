@@ -1025,7 +1025,7 @@ src: url('../fonts/entypo.woff'),
     border-top:1px solid #ddd;
     .padding_bottom;
     .padding_top;
-    .margin_top;
+    .margin_top_large;
     color:#444;
     .creditos{
         color:#666;
@@ -1458,26 +1458,29 @@ src: url('../fonts/entypo.woff'),
 /*------- Home new----------------------- */
 
 
-.articleLegend{
+.articleLegend{ 
         line-height:20px; height:45px; background-color: #FFF; position:absolute; bottom:0; opacity:0.7;font-size: 12px; 
         overflow-y: hidden;
         width:100%; font-weight:bold;
-          -webkit-transition: opacity 1s ease-in-out;
-          -moz-transition: opacity 1s ease-in-out;
-          -ms-transition: opacity 1s ease-in-out;
-          -o-transition: opacity 1s ease-in-out;
-          transition: opacity 1s ease-in-out;
-          -webkit-transition: height 1s ease-in-out;
-          -moz-transition: height 1s ease-in-out;
-          -ms-transition: height 1s ease-in-out;
-          -o-transition: height 1s ease-in-out;
-          transition: height 1s ease-in-out;
-    }
+          -webkit-transition: opacity .2s ease-in-out;
+          -moz-transition: opacity .2s ease-in-out;
+          -ms-transition: opacity .2s ease-in-out;
+          -o-transition: opacity .2s ease-in-out;
+          transition: opacity .2s ease-in-out;
+          -webkit-transition: height .2s ease-in-out;
+          -moz-transition: height .2s ease-in-out;
+          -ms-transition: height .2s ease-in-out;
+          -o-transition: height .2s ease-in-out;
+          transition: height .2s ease-in-out;
+  }
     .articleLegend:hover{
         height: 60px; opacity:.9; cursor:pointer; 
     }
     .articleRight{
         margin-top: 48px; width:100%; position: relative; overflow-y: hidden; text-align: center
+    }
+    .articleRight>a{
+        text-decoration:none;
     }
     .muted{
         font-size:10px;
@@ -1522,11 +1525,14 @@ src: url('../fonts/entypo.woff'),
         height: 5em;line-height: 5em;
     }
     #suscribe>div>input.email{
-        height: 40px;width: 100%;padding: 0 0 0 5px;border-radius: 0px;margin: 0;font-size: 26px;
+        height: 34px;width: 100%;padding: 6px 0 0 5px;border-radius: 0px;margin: 0;font-size: 26px;
     }
      #suscribe>div>input.button{
         width:100%; height:40px; line-height: 40px; background-color: #000; color: #FFF; border: solid 1px #000;
         font-size: 20px;
+    }
+    .no_list_style{
+      list-style-type: none;
     }
 
 

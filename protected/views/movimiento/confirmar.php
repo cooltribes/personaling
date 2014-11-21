@@ -72,8 +72,14 @@ $this->breadcrumbs=array(
                                 //$label = "No hay foto</br>para el color</br> ".$color->valor;
                                  if(!is_null($ptc->imagen))
                                   {
-                                     $foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "40", "height" => "40"));
-
+                                    $ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id,'color_id'=>$ptc->mycolor->id),array('order'=>'orden ASC'));
+                                    if(sizeof($ima)==0)
+                                        $ima = Imagen::model()->findAllByAttributes(array('tbl_producto_id'=>$indiv->id),array('order'=>'orden ASC'));
+                                    if(sizeof($ima)==0) 
+                                        $foto=CHtml::image('http://placehold.it/50x50', "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'));
+                                    else
+                                        $foto=CHtml::image($ima[0]->getUrl(array('ext'=>'png')), "producto", array('id'=>'principal','rel'=>'image_src','width'=>'50px'));
+                                                         
                                   }
                                     else {
                                         $foto="No hay foto</br>para el color";

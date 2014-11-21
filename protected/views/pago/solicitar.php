@@ -106,7 +106,7 @@ $this->breadcrumbs=array(
                <div id="venezuela" class="hide">   
                <div class="control-group<?php echo $model->hasErrors("accountType") ? " error" : ""; ?>">
                     <label class="control-label required">
-                        <?php echo Yii::t('contentForm', 'cuenta'); ?> <span class="required">*</span>
+                        <?php echo Yii::t('contentForm', 'Account Type'); ?> <span class="required">*</span>
                     </label>
                     <div class="controls">                        
                         <?php echo TbHtml::activeDropDownList($model, 'cuenta',Pago::getTiposCuenta(),

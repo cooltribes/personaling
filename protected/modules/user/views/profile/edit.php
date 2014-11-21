@@ -143,7 +143,7 @@ function getMonthsArray()
 				 
 				
 		} else {
-			if($field->varname=='comision'||$field->varname=='tiempo_validez'){
+			if($field->varname=='comision'||$field->varname=='tiempo_validez'||$field->varname=='pago_click'){
 				if(UserModule::isAdmin()){
 					echo $form->textFieldRow($profile,$field->varname,array('class'=>'span5','maxlength'=>(($field->field_size)?$field->field_size:255)));
 				}else{

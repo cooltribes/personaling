@@ -386,8 +386,8 @@ public function actionReportexls(){
 					 	'marca_id'=>$_POST['marcas'],
 					 	'descripcion'=>$_POST['Producto']['descripcion'],
 					 	'estado'=>$_POST['Producto']['estado'],
-					 	'fInicio'=>isset($_POST['Producto']['fInicio'])?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])):NULL,
-						'fFin'=>isset($_POST['Producto']['fFin'])?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])):NULL,
+                        'fInicio'=>isset($_POST['Producto']['fInicio'])&&$_POST['Producto']['fInicio']!=""?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])):NULL,
+                        'fFin'=>isset($_POST['Producto']['fFin'])&&$_POST['Producto']['fFin']!=""?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])):NULL,
 						'destacado' => $_POST['Producto']['destacado'],
 						'peso' => $_POST['Producto']['peso'],
 						'almacen' => $_POST['Producto']['almacen'],
@@ -442,6 +442,8 @@ public function actionReportexls(){
 				$model->peso = $_POST['Producto']['peso'];
 				$model->marca_id = $_POST['marcas'];
 				$model->status=1;
+                $model->fInicio=isset($_POST['Producto']['fInicio'])&&$_POST['Producto']['fInicio']!=""?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fInicio']." ".$_POST['Producto']['horaInicio'])):NULL;
+                $model->fFin=isset($_POST['Producto']['fFin'])&&$_POST['Producto']['fFin']!=""?date('Y-m-d h:i:s',strtotime($_POST['Producto']['fFin']." ".$_POST['Producto']['horaFin'])):NULL;
 				$model->almacen = $_POST['Producto']['almacen'];
 				$model->temporada = $_POST['Producto']['temporada'];
 				$model->outlet = $_POST['Producto']['outlet'];

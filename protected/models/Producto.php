@@ -1804,5 +1804,19 @@ public function multipleColor2($idColor, $idact)
         ));
          return $dp->getData();
     }
+	
+	public function getDisponibilidad($id)
+	{
+		 $cant=0;	
+		 $producto = Preciotallacolor::model()->findAllByAttributes(array('producto_id'=>$id));
+		 foreach($producto as $product)
+		 {
+		 	if($product->cantidad>0)
+			{
+				$cant++;
+			}
+		 }
+	  return $cant;
+	}
 		 
 }

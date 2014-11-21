@@ -54,7 +54,7 @@ return array (
      'Active Orders' => 'Pedidos Activos',
      'Ask for Return' => 'Solicitar Devolución',
      'Assurance' => 'Seguro',
-     
+     'Available Balance:' => "Balance Disponible:",
 
 
      'Balance' => 'Saldo',
@@ -368,6 +368,8 @@ return array (
      'Summary of the purchase' => 'Resumen de la compra',
      'Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com" title="Personaling">Personaling.com</a>',
      'Start enjoying your Gift Card in <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a>',
+     'Share Link' => 'Enlace para compartir',
+
 
      'Targeting ages' => 'Dirigido a edades',
      'Tax' => 'Impuesto',

@@ -71,7 +71,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
     <h1>Tu tipo<small> - <?php echo $mensajeH1; ?></small>
     <?php if (isset($ref)){
         echo TbHtml::tag("h2", array(),
-            "Al llenar los datos de tu perfil disfrutaras de un maravilloso
+            "Al llenar los datos de tu perfil disfrutarás de un maravilloso
                 mundo de looks adaptados para ti.");
     } ?>    
         
@@ -95,36 +95,41 @@ $this->widget('bootstrap.widgets.TbAlert', array(
               <div class="controls row-fluid" id="caracteristicas">
                 <?php $clase = (isset($editar) && $editar)?'span3':'span3'; ?>
                 <?php $clase2 = (isset($editar) && $editar)?'span8':'span6'; ?>
-                <div class="span2">
+                <div class="span2 no_margin_left">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
   				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span8','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
+                
                 <div class="span3">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));
   				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="span3">
+                <div class="span7 no_margin_left">
+                <div class="row-fluid">
+                <div class="span4 no_margin_left">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));
   				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="span3">
+                <div class="span4">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));
   				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="span3">
+                <div class="span4 no_margin_left">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));
   				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span5','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
+                </div>
+              </div>
               </div>
           </div>
           </div>

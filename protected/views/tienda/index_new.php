@@ -492,9 +492,7 @@ if(isset($seo)){
 						}
 						?>
 					</ul>  
-				</div>
-			</li> 
-<?php else: ?>
+				<?php else: ?>
 	<li class="item" id="li_chic">
 
 				<div class="dropdown" id="dd080" >
@@ -1018,8 +1016,9 @@ function refresh(reset)
             {
            		/*console.log(data.div);	
            		alert(data.status);*/
-           		
-           		
+           		console.log(data.status);
+           		console.log(data.div);
+
                 if (data.status == 'failure')
                 {
                     $('#dialogColor div.divForForm').html(data.div);
@@ -1032,6 +1031,8 @@ function refresh(reset)
                    		
        
                    	$('#tienda_productos').html(data.div);
+
+
              		
 		
                 }

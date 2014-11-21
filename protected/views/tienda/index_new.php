@@ -10,7 +10,7 @@ if(isset($seo)){
 	Yii::app()->clientScript->registerMetaTag($seo->title, null, null, array('property' => 'og:title'), null); 
 	Yii::app()->clientScript->registerMetaTag($seo->description, null, null, array('property' => 'og:description'), null);
 }
-else{
+else{ 
 	Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST']."/tienda-ropa-personalizada", null, null, array('property' => 'og:title'), null); 
 	Yii::app()->clientScript->registerMetaTag('La primera shopping experience con las mejores marcas de ropa y complementos.', null, null, array('property' => 'og:description'), null);
 }
@@ -22,7 +22,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 ?>
 
 
-
+ 
 
 
     
@@ -492,9 +492,7 @@ if(isset($seo)){
 						}
 						?>
 					</ul>  
-				</div>
-			</li> 
-<?php else: ?>
+				<?php else: ?>
 	<li class="item" id="li_chic">
 
 				<div class="dropdown" id="dd080" >

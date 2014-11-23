@@ -443,7 +443,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                      $cliente = new ZoomService;
                      
                      
-                      $array=array(  "tipo_tarifa"=>2,
+                      /*$array=array(  "tipo_tarifa"=>2,
                     "modalidad_tarifa"=>2,
                     "ciudad_remitente"=>"15",
                     "ciudad_destinatario"=>$ciudad_destino->cod_zoom,
@@ -451,9 +451,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     "cantidad_piezas"=>count($bolsa->bolsahasproductos), 
                     "peso"=>$peso_total,
                     NULL,
-                    "valor_declarado"=>$declarado);
-                    print_r($array);echo "<br/><br/>";
-       print_r($cliente->call("CalcularTarifa", $array));
+                    "valor_declarado"=>$declarado);*/
+                    //print_r($array);echo "<br/><br/>";
+       //print_r($cliente->call("CalcularTarifa", $array));
                      
                      
                 //Sumar el ENVIO

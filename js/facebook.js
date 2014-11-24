@@ -1,8 +1,12 @@
 $(document).ready(function(){
-    
+    var fb_id = '323808071078482';
+    var url = window.location.href;
+    if(url.indexOf("personaling.com.ve") > -1){
+      fb_id = '386830111475859';
+    }
     window.fbAsyncInit = function() {
         FB.init({
-            appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
+            appId      : fb_id, // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
             channelUrl : 'http://personaling.com/site/user/login', // Channel File
             status     : true, // check login status
             cookie     : true, // enable cookies to allow the server to access the session
@@ -32,9 +36,12 @@ function check_fb(){
             var datos = "facebook";
             
             FB.api('/me', function(response) {
-            	var ciudad=response.location.name;
-					ciudad=ciudad.split(",");
-					ciudad=ciudad[0];
+              var ciudad = '';
+              if(typeof response.location != 'undefined'){
+            	 ciudad=response.location.name;
+      					ciudad=ciudad.split(",");
+      					ciudad=ciudad[0];
+              }
                 $.ajax({
                   url: "user/login/loginfb",
                   data: {email : response.email, datos: datos, ciudad:ciudad},
@@ -69,19 +76,22 @@ function check_fb(){
                     var datos = "facebook";
                     
                     FB.api('/me', function(response) {
-                    	var ciudad=response.location.name;
-     					ciudad=ciudad.split(",");
-     					ciudad=ciudad[0];
-                    	$.ajax({
+                    	var ciudad = '';
+                      if(typeof response.location != 'undefined'){
+                       ciudad=response.location.name;
+                        ciudad=ciudad.split(",");
+                        ciudad=ciudad[0];
+                      }
+                      $.ajax({
 	                  url: "user/login/loginfb",
-	                  data: {email : response.email, datos: datos, ciudad:ciudad},
+	                  data: {email: response.email, datos: datos, ciudad: ciudad},
 	                  type: 'POST',
 	                  dataType: 'html',
 	                  success: function(data) {
 	                      if(data == "existe"){
 	                          console.log('existe');
 	                         // var Url = <?php echo Yii::app()->baseUrl; ?>+"";
-                                 
+                            //window.location = "http://www.personaling.com.ve/develop/tienda/look";     
 	                         // window.location = "../site/personal";
                                  /*Unificacion de la tienda de looks con tu personal shopper*/
 	                          window.location = "../tienda/look";

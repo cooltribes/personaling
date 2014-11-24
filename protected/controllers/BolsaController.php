@@ -795,8 +795,8 @@ class BolsaController extends Controller
 						        $message->subject    = $subject;
 						        $message->setBody($params, 'text/html');
 						        $message->addTo($user->email);
-								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-						        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
+						        //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
 						        Yii::app()->mail->send($message);
 								
 							// cuando finalice entonces envia id de la orden para redireccionar
@@ -1297,7 +1297,7 @@ class BolsaController extends Controller
                             $message->subject = $subject;
                             $message->setBody($params, 'text/html');
                             $message->addTo($user->email);
-                            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
                             Yii::app()->mail->send($message);
                             $this->refresh();
                         }
@@ -2330,8 +2330,8 @@ class BolsaController extends Controller
 						        $message->subject    = $subject;
 						        $message->setBody($params, 'text/html');
 						        $message->addTo($user->email);
-								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-						        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
+						        //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
 						        Yii::app()->mail->send($message);
 								
 							// cuando finalice entonces envia id de la orden para redireccionar
@@ -2811,7 +2811,7 @@ class BolsaController extends Controller
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
 						$message->addTo($user->email);
-						$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 						Yii::app()->mail->send($message);
 						$this->refresh();
 					}
@@ -3098,8 +3098,8 @@ class BolsaController extends Controller
 //	        $message->subject    = $subject;
 //	        $message->setBody($params, 'text/html');
 //	        $message->addTo($user->email);
-//			$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-//	        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+//			$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
+//	        //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
 //	        Yii::app()->mail->send($message);		
                 
                 //Ver resumen del pedido
@@ -3192,7 +3192,7 @@ class BolsaController extends Controller
                     
 //                    $message->view = "mail_giftcard";
 //                    $params = array('subject' => $subject, 'body' => $body,'envio' => $envio, 'model'=> $model);
-//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 
 
                     $resumen.="<tr><td>Email</td><td>{$envio->email}</td><td>{$model->monto}</td><tr>";
@@ -3236,7 +3236,7 @@ class BolsaController extends Controller
 
 
 //            $message->view = "mail_giftcard_summary";
-//            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 //            $params = array('subject' => $subject, 'body' => $body,'resumen' => $resumen, 'orden'=> OrdenGC::model()->findByPk($ordenId));
 
 
@@ -3760,7 +3760,7 @@ class BolsaController extends Controller
 //            $message->subject = $subject;
 //            $message->setBody($params, 'text/html');
 //            $message->addTo($usuario->email);
-//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
 //            Yii::app()->mail->send($message);
         }
         
@@ -3806,7 +3806,7 @@ class BolsaController extends Controller
             $message->subject = $subject;
             $message->setBody($params, 'text/html');
             $message->addTo($destinatario);
-            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
             Yii::app()->mail->send($message);
         }
         

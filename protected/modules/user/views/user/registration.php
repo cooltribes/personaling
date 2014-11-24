@@ -251,8 +251,8 @@ $(document).ready(function(){
     
     window.fbAsyncInit = function() {
         FB.init({
-            appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
-            channelUrl : 'http://personaling.com/test24/user/registration', // Channel File
+            appId      : '<?php echo Yii::app()->params["fb_appId"]; ?>', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
+            channelUrl : '<?php echo Yii::app()->baseUrl."/registro-personaling"; ?>', // Channel File
             status     : true, // check login status
             cookie     : true, // enable cookies to allow the server to access the session
             xfbml      : true,  // parse XFBML
@@ -292,9 +292,12 @@ function check_fb(){
                 
                 
           	//	$("#registration-form").fadeOut(100,function(){
- 					var ciudad=response.location.name;
- 					ciudad=ciudad.split(",");
- 					ciudad=ciudad[0];
+          			var ciudad = "";
+          			if(typeof response.location != 'undefined'){
+          				ciudad=response.location.name;
+	 					ciudad=ciudad.split(",");
+	 					ciudad=ciudad[0];
+          			}
  					
  					$('#facebook_id').val(response.id);
  					$('#RegistrationForm_password').val('1234');
@@ -341,9 +344,12 @@ function check_fb(){
 						//console.log(response.user_birthday);
 						
 						//$("#registration-form").fadeOut(100,function(){
-	     					var ciudad=response.location.name;
-	 					ciudad=ciudad.split(",");
-	 					ciudad=ciudad[0];
+	     				var ciudad = "";
+	          			if(typeof response.location != 'undefined'){
+	          				ciudad=response.location.name;
+		 					ciudad=ciudad.split(",");
+		 					ciudad=ciudad[0];
+	          			}
  		
                     		$('#Profile_ciudad').val(ciudad);
 	     					$('#facebook_id').val(response.id);

@@ -175,7 +175,7 @@ class AdminController extends Controller
                         
 //                        $message->view = "mail_template";
 //                        $params = array('subject' => $subject, 'body' => $body);
-//                        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 
                         $modelUser->unsetAttributes();
                         $profile->unsetAttributes();
@@ -1268,7 +1268,7 @@ class AdminController extends Controller
                     $message->subject = $subject;
 //                    $message->view = "mail_template";
 //                    $params = array('subject' => $subject, 'body' => $body);
-//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
                     $message->setBody($body, 'text/html');
                     $message->addTo($model->email);
                     Yii::app()->mail->send($message);  
@@ -1783,7 +1783,7 @@ class AdminController extends Controller
 			$message->subject    = $subject;
 			$message->setBody($params, 'text/html');                
 			$message->addTo($model->email);
-			$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+			$message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 			Yii::app()->mail->send($message);
 			Yii::app()->user->setFlash('success',"El correo electrónico de verificacion ha sido reenviado a <strong>".$model->email."</strong>");
 			$this->redirect(array('/user/admin'));
@@ -2703,8 +2703,8 @@ class AdminController extends Controller
 	        $message->subject    = $subject;
 	        $message->setBody($params, 'text/html');
 	        $message->addTo($user->email);
-			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Digital');
-	        //$message->from = 'Tu Personal Shopper Digital <ventas@personaling.com>\r\n';   
+			$message->from = array('ventas@personaling.com' => 'Tu Personal Shopper Online');
+	        //$message->from = 'Tu Personal Shopper Online <ventas@personaling.com>\r\n';   
 	        Yii::app()->mail->send($message);			
 		}
 		

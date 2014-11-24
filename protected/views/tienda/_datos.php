@@ -286,6 +286,22 @@ foreach($prods as $data):
 $cont++;
 
 endforeach;?>
+<?php
+//echo "LORE";
+//PC::debug('Pages: '.print_r($pages), 'scroll');
+$this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
+    'contentSelector' => '#catalogo',
+    'itemSelector' => 'div.div_productos',
+    'loadingText' => 'Consultando Productos',
+    'donetext' => 'No more',
+
+    //'afterAjaxUpdate' => 'alert("hola");',
+    'pages' => $pages,
+));
+
+
+
+?>
 </div>
 <script>	
 
@@ -332,20 +348,5 @@ function detalle_producto(product){
 
 </script>
 
-<?php 
-//echo "LORE"; 
-//PC::debug('Pages: '.print_r($pages), 'scroll');
-$this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
-	    'contentSelector' => '#catalogo',
-	    'itemSelector' => 'div.div_productos',
-	    'loadingText' => 'Consultando Productos',
-	    'donetext' => 'No more',
 
-	    //'afterAjaxUpdate' => 'alert("hola");',
-	    'pages' => $pages,
-	)); 
-			
-
-
-?>
 

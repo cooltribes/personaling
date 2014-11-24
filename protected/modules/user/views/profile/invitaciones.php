@@ -245,7 +245,7 @@ $create_date = date('j M Y', $create_time);
 	                    
 	          	FB.ui({method: 'apprequests',
 			      title: 'Personaling',
-			      message: '¡Te invito a probar Personaling, tu personal shopper digital!',
+			      message: '¡Te invito a probar Personaling, Tu Personal Shopper Online!',
 			    }, fbCallback);
 	        } else {
 	            FB.login(function(response) {
@@ -268,7 +268,7 @@ $create_date = date('j M Y', $create_time);
 	                    
 	                    FB.ui({method: 'apprequests',
 					      title: 'Personaling',
-					      message: '¡Te invito a probar Personaling, tu personal shopper digital!',
+					      message: '¡Te invito a probar Personaling, Tu Personal Shopper Online!',
 					    }, fbCallback);
 	                } else {
 	                    //console.log('User cancelled login or did not fully authorize.');

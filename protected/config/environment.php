@@ -453,13 +453,13 @@
                                       'brands'=>false),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
-                        'pais'=>'espana',
+                        'pais'=>'venezuela',
                         'clientName'=>'PERSONALING C.A.',
                         'clientIdentification'=>'J-40236088-6',
-                        'clientAddress'=>'Sant Pere Mes Baix, Nº 63 Principal B ',
-                        'clientCity'=>'Barcelona',
-                        'clientZIP'=>'08003',
-                        'clientPhone'=>'934 344 634',
+                        'clientAddress'=>'Avenida Bolívar, C.C CCM, Piso 2, Local 210, Porlamar, Nueva Esparta',
+                        'clientCity'=>'Porlamar',
+                        'clientZIP'=>'6031',
+                        'clientPhone'=>'0295-2676317',
                         'clientEmail'=>'info@personaling.com',
                         '    ',
                         'metodosPago'=> array(
@@ -487,6 +487,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
                         'zohoActive' => FALSE,
+                        'fb_appId' => '386830111475859',
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -550,6 +551,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken'=>'f24c0524a7999cf951cc1f2ccb32b288', 
                         'zohoActive' => FALSE,
+                        'fb_appId' => '323808071078482',
                     ),
                 );
         }
@@ -652,13 +654,15 @@
                                       'brands'=>false),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
-                        'pais'=>'espana',
+                        'pais'=>'venezuela',
                         'clientName'=>'PERSONALING C.A.',
                         'clientIdentification'=>'J-40236088-6',
-                        'clientAddress'=>'Sant Pere Mes Baix, Nº 63 Principal B ',
-                        'clientCity'=>'Barcelona',
-                        'clientZIP'=>'08003',
-                        'clientPhone'=>'934 344 634',
+                        'clientAddress'=>'Avenida Bolívar, C.C CCM, Piso 2, Local 210, Porlamar, Nueva Esparta',
+                        'clientCity'=>'Porlamar',
+                        'clientZIP'=>'6031',
+                        'clientPhone'=>'0295-2676317',
+                        
+                        
                         'clientEmail'=>'info@personaling.com',
                         '    ',
                         'metodosPago'=> array(
@@ -687,6 +691,7 @@
                         'zohoToken' => '3999a1f3cb9f2efc652651f94b82ff84',
                         'zohoActive' => TRUE,
                         'id_look_switch' => 0,
+                        'fb_appId' => '386830111475859',
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -759,6 +764,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken'=>'db303d2e324bda57cfd72e89640dc5bb',
                         'zohoActive' => TRUE,
+                        'fb_appId' => '323808071078482',
                     ),
                 );
         }
@@ -781,7 +787,7 @@
  
                             // Database
                             'db'=>array(
-                                    'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingT61',
+                                    'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingSTAGE_VE',
                                     'emulatePrepare' => true,
                                     'username' => 'personaling',
                                     'password' => 'Perso123Naling',
@@ -834,19 +840,19 @@
                                       'brands'=>true),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
-                        'pais'=>'espana',
-                        'clientName'=>'Personaling Enterprise S.L ',
-                        'clientIdentification'=>'B66202383',
-                        'clientAddress'=>'Sant Pere Mes Baix, NÂº 63 Principal B ',
-                        'clientCity'=>'Barcelona',
-                        'clientZIP'=>'08003',
-                        'clientPhone'=>'934 344 634',
+                         'pais'=>'venezuela',
+                        'clientName'=>'PERSONALING C.A.',
+                        'clientIdentification'=>'J-40236088-6',
+                        'clientAddress'=>'Avenida Bolívar, C.C CCM, Piso 2, Local 210, Porlamar, Nueva Esparta',
+                        'clientCity'=>'Porlamar',
+                        'clientZIP'=>'6031',
+                        'clientPhone'=>'0295-2676317',
                         'clientEmail'=>'info@personaling.com',
                         '        ',
                         'metodosPago'=> array(
                                 'bkCard' => false,
                                 'paypal' => false,
-                                'prueba' => true,
+                                'prueba' => false,
                                 'depositoTransferencia' => true,
                                 'instapago' => true,
                                                 ),
@@ -869,6 +875,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'f298def0f5eae649aa473c7db3092dc3',
                         'id_look_switch' => 0,
+                        'fb_appId' => '386830111475859',
                         ),
 
                 );
@@ -929,6 +936,7 @@
 
                         'AzPayTerminal'=>'001',
                         'AzPaySecret'=> 'CA4AE93932ADF12EF0D2',
+                        'fb_appId' => '323808071078482',
                         ),
                     );
 

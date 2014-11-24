@@ -188,7 +188,7 @@ return array (
 	'Instructions have been sent and email summary: {email}' => ' Se han enviado las instrucciones y el resumen al correo electrónico: {email}',
 	'In 10 seconds this page will be redirected to the Shopping Bag' => 'En 10 segundos esta página será redirigida a la Bolsa de Compras',
 	'In <b id="segundos">10</b> seconds this page will be redirected to the Shopping Bag' => 'En <b id="segundos">10</b> segundos serás redirigid@ al proceso de compra nuevamente',     
-	'In which occasion you think this Look could be used?' => '¿En que ocasión se puede usar este look?',
+	'In which occasion you think this Look could be used?' => '¿En qué ocasión se puede usar este look?',
 	'Items' => 'Prendas',
 	'It was not possible to continue with the order.' => 'No ha sido posible continuar con el pedido.',
 	'I.V.A' => 'I.V.A.',
@@ -395,7 +395,7 @@ return array (
 	'To' => 'Hasta',
 	'To1' => 'Para',
 	'To save this information you should fill every field.'=>'Para guardar esta información debes completar todos los campos.',
-	'To what age girls should focus this clothes?' => '¿A chicas de que edad va dirigido este look?',
+	'To what age girls should focus this clothes?' => '¿A chicas de qué edad va dirigido este look?',
 	'To complete your purchase you must:' => 'Para completar tu comprar debes:',
 	'To approve' => 'Por aprobar',
 	'To send' => 'Por enviar',
@@ -407,7 +407,7 @@ return array (
 	'Total sent amount' => 'Cant. Total Enviada',
 	'Total acknowledged amount' => 'Cant. Total Confirmada',   
 	'Type' => 'Tipo',
-	'Type a description for this look' => 'Escriba una descripción para este look',
+	'Type a description for this look' => 'Escribe una descripción para este look',
 	'Type of discount' => 'Tipo de descuento',
 	'Tracking' => 'Número de seguimiento',
 	'Transaction No.' => 'Nro. de Transacción',
@@ -483,7 +483,7 @@ return array (
 	'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
 	'What name would you give this Look?' => '¿Qué nombre le pondrías a este look?',
 	'What style suits this Look?' => '¿Qué estilo se adapta a este Look?',
-	'What type of body you favors?' => '¿A qué tipo de cuerpo le favorece más?',
+	'What type of body you favors?' => '¿A cuál contextura favorece?',
 	'What hair color would look better?' => '¿Con qué color de cabello quedaría mejor?',
 	'What eye color is look better?' => '¿Con qué color de ojos queda mejor?',
 	'What body type should I use?' => '¿Qué tipo de cuerpo debería usarlo?',
@@ -496,7 +496,7 @@ return array (
 	'Zip code' => 'Código postal',
 
 	// Copys de paginas estaticas
-	'copy FAQ' => '<h3>¿Cómo funciona Personaling.es?</h3>
+	'copy FAQ' => '<h3>¿Cómo funciona Personaling?</h3>
       <p align="justify">Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación. </p>   
       <hr/>
       <div class="cajadevideo">
@@ -547,7 +547,7 @@ return array (
 		<div class="page-header">
           <h1>Condiciones de Envíos y Encomiendas</h1>
         </div>
-        <p align="justify"> Al registrarte o realizar una compra en nuestra tienda <a href="http://www.personaling.es" title="Personaling, tu personal shopper digital">www.personaling.es</a>, aceptas automáticamente cada uno de los términos y condiciones que rigen nuestros envíos. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación. A continuación te los detallamos: </p>
+        <p align="justify"> Al registrarte o realizar una compra en nuestra tienda <a href="http://www.personaling.es" title="Personaling, Tu Personal Shopper Online">www.personaling.es</a>, aceptas automáticamente cada uno de los términos y condiciones que rigen nuestros envíos. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación. A continuación te los detallamos: </p>
         <ol align="justify">
           <li align="justify">Los envíos de Personaling.es se harán solamente dentro del territorio español y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
           <li align="justify"> El comprador tiene una única opción de envío, es decir sólo puede elegir una dirección para su envío.  </li>
@@ -560,14 +560,14 @@ return array (
             </ol>
             En todo caso, el monto del costo del envío se calculará automáticamente en el sistema, previo al pago, en el momento de realizar el pedido. De esta manera podrás conocerlo antes de tomar la decisión final de compra o cierre de la transacción.
           </li>
-          <li align="justify">El envió se llevará a cabo a través de SEUR que gestionará su entrega por medio de <a href="http://www.personaling.es" title="Personaling, tu personal shopper digital">Personaling.es</a> 
+          <li align="justify">El envió se llevará a cabo a través de SEUR que gestionará su entrega por medio de <a href="http://www.personaling.es" title="Personaling, Tu Personal Shopper Online">Personaling.es</a> 
             <br/> Puedes elegir entre dos tipo de entregas: </li>
             <ol class="margin_left_medium" style="list-style-type: none">
               <li >4.1 &nbsp; Puerta: Cuando tu dirección es de fácil acceso, podremos llevar tu pedido hasta la puerta de tu domicilio u oficina.  </li>
               <li >4.2 &nbsp; Local: Si por el contrario, es una dirección de difícil acceso podrás elegir la opción recogida en la oficina de SEUR más cercana, donde deberás buscar tu pedido cuando te notifiquemos que ha llegado. </li>
             </ol>            
           <li align="justify">Para recibir tu pedido en cualquiera de las modalidades debes presentar tu DNI y firmar el acuse de recibo. </li>
-          <li align="justify"> <a href="http://www.personaling.es" title="Personaling, tu personal shopper digital">Personaling.es</a> se hace responsable de empaquetar correctamente tu compra y gestionar la entrega dentro de los plazos correspondientes. En caso de retraso en los plazos, el cliente recibirá un cupón con el 10% de descuento para su próxima compra.</li>
+          <li align="justify"> <a href="http://www.personaling.es" title="Personaling, Tu Personal Shopper Online">Personaling.es</a> se hace responsable de empaquetar correctamente tu compra y gestionar la entrega dentro de los plazos correspondientes. En caso de retraso en los plazos, el cliente recibirá un cupón con el 10% de descuento para su próxima compra.</li>
         </ol>
         <p>&nbsp;</p>',
 

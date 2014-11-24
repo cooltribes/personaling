@@ -269,11 +269,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <?php } ?>
                 <?php 
                 //Aztive de prueba
-                if(isset(Yii::app()->params['metodosPago']['prueba'])){ 
+                if(Yii::app()->params['metodosPago']['prueba']){ 
                 ?>                
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <label class="radio accordion-toggle margin_left_small"
+                        <label class="radio accordion-toggle maprodrgin_left_small"
                            data-parent="#accordion2">
                             <input type="radio" name="optionsRadios" id="prueba" value="8"> 
                             <?php echo Yii::t('contentForm', 'Para probar las compras'); ?>
@@ -442,7 +442,21 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                      $cliente = new ZoomService;
                      
                      
+<<<<<<< HEAD
                     
+=======
+                      /*$array=array(  "tipo_tarifa"=>2,
+                    "modalidad_tarifa"=>2,
+                    "ciudad_remitente"=>"15",
+                    "ciudad_destinatario"=>$ciudad_destino->cod_zoom,
+                    NULL,
+                    "cantidad_piezas"=>count($bolsa->bolsahasproductos), 
+                    "peso"=>$peso_total,
+                    NULL,
+                    "valor_declarado"=>$declarado);*/
+                    //print_r($array);echo "<br/><br/>";
+       //print_r($cliente->call("CalcularTarifa", $array));
+>>>>>>> 6e85bcdb87ae8f0fcc71ce61a524472d39fcaefc
                      
                      
                 //Sumar el ENVIO

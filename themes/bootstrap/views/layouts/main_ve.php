@@ -346,7 +346,7 @@ if(!Yii::app()->user->isGuest){
             <?php
             echo CHtml::ajaxLink(
                 'Reenviar correo de validación.', 
-                $this->createUrl('user/registration/sendValidationEmail'), 
+                $this->createUrl('registration/sendValidationEmail'), 
                 array('success'=>'function(data){
                     $("#notificacion_validar").html(data);
                     $("#notificacion_validar").removeClass();
@@ -401,6 +401,7 @@ if(!Yii::app()->user->isGuest){
   <?php PC::debug('Execute Time (end content):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <!-- page -->
 <div id="modalAjax"></div>
+
 <footer>
     <div id="wrapper_footer">
         <div class="main_footer">

@@ -136,7 +136,7 @@
                        </td>
                       <td class="hide w0" width="60"></td>
                       <td class="hide w0" width="160" valign="top">
-                      <p id="street-address" align="right" class="footer-content-right" style="color:#FFFFFF"><span><a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Tu Personal Shopper Digital</a></span></p>
+                      <p id="street-address" align="right" class="footer-content-right" style="color:#FFFFFF"><span><a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Tu Personal Shopper Online</a></span></p>
                       </td>
                       <td class="w30" width="30"></td>
                     </tr>

@@ -104,7 +104,7 @@ class ProfileController extends Controller
                     //         'Puedes registrarte haciendo click en el enlace que aparece a continuación:<br/><br/> <a href="' . $registration_url.'">Click aquí</a>';
 //                    $params = array('subject' => $subject, 'body' => $body);
 
-//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
                     
                     //Guardar la invitacion en BD
                     $invitation = EmailInvite::model()->findByAttributes(array('user_id'=>$model->id, 'request_id'=>$requestId));                                       

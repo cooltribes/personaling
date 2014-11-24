@@ -105,16 +105,16 @@ class RegistrationController extends Controller
                     if ($model->save()) {
                         // Get profile picture from facebook url
                         if ( isset($_POST['facebook_picture']) && $_POST['facebook_picture']!="" ) {
-                            if(!is_dir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $model->id)){
-                                mkdir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $model->id,0777,true);
+                            if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'. Yii::app()->language .'/avatar/'. $model->id)){
+                                mkdir(Yii::getPathOfAlias('webroot').'/images/'. Yii::app()->language .'/avatar/'. $model->id,0777,true);
                             }
                             $content = file_get_contents($_POST['facebook_picture']);
                             $extension = '.jpg';
-                            $nombre = Yii::getPathOfAlias('webroot').'/images/avatar/'.$model->id.'/0';
-                            $nombre_orig = Yii::getPathOfAlias('webroot').'/images/avatar/'.$model->id.'/0_orig';
+                            $nombre = Yii::getPathOfAlias('webroot').'/images/'. Yii::app()->language .'/avatar/'.$model->id.'/0';
+                            $nombre_orig = Yii::getPathOfAlias('webroot').'/images/'. Yii::app()->language .'/avatar/'.$model->id.'/0_orig';
                             file_put_contents($nombre . $extension, $content);
                             file_put_contents($nombre_orig . $extension, $content);
-                            $model->avatar_url = '/images/avatar/'. $model->id .'/0' . $extension;
+                            $model->avatar_url = $model->id .'/0' . $extension;
                             $model->save();
 
                             $image = Yii::app()->image->load($nombre_orig.$extension);
@@ -207,6 +207,7 @@ class RegistrationController extends Controller
                             $message->subject = $subject;
                             $message->setBody($body, 'text/html');
                             $message->addTo($model->email);
+                            Yii::app()->mail->send($message);  
 
 //                                $message->view = "mail_template";
 //                                $subject = 'Registro Personaling';
@@ -634,7 +635,7 @@ class RegistrationController extends Controller
 									$respuesta = $zohoCase->save_potential(); 
 
                                 }
-                                /** Redireccionar a la p{agina de información **/
+                                //** Redireccionar a la p{agina de información **//
                                      $this->redirect(array('/site/afterApply'));
                                 
                             } else {
@@ -653,7 +654,7 @@ class RegistrationController extends Controller
 //                                        $this->redirect(array('/user/profile/tutipo'));
 //                                    else if ($profile->sex == 2) // hombre
 //                                        $this->redirect(array('/tienda/look'));
-                                    /** Redireccionar a la p{agina de información **/
+                                    //** Redireccionar a la p{agina de información **//
                                       $this->redirect('');
                                     // $this->redirect(array('/user/profile/tutipo'));									
                                 } else {

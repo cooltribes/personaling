@@ -696,15 +696,19 @@ class Orden extends CActiveRecord
        
         
         
-        $array=array(  "tipo_tarifa"=>2,
-                "modalidad_tarifa"=>2,
-                "ciudad_remitente"=>"15",
-                "ciudad_destinatario"=>"$ciudad",
-                NULL,
-                "cantidad_piezas"=>"$nproductos", 
-                "peso"=>"$peso",
-                NULL,
-                "valor_declarado"=>"$total");
+        $array=array(  
+             "tipo_tarifa"=>2,
+             "modalidad_tarifa"=>2,
+             "ciudad_remitente"=>19,
+             "ciudad_destinatario"=>$ciudad,
+             "oficina_retirar"=>0,
+             "cantidad_piezas"=>$nproductos,
+             "peso"=>$peso,
+             "valor_mercancia"=>NULL,
+             "valor_declarado"=>$total,
+             "codpais"=>0,
+             "tipo_envio"=>0
+        );
 	 	return $cliente->call("CalcularTarifa", $array);
         
 	 

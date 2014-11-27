@@ -79,24 +79,26 @@
         
         $like = UserEncantan::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'producto_id'=>$producto->id));
               
-              if(isset($like)) // le ha dado like
-        {
-          //echo "p:".$like->producto_id." us:".$like->user_id;
-          $entro=1;
-          ?>
-            <button id="meEncanta" onclick='encantar()' title="Me encanta" class="btn-link btn-link-active">
-                   <span id="like" class="entypo icon_personaling_big">&hearts;</span>
-            </button>
-                  <?php 
-          
-        }
-          
-          if($entro==0)
-          {
-             echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
-                 <span id='like' class='entypo icon_personaling_big'>&#9825;</span>
-                 </button>";
-          }
+             if(isset($like)) // le ha dado like al look
+                {
+                    //echo "p:".$like->producto_id." us:".$like->user_id;
+                    $entro=1;
+                    ?>
+
+                        <button id="meEncanta" onclick='encantar()' title="Me encanta" class="btn-link btn-link-active">
+                            <span id="like" class="entypo icon_personaling_big">&hearts;</span>
+                        </button>
+                       <?php
+
+                } 
+ 
+                    if($entro==0) // no le ha dado like
+                    {
+                        echo "<button id='meEncanta' onclick='encantar()' title='Me encanta' class='btn-link'>
+                           <span id='like' class='entypo icon_personaling_big'>&#9825;</span>
+                           </button>";
+                    }
+                  
 
               }  ?>
                 
@@ -1534,8 +1536,13 @@ $('.imagen_principal').zoom({url: imgZ});
           $("#meEncanta").addClass("btn-link-active");
           $("span#like").text(a);
           
-          $("#total-likes").text(data.total); 
-          $("#btn-encanta").addClass("btn-danger_modificado");
+          $("#total-likes").text(data.total);
+          
+
+                        $('#btn-encanta').addClass('btn-danger_modificado');
+                        $('#btn-encanta').removeClass('lighted');
+                     
+          
         }
         
         if(data.mensaje=="no")
@@ -1543,17 +1550,23 @@ $('.imagen_principal').zoom({url: imgZ});
           bootbox.alert("Debes ingresar con tu cuenta de usuario o registrarte antes de dar 'Me Encanta' a un producto");          
         }
         
-        if(data.mensaje=="borrado")
-        {
-          var a = "♡";
-          
-          //alert("borrando");
-          $("#btn-encanta").removeClass("btn-danger_modificado");
-          $("#meEncanta").removeClass("btn-link-active");
-          $("span#like").text(a);
-          
-          $("#total-likes").text(data.total);         
-        }
+                if(data.mensaje=="borrado")
+                {
+                  var a = "♡";
+                  
+                  //alert("borrando");
+                  $("#btn-encanta").removeClass("btn-danger_modificado");
+                  $("#meEncanta").removeClass("btn-link-active");
+                  $("span#like").text(a);
+                  
+                  $("#total-likes").text(data.total);  
+                  
+              
+                                $('#btn-encanta').addClass('lighted');
+                                $('#btn-encanta').removeClass('btn-danger_modificado');
+                            
+                        
+                }
           
           }//success
          })

@@ -29,7 +29,7 @@ class SiteController extends Controller
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',
                                     'preguntas_frecuentes', 'equipo_personaling','captcha',
                                     'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos',
-                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve'),
+                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve','terminos_condiciones_ps'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -80,7 +80,11 @@ class SiteController extends Controller
 	{
 		$this->render('terminos_de_servicio');
 	}
-
+    
+    public function actionTerminos_condiciones_ps()
+    {
+        $this->render('terminos_condiciones_ps');
+    }
 	public function actionPoliticas_de_devoluciones()
 	{
 		$this->render('politicas_de_devoluciones');

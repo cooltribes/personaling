@@ -235,17 +235,18 @@ $template = '{summary}
       <th rowspan="2" scope="col">Referencia</th>
       <th rowspan="2" scope="col">Categoría</th>
       <th rowspan="2" scope="col">Precio ('.Yii::t('contentForm','currSym').')</th>
-      <th colspan="3" scope="col">Cantidad</th>
+      <th colspan="4" scope="col">Cantidad</th>
       <th rowspan="2" scope="col">Ventas '.Yii::t('contentForm','currSym').'</th>
       <th rowspan="2" scope="col">Estado</th>
       <th rowspan="2" scope="col">Fecha de Carga</th>
-      <th rowspan="2" scope="col">Progreso de la campaña</th>
+     
       <th rowspan="2" scope="col">Acción</th>
     </tr>
     <tr>
       <th scope="col">Total</th>
       <th scope="col">Disp.</th>
       <th scope="col">Vendido</th>
+      <th scope="col">Egresos</th>
     </tr>
     {items}
     </table>

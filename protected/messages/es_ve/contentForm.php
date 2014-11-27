@@ -97,6 +97,7 @@ return array (
      'Credit Card' => 'Tarjeta de Crédito',
      'Create your Look here' => 'Crea tus Looks aquí',
      'Color' => 'Color',
+     'Colors' => 'Colores',
      'Courier delivery' => 'Transportista',
      'Confirm' => 'Confirmar',
      'Confirm <br>purchase' => 'Confirmar <br/>Compra',

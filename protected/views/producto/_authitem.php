@@ -56,6 +56,8 @@ $sql="select sum(oh.cantidad) from tbl_orden_has_productotallacolor oh JOIN tbl_
 	$data->id.") AND (o.estado=3 OR o.estado=4 OR o.estado=8)";	 
 $vend = Yii::app()->db->createCommand($sql)->queryScalar();
 
+$sql="select IFNULL(sum(cantidad), 0) from tbl_movimiento_has_preciotallacolor where preciotallacolor_id IN ( select id from tbl_precioTallaColor where producto_id =".$data->id.")";
+$egresos=Yii::app()->db->createCommand($sql)->queryScalar();
 
 //$sql= "select sum(precio) from tbl_orden_has_productotallacolor where tbl_orden_has_productotallacolor.preciotallacolor_id IN (select id from tbl_precioTallaColor where producto_id =".$data->id.")";
 $sql="select sum(oh.precio) from tbl_orden_has_productotallacolor oh JOIN tbl_orden o ON o.id=oh.tbl_orden_id where preciotallacolor_id IN (select id from tbl_precioTallaColor where producto_id=".
@@ -65,7 +67,7 @@ $totventas = Yii::app()->db->createCommand($sql)->queryScalar();
 
 
 
-$total = $num + $vend;
+$total = $num + $vend + $egresos;
 	
 		echo "<td>".$total."</td>"; // total
 		echo "<td>".$num."</td>"; // disponible
@@ -75,6 +77,8 @@ if($vend!="")
 else
 	echo "<td> 0 </td>";
 	
+    echo "<td>".$egresos."</td>";   
+  
    	echo "<td>".number_format($totventas, 2, ',', '.')."</td>"; // ventas bs
    	
    if($data->estado==0)
@@ -84,7 +88,7 @@ else
    }	
 	echo "<td>".date("d/m/Y",strtotime($data->fecha))."</td>";
 	
-	$a = $data->fFin;
+	/*$a = $data->fFin;
 	$b = date("d/m/Y",strtotime($a));
 	$c = $data->fInicio;
 	$d = date("d/m/Y",strtotime($c));
@@ -124,7 +128,7 @@ else
 		{
 			echo "<td> Sin rango de fechas.</td>";
 		}	
-
+*/
 	echo "<td>";
 
 	/*

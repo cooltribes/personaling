@@ -1,4 +1,5 @@
 <?php
+
 if(isset($seo)){
 	$this->pageTitle = $seo->title;
 	Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
@@ -243,15 +244,27 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
     </div>
   </div>
 </div>
-<?php endif; ?>
+<?php endif; 
+
+if(Yii::app()->language=="es_es")
+{
+	
+	$appId=323808071078482; //para facebook espana	
+}
+else 
+{
+	$appId=386830111475859; //para facebook venezuela
+}
+?>
+
 
 <script>
 	
 $(document).ready(function(){
-    
+    var appId=<?php echo $appId;?>;
     window.fbAsyncInit = function() {
         FB.init({
-            appId      : '<?php echo Yii::app()->params["fb_appId"]; ?>', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
+            appId      : appId, // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
             channelUrl : '<?php echo Yii::app()->baseUrl."/registro-personaling"; ?>', // Channel File
             status     : true, // check login status
             cookie     : true, // enable cookies to allow the server to access the session
@@ -307,7 +320,7 @@ function check_fb(){
                     $('#Profile_ciudad').val(ciudad);
 
                     
-                    
+                   // console.log(response.email);
                     var fecha = response.birthday;
                     var n = fecha.split("/"); // 0 mes, 1 dia, 2 año
                     

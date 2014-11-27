@@ -1,3 +1,8 @@
+<style type="text/css">
+  #entrar{
+    color: #0B0B3B }
+  </style>
+
 <script>
 	$('#ingresa').addClass('active');
 	
@@ -93,7 +98,7 @@ $this->breadcrumbs=array(
             'htmlOptions'=>array('class'=>'btn-block'),
         )); ?>
         </div>
-         <span class="color8"> <?php echo UserModule::t('If you don\'t have an account'); ?>, <a href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration" title="Registrate"><?php echo UserModule::t('Sign up here'); ?></a></span>
+         <span class="color8"> <?php echo UserModule::t('If you don\'t have an account'); ?>, <u><a id="entrar" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration" title="Registrate"><?php echo UserModule::t('Sign up here'); ?> </a> </u></span>
           </fieldset>
         <?php $this->endWidget(); ?>
       </section>

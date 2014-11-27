@@ -33,7 +33,7 @@ if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
     var ref = document.getElementsByTagName('script')[0];
     ref.parentNode.insertBefore(fpw, ref);
     })();
-    ", CClientScript::POS_HEAD, array()); 
+    ", CClientScript::POS_HEAD, array());
 } 
 $user = User::model()->findByPk(Yii::app()->user->id);
 $status_register = -1;

@@ -46,7 +46,7 @@ if(Yii::app()->language=='es_es'){
 }else{
     $links=array(
         'banner'=>Yii::app()->baseUrl."/registro-personaling",
-        'slider'=>"http://www.personaling.com.ve/looks-personalizados",
+        'slider'=>"http://www.personaling.com.ve/HarryLevy",
         'art1'=>"http://www.personaling.com.ve/producto/detalle/658",
         'art2'=>"http://www.personaling.com.ve/look/307",
         'art3'=>"http://www.personaling.com.ve/producto/detalle/571",

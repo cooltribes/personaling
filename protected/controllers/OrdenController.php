@@ -1188,7 +1188,7 @@ public function actionValidar()
             $detalle->estado = 2; // rechazado
             
             $orden = Orden::model()->findByPk($detalle->orden_id);
-            $orden->estado = 1; // regresa a "En espera de pago"
+            $orden->estado = 6; // regresa a "En espera de pago"
             
             if($detalle->save()){
                 if($orden->save()){

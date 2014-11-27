@@ -841,7 +841,13 @@ var ruta= "<?php echo Yii::app()->getBaseUrl(true);?>";
                     $("span#like").text(a);
 					
 					$("#total-likes").text(data.total);
-					$("#btn-encanta").addClass("btn-danger_modificado");
+					
+					
+					    $('#btn-encanta').addClass('btn-danger_modificado');
+					    $('#btn-encanta').removeClass('lighted');
+					
+					   
+
                 }
 
                 if(data.mensaje=="no") 
@@ -854,12 +860,14 @@ var ruta= "<?php echo Yii::app()->getBaseUrl(true);?>";
                 {
                     var a = "♡";
 
-                    //alert("borrando");
-					$("#btn-encanta").removeClass("btn-danger_modificado");
                     $("#meEncanta").removeClass("btn-link-active");
                     $("span#like").text(a);
                     
                     $("#total-likes").text(data.total);
+           
+                        $('#btn-encanta').addClass('lighted');
+                        $('#btn-encanta').removeClass('btn-danger_modificado');
+                    
 
                 }
 

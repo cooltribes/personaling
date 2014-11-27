@@ -409,8 +409,10 @@ class ProfileController extends Controller
 			if(isset($_POST['Direccion']['codigo_postal_id']))
 			     $model->codigo_postal_id = $_POST['Direccion']['codigo_postal_id'];
             else
-                $model->codigo_postal_id = CodigoPostal::model()->getCode($model->ciudad_id,'id');        
-			$model->pais=Pais::model()->getOficial($model->pais);
+                $model->codigo_postal_id = CodigoPostal::model()->getCode($model->ciudad_id,'id');
+			
+			if(is_numeric($model->pais))
+		 			$model->pais=Pais::model()->getOficial($model->pais);
 			$model->user_id = $usuario->id;
 			
 			if($model->save()){

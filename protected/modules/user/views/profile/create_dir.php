@@ -238,20 +238,22 @@ $looks_recomendados = $look->match($usuario);
 				}}
               	?>
                 
-                <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
+                <div id="submit" align="center">
+                	<?php $this->widget('bootstrap.widgets.TbButton', array(
+			            'buttonType'=>'submit',
+			            'type'=>'danger',
+			            'size'=>'large',
+			            'label'=>$model->isNewRecord ? 'Crear' : 'Guardar',
+			        )); 
+			
+			        ?>
+                </div>
               </div>
             </div>
             
-            <div class="form-actions">
-            <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'buttonType'=>'submit',
-            'type'=>'danger',
-            'size'=>'large',
-            'label'=>$model->isNewRecord ? 'Crear' : 'Guardar',
-        )); 
-
-        ?>
-            </div>
+            
+            
+           
            
           </fieldset>
         </form>

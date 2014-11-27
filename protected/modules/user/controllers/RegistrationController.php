@@ -207,6 +207,7 @@ class RegistrationController extends Controller
                             $message->subject = $subject;
                             $message->setBody($body, 'text/html');
                             $message->addTo($model->email);
+                            Yii::app()->mail->send($message);  
 
 //                                $message->view = "mail_template";
 //                                $subject = 'Registro Personaling';
@@ -221,7 +222,7 @@ class RegistrationController extends Controller
 //                                $message->subject = $subject;
 //                                $message->setBody($params, 'text/html');
 //                                $message->addTo($model->email);
-//                                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 //                                Yii::app()->mail->send($message);
                         } else {
                             $activation_url = $this->createAbsoluteUrl('/user/activation/activation', 
@@ -253,7 +254,7 @@ class RegistrationController extends Controller
 //                                
 //                                $message->setBody($params, 'text/html');
 //                                $message->addTo($model->email);
-//                                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 //                                Yii::app()->mail->send($message);
 
 
@@ -527,7 +528,7 @@ class RegistrationController extends Controller
 //                            $message->view = "mail_apply";
 //                            $footer = '<span>Recibes este correo porque has solicitado unirte a los Personal Shopper de <a href="http://personaling.com/" title="personaling" style="color:#FFFFFF">Personaling.com</a> </span>';
 //                            $params = array('subject'=>$subject, 'body'=>$body, 'footer' => $footer);
-//                            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
                             
                             
                             //Enviar email al admin para informar de una usuaria que aplico
@@ -548,7 +549,7 @@ class RegistrationController extends Controller
                             $message->subject    = $subject;
                             $message->setBody($params, 'text/html');                
                             $message->addTo('info@personaling.com');
-                            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
                             Yii::app()->mail->send($message);
                             
                             
@@ -688,7 +689,7 @@ class RegistrationController extends Controller
             
 //            $message->view = "mail_template";
 //            $params              = array('subject'=>$subject, 'body'=>$body);
-//            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
             Yii::app()->mail->send($message);
             echo 'Enlace de validación enviado a <strong>'.$model->email.'</strong>';
     }

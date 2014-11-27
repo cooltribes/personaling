@@ -1,4 +1,4 @@
-<h3 style="color:#999999;">RESUMEN DEL PEDIDO</h3>
+<h3 style="color:#999999;">RESUMEN DEL PEDIDO</h3> 
 <table width="100%" border="0" cellspacing="3" style="margin-bottom:10px;" cellpadding="5">
     <tr>
         <td style=" background-color:#dff0d8; padding:6px;  color:#468847; margin-bottom:5px">
@@ -104,11 +104,30 @@
 
                         echo('<tr>');
 
-                        if($imagen){					  	
-                        $aaa = CHtml::image('personaling.com/'.$producto->getImageUrl($color->id), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
-                        if($producto->getImageUrl($color->id)=='http://placehold.it/180')
-                                $aaa = CHtml::image("http://www.personaling.es".Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
-                        echo "<td style='border-bottom:1px solid #dddddd;'>".$aaa."</td>";
+                        if($imagen)
+                        {
+	                        if(Yii::app()->language=="es_es")
+							{
+								$aaa = CHtml::image('http://personaling.es/'.$producto->getImageUrl($color->id), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+							}
+							else 
+							{
+								$aaa = CHtml::image('http://personaling.com.ve/'.$producto->getImageUrl($color->id), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+							}						  	
+	                        
+	                        if($producto->getImageUrl($color->id)=='http://placehold.it/180')
+							{
+								 if(Yii::app()->language=="es_es")	
+								 {
+								 		$aaa = CHtml::image("http://www.personaling.es".Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+								 }
+								 else
+								 {
+								 	$aaa = CHtml::image("http://www.personaling.com.ve".Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+								 }
+							}
+	                               
+	                        echo "<td style='border-bottom:1px solid #ddzdddd;'>".$aaa."</td>";
                         }else{
                                 echo"<td><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";
                         }
@@ -169,10 +188,29 @@
 
                 echo "<tr>";		
 
-                if($imagen){					  	
-                        $aaa = CHtml::image('personaling.es/'.$producto->getImageUrl($color->id), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
-                        if($producto->getImageUrl($color->id)=='http://placehold.it/180')
-                                $aaa = CHtml::image(Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+                if($imagen)
+                {
+                        	 if(Yii::app()->language=="es_es")
+							{
+								$aaa = CHtml::image('http://personaling.es/'.$producto->getImageUrl($color->id), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+							}
+							else 
+							{
+								$aaa = CHtml::image('http://personaling.com.ve/'.$producto->getImageUrl($color->id), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+							}						  	
+	                        
+	                        if($producto->getImageUrl($color->id)=='http://placehold.it/180')
+							{
+								 if(Yii::app()->language=="es_es")	
+								 {
+								 		$aaa = CHtml::image("http://www.personaling.es".Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+								 }
+								 else
+								 {
+								 	$aaa = CHtml::image("http://www.personaling.com.ve".Yii::app()->getBaseUrl(true) . str_replace(".","_thumb.",$imagen->url), "Imagen ", array("width" => "70", "height" => "70",'class'=>'margin_bottom'));
+								 }
+							}
+
                         echo "<td style='border-bottom:1px solid #dddddd;'>".$aaa."</td>";
                 }else
                         echo"<td style='border-bottom:1px solid #dddddd;'><img src='http://placehold.it/70x70'/ class='margin_bottom'></td>";

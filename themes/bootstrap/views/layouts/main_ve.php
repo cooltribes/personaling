@@ -420,6 +420,7 @@ if(!Yii::app()->user->isGuest){
                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
                            <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
                              <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_condiciones_ps" title="Acerca de">Términos y condiciones para Personal Shoppers</a></li>
+                             <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
                         </ul>
                       </div>
                       
@@ -454,8 +455,8 @@ if(!Yii::app()->user->isGuest){
                                 <a class="span3">
                                     <img style="margin-top:7px" alt="Visa" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/visa.png';?>" height="25px"/>
                                 </a>
-                                <a class="span3">
-                                    <img style="margin-top:12px" alt="Paypal" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/pp.png';?>" height="25px"/>
+                                <a class="span4">
+                                    <img style="margin-top:12px" alt="Banesco" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/banesco.png';?>" height="25px"/>
                                 </a>
                             </div>
                             <h4 class="margin_top">Seguridad de Datos</h4>
@@ -501,6 +502,14 @@ if(!Yii::app()->user->isGuest){
         </div>
         
     </div>
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0027/3531.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+    
+    
 </footer>
 
 <script >

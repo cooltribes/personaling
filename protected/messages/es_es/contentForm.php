@@ -595,7 +595,7 @@ return array (
     </p>
     <p align="justify"> En Personaling nos preocupamos por nuestros clientes. Por ello, en el caso de que quieras devolver parte o todo tu pedido, iremos a recogerlo a la dirección que nos indiques, sin necesidad de que tengas que desplazarte a ninguna oficina postal. </p>
     <p align="justify"> Si una devolución modifica las condiciones de venta de una promoción (cheques, descuentos, cupones, etc.), se deducirá la parte proporcional de la promoción en función de los artículos devueltos en cada caso.</p>
-    <p align="justify"> Si tienes cualquier duda, puedes ponerte en contacto con nosotros vía mail en <a href="mailto:info@personaling.com">info@personaling.com</p>',
+    <p align="justify"> Si tienes cualquier duda, puedes ponerte en contacto con nosotros vía mail en <a href="mailto:'.Yii::app()->params['clientService'][Yii::app()->language].'">'.Yii::app()->params['clientService'][Yii::app()->language].'</p>',
 
 
      'Copy Formas de Pago' => '        

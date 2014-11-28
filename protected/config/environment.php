@@ -399,7 +399,11 @@
                     'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                     'askId'=>true, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
                     'IVA' => '0.12',
-                    'IVAtext' => '12%', 
+                    'IVAtext' => '12%',
+                    'clientService'=>array(
+                        'es_es'=>'info@personaling.com',
+                        'es_ve'=>'clientes@personaling.com.ve'
+                    ),
                     'registro' => true,   
                     'mostrarMarcas'=>true,
                     'mostrarChic'=>true,

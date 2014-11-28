@@ -346,7 +346,7 @@ if(!Yii::app()->user->isGuest){
             <?php
             echo CHtml::ajaxLink(
                 'Reenviar correo de validación.', 
-                $this->createUrl('registration/sendValidationEmail'), 
+               $this->createUrl('user/registration/sendValidationEmail'), 
                 array('success'=>'function(data){
                     $("#notificacion_validar").html(data);
                     $("#notificacion_validar").removeClass();
@@ -401,97 +401,107 @@ if(!Yii::app()->user->isGuest){
   <?php PC::debug('Execute Time (end content):'.(microtime(true)-$time_start), 'debug,time'); ?>
 <!-- page -->
 <div id="modalAjax"></div>
-<div id="wrapper_footer" style="background: #eee; border: 0px;">
-  <footer class="container">
-    <div class="row hidden-phone">
-      
-      <div class="span3">
-        <h4>Información de Interés</h4>
-        <ul>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de">Acerca de Personaling</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/formas-de-pago" title="Formas de Pago">Formas de Pago</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/envios" title="Envíos y Encomiendas">Envíos</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad">Políticas de Privacidad</a></li>
-         <!-- <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li> -->
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
-           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
-        </ul>
-      </div>
-      <div class="span3">
-        <h4>Lo que encontrarás</h4>
-        <ul>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/looks-personalizados" title="Looks Personalizados">Looks</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Ropa</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Zapatos</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Accesorios</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/profile/listado" title="Personal Shoppers">Personal Shoppers</a></li>
-        </ul>
-      </div>
-      <div class="span3">
-        <h4>Sigue nuestras redes sociales</h4>
-            <ul>
-               <li>  <a title="Facebook" href="https://www.facebook.com/Personaling">Facebook</a></li>  
-               <li>  <a title="Instagram" href="http://instagram.com/personaling">Instagram </a></li>  
-               <li>  <a title="Twitter" href="https://twitter.com/personaling">Twitter </a></li>  
-               <li>  <a title="Pinterest" href="https://pinterest.com/personaling/">Pinterest   </a></li>  
-               <li> <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ">Youtube </a> </li>  
-          
-        </ul>
-      </div>
-      <div class="span3">
-        <h4>Métodos de Pago</h4>
-        <div class="row-fluid">
-            <a class="span3">
-                <img alt="MasterCard" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/mc.png';?>" height="25px"/>
-            </a>
-            <a class="span3">
-                <img style="margin-top:7px" alt="Visa" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/visa.png';?>" height="25px"/>
-            </a>
-        <!--    <a class="span3">
-                <img style="margin-top:12px" alt="Paypal" src="<?php // echo Yii::app()->theme->baseUrl.'/images/home/logos/pp.png';?>" height="25px"/>
-        </a> -->
+
+<footer>
+    <div id="wrapper_footer">
+        <div class="main_footer">
+            <div class="container">
+                <div class="row hidden-phone">
+                    <div class="span3">
+                        <h4>Información de Interés</h4>
+                        <ul>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de">Acerca de Personaling</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/formas-de-pago" title="Formas de Pago">Formas de Pago</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/envios" title="Envíos y Encomiendas">Envíos</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad">Políticas de Privacidad</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
+                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
+                             <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_condiciones_ps" title="Acerca de">Términos y condiciones para Personal Shoppers</a></li>
+                        </ul>
+                      </div>
+                      
+                      <div class="span3">
+                        <h4>Lo que encontrarás</h4>
+                        <ul>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/looks-personalizados" title="Looks Personalizados">Looks</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Ropa</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Zapatos</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Accesorios</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/profile/listado" title="Personal Shoppers">Personal Shoppers</a></li>
+                        </ul>
+                      </div>                      
+                      
+                      <div class="span3">
+                        <h4>Sigue nuestras redes sociales</h4>
+                            <ul>
+                               <li>  <a title="Facebook" href="https://www.facebook.com/Personaling">Facebook</a></li>  
+                               <li>  <a title="Instagram" href="http://instagram.com/personaling">Instagram </a></li>  
+                               <li>  <a title="Twitter" href="https://twitter.com/personaling">Twitter </a></li>  
+                               <li>  <a title="Pinterest" href="https://pinterest.com/personaling/">Pinterest   </a></li>  
+                               <li> <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ">Youtube </a> </li>  
+                          
+                        </ul>
+                      </div>
+                      <div class="span3">
+                            <h4>Métodos de Pago</h4>
+                            <div class="row-fluid">
+                                <a class="span3">
+                                    <img alt="MasterCard" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/mc.png';?>" height="25px"/>
+                                </a>
+                                <a class="span3">
+                                    <img style="margin-top:7px" alt="Visa" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/visa.png';?>" height="25px"/>
+                                </a>
+                                <a class="span3">
+                                    <img style="margin-top:12px" alt="Paypal" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/pp.png';?>" height="25px"/>
+                                </a>
+                            </div>
+                            <h4 class="margin_top">Seguridad de Datos</h4>
+                            <div class="row-fluid">
+                               <a class="span2">
+                                                     <img alt="SSL Security" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/ssl.png';?>" height="25px"/>
+                                                </a>
+                                                <div class="span8">
+                                                    <script type="text/JavaScript">
+                                                    //<![CDATA[
+                                                    var sealServer=document.location.protocol+"//seals.websiteprotection.com/sealws/525d3892-d158-46f3-aacd-5777cbdd56cb.gif";var certServer=document.location.protocol+"//certs.websiteprotection.com/sealws/?sealId=525d3892-d158-46f3-aacd-5777cbdd56cb";var hostName="personaling.com";document.write(unescape('<div style="text-align:center;margin:0 auto;"><a target="_blank" href="'+certServer+'&pop=true" style="display:inline-block;"><img src="'+sealServer+'" alt="Website Protection&#153; Site Scanner protects this website from security threats." title="This Website Protection site seal is issued to '+ hostName +'. Copyright &copy; 2013, all rights reserved."oncontextmenu="alert(\'Copying Prohibited by Law\'); return false;" border="0" /></a><div id="bannerLink"><a href="https://www.godaddy.com/" target="_blank">Go Daddy</a></div></div>'));
+                                                    //]]>
+                                                    </script>
+                                             
+                                                </div>
+                               
+                            </div>
+                        
+                      
+                      </div>
+                      
+                    
+                    
+                </div>
+                
+            </div>
+            
         </div>
         
-              
-               
-          
         
-        <h4 class="margin_top">Seguridad de Datos</h4>
-       <div class="row-fluid">
-           <a class="span2">
-                                 <img alt="SSL Security" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/ssl.png';?>" height="25px"/>
-                            </a>
-                            <div class="span8">
-                                <script type="text/JavaScript">
-                                //<![CDATA[
-                                var sealServer=document.location.protocol+"//seals.websiteprotection.com/sealws/525d3892-d158-46f3-aacd-5777cbdd56cb.gif";var certServer=document.location.protocol+"//certs.websiteprotection.com/sealws/?sealId=525d3892-d158-46f3-aacd-5777cbdd56cb";var hostName="personaling.com";document.write(unescape('<div style="text-align:center;margin:0 auto;"><a target="_blank" href="'+certServer+'&pop=true" style="display:inline-block;"><img src="'+sealServer+'" alt="Website Protection&#153; Site Scanner protects this website from security threats." title="This Website Protection site seal is issued to '+ hostName +'. Copyright &copy; 2013, all rights reserved."oncontextmenu="alert(\'Copying Prohibited by Law\'); return false;" border="0" /></a><div id="bannerLink"><a href="https://www.godaddy.com/" target="_blank">Go Daddy</a></div></div>'));
-                                //]]>
-                                </script>
-                         
-                            </div>
-           
-       </div>
-               
-          
-       
-      </div>
-    </div>
-</div>
-<div id="wrapper_footer no_margin_top no_padding_top" style="border: 0px;">
-    <div class="row-fluid margin_top_medium padding_bottom">
-      <div class="span12 text_align_center creditos"><?php echo Yii::app()->params['clientName']; ?> Nuestro RIF <?php echo Yii::app()->params['clientIdentification']; ?> | Todos los derechos reservados<br/>
-       Desarrollado por: <br/>
-       <!-- <a class="to_add" href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> -->
-        <a  href="http://cooltribes.com" title="Connecting true fans" target="_blank">
-            <img src="<?php echo Yii::app()->baseUrl ?>/images/cooltribes100.png" width="100" />
+        <div>
+            <div class="row-fluid margin_top_medium padding_bottom">
+                  <div class="span12 text_align_center creditos"><?php echo Yii::app()->params['clientName']; ?> Nuestro RIF <?php echo Yii::app()->params['clientIdentification']; ?> | Todos los derechos reservados<br/>
+                   Desarrollado por: <br/>
+                   <!-- <a class="to_add" href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> -->
+                    <a  href="http://cooltribes.com" title="Connecting true fans" target="_blank">
+                        <img src="<?php echo Yii::app()->baseUrl ?>/images/cooltribes100.png" width="100" />
+                        
+                    </a> 
+                   </div>
+                </div>        
             
-        </a> 
-       </div>
-    </div>    
-  </footer>
-</div>
+        </div>
+        
+    </div>
+</footer>
 
 <script >
   

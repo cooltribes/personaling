@@ -401,7 +401,7 @@ class PagoController extends Controller
             $message->subject = $subject;
             $message->setBody($params, 'text/html');
             $message->addTo($destinatario);
-            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
             Yii::app()->mail->send($message);
         }
         
@@ -475,7 +475,7 @@ class PagoController extends Controller
             $message->subject = $subject;
             $message->setBody($body, 'text/html');
             $message->addTo($destinatario);
-//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
             Yii::app()->mail->send($message);
         }
         
@@ -519,7 +519,7 @@ class PagoController extends Controller
             $message->subject = $subject;
             $message->setBody($body, 'text/html');
             $message->addTo($destinatario);
-//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
             Yii::app()->mail->send($message);
         }
 

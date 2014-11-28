@@ -60,19 +60,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       </h1>
     </div>
   </div>
-  <input type="hidden" id="idDireccion" value="<?php echo(Yii::app()->getSession()->get('idDireccion')); ?>" />
-  <input type="hidden" id="tipoPago" value="<?php echo(Yii::app()->getSession()->get('tipoPago')); ?>" />
-  <input type="hidden" id="subtotal" value="<?php echo(Yii::app()->getSession()->get('subtotal')); ?>" />
-  <input type="hidden" id="descuento" value="<?php echo(Yii::app()->getSession()->get('descuento')); ?>" />
-  <input type="hidden" id="descuentoRegalo" value="<?php echo(Yii::app()->getSession()->get('descuentoRegalo')); ?>" />
-  <input type="hidden" id="envio" value="<?php echo(Yii::app()->getSession()->get('envio')); ?>" />
-  <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
-  <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
-  <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
-  <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
-  <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
-  <input type="hidden" id="peso" value="<?php echo(Yii::app()->getSession()->get('peso')); ?>" />
-  <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
+  
   <!-- <input type="hidden" id="idCard" value="0" /> -->
 
   <div class="row margin_top_medium">
@@ -276,14 +264,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                       Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
             </tr>            
             
-            <?php if(Yii::app()->getSession()->get('seguro')>0){ ?>            
-            <tr>
-              <th class="text_align_left"><?php echo Yii::t('contentForm','Assurance') ?>:</th>
+            <?php //if(Yii::app()->getSession()->get('seguro')>0){ ?>            
+          <!--  <tr>
+              <th class="text_align_left"><?php // echo Yii::t('contentForm','Assurance') ?>:</th>
               <td class="text_align_right"><?php 
-              	echo Yii::t('contentForm','currSym').' '.Yii::app()->getSession()->get('seguro'); ?>
+             // 	echo Yii::t('contentForm','currSym').' '.Yii::app()->getSession()->get('seguro'); ?>
                 	 </td>              
-            </tr>
-            <?php }?>   
+            </tr>-->
+            <?php//}?>   
                 
             <!--IVA-->
             <?php /*if(!$direccion->ciudad->provincia->pais->exento){ ?>
@@ -554,9 +542,22 @@ else
 	header('Location: /site/user/login');	
 }
 
+     Yii::app()->getSession()->add('envio',(Yii::app()->getSession()->get('envio')-Yii::app()->getSession()->get('seguro')));
 
 ?>
-
+<input type="hidden" id="idDireccion" value="<?php echo(Yii::app()->getSession()->get('idDireccion')); ?>" />
+  <input type="hidden" id="tipoPago" value="<?php echo(Yii::app()->getSession()->get('tipoPago')); ?>" />
+  <input type="hidden" id="subtotal" value="<?php echo(Yii::app()->getSession()->get('subtotal')); ?>" />
+  <input type="hidden" id="descuento" value="<?php echo(Yii::app()->getSession()->get('descuento')); ?>" />
+  <input type="hidden" id="descuentoRegalo" value="<?php echo(Yii::app()->getSession()->get('descuentoRegalo')); ?>" />
+  <input type="hidden" id="envio" value="<?php echo(Yii::app()->getSession()->get('envio')); ?>" />
+  <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
+  <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
+  <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
+  <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
+  <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
+  <input type="hidden" id="peso" value="<?php echo(Yii::app()->getSession()->get('peso')); ?>" />
+  <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
 
 <script>
 

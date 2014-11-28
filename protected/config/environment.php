@@ -691,6 +691,7 @@
                         'zohoToken' => '3999a1f3cb9f2efc652651f94b82ff84',
                         'zohoActive' => TRUE,
                         'id_look_switch' => 0,
+                        'fb_appId' => '386830111475859',
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -763,6 +764,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken'=>'db303d2e324bda57cfd72e89640dc5bb',
                         'zohoActive' => TRUE,
+                        'fb_appId' => '323808071078482',
                     ),
                 );
         }
@@ -873,6 +875,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'f298def0f5eae649aa473c7db3092dc3',
                         'id_look_switch' => 0,
+                        'fb_appId' => '386830111475859',
                         ),
 
                 );
@@ -933,6 +936,7 @@
 
                         'AzPayTerminal'=>'001',
                         'AzPaySecret'=> 'CA4AE93932ADF12EF0D2',
+                        'fb_appId' => '323808071078482',
                         ),
                     );
 

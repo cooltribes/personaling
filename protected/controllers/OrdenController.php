@@ -1188,7 +1188,7 @@ public function actionValidar()
             $detalle->estado = 2; // rechazado
             
             $orden = Orden::model()->findByPk($detalle->orden_id);
-            $orden->estado = 1; // regresa a "En espera de pago"
+            $orden->estado = 6; // regresa a "En espera de pago"
             
             if($detalle->save()){
                 if($orden->save()){
@@ -1216,7 +1216,7 @@ public function actionValidar()
         $message->subject    = $subject;
         $message->setBody($params, 'text/html');                
         $message->addTo($user->email);
-        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
         Yii::app()->mail->send($message);
         echo json_encode($response);
 
@@ -1472,7 +1472,7 @@ public function actionValidar()
 							$message->subject    = $subject;
 							$message->setBody($params, 'text/html');                
 							$message->addTo($user->email);
-							$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+							$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
 							Yii::app()->mail->send($message);
 							
 						/*
@@ -1491,7 +1491,7 @@ public function actionValidar()
 							$message->subject    = $subject;
 							$message->setBody($params, 'text/html');
 							$message->addTo($user->email);
-							$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+							$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
 							
 							Yii::app()->mail->send($message);					
 						
@@ -1553,7 +1553,7 @@ public function actionValidar()
 //                        $message->view = "mail_template";
 //                        Yii::t('contentForm','',array('{number}'=>$orden->tracking));
 //                        $params              = array('subject'=>$subject, 'body'=>$body);
-//                        $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+//                        $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
 
                         Yii::app()->user->setFlash('success', 'Se ha enviado la orden.');
 
@@ -1610,7 +1610,7 @@ public function actionValidar()
                 $message->setBody($body, 'text/html');
                 if(is_null($mensaje->admin))
                 	$message->addTo($usuario->email);
-                //$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                //$message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
                 Yii::app()->mail->send($message);
 			}		
 			
@@ -2428,9 +2428,9 @@ public function actionValidar()
                             $message->addTo($user->email);
 //                            $message->addTo("nramirez@upsidecorp.ch");
 
-//                            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+//                            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
 //                            $message->view = "mail_devolucion";
-                            //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+                            //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
                             Yii::app()->mail->send($message);
                             if($devolucion->sendXML() && UserModule::isAdmin())
                                 $lf="<br/>Devolución notificada a Logisfashion.";
@@ -2525,9 +2525,9 @@ public function actionValidar()
                             $message->addTo($user->email);
                                                         
 //                            $message->view = "mail_devolucion";
-//                            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+//                            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
 //                            $params = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
-                            //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+                            //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
                             Yii::app()->mail->send($message);
 
 
@@ -2562,8 +2562,8 @@ public function actionValidar()
 //                $message->addTo("nramirez@upsidecorp.ch");
 //                $message->view = "mail_devolucion";
 //                $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
-//                $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-                //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+//                $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
+                //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
                 Yii::app()->mail->send($message);
 
                 Yii::app()->user->setFlash('success', 'Devolución Rechazada correctamente');

@@ -274,7 +274,7 @@ $looks_recomendados = $look->match($model);
 	                    
 	          	FB.ui({method: 'apprequests',
 			      title: 'Personaling',
-			      message: 'Tu personal shopper digital.',
+			      message: 'Tu Personal Shopper Online.',
 			    }, fbCallback);
 	        } else {
 	            FB.login(function(response) {
@@ -297,7 +297,7 @@ $looks_recomendados = $look->match($model);
 	                    
 	                    FB.ui({method: 'apprequests',
 					      title: 'Personaling',
-					      message: 'Tu personal shopper digital.',
+					      message: 'Tu Personal Shopper Online.',
 					    }, fbCallback);
 	                } else {
 	                    //console.log('User cancelled login or did not fully authorize.');

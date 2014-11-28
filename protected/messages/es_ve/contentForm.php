@@ -97,6 +97,7 @@ return array (
      'Credit Card' => 'Tarjeta de Crédito',
      'Create your Look here' => 'Crea tus Looks aquí',
      'Color' => 'Color',
+     'Colors' => 'Colores',
      'Courier delivery' => 'Transportista',
      'Confirm' => 'Confirmar',
      'Confirm <br>purchase' => 'Confirmar <br/>Compra',
@@ -451,10 +452,10 @@ return array (
      'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',
      'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',
      'We received the data of purchase as well as your credit card payment.' => 'Hemos recibido los datos de la compra así como los de tu pago con tarjeta de crédito.',
-     'We received the order data as well as your payment transfer or bank deposit' => 'Hemos recibido los datos del pedido asi como de tu pago con transferencia o depósito bancario',
+     'We received the order data as well as your payment transfer or bank deposit' => 'Hemos recibido los datos del pedido así como de tu pago con transferencia o depósito bancario',
      'We have received the order data as well as your credit card payment or Personaling credit. <br/> Your order will be shipped in the coming hours.' => 'Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de crédito o saldo Personaling.<br/> Tu pedido será enviado en las próximas horas.',
      'We will verify the transfer or deposit in the next 2-3 business days and will notify you when it has been approved' => 'Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado',
-     'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
+     'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos vía correo electrónico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
      'Weigth' => 'Peso',
      'We have good news, you have a balance available for {balance}' => 'Tenemos una buena noticia, tienes disponible un saldo a favor de {balance}',     
      '<h2>Welcome to Personaling</h2>Receiving this email because you registered your address Personaling. Please validate your account by clicking on the link below:<br/><br/><a href="{url}">Click here</a>' => '<h2>Te damos la bienvenida a Personaling.</h2>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/><a href="{url}">Haz click aquí</a>',
@@ -510,14 +511,14 @@ return array (
         <li>La información que facilites a la hora del registro será debidamente guardada en un fichero de datos destinado solamente al uso de nuestra plataforma y no será facilitada a terceros sin tu previa autorización. </li>
         <li> Si haces conexión con alguna red social, es posible que tengamos acceso a alguna información como fotografías, fecha de nacimiento, teléfono, etc. Será tratada esta información de la misma manera que en el punto uno (1), es decir, para el uso exclusivo de nuestra página web y en caso de ser compartida será sólo bajo tu previa autorización.</li>
         <li>Tus compras serán cuantificadas para uso interno de elaboración de apartados como “Más vendidos” o “Más buscados” y serán utilizadas dentro de grandes muestras para nuestra promoción, sin publicar tu identidad a no ser que así lo autorices.  </li>
-        <li><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> cuenta con un sistema de protección de datos y seguridad en red que protegerá tus datos bancarios y personales.   </li>
+        <li><a href="http://www.personaling.com" title="Personaling, Tu Personal Shopper Online">Personaling.com</a> cuenta con un sistema de protección de datos y seguridad en red que protegerá tus datos bancarios y personales.   </li>
       </ol>',
 
       'Copy Envios y Encomiendas' => '
           <div class="page-header">
           <h1>Condiciones de Envíos y Encomiendas</h1>
         </div>
-        <p>Al registrarte o realizar una compra  en nuestra tienda <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">www.personaling.com</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
+        <p>Al registrarte o realizar una compra  en nuestra tienda <a href="http://www.personaling.com" title="Personaling, Tu Personal Shopper Online">www.personaling.com</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
         <ol>
           <li>Los envíos de Personaling.com.ve se harán solamente dentro del  territorio venezolano, y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
           <li> El comprador tiene una única opción de envío, es decir sólo puede elegir una dirección para su envío.  </li>

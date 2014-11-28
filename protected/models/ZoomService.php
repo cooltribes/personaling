@@ -5,7 +5,7 @@ class ZoomService {
     
     function ZoomService()
     {
-        $this->URL = "http://sandbox.grupozoom.com/localhost/htdocs/internet/servicios/webservices/";
+        $this->URL = "http://www.grupozoom.com/servicios/webservices/";
     }
     
     function setUrl($url) {

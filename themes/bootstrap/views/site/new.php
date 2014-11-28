@@ -46,7 +46,7 @@ if(Yii::app()->language=='es_es'){
 }else{
     $links=array(
         'banner'=>Yii::app()->baseUrl."/registro-personaling",
-        'slider'=>"http://www.personaling.com.ve/looks-personalizados",
+        'slider'=>"http://www.personaling.com.ve/HarryLevy",
         'art1'=>"http://www.personaling.com.ve/producto/detalle/658",
         'art2'=>"http://www.personaling.com.ve/look/307",
         'art3'=>"http://www.personaling.com.ve/producto/detalle/571",
@@ -289,19 +289,19 @@ if(Yii::app()->language=='es_es'){
                              ¡Sígue nuestras redes sociales para enterarte de lo último en moda y tendencias!
                          </h3>
                      </div>
-                     <a title="Facebook" href="https://www.facebook.com/Personaling">                                   
+                     <a title="Facebook" href="https://www.facebook.com/Personaling" target="_blank">                                   
                         <img alt="Facebook" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/fb.jpg';?>" class="span1"/>
                      </a>
-                     <a title="Instagram" href="http://instagram.com/personaling"> 
+                     <a title="Instagram" href="http://instagram.com/personaling" target="_blank"> 
                         <img alt="Instagram" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/ig.jpg';?>" class="span1"/>
                      </a>
-                     <a title="Twitter" href="https://twitter.com/personaling"> 
+                     <a title="Twitter" href="https://twitter.com/personaling" target="_blank"> 
                         <img alt="Twitter" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/tw.jpg';?>" class="span1"/>
                      </a>
-                     <a title="Pinterest" href="https://pinterest.com/personaling/">   
+                     <a title="Pinterest" href="https://pinterest.com/personaling/" target="_blank">   
                         <img alt="Pinterest" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/pt.jpg';?>" class="span1"/>
                      </a>
-                     <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ">   
+                     <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ" target="_blank"   
                         <img alt="Youtube" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/yt.jpg';?>" class="span1"/>
                      </a> 
                      <div class="span3"></div>
@@ -313,7 +313,7 @@ if(Yii::app()->language=='es_es'){
                     
                      <div class="span4">
                          <h3 class="no_margin_top socialText">
-                             Se el primero en recibir noticias y promociones suscribiéndote a nuestro NewsLetter.
+                             Sé el primero en recibir noticias y promociones suscribiéndote a nuestro NewsLetter.
                          </h3>
                      </div>
                      <form method="post" id="suscribe">                                 

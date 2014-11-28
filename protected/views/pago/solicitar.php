@@ -109,7 +109,7 @@ $this->breadcrumbs=array(
                         <?php echo Yii::t('contentForm', 'Account Type'); ?> <span class="required">*</span>
                     </label>
                     <div class="controls">                        
-                        <?php echo TbHtml::activeDropDownList($model, 'cuenta',Pago::getTiposCuenta(),
+                        <?php echo TbHtml::activeDropDownList($model, 'accountType',Pago::getTiposCuenta(),
                                 array('class' => 'span2',
                                       'prompt' => '-Seleccionar-',
                      

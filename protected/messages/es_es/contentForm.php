@@ -470,11 +470,11 @@ return array (
 	'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',
 	'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',
 	'We received the data of purchase as well as your credit card payment.' => 'Hemos recibido los datos de la compra así como los de tu pago con tarjeta de crédito.',
-	'We received the order data as well as your payment transfer or bank deposit' => 'Hemos recibido los datos del pedido asi como de tu pago con transferencia o depósito bancario',
+	'We received the order data as well as your payment transfer or bank deposit' => 'Hemos recibido los datos del pedido así como de tu pago con transferencia o depósito bancario',
     'We have received the order data as well as your credit card payment or Personaling credit. <br/> Your order will be shipped in the coming hours.' => 'Hemos recibido los datos del pedido asi como los de tu pago.<br/> Tu pedido será enviado en las próximas horas.',
     'We have good news, you have a balance available for {balance}' => 'Tenemos una buena noticia, tienes disponible un saldo a favor de {balance}',
 	'We will verify the transfer or deposit in the next 2-3 business days and will notify you when it has been approved' => 'Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado',
-	'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
+	'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos vía correo electrónico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
 	'Weigth' => 'Peso',
         '<h2>Welcome to Personaling</h2>Receiving
                                     this email because you registered your address Personaling.
@@ -547,7 +547,7 @@ return array (
 		<div class="page-header">
           <h1>Condiciones de Envíos y Encomiendas</h1>
         </div>
-        <p align="justify"> Al registrarte o realizar una compra en nuestra tienda <a href="http://www.personaling.es" title="Personaling, tu personal shopper digital">www.personaling.es</a>, aceptas automáticamente cada uno de los términos y condiciones que rigen nuestros envíos. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación. A continuación te los detallamos: </p>
+        <p align="justify"> Al registrarte o realizar una compra en nuestra tienda <a href="http://www.personaling.es" title="Personaling, Tu Personal Shopper Online">www.personaling.es</a>, aceptas automáticamente cada uno de los términos y condiciones que rigen nuestros envíos. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación. A continuación te los detallamos: </p>
         <ol align="justify">
           <li align="justify">Los envíos de Personaling.es se harán solamente dentro del territorio español y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
           <li align="justify"> El comprador tiene una única opción de envío, es decir sólo puede elegir una dirección para su envío.  </li>
@@ -560,14 +560,14 @@ return array (
             </ol>
             En todo caso, el monto del costo del envío se calculará automáticamente en el sistema, previo al pago, en el momento de realizar el pedido. De esta manera podrás conocerlo antes de tomar la decisión final de compra o cierre de la transacción.
           </li>
-          <li align="justify">El envió se llevará a cabo a través de SEUR que gestionará su entrega por medio de <a href="http://www.personaling.es" title="Personaling, tu personal shopper digital">Personaling.es</a> 
+          <li align="justify">El envió se llevará a cabo a través de SEUR que gestionará su entrega por medio de <a href="http://www.personaling.es" title="Personaling, Tu Personal Shopper Online">Personaling.es</a> 
             <br/> Puedes elegir entre dos tipo de entregas: </li>
             <ol class="margin_left_medium" style="list-style-type: none">
               <li >4.1 &nbsp; Puerta: Cuando tu dirección es de fácil acceso, podremos llevar tu pedido hasta la puerta de tu domicilio u oficina.  </li>
               <li >4.2 &nbsp; Local: Si por el contrario, es una dirección de difícil acceso podrás elegir la opción recogida en la oficina de SEUR más cercana, donde deberás buscar tu pedido cuando te notifiquemos que ha llegado. </li>
             </ol>            
           <li align="justify">Para recibir tu pedido en cualquiera de las modalidades debes presentar tu DNI y firmar el acuse de recibo. </li>
-          <li align="justify"> <a href="http://www.personaling.es" title="Personaling, tu personal shopper digital">Personaling.es</a> se hace responsable de empaquetar correctamente tu compra y gestionar la entrega dentro de los plazos correspondientes. En caso de retraso en los plazos, el cliente recibirá un cupón con el 10% de descuento para su próxima compra.</li>
+          <li align="justify"> <a href="http://www.personaling.es" title="Personaling, Tu Personal Shopper Online">Personaling.es</a> se hace responsable de empaquetar correctamente tu compra y gestionar la entrega dentro de los plazos correspondientes. En caso de retraso en los plazos, el cliente recibirá un cupón con el 10% de descuento para su próxima compra.</li>
         </ol>
         <p>&nbsp;</p>',
 

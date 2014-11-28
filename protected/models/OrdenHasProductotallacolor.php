@@ -141,7 +141,15 @@ class OrdenHasProductotallacolor extends CActiveRecord
                 'condition' => 'user.id = :id',
                 'params' => array(":id" => $id),                  
             );
+			
+			 $criteria->with['myorden'] = array(
+                'order'=> 'myorden.fecha desc',                
+            );
+			
 
+
+			
+			
             $criteria->together = true;
 
             //Agregar el filtro por devolucion = 0

@@ -104,7 +104,7 @@ class ProfileController extends Controller
                     //         'Puedes registrarte haciendo click en el enlace que aparece a continuación:<br/><br/> <a href="' . $registration_url.'">Click aquí</a>';
 //                    $params = array('subject' => $subject, 'body' => $body);
 
-//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
                     
                     //Guardar la invitacion en BD
                     $invitation = EmailInvite::model()->findByAttributes(array('user_id'=>$model->id, 'request_id'=>$requestId));                                       
@@ -409,8 +409,10 @@ class ProfileController extends Controller
 			if(isset($_POST['Direccion']['codigo_postal_id']))
 			     $model->codigo_postal_id = $_POST['Direccion']['codigo_postal_id'];
             else
-                $model->codigo_postal_id = CodigoPostal::model()->getCode($model->ciudad_id,'id');        
-			$model->pais=Pais::model()->getOficial($model->pais);
+                $model->codigo_postal_id = CodigoPostal::model()->getCode($model->ciudad_id,'id');
+			
+			if(is_numeric($model->pais))
+		 			$model->pais=Pais::model()->getOficial($model->pais);
 			$model->user_id = $usuario->id;
 			
 			if($model->save()){

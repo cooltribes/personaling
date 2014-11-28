@@ -1,7 +1,7 @@
 <div class="container margin_top">
   <div class="row">
     <div class="span8 offset2">
-      <section class="box_1 bg_mancha_1  margin_top  margin_bottom_small padding_small">
+      <section class="box_1  margin_top  margin_bottom_small padding_small">
         <div class="page-header">
           <h1><?php echo Yii::t('contentForm','Campaigns don\'t have available at this time'); ?></h1>
         </div>

@@ -82,7 +82,9 @@ $create_date = date('j M Y', $create_time);
                             
             	<div class="span8 padding_bottom_small">
             		<p>¡Bienvenida! Ya eres parte de Personaling.com; desde hoy tendrás a la distancia de un click las mejores marcas y asesoría de moda hecha por expertos.</p>
+            		<?php #echo Yii::app()->user->id;?>
             		<p>¿Quieres invitar a tus amigas a probar nuestro servicio de Personal Shopper? Anímate, ellas te lo agradecerán.</p>
+            	
             	</div>
                 
                 <div class="row-fluid margin_bottom margin_top padding_top">
@@ -245,7 +247,7 @@ $create_date = date('j M Y', $create_time);
 	                    
 	          	FB.ui({method: 'apprequests',
 			      title: 'Personaling',
-			      message: '¡Te invito a probar Personaling, tu personal shopper digital!',
+			      message: '¡Te invito a probar Personaling, Tu Personal Shopper Online!',
 			    }, fbCallback);
 	        } else {
 	            FB.login(function(response) {
@@ -268,7 +270,7 @@ $create_date = date('j M Y', $create_time);
 	                    
 	                    FB.ui({method: 'apprequests',
 					      title: 'Personaling',
-					      message: '¡Te invito a probar Personaling, tu personal shopper digital!',
+					      message: '¡Te invito a probar Personaling, Tu Personal Shopper Online!',
 					    }, fbCallback);
 	                } else {
 	                    //console.log('User cancelled login or did not fully authorize.');

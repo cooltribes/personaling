@@ -336,7 +336,7 @@ class GiftcardController extends Controller
 
 //                    $message->view = "mail_giftcard";
 //                    $params = array('subject' => $subject, 'body' => $body,'envio' => $envio, 'model'=> $model);
-//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 
                     
                     Yii::app()->user->updateSession();
@@ -879,7 +879,7 @@ class GiftcardController extends Controller
 
                 $message->addTo($envio->email);
 
-                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
                 Yii::app()->mail->send($message); 
                                                         
                 if(!$model->save()){

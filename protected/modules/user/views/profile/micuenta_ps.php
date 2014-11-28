@@ -72,13 +72,21 @@ $looks_recomendados = $look->match($model);
         <li><?php echo $total; ?> Devoluciones</li>
       </ul>
         <hr/>
-        <h5>Invita a tus amig@s</h5>
+       <!-- <h5>Invita a tus amig@s</h5>-->
         <!-- AddThis Button BEGIN -->
         <div class="addthis_toolbox addthis_default_style addthis_32x32_style text_align_center">
-          <a class="addthis_button_preferred_1"></a>
+         <!-- <a class="addthis_button_preferred_1"></a>
           <a class="addthis_button_preferred_2"></a>
           <a class="addthis_button_preferred_3"></a>
-          <a class="addthis_counter addthis_bubble_style"></a>
+          <a class="addthis_counter addthis_bubble_style"></a>-->
+           
+           <?php $this->widget('bootstrap.widgets.TbButton', array(
+					    'label'=>'Invita a tus amig@s',
+					    'type'=>'danger',
+					    'htmlOptions'=>array('class'=>'btn-block btn-large'),
+						'url'=>array('invitaciones')	,    
+					)); ?> 
+			
         </div>
         <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};
               var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};

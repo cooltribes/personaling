@@ -51,7 +51,7 @@ if(Yii::app()->session['pais']!="")
 		
 			<div align="center">
 					<a class="btn btn-danger margin_bottom_medium margin_top_medium" style="width:90px" href="http://www.personaling.es" value="http://www.personaling.es" >España<span class="color12"></span></a>
-					<a class="btn btn-danger margin_bottom_medium margin_top_medium" style="width:90px" value="http://www.personaling.com.ve"  onclick="$('#excuses').show()">Venezuela<span class="color12"></span></a>
+					<a class="btn btn-danger margin_bottom_medium margin_top_medium" style="width:90px" href="http://www.personaling.com.ve">Venezuela<span class="color12"></span></a>
 			</div>
 					
 			 

@@ -166,6 +166,6 @@ class YiiMailMessage extends CComponent {
             
             Yii::app()->mail->activarMandrill();  
             
-            $this->from = array('no-reply@personaling.com' => 'Tu Personal Shopper Digital');
+            $this->from = array('no-reply@personaling.com' => 'Tu Personal Shopper Online');
         }
 }

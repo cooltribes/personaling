@@ -1019,10 +1019,12 @@ src: url('../fonts/entypo.woff'),
 /*------------ Footer OFF --------------*/
 
 
-#wrapper_footer{
-    background-color: white;
+.main_footer{
 
-    border-top:1px solid #ddd;
+
+ 
+    background: #eee;
+    border: 0px;
     .padding_bottom;
     .padding_top;
     .margin_top_large;
@@ -1668,15 +1670,21 @@ src: url('../fonts/entypo.woff'),
                       background-repeat: no-repeat;
                       background-position-x: 11px;
                       background-position-y: 9px;  
-                      text-shadow: none;                    
+                      text-shadow: none;
+                      span{
+                        margin-right:3px;
+                      }
+              
  }   
 .btn-danger_modificado{
                       background: @negro !important;
+                      border: solid 1px @negro;
                       background-image: url('../images/icon_corazon_lleno.png') !important;
                       background-repeat: no-repeat !important;
                       background-position-x: 11px !important;
                       background-position-y: 9px !important;  
                       color: #FFF !important;
+                      
 }      
 #total-likes{
                       background: #E3DEDE;
@@ -1750,23 +1758,7 @@ src: url('../fonts/entypo.woff'),
                             }
                         }
 
-                    #btn-encanta{
-                      border-radius: 0;
-                      background-color: #E3DEDE;
-                      background-image: url('../images/icon_corazon_vacio.png');
-                      background-repeat: no-repeat;
-                      background-position-x: 11px;
-                      background-position-y: 9px;  
-                      text-shadow: none;                    
-                    }   
-                    .btn-danger_modificado{
-                      background: @negro !important;
-                      background-image: url('../images/icon_corazon_lleno.png') !important;
-                      background-repeat: no-repeat !important;
-                      background-position-x: 11px !important;
-                      background-position-y: 9px !important;  
-                      color: #FFF !important;
-                    }      
+ 
                     #total-likes{
                       background: #E3DEDE;
                       color: #3C4141;              
@@ -2266,24 +2258,8 @@ src: url('../fonts/entypo.woff'),
             .padding_top;
             margin-top:1em;
             .margin_bottom; 
-            #btn-encanta{
-                border-radius: 0;
-                background-color: #E3DEDE;
-                background-image: url('../images/icon_corazon_vacio.png');
-                background-repeat: no-repeat;
-                background-position-x: 11px;
-                background-position-y: 9px;  
-                text-shadow: none;  
-              
-            }   
-            .btn-danger_modificado{
-                background: @color1 !important;
-                background-image: url('../images/icon_corazon_lleno.png') !important;
-                background-repeat: no-repeat !important;
-                background-position-x: 11px !important;
-                background-position-y: 9px !important;  
-                color: #FFF !important;
-            }      
+          
+    
             #total-likes{
                 background: #C4BCCD;
                 color: #3C4141;              

@@ -500,7 +500,7 @@ return array (
       <p>Oh! No, lamentablemente tenemos súper buenos precios porque tenemos artículos exclusivos, así que si compras por aquí, debes hacer el cambio por aquí.    </p>
       <hr/>
       <h3>¿Si tengo una queja o sugerencia, a cuál correo electrónico puedo escribir?  </h3>
-      <p>Puedes comunicarte con nosotros por cualquiera de nuestras redes sociales o a través de  <a href="mailto:servicioalcliente@personaling.com">servicioalcliente@personaling.com</a></p>',
+      <p>Puedes comunicarte con nosotros por cualquiera de nuestras redes sociales o a través de  <a href="mailto:'.Yii::app()->params['clientService'][Yii::app()->language].'">'.Yii::app()->params['clientService'][Yii::app()->language].'</p>',
 
       'Copy Politicas de Privacidad' => '
       <div class="page-header">

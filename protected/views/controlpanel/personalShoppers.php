@@ -70,24 +70,33 @@
 $template = '{summary}
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped table-condensed">
     <tr>      
-      <th colspan="3" rowspan="2" scope="col">Usuario</th>
-      <th colspan="2" scope="col" style="text-align: center">Ventas</th>
-      <th rowspan="2" scope="col" style="text-align: center">Comisión<br>Actual</th>
-      <th rowspan="2" scope="col" style="text-align: center">Pago por<br>Click</th>
+      <th colspan="2" rowspan="2" scope="col">Usuario</th>
+      <th rowspan="2" scope="col" style="text-align: center">Vistas</th>
+      <th colspan="2" scope="col" style="text-align: center">Ventas <br>(Looks Completos)</th>
+      <th colspan="2" scope="col" style="text-align: center">Ventas <br>(Looks Parciales)</th>
+      <th rowspan="2" scope="col" style="text-align: center">Comisión<br>Ventas</th>
       <th rowspan="2" scope="col" style="text-align: center">Validez<br>Bolsa</th>
-      <th colspan="2" scope="col" style="text-align: center">Saldo ('.Yii::t('contentForm', 'currSym').')</th>
-      <th rowspan="2" scope="col">Fecha de Registro</th>
+      <th rowspan="2" scope="col" style="text-align: center">Comisiones('.Yii::t('contentForm', 'currSym').')</th>
       <th rowspan="2" scope="col">Detalle</th>
     </tr> 
         <tr>
       <th scope="col">Looks</th>
       <th scope="col">Productos</th>
-      <th scope="col">Comisiones</th>
-      <th scope="col">Total</th>
+      <th scope="col">Looks</th>
+      <th scope="col">Productos</th>
     </tr>
     {items}
     </table>
     {pager}';
+	
+	 $pagerParams=array(
+        'header'=>'',
+        'prevPageLabel' => Yii::t('contentForm','Previous'),
+        'nextPageLabel' => Yii::t('contentForm','Next'),
+        'firstPageLabel'=> Yii::t('contentForm','First'),
+        'lastPageLabel'=> Yii::t('contentForm','Last'),
+        'htmlOptions'=>array(
+            'class'=>'pagination pagination-right'));   
 
 $this->widget('zii.widgets.CListView', array(
     'id' => 'list-auth-items',
@@ -100,13 +109,9 @@ $this->widget('zii.widgets.CListView', array(
         actualizarNroUsuarios(id, data);
 
       } ",
-    'pager' => array(
-        'header' => '',
-        'htmlOptions' => array(
-            'class' => 'pagination pagination-right',
-        )
-    ),
+     'pager'=>$pagerParams,	
 ));
+
 
 
 Yii::app()->clientScript->registerScript('search', "

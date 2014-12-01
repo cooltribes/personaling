@@ -15,8 +15,20 @@
     
     <!--DATOS PERSONALES-->    
     <td>
-        <h5 class="no_margin_bottom"> <?php echo $data->profile->first_name . ' '
-                . $data->profile->last_name; ?></h5>
+        <h5 class="no_margin_bottom">  
+        <?php 
+        
+        
+                echo "".
+   				CHtml::link(
+   							$data->profile->first_name . ' '
+               			 . $data->profile->last_name,
+                		Yii::app()->getBaseUrl()."/user/admin/update/id/".$data->id
+   				)
+  				."";
+				?>
+        </h5>
+              
         <small><strong>ID</strong>: <?php echo $data->id; ?><br/>
             <?php
             if ($data->personal_shopper == 1) {
@@ -35,7 +47,11 @@
             ?> </small>
     </td>
     
+     <td>
+     <?php	echo $data->getAllViews($data->id); ?>
+     </td>
     <!--TELF - EMAIL - CIUDAD-->
+   <!-- 
     <td>
         <small><?php echo $data->email; ?><br/>
             <strong>Telf.</strong>: <?php echo $data->profile->tlf_celular; ?> <br/>
@@ -47,18 +63,42 @@
             <?php } ?>   
         </small>
     </td>
+     
     
     <!--LOOKS COMPLETOS-->
-    <td class="error">
+    <td>
         <?php
-            echo $data->getLooksVendidos($data->id);
+            $arrs= $data->getLooksVendidos($data->id);
+			$partir=explode("/",$arrs);
+			echo $partir[0];
+			
         ?>
     </td>
     
-    <!--PRODUCTOS VENDIDOS-->
+    <!--PRODUCTO DE LOOKS COMPLETOS-->
     <td>
         <?php 
-            echo $data->getProductosVendidos();
+           # echo $data->getProductosVendidos();
+           echo $partir[1];
+
+        ?>
+    </td>
+    
+    <!--LOOKS PARCIALES-->
+        <td>
+        <?php
+        
+            $arrs= $data->getLooksParciales($data->id);
+			$partir=explode("/",$arrs);
+			echo $partir[0];
+        ?>
+    </td>
+    
+    <!--PRODUCTOS DE LOOK PARCIALES-->
+    <td>
+        <?php 
+           # echo $data->getProductosVendidos();
+           echo $partir[1];
 
         ?>
     </td>
@@ -71,7 +111,7 @@
     </td>
 
     <!--PAGO POR CLICK-->
-    <td>
+    <!--<td>
         <?php 
             echo $data->getPagoClick();
         ?>
@@ -88,16 +128,16 @@
     <td><?php echo $data->getSaldoPorComisiones();echo " ".Yii::t('backEnd', 'currSym'); ?></td>
     
     <!--SALDO TOTAL-->
-    <td>
+   <!-- <td>
         <?php $saldo = Profile::model()->getSaldo($data->id);
         echo Yii::app()->numberFormatter->formatDecimal($saldo)." ".Yii::t('backEnd', 'currSym'); ?>
     </td>
     
     <!--FECHA DE REGISTRO-->
-    <td>
+   <!-- <td>
         <?php if ($data->getCreatetime()) echo date("d/m/Y", $data->getCreatetime());
             else echo 'N/D'; ?>
-    </td>
+   </td> -->
     
     <!--VER DETALLES-->
     <td>

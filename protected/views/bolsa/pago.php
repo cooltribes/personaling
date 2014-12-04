@@ -677,6 +677,27 @@ else
 }
 ?>
 
+<?php $this->beginWidget(
+    'bootstrap.widgets.TbModal',
+    array('id' => 'alertFail')
+); ?>
+
+<div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h4>Hay un problema</h4>
+</div>
+
+<div class="modal-body">
+    <p>Tu saldo no es suficiente para realizar el pago, por favor seleccionar un método de pago</p>
+</div>
+
+<div class="modal-footer">
+
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+</div>
+
+<?php $this->endWidget(); ?>
+
 <script>
 	
     var balanceUsuario = <?php echo $balance; ?>;
@@ -783,6 +804,8 @@ $('#TarjetaCredito_year').change(function(){
 		$('#TarjetaCredito_vencimiento').val($('#TarjetaCredito_month').val()+'/'+$('#TarjetaCredito_year').val());
 	
 });
+
+
 ///******** FIN RAFA **********//////
         $("#deposito").click(function() {
         	
@@ -804,7 +827,19 @@ $('#TarjetaCredito_year').change(function(){
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
             
         });
-        
+        $("#radio-Saldo").click(function() {
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'codigo');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ci');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'direccion');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ciudad');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'estado');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
+        })
         $("#mercadopago").click(function() {
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> MercadoPago.</td>";
             $("#adentro").html(añadir);
@@ -916,6 +951,23 @@ $('#TarjetaCredito_year').change(function(){
             }
          
         });
+
+    });
+    $("#tarjeta-form").submit(function(){
+        var total = <?php echo $total; ?>;
+        var balance = <?php echo $balance; ?>;
+        if($("#asegurado").is(':checked')){
+            total=total+parseFloat($("#asegurado").val());
+            $("#conSeguro").val('1');
+        }else{
+            $("#conSeguro").val('0');
+        }
+        if(balance < total){
+
+            $("#alertFail").modal("show");
+            return false;
+
+        }
 
     });
 

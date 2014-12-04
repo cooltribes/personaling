@@ -899,6 +899,7 @@ class User extends CActiveRecord {
         function getLooksVendidos($id) { 
         	$total = 0;
 			 $looks= look::model()->findAllByAttributes(array('user_id'=>$id));
+			 $absoluto_todo=0;
 			 
 			 foreach($looks as $lks)
 			 {
@@ -914,13 +915,66 @@ class User extends CActiveRecord {
 						$total_ordenes=OrdenHasProductotallacolor::model()->countByAttributes(array('look_id'=>$lks->id, 'tbl_orden_id'=>$orders->tbl_orden_id));
 						if($total_ordenes>=$total_producto)
 						{
+							/*$absoluto_todo+=$total_producto;	
+							$total++;*/
+							$tot=OrdenHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$lks->id, 'tbl_orden_id'=>$orders->tbl_orden_id));	
+							foreach($tot as $totalero)
+							{
+								$absoluto_todo+=$totalero->cantidad;
+							}
 							$total++;
 						}
 					}	
 				}
 			 } 
-            return $total;
+            return $total."/".$absoluto_todo;
         }
+		
+		function getLooksParciales($id)
+		{
+			$total = 0;
+			 $looks= look::model()->findAllByAttributes(array('user_id'=>$id));
+			 $absoluto_todo=0;
+			 
+			 foreach($looks as $lks)
+			 {
+			 		
+			 	$total_producto=LookHasProducto::model()->countByAttributes(array('look_id'=>$lks->id));	//busco todos los productos de ese look
+			 	$ordenes=OrdenHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$lks->id));
+			 	$equal=0;
+			 	foreach($ordenes as $orders)
+				{
+					if($equal!=$orders->tbl_orden_id)
+					{
+						$equal=$orders->tbl_orden_id;	
+						$total_ordenes=OrdenHasProductotallacolor::model()->countByAttributes(array('look_id'=>$lks->id, 'tbl_orden_id'=>$orders->tbl_orden_id));
+						if($total_ordenes<$total_producto)
+						{
+							#$absoluto_todo+=$total_ordenes;
+							
+							$tot=OrdenHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$lks->id, 'tbl_orden_id'=>$orders->tbl_orden_id));	
+							foreach($tot as $totalero)
+							{
+								$absoluto_todo+=$totalero->cantidad;
+							}
+							$total++;
+						}
+					}	
+				}
+			 } 
+            return $total."/".$absoluto_todo;
+		}
+
+		function getAllViews($id)
+		{
+			$contador=0;
+			$looks=Look::model()->findAllByAttributes(array('user_id'=>$id));
+			foreach($looks as $lks)
+			{
+				$contador+=$lks->view_counter;
+			}	
+			return $contador;
+		}
         
         /*Obtiene la comision del PS formateada de acuerdo al tipo (% o fijo)*/
         function getComision() {

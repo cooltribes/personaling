@@ -861,16 +861,16 @@ public function actionCategorias(){
 
                // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),$criteria);
                 $count_productos = Producto::model()->with($with)->noeliminados()->activos()->countByAttributes(array('marca_id'=>$_POST['marcas']));
-                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),array('limit'=>$limit,'offset'=>$offset));
+                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),array('limit'=>$limit,'offset'=>$offset,'order'=>'t.id desc'));
             }else{
                 //$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll($criteria);
                 $count_productos = Producto::model()->with($with)->noeliminados()->activos()->count();
-                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset));
+                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset,'order'=>'t.id desc'));
             }
 		} else {
 			//$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll($criteria);
             $count_productos = Producto::model()->with($with)->noeliminados()->activos()->count();
-            $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset));
+            $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset,'order'=>'t.id desc'));
 		}
 		$pages = ceil($count_productos/$limit);
 

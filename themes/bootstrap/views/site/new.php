@@ -204,33 +204,33 @@ if(Yii::app()->language=='es_es'){
                
                     <div class="articleRight no_margin_top">
                         <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art1.jpg';?>" width="100%" />
-                       <div class="articleLegend text_center_align">
-                           <?php echo $copys['art1'];?>
-                       </div> 
+                      <!-- <div class="articleLegend text_center_align">
+                           <?php //echo $copys['art1'];?>
+                       </div> -->
                     </div>
                 </a>
                 <a href="<?php echo $links['art2'];?>">
                     <div class="articleRight">
                         <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art2.jpg';?>" width="100%" />
-                       <div class="articleLegend">
-                           <?php echo $copys['art2'];?>
-                       </div> 
+                      <!-- <div class="articleLegend">
+                           <?php //echo $copys['art2'];?>
+                       </div> -->
                     </div>
                 </a>
                 <a href="<?php echo $links['art3'];?>">
                     <div class="articleRight">
                         <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art3.jpg';?>" width="100%" />
-                       <div class="articleLegend">
-                           <?php echo $copys['art3'];?>
-                       </div> 
+                     <!--  <div class="articleLegend">
+                           <?php //echo $copys['art3'];?>
+                       </div> -->
                     </div>
                 </a>
                 <a href="<?php echo $links['art4'];?>">
                     <div class="articleRight">
                         <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art4.jpg';?>" width="100%" />
-                       <div class="articleLegend margin_top_medium">
-                           <?php echo $copys['art4'];?>
-                       </div> 
+                     <!--  <div class="articleLegend margin_top_medium">
+                           <?php // echo $copys['art4'];?>
+                       </div> -->
                     </div>
                 </a>
       <!--          <div style="background-color: #6F6F6F; margin-top: 80px; width:100%; height:207px; position: relative; overflow-y: hidden;">

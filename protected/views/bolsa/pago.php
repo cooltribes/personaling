@@ -639,7 +639,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </div>
             <!-- Aplicar Gifcard OFF -->
             <?php } ?>
-            <input type="hidden" id="tipo_pago" name="tipo_pago" value="5" />
+            <input type="hidden" id="tipo_pago" name="tipo_pago" value="5" /> <!-- 5 por que no hay ningun pago seleccionado OJO se utiliza en funcion de js -->
             <input type="hidden" id="usar_balance_hidden" name="usar_balance_hidden" value="0" />
             <input type="hidden" id="conSeguro" name="conSeguro" value="0" />
             <div class="form-actions siguiente">
@@ -962,12 +962,13 @@ $('#TarjetaCredito_year').change(function(){
         }else{
             $("#conSeguro").val('0');
         }
-        if(balance < total){
+        if ($("#tipo_pago").val()==5)
+            if(balance < total){
 
-            $("#alertFail").modal("show");
-            return false;
+                $("#alertFail").modal("show");
+                return false;
 
-        }
+            }
 
     });
 

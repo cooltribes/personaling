@@ -1197,8 +1197,31 @@ class AdminController extends Controller
 
 	public function actionToggle_admin($id){
 		$model = User::model()->findByPk($id);
+		$usuario=$model->superuser;
 		$model->superuser = 1-$model->superuser; // hacer el toggle
-		if ($model->save()){
+		if ($model->save())
+		{	
+				$message = new YiiMailMessage;
+	            //Opciones de Mandrill
+	            $message->activarPlantillaMandrill();
+	            if($usuario==0)
+				{
+					$subject = 'Activacion de Administrador';
+				}
+				else 
+				{
+					$subject = 'Desactivacion de Administrador';
+				}
+	            
+	            $message->subject= $subject;
+	            $body = $this->renderPartial("//mail/admin", array(
+	                "usuario" => $usuario), true);
+	            
+	            $message->setBody($body, 'text/html');                
+	            $message->addTo($model->email);
+	            
+	            Yii::app()->mail->send($message);
+			
 		echo CJSON::encode(array(
 	            'status'=>'success',
 	            'admin'=>$model->superuser,

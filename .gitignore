@@ -13,14 +13,14 @@ svn-commit*.tmp
 *.xml
 
 sftp-config.json
-/nbproject/private/
+nbproject/private/
 nbproject
-/magazine/
-/test48/
-/images/es_es/*
-/images/es_ve/*
-/.htaccess
-/images/es_ve
+magazine/
+test48/
+images/es_es/*
+images/es_ve/*
+.htaccess
+images/es_ve
 
 ### Yii ###
 assets/*

@@ -7,7 +7,33 @@ $user = User::model()->findByPk($user);
 //$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 $tipo_pago = $orden->getTipoPago();
 //echo $orden->pago_id;
+if(Yii::app()->language=="es_ve"):
+?>
 
+<!-- Google Code for Ventas Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 957544716;
+var google_conversion_language = "es";
+var google_conversion_format = "1";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "n2QBCKTj_VcQjPLLyAM";
+var google_conversion_value = 1.00;
+var google_conversion_currency = "VEF";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/957544716/?value=1.00&amp;currency_code=VEF&amp;label=n2QBCKTj_VcQjPLLyAM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+
+<?php
+endif;
 ?>
 <?php //echo "xPagar".$orden->getxPagar()." SumxOrden".Detalle::model()->getSumxOrden($orden->id);?>
  <style>
@@ -17,6 +43,9 @@ $tipo_pago = $orden->getTipoPago();
 			outline: solid 1px;
     	}
     </style>
+    
+    
+    
 <div class="container margin_top">
 <div class="row">
   <div class="span8 offset2">

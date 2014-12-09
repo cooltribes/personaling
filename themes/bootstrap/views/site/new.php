@@ -28,37 +28,37 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 if(Yii::app()->language=='es_es'){
     $links=array(
         'banner'=>Yii::app()->baseUrl."/registro-personaling",
-        'slider'=>"http://www.personaling.es/nightnonstop",
-        'art1'=>"http://personaling.com/magazine/como-llevar-la-clasica-camisa-vaquera-segun-mi-tipo-de-cuerpo/",
-        'art2'=>"http://www.personaling.es/outlet",
-        'art3'=>"http://www.personaling.es/producto/detalle/5808",
-        'art4'=>"http://www.personaling.es/look/998",
+        'slider'=>"http://www.personaling.es/looks-personalizados",
+        'art1'=>"http://personaling.com/magazine/el-abc-de-la-moda/",
+        'art2'=>"http://www.personaling.es/nightnonstop",
+        'art3'=>"http://www.personaling.es/outlet",
+        'art4'=>"http://www.personaling.es/tienda-ropa-personalizada",
     );
     $copys=array(
         'banner'=>"",
         'slider'=>"",
-        'art1'=>"¡Dejáte llevar por la moda vaquera!",
-        'art2'=>"Compra prendas hasta con 50% de descuento en nuestro outlet ",
-        'art3'=>"Compra los productos tendencia de esta temporada en nuestra tienda",
-        'art4'=>"Compra looks especiales para ti",
+        'art1'=>"Sé una experta en moda con nuestro glosario fashion",
+        'art2'=>"¡Déjate asesorar por nuestros Personal Shoppers! ",
+        'art3'=>"Los mejores precios para Navidad",
+        'art4'=>"¡Compra Custo Barcelona en Personaling!",
     );
     
 }else{
     $links=array(
         'banner'=>Yii::app()->baseUrl."/registro-personaling",
-        'slider'=>"http://www.personaling.com.ve/HarryLevy",
-        'art1'=>"http://www.personaling.com.ve/producto/detalle/658",
-        'art2'=>"http://www.personaling.com.ve/look/307",
-        'art3'=>"http://www.personaling.com.ve/producto/detalle/571",
-        'art4'=>"http://www.personaling.com.ve/look/264",
+        'slider'=>"http://www.personaling.com.ve/looks-personalizados",
+        'art1'=>"http://www.personaling.com.ve/tienda-ropa-personalizada",
+        'art2'=>"http://www.personaling.com.ve/HarryLevy",
+        'art3'=>"http://www.personaling.com.ve/look/449",
+        'art4'=>"http://www.personaling.com.ve/producto/detalle/600 ",
     );
     $copys=array(
         'banner'=>"",
         'slider'=>"",
-        'art1'=>"¡Únete a la fiebre de las bandoleras",
-        'art2'=>"Encuentra los mejores looks inspirados en las famosas",
-        'art3'=>"¡Suéteres para todas!",
-        'art4'=>"Compra looks especiales para ti",
+        'art1'=>"¡Tus must de Navidad!",
+        'art2'=>"¡Déjate asesorar por nuestros Personal Shoppers!",
+        'art3'=>"Consigue un vestido especial para ti",
+        'art4'=>"¿Ya tienes tu pijama para Diciembre?",
     );
 }
 
@@ -204,33 +204,33 @@ if(Yii::app()->language=='es_es'){
                
                     <div class="articleRight no_margin_top">
                         <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art1.jpg';?>" width="100%" />
-                       <div class="articleLegend text_center_align">
-                           <?php echo $copys['art1'];?>
-                       </div> 
+                      <!-- <div class="articleLegend text_center_align">
+                           <?php //echo $copys['art1'];?>
+                       </div> -->
                     </div>
                 </a>
                 <a href="<?php echo $links['art2'];?>">
                     <div class="articleRight">
                         <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art2.jpg';?>" width="100%" />
-                       <div class="articleLegend">
-                           <?php echo $copys['art2'];?>
-                       </div> 
+                      <!-- <div class="articleLegend">
+                           <?php //echo $copys['art2'];?>
+                       </div> -->
                     </div>
                 </a>
                 <a href="<?php echo $links['art3'];?>">
                     <div class="articleRight">
                         <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art3.jpg';?>" width="100%" />
-                       <div class="articleLegend">
-                           <?php echo $copys['art3'];?>
-                       </div> 
+                     <!--  <div class="articleLegend">
+                           <?php //echo $copys['art3'];?>
+                       </div> -->
                     </div>
                 </a>
                 <a href="<?php echo $links['art4'];?>">
                     <div class="articleRight">
                         <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art4.jpg';?>" width="100%" />
-                       <div class="articleLegend margin_top_medium">
-                           <?php echo $copys['art4'];?>
-                       </div> 
+                     <!--  <div class="articleLegend margin_top_medium">
+                           <?php // echo $copys['art4'];?>
+                       </div> -->
                     </div>
                 </a>
       <!--          <div style="background-color: #6F6F6F; margin-top: 80px; width:100%; height:207px; position: relative; overflow-y: hidden;">

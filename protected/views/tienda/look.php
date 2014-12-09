@@ -265,7 +265,8 @@ $("#mobFiltrar").click(function() {
                 
                 <?php
                 // este bloque no se debe mostrar si el usuario es hombre
-                if((isset($user) && $user->profile->sex == 1) || !isset($user)){
+                if((isset($user) && $user->profile->sex == 1) || !isset($user))
+                {
                     ?>
                     <div class="margin_top_medium botones" style="width:100%">
                         <div class="btlooks">

@@ -1377,7 +1377,7 @@ public function actionValidar()
                             break;
                         }
                 }
-                
+                $totalDevuelto = 0;
                 /*Si ha pagado, devolver dinero al saldo*/
                 if($pagoHecho){
                                                

@@ -2550,7 +2550,23 @@ class BolsaController extends Controller
 
 						Yii::app()->user->setFlash('success', 'Hemos recibido tu pago y está en espera de confirmación');
 						echo "ok";	
-					}	
+					}
+
+				 $user = User::model()->findByPk($usuario);
+				 
+				 $message = new YiiMailMessage;
+	            //Opciones de Mandrill
+	            $message->activarPlantillaMandrill();
+	            
+	            $subject = 'Tu Pago en Personaling';
+	            $message->subject    = $subject;
+	            $body = $this->renderPartial("//mail/verificar_pago", array(
+	                "orden" => $orden), true);
+	            
+	            $message->setBody($body, 'text/html');                
+	            $message->addTo($user->email);
+	            
+	            Yii::app()->mail->send($message);	
 					
 				}				
 			}

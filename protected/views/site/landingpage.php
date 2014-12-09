@@ -50,8 +50,8 @@ if(Yii::app()->session['pais']!="")
 	
 		
 			<div align="center">
-					<a class="btn btn-danger margin_bottom_medium margin_top_medium" style="width:90px" href="http://www.personaling.es" value="http://www.personaling.es" >España<span class="color12"></span></a>
-					<a class="btn btn-danger margin_bottom_medium margin_top_medium" style="width:90px" href="http://www.personaling.com.ve">Venezuela<span class="color12"></span></a>
+					<a class="btn btn-danger margin_bottom_medium margin_top_medium pais" style="width:90px" href="http://www.personaling.es" value="http://www.personaling.es" >España<span class="color12"></span></a>
+					<a class="btn btn-danger margin_bottom_medium margin_top_medium pais" style="width:90px" href="http://www.personaling.com.ve">Venezuela<span class="color12"></span></a>
 			</div>
 					
 			 
@@ -88,9 +88,9 @@ $('#botone').click(function () {
 		});
 	$(document).ready(function(){
 		var country = readCookie('country_value');
-		/*if(country){
+		if(country){
 			window.location.replace(country);
-		}*/
+		}
 	});
 	$('#cookies_notification').css('margin-top','0px');
 	$('#cookies_notification').css('position','absolute');

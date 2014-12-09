@@ -1,11 +1,12 @@
 <?php 
-
+if(!isset($iddireccionNueva))
+    $iddireccionNueva=0;
 if(isset($_SESSION['idFacturacion']))
 		{	echo CHtml::hiddenField('controlBill',Yii::app()->getSession()->get('idFacturacion'),array('class'=>'hidBill'));
 			unset($_SESSION['idFacturacion']);
 		}
-		else
-			echo CHtml::hiddenField('controlBill','0',array('class'=>'hidBill'));
+		else 
+			     echo CHtml::hiddenField('controlBill',$iddireccionNueva,array('class'=>'hidBill'));
 	foreach($direcciones as $cadauna){
 	       			$ciudad = Ciudad::model()->findByPk($cadauna->ciudad_id);
 					$provincia = Provincia::model()->findByPk($cadauna->provincia_id);
@@ -36,7 +37,7 @@ if(isset($_SESSION['idFacturacion']))
 							unset($_SESSION['idFacturacion']);
 						}
 					else
-						echo CHtml::hiddenField('billAdd','0',array('class'=>'hidBill'));
+						echo CHtml::hiddenField('billAdd',$iddireccionNueva,array('class'=>'hidBill'));
 		           
 					 
 		            echo "
@@ -76,7 +77,7 @@ if(isset($_SESSION['idFacturacion']))
 		            </div>
 		            <div class=''>		            	
 						<label class='checkbox'>
-						  <input  class='billingAddress' type='checkbox' value='".$cadauna->id."'>
+						  <input  class='billingAddress' type='checkbox' value='".$cadauna->id."' id='check".$cadauna->id."'>
 						  ".Yii::t('contentForm','Use this as billing address')."
 						</label>
 		            </div>
@@ -97,7 +98,11 @@ if(isset($_SESSION['idFacturacion']))
 <script>
 			  		
 	$( document ).ready(function() {
-		
+	<?php if(isset($iddireccionNueva)){?>
+	    $('#check<?php echo $iddireccionNueva; ?>').prop('checked', true); 
+	    <?php
+	    
+         } ?>	
 			  			
 		$('.bUsadas').click(function(e) {
 

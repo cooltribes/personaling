@@ -71,6 +71,8 @@
                 case self::DEVELOPMENT:
                     $this->_debug       = true;
                     $this->_trace_level = 3;
+                    defined('YII_DEBUG') or define('YII_DEBUG',$this->_debug);
+                    defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', $this->_trace_level);
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_development());
                     break;
                 case self::TEST:
@@ -384,6 +386,7 @@
                         'depositoTransferencia' => false,
                         'instapago' => false,
                         'mercadopago' => false,
+                        'prueba' => false,
                                                     
                     ),
                     'clientName'=>'Personaling Enterprise S.L ',
@@ -412,6 +415,10 @@
                     'outlet'=>TRUE,
                     'zohoActive' => FALSE,
                     'id_look_switch' => 638,
+                    'instapago_key' => array(
+                        "KeyId"=> "EDC20F86-9C7E-4D2A-9603-6EF5612F5536",
+                        "PublicKeyId"=>"5274e829763cd383270512b87a6c947e",
+                    )
                 ),
             );
         }
@@ -625,7 +632,7 @@
                     'components'=>array(
                         'db'=>array(
                             'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
-                                                dbname=db_personalingNUEVA_VE',
+                                                dbname=db_personalingSTAGE_VE',
                             'emulatePrepare' => true,
                             'username' => 'personaling',
                             'password' => 'Perso123Naling',

@@ -82,7 +82,7 @@
         }
 		else {
 			echo $this->_lastDate ? $data->getLookReferredViewsByDate(
-                    $this->_lastDate, date("Y-m-d")) : $data->getLookReferredViews();
+                    $this->_lastDate, date("Y-m-d H:i:s")) : $data->getLookReferredViews();
 		}
         ?>
     </td>
@@ -91,7 +91,7 @@
     <td>
         <?php 
             echo $this->_lastDate ? $data->getLookViewsPercentageByDate($this->_lastDate,
-                    date("Y-m-d"), $this->_totallooksviews) : 
+                    date("Y-m-d H:i:s"), $this->_totallooksviews) :
                 $data->getLookViewsPercentage($this->_totallooksviews);
         ?>
     </td>
@@ -107,8 +107,8 @@
        ));
        //aqui va el porcentaje de comision
        echo CHtml::hiddenField("percentage-$data->id", $this->_lastDate ?
-               $data->getLookViewsPercentageByDate($this->_totallooksviews,
-                       date("Y-m-d"), $this->_totallooksviews, false)
+               $data->getLookViewsPercentageByDate($this->_lastDate,
+                       date("Y-m-d H:i:s"), $this->_totallooksviews, false)
                : $data->getLookViewsPercentage($this->_totallooksviews, false));
        
        ?>                    

@@ -94,11 +94,12 @@ class Curl extends CComponent {
 		"KeyId"=> "069C794A-6917-4283-B26F-2AFC7F685A96",
 		"PublicKeyId"=>"5274e829763cd383270512b87a6c947e",
 		);*/
-		
+		/*
 		$data_keys = array(
 		"KeyId"=> "EDC20F86-9C7E-4D2A-9603-6EF5612F5536",
 		"PublicKeyId"=>"5274e829763cd383270512b87a6c947e", 
-		);
+		);*/
+        $data_keys = Yii::app()->params['instapago_key'];
 		
 		$data = array_merge($data_keys, $data);
 		//var_dump($data); 

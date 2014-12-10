@@ -52,8 +52,21 @@ $this->breadcrumbs=array(
                 <div class=" muted">Precio de venta de este producto (sin IVA)</div>
               </div>
             </div>
+            <?php 
+            if(Yii::app()->language=="es_es")
+			{
+			?>
+				<div class="control-group"> <?php echo $form->dropDownListRow($precio, 'impuesto', array(0 => 'Sin IVA (Zona Libre)', 1 => 'Con IVA '.Yii::app()->params['IVAtext'].' (Tierra Firme)',2 => 'Ambos'), array('disabled'=>'disabled', 'options' => array('1'=>array('selected'=>true)))); ?> <?php echo $form->error($precio,'impuesto'); ?> </div>	
+			<?php
+			}
+			else 
+			{
+			?>	
+				<div class="control-group"> <?php echo $form->dropDownListRow($precio, 'impuesto', array(0 => 'Sin IVA (Zona Libre)', 1 => 'Con IVA '.Yii::app()->params['IVAtext'].'',2 => 'Ambos'), array('disabled'=>'disabled', 'options' => array('1'=>array('selected'=>true)))); ?> <?php echo $form->error($precio,'impuesto'); ?> </div>
+			<?php
+			}
+            ?>
             
-            <div class="control-group"> <?php echo $form->dropDownListRow($precio, 'impuesto', array(0 => 'Sin IVA (Zona Libre)', 1 => 'Con IVA '.Yii::app()->params['IVAtext'].' (Tierra Firme)',2 => 'Ambos'), array('disabled'=>'disabled', 'options' => array('1'=>array('selected'=>true)))); ?> <?php echo $form->error($precio,'impuesto'); ?> </div>
             <div class="control-group"> <?php echo $form->textFieldRow($precio, 'precioImpuesto', array('class'=>'span5')); ?> </div>
             
             

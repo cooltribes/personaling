@@ -22,7 +22,10 @@
                           '2' => 'Valor fijo ('
                         .Yii::t('contentForm', 'currSym').")",
                                                            ),
-                            array('style' => 'display:none'));    
+                            array('style' => 'display:none')); 
+							
+	echo CHtml::dropDownList('ps_creado_2', '', array('1'=>'Si', '0'=>'No' ),
+                            array('style' => 'display:none'));   
     
 //    echo CHtml::dropDownList('prods_marca', '', CHtml::listData(Marca::model()->findAll(), 'id', 'nombre'),
 //                            array('style' => 'display:none'));    
@@ -59,9 +62,10 @@
                                 'saldoComisiones_2' => 'Saldo en comisiones',                                                                                                
                                 'create_at_2' => 'Fecha de registro',                                
 //                                'prodsVendidos+2' => '-Productos vendidos',                                
-//                                'looksVendidos+2' => '-Looks vendidos',                                                                
-                                'comision_2' => 'Comisión actual',                                                                
+//                                'looksVendidos+2' => 'Looks vendidos',                                                                
+                                'comision_2' => 'Comisión actual',                                                               
                                 'tipo_comision_2' => 'Tipo de comisión',
+                                'ps_creado_2'=>'PS que Han Creado Looks',
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>

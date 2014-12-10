@@ -134,6 +134,12 @@ class User extends CActiveRecord {
 //                        'joinType'=>'INNER JOIN',
                         'condition'=>'(looks.status = '.Look::STATUS_APROBADO.')',
             );
+	$relations['looks_todos'] = array(self::HAS_MANY, 'Look', 'user_id',
+
+//                        'select'=>false,
+//                        'joinType'=>'INNER JOIN',
+                       // 'condition'=>'(looks.status = '.Look::STATUS_APROBADO.')',
+            );
         $relations['psPayments'] = array(self::HAS_MANY, 'Pago', 'user_id',
 
                         'condition'=>'(psPayments.estado = 0)',
@@ -669,6 +675,21 @@ class User extends CActiveRecord {
                      . $comparator . ' ' . $value . '', $logicOp);
                         
                 continue;
+            }
+			
+			/* Para Saber que Personal Shopper han creado Looks*/
+			if($column == 'ps_creado')
+            {
+            	
+                if(($comparator=="=" && $value==1) || ($comparator=="<>" && $value==0))
+					$criteria->addCondition('id in (select distinct user_id from tbl_look ) ');
+				else 
+					$criteria->addCondition('id not in (select distinct user_id from tbl_look ) ');
+				
+				
+                        
+                    continue;
+ 
             }
                     
             /*Prendas compradas*/

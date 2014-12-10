@@ -62,7 +62,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                             array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
                                             array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),                                           
                                             array('label'=>'Acciones', 'url'=>array('#')),
-                                         
+
                     )),
 
                 array('label'=>'Usuarios', 'url'=>Yii::app()->baseUrl.'/user/admin'),

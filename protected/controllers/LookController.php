@@ -857,9 +857,8 @@ public function actionCategorias(){
 				$_POST['marcas']='Todas las Marcas';
 			}
 
-			if ($_POST['marcas']!='Todas las Marcas')	{
-
-               // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),$criteria);
+			if ($_POST['marcas']!='Todas las Marcas'){
+                // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),$criteria);
                 $count_productos = Producto::model()->with($with)->noeliminados()->activos()->countByAttributes(array('marca_id'=>$_POST['marcas']));
                 $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),array('limit'=>$limit,'offset'=>$offset,'order'=>'t.id desc'));
             }else{
@@ -873,8 +872,6 @@ public function actionCategorias(){
             $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset,'order'=>'t.id desc'));
 		}
 		$pages = ceil($count_productos/$limit);
-
-
 
         echo $this->renderPartial('_view_productos',array(
             'productos'=>$productos,

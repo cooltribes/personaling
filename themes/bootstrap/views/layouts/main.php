@@ -87,7 +87,8 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                                     array('label' => 'Descuentos',
                                                         'url'=>array('/producto/importarPrecios'),),
                                                     
-                                                )),                                        
+                                                ),
+                                                'htmlOptions'=>array('class'=>'pull-right')),                                        
                                            
                                             
                     )

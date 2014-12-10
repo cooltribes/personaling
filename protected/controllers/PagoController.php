@@ -563,7 +563,7 @@ class PagoController extends Controller
             $lastPayment = AffiliatePayment::findLastPayment(1);            
             $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
             // if doesn't exist any payment or if there is at least one of them
-            $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
+            $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d H:i:s")) :
                 ShoppingMetric::getAllViewsPs();                   
 
             $anterior = $this->_lastDate;
@@ -590,7 +590,7 @@ class PagoController extends Controller
                     
                     $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
                     // if doesn't exist any payment or if there is at least one of them
-                    $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
+                    $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d H:i:s")) :
                         ShoppingMetric::getAllViewsPs();                   
 
                     //Asign the totalViews attribute for optimize new queries
@@ -612,8 +612,8 @@ class PagoController extends Controller
                             $total = $userPs->getLookReferredViews();
                         }
                         else{
-                            $percent = $userPs->getLookViewsPercentageByDate($totalViews, date("Y-m-d"), false);
-                            $total = $userPs->getLookReferredViewsByDate($lastDate, date("Y-m-d"));
+                            $percent = $userPs->getLookViewsPercentageByDate($totalViews, date("Y-m-d H:i:s"), false);
+                            $total = $userPs->getLookReferredViewsByDate($lastDate, date("Y-m-d H:i:s"));
                         }
 
                         $amountToPay = $_POST["monthlyEarning"] * $percent;

@@ -66,6 +66,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                             array('label'=>'Importar Descuentos', 'url'=>array('/look/importarDescuentos')),
                                             array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
                                             array('label'=>'Campañas', 'url'=>array('/campana/index')),
+                                            array('label'=>'Adornos', 'url'=>array('/adorno/index')),
                                         )),
 
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(

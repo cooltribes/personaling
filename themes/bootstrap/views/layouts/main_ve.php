@@ -59,7 +59,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                             array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')),
                                             array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
                                             array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
-                                            array('label'=>'Acciones', 'url'=>array('/adorno/index')),
+											array('label'=>'Acciones', 'url'=>array('/adorno/index')),
                                             array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
                                             array('label'=>'SEO', 'url'=>array('/controlpanel/seo')),
                                             array('label'=>'Metricas', 'url'=>array('/shoppingMetric/admin')),
@@ -76,6 +76,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                             array('label'=>'Importar Descuentos', 'url'=>array('/look/importarDescuentos')),
                                             array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
                                             array('label'=>'Campañas', 'url'=>array('/campana/index')),
+                                            array('label'=>'Adornos', 'url'=>array('/adorno/index')),
                                         )),
 
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(

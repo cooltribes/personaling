@@ -28,7 +28,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 if(Yii::app()->language=='es_es'){
     $links=array(
         'banner'=>Yii::app()->baseUrl."/registro-personaling",
-        'slider'=>"http://www.personaling.es/looks-personalizados",
+        'slider'=>"http://www.personaling.es/tienda-ropa-personalizada",
         'art1'=>"http://personaling.com/magazine/el-abc-de-la-moda/",
         'art2'=>"http://www.personaling.es/nightnonstop",
         'art3'=>"http://www.personaling.es/outlet",

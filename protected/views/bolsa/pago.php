@@ -99,7 +99,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" id="btn_deposito">
                                 <label class="radio">
-                                    <input type="radio" name="optionsRadios" id="deposito" value="option1"> 
+                                    <input class="payment" type="radio" name="optionsRadios" id="deposito" value="option1"> 
                                     <?php echo Yii::t('contentForm', 'Deposit or Transference'); ?>
                                 </label>
                             </a>
@@ -120,7 +120,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree" id="btn_tarjeta">
                                 <label class="radio">
-                                    <input type="radio" name="optionsRadios" id="tarjeta" value="option2"> 
+                                    <input class="payment" type="radio" name="optionsRadios" id="tarjeta" value="option2"> 
                                     <?php echo Yii::t('contentForm', 'Credit Card'); ?>
 
                                 </label>
@@ -241,7 +241,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <label class="radio accordion-toggle margin_left_small" data-parent="#accordion2">
-                            <input type="radio" name="optionsRadios" id="bankCard" checked="true" value="5"> 
+                            <input type="radio" name="optionsRadios" class="payment" id="bankCard" checked="true" value="5"> 
                             <?php echo Yii::t('contentForm', 'Credit Card'); ?>
                         </label>                       
                        
@@ -258,7 +258,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     <div class="accordion-heading">
                         <label class="radio accordion-toggle margin_left_small"
                            data-parent="#accordion2">
-                            <input type="radio" name="optionsRadios" id="payPal" value="6"> 
+                            <input type="radio" name="optionsRadios" class="payment" id="payPal" value="6"> 
                             <?php echo Yii::t('contentForm', 'PayPal'); ?>
                         </label>                        
                     </div>
@@ -275,7 +275,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     <div class="accordion-heading">
                         <label class="radio accordion-toggle maprodrgin_left_small"
                            data-parent="#accordion2">
-                            <input type="radio" name="optionsRadios" id="prueba" value="8"> 
+                            <input type="radio" name="optionsRadios" class="payment" id="prueba" value="8"> 
                             <?php echo Yii::t('contentForm', 'Para probar las compras'); ?>
                         </label>                        
                     </div>
@@ -1064,6 +1064,11 @@ $('#TarjetaCredito_year').change(function(){
 
         $("#opt-balance").click(function(e){
             $("#collapse-cupon").slideUp();
+        });
+        $(".payment").click(function(e){
+            $("input[name=optionsRadios]").prop('checked', false);
+            $("input[name=optionsRadios][value=" +$(this).val() + "]").prop('checked', true);
+           
         });
         $("#opt-codigo").click(function(e){
             $("#collapse-cupon").slideDown();

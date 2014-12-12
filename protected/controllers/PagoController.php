@@ -678,13 +678,17 @@ class PagoController extends Controller
 				$this->_first = $_GET['first'];
 				$this->_last = $_GET['second'];
             }	
+
 	            /*Enviar a la vista el listado de todos los PS*/
-	            $criteria = new CDbCriteria;
+	            /*
+                $criteria = new CDbCriteria;
 	            $criteria->compare("personal_shopper", 1);
+                //$criteria->order = "lookreferredviews DESC";
 	            
 	            $dataProvider = new CActiveDataProvider('User', array(
 	                'criteria' => $criteria,
 	                'sort' => array(
+                       // 'attributes'=> array('lookreferredviews'),
 					    'defaultOrder' => array(
 							'lookreferredviews' => "DESC", 
 						),
@@ -692,7 +696,22 @@ class PagoController extends Controller
 	                'pagination' => array(
 	                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
 	                ),
-	            ));
+	            ));*/
+            $rawData=User::model()->findAllByAttributes(array('personal_shopper'=>1));
+            $dataProvider = new CArrayDataProvider($rawData, array(
+               // 'criteria' => $criteria,
+                'sort' => array(
+                    //'attributes'=> array('lookreferredviews'),
+                    'attributes'=> array('lookreferredviewslast'),
+                    'defaultOrder' => array(
+                        'lookreferredviewslast' => "DESC",
+                    ),
+                ),
+                'pagination' => array(
+                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                ),
+            ));
+
 			            
             $this->render("comision_afiliacion", array(
                 "dataProvider" => $dataProvider,

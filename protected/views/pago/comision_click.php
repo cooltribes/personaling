@@ -27,14 +27,28 @@
 
     $total = 0;
 
-    foreach($dataProvider->getData() as $cadauno){
+    $provider2=User::model()->findAllByAttributes(array("personal_shopper" =>'1'), array('order'=>'pago_click desc'));
+	foreach($provider2 as $cadauno)
+	{
+		
+		$amount = $cadauno->getPagoClick();
+		 $arreglo = explode(" ",$amount);
+		 #echo $this->_lastDate;
+		 #echo $cadauno->getLookReferredViews()."////";
+		$dos = $this->_lastDate ? $cadauno->getLookReferredViewsByDate($this->_lastDate, date("Y-m-d")) : $cadauno->getLookReferredViews();
+#echo $this->_lastDate;
+        $total += ($arreglo[0] * $dos);
+		
+	}
+   
+    /*foreach($dataProvider->getData() as $cadauno){
         $amount = $cadauno->getPagoClick();
         $arreglo = explode(" ",$amount);
 
         $dos = $this->_lastDate ? $cadauno->getLookReferredViewsByDate($this->_lastDate, date("Y-m-d")) : $cadauno->getLookReferredViews();
 
         $total += ($arreglo[0] * $dos);
-    }
+    }*/
 
     ?> 
 
@@ -117,6 +131,14 @@ $template = '{summary}
     {items}
     </table>
     {pager}';
+	 $pagerParams=array(
+        'header'=>'',
+        'prevPageLabel' => Yii::t('contentForm','Previous'),
+        'nextPageLabel' => Yii::t('contentForm','Next'),
+        'firstPageLabel'=> Yii::t('contentForm','First'),
+        'lastPageLabel'=> Yii::t('contentForm','Last'),
+        'htmlOptions'=>array(
+            'class'=>'pagination pagination-right'));   
 
 $this->widget('zii.widgets.CListView', array(
     'id' => 'list-auth-items',
@@ -129,12 +151,7 @@ $this->widget('zii.widgets.CListView', array(
         
 
       } ",
-    'pager' => array(
-        'header' => '',
-        'htmlOptions' => array(
-            'class' => 'pagination pagination-right',
-        )
-    ),
+    'pager' =>$pagerParams, 
 ));
 
 

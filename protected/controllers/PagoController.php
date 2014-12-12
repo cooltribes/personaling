@@ -866,7 +866,7 @@ class PagoController extends Controller
             } //if $_POST 
 
 	            /*Enviar a la vista el listado de todos los PS*/
-	            $criteria = new CDbCriteria;
+	            /*$criteria = new CDbCriteria;
 	            $criteria->compare("personal_shopper", 1);
 	            
 	            $dataProvider = new CActiveDataProvider('User', array(
@@ -874,7 +874,22 @@ class PagoController extends Controller
 	                'pagination' => array(
 	                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
 	                ),
-	            ));
+	            ));*/
+				
+				
+				 $rawData=User::model()->findAllByAttributes(array('personal_shopper'=>1));
+            $dataProvider = new CArrayDataProvider($rawData, array(
+               // 'criteria' => $criteria,
+                'sort' => array(
+                    'attributes'=> array('lookreferredviewslastClicks'),
+                    'defaultOrder' => array(
+                        'lookreferredviewslastClicks' => "DESC",
+                    ),
+                ),
+                'pagination' => array(
+                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                ),
+            ));
 			            
             $this->render("comision_click", array(
                 "dataProvider" => $dataProvider,

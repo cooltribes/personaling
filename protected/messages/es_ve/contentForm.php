@@ -509,19 +509,19 @@ return array (
       <div class="page-header">
         <h1>Política de privacidad o privacidad de datos</h1>
       </div>
-      <p>A continuación te indicamos los terminos y politicas de privacidad de   <a href="http://www.personaling.com">personaling</a>  las cuales rigen y son aceptadas automáticamente por nuestros usuarios, a partir de su registro y compra en nuestro portal, razón por la cual es sumamente importante te asegures de leerlas y entenderlas con antelación. En caso de algún cambio en las mismas, sea por razones legales o corporativas, cada uno de nuestros usuarios serán notificados vía correo electrónico.  </p>
+      <p>A continuación te indicamos los terminos y politicas de privacidad de   <a href="http://www.personaling.com.ve">personaling</a>  las cuales rigen y son aceptadas automáticamente por nuestros usuarios, a partir de su registro y compra en nuestro portal, razón por la cual es sumamente importante te asegures de leerlas y entenderlas con antelación. En caso de algún cambio en las mismas, sea por razones legales o corporativas, cada uno de nuestros usuarios serán notificados vía correo electrónico.  </p>
       <ol>
         <li>La información que facilites a la hora del registro será debidamente guardada en un fichero de datos destinado solamente al uso de nuestra plataforma y no será facilitada a terceros sin tu previa autorización. </li>
         <li> Si haces conexión con alguna red social, es posible que tengamos acceso a alguna información como fotografías, fecha de nacimiento, teléfono, etc. Será tratada esta información de la misma manera que en el punto uno (1), es decir, para el uso exclusivo de nuestra página web y en caso de ser compartida será sólo bajo tu previa autorización.</li>
         <li>Tus compras serán cuantificadas para uso interno de elaboración de apartados como “Más vendidos” o “Más buscados” y serán utilizadas dentro de grandes muestras para nuestra promoción, sin publicar tu identidad a no ser que así lo autorices.  </li>
-        <li><a href="http://www.personaling.com" title="Personaling, Tu Personal Shopper Online">Personaling.com</a> cuenta con un sistema de protección de datos y seguridad en red que protegerá tus datos bancarios y personales.   </li>
+        <li><a href="http://www.personaling.com.ve" title="Personaling, Tu Personal Shopper Online">Personaling.com.ve</a> cuenta con un sistema de protección de datos y seguridad en red que protegerá tus datos bancarios y personales.   </li>
       </ol>',
 
       'Copy Envios y Encomiendas' => '
           <div class="page-header">
           <h1>Condiciones de Envíos y Encomiendas</h1>
         </div>
-        <p>Al registrarte o realizar una compra  en nuestra tienda <a href="http://www.personaling.com" title="Personaling, Tu Personal Shopper Online">www.personaling.com</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
+        <p>Al registrarte o realizar una compra  en nuestra tienda <a href="http://www.personaling.com.ve" title="Personaling, Tu Personal Shopper Online">www.personaling.com.ve</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
         <ol>
           <li>Los envíos de Personaling.com.ve se harán solamente dentro del  territorio venezolano, y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
           <li> El comprador tiene una única opción de envío, es decir sólo puede elegir una dirección para su envío.  </li>

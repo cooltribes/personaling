@@ -29,10 +29,10 @@ if(Yii::app()->language=='es_es'){
     $links=array(
         'banner'=>Yii::app()->baseUrl."/registro-personaling",
         'slider'=>"http://www.personaling.es/tienda-ropa-personalizada",
-        'art1'=>"http://personaling.com/magazine/el-abc-de-la-moda/",
+        'art1'=>"http://personaling.com/magazine/lista-de-regalos-para-no-fallar-estas-navidades/",
         'art2'=>"http://www.personaling.es/nightnonstop",
-        'art3'=>"http://www.personaling.es/outlet",
-        'art4'=>"http://www.personaling.es/tienda-ropa-personalizada",
+        'art3'=>"http://www.personaling.es/producto/detalle/5990",
+        'art4'=>"http://www.personaling.es/outlet",
     );
     $copys=array(
         'banner'=>"",
@@ -46,11 +46,11 @@ if(Yii::app()->language=='es_es'){
 }else{
     $links=array(
         'banner'=>Yii::app()->baseUrl."/registro-personaling",
-        'slider'=>"http://www.personaling.com.ve/looks-personalizados",
+        'slider'=>"http://www.personaling.com.ve/tienda-ropa-personalizada",
         'art1'=>"http://www.personaling.com.ve/tienda-ropa-personalizada",
         'art2'=>"http://www.personaling.com.ve/HarryLevy",
-        'art3'=>"http://www.personaling.com.ve/look/449",
-        'art4'=>"http://www.personaling.com.ve/producto/detalle/600 ",
+        'art3'=>"http://www.personaling.com.ve/producto/detalle/486",
+        'art4'=>"http://www.personaling.com.ve/producto/detalle/635",
     );
     $copys=array(
         'banner'=>"",

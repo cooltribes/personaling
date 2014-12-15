@@ -34,11 +34,11 @@
             if ($data->personal_shopper == 1) {
                 if ($data->ps_destacado == 1) {
                     ?>
-                    <span class="label label-warning">Personal Shopper Destacado</span>
+                    <span id="label<?php echo $data->id?>" class="label label-warning">Personal Shopper Destacado</span>
                     <?php
-                } else {
-                    echo 'Personal Shopper';
-                }
+                } else {?>
+                    <span id="label<?php echo $data->id?>">Personal Shopper</span>
+             <?php   }
             } else if ($data->personal_shopper == 2) {
                 echo '<span class="label label-info"> Aplicante Personal Shopper</span>';
             } else {
@@ -143,14 +143,24 @@
     <td>
         <div class="dropdown"> <a class="dropdown-toggle btn btn-block" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" title="Acciones"> <i class="icon-cog"></i></a> 
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
-            <li>
-                <?php echo CHtml::link('<i class="icon-eye-open"></i> Ventas PS',array("controlpanel/misventas", "id" => $data->id)); ?>            
-            </li> 
-            <li>
-                <?php echo CHtml::link('<i class="icon-edit"></i> Comisión por Afiliación',array("controlpanel/comisionAfiliacion","id"=>$data->id)); ?>
+             <li >
+                 <a id="destacar<?php echo $data->id ?>" class="pointer" onclick="destacarPs('<?php echo $data->id ?>')">
+            <?php if($data->ps_destacado==1): ?>
+                      <i class="icon-star-empty"></i> Quitar destacado 
+            <?php else: ?>
+                      <i class="icon-star"></i> Destacar            
+            <?php endif;?>   
+                </a>
             </li>
             <li>
-                <?php echo CHtml::link('<i class="icon-eye-open"></i> Comisión por Clic',array("controlpanel/comisionesClic", "id" => $data->id)); ?>
+                <?php echo CHtml::link('<i class="icon-eye-open"></i> Ventas PS',array("controlpanel/misventas", "id" => $data->id)); ?>            
+            
+            </li>
+            <li>
+                <?php echo CHtml::link('<i class="icon-check"></i> Comisión por Afiliación',array("controlpanel/comisionAfiliacion","id"=>$data->id)); ?>
+            </li>
+            <li>
+                <?php echo CHtml::link('<i class="icon-hand-up"></i> Comisión por Clic',array("controlpanel/comisionesClic", "id" => $data->id)); ?>
             <li>
                 <?php echo CHtml::link('<i class="icon-refresh"></i> Historial de pagos',array("pago/index")); ?>
             </li>

@@ -341,8 +341,8 @@ if(Yii::app()->language=='es_es'){
                         <div class="row-fluid">
                             <div class="span11">
                                 <div class="row-fluid">
-                                    <a title="Agente K" class="span2" href="http://www.agente-k.com/personaling-es-de-compras-con-tu-personal-shopper-sin-salir-de-casa/">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/agk.jpg';?>" alt="Agente K" height="70px" />
+                                    <a title="ELLE" class="span2" href="http://www.elle.es/lo-mas-elle/ocio/regalos-navidad-2014/regalos-moda-navidad/personaling.es">
+                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/elle.jpg';?>" alt="ELLE" height="70px" />
                                     </a>
                                     <a title="Cosmopolitan" class="span2" href="https://www.facebook.com/Cosmopolitan.es/photos/a.114689081490.110515.55254956490/10152496043136491/?type=1&permPage=1">
                                         <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/cosmo.jpg';?>" alt="Cosmopolitan" height="70px" />

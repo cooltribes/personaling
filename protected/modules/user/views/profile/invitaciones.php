@@ -145,7 +145,7 @@ $create_date = date('j M Y', $create_time);
 	                                <div class="controls">
 	                                    <?php 
 	                                   echo CHtml::textArea('invite-message',
-	                                   Yii::t('contentForm','Watch all the looks created by the best Personal Shoppers from *country*'),
+	                                   Yii::t('contentForm','I\'ve created great looks on my profile, go and take a look'),
 	                                   array('class' => 'span5', 'rows' => '4'));
 	                                   ?>
 	                                   <span class="help-block error" id="invite_mess_em_" style="display: none;"> Debes escribir un mensaje </span>

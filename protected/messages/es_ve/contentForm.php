@@ -168,6 +168,7 @@ return array (
      'ID of the person to whom you send' => 'Cédula de Identidad de la persona a la que envias',
      'ID Transaction' => 'ID de Transaccion',
      'Identity card' => 'Cédula de Identidad',
+     'I\'ve created great looks on my profile, go and take a look'=>'He creado Looks geniales en mi perfil, entra y dale un vistazo',
      'If you\'ve made ​​your deposit' => 'Si ya has realizado el depósito',
      'Inbound details' => 'Detalles del Inbound',
      'Inactive' => 'Inactivo',

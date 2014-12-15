@@ -178,6 +178,7 @@ return array (
 	'ID Transaction' => 'ID de Transaccion',
 	'Identity card' => 'DNI/NIF',
 	'If you\'ve made ​​your deposit' => 'Si ya has realizado el depósito',
+	'I\'ve created great looks on my profile, go and take a look'=>'He creado Looks geniales en mi perfil, entra y dale un vistazo',
 	'Inactive' => 'Inactivo',
 	'Inbound details' => 'Detalles del Inbound',
 	'Include a new shipping address' => 'Incluir una nueva dirección de envío',

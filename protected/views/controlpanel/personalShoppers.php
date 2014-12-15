@@ -447,6 +447,8 @@ function actualizarNroUsuarios(id, data){
 
 
 $(document).ready(function(){
+    
+    
 
     /*Boton de acciones masivas, para cambiar comision y tiempo*/
     $("#btnProcesar").click(function() {
@@ -531,5 +533,37 @@ $(document).ready(function(){
         }
     });
     
-});    
+}); 
+
+function destacarPs(id){ 
+        
+        
+          
+           $.ajax({
+            type: "post",
+            'url' :"destacarPs/id/"+id,
+            dataType:'json',
+            data: { 
+            'id':id}, 
+            'success': function(data){
+               if(data.value){
+                   $('#destacar'+data.id).html('<i class="icon-star-empty"></i> Quitar destacado');
+                   $('#label'+data.id).html('Personal Shopper Destacado');
+                   $('#label'+data.id).addClass('label');
+                   $('#label'+data.id).addClass('label-warning');
+                   
+               }
+                
+               else{
+                   $('#destacar'+data.id).html('<i class="icon-star"></i> Destacar');
+                   $('#label'+data.id).html('Personal Shopper');
+                   $('#label'+data.id).removeClass('label');
+                   $('#label'+data.id).removeClass('label-warning'); 
+               }                                 
+            },
+            'cache' :false});
+            
+}
+
+   
 </script>

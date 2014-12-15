@@ -34,7 +34,7 @@ class AdminController extends Controller
                             'credito','editardireccion',
                             'eliminardireccion','comprafin','mensajes','displaymsj',
                             'invitaciones','porcomprar','seguimiento','balance',
-                            'reporteCSV','usuariosZoho', 'suscritosNl', 'historial','enviarzoho','saveUrl','editAddress'),                                         
+                            'reporteCSV','usuariosZoho', 'statusPS','suscritosNl', 'historial','enviarzoho','saveUrl','editAddress'),                                         
                          
                         'expression' => 'UserModule::isAdmin()',
 
@@ -3003,6 +3003,125 @@ class AdminController extends Controller
             }
              else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+        
+        public function actionStatusPs(){
+            $model = User::model()->findByPk($_POST['id']);
+            $prev=$model->personal_shopper;
+              if($model->saveAttributes(array('personal_shopper'=>$_POST['status']))){
+                    if($model->personal_shopper == 1){ 
+                        $model->activkey = UserModule::encrypting(microtime() . $model->password);
+                            $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $model->activkey, "email" => $model->email));
+                            
+                            $message = new YiiMailMessage;
+                            //Opciones de Mandrill
+                            $message->activarPlantillaMandrill();
+                            $subject = 'Registro Personaling'; 
+                            $message->subject = $subject;
+                        if($prev==2){                   
+                            //Enviar mail
+                            
+                            $body = '<h2>¡Felicitaciones! Tu aplicación ha sido aceptada.</h2><br/><br/>
+                                Nuestro equipo piensa que tienes potencial como Personal Shopper de Personaling.es
+                                <br/><br/>
+                                ¿Nervios? No por favor, sabemos que tienes madera para esto.<br/>
+                                Gracias por querer ser parte de nuestro equipo.<br/><br>
+                                Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>
+                                <a href="' . $activation_url.'"> Haz click aquí </a>';
+                           
+        //                    $message->view = "mail_template";
+        //                    $params = array('subject' => $subject, 'body' => $body);
+        //                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
+                            
+                            $alert="¡Se ha aprobado la solicitud para Personal Shopper!";
+                       }else{
+                            $body = '<h2>¡Felicitaciones eres Personal Shopper!.</h2><br/><br/>
+                                Nuestro equipo piensa que tienes potencial como Personal Shopper de Personaling.es
+                                <br/><br/>
+                                ¿Nervios? No por favor, sabemos que tienes madera para esto.<br/>
+                                Gracias por ser parte de nuestro equipo.<br/><br>
+                                Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/>
+                                <a href="' . $activation_url.'"> Haz click aquí </a>';
+                           
+        //                    $message->view = "mail_template";
+        //                    $params = array('subject' => $subject, 'body' => $body);
+        //                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
+                            
+                            $alert="¡El usuario es Personal Shopper!";
+                       }     
+                            $message->setBody($body, 'text/html');
+                            $message->addTo($model->email);
+                            Yii::app()->mail->send($message);  
+                        
+                    }else if($model->personal_shopper == 2)
+                             $alert="El usuario es aplicante a PS";
+                          else
+                            $alert="El usuario ya no es Personal Shopper";             
+                  
+              }       
+                            
+            $time=date("d-m-Y H:i:s");
+    
+            if($model->admin_ps=="")
+            {
+                $model->admin_ps=Yii::app()->user->id."/A-";
+                $model->fecha_ps=$time."*";
+            }
+            else
+            {
+                $porciones = explode("-", $model->admin_ps);
+                $num=count($porciones)-2;
+                $value=$porciones[$num];
+                $letter="";
+                $ultima= explode("/", $value);      
+                if($ultima[1]=="A")
+                {
+                    $letter="Q";    
+                }
+                else 
+                {
+                    $letter="A";    
+                }
+                $model->fecha_ps=$model->fecha_ps."".$time."*";
+                $model->admin_ps=$model->admin_ps."".Yii::app()->user->id."/".$letter."-";
+            }
+            
+            if ($model->save()){
+                
+                if(Yii::app()->params['zohoActive'] == TRUE){ // Si Zoho Activo
+                /* Creando el caso */
+                    $ps = $model->personal_shopper==1?'Si':'No';
+                    
+                    $zoho = new Zoho();
+                    $zoho->email = $model->email;
+                    $zoho->ps = $ps;
+                    
+                    $result = $zoho->save_potential();
+                                        
+                    $zohoCase = new ZohoCases;
+                    $zohoCase->Subject = "Aplicación PS - ".$model->email;
+                    $zohoCase->internal = "Aprobado";
+                    $zohoCase->Comment = "Aprobado por administrador";
+                    $zohoCase->Solution = "Aprobado por administrador";
+                    $zohoCase->Status = "Closed"; 
+                                        
+                    $respuesta = $zohoCase->save_potential(); 
+                } 
+    
+            echo CJSON::encode(array(
+                    'status'=>'success',
+                    'personal_shopper'=>$model->personal_shopper,
+                    'alert'=>$alert,
+                    'previous'=>$prev
+                   
+             ));    
+             }else{
+                Yii::trace('AdminController:117 Error toggle:'.print_r($model->getErrors(),true), 'registro');
+                echo CJSON::encode(array(
+                    'status'=>'error',
+                    'personal_shopper'=>$model->personal_shopper,
+             ));
+             }
         }
 
 

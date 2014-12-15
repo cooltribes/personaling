@@ -22,7 +22,7 @@ class ControlpanelController extends Controller
                             'actions'=>array('index','delete','ventas',
                                 'pedidos','usuarios', 'looks', 'productos','ingresos',
                                 'remuneraciones', 'personalshoppers','seo','createSeo',
-                                'deleteSeo', 'misventas','comisionesClic','comisionAfiliacion','exportarClicCSV','ExportarAfiliacionCSV'), 
+                                'deleteSeo', 'misventas','comisionesClic','comisionAfiliacion','exportarClicCSV','ExportarAfiliacionCSV','destacarPS'), 
                             //'users'=>array('admin'),
                             'expression' => 'UserModule::isAdmin()',
 			),
@@ -652,6 +652,24 @@ class ControlpanelController extends Controller
             Yii::app()->user->setFlash('error','Petición no válida');
         }
         $this->redirect(array('seo'));
+    }
+
+    public function actionDestacarPS(){
+        if(isset($_GET['id'])){
+            $model = User::model()->findByPk($_GET['id']);
+            if($model){               
+                if(!$model->saveAttributes(array('ps_destacado'=>$model->ps_destacado==1?0:1))){
+                    print_r($model->errors);
+                }                    
+            }
+        }else{
+            Yii::app()->user->setFlash('error','Petición no válida');
+        }
+        echo CJSON::encode(array(
+                'value'=>$model->ps_destacado,
+                'id'=>$model->id,
+                
+         ));
     }
         
 }

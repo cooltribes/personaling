@@ -1009,7 +1009,19 @@ class AdminController extends Controller
 				$xml .= '<row no="'.$cont.'">';
 				$xml .= '<FL val="First Name">'.$user->profile->first_name.'</FL>';
 				$xml .= '<FL val="Last Name">'.$user->profile->last_name.'</FL>';
-				$xml .= '<FL val="Email">'.$user->email.'</FL>';
+				
+                if(strpos($this->email, "+") === false){
+                    #$xml .= '<FL val="Email">'.$this->email.'</FL>';
+                    $xml .= '<FL val="Email">'.$user->email.'</FL>';
+                }
+                else{
+                    $variable_cambiar = $user->email;
+                    $primera = str_replace("+","%2B",$variable_cambiar);                
+                    $email = "<![CDATA[".$primera."]]>"; 
+                
+                    $xml .= '<FL val="Email">'.$email.'</FL>';
+                }
+
 				$xml .= '<FL val="Lead Source">Tienda Personaling</FL>';
 				$xml .= '<FL val="Fecha de Nacimiento">'.date('d/m/Y', $time).'</FL>';
 				$xml .= '<FL val="Sexo">'.Profile::range($rangosSex,$user->profile->sex).'</FL>';

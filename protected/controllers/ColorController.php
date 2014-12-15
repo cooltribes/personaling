@@ -140,6 +140,8 @@ class ColorController extends Controller
 			Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 			Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 			Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.min.js']=false;
+			Yii::app()->clientScript->scriptMap['bootstrap.min.css']=false;
 			Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
             echo CJSON::encode(array(
                 'status'=>'failure', 

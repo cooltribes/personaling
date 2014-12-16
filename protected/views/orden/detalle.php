@@ -20,6 +20,19 @@ $usuario = User::model()->findByPk($orden->user_id);
 ?>
 
 <div class="container margin_top">
+        <?php if(Yii::app()->user->hasFlash('success')){?>
+        <div class="alert in alert-block fade alert-success text_align_center">
+            <?php echo Yii::app()->user->getFlash('success'); ?>
+        </div>
+    <?php } ?>
+    <?php if(Yii::app()->user->hasFlash('error')){?>
+        <div class="alert in alert-block fade alert-error text_align_center">
+            <?php echo Yii::app()->user->getFlash('error'); ?>
+        </div>
+    <?php } ?>
+    
+    
+    
 			
   <div class="page-header">
     <h1>PEDIDO #<?php echo $orden->id; 
@@ -812,16 +825,7 @@ $usuario = User::model()->findByPk($orden->user_id);
   <div class="row" id="mensajes">
   	
   	
-  	<?php if(Yii::app()->user->hasFlash('success')){?>
-	    <div class="alert in alert-block fade alert-success text_align_center">
-	        <?php echo Yii::app()->user->getFlash('success'); ?>
-	    </div>
-	<?php } ?>
-	<?php if(Yii::app()->user->hasFlash('error')){?>
-	    <div class="alert in alert-block fade alert-error text_align_center">
-	        <?php echo Yii::app()->user->getFlash('error'); ?>
-	    </div>
-	<?php } ?>
+
 	
 	<?php
 Yii::app()->clientScript->registerScript(

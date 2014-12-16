@@ -134,6 +134,12 @@ class User extends CActiveRecord {
 //                        'joinType'=>'INNER JOIN',
                         'condition'=>'(looks.status = '.Look::STATUS_APROBADO.')',
             );
+	$relations['looks_todos'] = array(self::HAS_MANY, 'Look', 'user_id',
+
+//                        'select'=>false,
+//                        'joinType'=>'INNER JOIN',
+                       // 'condition'=>'(looks.status = '.Look::STATUS_APROBADO.')',
+            );
         $relations['psPayments'] = array(self::HAS_MANY, 'Pago', 'user_id',
 
                         'condition'=>'(psPayments.estado = 0)',
@@ -670,6 +676,21 @@ class User extends CActiveRecord {
                         
                 continue;
             }
+			
+			/* Para Saber que Personal Shopper han creado Looks*/
+			if($column == 'ps_creado')
+            {
+            	
+                if(($comparator=="=" && $value==1) || ($comparator=="<>" && $value==0))
+					$criteria->addCondition('id in (select distinct user_id from tbl_look ) ');
+				else 
+					$criteria->addCondition('id not in (select distinct user_id from tbl_look ) ');
+				
+				
+                        
+                    continue;
+ 
+            }
                     
             /*Prendas compradas*/
             if($column == 'prendas')
@@ -1038,6 +1059,53 @@ class User extends CActiveRecord {
      * RANPACO
      *
      */
+    function getLookReferredViewsLast(){
+        $lastPayment = AffiliatePayment::findLastPayment(1);
+        $from = $lastPayment ? $lastPayment->created_at : null;
+        $to = date("Y-m-d H:i:s");
+        $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
+        $match = addcslashes($match, '%_');
+        if ($from){
+            return ShoppingMetric::model()->count(
+                'data LIKE :match and created_on between :from and :to',
+                array(
+                    ':match' => "%$match%",
+                    ':from' => $from,
+                    ':to' => $to
+                )
+            );
+        } else {
+            return ShoppingMetric::model()->count(
+                'data LIKE :match',
+                array(':match' => "%$match%")
+            );
+        }
+    }
+    
+	//para afiliacion por clicks
+	    function getLookReferredViewsLastClicks(){
+        $lastPayment = AffiliatePayment::findLastPayment(2);
+        $from = $lastPayment ? $lastPayment->created_at : null;
+        $to = date("Y-m-d H:i:s");
+        $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
+        $match = addcslashes($match, '%_');
+		$pago = Profile::model()->findByPk($this->id)->pago_click;
+        if ($from){
+            return $pago*ShoppingMetric::model()->count(
+                'data LIKE :match and created_on between :from and :to',
+                array(
+                    ':match' => "%$match%",
+                    ':from' => $from,
+                    ':to' => $to
+                )
+            );
+        } else {
+            return $pago*ShoppingMetric::model()->count(
+                'data LIKE :match',
+                array(':match' => "%$match%")
+            );
+        }
+    }
 
     function getLookReferredViewsByDate($from,$to){
         $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';

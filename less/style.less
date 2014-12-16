@@ -561,7 +561,12 @@ border:0;
   font-size: 20px;
   color: #727272;
 }
-
+#navAdmin.navbar .pull-right > li > .dropdown-menu .dropdown-menu{
+  left:100%;
+  right:auto;
+  .border_radius(@radius:0); 
+  
+} 
 .navbar .divider-vertical {
   height: 41px;
   background-color: #ffffff;
@@ -1091,6 +1096,17 @@ src: url('../fonts/entypo.woff'),
     select{ height:30px;}
 
     }
+    
+ .controls-row>.label-row{
+    float: left;
+    padding: 0px 5px 0px 0px;
+    line-height: 30px;
+    vertical-align: middle;
+    
+ }
+ .controls-row>input.span1{
+   margin-right:5px;
+ }   
 /*------------ Forms OFF --------------*/
 
 /*------------ Vcard ON ---------------*/
@@ -4576,7 +4592,11 @@ img[alt="Loading"]{
     font-weight: bold;
     color: #666;
 }
-
+/*
+.payment{
+  margin: 12px 0 0 -5px !important;
+}
+*/
 /*--------------- HACKS ON --------------------*/
 #profile-form{
     select#Profile_pais, select#Profile_day, #Profile_sex_0{

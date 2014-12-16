@@ -1,5 +1,4 @@
 <?php
-include(__DIR__."/../modules/user/controllers/MailChimp.php");
 class SiteController extends Controller
 {
 
@@ -165,7 +164,7 @@ class SiteController extends Controller
 		// using the default layout 'protected/views/layouts/main.php'
 		$result=false;
 		if(isset($_POST['email'])){
-			    
+			include(__DIR__."/../modules/user/controllers/MailChimp.php");
 			$group = array(
                 array(
                     'name' => 'Personaling Newsletter',

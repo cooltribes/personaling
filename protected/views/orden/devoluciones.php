@@ -6,7 +6,7 @@ $this->breadcrumbs=array(
 	'Detalle'=>array('detalles','id'=>$orden->id),
 	'Devolucion',
 );
-
+$returnable=false;
 ?>
 <style> .table td {vertical-align:middle; text-align:center;}</style>
 <script type="text/javascript">
@@ -114,7 +114,8 @@ $this->breadcrumbs=array(
                                         echo("<td>".$color->valor."</td>");
                                         echo("<td>".$talla->valor."</td>");
 										
-									if($prodlook['cantidadActualizada']>Devolucion::model()->devueltosxOrden($orden->id, $ptclk->id, $lkid['look_id'])){   
+									if($prodlook['cantidadActualizada']>Devolucion::model()->devueltosxOrden($orden->id, $ptclk->id, $lkid['look_id'])){
+                                		$returnable=true;       
                                 		echo "<td><input type='number' id='".$ptclk->id."_".$lkid."' value='0' class='input-mini cant' max='".$prodlook['cantidadActualizada']."'  min='0' required='required' /></td>";
                                        	echo CHtml::hiddenField($ptclk->id."_".$lkid."hid",$prodlook['cantidad']); 
                                         echo("<td>".number_format($prodlook['precio'], 2, ',', '.')."</td><td>".
@@ -160,7 +161,7 @@ $this->breadcrumbs=array(
 				$ptc = Preciotallacolor::model()->findByAttributes(array('id'=>$prod['preciotallacolor_id'])); // consigo existencia actual
 				$indiv = Producto::model()->findByPk($ptc->producto_id); // consigo nombre
 				if(is_null($indiv->tienda))
-                {
+                {   
     				$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$ptc->producto_id)); // precios
     				$marca=Marca::model()->findByPk($indiv->marca_id);
     				$talla=Talla::model()->findByPk($ptc->talla_id);
@@ -200,7 +201,7 @@ $this->breadcrumbs=array(
                    echo "<td><input type='number' id='".$ptc->id."_0' value='0' class='input-mini cant' max='".$prod['cantidadActualizada']."'  min='0' required='required' /></td>";
     			  echo("<td>".number_format($prod['precio'], 2, ',', '.')."</td><td>");
     			   
-    			  
+    			     $returnable=true; 
     				  echo  (CHtml::dropDownList($ptc->id."_0motivo",'',Devolucion::model()->reasons,array('empty'=>'Selecciona una opcion','disabled'=>'disabled','class'=>'motivos'))."</td>");
     					echo CHtml::hiddenField($ptc->id."_0hid",$prod['cantidad']); 
     					echo CHtml::hiddenField($ptc->id."_0precio",$prod['precio']);
@@ -243,9 +244,12 @@ $this->breadcrumbs=array(
         	<td  class="text_align_right"><input class="text_align_right" type="text" readonly="readonly" id="montoTotal" value="000,00" /></td>
         </tr>       --> 
     	</table>
-    	
-    	<div class="pull-right"><a onclick="devolver()" title="Devolver productos" style="cursor: pointer;" class="btn btn-warning btn-large">Hacer devolución</a>
+    	<?php if($returnable):?>
+    	<div class="pull-right">
+    	    <a onclick="devolver()" id="buttonReturn" title="Devolver productos" style="cursor: pointer;" class="btn btn-warning btn-large">Hacer devolución</a>
+    	   <a  id="proccessing" style="cursor: pointer;" class="btn btn-large hide">Procesando...</a>
     	</div>
+    	<?php endif;?>
 	</div>
 
 </div> 
@@ -322,8 +326,8 @@ function actualizarArrays(indice,cantidad,monto ){
 }
 
 function devolver()
-	{			console.log(cantidades.toString()+" // "+motivos.toString());
-				
+	{			//console.log(cantidades.toString()+" // "+motivos.toString());
+				blockReturn(true);
 				var ct=0;
 				var mt=0;
 				for(var i =0; i<indices.length; i++){
@@ -332,7 +336,7 @@ function devolver()
 					if(motivos[i]!='-')
 						mt++;
 				}
-				if(ct==mt){
+				if(ct==mt&&ct!=0){
 				    var id = $('#orden_id').attr('value');
                     var monto = $('#monto').attr('value');
                     	var inds=indices.toString();
@@ -377,9 +381,22 @@ function devolver()
                     });		
                 }
                 else{
-                	alert('Para cada prenda que desees devolver debes especificar el motivo de la devolución');
+                    if(ct==mt&&mt==0)
+                	   alert('No has seleccionado productos para devolver');
+                	else  
+                	   alert('Para cada prenda que desees devolver debes especificar el motivo de la devolución');
+                	blockReturn(false);   
                 }		
 		
 		}
+function blockReturn(bool){
+    if(bool){
+        $('#buttonReturn').addClass('hide');
+        $('#proccessing').removeClass('hide');
+    }else{
+        $('#buttonReturn').removeClass('hide');
+        $('#proccessing').addClass('hide');
+    }
+}		
 	
 </script>

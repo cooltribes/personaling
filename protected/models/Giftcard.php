@@ -34,7 +34,7 @@ class Giftcard extends CActiveRecord
         /*CAMBIAR ESTA CONSTANTE CUANDO SE REQUIERA CAMBIAR LA LONGITUD DEL CODIGO DE UNA TARJETA*/
         const DIGITOS_CODIGO = 16;
         
-        const MAX_MONTO_VE = 1000; //Para venezuela
+        const MAX_MONTO_VE = 20000; //Para venezuela
         const MAX_MONTO_ES = 100; //Para españa
     
         //Montos para españa

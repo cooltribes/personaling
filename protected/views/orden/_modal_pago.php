@@ -61,8 +61,11 @@ $detPago = new Detalle;
             <!--[if lte IE 9]>
                 <label class="control-label required"><?php echo Yii::t('backEnd', 'Deposit date'); ?><span class="required">*</span></label>
     <![endif]--> 
+            <span class="label-row">Día</span>
             <?php echo CHtml::TextField('dia', date("d"), array('id' => 'dia', 'class' => 'span1', 'placeholder' => 'Día', 'title' => Yii::t('backEnd', 'Day'))); ?> 
+            <span class="label-row">Mes</span>
             <?php echo CHtml::TextField('mes', date("m"), array('id' => 'mes', 'class' => 'span1', 'placeholder' => 'Mes', 'title' => Yii::t('backEnd', 'Month'))); ?> 
+            <span class="label-row">Año</span>
             <?php echo CHtml::TextField('ano', date("Y"), array('id' => 'ano', 'class' => 'span2', 'placeholder' => 'Año', 'title' => Yii::t('backEnd', 'Year'))); ?> </div>
         <div class="control-group"> 
             <!--[if lte IE 9]>

@@ -34,8 +34,11 @@ $contadorMensaje = 0;
 //<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
 
 
+
+     
 if (Yii::app()->user->id?UserModule::isAdmin():false){
-$this->widget('bootstrap.widgets.TbNavbar',array(
+        
+    $this->widget('bootstrap.widgets.TbNavbar',array(
     'type'=> 'inverse',
     'items'=>array(
         array(
@@ -308,10 +311,30 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
 }
 
+ 
+
+
+    if(Yii::app()->params['environment']): 
 ?>
+ 
+        <div class="navbar-fixed-top" id="entorno" style="background: #A23; top:71px; color:#FFF;z-index:999;"">
+           Estás en:
+           <b><?php echo  Yii::app()->params['environment'];?></b>
+           <?php echo Yii::app()->params['zohoActive']?'<span class="pull-right">Zoho: <b>'.Yii::app()->params['zohoToken'].'</b> '.Yii::app()->params['zohoAccount'].'</span>':""; ?>
+            
+        </div>
+         <script>
+            $('#page').css('margin-top','70px'); //aumentar si se agregan mas cosas al cintillo
+        </script>
+      
+<?php endif; ?>
+
+
+
 </div>
 
 <?php
+
 //si es invitado agregar el estilo del link de vaciar bolsa
 if(Yii::app()->user->isGuest){
 ?>
@@ -323,6 +346,8 @@ if(Yii::app()->user->isGuest){
 <?php
 }
 ?>
+
+
   
   
 <!-- Mensaje Cookies ON -->

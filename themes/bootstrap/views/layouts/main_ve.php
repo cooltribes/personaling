@@ -315,11 +315,24 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
     ),
 ));
-
+ 
 
 }
 
+    if(Yii::app()->params['environment']): 
 ?>
+ 
+        <div class="navbar-fixed-top" id="entorno" style="background: #A23; top:71px; color:#FFF; z-index:9;">
+           Estás en:
+           <b><?php echo  Yii::app()->params['environment'];?></b>
+           <?php echo Yii::app()->params['zohoActive']?'<span class="pull-right">Zoho: <b>'.Yii::app()->params['zohoToken'].'</b> '.Yii::app()->params['zohoAccount'].'</span>':""; ?>
+            
+        </div>
+        <script>
+            $('#page').css('margin-top','70px'); //aumentar si se agregan mas cosas al cintillo
+        </script>
+      
+<?php endif; ?>
 </div>
 
 <?php

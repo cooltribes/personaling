@@ -412,6 +412,7 @@
                     'mostrarChic'=>true,
                     'country'=>'Venezuela',
                     //'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
+                    
                     'outlet'=>TRUE,
                     'zohoActive' => FALSE,
                     'id_look_switch' => 638,
@@ -452,6 +453,7 @@
                     // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
                         'PRONUNCIACION' => 'Venezolana',
+                        'environment'=>'Develop Venezuela',
                         'currSym'=>'Bs',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.12',
@@ -497,6 +499,7 @@
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
+                        'zohoAccount'=>'cruiz@upsidecorp.ch',
                         'zohoActive' => FALSE,
                         'fb_appId' => '386830111475859',
                         ),
@@ -519,6 +522,7 @@
                     // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
                         'PRONUNCIACION' => 'Española', 
+                        'environment'=>'Develop España',
                         'currSym'=>'E',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.21',
@@ -560,7 +564,8 @@
                         ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken'=>'645a319a2cfe40d183067f4a82259f0a', 
+                        'zohoToken'=>'645a319a2cfe40d183067f4a82259f0a',
+                        'zohoAccount'=>'wmontilla@upsidecorp.ch', 
                         'zohoActive' => TRUE,
                         'fb_appId' => '323808071078482',
                     ),
@@ -629,6 +634,7 @@
                 return array(
                     'timeZone' => 'America/Caracas',
                     'language' => 'es_ve',
+                    'environment'=>'Stage Venezuela',
                     'components'=>array(
                         'db'=>array(
                             'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
@@ -700,6 +706,7 @@
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => '3ca8d750a84be5ae66794e919bbe0625',
+                        'zohoAccount'=>'dduque@upsidecorp.ch',
                         'zohoActive' => TRUE,
                         'id_look_switch' => 0,
                         'fb_appId' => '386830111475859',
@@ -731,7 +738,8 @@
                     'params'=>array(
                     // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
-                        'PRONUNCIACION' => 'Española', 
+                        'PRONUNCIACION' => 'Española',
+                        'environment'=>'Stage España', 
                         'currSym'=>'E',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.21',
@@ -774,6 +782,7 @@
                         'AzPayTerminal'=>'997',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken'=>'db303d2e324bda57cfd72e89640dc5bb',
+                        'zohoAccount'=>'cmontanez@upsidecorp.ch',
                         'zohoActive' => TRUE,
                         'fb_appId' => '323808071078482',
                     ),
@@ -838,7 +847,7 @@
                         // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
                         'PRONUNCIACION' => 'Venezolana',
-
+                        'environment'=>false,
                         'currSym'=>'Bs',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envÃ­o es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.12',
@@ -885,6 +894,7 @@
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'f298def0f5eae649aa473c7db3092dc3',
+                        'zohoAccount'=>'',
                         'id_look_switch' => 0,
                         'fb_appId' => '386830111475859',
                         ),
@@ -910,7 +920,7 @@
                         // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
                         'PRONUNCIACION' => 'EspaÃ±ola',
-
+                        'environment'=>false,
                         'currSym'=>'E',
                         'noShipping'=> '1', // 0: Cuando se debe cobrar envio, VALOR: cuando el envÃ­o es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.21',

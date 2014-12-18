@@ -32,6 +32,9 @@
     
     echo CHtml::dropDownList('outlet', '', array('1'=>'Si', '0'=>'No' ),
                             array('style' => 'display:none'));
+							
+	echo CHtml::dropDownList('producto_externo', '', array('1'=>'Si', '0'=>'No' ),
+                            array('style' => 'display:none'));
     
     /*Filtro de tiendas*/
     $allBrands = CHtml::listData(Tienda::model()->findAll(), 'id', 'name');
@@ -89,6 +92,7 @@
                                 'destacado' => 'Destacados',
                                 'outlet'=>'Outlet',
                                 $var=> $var_name,
+                                'producto_externo'=>'Producto Externo',
                                  ),
                             array('empty' => '-- Seleccione --', 'class' => 'dropdown_filter span3')); ?> 
                         </div>

@@ -87,7 +87,16 @@ class BugController extends Controller
 			$nombre = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/bug/'.$contador;
 			$extension = '.'.$images->extensionName;
 			$model->image=$contador. $extension;
-			$images->saveAs($nombre . $extension);
+			#$images->saveAs($nombre . $extension);
+			
+			if ($images->saveAs($nombre . $extension)) {
+		
+		       		$image = Yii::app()->image->load($nombre.$extension);
+					$image->resize(150, 150);
+					$image->save($nombre.'_thumb'.$extension);
+			}
+			
+					
 			if($model->save())
 			{
 				Yii::app()->user->setFlash('success',UserModule::t("Falla tecnica reportada exitosamente"));
@@ -98,7 +107,7 @@ class BugController extends Controller
 				Yii::app()->user->setFlash('error',UserModule::t("Falla tecnica no reportada, error inesperado"));
                 $this->redirect(array('admin'));
 			}
-				
+			
 		}
 
 		$this->render('create',array(

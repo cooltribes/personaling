@@ -26,7 +26,7 @@ class SiteController extends Controller
                                     'acerca_de','activos_graficos','publicaciones_de_prensa',
                                     'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',
-                                    'preguntas_frecuentes', 'equipo_personaling','captcha',
+                                    'preguntas_frecuentes', 'equipo_personaling','captcha','homeConf',
                                     'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos',
                                     'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve','terminos_condiciones_ps'),
 				'users'=>array('*'),
@@ -755,7 +755,36 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 			$this->render('zohoCases');			 
 		}
 		
+        public function actionHomeConf(){
+            
+            $this->render('homeConf'); 
+        }
         
-       
+        public function actionFormSiteImage()
+        {
+            $model=new SiteImage;
+        
+            // uncomment the following code to enable ajax-based validation
+            /*
+            if(isset($_POST['ajax']) && $_POST['ajax']==='site-image-form-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
+            */
+        
+            if(isset($_POST['SiteImage']))
+            {
+                $model->attributes=$_POST['SiteImage'];
+                if($model->validate())
+                {
+                    // form inputs are valid, do something here
+                    return;
+                }
+            }
+            $this->render('form',array('model'=>$model));
+        }
+        
+        
 		
 }

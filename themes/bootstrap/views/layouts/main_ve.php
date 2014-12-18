@@ -315,11 +315,29 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
     ),
 ));
-
+ 
 
 }
 
+    if(Yii::app()->params['environment']): 
 ?>
+ 
+        <div class="navbar-fixed-top" id="entorno" style="background: #A23; top:71px; color:#FFF; z-index:9;">
+           Estás en:
+           <b><?php echo  Yii::app()->params['environment'];?></b>
+           <?php echo Yii::app()->params['zohoActive']?'<span class="pull-right">Zoho: <b>'.Yii::app()->params['zohoToken'].'</b> '.Yii::app()->params['zohoAccount'].'</span>':"Zoho esta Desactivado"; ?>
+          </br>
+           <?php echo "Database: ".Yii::app()->db->connectionString; ?> 
+           
+           
+           
+            
+        </div>
+        <script>
+            $('#page').css('margin-top','70px'); //aumentar si se agregan mas cosas al cintillo
+        </script>
+      
+<?php endif; ?>
 </div>
 
 <?php
@@ -424,7 +442,7 @@ if(!Yii::app()->user->isGuest){
                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/envios" title="Envíos y Encomiendas">Envíos</a></li>
                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad">Políticas de Privacidad</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li>
+                          <!-- <li><a href="<?php //echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li> -->
                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
                            <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>

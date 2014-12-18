@@ -1010,14 +1010,14 @@ class AdminController extends Controller
 				$xml .= '<FL val="First Name">'.$user->profile->first_name.'</FL>';
 				$xml .= '<FL val="Last Name">'.$user->profile->last_name.'</FL>';
 				
-                if(strpos($this->email, "+") === false){
+                if(strpos($user->email, "+") === false){
                     #$xml .= '<FL val="Email">'.$this->email.'</FL>';
                     $xml .= '<FL val="Email">'.$user->email.'</FL>';
                 }
                 else{
                     $variable_cambiar = $user->email;
                     $primera = str_replace("+","%2B",$variable_cambiar);                
-                    $email = "<![CDATA[".$primera."]]>"; 
+                    $email = "<![CDATA[".$primera."]]>";
                 
                     $xml .= '<FL val="Email">'.$email.'</FL>';
                 }

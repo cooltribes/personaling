@@ -1410,6 +1410,27 @@ public function actionValidar()
                             $response["status"] = "success";
                             $response["message"] = "Pedido cancelado con éxito. <br>
                                 Se han agregado <b>".Yii::app()->numberFormatter->format('#,##0.00',$totalDevuelto)." Bs.</b> al saldo del usuario</b>";
+                            
+                            $message = new YiiMailMessage;
+                            $message->activarPlantillaMandrill();
+                            $subject = 'Cancelación de Orden'; 
+                            $message->subject = $subject;
+
+                            
+                            $body = '<h2>Tu orden #'.$orden->id.' ha sido cancelada</h2><br/><br/>
+                                    La orden realizada el '.$orden->fecha.' ha sido cancelada';
+                                    if(isset($_GET['mensaje']) && $_GET['mensaje'] != ""){
+                                            $body.='debido a las siguientes razones:</br></br></br>"'.$_GET['mensaje'].'"<br><br><br>';
+                                    }else $body.='.<br>';
+                                    $body.='Si tienes alguna duda por favor contacta a nuestro
+                                    servicio al cliente a través de '.Yii::app()->params['clientService'][Yii::app()->language].'.';
+
+                            
+             
+                         
+                            $message->setBody($body, 'text/html');
+                            $message->addTo($orden->user->email);
+                            Yii::app()->mail->send($message);  
                     }
                 }	
             }

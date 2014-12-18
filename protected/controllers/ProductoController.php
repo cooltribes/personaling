@@ -5151,7 +5151,7 @@ public function actionReportexls(){
 						$posicion=0;
 						
 						//print_r($ids);
-					//	var_dump($response); 
+						//var_dump($datos); 
 						$total = sizeof($ids);
 						
 						//Yii::app()->end();
@@ -5175,22 +5175,22 @@ public function actionReportexls(){
 																						
 											echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
 										}else{
-											echo "Error en posicion ".$posicion;
+											// echo "Error en posicion ".$posicion;
+											Yii::trace('ProductoController.php:5160, Error en posición '.$posición);
 										}
 										
 									}
 								}
 						}else{
-							echo "error";
+							//echo "error";
+							Yii::trace('ProductoController.php:5174, Error: variable datos->result parece fallar');
 						} 
 						
 						$posicion++;
 
 					}
 					
-					echo "fin de ciclo"; 
-					echo "<br><br>";
-						
+					echo "fin de ciclo de envío a zoho<br><br>";
 						
 					/* reiniciando todos los valores */
 					$xml = ""; 

@@ -44,9 +44,9 @@ class SiteImage extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id', 'required'),
-			array('id, index, group, alt, type, width, height', 'numerical', 'integerOnly'=>true),
-			array('name, title', 'length', 'max'=>50),
+			array('url', 'required'),
+			array('id, index, group, type, width, height', 'numerical', 'integerOnly'=>true),
+			array('name, title, alt', 'length', 'max'=>50),
 			array('copy', 'length', 'max'=>200),
 			array('url', 'length', 'max'=>100),
 			// The following rule is used by search().
@@ -73,14 +73,14 @@ class SiteImage extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Ubicación',
-			'index' => 'Index',
-			'group' => 'Group',
-			'title' => 'Title',
-			'alt' => 'Alt',
+			'name' => 'Elemento',
+			'index' => 'Posición',
+			'group' => 'Grupo',
+			'title' => 'Titulo',
+			'alt' => 'Texto Alternativo',
 			'copy' => 'Copy',
 			'url' => 'Url',
-			'type' => 'Type',
+			'type' => 'Tipo',
 			'width' => 'Width',
 			'height' => 'Height',
 		);
@@ -121,4 +121,12 @@ class SiteImage extends CActiveRecord
         $array=array(1=>'Desktop',2=>'Mobile',3=>'Ambas');
         return $array;
     }
+    public function getImage($name,$index=1,$width='100%',$height=''){
+            $img=$this->findByAttributes(array('name'=>$name,'index'=>$index));
+            if($img){              
+                
+                return CHtml::image($img->url, $img->alt,array('title'=>$img->title,'width'=>$width,'height'=>$height));
+            }
+            else return "";    
+        }
 }

@@ -10,10 +10,12 @@
         <div style="width:500px; margin:50px auto 0 auto">
             <div class="row-fluid margin_bottom_small"> 
                 <div onclick="modal('banner',1,1,1);"  class="span12 margin_bottom_small toload" id="banner" style="height:220px;">
-                    <?php //echo $siteIm->getImage('banner');?>
+                    <?php echo $siteIm->getImage('banner');?>
                 </div>
                 <div class="span9 no_margin_left">
-                    <div onclick="modal('slider',1,1,1);"  class="margin_bottom_small toload" id="slider" style="height:190px;"></div>
+                    <div onclick="modal('slider',1,1,1);"  class="margin_bottom_small toload" id="slider" style="height:190px;">
+                        <?php echo $siteIm->getImage('slider');?>
+                    </div>
                     <div class="margin_bottom_small not-toload text_align_center" style="height:190px; ">
                         <h3>Looks</h3>
                     </div>
@@ -80,6 +82,7 @@ function modal(name,index,group,type){
       $.ajax({ 
                       url: "formSiteImage",
                       type: "post",
+                      datatype:'json',
                       data: {
                         name:name,
                         index:index,
@@ -89,8 +92,18 @@ function modal(name,index,group,type){
                         
                          },
                       success: function(data){
-                           $('#toLoad').html(data);    
-                           $('#toLoad').modal();                    
+                          console.log(data);
+                          var obj=JSON.parse(data);
+                          if(!obj.confirm){
+                              $('#toLoad').html(obj.form);    
+                              $('#toLoad').modal(); 
+                          }else{
+                              if(confirm("Al cargar una imagen sobrescribirás la actual. ¿Deseas sobrescribir la imagen?")){
+                                  $('#toLoad').html(obj.form);    
+                                    $('#toLoad').modal(); 
+                              }
+                          }
+                                              
                       },
                       error:function(){
                   

@@ -768,7 +768,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
             if(isset($_POST['SiteImage']))
             {
                 $model->attributes=$_POST['SiteImage'];
-              
+                $previa=SiteImage::model()->findByAttributes(array('name'=>$_POST['SiteImage']['name'],'index'=>$_POST['SiteImage']['index']));
                     
                     $rnd = rand(0,9999);  
                     
@@ -793,12 +793,17 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
                         {
                             mkdir($dir,0777,true);
                         }
-                        
+                                                
                         $extension_ori = ".jpg";
-                        $extension = '.'.$images->extensionName;                       
+                        $extension = '.'.$images->extensionName;
+                        if(is_file($nombre.$extension)){
+                            rename($nombre.$extension,$nombre."OLD".$previa->id.$extension);
+                        }                       
                         $images->saveAs($nombre . $extension);
                         $model->url=$url. $extension;
                         if($model->save()){
+                            if(!is_null($previa))    
+                                $previa->delete();
                             $this->redirect('homeConf');
                         }else{
                             print_r($model->errors);
@@ -815,9 +820,15 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
                 
                 
             }else{
-                 echo $this->renderPartial('form', array(
-                    'model'=>$model,'name'=>$_POST['name'],'index'=>$_POST['index'],'group'=>$_POST['group'],'type'=>$_POST['type'], ),true)
+                $response=array();
+                $response['confirm']=is_null(SiteImage::model()->findByAttributes(array('name'=>$_POST['name'],'index'=>$_POST['index'])))?false:true;
+                //print_r($response['confirm']);
+                
+                $response['form']= $this->renderPartial('form', array(
+                    'model'=>$model,'name'=>$_POST['name'],'index'=>$_POST['index'],'group'=>$_POST['group'],'type'=>$_POST['type'] ),true)
                 ;
+                
+                 echo CJSON::encode($response); 
             }
             
         }

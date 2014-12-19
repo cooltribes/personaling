@@ -1331,7 +1331,6 @@ public function actionReportexls(){
 			
 			$checks = explode(',',$_POST['check']);
 			$accion = $_POST['accion'];	
-		
 			if($accion=="Acciones")
 			{
 				//echo("2"); // no selecciono una accion
@@ -1340,9 +1339,13 @@ public function actionReportexls(){
 			else if($accion=="Activar")
 			{
 				foreach($checks as $id){
-					$model = Producto::model()->findByPk($id);
-					$model->estado=0;
-					Producto::model()->updateByPk($id, array('estado'=>'0'));
+					if($id!="todos")
+					{
+						$model = Producto::model()->findByPk($id);
+						$model->estado=0;
+						Producto::model()->updateByPk($id, array('estado'=>'0'));
+					} 
+					
 					/*if($model->save())
 						echo("guarda");
 					else {
@@ -1355,9 +1358,13 @@ public function actionReportexls(){
 			else if($accion=="Inactivar")
 			{
 				foreach($checks as $id){
-					$model = Producto::model()->findByPk($id);
-					$model->estado=1;
-					Producto::model()->updateByPk($id, array('estado'=>'1'));
+					if($id!="todos")
+					{
+						$model = Producto::model()->findByPk($id);
+						$model->estado=1;
+						Producto::model()->updateByPk($id, array('estado'=>'1'));
+					}
+					
 					/*if($model->save())
 						echo("guarda");
 					else {
@@ -1370,9 +1377,13 @@ public function actionReportexls(){
 			else if($accion=="Borrar")
 			{
 				foreach($checks as $id){
-					$model = Producto::model()->findByPk($id);
-					$model->status=0;
-					Producto::model()->updateByPk($id, array('status'=>'0'));		
+					if($id!="todos")
+					{
+						$model = Producto::model()->findByPk($id);
+						$model->status=0;
+						Producto::model()->updateByPk($id, array('status'=>'0'));
+					}
+							
 				}
 				//echo("5");
 				$result['status'] = "10";

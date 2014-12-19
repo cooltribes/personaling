@@ -320,8 +320,9 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
         <div class="navbar-fixed-top" id="entorno" style="background: #A23; top:71px; color:#FFF;z-index:999;"">
            Estás en:
            <b><?php echo  Yii::app()->params['environment'];?></b>
-           <?php echo Yii::app()->params['zohoActive']?'<span class="pull-right">Zoho: <b>'.Yii::app()->params['zohoToken'].'</b> '.Yii::app()->params['zohoAccount'].'</span>':""; ?>
-            
+           <?php echo Yii::app()->params['zohoActive']?'<span class="pull-right">Zoho: <b>'.Yii::app()->params['zohoToken'].'</b> '.Yii::app()->params['zohoAccount'].'</span>':"Zoho esta Desactivado"; ?>
+          </br>
+           <?php echo "Database: ".Yii::app()->db->connectionString; ?> 
         </div>
          <script>
             $('#page').css('margin-top','90px'); //aumentar si se agregan mas cosas al cintillo

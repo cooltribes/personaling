@@ -27,12 +27,13 @@ $this->breadcrumbs=array(
 $template = '{summary}
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
         <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Descripcion</th>
-            <th scope="col">Url</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Detalles</th>
+             <th scope="col" width="20%">Imagen</th>
+            <th scope="col" width="20%">Nombre</th>
+             <th scope="col" width="30%">Descripción</th>
+            <th scope="col" width="5%">URL</th>
+            <th scope="col" width="7%">Estado</th>
+            <th scope="col" width="10%">Fecha</th>
+             <th scope="col" width="8%">Opciones</th>
         </tr>
     {items}
     </table>

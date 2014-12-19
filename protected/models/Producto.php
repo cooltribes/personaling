@@ -1585,6 +1585,16 @@ public function multipleColor2($idColor, $idact)
                         
                     continue;
                 }
+				if($column == 'producto_externo') // 
+                 {
+                        //si es el comparador igual o diferente
+                     $value = ($comparator == '=') ? $value : 1-$value;
+
+                        $criteria->addCondition("t.tipo = ".$value,
+                                $logicOp);
+                        
+                    continue;
+                }
                 if($column == 'fecha')
                 {
                     $value = strtotime($value);

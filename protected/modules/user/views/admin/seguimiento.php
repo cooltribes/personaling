@@ -46,6 +46,15 @@ $this->breadcrumbs = array(
 			    </table>
 			    {pager}
 				';
+				
+				$pagerParams=array(
+			        'header'=>'',
+			        'prevPageLabel' => Yii::t('contentForm','Previous'),
+			        'nextPageLabel' => Yii::t('contentForm','Next'),
+			        'firstPageLabel'=> Yii::t('contentForm','First'),
+			        'lastPageLabel'=> Yii::t('contentForm','Last'),
+			        'htmlOptions'=>array(
+			            'class'=>'pagination pagination-right'));   
                                             
                             $this->widget('zii.widgets.CListView', array(
                                 'id' => 'email',
@@ -53,14 +62,11 @@ $this->breadcrumbs = array(
                                 'itemView' => '_shoppM',
                                 'template' => $template,
                                 'enableSorting' => 'true',
+                                'emptyText'=> Yii::t('contentForm','No elements to show'),
+                                 'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
                                 'afterAjaxUpdate' => " function(id, data) {
                                                                     } ",
-                                'pager' => array(
-                                    'header' => '',
-                                    'htmlOptions' => array(
-                                        'class' => 'pagination pagination-right',
-                                    )
-                                ),
+                                'pager' =>$pagerParams, 	
                             ));
                             ?>
                         </div>
@@ -73,6 +79,10 @@ $this->breadcrumbs = array(
                             
                             <th scope="col">Paso del Proceso</th>
                             <th scope="col">Fecha</th>
+                            <th scope="col">IP del Cliente</th>
+                             <th scope="col">Referido de</th>
+                             <th scope="col">Accedido con</th>
+                             <th scope="col">Data</th>
                             
                             
              

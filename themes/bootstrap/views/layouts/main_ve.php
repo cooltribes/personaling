@@ -334,7 +334,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
             
         </div>
         <script>
-            $('#page').css('margin-top','70px'); //aumentar si se agregan mas cosas al cintillo
+            $('#page').css('margin-top','90px'); //aumentar si se agregan mas cosas al cintillo
         </script>
       
 <?php endif; ?>

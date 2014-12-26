@@ -27,7 +27,7 @@ class SiteController extends Controller
                                     'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',
                                     'preguntas_frecuentes', 'equipo_personaling','captcha','homeConf',
-                                    'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos',
+                                    'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos','formSiteImage',
                                     'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve','terminos_condiciones_ps'),
 				'users'=>array('*'),
 			),
@@ -756,34 +756,85 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 		}
 		
         public function actionHomeConf(){
-            
-            $this->render('homeConf'); 
+            $siteIm=new SiteImage;
+            $this->render('homeConf',array('siteIm'=>$siteIm));  
         }
         
-        public function actionFormSiteImage()
-        {
-            $model=new SiteImage;
-        
-            // uncomment the following code to enable ajax-based validation
-            /*
-            if(isset($_POST['ajax']) && $_POST['ajax']==='site-image-form-form')
-            {
-                echo CActiveForm::validate($model);
-                Yii::app()->end();
-            }
-            */
+        public function actionFormSiteImage() 
+        { 
+            $model=new SiteImage;            
+           
         
             if(isset($_POST['SiteImage']))
             {
                 $model->attributes=$_POST['SiteImage'];
-                if($model->validate())
-                {
-                    // form inputs are valid, do something here
-                    return;
-                }
+                $previa=SiteImage::model()->findByAttributes(array('name'=>$_POST['SiteImage']['name'],'index'=>$_POST['SiteImage']['index']));
+                    
+                    $rnd = rand(0,9999);  
+                    
+                    $images=CUploadedFile::getInstanceByName('SiteImage[url]');
+        
+                    if (isset($images) && count($images) > 0) {
+                     
+                        $model->url = "{$rnd}-{$images}";
+                        if($model->name=='banner'){
+                             $dir = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/home';
+                             $nombre = $dir.'/'.$model->name;
+                             $url=Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/home'.'/'.$model->name;
+                        }                       
+                            
+                        else {
+                            $dir = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/home/'.$model->name;
+                            $nombre = $dir.'/'.$model->name.$model->index; 
+                            $url=Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/home/'.$model->name.'/'.$model->name.$model->index;  
+                        }  
+                            
+                        if(!is_dir($dir))
+                        {
+                            mkdir($dir,0777,true);
+                        }
+                                                
+                        $extension_ori = ".jpg";
+                        $extension = '.'.$images->extensionName;
+                        if(is_file($nombre.$extension)){
+                            rename($nombre.$extension,$nombre."OLD".$previa->id.$extension);
+                        }                       
+                        $images->saveAs($nombre . $extension);
+                        $model->url=$url. $extension;
+                        if($model->save()){
+                            if(!is_null($previa))    
+                                $previa->delete();
+                            $this->redirect('homeConf');
+                        }else{
+                            print_r($model->errors);
+                            break;
+                        }
+                   
+                
+                    }
+                    else{
+                      echo "NANE";
+                        break;
+                    }
+                    
+                
+                
+            }else{
+                $response=array();
+                $response['confirm']=is_null(SiteImage::model()->findByAttributes(array('name'=>$_POST['name'],'index'=>$_POST['index'])))?false:true;
+                //print_r($response['confirm']);
+                
+                $response['form']= $this->renderPartial('form', array(
+                    'model'=>$model,'name'=>$_POST['name'],'index'=>$_POST['index'],'group'=>$_POST['group'],'type'=>$_POST['type'] ),true)
+                ;
+                
+                 echo CJSON::encode($response); 
             }
-            $this->render('form',array('model'=>$model));
+            
         }
+
+
+        
         
         
 		

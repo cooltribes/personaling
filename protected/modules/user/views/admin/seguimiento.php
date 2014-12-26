@@ -77,13 +77,14 @@ $this->breadcrumbs = array(
 			  <tbody>
 			    <tr>
                             
-                            <th scope="col">Paso del Proceso</th>
+                             <th scope="col">Paso del Proceso</th>
                             <th scope="col">Fecha</th>
+
                             <th scope="col">IP del Cliente</th>
                              <th scope="col">Referido de</th>
                              <th scope="col">Accedido con</th>
                              <th scope="col">Data</th>
-                            
+
                             
              
 			    </tr>

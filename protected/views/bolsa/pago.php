@@ -404,10 +404,11 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             {	            $declarado=$total<=50?51:$total;  
                                             $flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$declarado);
                                             
-                                            if(!is_null($flete)&&$flete->total!=0){
-                                                    $seguro=floatval(str_replace(',','.',$flete->seguro));
+                                            if(!is_null($flete)){
+                                                if($flete->total!=0)
+                                                 {   $seguro=floatval(str_replace(',','.',$flete->seguro));
                                                     $envio=floatval(str_replace(',','.',$flete->total));                                                  
-
+                                                 }
 
                                             }else{
                                                     $envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);

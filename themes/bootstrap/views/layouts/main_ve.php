@@ -126,6 +126,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     ),
                     
                  array('label'=>'Configuración', 'url'=>'#', 'items'=>array(
+                  array('label'=>'Configuración Home', 'url'=>array('/site/homeConf')),
                     array('label'=>'Colores', 'url'=>array('/color/admin')),
                     array('label'=>'Marcas', 'url'=>array('/marca/admin')),
                     array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
@@ -319,7 +320,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
 }
 
-    if(Yii::app()->params['environment']): 
+    if(Yii::app()->params['environment']):  
 ?>
  
         <div class="navbar-fixed-top" id="entorno" style="background: #A23; top:71px; color:#FFF; z-index:9;">
@@ -415,8 +416,9 @@ if(!Yii::app()->user->isGuest){
 
 
 <!-- <div class="alert alert-error margin_top padding_top">Estas en el sitio de Pruebas T1</div> -->
-<div class="container" id="page">
-  <?php if(isset($this->breadcrumbs)):?>
+
+<div class="container" id="page"> 
+<?php if(isset($this->breadcrumbs)):?>
   <?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
             'links'=>$this->breadcrumbs,
         )); ?>

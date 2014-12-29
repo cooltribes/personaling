@@ -3015,8 +3015,10 @@ class BolsaController extends Controller
 
             $cData = CJSON::encode($cData);
             $pago = new AzPay();
-
-            $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
+			
+			 $orderID = "G" . Yii::app()->user->id."F";   
+			
+            $urlAztive = $pago->AztivePay($monto, $idPagoAztive, $orderID,
                     $idPagoAztive==8?null:null, $optional, $cData);   
 
 

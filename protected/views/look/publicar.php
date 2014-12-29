@@ -171,9 +171,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               <label class="control-label required">Titulo del look <span class="required">*</span></label>
   <![endif]-->
   		<?php echo Yii::t('contentForm','What name would you give this Look?'); ?>
-            <div class="controls">
-               <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45)); ?>
+            <div class="controls" id="title">
+               <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45, 'id'=>'title2')); ?>
                <?php echo $form->error($model,'title'); ?>
+               <span id="errorUrl" class="error margin_top_small_minus hide"><br/><small>Formato no válido, evita el uso de caracteres especiales y espacios en blanco.</small></span>
             </div>
           </div>
           <div class="control-group"> 
@@ -773,6 +774,50 @@ $script = "
     
     
    });
+   
+   $('body').on('input','#title2', function() { 
+     var validacion=$('#title2').val();
+     
+     var reg=/^[A-Za-z0-9_-]/;
+     var palabra=$(this).val();
+     var variable=$(this).val().length;
+     for(i=0;i<variable;i++)
+     {
+     	
+     	 var vari=palabra.charAt(i); 
+     	 if(reg.test(vari))
+     	 {
+	         $('#errorUrl').hide();
+	         $('#button_send').attr('disabled',false);
+     	}
+     	else
+     	{
+	         $('#button_send').attr('disabled',true);
+	         $('#errorUrl').show();
+	         if(!reg.test($(this).val().substring($(this).val().length-2,$(this).val().length-1)))
+	            $(this).val($(this).val().substring(0, $(this).val().length- 1));
+     	}
+     }
+
+        
+        
+     });	
+   
+   
+
+<!--
+/*function validatePass(campo) {
+    var RegExPattern = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,10})$/;
+    var errorMessage = 'Password Incorrecta.';
+    if ((campo.value.match(RegExPattern)) && (campo.value!='')) {
+        alert('Password Correcta'); 
+    } else {
+        alert(errorMessage);
+        campo.focus();
+    } 
+}*/
+//-->
+
 	 
 	 
 </script>

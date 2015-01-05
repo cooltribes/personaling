@@ -2357,10 +2357,10 @@ src: url('../fonts/entypo.woff'),
             }
         .productos_del_look{
             overflow:auto;
-            height:570px;
+            height:570px; 
             padding-top:5px;
-            .span6:nth-child(2n+1){ margin-left:0}
-            .span6{
+            .producto:nth-child(2n+1){ margin-left:0}
+            .producto{
                      margin-bottom:1.4em;
                     position:relative;
                     color:lighten(@color4, 10%);
@@ -4053,7 +4053,12 @@ img[alt="Loading"]{
 
 }
 
-/* ----------- Estadisticas Administrador ON --------------*/
+.thumbnail.categoria{
+  height:112px;
+  overflow-y:hidden;
+}
+
+/* ----------- Estadisticas Administrador ON --------------*/ 
 
 .graficos_controlpanel{
   margin-left: 0;

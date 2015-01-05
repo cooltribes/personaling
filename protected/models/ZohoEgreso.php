@@ -26,6 +26,8 @@ class ZohoEgreso{
 		
 		// var_dump($xml);
 		
+		//Yii::app()->end();
+
 		$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&xmlData=".$xml;
 		$ch = curl_init();
@@ -61,7 +63,6 @@ class ZohoEgreso{
 				$zoho->tipo = "Interno";
 				
 				$response = $zoho->save_potential();
-				
 				$xml = simplexml_load_string($response);
 	            $id = (int)$xml->result[0]->recorddetail->FL[0];
 	
@@ -82,8 +83,8 @@ class ZohoEgreso{
 				}else{
 					return $id;
 				}
-				
 			}
+
 		}else{ // create new user and send it to zoho
 			$user = new User;
 			$user->email = "info@personaling.com";

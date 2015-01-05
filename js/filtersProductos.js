@@ -46,6 +46,11 @@ function changeFilter(e){
    {       
        listFilter(column, 'outlet');
 
+   }
+   else if(column.val() === 'producto_externo') //si es Producto Externo
+   {       
+       listFilter(column, 'producto_externo');
+
    }else //campo normal (numérico)
    {      
       valueFilter(column);       

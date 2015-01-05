@@ -1422,8 +1422,8 @@ public function actionValidar()
                                     if(isset($_GET['mensaje']) && $_GET['mensaje'] != ""){
                                             $body.='debido a las siguientes razones:</br></br></br>"'.$_GET['mensaje'].'"<br><br><br>';
                                     }else $body.='.<br>';
-                                    $body.='Si tienes alguna duda por favor contacta via e-mail a nuestro
-                                    servicio al cliente en '.Yii::app()->params['clientService'][Yii::app()->language].'.';
+                                    $body.='Si tienes alguna duda por favor contacta a nuestro
+                                    servicio al cliente a través de '.Yii::app()->params['clientService'][Yii::app()->language].'.';
 
                             
              

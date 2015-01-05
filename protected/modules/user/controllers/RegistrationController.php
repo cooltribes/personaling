@@ -469,18 +469,18 @@ class RegistrationController extends Controller
                                 
 				$id = $model->id;
                                 // make the directory to store the pic:
-				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id))
-				{
-	   				mkdir(Yii::getPathOfAlias('webroot').'/images/avatar/'. $id,0777,true);
+				if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'. Yii::app()->language .'/avatar/'. $model->id))
+				{	
+	   				mkdir(Yii::getPathOfAlias('webroot').'/images/'. Yii::app()->language .'/avatar/'. $model->id,0777,true);
 	 			}	 
 				$images = CUploadedFile::getInstancesByName('ApplyPsForm[avatarPs]');
                                 
                                 if (isset($images) && count($images) > 0) {
                                     
                                     foreach ($images as $image => $pic) {
-                                        $nombre = Yii::getPathOfAlias('webroot').'/images/avatar/'. $id .'/'. $image;
+                                        $nombre = Yii::getPathOfAlias('webroot').'/images/'. Yii::app()->language .'/avatar/'. $model->id .'/'. $image;
                                         $extension = '.'.$pic->extensionName;
-                                        $model->avatar_url = '/images/avatar/'. $id .'/'. $image .$extension;                                        
+                                        $model->avatar_url =  $id .'/'. $image .$extension;                                        
                                        
                                         if (!$model->save()){	
                                             Yii::trace('username:'.$model->username.' Crear Avatar Error:'.print_r($model->getErrors(),true), 'registro');

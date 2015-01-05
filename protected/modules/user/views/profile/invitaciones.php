@@ -17,7 +17,7 @@ $create_date = date('j M Y', $create_time);
                     <h4 class="fn"><?php echo $profile->first_name.' '.$profile->last_name; ?></h4>
                     <p class="muted">Miembro desde: <?php echo $create_date; ?></p>
                 </div>
-            </div>
+            </div> 
             <div>
                 <ul class="nav nav-tabs nav-stacked">
                     <li class="nav-header">Opciones de edición</li>
@@ -80,7 +80,7 @@ $create_date = date('j M Y', $create_time);
                     <h1>Invita tus amig@s a Personaling</h1>
                 </div>
                             
-            	<div class="span8 padding_bottom_small">
+            	<div class="span8 padding_bottom_small text_align_center">
             		<p>¡Bienvenida! Ya eres parte de Personaling.com; desde hoy tendrás a la distancia de un click las mejores marcas y asesoría de moda hecha por expertos.</p>
             		<?php if($model->personal_shopper==0){
             			
@@ -186,19 +186,25 @@ $create_date = date('j M Y', $create_time);
 				    </table>
 				    {pager}
 					';
+					
+					 $pagerParams=array(
+			        'header'=>'',
+			        'prevPageLabel' => Yii::t('contentForm','Previous'),
+			        'nextPageLabel' => Yii::t('contentForm','Next'),
+			        'firstPageLabel'=> Yii::t('contentForm','First'),
+			        'lastPageLabel'=> Yii::t('contentForm','Last'),
+			        'htmlOptions'=>array(
+			            'class'=>'pagination pagination-right'));   
 				
 						$this->widget('zii.widgets.CListView', array(
 					    'id'=>'list-invitaciones',
 					    'dataProvider'=>$dataProvider,
 					    'itemView'=>'_view_invitacion',
 					    'template'=>$template,
+					        'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
 					    'enableSorting'=>'false',
-						'pager'=>array(
-							'header'=>'',
-							'htmlOptions'=>array(
-							'class'=>'pagination pagination-right',
-							)
-						),					
+					    'emptyText'=> Yii::t('contentForm','No elements to show'),
+						'pager' =>$pagerParams, 				
 					));    
 					?>
 	            </div>

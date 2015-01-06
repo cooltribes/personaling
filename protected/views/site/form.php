@@ -54,11 +54,19 @@
        
        
        <div class="span4 no_margin_left text_align_right">
-        <?php echo $form->labelEx($model,'url'); ?>          
+        <?php echo $form->labelEx($model,'path'); ?>          
        </div>
        <div class="span8">
-           <?php echo CHtml::activeFileField($model, 'url', array('required'=>'required','accept'=>'image/*'));?>
-		  <?php echo $form->error($model,'url'); ?>
+           <?php echo CHtml::activeFileField($model, 'path', array('required'=>'required','accept'=>'image/*'));?>
+		  <?php echo $form->error($model,'path'); ?>
+       </div>
+       
+       <div class="span4 no_margin_left text_align_right">
+        <?php echo $form->labelEx($model,'link'); ?>          
+       </div>
+       <div class="span8">
+           <?php echo $form->textField($model,'link'); ?>
+            <?php echo $form->error($model,'link'); ?>
        </div>
        
        <?php

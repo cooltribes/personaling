@@ -2379,10 +2379,16 @@ public function actionCategorias(){
         
         public function actionUpdateAvailability(){
             $looks=Look::model()->findAllByAttributes(array('activo'=>1));
+            echo "<table>";
             foreach($looks as $look){
-                $look->updateAvailability();
-                echo $look->id." - ".$look->available."<br/>";
+               //$look->updateAvailability();
+                echo "<tr/><td>{$look->id} - </td>";
+                echo "<td>{$look->title}</td>";
+                echo "<td>{$look->countAvailableProducts()} prods.</td><td>";
+                echo $look->available?"Disponible":"No Disponible";
+                echo "<td></tr>";
             }
+            echo "</table>";
         }
         
         

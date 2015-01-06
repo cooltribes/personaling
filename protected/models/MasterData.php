@@ -191,14 +191,14 @@ class MasterData extends CActiveRecord
             $archivo = tmpfile();
             fwrite($archivo, $docXml->asXML());
             fseek($archivo, 0);
-            
+             
             /* en pruebas dejarlos aparte, en produccion
              * subirlo a una carpeta especifica de produccion*/
             $directorio = "html/develop/develop/protected/data";
             if($enProduccion){                
                 $directorio = "IN/";
-            }            
-            
+            }             
+             
             //realizar la conexion ftp
             $conexion = ftp_connect($ftpServer); 
             //loguearse
@@ -209,7 +209,7 @@ class MasterData extends CActiveRecord
 //                echo "Se intentó conectar al $ftpServer por el usuario $userName";
                 fclose($archivo); 
                 return false; 
-            }
+            } 
             //activar modo pasivo FTP
             ftp_pasv($conexion, true);            
 //            echo "Conexión a $ftpServer realizada con éxito, por el usuario $userName";

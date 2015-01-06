@@ -11,7 +11,8 @@
  * @property string $title
  * @property integer $alt
  * @property string $copy
- * @property string $url
+ * @property string $path
+ * @property string $link
  * @property integer $type
  * @property integer $width
  * @property integer $height
@@ -44,14 +45,14 @@ class SiteImage extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('url', 'required'),
+			array('path', 'required'),
 			array('id, index, group, type, width, height', 'numerical', 'integerOnly'=>true),
 			array('name, title, alt', 'length', 'max'=>50),
-			array('copy', 'length', 'max'=>200),
-			array('url', 'length', 'max'=>100),
+			array('copy, link', 'length', 'max'=>200),
+			array('path', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, index, group, title, alt, copy, url, type, width, height', 'safe', 'on'=>'search'),
+			array('id, name, index, group, title, alt, copy, path, type, width, height, link', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,7 +80,8 @@ class SiteImage extends CActiveRecord
 			'title' => 'Titulo',
 			'alt' => 'Texto Alternativo',
 			'copy' => 'Copy',
-			'url' => 'Url',
+			'path' => 'Archivo',
+			'link' => 'Enlace a',
 			'type' => 'Tipo',
 			'width' => 'Width',
 			'height' => 'Height',
@@ -104,7 +106,7 @@ class SiteImage extends CActiveRecord
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('alt',$this->alt);
 		$criteria->compare('copy',$this->copy,true);
-		$criteria->compare('url',$this->url,true);
+		$criteria->compare('path',$this->path,true);
 		$criteria->compare('type',$this->type);
 		$criteria->compare('width',$this->width);
 		$criteria->compare('height',$this->height);
@@ -125,7 +127,16 @@ class SiteImage extends CActiveRecord
             $img=$this->findByAttributes(array('name'=>$name,'index'=>$index));
             if($img){              
                 
-                return CHtml::image($img->url, $img->alt,array('title'=>$img->title,'width'=>$width,'height'=>$height));
+                return CHtml::image($img->path, $img->alt,array('title'=>$img->title,'width'=>$width,'height'=>$height));
+            }
+            else return "";    
+        }
+    
+    public function getLinkedImage($name,$index=1,$width='100%',$height='',$class=''){
+            $img=$this->findByAttributes(array('name'=>$name,'index'=>$index));
+            if($img){              
+                
+                return "<a href='".$img->link."' title='".$img->title."' class='".$class."'>".CHtml::image($img->path, $img->alt,array('title'=>$img->title,'width'=>$width,'height'=>$height))."</a>";
             }
             else return "";    
         }

@@ -414,7 +414,7 @@ return array (
 	'Transaction No.' => 'Nro. de Transacción',
 	'Try again' => 'Intentar nuevamente',
 
-
+    'Unavailable'=>'No disponible',
 	'Underpayment' => 'Pago Insuficiente',
 	'Unit price' => 'Precio unitario',
 	'Until' => 'Hasta',

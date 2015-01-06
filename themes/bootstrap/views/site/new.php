@@ -25,6 +25,9 @@ Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST'] , null, null, ar
 Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST'], null, null, array('property' => 'og:site_name'), null); 
 Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url .'images/icono_preview.jpg', null, null, array('property' => 'og:image'), null);
 
+
+/*
+
 if(Yii::app()->language=='es_es'){
     $links=array(
         'banner'=>Yii::app()->baseUrl."/registro-personaling",
@@ -62,11 +65,10 @@ if(Yii::app()->language=='es_es'){
     );
 }
 
-
+*/
 ?>
-<a href="<?php echo $links['banner'];?>">     
-    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/banner.jpg';?>" width="100%">
-</a>
+<?php echo $elements['banner'];?>    
+
 <!--<div class="onBanner row-fluid">
 
      <!--
@@ -102,10 +104,7 @@ if(Yii::app()->language=='es_es'){
         <div class="row" style="margin-top: 80px">
             <div class="span9">
                 <div>
-                    <a href="<?php echo $links['slider'];?>">
-                    
-                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/slide1.jpg';?>" />
-                    </a>    
+                    <?php echo $elements['slider'];?>        
                 </div>
                 <section>
                 <div class="sectionTitle">
@@ -200,39 +199,28 @@ if(Yii::app()->language=='es_es'){
             </div>
             <div class="span3">
                 <section>
-                <a href="<?php echo $links['art1'];?>">
+             
                
                     <div class="articleRight no_margin_top">
-                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art1.jpg';?>" width="100%" />
-                      <!-- <div class="articleLegend text_center_align">
-                           <?php //echo $copys['art1'];?>
-                       </div> -->
+                     <?php echo $elements['art1'];?>    
                     </div>
-                </a>
-                <a href="<?php echo $links['art2'];?>">
+                
+               
                     <div class="articleRight">
-                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art2.jpg';?>" width="100%" />
-                      <!-- <div class="articleLegend">
-                           <?php //echo $copys['art2'];?>
-                       </div> -->
+                        <?php echo $elements['art2'];?> 
                     </div>
-                </a>
-                <a href="<?php echo $links['art3'];?>">
+              
+               
                     <div class="articleRight">
-                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art3.jpg';?>" width="100%" />
-                     <!--  <div class="articleLegend">
-                           <?php //echo $copys['art3'];?>
-                       </div> -->
+                      <?php echo $elements['art3'];?> 
+                   
                     </div>
-                </a>
-                <a href="<?php echo $links['art4'];?>">
+               
+   
                     <div class="articleRight">
-                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art4.jpg';?>" width="100%" />
-                     <!--  <div class="articleLegend margin_top_medium">
-                           <?php // echo $copys['art4'];?>
-                       </div> -->
+                     <?php echo $elements['art4'];?>    
                     </div>
-                </a>
+             
       <!--          <div style="background-color: #6F6F6F; margin-top: 80px; width:100%; height:207px; position: relative; overflow-y: hidden;">
                   
                    <div style="width:100%; height:45px; position:absolute; top:25%; font-size: 25px; line-height: 27px; text-align: center; color:#000 ">
@@ -341,25 +329,13 @@ if(Yii::app()->language=='es_es'){
                         <div class="row-fluid">
                             <div class="span11">
                                 <div class="row-fluid">
-                                    <a title="ELLE" class="span2" href="http://www.elle.es/lo-mas-elle/ocio/regalos-navidad-2014/regalos-moda-navidad/personaling.es">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/elle.jpg';?>" alt="ELLE" height="70px" />
-                                    </a>
-                                    <a title="Cosmopolitan" class="span2" href="https://www.facebook.com/Cosmopolitan.es/photos/a.114689081490.110515.55254956490/10152496043136491/?type=1&permPage=1">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/cosmo.jpg';?>" alt="Cosmopolitan" height="70px" />
-                                    </a>
-                                    
-                                    <a title="Marie Claire" class="span2" href="http://www.marie-claire.es/moda/tendencias/articulo/personalizar-esta-de-moda-541415705858">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/mc.jpg';?>" alt="Marie Claire" height="70px" />
-                                    </a>
-                                    <a title="Movistar" class="span2" href="http://www.masquenegocio.com/2014/05/05/heidi-garcia-adragna-personaling-moda-personal-shopper/">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/mstar.jpg';?>" alt="Movistar" height="70px" />
-                                    </a>                                    
-                                    <a title="Woman" class="span2" href="http://www.woman.es/moda/novedades/lo-ultimo-en-venta-on-line-personaling">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/woman.jpg';?>" alt="Woman" height="70px" />
-                                    </a>
-                                    <a title="S Moda" class="span2" href="http://smoda.elpais.com/articulos/moda-e-internet-un-binomio-ganador/5121">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/smoda.jpg';?>" alt="S Moda" height="70px" />
-                                    </a>
+                                    <?php echo $elements['magazine1'];?> 
+                                    <?php echo $elements['magazine2'];?> 
+                                    <?php echo $elements['magazine3'];?> 
+                                    <?php echo $elements['magazine4'];?> 
+                                    <?php echo $elements['magazine5'];?> 
+                                    <?php echo $elements['magazine6'];?> 
+
                                     
                                 </div>
                             </div>

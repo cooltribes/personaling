@@ -22,13 +22,14 @@ $(":submit").mouseup(function() {
 })',CClientScript::POS_READY);
 
 if (!Yii::app()->user->isGuest) { // que este logueado
-    $descuento = Yii::app()->getSession()->get('descuento');
+    $descuento = Yii::app()->getSession()->get('descuento'); 
+
     $descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
     $total = Yii::app()->getSession()->get('total');
     $totalPagar = Yii::app()->getSession()->get('totalTarjeta');	
+    
 ?>
-
-<div class="container margin_top">
+<div class="container margin_top"> 
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
       <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
@@ -42,7 +43,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <?php echo Yii::t('contentForm','Confirm <br>purchase'); ?>
       </div>
     </div>
-  </div>
+  </div>  
   <div class="row">
     <div class="span12">
       <h1><?php echo Yii::t('contentForm','Order confirmation'); ?>
@@ -877,9 +878,7 @@ $(document).ready(function(){
   }
  			
 	}
-	
-        
-       
+     
         
         
 </script> 

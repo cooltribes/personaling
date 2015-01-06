@@ -66,7 +66,7 @@ $this->breadcrumbs = array(
                                  'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
                                 'afterAjaxUpdate' => " function(id, data) {
                                                                     } ",
-                                'pager' =>$pagerParams, 	
+                                'pager' =>$pagerParams, 
                             ));
                             ?>
                         </div>

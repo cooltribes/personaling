@@ -1,5 +1,5 @@
 <tr>       
-    
+      
     <td>
         <?php echo $data->id; ?>
     </td>

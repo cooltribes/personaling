@@ -3546,6 +3546,8 @@ class BolsaController extends Controller
 
 	                    $datos = simplexml_load_string($respuesta);
 
+	                    //var_dump($datos);
+	                    //Yii::app()->end();
 	                    $id = $datos->result[0]->recorddetail->FL[0];
 	                    //echo $id;	 
 

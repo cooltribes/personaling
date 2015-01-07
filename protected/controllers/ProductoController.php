@@ -5219,19 +5219,24 @@ public function actionReportexls(){
 						$nombre = $producto->nombre." - ".$ptc->sku;
 						
 							$xml .= '<FL val="Product Name">'.$nombre.'</FL>';
-						
-						if(strpos($producto->mymarca->nombre, "&") === false )
-							$marca = $producto->mymarca->nombre;
+						if(isset($producto->mymarca)){
+							if(strpos($producto->mymarca->nombre, "&") === false)
+								$marca = $producto->mymarca->nombre;
+							else{
+								$marca_cambiar = $producto->mymarca->nombre;
+								$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+								
+								$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+								
+								$marca = $marcacorregida;
+							}
+
+							$xml .= '<FL val="Marca">'.$marca.'</FL>';
+						} // si existe la relacion
 						else{
-							$marca_cambiar = $producto->mymarca->nombre;
-							$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
-							
-							$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
-							
-							$marca = $marcacorregida;
-						}
+							$xml .= '<FL val="Marca"></FL>';
+						}	
 						
-						$xml .= '<FL val="Marca">'.$marca.'</FL>';
 						$xml .= '<FL val="Referencia">'.$producto->codigo.'</FL>';
 						
 						$estado="FALSE";

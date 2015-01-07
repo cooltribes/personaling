@@ -107,14 +107,14 @@ class ZohoSales{
 		$xml .= '</row>'; 
 		$xml .= '</Invoices>';
 		
+		//var_dump($xml);
+		//echo htmlspecialchars($xml)."<p><p>";
+		//Yii::app()->end();
+
 		$this->addAddress($orden->user->zoho_id, $orden->user->profile->first_name, $orden->user->profile->last_name, $orden->user->email, $orden->direccionEnvio->dirUno,
 							$orden->direccionEnvio->dirDos, $orden->direccionEnvio->provincia->nombre, $orden->direccionEnvio->myciudad->nombre,
 							$orden->direccionEnvio->pais, $orden->direccionEnvio->codigoPostal->codigo); 
 							
-		//var_dump($xml);
-		//echo htmlspecialchars($xml)."<p><p>";
-		//Yii::app()->end();
-		
 		$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&wfTrigger=true&xmlData=".$xml; 
 		$ch = curl_init();

@@ -1011,8 +1011,14 @@ class BolsaController extends Controller
                         'product_name'  => $nombreProducto,                             
                     );               
                     
+					$usu=User::model()->findByPk( Yii::app()->user->id );
                     $cData = array(
                         "src" => 1, //origen de la compra, 1-Normal, 2-GiftCard
+                        'idUsuario'=>Yii::app()->user->id,
+                        'nombreUsuario'=>$usu->profile->first_name." ".$usu->profile->last_name, 
+                        'cantProduc'=>$bolsa->getProductos()+$bolsa->getSumaCadaLook(),
+                        'idsProductos'=> $bolsa->getEachProducto(),
+   
                     );
 
                     $cData = CJSON::encode($cData);
@@ -3008,9 +3014,11 @@ class BolsaController extends Controller
             $optional = array(                        
                 'name'          => 'Personaling Enterprise S.L.',
                 'product_name'  => $nombreProducto,                             
-            );                                    
+            );   
+			$usu=User::model()->findByPk( Yii::app()->user->id );                                 
             $cData = array(
                 "src" => 2, //origen de la compra, 1-Normal, 2-GC
+                'nombreUsuario'=>$usu->profile->first_name." ".$usu->profile->last_name, 
             );
 
             $cData = CJSON::encode($cData);

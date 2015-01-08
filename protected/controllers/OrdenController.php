@@ -34,7 +34,7 @@ class OrdenController extends Controller
                                     'adminXLS','generarExcelOut','devolver','adminDevoluciones',
                                     'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
                                     'AnularDevuelto','cantidadDevuelto','activarDevuelto',
-                                    'resolverOutbound','descargarReturnXML', 'reporteDetallado','ResolverItemReturn','ordeneszoho'),
+                                    'resolverOutbound','descargarReturnXML', 'reporteDetallado','ResolverItemReturn','ordeneszoho', 'ordenFinalizada'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -2959,6 +2959,202 @@ public function actionValidar()
 				echo "fin de ciclo final";		
 			
 		}
+
+public function actionOrdenFinalizada() // ES EL SCRIPT ORDEN FINALIZADA
+{
+		$bd=explode("=",Yii::app()->db->connectionString);	
+	    $BaseDatos=$bd[2];
+		
+		$debug = false;
+		        
+		/*
+		 * *********************** IMPORTANTE *****************************  
+		 */
+		$conexion = mysqli_connect("mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com",
+		        "personaling","Perso123Naling",$BaseDatos);
+		/*
+		 * *********************** IMPORTANTE ***************************** 
+		 */
+		
+		
+		//Ordenes q pasaron a ser recibidas y estan en ese estado, o devueltas
+		//o parcialmente devueltas
+		$consulta = "
+		SELECT e.* FROM tbl_estado e, tbl_orden o
+		WHERE e.orden_id = o.id
+		AND e.estado = 8
+		AND o.estado IN (8, 9, 10)
+		";
+		
+		$ordenes = mysqli_query($conexion,$consulta);
+		
+		/*
+		 * *********************** IMPORTANTE ***************************** 
+		 */
+		$DIAS_DEVOLUCION = -1; //CONSTANTE
+		/*
+		 * *********************** IMPORTANTE ***************************** 
+		 */
+		
+		
+		
+		$hoy = new DateTime();
+		
+		$fechaDeHoy = $hoy->format("Y-m-d");
+		
+		$idOrdenes = array();
+		
+		while($row = mysqli_fetch_array($ordenes)){	
+		
+		    $recibida = new DateTime($row['fecha']);
+		    $diasTranscurridos = $recibida->diff($hoy)->days;
+		    
+		    //si ya pasaron los 3 dias
+		    if($diasTranscurridos > $DIAS_DEVOLUCION){
+		        
+		        //cambiarle el estado a la orden
+		        $consultaEstado = "SELECT estado FROM tbl_orden o
+		        WHERE o.id = {$row['orden_id']}";
+		        
+		        /*
+		         * CONSULTAR LA ORDEN ACTUAL
+		         */
+		        $resultado = mysqli_query($conexion, $consultaEstado);         
+		        
+		        $estado = mysqli_fetch_array($resultado);
+		        
+		        //cambiar el estado a finalizada
+		        $estado = $estado[0] + 3;
+		        
+		        $update = "
+		        UPDATE tbl_orden
+		        SET estado = {$estado}
+		        WHERE id = {$row['orden_id']}    
+		        ";        
+		        /*
+		         * ACTUALIZAR EL ESTADO TBL_ORDEN
+		         */
+		        $queryResult = mysqli_query($conexion, $update);
+		        
+		        if($debug){
+		            echo "<br>Actualizar estado de la orden<pre>";
+		            print_r($queryResult);
+		            echo "</pre>";            
+		        }
+		
+		
+		
+		        //insertar un nuevo cambio de estado en tbl_estado
+		        $insertar = "INSERT INTO tbl_estado (estado, user_id, fecha, orden_id)
+		            VALUES ({$estado}, 0, \"$fechaDeHoy\", {$row['orden_id']})";                     
+		        
+		        /*
+		         * INSERTAR EL NUEVO ESTADO TBL_ESTADO
+		         */
+		        $queryResult = mysqli_query($conexion, $insertar);  
+		        
+		        if($debug){            
+		            echo "<br>Insertar Estado<pre>";
+		            print_r($queryResult);
+		            echo "</pre>";            
+		        }
+		        
+		        //Guardar el id de la orden para los pagos luego
+		        $idOrdenes[] = $row['orden_id'];
+		        
+		    }
+		}
+		
+		$idOrdenes = implode(", ", $idOrdenes);
+		
+		if($debug)
+		echo "<br>Las Ordenes: ".$idOrdenes." <br>";
+		
+		// Buscar los productos pendientes por pagar al PS, que no se hayan devuelto,
+		// y que sean de las ordenes que acaban de pasar a estado FINALIZADA
+		$consultaPago = "
+		SELECT o.tbl_orden_id ordenId, o.preciotallacolor_id ptcId, o.look_id, o.comision,
+		o.tipo_comision tipoComision, o.cantidad, o.precio, l.user_id
+		FROM tbl_orden_has_productotallacolor o, tbl_look l
+		WHERE o.status_comision = 1
+		AND o.devolucion_id = 0
+		AND o.tbl_orden_id IN ({$idOrdenes})
+		AND l.id = o.look_id
+		";
+		
+		/*
+		 * CONSULTAR TODOS LOS PRODUCTOS VENDIDOS PARA PAGAR A LOS PS
+		 */
+		$resultado = mysqli_query($conexion, $consultaPago);
+		
+		if($debug){            
+		         
+		    echo "<br>Productos Vendidos OrdenHasPrecioTallaColor<pre>";
+		    print_r($resultado);
+		    echo "</pre>";
+		}
+		
+		if($resultado)
+		{
+					while($fila = mysqli_fetch_array($resultado)){
+			
+			    //Calcular el monto de ganancia a pagar por producto a cada PS
+			    if($fila["tipoComision"] == 1){
+			        $fila["comision"] /= 100;            
+			        $monto = $fila["cantidad"] * $fila["precio"] * $fila["comision"];
+			    }else{
+			        $monto = $fila["cantidad"] * $fila["comision"];                
+			    }
+			
+			    $monto = round($monto, 3);
+			
+			     //insertar un nuevo balance para el usuario PS
+			    $insertar = "INSERT INTO tbl_balance (total, orden_id, user_id, tipo)
+			    VALUES ({$monto}, {$fila["ordenId"]}, {$fila["user_id"]}, 5)";        
+			
+			    if($debug){
+			        echo "<br>Monto a pagar: ".$insertar."<br>";
+			    }
+			    
+			     /*
+			     * INSERTAR EL NUEVO BALANCE
+			     */
+			    
+			    $queryResult = mysqli_query($conexion, $insertar);
+			    if($debug){            
+			        echo "<br>Insertar Balance<pre>";
+			        print_r($queryResult);
+			        echo "</pre>";            
+			    }
+			    
+			    //Pasar el producto de la venta a estado 2 (ya pagado al PS)
+			    $update = "
+			        UPDATE tbl_orden_has_productotallacolor o
+			        SET o.status_comision = 2        
+			        WHERE o.tbl_orden_id = {$fila["ordenId"]}
+			        AND o.preciotallacolor_id = {$fila["ptcId"]}
+			        AND o.look_id = {$fila["look_id"]}
+			        ";
+			        
+			     /*
+			      * ACTUALIZAR EL PRODUCTO a ESTADO 2 - PAGADO
+			      */   
+			      $queryResult = mysqli_query($conexion, $update); 
+			        if($debug){            
+			        echo "Insertar Estado<pre>";
+			        print_r($queryResult);
+			        echo "</pre>";            
+			      }
+			
+			} 
+		}
+   
+		
+		mysqli_close($conexion);
+		
+		$this->render('/controlpanel/index');
+		
+}
 
         
 }

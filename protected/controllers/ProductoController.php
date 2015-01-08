@@ -1494,13 +1494,17 @@ public function actionReportexls(){
 					$datos=$datos."</div>";	
 				$datos .= '</form>';
 				$result['html'] = $datos;
-			}else if($accion=="Destacar") {
-				    foreach($checks as $id){
-                    $model = Producto::model()->findByPk($id);
-                    $model->destacado=1;
-                    Producto::model()->updateByPk($id, array('destacado'=>'1'));
-
-                }
+			}else if($accion=="Destacar") 
+			{
+				    foreach($checks as $id)
+				    {
+				    	if($id!="todos")
+						{
+	                   	 $model = Producto::model()->findByPk($id);
+	                   	 $model->destacado=1;
+	                   	 Producto::model()->updateByPk($id, array('destacado'=>'1'));
+	                    }
+                	}
                 $result['status'] = "9";
 			}
 		}

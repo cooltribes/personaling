@@ -1119,7 +1119,7 @@ class AdminController extends Controller
     	
     		if($usuariosTotal == $sumatoria){
 				$success = $this->actionEnviarZoho($xml, $ids);
-				$acumulador += $success;
+				$acumulador += 1; 
 			}
 			else
 				$sumatoria++;

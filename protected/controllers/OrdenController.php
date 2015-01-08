@@ -1524,7 +1524,7 @@ public function actionValidar()
 						
 				
 				}
-			else{
+			else{ 
 				
 				Yii::app()->user->setFlash('success',"No se pudo registrar la Entrega");
 			}	
@@ -1532,7 +1532,7 @@ public function actionValidar()
 		}else
 			Yii::app()->user->setFlash('success',"No esta autorizado para registrar la entrega");
 		
-		echo "ok";	
+		echo "ok";	  
 	}
 	
 
@@ -1543,8 +1543,12 @@ public function actionValidar()
 		$orden->tracking = $_POST['guia'];
 		$orden->estado=4; // enviado
 		
-		if($orden->save())
-                {
+		if($orden->save()){
+
+			// cambiar estado de la orden en Zoho a Enviada 
+			$zoho = new ZohoSales;
+			$zoho->updateStatus($orden->id);
+
                     // agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
                     $estado = new Estado;
 

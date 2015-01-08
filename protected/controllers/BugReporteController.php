@@ -1,6 +1,6 @@
 <?php
 
-class BugController extends Controller
+class BugReporteController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -62,59 +62,20 @@ class BugController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Bug;
+		$model=new BugReporte;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Bug']))
+		if(isset($_POST['BugReporte']))
 		{
-			$model->attributes=$_POST['Bug'];
-			$model->estado=0;
-			$model->date=date('Y-m-d-h-i-s');
-			
-			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/bug/'))
-			{
-			  mkdir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/bug/',0777,true);
-			 }
-			$images=CUploadedFile::getInstanceByName('image');
-			
-			
-         	$contador = count(Bug::model()->findAll());
-			$contador+= 1;
-			#var_dump($contador);
-			#Yii::app()->end();
-			$nombre = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/bug/'.$contador;
-			$extension = '.'.$images->extensionName;
-			$model->image=$contador. $extension;
-			#$images->saveAs($nombre . $extension);
-			
-			if ($images->saveAs($nombre . $extension)) {
-		
-		       		$image = Yii::app()->image->load($nombre.$extension);
-					$image->resize(150, 150);
-					$image->save($nombre.'_thumb'.$extension);
-			}
-			
-					
+			$model->fecha=date('Y-m-d-h-i-s');
+			$model->user_id=Yii::app()->user->id; 
+			$model->bug_id= Yii::app()->session['bug_id'];
+			$model->attributes=$_POST['BugReporte'];
+			unset(Yii::app()->session['bug_id']); 
 			if($model->save())
-			{
-				$modelado=new BugReporte;
-				$modelado->user_id=Yii::app()->user->id;
-				$modelado->bug_id=$contador;
-				$modelado->estado=0;	
-				$modelado->descripcion=$_POST['Bug']['description'];
-				$modelado->fecha=date('Y-m-d-h-i-s');
-				$modelado->save();
-				Yii::app()->user->setFlash('success',UserModule::t("Falla tecnica reportada exitosamente"));
-                $this->redirect(array('admin'));
-			}
-			else 
-			{
-				Yii::app()->user->setFlash('error',UserModule::t("Falla tecnica no reportada, error inesperado"));
-                $this->redirect(array('admin'));
-			}
-			
+				$this->redirect(array('bug/admin'));
 		}
 
 		$this->render('create',array(
@@ -134,9 +95,9 @@ class BugController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Bug']))
+		if(isset($_POST['BugReporte']))
 		{
-			$model->attributes=$_POST['Bug'];
+			$model->attributes=$_POST['BugReporte'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -165,7 +126,7 @@ class BugController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Bug');
+		$dataProvider=new CActiveDataProvider('BugReporte');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -176,24 +137,13 @@ class BugController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Bug('search');
+		$model=new BugReporte('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Bug']))
-			$model->attributes=$_GET['Bug'];
-		
-			$criteria = new CDbCriteria;
-			//$criteria->condition = 'data like "%look_id%"';
-			$criteria->order = 'id DESC';
-			$dataProvider = new CActiveDataProvider('Bug', array(
-                    'criteria' => $criteria,
-                    'pagination' => array(
-                        #'pageSize' => Yii::app()->getModule('user')->user_page_size,
-                    	),
-                	));
+		if(isset($_GET['BugReporte']))
+			$model->attributes=$_GET['BugReporte'];
 
 		$this->render('admin',array(
 			'model'=>$model,
-			'dataProvider'=>$dataProvider,
 		));
 	}
 
@@ -201,12 +151,12 @@ class BugController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Bug the loaded model
+	 * @return BugReporte the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Bug::model()->findByPk($id);
+		$model=BugReporte::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -214,11 +164,11 @@ class BugController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Bug $model the model to be validated
+	 * @param BugReporte $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='bug-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='bug-reporte-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

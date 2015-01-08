@@ -401,5 +401,37 @@ class ZohoSales{
 		$response = curl_exec($ch);
 		curl_close($ch);
 	}
-	
+
+	function getLostId($lead_mail){
+		
+		$url ="https://crm.zoho.com/crm/private/xml/Leads/searchRecords";
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&criteria=((Email:".$lead_mail."))&selectColumns=leads(leadID)";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+
+		//Execute cUrl session
+		$response = curl_exec($ch);
+		curl_close($ch);
+		
+		$datos = simplexml_load_string($response);
+		//print_r($datos);
+		//echo $datos->result->Leads->row->FL;
+		
+		$zoho_id = $datos->result->Leads->row->FL;
+		$usuario = User::model()->findByAttributes(array('email'=>$lead_mail));
+		$usuario->zoho_id = $zoho_id;
+		//$usuario->saveAttributes(array('zoho_id'=>$zoho_id)); // se recupera el zoho id en caso de que se perdiera.
+		
+		if($usuario->save())
+			return TRUE;
+		else
+			return FALSE;
+
+	}
+
 }

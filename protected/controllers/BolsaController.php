@@ -1943,19 +1943,35 @@ class BolsaController extends Controller
 									$zoho = new ZohoSales;
 									
 									//transformando Lead a posible cliente.
-									if($user->tipo_zoho == 0){ 
+									if($user->tipo_zoho == 0){
+
+										if($user->zoho_id == ""){
+					            			$zoho->getLostId($user->email);
+					            		}
+
 										$conv = $zoho->convertirLead($user->zoho_id, $user->email);
 										$datos = simplexml_load_string($conv);
 										
+										/*
+										var_dump($datos);
+										Yii::app()->end();
+										*/
+
 										$id = $datos->Contact;
 										$user->zoho_id = $id;
 										$user->tipo_zoho = 1;
 										
-										$user->save(); 
+										if(!$user->save())
+											Yii::trace('ZOHO:'.$user.' Error al guardar:'.print_r($user->getErrors(),true),'Compra');
+
 									}
 									
 									if($user->tipo_zoho == 1) // es ahora un contact
 									{
+										if($user->zoho_id == ""){ 
+					            			$zoho->getLostId($user->email);
+					            		}
+
 										$respuesta = $zoho->save_potential($orden);
 									
 										$datos = simplexml_load_string($respuesta);
@@ -3537,19 +3553,35 @@ class BolsaController extends Controller
 	            $zoho = new ZohoSales;
 
 	            //transformando Lead a posible cliente.
-	            if($usuario->tipo_zoho == 0){ 
+	            if($usuario->tipo_zoho == 0){
+	                    
+	            		if($usuario->zoho_id == ""){ 
+	            			$zoho->getLostId($usuario->email);
+	            		} 
+
 	                    $conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email);
 	                    $datos = simplexml_load_string($conv);
-
-	                    $id = $datos->Contact;
+	                    
+	                    /*
+	                    var_dump($datos);
+						Yii::app()->end();		
+						*/ 
+ 
+	                    $id = $datos->Contact; 
 	                    $usuario->zoho_id = $id;
-	                    $usuario->tipo_zoho = 1;
+	                    $usuario->tipo_zoho = 1; 
 
-	                    $usuario->save(); 
+	                    if(!$usuario->save()) 
+	                    	Yii::trace('ZOHO:'.$usuario.' Error al guardar:'.print_r($usuario->getErrors(),true),'Compra'); 
 	            }
 
-	            if($usuario->tipo_zoho == 1) // es ahora un contacto
+	            if($usuario->tipo_zoho == 1) // es ahora un contacto 
 	            {
+
+	            	if($usuario->zoho_id == ""){
+            			$zoho->getLostId($usuario->email);  
+            		} 
+ 
 	                    $respuesta = $zoho->save_potential($orden);
 
 	                    $datos = simplexml_load_string($respuesta);

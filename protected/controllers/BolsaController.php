@@ -3575,7 +3575,7 @@ class BolsaController extends Controller
 	                    	Yii::trace('ZOHO:'.$usuario.' Error al guardar:'.print_r($usuario->getErrors(),true),'Compra'); 
 	            }
 
-	            if($usuario->tipo_zoho == 1) // es ahora un contacto 
+	            if($usuario->tipo_zoho == 1) // es ahora un contacto
 	            {
 
 	            	if($usuario->zoho_id == ""){

@@ -1310,7 +1310,7 @@ class Look extends CActiveRecord
                 foreach($ptcs as $ptc){
                     if($ptc->cantidad>0&&$ptc->producto->estado==0&&$ptc->producto->status==1){
                         $count++;
-                        break;
+                        
                     }
                 }
             }
@@ -1326,13 +1326,13 @@ class Look extends CActiveRecord
         if($this->countAvailableProducts()<3)
         {
             if($this->available!=0){
-                 $this->saveAttributes(array('available'=>0));
+                 if($this->saveAttributes(array('available'=>0)));
                  $save=true;                
             }
         }           
         else{
             if($this->available!=1){                 
-                 $this->saveAttributes(array('available'=>1));
+                 if($this->saveAttributes(array('available'=>1)));
                  $save=true;                
             }
         } 

@@ -22,8 +22,11 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
   Yii::app()->clientScript->registerMetaTag('personaling.com', 'twitter:domain', null, null, null);
 
   //Metas de Twitter CARD OFF
-
-
+   /* foreach ($model->lookhasproducto as $pr){
+        $mod = Preciotallacolor::model()->findByAttributes(array('color_id'=>$pr->color_id,'producto_id'=>$pr->producto_id));
+        echo $mod->updateLooksAvailability()."<br/>";
+    }
+   break;*/
 ?>
 
 

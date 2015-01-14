@@ -41,6 +41,15 @@ function changeFilter(e){
    {       
        listFilter(column, '100');
 
+   }else if(column.val() === 'descuento') //si el producto tiene descuento
+   {       
+       listFilter(column, 'descuento');
+
+   }
+   else if(column.val() === 'tipoDescuento') //Tipo de descuento
+   {       
+       listFilter(column, 'tipoDescuento');
+
    }
    else if(column.val() === 'outlet') //si es Outlet
    {       

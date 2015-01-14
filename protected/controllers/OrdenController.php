@@ -3058,7 +3058,11 @@ public function actionOrdenFinalizada() // ES EL SCRIPT ORDEN FINALIZADA
 		            print_r($queryResult);
 		            echo "</pre>";            
 		        }
-		        
+				//////////////actualizar estado finalizado en zoho/////////////////////
+		        $zoho=New ZohoSales;
+				$zoho->updateStatus($row['orden_id']);
+				
+				
 		        //Guardar el id de la orden para los pagos luego
 		        $idOrdenes[] = $row['orden_id'];
 		        

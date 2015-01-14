@@ -48,6 +48,7 @@ if (Yii::app()->user->id?UserModule::isAdmin():false){
 
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 array('label'=>'Panel de Control', 'url'=>'#', 'items'=>array(
+                							 array('label'=>'Script', 'url'=>array('/Orden/ordenFinalizada')),
                                             array('label'=>'General', 'url'=>array('/controlpanel/index')),
                                             array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')),
                                             array('label'=>'Productos', 'url'=>array('/controlpanel/productos')),

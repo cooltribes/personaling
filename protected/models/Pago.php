@@ -46,8 +46,8 @@ class Pago extends CActiveRecord
     
     const MONTO_MIN = 1;
     const MONTO_MAX = 1000;
-    const MONTO_MIN_PAYPAL = 2;
-    const MONTO_MIN_BANCO = 5;
+    const MONTO_MIN_PAYPAL = 50;
+    const MONTO_MIN_BANCO = 50;
     const MONTO_MIN_BALANCE = 1;
 
 

@@ -176,7 +176,7 @@ class RegistrationController extends Controller
 
                             $xml = simplexml_load_string($result);
                             $id = (int)$xml->result[0]->recorddetail->FL[0];
-                            $model->saveAttributes(array('zoho_id'=>$id));
+                            $model->saveAttributes(array('zoho_id'=>$id,'tipo_zoho'=>0));
                             
                             /*$model->zoho_id = $id;
                             if($model->save()){

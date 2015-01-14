@@ -3,6 +3,28 @@ $this->breadcrumbs = array(
     'Usuarios' => array('admin'),
     'Editar',);
 ?>
+
+<?php /*
+$models=User::model()->findAllBySql("select * from tbl_users where create_at>= '2014-07-01' and create_at<= '2014-07-24'");
+				foreach($models as $modelado)
+				{
+					$saldo=Profile::model()->getSaldo($modelado->id);
+					
+					if($saldo>0 && $saldo <=5)
+					{
+						//echo $modelado->id."----";
+						$balance=new Balance;
+						$balance->total=$saldo*(-1); // coloco el usuario que se le quiere hacer el cambio
+						$balance->orden_id=0;
+						$balance->admin_id = 228; //guardar cual admin fue
+						$balance->user_id=$modelado->id; // el usuario que se quiera hacer el cambio
+						$balance->tipo=12;
+						$balance->fecha = date("Y-m-d H:m:i");
+						$balance->save();
+					}
+				}
+*/
+?>
 <div class="container margin_top">
     <div class="page-header">
         <h1>Editar Usuario</small></h1>

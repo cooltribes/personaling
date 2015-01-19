@@ -265,7 +265,7 @@ class ZohoSales{
 		
 		return $xml2; 
 	}
-
+	//Funcion para convertir de posible cliente a cliente en Zoho....
 	function convertirLead($lead_id,$lead_mail){
 		
 		$xml = '

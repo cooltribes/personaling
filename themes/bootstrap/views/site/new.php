@@ -278,19 +278,19 @@ if(Yii::app()->language=='es_es'){
                          </h3>
                      </div>
                      <a title="Facebook" href="https://www.facebook.com/Personaling" target="_blank">                                   
-                        <img alt="Facebook" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/fb.jpg';?>" class="span1"/>
+                        <img alt="Facebook" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/fb.jpg';?>" class="span1 socialHome"/>
                      </a>
                      <a title="Instagram" href="http://instagram.com/personaling" target="_blank"> 
-                        <img alt="Instagram" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/ig.jpg';?>" class="span1"/>
+                        <img alt="Instagram" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/ig.jpg';?>" class="span1 socialHome"/>
                      </a>
                      <a title="Twitter" href="https://twitter.com/personaling" target="_blank"> 
-                        <img alt="Twitter" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/tw.jpg';?>" class="span1"/>
+                        <img alt="Twitter" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/tw.jpg';?>" class="span1 socialHome"/>
                      </a>
                      <a title="Pinterest" href="https://pinterest.com/personaling/" target="_blank">   
-                        <img alt="Pinterest" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/pt.jpg';?>" class="span1"/>
+                        <img alt="Pinterest" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/pt.jpg';?>" class="span1 socialHome"/>
                      </a>
                      <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ" target="_blank"   
-                        <img alt="Youtube" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/yt.jpg';?>" class="span1"/>
+                        <img alt="Youtube" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/yt.jpg';?>" class="span1 socialHome"/>
                      </a> 
                      <div class="span3"></div>
                 

@@ -27,7 +27,8 @@ $this->breadcrumbs=array(
         <li align="justify"><a href="http://www.personaling.com" title="Personaling, Tu Personal Shopper Online">Personaling.com</a> enviará a nuestros usuarios un número indeterminado de comunicaciones periódicas -que nuestro equipo considere necesarias- sobre productos, promociones e información general referente a nosotros o a empresas afiliadas a nuestra plataforma siempre con su consentimiento previo.</li>
         <li align="justify">La marca, contenido y logotipo son propiedad de Personaling.com, el registro en la página no otorga derecho ninguno sobre alguno de los elementos antes citados ni su distribución en ningún medio sin previa autorización de nuestro equipo. </li>
         <li align="justify"><a href="http://www.personaling.com" title="Personaling, Tu Personal Shopper Online">Personaling.com</a> podrá desincorporar cualquier perfil que considere viole o infrinja nuestros términos de servicio o considere fraudulento, sin previa notificación al usuario. 
-  </li>
+        <li align="justify">El balance obtenido de promociones de parte de Personaling Enterprise Tiene un tiempo de uso Máximo de 30 Días o el que la promo lo indique.</li>  
+</li>
       </ol>
     </div>
   </div>

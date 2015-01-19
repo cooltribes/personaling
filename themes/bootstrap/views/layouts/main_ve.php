@@ -127,7 +127,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                     ),
                     
                  array('label'=>'Configuración', 'url'=>'#', 'items'=>array(
-                  array('label'=>'Configuración Home', 'url'=>array('/site/homeConf')),
+                  array('label'=>'Home', 'url'=>array('/site/homeConf')),
                     array('label'=>'Colores', 'url'=>array('/color/admin')),
                     array('label'=>'Marcas', 'url'=>array('/marca/admin')),
                     array('label'=>'Categorías', 'url'=>array('/categoria/admin')),

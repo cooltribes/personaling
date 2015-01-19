@@ -487,7 +487,7 @@ $("#mobFiltrar").click(function() {
         <input type="hidden" id="perfil_propio" name="perfil_propio" value="<?php echo $perfil_propio; ?>" />     
 
 
-        <div class="navbar-inner sub_menu hide">
+        <div class="navbar-inner sub_menu psFilter hide">
             <div id="div_ocasiones"></div>
             <div id="div_shopper">
                 <form id="form_shopper">

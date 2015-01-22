@@ -588,9 +588,15 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             /*Si es admin no mostrar el boton de agregar giftcard*/
             if(!$admin){
             ?>
-             <button type="button" class="btn btn-success margin_top_medium" 
+          <!--  <button type="button" class="btn btn-success margin_top_medium" 
                      data-toggle="collapse" data-target="#collapse2">
-                 <i class = "icon-gift icon-white"></i> <?php echo Yii::t('contentForm','Redeem Gift Card'); ?></button> 
+                 <i class = "icon-gift icon-white"></i> <?php echo Yii::t('contentForm','Redeem Gift Card'); ?></button> -->
+                 
+                 
+                <a data-toggle="collapse" data-target="#collapse2" style="cursor: pointer" class="pull-right"> 
+                 	<u>Canjear Gift Card</u>
+				</a>
+              
             
            
             <!-- Aplicar Gifcard ON -->

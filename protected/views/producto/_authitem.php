@@ -2,8 +2,11 @@
 	$es="";
    	$r="";
 	$cats="";
-	
-echo"<tr>";
+if($data->status==1)	{
+	echo"<tr>";}
+else {
+	echo"<tr class='error'>";
+}
 	echo "<td><input name='check' type='checkbox' id='".$data->id."' /></td>";
    	echo "<td>".$data->nombre."</td>";
    	echo "<td>".$data->codigo."</td>";
@@ -81,8 +84,8 @@ else
   
    	echo "<td>".number_format($totventas, 2, ',', '.')."</td>"; // ventas bs
    	
-   if($data->estado==0)
-		echo "<td> Activo </td>";
+   if($data->estado==0){
+		echo "<td> Activo </td>";}
    else {
       	echo "<td> Inactivo </td>";
    }	

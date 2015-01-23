@@ -504,7 +504,7 @@
 			        {
 						if(data=='ok'){
 							//alert('redireccionar maÃ±ana');
-							window.location='../bolsa/index';
+							window.location='".Yii::app()->getBaseUrl(true)."/bolsa/index';
 						}
 						
 						if(data=='no es usuario'){

@@ -3018,6 +3018,33 @@ class AdminController extends Controller
                             $message->activarPlantillaMandrill();
                             $subject = 'Registro Personaling'; 
                             $message->subject = $subject;
+							
+							$zoho = new ZohoSales;
+									
+									//transformando Lead a posible cliente.
+									if($model->tipo_zoho == 0){
+
+										if($model->zoho_id == ""){
+					            			$zoho->getLostId($model->email);
+					            		}
+
+										$conv = $zoho->convertirLead($model->zoho_id, $model->email);
+										$datos = simplexml_load_string($conv);
+										
+										/*
+										var_dump($datos);
+										Yii::app()->end();
+										*/
+
+										$id = $datos->Contact;
+										$model->zoho_id = $id;
+										$model->tipo_zoho = 1;
+										
+										if(!$model->save())
+											Yii::trace('ZOHO:'.$model.' Error al guardar:'.print_r($model->getErrors(),true),'Compra');
+
+									}
+							
                         if($prev==2){                   
                             //Enviar mail
                             

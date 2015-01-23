@@ -8,6 +8,14 @@
      tipopago 7: Saldo
 -->
 <?php
+
+//Si borran los datos de navegacion.
+if(Yii::app()->getSession()->get('subtotal')=="") 
+{
+	$this->redirect('index');
+}
+
+
 Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
 
 $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Payment method'));
@@ -320,7 +328,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed " id="tabla_resumen">
               <tr>
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal'); ?>:</th>
-                <td class="text_align_right"><?php
+                <td class="text_align_right"><?php 
                   $envio = 0;
                   $peso_total = 0;
                   $tipo_guia = 0;

@@ -186,7 +186,7 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 /* SIdebar */
 #scroller{
     background:rgba(255,255,255,.8);
-    }
+  }
 
 /* Brakers */
 .braker_right{border-right:1px solid #ddd;}
@@ -686,7 +686,7 @@ border:0;
 
 .dropdown-menu .active{color: white}
 
-.error{color: #B94A48}
+.error{color: #B94A48;}
 
 .modal{
   border-radius: 0;
@@ -1552,15 +1552,48 @@ src: url('../fonts/entypo.woff'),
     .no_list_style{
       list-style-type: none;
     }
-
+    
+    .nodesktop{ display:none}
+  
   @media  (max-width: 767px) {
+    .braker_horz_top_less_space{
+      margin-bottom:3em !important;
+    }
     .socialHome,.articleRight{
       width: 50%;
-      margin: 2em auto .2em auto;
+      margin: 0;
       padding:10px;
       float:left;
     }
-    
+    .magazinesHome>a{
+      width:48% !important;
+      padding:10px;
+      float:left !important;
+    }
+    .organizationsHome>a{
+      width:98% !important;
+      padding:10px;
+      float:left !important;
+      text-align:center;
+      img{
+        width:50%;
+      }
+    }
+    .mediosHome>div>h4{
+      font-weight:bold;
+    }
+    .destacadosHome>article{
+      .margin_bottom
+    }
+    .nodesktop{ display:block }
+    .articleRight{
+       width:100%;
+    }
+    h3.socialText{
+      font-size:18px;
+      font-weight:500px;
+      min-height:0px;
+    }
     .lookHome{
       margin-top: 3em;
     }
@@ -1577,7 +1610,7 @@ src: url('../fonts/entypo.woff'),
     }
     
     .sectionTitle{
-        margin-top:2em;
+        margin:0;
         font-size:2em;
         font-weight:bold;
         .braker{
@@ -1585,6 +1618,11 @@ src: url('../fonts/entypo.woff'),
         }
         .text{
           width:100%;
+          h2{
+            font-size:28px;
+            font-weight:500;
+            margin-bottom:1em;
+          }
         }
     }
   }
@@ -5513,7 +5551,10 @@ div .social{
   }
   
 }
-
+.table-striped>tbody>tr.error>td{
+  color: #B94A48;
+   background:#f2dede;
+}
 
 
 

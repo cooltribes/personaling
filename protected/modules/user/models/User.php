@@ -1195,6 +1195,19 @@ class User extends CActiveRecord {
             return isset($looks);
         }
 		
+		public function getUrl($url)
+		{
+			if($url=='')
+				$url="Proviene de Pagina no Localizada";
+			if(strpos($url, "plus.url.google.com"))
+			    $url="Google+";
+
+			
+						
+				
+			return $url;
+		}
+		
 		
 	
         

@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
             if($field->title == 'Fiesta')
                 $return .='<legend>¿Con cuál de estos looks te irias de fiesta? </legend>';
             if($field->title == 'Vacaciones')
-                $return .='<legend>Para ir a la playa, ¿Cuál de estos looks te pondrías? </legend>';
+                $return .='<legend>¿Cuales serían tus vacaciones ideales? </legend>';
             if($field->title == 'Haciendo Deporte')
                 $return .='<legend>¿Con cuál estilo te identificas más para hacer deporte? </legend>';
             if($field->title == 'Oficina')
@@ -24,8 +24,8 @@ $this->breadcrumbs=array(
 
                 //echo Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg';
                 //if (file_exists(Yii::app()->baseUrl . '/images/'.$nombre_tmp.'_'.$key.'.jpg'))
-                    $nombre_image = Yii::app()->baseUrl . '/images/'.Yii::app()->language.'/estilos/'.$nombre_tmp.'_'.$key.'.jpg';
-                //else
+                    $nombre_image = Yii::app()->baseUrl . '/images/estilos/'.Yii::app()->language.'/'.$nombre_tmp.'_'.$key.'.jpg';
+                //else 
                 //    $nombre_image = "http://placehold.it/270x400";
                 // CHtml::image($nombre_image, "Imagen ".$value, array("width" => "370", "height" => "370"))
             $return .=  '<li class="span4 '.($key==$valor?'active':'').'" id="ocasion_'.$key.'"> <a href="#" title="Elige este estilo">

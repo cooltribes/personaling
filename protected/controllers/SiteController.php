@@ -22,7 +22,7 @@ class SiteController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('productoimagen','index','top','error','contacto','login','logout',
+				'actions'=>array('productoimagen','index','top','error','contacto','login','logout', 
                                     'acerca_de','activos_graficos','publicaciones_de_prensa',
                                     'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',

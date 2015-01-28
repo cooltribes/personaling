@@ -70,8 +70,8 @@ class BugController extends Controller
 		if(isset($_POST['Bug']))
 		{
 			$model->attributes=$_POST['Bug'];
-			$model->estado=1;
-			$model->date=date('Y-m-d');
+			$model->estado=0;
+			$model->date=date('Y-m-d-h-i-s');
 			
 			if(!is_dir(Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/bug/'))
 			{
@@ -99,6 +99,13 @@ class BugController extends Controller
 					
 			if($model->save())
 			{
+				$modelado=new BugReporte;
+				$modelado->user_id=Yii::app()->user->id;
+				$modelado->bug_id=$contador;
+				$modelado->estado=0;	
+				$modelado->descripcion=$_POST['Bug']['description'];
+				$modelado->fecha=date('Y-m-d-h-i-s');
+				$modelado->save();
 				Yii::app()->user->setFlash('success',UserModule::t("Falla tecnica reportada exitosamente"));
                 $this->redirect(array('admin'));
 			}

@@ -1,5 +1,15 @@
 <?php
 
+if (isset($_SERVER['HTTP_REFERER'])) 
+{
+	
+	echo Yii::app()->session['referencia']= $_SERVER['HTTP_REFERER'];
+}
+else
+{
+	Yii::app()->session['referencia']='';
+}
+
 if(isset($seo)){
 	$this->pageTitle = $seo->title;
 	Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
@@ -78,8 +88,6 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 </div>
 <?php else: ?>
 	
-	
-
 
 <div class="container margin_top">
   <div class="row">
@@ -94,7 +102,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
       </div>
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
 
-        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+        <?php  $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'registration-form',
 	'htmlOptions'=>array('class'=>'personaling_form'),
     //'type'=>'stacked',

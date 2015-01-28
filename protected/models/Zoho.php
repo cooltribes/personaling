@@ -55,7 +55,7 @@ class Zoho{
 				$xml .= '<FL val="Email">'.$email.'</FL>';
 			}				
 		}
-		$xml .= '<FL val="Lead Source">Tienda Personaling</FL>';
+		$xml .= '<FL val="Lead Source">'.User::model()->getUrl(Yii::app()->session['referencia']).'</FL>';
 		if(isset($this->birthday)) $xml .= '<FL val="Fecha de Nacimiento">'.$this->birthday.'</FL>';
 		if(isset($this->sex)) $xml .= '<FL val="Sexo">'.$this->sex.'</FL>';
 		if(isset($this->bio)) $xml .= '<FL val="Description">'.$this->bio.'</FL>';

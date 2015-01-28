@@ -510,10 +510,10 @@ class PagoController extends Controller
                      
             $destinatario = $pago->user->email;
             
-            if(Funciones::isDev()){
+            /*if(Funciones::isDev()){
                 
                 $destinatario = "nramirez@upsidecorp.ch";               
-            }     
+            }*/     
                      
 //            $params = array('subject'=>$subject, 'body'=>$body);
             $message->subject = $subject;

@@ -107,14 +107,14 @@ class ZohoSales{
 		$xml .= '</row>'; 
 		$xml .= '</Invoices>';
 		
+		//var_dump($xml);
+		//echo htmlspecialchars($xml)."<p><p>";
+		//Yii::app()->end();
+
 		$this->addAddress($orden->user->zoho_id, $orden->user->profile->first_name, $orden->user->profile->last_name, $orden->user->email, $orden->direccionEnvio->dirUno,
 							$orden->direccionEnvio->dirDos, $orden->direccionEnvio->provincia->nombre, $orden->direccionEnvio->myciudad->nombre,
 							$orden->direccionEnvio->pais, $orden->direccionEnvio->codigoPostal->codigo); 
 							
-		//var_dump($xml);
-		//echo htmlspecialchars($xml)."<p><p>";
-		//Yii::app()->end();
-		
 		$url ="https://crm.zoho.com/crm/private/xml/Invoices/insertRecords";
 		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&wfTrigger=true&xmlData=".$xml; 
 		$ch = curl_init();
@@ -265,7 +265,7 @@ class ZohoSales{
 		
 		return $xml2; 
 	}
-
+	//Funcion para convertir de posible cliente a cliente en Zoho....
 	function convertirLead($lead_id,$lead_mail){
 		
 		$xml = '
@@ -401,5 +401,37 @@ class ZohoSales{
 		$response = curl_exec($ch);
 		curl_close($ch);
 	}
-	
+
+	function getLostId($lead_mail){
+		
+		$url ="https://crm.zoho.com/crm/private/xml/Leads/searchRecords";
+		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&criteria=((Email:".$lead_mail."))&selectColumns=leads(leadID)";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+
+		//Execute cUrl session
+		$response = curl_exec($ch);
+		curl_close($ch);
+		
+		$datos = simplexml_load_string($response);
+		//print_r($datos);
+		//echo $datos->result->Leads->row->FL;
+		
+		$zoho_id = $datos->result->Leads->row->FL;
+		$usuario = User::model()->findByAttributes(array('email'=>$lead_mail));
+		$usuario->zoho_id = $zoho_id;
+		//$usuario->saveAttributes(array('zoho_id'=>$zoho_id)); // se recupera el zoho id en caso de que se perdiera.
+		
+		if($usuario->save())
+			return TRUE;
+		else
+			return FALSE;
+
+	}
+
 }

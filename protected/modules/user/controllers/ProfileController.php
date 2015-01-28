@@ -1148,8 +1148,8 @@ class ProfileController extends Controller
 						Yii::app()->user->setFlash('success',UserModule::t("New password is saved."));
 						//$this->redirect(array("profile"));
 					} else {
-						Yii::trace('username:'.$new_password->username.' Error:'.print_r($new_password->getErrors(),true), 'registro');
-						Yii::app()->user->setFlash('error',UserModule::t("Lo sentimos hubo un error, intente de nuevo mas tarde."));
+						#Yii::trace('username:'.$new_password->username.' Error:'.print_r($new_password->getErrors(),true), 'registro');
+						Yii::app()->user->setFlash('error',UserModule::t("Contraseña Actual no es valida."));
 					}
 			}
 			$this->render('changepassword',array('model'=>$model));

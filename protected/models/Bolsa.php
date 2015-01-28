@@ -180,6 +180,47 @@ class Bolsa extends CActiveRecord
 		
 	}
 	
+	public function getEachProducto()
+	{
+		$producto="";
+		$i=0;
+		$cada = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$this->id)); //, 'look_id'=>0 quitando los looks
+		foreach($cada as $cadauno)
+		{
+			if($i==0)
+			{
+				$producto=Preciotallacolor::model()->findByPk($cadauno->preciotallacolor_id)->producto_id;
+				$i++;
+			}
+			else 
+			{
+				$producto=$producto.", ".Preciotallacolor::model()->findByPk($cadauno->preciotallacolor_id)->producto_id;
+			}	
+				
+		}	
+		
+		return $producto;
+		
+	}
+	
+	public function getSumaCadaLook()
+	{
+		$cantidad=0;
+		$cada=BolsaHasProductotallacolor::model()->findAll(array('condition'=>'bolsa_id=:bolsa_id AND look_id!= :look_id',
+    		'params'=>array(':bolsa_id'=>$this->id, ':look_id'=>0),
+			));
+                
+		foreach($cada as $cadauno)
+		{
+			$cantidad+=$cadauno->cantidad;		
+				
+		}	
+		
+		return $cantidad;
+		
+	}
+	
+	
 	public function deleteInactivos(){
 		$return=false;
 		foreach($this->bolsahasproductos as $productobolsa){

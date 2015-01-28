@@ -925,11 +925,10 @@ Yii::app()->clientScript->registerScript(
   </div>
   <div class="modal-footer"><a href="" title="ver" class="btn-link" target="_blank">Cancelar </a> <a href="#" title="Confirmar" class="btn btn-success">Aceptar el pago</a> </div>
 </div>
-<!------------------- MODAL WINDOW OFF ----------------->
+<!------------------- MODAL WINDOW OFF --------------- -->
 
 <script>
-	
- function enviar(id)
+function enviar(id)
     {
         //var idDetalle = $("#idDetalle").attr("value");
         var nombre= $("#nombre").attr("value");
@@ -1053,23 +1052,23 @@ Yii::app()->clientScript->registerScript(
 	        url: "../validar", // action
 	        dataType: 'json', 
 	        data: { 'accion':uno, 'id':id}, 
-	        success: function (data) {
+	        success: function (data) { 
 				if(data.status=="ok")
 				{
 					window.location.reload();
 					//alert("guardado"); 
 					// redireccionar a donde se muestre que se ingreso el pago para luego cambiar de estado la orden 
 				}
-	       	}//success
+	       	}//success  
 	       })		
 		
 	}
 	
-	function enviarPedido(id){
-		
+	function enviarPedido(id){ 
+		 
 		var guia = $('#tracking').attr('value');
 		
-		$.ajax({
+		$.ajax({ 
 	        type: "post", 
 	        url: "../enviar", // action 
 	        dataType: 'json',
@@ -1080,16 +1079,14 @@ Yii::app()->clientScript->registerScript(
 					window.location.reload();
 				}
 	       	}//success
-	       })	
+	       })	 
 	      
 	   //  alert(guia);	
-		
+		 
 	}
 	
-	function entregado(id){
-		
-	
-		
+	function entregado(id){ 
+
 		$.ajax({
 	        type: "post", 
 	        url: "../entregar", // action 

@@ -43,7 +43,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <?php echo Yii::t('contentForm','Confirm <br>purchase'); ?>
       </div>
     </div>
-  </div>
+  </div>  
   <div class="row">
     <div class="span12">
       <h1><?php echo Yii::t('contentForm','Order confirmation'); ?>

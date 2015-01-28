@@ -106,6 +106,7 @@ if(Yii::app()->language=='es_es'){
                 <div>
                     <?php echo $elements['slider'];?>        
                 </div>
+                <div class="braker_horz_top_less_space nodesktop"></div>
                 <section>
                 <div class="sectionTitle">
                     <div class="braker"></div>
@@ -161,6 +162,7 @@ if(Yii::app()->language=='es_es'){
                     </a>
                  </div>
                  </section>
+                 <div class="braker_horz_top_less_space hidden-desktop"></div>
                  <section>
                  
                     <div class="sectionTitle">
@@ -197,6 +199,7 @@ if(Yii::app()->language=='es_es'){
                  </div>
                  </section>
             </div>
+            <div class="braker_horz_top_less_space hidden-desktop"></div>
             <div class="span3">
                 <section>
              
@@ -238,6 +241,7 @@ if(Yii::app()->language=='es_es'){
                 </section>
                 
             </div>
+            <div class="braker_horz_top_less_space hidden-desktop"></div>
             <section>
              <div class="span12 no_margin_left sectionTitle">
                         <div class="braker"></div>
@@ -248,7 +252,7 @@ if(Yii::app()->language=='es_es'){
              
              
              
-             <div class="row">
+             <div class="row destacadosHome">
                 
                <?php    foreach(Producto::model()->destacados(6) as $producto): ?>
                    <article><?php
@@ -261,6 +265,7 @@ if(Yii::app()->language=='es_es'){
                                 
              </div>
              </section>
+             <div class="braker_horz_top_less_space hidden-desktop"></div>
              <section>
              <div class="span12 no_margin_left sectionTitle">
                         <div class="braker"></div>
@@ -278,19 +283,19 @@ if(Yii::app()->language=='es_es'){
                          </h3>
                      </div>
                      <a title="Facebook" href="https://www.facebook.com/Personaling" target="_blank">                                   
-                        <img alt="Facebook" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/fb.jpg';?>" class="span1"/>
+                        <img alt="Facebook" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/fb.jpg';?>" class="span1 socialHome"/>
                      </a>
                      <a title="Instagram" href="http://instagram.com/personaling" target="_blank"> 
-                        <img alt="Instagram" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/ig.jpg';?>" class="span1"/>
+                        <img alt="Instagram" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/ig.jpg';?>" class="span1 socialHome"/>
                      </a>
                      <a title="Twitter" href="https://twitter.com/personaling" target="_blank"> 
-                        <img alt="Twitter" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/tw.jpg';?>" class="span1"/>
+                        <img alt="Twitter" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/tw.jpg';?>" class="span1 socialHome"/>
                      </a>
                      <a title="Pinterest" href="https://pinterest.com/personaling/" target="_blank">   
-                        <img alt="Pinterest" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/pt.jpg';?>" class="span1"/>
+                        <img alt="Pinterest" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/pt.jpg';?>" class="span1 socialHome"/>
                      </a>
                      <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ" target="_blank"   
-                        <img alt="Youtube" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/yt.jpg';?>" class="span1"/>
+                        <img alt="Youtube" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/yt.jpg';?>" class="span1 socialHome"/>
                      </a> 
                      <div class="span3"></div>
                 
@@ -315,20 +320,21 @@ if(Yii::app()->language=='es_es'){
                           
              </div>
              </section>
+             <div class="braker_horz_top_less_space hidden-desktop"></div>
              <section>
              <div class="span12 no_margin_left sectionTitle">
                         <div class="braker"></div>
                         <div class="text" ><h2>Aquí hablan de tu Personal Shopper</h2></div>
                         <div class="braker"></div>
              </div>
-            <div class="row">
-                <ul class="no_list_style">     
+            <div class="row mediosHome">
+                 
                      
                      <div class="span8 no_margin_left">
                         <h4>En los medios</h4>
                         <div class="row-fluid">
                             <div class="span11">
-                                <div class="row-fluid">
+                                <div class="row-fluid magazinesHome">
                                     <?php echo $elements['magazine1'];?> 
                                     <?php echo $elements['magazine2'];?> 
                                     <?php echo $elements['magazine3'];?> 
@@ -341,9 +347,10 @@ if(Yii::app()->language=='es_es'){
                             </div>
                         </div>    
                      </div>
+                     <div class="margin_top_large nodesktop"></div>
                      <div class="span4 no_margin_left">
                         <h4>Nos avalan</h4>
-                        <div class="row-fluid">
+                        <div class="row-fluid organizationsHome">
                             <a title="Wayra" href="http://ve.wayra.org/es/startup/personaling" class="span3">
                                 <img alt="Wayra" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/wayra.jpg';?>" height="25px"/>
                             </a>
@@ -358,7 +365,7 @@ if(Yii::app()->language=='es_es'){
                     
                                                       
                      
-                </ul>           
+                    
              </div> 
              </section>
             
@@ -367,6 +374,7 @@ if(Yii::app()->language=='es_es'){
     </div>
     
 </div>
+<div class="braker_bottom margin_top nodesktop"></div>
 <?php if($result): ?>
 <div id="confirmLook" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
  <div class="modal-header">

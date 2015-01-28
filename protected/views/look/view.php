@@ -22,8 +22,11 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
   Yii::app()->clientScript->registerMetaTag('personaling.com', 'twitter:domain', null, null, null);
 
   //Metas de Twitter CARD OFF
-
-
+   /* foreach ($model->lookhasproducto as $pr){
+        $mod = Preciotallacolor::model()->findByAttributes(array('color_id'=>$pr->color_id,'producto_id'=>$pr->producto_id));
+        echo $mod->updateLooksAvailability()."<br/>";
+    }
+   break;*/
 ?>
 
 
@@ -260,7 +263,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                   $image_url = $lookhasproducto->producto->getImageUrl($lookhasproducto->color_id,array('type'=>'thumb'));
                   Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.$image_url, null, null, array('property' => 'og:image'), null);  // Registro de <meta> para compartir en Facebook                              
                   ?>
-                  <div class="span6"> 
+                  <div class="producto span6"> 
                     <a href="pagina_producto.php" title="Nombre del Producto">
                       <!-- <img width="170" height="170" src="<?php echo Yii::app()->getBaseUrl(true) . '/'; ?>/images/producto_sample_1.jpg" title="Nombre del producto" class="imagen_producto" />
                       -->
@@ -309,7 +312,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                     <div class="metadata_bottom">
                       <h5><?php echo $lookhasproducto->producto->nombre; ?></h5>
                       <div class="row-fluid">
-                        <div class="span7"><span> <?php echo Yii::t('contentForm', 'currSym'); ?>
+                        <div class="span6"><span> <?php echo Yii::t('contentForm', 'currSym'); ?>
                         <?php foreach ($lookhasproducto->producto->precios as $precio) {
                         echo Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); // precio
                         }
@@ -317,19 +320,19 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;;
                         ?>
 
                         </span></div>
-                        <div class="span5"> <span id="cantidad<?php echo $lookhasproducto->producto_id.'_'.$color_id; ?>">
+                        <div class="span6 text_align_right"> <span id="cantidad<?php echo $lookhasproducto->producto_id.'_'.$color_id; ?>">
                         <?php 
-                        if($lookhasproducto->producto->estado == 0){                        
+                        if($lookhasproducto->producto->estado == 0 && $lookhasproducto->producto->status == 1){                        
 
-                        echo $lookhasproducto->producto->getCantidad(null,$color_id);
+                        echo $lookhasproducto->producto->getCantidad(null,$color_id)." unds.";
 
                         }else{
 
-                        echo "0";
+                        echo Yii::t('contentForm','Unavailable');
 
                         }
 
-                        ?> unds.</span></div>
+                        ?> </span></div>
                       </div>
                     </div>
                   </div>

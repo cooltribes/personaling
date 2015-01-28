@@ -129,15 +129,24 @@ class SiteImage extends CActiveRecord
                 
                 return CHtml::image($img->path, $img->alt,array('title'=>$img->title,'width'=>$width,'height'=>$height));
             }
-            else return "";    
-        }
-    
+            else
+                if(file_exists(Yii::app()->theme->getBaseUrl(true).'/images/home/default/'.$name.$index.'.jpg'))
+                    return CHtml::image(Yii::app()->theme->getBaseUrl(true).'/images/home/default/'.$name.$index.'.jpg', "Default",array('width'=>$width,'height'=>$height));
+                else
+                    return "";    
+        }  
+     
     public function getLinkedImage($name,$index=1,$width='100%',$height='',$class=''){
             $img=$this->findByAttributes(array('name'=>$name,'index'=>$index));
             if($img){              
                 
                 return "<a href='".$img->link."' title='".$img->title."' class='".$class."'>".CHtml::image($img->path, $img->alt,array('title'=>$img->title,'width'=>$width,'height'=>$height))."</a>";
             }
-            else return "";    
+            else 
+                if(file_exists(Yii::app()->theme->getBaseUrl(true).'/images/home/default/'.$name.$index.'.jpg'))
+                   return "";   
+                else
+                   return "<a href='' title='Default' class='".$class."'>".CHtml::image(Yii::app()->theme->baseUrl.'/images/home/default/'.$name.$index.'.jpg', "Default",array('width'=>$width,'height'=>$height))."</a>";
+                      
         }
 }

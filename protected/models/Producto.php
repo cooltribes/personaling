@@ -1595,6 +1595,59 @@ public function multipleColor2($idColor, $idact)
                         
                     continue;
                 }
+				  if($column == 'descuento') // 
+                 {
+	                 	/// Descuento si es 0 es que es porcentaje si es 1 es de Valor y si es NULL  (CAMBIA LA MANERA DE MANEJAR LOS SI Y NO)
+	                 	if(($comparator=='=' && $value=="1")|| ($comparator!='=' && $value=="0"))
+						{
+							$criteria->addInCondition('precios.tipoDescuento',array(0, 1));
+						}
+						if(($comparator=='=' && $value=="0") || ($comparator!='=' && $value=="1"))
+						{
+							$criteria->addCondition('precios.tipoDescuento is NULL');	
+							#$criteria->compare('precios.tipoDescuento',NULL, true);
+							#$criteria->addNotInCondition('precios.tipoDescuento',array(0, 1));
+						}
+	                 	
+	                  
+	                    
+	                    if(!in_array('precios', $criteria->with))
+	                    {
+	                        $criteria->with[] = 'precios';
+	                    }
+	                    
+	                    continue;
+                }
+				 
+				 if($column == 'tipoDescuento') 
+                 {
+	                        //si es el comparador igual o diferente
+	                     $value = ($comparator == '=') ? $value : 1-$value;
+	
+	                        $criteria->addCondition("precios.tipoDescuento = ".$value,
+	                                $logicOp);
+									
+						if(!in_array('precios', $criteria->with))
+	                    {
+	                        $criteria->with[] = 'precios';
+	                    }
+	                        
+	                    continue;
+                }
+
+				 if($column == 'valorTipo') 
+                 {
+	                      $criteria->compare('precios.'.$column, $comparator." ".$value,
+                        false, $logicOp);
+                    
+                    if(!in_array('precios', $criteria->with))
+                    {
+                        $criteria->with[] = 'precios';
+                    }
+                    
+                    continue;
+                }
+				 
                 if($column == 'fecha')
                 {
                     $value = strtotime($value);

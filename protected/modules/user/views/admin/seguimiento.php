@@ -66,7 +66,7 @@ $this->breadcrumbs = array(
                                  'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
                                 'afterAjaxUpdate' => " function(id, data) {
                                                                     } ",
-                                'pager' =>$pagerParams, 	
+                                'pager' =>$pagerParams, 
                             ));
                             ?>
                         </div>
@@ -94,19 +94,16 @@ $this->breadcrumbs = array(
 			    {pager}
 				';
                                 $this->widget('zii.widgets.CListView', array(
-                                    'id' => 'email',
+                                    'id' => 'emaila',
                                     'dataProvider' => $movimientosGC,
                                     'itemView' => '_shoppM',
                                     'template' => $template,
                                     'enableSorting' => 'true',
+                                	'emptyText'=> Yii::t('contentForm','No elements to show'),
+                                 	'summaryText' => 'Mostrando {start} - {end} de {count} Resultados', 
                                     'afterAjaxUpdate' => " function(id, data) {
                                                                         } ",
-                                    'pager' => array(
-                                        'header' => '',
-                                        'htmlOptions' => array(
-                                            'class' => 'pagination pagination-right',
-                                        )
-                                    ),
+                                     'pager' =>$pagerParams, 
                                 ));
                                 ?>
                                     </div>

@@ -63,6 +63,7 @@ $total_productos_look = 0;
         $cont_propios = 0;
         $cont_externos = 0;
 		  	foreach ($bolsa->looks() as $look_id){
+		  		
 		  		$bolsahasproductotallacolor = BolsaHasProductotallacolor::model()->findAllByAttributes(array('bolsa_id'=>$bolsa->id,'look_id' => $look_id));
   				$look = Look::model()->findByPk($look_id);
   				if(isset($look)){
@@ -85,7 +86,8 @@ $total_productos_look = 0;
                 <?php 
                 $productos_externos = array();
                 
-                foreach($bolsahasproductotallacolor as $productotallacolor){ 
+                foreach($bolsahasproductotallacolor as $productotallacolor){
+                	
                 	$total_productos_look++;
                 	$color = Color::model()->findByPk($productotallacolor->preciotallacolor->color_id)->valor;
                         $talla = Talla::model()->findByPk($productotallacolor->preciotallacolor->talla_id)->valor;
@@ -109,7 +111,7 @@ $total_productos_look = 0;
                           $precio_descuento = $producto->getPrecioDescuento();
                           array_push($precios,floatval($precioSumar));	
                           //array_push($precios,floatval($pre));	
-                          array_push($descuentos,$producto->getAhorro(false));
+                          array_push($descuentos,$producto->getAhorro(false)*$productotallacolor->cantidad);
                                           
                               
                             ?>
@@ -266,7 +268,7 @@ $total_productos_look = 0;
                             if($bolsa->getLookProducts($look_id) == $look->countItems()){
                                     $descuento_look = $look->getPrecioProductosDescuento(false) - $look->getPrecioDescuento(false);                                    
 //                                    $descuento_look = $look->getPrecio(false) - $look->getPrecioDescuento(false);
-                                    array_push($descuentos,$descuento_look);
+                                    array_push($descuentos,$descuento_look); 
                             }
                     }
             ?>
@@ -347,8 +349,8 @@ $total_productos_look = 0;
                             $precioMostrar = $producto->getPrecioImpuesto();
                             $precio_descuento = $producto->getPrecioDescuento();
                             
-                            array_push($precios,floatval($precioSumar));	
-                            array_push($descuentos,$producto->getAhorro(false));
+                            array_push($precios,floatval($precioSumar));	    
+                            array_push($descuentos,$producto->getAhorro(false)*$productoBolsa->cantidad); 
                             array_push($cantidades,$productoBolsa->cantidad);                           
                             
 

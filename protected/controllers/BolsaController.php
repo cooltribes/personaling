@@ -162,7 +162,15 @@ class BolsaController extends Controller
 					));
 				}
 			} else {
-				$response = $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+				if($_POST['productoIndividual']!="0") // si es 0 no trae look
+				{
+					$response = $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color'], $_POST['productoIndividual']);
+				}
+				else
+				{
+					$response = $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+				}
+				
 				$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$_POST['producto'],'talla_id'=>$_POST['talla'],'color_id'=>$_POST['color']));
 				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$_POST['producto']));
                 $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
@@ -208,8 +216,17 @@ class BolsaController extends Controller
 				list($producto_id,$color_id) = explode("_",$value);
 				echo $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
 			}
-		} else {
-			echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+		} else 
+		{
+				if($_POST['productoIndividual']!="0") // si es 0 no trae look
+				{
+					
+					echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color'], $_POST['productoIndividual']);
+				}
+				else
+				{
+					echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+				}
 		}
 		 /*	 
 		$usuario = Yii::app()->user->id;

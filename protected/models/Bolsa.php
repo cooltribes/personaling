@@ -518,13 +518,25 @@ class Bolsa extends CActiveRecord
             
         }
         
-        public static function isEmpty(){
+        public static function isEmpty($id=null){
             
             if(Yii::app()->user->isGuest){
                 return true;
             }
-            $bolsa = Bolsa::model()->findByAttributes(array(
-                "user_id" => Yii::app()->user->id));
+			if(is_null($id))
+				$id=Yii::app()->user->id;
+
+			if(!UserModule::isAdmin())
+			{
+				$bolsa = Bolsa::model()->findByAttributes(array(
+                "user_id" =>$id ));
+			}
+			else 
+			{
+				$bolsa = Bolsa::model()->findByAttributes(array(
+                "user_id" =>$id, "admin"=>1 ));
+			}
+            
             
             return !$bolsa->bolsahasproductos;
                     

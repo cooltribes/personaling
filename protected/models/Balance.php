@@ -41,7 +41,7 @@
   * 9: Saldo por cobro tipo "agregar al balance" para PS 
   * 10: Saldo por pago de comision de productos externos para PS
   * 11: Saldo por comisión (clics) 
-  * 12: No uso de la promoción 
+  * 12: Promocion finalizada
   */
  
 class Balance extends CActiveRecord
@@ -156,7 +156,7 @@ class Balance extends CActiveRecord
 		if($balance->tipo==11)
 			return "Pago por comisión (clic)";
 		if($balance->tipo==12)
-			return "No uso de la promoción";
+			return "Promocion finalizada";
 		
 		return "Desconocido";  		
 	}        

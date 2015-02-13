@@ -1076,6 +1076,9 @@ if($validar=="1")
 <?php 
 }?>
 $(document).ready(function(){
+	
+	
+	  
 
     $('.closeModal').click(function(event) {
             $('#alertRegister').hide();
@@ -1435,6 +1438,35 @@ $('.imagen_principal').zoom({url: imgZ});
    
    function comprar(){ // comprobar quienes están seleccionados
       
+       var productoIndividual=<?php //para saber si vino referenciado de un look
+	        if (isset($_SERVER['HTTP_REFERER'])) 
+			{
+				$varis=explode("/",$_SERVER['HTTP_REFERER']);
+				$cont=count($varis);
+				if($varis[$cont-2]=="look")
+				{
+					echo $varis[$cont-1]; 
+				}
+				else
+				{
+					if($varis[$cont-2]=="l") 
+					{
+					  echo Yii::app()->session['look_id'];
+					}
+					else 
+					{
+						echo "0";
+					}
+				}
+					
+				
+			}
+			else 
+			{
+			  echo "0";	
+			}
+        ?>;
+        
       if (comprando == true){
         var talla = $("#vTa").find(".tallass.active").attr("id");
         var color = $("#vCo").find(".coloress.active").attr("id");
@@ -1469,7 +1501,7 @@ $('.imagen_principal').zoom({url: imgZ});
             $.ajax({
                 type: "post",
                 url: "<?php echo Yii::app()->createUrl('bolsa/agregar2'); ?>", // action Tallas de Producto
-                data: { 'producto':producto, 'talla':talla, 'color':color}, 
+                data: { 'producto':producto, 'talla':talla, 'color':color, 'productoIndividual':productoIndividual}, 
                 dataType: 'json',
                 success: function (data) {
                   comprando = true;

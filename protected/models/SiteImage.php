@@ -140,13 +140,13 @@ class SiteImage extends CActiveRecord
             $img=$this->findByAttributes(array('name'=>$name,'index'=>$index));
             if($img){              
                 
-                return "<a href='".$img->link."' title='".$img->title."' class='".$class."'>".CHtml::image($img->path, $img->alt,array('title'=>$img->title,'width'=>$width,'height'=>$height))."</a>";
+                return "<a  target='_blank' href='".$img->link."' title='".$img->title."' class='".$class."'>".CHtml::image($img->path, $img->alt,array('title'=>$img->title,'width'=>$width,'height'=>$height))."</a>";
             }
             else 
                 if(file_exists(Yii::app()->theme->getBaseUrl(true).'/images/home/default/'.$name.$index.'.jpg'))
                    return "";   
                 else
-                   return "<a href='' title='Default' class='".$class."'>".CHtml::image(Yii::app()->theme->baseUrl.'/images/home/default/'.$name.$index.'.jpg', "Default",array('width'=>$width,'height'=>$height))."</a>";
+                   return "<a  target='_blank' href='' title='Default' class='".$class."'>".CHtml::image(Yii::app()->theme->baseUrl.'/images/home/default/'.$name.$index.'.jpg', "Default",array('width'=>$width,'height'=>$height))."</a>";
                       
         }
 }

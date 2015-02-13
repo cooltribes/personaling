@@ -157,8 +157,8 @@ class ZohoSales{
 			$producto = $tallacolor->preciotallacolor->producto;
 			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 			
-			$costo += $precio->costo;
-			$dcto_productos += $precio->ahorro;	
+			$costo += $precio->costo*$tallacolor->cantidad;
+			$dcto_productos += $precio->ahorro*$tallacolor->cantidad;	
 			
 			$id = $tallacolor->preciotallacolor->zoho_id;
 			$nombre = $producto->nombre." - ".$tallacolor->preciotallacolor->sku;
@@ -260,7 +260,7 @@ class ZohoSales{
 		$xml2 .= '<FL val="Descuento Looks">'.(double)$dcto_looks.'</FL>';
 		$xml2 .= '<FL val="Descuento Total">'.(double)$dcto_total.'</FL>';
 		$xml2 .= '<FL val="Total Productos">'.(double)$totalProductos.'</FL>'; 
-		$xml2 .= '<FL val="Productos IVA">'.(double)$orden->getProductsValue().'</FL>'; 
+		$xml2 .= '<FL val="Productos IVA">'.(double)$prod_iva.'</FL>'; 
 		$xml2 .= '<FL val="Productos IVA Descuento">'.(double)$prod_resta_descuento.'</FL>';
 		
 		return $xml2; 

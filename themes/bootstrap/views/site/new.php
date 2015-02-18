@@ -330,7 +330,7 @@ if(Yii::app()->language=='es_es'){
             <div class="row mediosHome">
                  
                      
-                     <div class="span8 no_margin_left">
+                     <div class="span8">
                         <h4>En los medios</h4>
                         <div class="row-fluid">
                             <div class="span11">

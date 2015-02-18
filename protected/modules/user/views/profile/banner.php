@@ -15,7 +15,7 @@
             'error'=>array('block'=>true, 'fade'=>true, 'closeText'=>'&times;'), // success, info, warning, error or danger
         ),
     )
-); ?>	
+); ?>
 <!-- FLASH OFF --> 
 <!-- SIDEBAR ON -->
   <aside class="span3"> <?php echo $this->renderPartial('_sidebar'); ?> </aside>
@@ -40,7 +40,7 @@
                   <h1>Tu Banner</h1>
 <?php echo "<p>Puedes editar o cambiar tu banner usando las opciones a continuación";
  if(is_null($user->banner_url)||$user->banner_url=="/images/banner/default.gif")
-		echo  ", con las siguientes dimensiones:</p>".CHtml::image('http://placehold.it/870x90','Avatar',array("width"=>"870", "height"=>"90", "id"=>"example")); //imagen 
+		echo  ", con las siguientes dimensiones:</p>".CHtml::image('http://placehold.it/1170x343','Avatar',array("width"=>"1170", "height"=>"343", "id"=>"example")); //imagen 
 		else
 			 echo":</p>";?>
     	<div id="container" class="text_align_center margin_bottom margin_top" >
@@ -63,7 +63,7 @@
       <input type="file" name="filesToUpload" id="filesToUpload" class="well well-small" />
       <?php echo CHtml::hiddenField('valido','1'); ?>
       <div id="extension"><div class="alert in alert-block fade alert-error" style="margin-top:20px">El archivo debe ser de formato JPG, GIF o PNG.</div></div>
-      <div id="dimension"><div class="alert in alert-block fade alert-error" >Las dimensiones de la imagen deben ser 870 x 90</div></div>
+      <div id="dimension"><div class="alert in alert-block fade alert-error" >Las dimensiones de la imagen deben ser 1170 x 343</div></div>
       <?php // echo CHtml::hiddenField('avatar_x','0'); ?>
       <?php // echo CHtml::hiddenField('avatar_y','0'); ?>
 <?php /*?>      <div id="dropTarget">O arrasta la imagen hasta aqui</div><?php */?>
@@ -494,7 +494,7 @@ $(document).ready(function() {
 	$( "#yw1" ).click(function(e) {
 		e.preventDefault();
 
-		if(W==870 && H==90){
+		if(W==1170 && H==343){
 			dim=true;			
 		}
 		if(!(E!="JPG"&&E!="PNG"&&E!="GIF"&&E!="jpg"&&E!="png"&&E!="gif")){

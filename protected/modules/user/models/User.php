@@ -790,7 +790,7 @@ class User extends CActiveRecord {
 	protected function beforeSave()
 	{
 	   	
-	   if($this->personal_shopper>0)
+	   if($this->personal_shopper>0  && $this->isNewRecord)
 	   		$this->banner_url='/images/banner/default.gif';
 	   //echo $this->birthday;
 	   return parent::beforeSave();

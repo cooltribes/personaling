@@ -127,6 +127,7 @@ return array (
      'Delivery' => 'Envío',
      'Decorations' => 'Adornos',
      'Discount' => 'Descuento',
+     'Discount look' => 'Descuento por Look',
      'Document' => 'Documento',
      'Do you really want to pull this look out from your cart?'=>'Realmente deseas eliminar este look de tu carrito?',
      'Documents' => 'Documentos',

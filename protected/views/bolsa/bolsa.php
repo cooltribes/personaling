@@ -11,8 +11,6 @@ $this->setPageTitle(Yii::app()->name." - ".Yii::t('contentForm','Your bag')); ?>
                       : Yii::t('contentForm','Your bag');  ?>
           </h1>
           <?php
-
-
 if (!Yii::app()->user->isGuest) { // que este logueado
 
 //$usuario = Yii::app()->user->id;
@@ -28,7 +26,8 @@ $precios = array();
 $descuentos = array();
 $cantidades = array();
 $total_look = 0;
-$total_productos_look = 0; 
+$total_productos_look = 0;
+$descuentoXlook= array();
 ?>
 
 <div class="container margin_top_medium_minus" id="carrito_compras">
@@ -268,8 +267,9 @@ $total_productos_look = 0;
                             if($bolsa->getLookProducts($look_id) == $look->countItems()){
                                     $descuento_look = $look->getPrecioProductosDescuento(false) - $look->getPrecioDescuento(false);                                    
 //                                    $descuento_look = $look->getPrecio(false) - $look->getPrecioDescuento(false);
-                                    array_push($descuentos,$descuento_look); 
-                            }
+                                    //array_push($descuentos,$descuento_look); //no mostrar porque se va a detallar en el look
+									 array_push($descuentoXlook,$descuento_look); // nuevo, para mostrar descuento por la compra del look
+                            } 
                     }
             ?>
 
@@ -522,6 +522,7 @@ $total_productos_look = 0;
                       <?php
                       	$totalPr=0;                        
                       	$totalDe=0;
+						$descuentoEachLook=0;
                                              	
                         $i=0;
 						
@@ -536,6 +537,11 @@ $total_productos_look = 0;
                         foreach ($descuentos as $y) {
                             $totalDe += $y;
                         }
+						
+						foreach ($descuentoXlook as $y) {
+                            $descuentoEachLook += $y;
+                        }
+						
                         
                         //Calcular el IVA
                         $IVA = $totalPr * Yii::t('contentForm', 'IVA');
@@ -543,11 +549,12 @@ $total_productos_look = 0;
                         $totalConIVA = $totalPr + $IVA;
                         
                         //Restarle los descuentos                        
-                        $total = $totalConIVA - $totalDe;                      
+                        $total = $totalConIVA - $totalDe-$descuentoEachLook;                      
                             
                         // variables de sesion
                         Yii::app()->getSession()->add('subtotal', $totalPr);
                         Yii::app()->getSession()->add('descuento', $totalDe);
+						Yii::app()->getSession()->add('descuentoxLook', $descuentoEachLook);
                         Yii::app()->getSession()->add('iva', $IVA);
                         Yii::app()->getSession()->add('total', $total);
                         //Yii::app()->getSession()->add('totalConIva', $totalConIVA);
@@ -574,8 +581,16 @@ $total_productos_look = 0;
                           <td class="text_align_right"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.
                                   Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
                         </tr>
-                      <?php } ?>
+                      <?php } 
+                      	if($descuentoEachLook!=0){
+                      ?>
+                        <tr>
+                          <td class="text_align_left"><?php echo Yii::t('contentForm', 'Discount look'); ?>:</td>
+                          <td class="text_align_right"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.
+                                  Yii::app()->numberFormatter->formatCurrency($descuentoEachLook, ''); ?></td>
+                        </tr>
                       
+                      <?php }?>
                       <tr>
                         <th class="text_align_left"><h4><strong><?php echo Yii::t('contentForm', 'Total'); ?>:</strong></h4></th>
                         <td class="text_align_right"><h4><strong><?php echo Yii::t('contentForm', 'currSym').' '.

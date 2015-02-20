@@ -385,9 +385,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 
                 /****OJO - recalcularlo para productos sin iva*****/
                 $totalDe = Yii::app()->getSession()->get('descuento');
+				
+				//el descuento que viene de los looks
+                $descuentoEachLook=Yii::app()->getSession()->get('descuentoxLook');
                 
                 //Restarle los descuentos                        
-                $total = $totalConIVA - $totalDe;  
+                $total = $totalConIVA - $totalDe-$descuentoEachLook;  
 
                 /*Calcular si hay envio o no*/
                 $shipping=true;
@@ -497,10 +500,16 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
                 <td class="text_align_right" id="descuento"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
               </tr>
-              <?php } 
-        
+              <?php }
+              if($descuentoEachLook){ // si hay descuento por look
               ?>
+               <tr>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Discount look'); ?>:</th>
+                <td class="text_align_right" id="descuento"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuentoEachLook, ''); ?></td>
+              </tr>
               
+              <?php 
+			  }?>
               
               <tr>
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping');

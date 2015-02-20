@@ -182,7 +182,13 @@ endif;
               <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
               <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
             </tr>
-            <?php } ?>     
+            <?php } ?>
+            <?php if($orden->descuento_look != 0){ // si no hay descuento por look ?> 
+            <tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Discount look'); ?>:</th>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento_look, ''); ?></td>
+            </tr>
+            <?php } ?>        
             <?php if($orden->descuentoRegalo != 0){ // si no hay descuento ?> 
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Used Balance:'); ?></th>

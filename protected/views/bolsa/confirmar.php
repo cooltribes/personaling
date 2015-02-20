@@ -23,7 +23,7 @@ $(":submit").mouseup(function() {
 
 if (!Yii::app()->user->isGuest) { // que este logueado
     $descuento = Yii::app()->getSession()->get('descuento'); 
-
+	$descuentoEachLook=Yii::app()->getSession()->get('descuentoxLook');
     $descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
     $total = Yii::app()->getSession()->get('total');
     $totalPagar = Yii::app()->getSession()->get('totalTarjeta');	
@@ -290,12 +290,20 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </tr>
             
             
-            <!--DESCUENTOS-->
+            
             <?php if($descuento != 0){ // si hay descuento ?> 
                 <tr>
                   <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>
                   <td class="text_align_right"><?php echo "- ".Yii::t('contentForm','currSym').' '.
                           Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
+                </tr>
+            <?php } ?>
+            <!--DESCUENTOS POR LOOK-->
+             <?php if($descuentoEachLook != 0){ // si hay descuento ?> 
+                <tr>
+                  <th class="text_align_left"><?php echo Yii::t('contentForm','Discount look') ?>:</th>
+                  <td class="text_align_right"><?php echo "- ".Yii::t('contentForm','currSym').' '.
+                          Yii::app()->numberFormatter->formatCurrency($descuentoEachLook, ''); ?></td>
                 </tr>
             <?php } ?>
                 

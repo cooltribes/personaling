@@ -553,6 +553,13 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td><?php echo Yii::t('contentForm','Discount');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
+        <?php if(isset($orden->descuento_look))
+		{?>
+			 <tr>
+         		 <td><?php echo Yii::t('contentForm','Discount look');  ?></td>
+         		 <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento_look). " ".Yii::t('contentForm','currSym')."."; ?></td>
+       		 </tr>
+		<?php } ?>
         <tr>
           <td><?php echo Yii::t('contentForm','Used balance');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuentoRegalo). " ".Yii::t('contentForm','currSym')."."; ?></td>

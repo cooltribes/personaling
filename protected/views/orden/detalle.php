@@ -740,7 +740,14 @@ $usuario = User::model()->findByPk($orden->user_id);
           		echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; 
         	else
         		echo "<b class='text-success'>GRATIS</b>";  ?></td>
-        </tr>    
+        </tr>  
+        <?php if(isset($orden->descuento_look))
+        {?>
+            <tr>
+         		 <td colspan="10" ><div class="text_align_right"><strong>Descuento por Look</strong></div></td>
+         		 <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->descuento_look, 2, ',', '.'); ?></td>
+           </tr>  	
+        <?php }?>  
         <tr>
           <td colspan="10" ><div class="text_align_right"><strong>Descuento</strong></div></td>
           <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->descuento, 2, ',', '.'); ?></td>

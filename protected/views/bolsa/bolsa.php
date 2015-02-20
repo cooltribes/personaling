@@ -567,15 +567,17 @@ $descuentoXlook= array();
                         <td class="text_align_right"><?php //echo Yii::t('contentForm', 'currSym').' '.
                                 //Yii::app()->numberFormatter->formatCurrency($IVA, ''); ?></td>
                       </tr> -->
-                      
                       <!--DESCUENTOS-->
-                      <?php if($totalDe != 0){ // si HAY descuento ?> 
+                      <?php if($totalDe != 0 || $descuentoEachLook!=0){ // si HAY descuento o hay descuento por look ?> 
                          <!--PRODUCTOS-->  
                         <tr>
                           <td class="text_align_left"><?php echo Yii::t('contentForm', 'Subtotal'); ?>:</td>
                           <td class="text_align_right"><?php echo Yii::t('contentForm', 'currSym').' '.
                                   Yii::app()->numberFormatter->formatCurrency($totalConIVA, ''); ?></td>
                         </tr>
+                        <?php }?>
+                         <?php if($totalDe != 0){ // si HAY descuento ?> 
+                         <!--PRODUCTOS-->  
                         <tr>
                           <td class="text_align_left"><?php echo Yii::t('contentForm', 'Discount'); ?>:</td>
                           <td class="text_align_right"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.

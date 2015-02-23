@@ -272,6 +272,8 @@ class ZohoSales{
 		$totalProductos = $orden->total - $orden->envio; 
 		$prod_iva = $orden->getProductsValue();
 		$prod_resta_descuento = (double)$prod_iva-$dcto_productos;
+		$prod_resta_look=(double)$prod_iva-$dcto_looks;
+		$prod_tota_desc_look=(double)$prod_resta_look+$prod_resta_descuento;
 		
 		$pctjeDescTotal=round($dcto_total*100/$prod_iva,2);
 		
@@ -289,6 +291,9 @@ class ZohoSales{
 		$xml2 .= '<FL val="Porcentaje Descuento Total">'.(double)$pctjeDescTotal.'</FL>';
 		$xml2 .= '<FL val="Porcentaje Descuento Looks">'.(double)$pctjeDescLook.'</FL>';
 		$xml2 .= '<FL val="Porcentaje Descuento Productos">'.(double)$pctjeDescProduc.'</FL>';
+		
+		$xml2 .= '<FL val="Looks IVA Descuento">'.(double)$prod_resta_look.'</FL>';
+		#$xml2 .= '<FL val="IVA Descuento Total">'.(double)$prod_tota_desc_look.'</FL>';
 		return $xml2; 
 	}
 	//Funcion para convertir de posible cliente a cliente en Zoho....

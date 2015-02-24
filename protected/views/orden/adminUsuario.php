@@ -3,6 +3,7 @@ $this->breadcrumbs=array(
   'Tus Pedidos',
 );
 ?>
+
 <div class="container margin_top">
   <div class="page-header">
     <h1>Tus Pedidos</h1>
@@ -132,9 +133,30 @@ $template = '{summary}
   <input id="hiddenMensaje" type="hidden">
 <!-- /container -->
 
+<!-- Modal que despliega el pago-->
 <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'myModal','htmlOptions'=>array('class'=>'modal hide fade','tabindex'=>'-1','role'=>'dialog','aria-labelleby'=>'myModalLabel','aria-hidden'=>'true'))); ?>
 
 <?php $this->endWidget(); ?>
+
+
+<div class="wrapper_home hide">
+            
+    <div class="box_20130928 margin_bottom_small" style="position: fixed;">
+            <h1>
+                <span><?php echo Yii::t('contentForm', 'Your payment is being processed'); ?></span>
+                <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
+            </h1>
+            
+            <p>
+              <?php echo Yii::t('contentForm', 'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser'); ?>
+                <br>
+                <?php echo Yii::t('contentForm', 'Your purchase will be completed in seconds!'); ?>                
+            </p>
+            
+    </div>
+</div>
+
+
 
 <script>
 
@@ -142,6 +164,7 @@ $template = '{summary}
     function enviar(id) 
     {
         //var idDetalle = $("#idDetalle").attr("value");
+        
         var nombre= $("#nombre").attr("value");
         var numeroTrans = $("#numeroTrans").attr("value");
         var dia = $("#dia").attr("value");
@@ -153,10 +176,10 @@ $template = '{summary}
         var monto = $("#monto").attr("value");
         var idOrden = id;
 
-
         if(nombre=="" || numeroTrans=="" || monto=="" || banco=="Seleccione")
         {
             alert("Por favor complete los datos.");
+
         }
         else
         {
@@ -171,6 +194,9 @@ $template = '{summary}
             if (pattern.test(monto)) {
                 monto = monto.replace(',','.');
 */
+                   $('#myModal').modal('toggle');
+                   $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
+                   
                    $.ajax({
                     type: "post",
                     url: "<?php echo Yii::app()->createUrl('bolsa/cpago'); ?>",//"../bolsa/cpago", // action de controlador de bolsa cpago
@@ -185,8 +211,10 @@ $template = '{summary}
                         }
                         else
                         if(data=="no")
-                        {
+                        { 
+                            $(".wrapper_home").addClass("hide");
                             alert("Datos invalidos.");
+                            //$('#myModal').modal();
                         }
 
                        }//success

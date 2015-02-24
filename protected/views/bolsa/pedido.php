@@ -492,6 +492,24 @@ $detPago->monto=0;
 
 <!-- // Modal Window --> 
 
+<!--Modal para el deposito -->
+<div class="wrapper_home hide">
+            
+    <div class="box_20130928 margin_bottom_small" style="position: fixed;">
+            <h1>
+                <span><?php echo Yii::t('contentForm', 'Your payment is being processed'); ?></span>
+                <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
+            </h1>
+            
+            <p>
+              <?php echo Yii::t('contentForm', 'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser'); ?>
+                <br>
+                <?php echo Yii::t('contentForm', 'Your purchase will be completed in seconds!'); ?>                
+            </p>
+            
+    </div>
+</div>
+
 <script>
 	
 	function enviar(id)
@@ -513,7 +531,9 @@ $detPago->monto=0;
 		}
 		else
 		{
-
+		
+		$('#myModal').modal('toggle');
+        $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
  		$.ajax({
 	        type: "post", 
 	        url: "<?php echo Yii::app()->createUrl('bolsa/cpago'); ?>", // action 

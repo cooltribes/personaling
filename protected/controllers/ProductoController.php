@@ -851,15 +851,7 @@ public function actionReportexls(){
 
         $datos=$datos."</td></tr>";
         
-        $datos=$datos."<tr>";
-        $datos=$datos."<th scope='row'>Precio con descuento</th>";
-		
-		if($precio)
-	        $datos=$datos."<td>".Yii::t('contentForm','currSym')." ".Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); 
-		else
-        	$datos=$datos."<td>"; 
 
-        $datos=$datos."</td></tr>";
         
 		$datos=$datos."<tr>";
         $datos=$datos."<th scope='row'>Descuento </th>";
@@ -873,6 +865,8 @@ public function actionReportexls(){
         	$datos=$datos."<td>"; 
 
         $datos=$datos."</td></tr>";
+        
+		$datos=$datos."<tr>";
 		
 		$datos=$datos."<tr>";
         $datos=$datos."<th scope='row'>Total Descuento</th>";
@@ -884,6 +878,17 @@ public function actionReportexls(){
         		$datos=$datos."<td>"; 
 
         $datos=$datos."</td></tr>";
+		
+        $datos=$datos."<th scope='row'>Precio con descuento</th>";
+		
+		if($precio)
+	        $datos=$datos."<td>".Yii::t('contentForm','currSym')." ".Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); 
+		else
+        	$datos=$datos."<td>"; 
+
+        $datos=$datos."</td></tr>";
+		
+		
 		$datos=$datos."</table><hr/>";
 		
 		$datos=$datos."<h4>Estadísticas</h4>";	

@@ -2806,7 +2806,11 @@ public function actionReportexls(){
                             
                             //Agregar el modelo
                             $item->addChild('CodigoModelo', $producto->codigo);
-                            $item->addChild('DescripcionModelo', $producto->nombre);
+							
+							// corregir errores, como cuando se coloca un & y se debe validar ///
+							$nombreProduc=Producto::model()->getNombre($producto->nombre);
+
+                            $item->addChild('DescripcionModelo', $nombreProduc);
                             
                             //Agregar el color
                             $item->addChild('CodigoColor', $color->id);

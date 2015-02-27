@@ -280,7 +280,7 @@ return array (
      'Personaling C.A RIF: J-40236088-6' => 'Personaling C.A RIF: J-40236088-6',
      'Phone' => 'Teléfono',
      'Phone number' => 'Número de teléfono',
-     'Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Es posible que lo que quieras preguntar esté en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. O LLama al  (212) 7202089. <strong>¡Gracias!</strong>',
+     'Perhaps you want to ask is in our <a href="'.Yii::app()->getBaseUrl().'/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Es posible que lo que quieras preguntar esté en nuestro apartado de <a href=" '.Yii::app()->getBaseUrl().'/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. O si lo prefieres escríbenos al correo Info@personaling.com. <strong>¡Gracias!</strong>',
      'Purchasing Information' => 'Datos de la compra',
      'Publish Look' => 'Publicar Look',
      'Preset filters' => 'Filtros Preestablecidos',

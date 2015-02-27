@@ -30,7 +30,7 @@ $this->breadcrumbs=array(
 		    </div>
 		<?php } ?>
  
-        <p class="margin_top_medium"><?php echo Yii::t('contentForm','Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>'); ?></p>
+        <p class="margin_top_medium"><?php echo Yii::t('contentForm','Perhaps you want to ask is in our <a href="'.Yii::app()->getBaseUrl().'/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>'); ?></p>
         <div class="form">
            
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(

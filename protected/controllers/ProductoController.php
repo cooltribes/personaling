@@ -3536,14 +3536,27 @@ public function actionReportexls(){
                             $cantCategorias++;
                         }   
                                                 
-                        //tallas
-                        if (isset($row['I']) && $row['I'] != "" ) {
-                            $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));
-
-                            if (!isset($talla)) {
-                                $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
-                            }
-                        }
+                         if ($tipoProductos == 0) 
+						{
+							 //tallas
+	                        if (isset($row['I']) && $row['I'] != "" )
+							 {
+	                            $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));
+	
+	                            if (!isset($talla))
+								{
+	                                $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
+	                            }
+                        	 }
+						} 
+						else  //producto de terceros
+						{
+							$talla = Talla::model()->findByAttributes(array('valor' => "Varias"));
+							if (!isset($talla))
+							{
+	                                $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
+	                         }
+						} 
                         
                         //colores
                         if (isset($row['J']) && $row['J'] != "") {
@@ -4565,7 +4578,7 @@ public function actionReportexls(){
                             $rCatego1 = $row['F'];
                             $rCatego2 = $row['G'];
                             $rCatego3 = $row['H'];
-                            $rTalla = $row['I'];
+                            $rTalla = "Varias";// $row['I'], pero como la talla siempre va ser Varias, se coloca estatico
                             $rColor = $row['J'];
                             $rPeso = $row['K'];
                             $rCosto = $row['L'];

@@ -22,7 +22,16 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
           <tr>
             <td width="50%">
             				<strong>Nombre de Empresa:</strong> <?php echo Yii::app()->params['clientName'];?><br/>
-							<strong>NIF:</strong> <?php echo Yii::app()->params['clientIdentification'];?> <br/>
+							<?php if(Yii::app()->language=="es_ve")
+							{
+								?><strong>RIF:</strong>
+								 <?php 
+							}else
+							{
+								?><strong>NIF:</strong>
+								 <?php 
+							} 
+							echo Yii::app()->params['clientIdentification'];?> <br/> 
 			   		
 							<strong>Dirección Fiscal:</strong> <?php echo Yii::app()->params['clientAddress'];?> <br/>
 								<?php echo Yii::app()->params['clientCity']." - ".Yii::app()->params['clientZIP']; ?><br/>
@@ -100,6 +109,13 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                   <td colspan="4"><div class="text_align_right"><strong>Envío</strong>:</div></td>
                   <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->envio+$factura->orden->seguro, 2, ',', '.'); ?></td>
                 </tr>
+                <?php if(isset($factura->orden->descuento_look))
+				{ ?>
+					 <tr>
+                 		 <td colspan="4"><div class="text_align_right"><strong>Descuento por Look</strong>:</div></td>
+                 		 <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->descuento_look, 2, ',', '.'); ?></td>
+                	</tr>
+				<?php } ?>
                   <tr>
                   <td colspan="4"><div class="text_align_right"><strong>Descuento</strong>:</div></td>
                   <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->descuento, 2, ',', '.'); ?></td>

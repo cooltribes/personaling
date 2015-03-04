@@ -186,7 +186,7 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 /* SIdebar */
 #scroller{
     background:rgba(255,255,255,.8);
-    }
+  }
 
 /* Brakers */
 .braker_right{border-right:1px solid #ddd;}
@@ -265,6 +265,11 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 .margin_left_large_minus{ margin-left:-4.68em;}
 .margin_right_large_minus{ margin-right:-4.68em;}
 .margin_bottom_large_minus{ margin-bottom:-4.68em;}
+
+.margin_top_xLarge_minus{ margin-top:-6.5em;}
+.margin_left_xLarge_minus{ margin-left:-6.5em;}
+.margin_right_xLarge_minus{ margin-right:-6.5em;}
+.margin_bottom_xLarge_minus{ margin-bottom:-6.5em;}
 
 .margin_left_minus{ margin-left:-1em;}
 .margin_right_minus{ margin-right:-1em;}
@@ -561,7 +566,12 @@ border:0;
   font-size: 20px;
   color: #727272;
 }
-
+#navAdmin.navbar .pull-right > li > .dropdown-menu .dropdown-menu{
+  left:100%;
+  right:auto;
+  .border_radius(@radius:0); 
+  
+} 
 .navbar .divider-vertical {
   height: 41px;
   background-color: #ffffff;
@@ -681,7 +691,7 @@ border:0;
 
 .dropdown-menu .active{color: white}
 
-.error{color: #B94A48}
+.error{color: #B94A48;}
 
 .modal{
   border-radius: 0;
@@ -988,7 +998,11 @@ src: url('../fonts/entypo.woff'),
     background-image: url("../images/glyphicons-halflings-white.png");
   }  
 }
-
+.imgSolid{
+  background:#FFF;
+  border:solid 1px #DDD;
+  padding:3px;
+}
 
 .header_notification{
     margin-top: 12px; 
@@ -1019,13 +1033,15 @@ src: url('../fonts/entypo.woff'),
 /*------------ Footer OFF --------------*/
 
 
-#wrapper_footer{
-    background-color: white;
+.main_footer{
 
-    border-top:1px solid #ddd;
+
+ 
+    background: #eee;
+    border: 0px;
     .padding_bottom;
     .padding_top;
-    .margin_top;
+    .margin_top_large;
     color:#444;
     .creditos{
         color:#666;
@@ -1089,6 +1105,17 @@ src: url('../fonts/entypo.woff'),
     select{ height:30px;}
 
     }
+    
+ .controls-row>.label-row{
+    float: left;
+    padding: 0px 5px 0px 0px;
+    line-height: 30px;
+    vertical-align: middle;
+    
+ }
+ .controls-row>input.span1{
+   margin-right:5px;
+ }   
 /*------------ Forms OFF --------------*/
 
 /*------------ Vcard ON ---------------*/
@@ -1454,6 +1481,164 @@ src: url('../fonts/entypo.woff'),
     text-decoration: underline;
   }
 }
+
+/*------- Home new----------------------- */
+
+
+.articleLegend{ 
+        line-height:20px; height:45px; background-color: #FFF; position:absolute; bottom:0; opacity:0.7;font-size: 12px; 
+        overflow-y: hidden;
+        width:100%; font-weight:bold;
+          -webkit-transition: opacity .2s ease-in-out;
+          -moz-transition: opacity .2s ease-in-out;
+          -ms-transition: opacity .2s ease-in-out;
+          -o-transition: opacity .2s ease-in-out;
+          transition: opacity .2s ease-in-out;
+          -webkit-transition: height .2s ease-in-out;
+          -moz-transition: height .2s ease-in-out;
+          -ms-transition: height .2s ease-in-out;
+          -o-transition: height .2s ease-in-out;
+          transition: height .2s ease-in-out;
+  }
+    .articleLegend:hover{
+        height: 60px; opacity:.9; cursor:pointer; 
+    }
+    .articleRight{
+        margin-top: 48px; width:100%; position: relative; overflow-y: hidden; text-align: center
+    }
+    .articleRight>a{
+        text-decoration:none;
+    }
+    .muted{
+        font-size:10px;
+        line-height: 10px;
+    }
+    .psname{
+        font-weight:300;
+        color:#000;
+    }
+    .onBanner{
+        z-index:1000; position: absolute; top:150px; width:100%;
+    }
+    .sectionTitle{
+        margin-top: 4.4em; height:50px; text-align: center
+    }
+    .sectionTitle>.text{
+        width: 60%; float:left; margin-top:-30px
+    }
+    .sectionTitle>.braker{
+        height: 1px; background-color: #000; width: 20%; float:left
+    }
+    .lookHome{
+        border:1px solid #AAA
+    }
+    .lookHome>.vcard{
+        height: 50px; border-top:1px solid #AAA
+    }
+    .lookHome>.vcard>.row-fluid>.price{
+        font-size: 1.5em;
+        margin-top: .7em;
+    }
+    .sectionButton{
+        margin-top: 35px; height:30px; line-height:30px; background-color: #000; color: #FFF; text-align: center
+    }
+    .pShopper.bio{
+        height:55px; text-align:center;  overflow-y: hidden;
+    }
+    h3.socialText{
+        font-size: 20px;font-weight: bold;line-height: 26px;text-align: center; min-height: 132px;
+    }
+    #suscribe>div{
+        height: 5em;line-height: 5em;
+    }
+    #suscribe>div>input.email{
+        height: 34px;width: 100%;padding: 6px 0 0 5px;border-radius: 0px;margin: 0;font-size: 26px;
+    }
+     #suscribe>div>input.button{
+        width:100%; height:40px; line-height: 40px; background-color: #000; color: #FFF; border: solid 1px #000;
+        font-size: 20px;
+    }
+    .no_list_style{
+      list-style-type: none;
+    }
+    
+    .nodesktop{ display:none}
+  
+  @media  (max-width: 767px) {
+    .braker_horz_top_less_space{
+      margin-bottom:3em !important;
+    }
+    .socialHome,.articleRight{
+      width: 50%;
+      margin: 0;
+      padding:10px;
+      float:left;
+    }
+    .magazinesHome>a{
+      width:48% !important;
+      padding:10px;
+      float:left !important;
+    }
+    .organizationsHome>a{
+      width:98% !important;
+      padding:10px;
+      float:left !important;
+      text-align:center;
+      img{
+        width:50%;
+      }
+    }
+    .mediosHome>div>h4{
+      font-weight:bold;
+    }
+    .destacadosHome>article{
+      .margin_bottom
+    }
+    .nodesktop{ display:block }
+    .articleRight{
+       width:100%;
+    }
+    h3.socialText{
+      font-size:18px;
+      font-weight:500px;
+      min-height:0px;
+    }
+    .lookHome{
+      margin-top: 3em;
+    }
+    .bio>a>h4{
+      font-size:1.7em;
+      margin-top:1em;
+      margin-bottom:2em;
+    }
+    .sectionButton{
+      margin-bottom:3em;
+    }
+    .main_footer{
+      display:none;
+    }
+    
+    .sectionTitle{
+        margin:0;
+        font-size:2em;
+        font-weight:bold;
+        .braker{
+          display: none;
+        }
+        .text{
+          width:100%;
+          h2{
+            font-size:28px;
+            font-weight:500;
+            margin-bottom:1em;
+          }
+        }
+    }
+  }
+
+
+
+
 /*------------- Home OFF -------------*/
 
 /*------------- login ON -------------*/
@@ -1582,15 +1767,21 @@ src: url('../fonts/entypo.woff'),
                       background-repeat: no-repeat;
                       background-position-x: 11px;
                       background-position-y: 9px;  
-                      text-shadow: none;                    
+                      text-shadow: none;
+                      span{
+                        margin-right:3px;
+                      }
+              
  }   
 .btn-danger_modificado{
                       background: @negro !important;
+                      border: solid 1px @negro;
                       background-image: url('../images/icon_corazon_lleno.png') !important;
                       background-repeat: no-repeat !important;
                       background-position-x: 11px !important;
                       background-position-y: 9px !important;  
                       color: #FFF !important;
+                      
 }      
 #total-likes{
                       background: #E3DEDE;
@@ -1664,23 +1855,7 @@ src: url('../fonts/entypo.woff'),
                             }
                         }
 
-                    #btn-encanta{
-                      border-radius: 0;
-                      background-color: #E3DEDE;
-                      background-image: url('../images/icon_corazon_vacio.png');
-                      background-repeat: no-repeat;
-                      background-position-x: 11px;
-                      background-position-y: 9px;  
-                      text-shadow: none;                    
-                    }   
-                    .btn-danger_modificado{
-                      background: @negro !important;
-                      background-image: url('../images/icon_corazon_lleno.png') !important;
-                      background-repeat: no-repeat !important;
-                      background-position-x: 11px !important;
-                      background-position-y: 9px !important;  
-                      color: #FFF !important;
-                    }      
+ 
                     #total-likes{
                       background: #E3DEDE;
                       color: #3C4141;              
@@ -2180,24 +2355,8 @@ src: url('../fonts/entypo.woff'),
             .padding_top;
             margin-top:1em;
             .margin_bottom; 
-            #btn-encanta{
-                border-radius: 0;
-                background-color: #E3DEDE;
-                background-image: url('../images/icon_corazon_vacio.png');
-                background-repeat: no-repeat;
-                background-position-x: 11px;
-                background-position-y: 9px;  
-                text-shadow: none;  
-              
-            }   
-            .btn-danger_modificado{
-                background: @color1 !important;
-                background-image: url('../images/icon_corazon_lleno.png') !important;
-                background-repeat: no-repeat !important;
-                background-position-x: 11px !important;
-                background-position-y: 9px !important;  
-                color: #FFF !important;
-            }      
+          
+    
             #total-likes{
                 background: #C4BCCD;
                 color: #3C4141;              
@@ -2279,10 +2438,10 @@ src: url('../fonts/entypo.woff'),
             }
         .productos_del_look{
             overflow:auto;
-            height:570px;
+            height:570px; 
             padding-top:5px;
-            .span6:nth-child(2n+1){ margin-left:0}
-            .span6{
+            .producto:nth-child(2n+1){ margin-left:0}
+            .producto{
                      margin-bottom:1.4em;
                     position:relative;
                     color:lighten(@color4, 10%);
@@ -3261,6 +3420,10 @@ ul.yiiPager .last
         }
 
 }
+.psFilter{
+    max-height:130px;
+    overflow-y:scroll;
+  }
 #ModalRegistro{
     // Cambios del modal para hacerlo mas ancho
     .legend{
@@ -3975,7 +4138,12 @@ img[alt="Loading"]{
 
 }
 
-/* ----------- Estadisticas Administrador ON --------------*/
+.thumbnail.categoria{
+  height:112px;
+  overflow-y:hidden;
+}
+
+/* ----------- Estadisticas Administrador ON --------------*/ 
 
 .graficos_controlpanel{
   margin-left: 0;
@@ -4514,7 +4682,11 @@ img[alt="Loading"]{
     font-weight: bold;
     color: #666;
 }
-
+/*
+.payment{
+  margin: 12px 0 0 -5px !important;
+}
+*/
 /*--------------- HACKS ON --------------------*/
 #profile-form{
     select#Profile_pais, select#Profile_day, #Profile_sex_0{
@@ -5080,6 +5252,7 @@ img[alt="Loading"]{
     }
   }
   
+   
   .mobilefilters{
       background-color:black; 
       padding:0 20px 0 20px;
@@ -5387,7 +5560,10 @@ div .social{
   }
   
 }
-
+.table-striped>tbody>tr.error>td{
+  color: #B94A48;
+   background:#f2dede;
+}
 
 
 

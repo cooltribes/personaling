@@ -517,12 +517,12 @@
             foreach($last3 as $last){
             	echo " <tr><td><a href='#' title='Ver perfil'>".Profile::model()->getNombre($last)."</a></td>";
             	$T=Orden::model()->countOrdersByUser($last); 
-            	echo "<td>".$T." Bs.</td>";
+            	echo "<td>".$T.' '. Yii::t('contentForm','currSym')."</td>";
 				if($T>0)
-            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(round(Orden::model()->getPurchasedByUser($last)/Orden::model()->countOrdersByUser($last),2))." Bs</td>";
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(round(Orden::model()->getPurchasedByUser($last)/Orden::model()->countOrdersByUser($last),2)).Yii::t('contentForm','currSym')."</td>";
 				else
 					echo "<td>0</td>";
-            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(Orden::model()->getPurchasedByUser($last))." Bs.</td></tr>";
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(Orden::model()->getPurchasedByUser($last)).' '.Yii::t('contentForm','currSym')."</td></tr>";
             	
             }
             ?>
@@ -542,12 +542,12 @@
             foreach($last3 as $last){
             	echo " <tr><td><a href='#' title='Ver perfil'>".Profile::model()->getNombre($last)."</a></td>";
             	$T=Orden::model()->countOrdersByUser($last); 
-            	echo "<td>".$T." Bs.</td>";
+            	echo "<td>".$T.' '.Yii::t('contentForm','currSym')."</td>";
 				if($T>0)
-            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(round(Orden::model()->getPurchasedByUser($last)/Orden::model()->countOrdersByUser($last),2))." Bs</td>";
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(round(Orden::model()->getPurchasedByUser($last)/Orden::model()->countOrdersByUser($last),2)).' '.Yii::t('contentForm','currSym')."</td>";
 				else
 					echo "<td>0</td>";
-            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(Orden::model()->getPurchasedByUser($last))." Bs.</td></tr>";
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(Orden::model()->getPurchasedByUser($last)).''.Yii::t('contentForm','currSym')."</td></tr>";
             	
             }
             ?>
@@ -566,12 +566,12 @@
             foreach($last3 as $last){
             	echo " <tr><td><a href='#' title='Ver perfil'>".Profile::model()->getNombre($last)."</a></td>";
             	$T=Orden::model()->countOrdersByUser($last); 
-            	echo "<td>".$T." Bs.</td>";
+            	echo "<td>".$T.' '.Yii::t('contentForm','currSym')."</td>";
 				if($T>0)
-            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(round(Orden::model()->getPurchasedByUser($last)/Orden::model()->countOrdersByUser($last),2))." Bs</td>";
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(round(Orden::model()->getPurchasedByUser($last)/Orden::model()->countOrdersByUser($last),2)).' '.Yii::t('contentForm','currSym')."</td>";
 				else
 					echo "<td>0</td>";
-            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(Orden::model()->getPurchasedByUser($last))." Bs.</td></tr>";
+            	echo "<td>".Yii::app()->numberFormatter->formatDecimal(Orden::model()->getPurchasedByUser($last)).' '.Yii::t('contentForm','currSym').".</td></tr>";
             	
             }
             ?>

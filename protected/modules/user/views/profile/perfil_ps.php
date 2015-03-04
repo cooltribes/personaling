@@ -4,9 +4,18 @@
     <h1>Perfil</h1>
   </div>-->
   <div class="row">
-    <aside class="span3">
+  	<div class="span12">
+  		<?php echo CHtml::image($model->getBanner(),'Banner',array("width"=>"100%")); //imagen ?> 
+  	</div>
+    <aside class="span3 margin_top_xLarge_minus">
+    	<div class="row-fluid">
+    		<div class="span10 offset1" >
+    			<?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270", "class"=>'imgSolid')); ?>
+    		</div>
+    		
+    	</div>
       <div class="card">
-      	<?php echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270")); //imagen 	
+      	<?php #echo CHtml::image($model->getAvatar(),'Avatar',array("width"=>"270", "height"=>"270")); //imagen 	
         
           //Metas de Twitter CARD ON
 
@@ -27,7 +36,7 @@
 
   			//Metas de Facebook CARD OFF
         ?>        
-        <div class="card_content vcard">
+        <div class="card_content vcard margin_top_small">
           <h4 class="fn"><?php echo $model->profile->first_name.' '.$model->profile->last_name; ?></h4>
           <p><strong>Bio</strong>: <?php echo $model->profile->bio; ?> </p>
           <p class="muted">Miembro desde: <?php echo date("d/m/Y",strtotime($model->create_at)); ?></p>
@@ -132,8 +141,6 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
     </aside>
     <div class="span9 "> 
     	
-    	<?php echo CHtml::image($model->getBanner(),'Banner',array("width"=>"870", "height"=>"90")); //imagen ?>
-    	
       <div class="well margin_top">
         <h3 class="muted margin_bottom_small">Looks Actuales</h3>
         <div class="row-fluid items" id="perfil_looks">
@@ -164,6 +171,7 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 	    'id'=>'list-looks',
 	    'dataProvider'=>$datalooks,
 	    'itemView'=>'_datoslooks',
+	    'emptyText'=>Yii::t('contentForm','There are not any results to show'),
 	    'afterAjaxUpdate'=>" function(id, data) {
 						} ",
 	    'template'=>$template,
@@ -262,6 +270,7 @@ $sql = "select count(*) as cant, d.id, d.nombre from tbl_look a, tbl_look_has_pr
 							} ",
 		    'template'=>$template2,
 		    'pager'=>$pagerParams,
+		    'emptyText'=>Yii::t('contentForm','There are not any results to show'),
 		));   
 	?>
 

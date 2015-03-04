@@ -69,27 +69,29 @@
         private function setConfig() {
             switch($this->_mode) {
                 case self::DEVELOPMENT:
-                    $this->_debug       = TRUE;
+                    $this->_debug       = true;
                     $this->_trace_level = 3;
+                    defined('YII_DEBUG') or define('YII_DEBUG',$this->_debug);
+                    defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', $this->_trace_level);
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_development());
                     break;
                 case self::TEST:
-                    $this->_debug       = FALSE;
+                    $this->_debug       = false;
                     $this->_trace_level = 0;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_test());
                     break;
                 case self::STAGE:
-                    $this->_debug       = TRUE;
+                    $this->_debug       = true;
                     $this->_trace_level = 0;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_stage());
                     break;
                 case self::PRODUCTION:
-                    $this->_debug       = FALSE;
+                    $this->_debug       = false;
                     $this->_trace_level = 0;
                     $this->_config      = CMap::mergeArray  ($this->_main(), $this->_production());
                     break;
                 default:
-                    $this->_debug       = TRUE;
+                    $this->_debug       = true;
                     $this->_trace_level = 0;
                     $this->_config      = $this->_main();
                     break;
@@ -305,7 +307,7 @@
                                 'connectionID' => 'db',
                                 'autoCreateLogTable' => false,
                                 'logTableName' => 'tbl_logger',
-                                'levels' => 'trace',
+                                'levels' => 'trace,error,warning',
                                 'categories' => 'registro,compra,tienda,admin,otro',
 
                         ),
@@ -384,6 +386,7 @@
                         'depositoTransferencia' => false,
                         'instapago' => false,
                         'mercadopago' => false,
+                        'prueba' => false,
                                                     
                     ),
                     'clientName'=>'Personaling Enterprise S.L ',
@@ -399,14 +402,24 @@
                     'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                     'askId'=>true, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
                     'IVA' => '0.12',
-                    'IVAtext' => '12%', 
+                    'IVAtext' => '12%',
+                    'clientService'=>array(
+                        'es_es'=>'info@personaling.com',
+                        'es_ve'=>'clientes@personaling.com.ve'
+                    ),
                     'registro' => true,   
                     'mostrarMarcas'=>true,
                     'mostrarChic'=>true,
                     'country'=>'Venezuela',
                     //'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
+                    
                     'outlet'=>TRUE,
                     'zohoActive' => FALSE,
+                    'id_look_switch' => 638,
+                    'instapago_key' => array(
+                        "KeyId"=> "EDC20F86-9C7E-4D2A-9603-6EF5612F5536",
+                        "PublicKeyId"=>"5274e829763cd383270512b87a6c947e",
+                    )
                 ),
             );
         }
@@ -427,11 +440,10 @@
                     'language' => 'es_ve',
                     'components'=>array(
                         'db'=>array(
-                            'connectionString' => 'mysql:host=localhost;
-                                                dbname=db_personalingT1',
+                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingDEV_VE',
                             'emulatePrepare' => true,
-                            'username' => 'root',
-                            'password' => '',
+                            'username' => 'personaling',
+                            'password' => 'Perso123Naling',
                             'charset' => 'utf8',
                             'tablePrefix' => 'tbl_',
                         ),
@@ -441,24 +453,26 @@
                     // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
                         'PRONUNCIACION' => 'Venezolana',
+                        'environment'=>'Develop Venezuela',
                         'currSym'=>'Bs',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.12',
-                        'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
+                        'registerGift'=>'0', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
                         'askId'=>false, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
                         'IVAtext' => '12%',
                         'registro' => false,    
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>false,
+                                      'brands'=>false),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
-                        'pais'=>'espana',
+                        'pais'=>'venezuela',
                         'clientName'=>'PERSONALING C.A.',
                         'clientIdentification'=>'J-40236088-6',
-                        'clientAddress'=>'Sant Pere Mes Baix, Nº 63 Principal B ',
-                        'clientCity'=>'Barcelona',
-                        'clientZIP'=>'08003',
-                        'clientPhone'=>'934 344 634',
+                        'clientAddress'=>'Avenida Bolívar, C.C CCM, Piso 2, Local 210, Porlamar, Nueva Esparta',
+                        'clientCity'=>'Porlamar',
+                        'clientZIP'=>'6031',
+                        'clientPhone'=>'0295-2676317',
                         'clientEmail'=>'info@personaling.com',
                         '    ',
                         'metodosPago'=> array(
@@ -485,6 +499,9 @@
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
+                        'zohoAccount'=>'cruiz@upsidecorp.ch',
+                        'zohoActive' => FALSE,
+                        'fb_appId' => '386830111475859',
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -505,6 +522,7 @@
                     // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
                         'PRONUNCIACION' => 'Española', 
+                        'environment'=>'Develop España',
                         'currSym'=>'E',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.21',
@@ -514,7 +532,8 @@
                         'registro' => false,    
                         'mostrarMarcas'=>true,
                         'codigoPostal'=>true,
-                        'mostrarChic'=>false, 
+                        'chic'=>array('show'=>true,
+                                      'brands'=>false),
                         'country'=>'España',
                         'pais'=>'espana',
                         'clientName'=>'Personaling Enterprise S.L ',
@@ -533,7 +552,7 @@
                         'metodosPago'=> array(
                             'bkCard' => true,
                             'paypal' => true, 
-                            'prueba' => true,
+                            'prueba' => true, 
                         ),
                         'multiLook'=> array(
                             'bodyType' => false,
@@ -545,7 +564,11 @@
                         ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
+                        'zohoToken'=>'645a319a2cfe40d183067f4a82259f0a',
+                        'zohoAccount'=>'wmontilla@upsidecorp.ch', 
+
+                        'zohoActive' => TRUE,
+                        'fb_appId' => '323808071078482',
                     ),
                 );
         }
@@ -612,10 +635,11 @@
                 return array(
                     'timeZone' => 'America/Caracas',
                     'language' => 'es_ve',
+                    'environment'=>'Stage Venezuela',
                     'components'=>array(
                         'db'=>array(
                             'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
-                                                dbname=db_personalingDEV_VE',
+                                                dbname=db_personalingSTAGE_VE',
                             'emulatePrepare' => true,
                             'username' => 'personaling',
                             'password' => 'Perso123Naling',
@@ -639,21 +663,24 @@
                         'currSym'=>'Bs',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.12',
-                        'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
+                        'registerGift'=>'0', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
                         'askId'=>false, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
                         'IVAtext' => '12%',
                         'registro' => false,    
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>false,
+                                      'brands'=>false),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
-                        'pais'=>'espana',
+                        'pais'=>'venezuela',
                         'clientName'=>'PERSONALING C.A.',
                         'clientIdentification'=>'J-40236088-6',
-                        'clientAddress'=>'Sant Pere Mes Baix, Nº 63 Principal B ',
-                        'clientCity'=>'Barcelona',
-                        'clientZIP'=>'08003',
-                        'clientPhone'=>'934 344 634',
+                        'clientAddress'=>'Avenida Bolívar, C.C CCM, Piso 2, Local 210, Porlamar, Nueva Esparta',
+                        'clientCity'=>'Porlamar',
+                        'clientZIP'=>'6031',
+                        'clientPhone'=>'0295-2676317',
+                        
+                        
                         'clientEmail'=>'info@personaling.com',
                         '    ',
                         'metodosPago'=> array(
@@ -679,7 +706,11 @@
                         ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
+                        'zohoToken' => '3ca8d750a84be5ae66794e919bbe0625',
+                        'zohoAccount'=>'dduque@upsidecorp.ch',
+                        'zohoActive' => TRUE,
+                        'id_look_switch' => 0,
+                        'fb_appId' => '386830111475859',
                         ),
                 );
             if ($this->_country == 'es_es')
@@ -688,7 +719,7 @@
                     'timeZone' => 'Europe/Madrid', 
                     'components'=>array(
                         'db'=>array(
-                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingDEV',
+                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingTEST',
                             'emulatePrepare' => true,
                             'username' => 'personaling',
                             'password' => 'Perso123Naling',
@@ -708,7 +739,8 @@
                     'params'=>array(
                     // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
-                        'PRONUNCIACION' => 'Española', 
+                        'PRONUNCIACION' => 'Española',
+                        'environment'=>'Stage España', 
                         'currSym'=>'E',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envío es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.21',
@@ -718,7 +750,8 @@
                         'registro' => false,    
                         'mostrarMarcas'=>true,
                         'codigoPostal'=>true,
-                        'mostrarChic'=>false, 
+                        'chic'=>array('show'=>true,
+                                      'brands'=>false),
                         'country'=>'España',
                         'pais'=>'espana',
                         'clientName'=>'Personaling Enterprise S.L ',
@@ -747,9 +780,12 @@
                             'bodyFavors' => false,
                             'skinColor' => false,
                         ),
-                        'AzPayTerminal'=>'999',
+                        'AzPayTerminal'=>'997',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
+                        'zohoToken'=>'db303d2e324bda57cfd72e89640dc5bb',
+                        'zohoAccount'=>'cmontanez@upsidecorp.ch',
+                        'zohoActive' => TRUE,
+                        'fb_appId' => '323808071078482',
                     ),
                 );
         }
@@ -772,7 +808,7 @@
  
                             // Database
                             'db'=>array(
-                                    'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingT61',
+                                    'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingSTAGE_VE',
                                     'emulatePrepare' => true,
                                     'username' => 'personaling',
                                     'password' => 'Perso123Naling',
@@ -812,7 +848,7 @@
                         // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
                         'PRONUNCIACION' => 'Venezolana',
-
+                        'environment'=>false,
                         'currSym'=>'Bs',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envÃ­o es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.12',
@@ -821,22 +857,23 @@
                         'IVAtext' => '12%',
                         'registro' => false,
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'Venezuela',
                         'codigoPostal'=>false,
-                        'pais'=>'espana',
-                        'clientName'=>'Personaling Enterprise S.L ',
-                        'clientIdentification'=>'B66202383',
-                        'clientAddress'=>'Sant Pere Mes Baix, NÂº 63 Principal B ',
-                        'clientCity'=>'Barcelona',
-                        'clientZIP'=>'08003',
-                        'clientPhone'=>'934 344 634',
+                         'pais'=>'venezuela',
+                        'clientName'=>'PERSONALING C.A.',
+                        'clientIdentification'=>'J-40236088-6',
+                        'clientAddress'=>'Avenida Bolívar, C.C CCM, Piso 2, Local 210, Porlamar, Nueva Esparta',
+                        'clientCity'=>'Porlamar',
+                        'clientZIP'=>'6031',
+                        'clientPhone'=>'0295-2676317',
                         'clientEmail'=>'info@personaling.com',
                         '        ',
                         'metodosPago'=> array(
                                 'bkCard' => false,
                                 'paypal' => false,
-                                'prueba' => true,
+                                'prueba' => false,
                                 'depositoTransferencia' => true,
                                 'instapago' => true,
                                                 ),
@@ -848,16 +885,19 @@
                             ),
 
                         'multiLook'=> array(
-                            'bodyType' => false,
-                            'eyesColor' => false,
-                            'hairColor' => false,
-                            'womanMeasure' => false,
-                            'bodyFavors' => false,
-                            'skinColor' => false,
+                            'bodyType' => true,
+                            'eyesColor' => true,
+                            'hairColor' => true,
+                            'womanMeasure' => true,
+                            'bodyFavors' => true,
+                            'skinColor' => true,
                             ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'f298def0f5eae649aa473c7db3092dc3',
+                        'zohoAccount'=>'',
+                        'id_look_switch' => 0,
+                        'fb_appId' => '386830111475859',
                         ),
 
                 );
@@ -881,7 +921,7 @@
                         // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
                         'PRONUNCIACION' => 'EspaÃ±ola',
-
+                        'environment'=>false,
                         'currSym'=>'E',
                         'noShipping'=> '1', // 0: Cuando se debe cobrar envio, VALOR: cuando el envÃ­o es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.21',
@@ -890,7 +930,8 @@
                         'IVAtext' => '21%',
                         'registro' => false,
                         'mostrarMarcas'=>true,
-                        'mostrarChic'=>false,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>true),
                         'country'=>'EspaÃ±a',
                         'pais'=>'espana',
                         'clientName'=>'Personaling Enterprise S.L ',
@@ -917,6 +958,7 @@
 
                         'AzPayTerminal'=>'001',
                         'AzPaySecret'=> 'CA4AE93932ADF12EF0D2',
+                        'fb_appId' => '323808071078482',
                         ),
                     );
 

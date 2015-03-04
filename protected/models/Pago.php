@@ -22,10 +22,10 @@
  * @property string $cuenta
  * @property integer $id_transaccion
  * @property integer $observacion
- * @property string recipient
- * @property string identification
- * @property string accountType
- * @property string email
+ * @property string $recipient
+ * @property string $identification
+ * @property string $accountType
+ * @property string $email
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -46,8 +46,8 @@ class Pago extends CActiveRecord
     
     const MONTO_MIN = 1;
     const MONTO_MAX = 1000;
-    const MONTO_MIN_PAYPAL = 2;
-    const MONTO_MIN_BANCO = 5;
+    const MONTO_MIN_PAYPAL = 50;
+    const MONTO_MIN_BANCO = 50;
     const MONTO_MIN_BALANCE = 1;
 
 

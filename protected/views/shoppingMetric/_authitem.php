@@ -23,7 +23,7 @@ echo"<tr>";
 		$model=Look::model()->findByPk($look_id);
 
 	
-	$navegador=ShoppingMetric::getBrowser($data->HTTP_USER_AGENT);
+	$navegador=$data->getBrowser($data->HTTP_USER_AGENT);
 	
 	#echo "<td>".$data->id."</td>";  //id del look
 	echo "<td>".$look_id."</td>";  //id del look

@@ -171,9 +171,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
               <label class="control-label required">Titulo del look <span class="required">*</span></label>
   <![endif]-->
   		<?php echo Yii::t('contentForm','What name would you give this Look?'); ?>
-            <div class="controls">
-               <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45)); ?>
+            <div class="controls" id="title">
+               <?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>45, 'id'=>'title2')); ?>
                <?php echo $form->error($model,'title'); ?>
+               <span id="errorUrl" class="error margin_top_small_minus hide"><br/><small>Formato no válido, evita el uso de caracteres especiales y espacios en blanco.</small></span>
             </div>
           </div>
           <div class="control-group"> 
@@ -643,7 +644,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             	
 <?php 
 $script = "
+
+	var selector;
+	var selector2;
 	$('.select_todos_ocasiones').on('click',function(e){
+			selector=$(this);
 		if ($(this).is(':checked')){
 			$(this).parent().find('.btn').addClass('active');
 		}
@@ -660,6 +665,8 @@ $script = "
 	});
 
 	$('.select_todos').on('click',function(e){
+		
+		selector2=$(this);
 		//if ($(this).is(':checked')){
 
 		if (!$(this).hasClass('active')){
@@ -675,6 +682,7 @@ $script = "
 
 		}
 		else {
+			
 			$(this).parent().find('.btn').not('.select_todos').removeClass('active');
 			$(this).parent().find('.btn').not('.select_todos').parent().next('input').val(0);
 
@@ -682,7 +690,7 @@ $script = "
 	});
 
 	$('#div_ocasiones').on('click', 'a', function(e) {
-
+		var padre;
 		 var ids = '';
 		 var selected = $(this).attr('href');
 		 $('#div_ocasiones .active').each(function(){
@@ -691,13 +699,21 @@ $script = "
 		 });
 		 if (!($(this).hasClass('active')))
 		 	ids += $(this).attr('href');
+		 
+		  if (($(this).hasClass('active')))
+		  {
+			selector.removeAttr('checked');
+		  }
+		 
 		 $('#categorias').val(ids.substring(1));
 		 $('#Look_has_ocasiones').val(ids.substring(1));
 		 e.preventDefault();
 	 });
 
 	$('#div_tipo .btn-group').on('click', 'a', function(e) {
+		
 		 if (!($(this).hasClass('select_todos'))){
+		 	
              if ($(this).parent().attr('data-toggle')=='buttons-checkbox'){
                  var ids = 0;
                      $(this).siblings('.active').each(function(){
@@ -708,6 +724,13 @@ $script = "
                  if (!($(this).hasClass('active')))
 				 	if (!($(this).hasClass('select_todos')))
                     	ids += parseInt($(this).attr('href').substring(1));
+				  
+				  if (($(this).hasClass('active')))
+				  {
+					
+					selector2.removeClass('active');
+				  }
+				
             } else {
             	if (!($(this).hasClass('select_todos')))
                 	ids = parseInt($(this).attr('href').substring(1));
@@ -716,6 +739,9 @@ $script = "
 			 $(this).parent().next('input').val(ids);
 			 e.preventDefault();
 		}
+		 if (($(this).hasClass('select_todos'))){
+		 	$(this).hasClass('select_todos');
+		 }
 		 
 	 });
 ";
@@ -748,6 +774,50 @@ $script = "
     
     
    });
+   
+   $('body').on('input','#title2', function() { 
+     var validacion=$('#title2').val();
+     
+     var reg=/^[A-Za-z0-9_-]/;
+     var palabra=$(this).val();
+     var variable=$(this).val().length;
+     for(i=0;i<variable;i++)
+     {
+     	
+     	 var vari=palabra.charAt(i); 
+     	 if(reg.test(vari))
+     	 {
+	         $('#errorUrl').hide();
+	         $('#button_send').attr('disabled',false);
+     	}
+     	else
+     	{
+	         $('#button_send').attr('disabled',true);
+	         $('#errorUrl').show();
+	         if(!reg.test($(this).val().substring($(this).val().length-2,$(this).val().length-1)))
+	            $(this).val($(this).val().substring(0, $(this).val().length- 1));
+     	}
+     }
+
+        
+        
+     });	
+   
+   
+
+<!--
+/*function validatePass(campo) {
+    var RegExPattern = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,10})$/;
+    var errorMessage = 'Password Incorrecta.';
+    if ((campo.value.match(RegExPattern)) && (campo.value!='')) {
+        alert('Password Correcta'); 
+    } else {
+        alert(errorMessage);
+        campo.focus();
+    } 
+}*/
+//-->
+
 	 
 	 
 </script>

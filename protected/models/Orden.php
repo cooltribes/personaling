@@ -289,7 +289,7 @@ class Orden extends CActiveRecord
 		JOIN tbl_marca m ON m.id=pr.marca_id 
 		JOIN tbl_talla t ON t.id=p.talla_id 
 		JOIN tbl_color c ON c.id=p.color_id where o.tbl_orden_id IN(
-		select id from tbl_orden where estado = 3 OR estado = 4 OR estado = 8 OR estado = 10 ) AND o.cantidad > 0 ";
+		select id from tbl_orden where estado = 3 OR estado = 4 OR estado = 8 OR estado = 10 OR estado = 11 ) AND o.cantidad > 0 ";
 		
 		if(isset(Yii::app()->session['idMarca'])){
 			if(Yii::app()->session['idMarca']!=0)
@@ -696,15 +696,19 @@ class Orden extends CActiveRecord
        
         
         
-        $array=array(  "tipo_tarifa"=>2,
-                "modalidad_tarifa"=>2,
-                "ciudad_remitente"=>"15",
-                "ciudad_destinatario"=>"$ciudad",
-                NULL,
-                "cantidad_piezas"=>"$nproductos", 
-                "peso"=>"$peso",
-                NULL,
-                "valor_declarado"=>"$total");
+        $array=array(  
+             "tipo_tarifa"=>2,
+             "modalidad_tarifa"=>2,
+             "ciudad_remitente"=>19,
+             "ciudad_destinatario"=>$ciudad,
+             "oficina_retirar"=>0,
+             "cantidad_piezas"=>$nproductos,
+             "peso"=>$peso,
+             "valor_mercancia"=>NULL,
+             "valor_declarado"=>$total,
+             "codpais"=>0,
+             "tipo_envio"=>0
+        );
 	 	return $cliente->call("CalcularTarifa", $array);
         
 	 
@@ -1023,7 +1027,7 @@ class Orden extends CActiveRecord
 		
 		foreach($orderhas as $ptc){
 			$product = $ptc->preciotallacolor->producto;
-			$value += $product->getPrecioImpuesto(false);
+			$value += $product->getPrecioImpuesto(false)*$ptc->cantidad;
 		}
 		
 		return $value;

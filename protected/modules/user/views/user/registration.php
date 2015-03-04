@@ -1,4 +1,15 @@
 <?php
+
+if (isset($_SERVER['HTTP_REFERER'])) 
+{
+	
+	echo Yii::app()->session['referencia']= $_SERVER['HTTP_REFERER'];
+}
+else
+{
+	Yii::app()->session['referencia']='';
+}
+
 if(isset($seo)){
 	$this->pageTitle = $seo->title;
 	Yii::app()->clientScript->registerMetaTag($seo->title, 'title', null, null, null);
@@ -77,8 +88,6 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 </div>
 <?php else: ?>
 	
-	
-
 
 <div class="container margin_top">
   <div class="row">
@@ -93,7 +102,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
       </div>
       <section class="bg_color3 margin_top  margin_bottom_small padding_small box_1">
 
-        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+        <?php  $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'registration-form',
 	'htmlOptions'=>array('class'=>'personaling_form'),
     //'type'=>'stacked',
@@ -243,16 +252,28 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
     </div>
   </div>
 </div>
-<?php endif; ?>
+<?php endif; 
+
+if(Yii::app()->language=="es_es")
+{
+	
+	$appId=323808071078482; //para facebook espana	
+}
+else 
+{
+	$appId=386830111475859; //para facebook venezuela
+}
+?>
+
 
 <script>
 	
 $(document).ready(function(){
-    
+    var appId=<?php echo $appId;?>;
     window.fbAsyncInit = function() {
         FB.init({
-            appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
-            channelUrl : 'http://personaling.com/test24/user/registration', // Channel File
+            appId      : appId, // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
+            channelUrl : '<?php echo Yii::app()->baseUrl."/registro-personaling"; ?>', // Channel File
             status     : true, // check login status
             cookie     : true, // enable cookies to allow the server to access the session
             xfbml      : true,  // parse XFBML
@@ -292,9 +313,12 @@ function check_fb(){
                 
                 
           	//	$("#registration-form").fadeOut(100,function(){
- 					var ciudad=response.location.name;
- 					ciudad=ciudad.split(",");
- 					ciudad=ciudad[0];
+          			var ciudad = "";
+          			if(typeof response.location != 'undefined'){
+          				ciudad=response.location.name;
+	 					ciudad=ciudad.split(",");
+	 					ciudad=ciudad[0];
+          			}
  					
  					$('#facebook_id').val(response.id);
  					$('#RegistrationForm_password').val('1234');
@@ -304,7 +328,7 @@ function check_fb(){
                     $('#Profile_ciudad').val(ciudad);
 
                     
-                    
+                   // console.log(response.email);
                     var fecha = response.birthday;
                     var n = fecha.split("/"); // 0 mes, 1 dia, 2 año
                     
@@ -341,9 +365,12 @@ function check_fb(){
 						//console.log(response.user_birthday);
 						
 						//$("#registration-form").fadeOut(100,function(){
-	     					var ciudad=response.location.name;
-	 					ciudad=ciudad.split(",");
-	 					ciudad=ciudad[0];
+	     				var ciudad = "";
+	          			if(typeof response.location != 'undefined'){
+	          				ciudad=response.location.name;
+		 					ciudad=ciudad.split(",");
+		 					ciudad=ciudad[0];
+	          			}
  		
                     		$('#Profile_ciudad').val(ciudad);
 	     					$('#facebook_id').val(response.id);

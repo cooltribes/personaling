@@ -124,9 +124,9 @@ Yii::app()->clientScript->registerScriptFile('http://akwww.polyvorecdn.com/rsrc/
                 // polyvore button
                 echo CHtml::link(
                   CHtml::image(Yii::app()->baseUrl.'/images/icon_polyvore_2.png', 'Compartir en polyvore', array('width'=>30, 'height'=>30, 'class'=>'social')),
-                  'http://www.polyvore.com?url='.Yii::app()->getBaseUrl(true).'/l/'.$look->encode_url("123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ").'&description='.$look->title.'&media='.Yii::app()->getBaseUrl(true).'/images/look/'.$look->id.'.png',
+                  'http://www.polyvore.com?url='.Yii::app()->getBaseUrl(true).'/l/'.$look->encode_url("123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ").'&description='.$look->title.'&media='.Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/look/'.$look->id.'.png',
                   array(
-                    'target'=>'_blank', 
+                    #'target'=>'_blank', 
                     'name'=>'addToPolyvore',
                     'id'=>'addToPolyvore',
                     'data-product-url'=>Yii::app()->getBaseUrl(true).'/look/'.$look->id,

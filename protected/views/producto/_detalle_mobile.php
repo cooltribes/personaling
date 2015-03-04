@@ -5,6 +5,34 @@
  		<article> 
           <?php 
           
+          
+          //para saber si vino referenciado de un look
+								        if (isset($_SERVER['HTTP_REFERER'])) 
+										{
+											$varis=explode("/",$_SERVER['HTTP_REFERER']);
+											$cont=count($varis);
+											if($varis[$cont-2]=="look")
+											{
+												$productoIndividual=$varis[$cont-1]; 
+											}
+											else
+											{
+												if($varis[$cont-2]=="l") 
+												{
+												  $productoIndividual=Yii::app()->session['look_id'];
+												}
+												else 
+												{
+													$productoIndividual="0";
+												}
+											}
+												
+											
+										}
+										else 
+										{
+										  $productoIndividual="0";
+										}
 
 		$id=$producto->id;
 		$producto = Producto::model()->findByPk($id);
@@ -494,17 +522,19 @@
                                 
                                     agregarBolsaGuest('.$id.', talla, color);
                                     
-                                }else{ 
-				
+                                }else{
+                                	 
+							        
+						
                        <?php echo CHtml::ajax(array(
 	            	'url'=>array('bolsa/agregar'),
-			        'data'=>array('producto'=>$id,'talla'=>'js:$("#vTa").find(".tallass.active").attr("id")','color'=>'js:$("#vCo").find(".coloress.active").attr("id")'),
+			        'data'=>array('producto'=>$id,'talla'=>'js:$("#vTa").find(".tallass.active").attr("id")','color'=>'js:$("#vCo").find(".coloress.active").attr("id")', 'productoIndividual'=>$productoIndividual),
 			        'type'=>'post',
 			        'success'=>"function(data)
 			        {
 						if(data=='ok'){
 							//alert('redireccionar maÃ±ana');
-							window.location='../bolsa/index';
+							window.location='".Yii::app()->getBaseUrl(true)."/bolsa/index';
 						}
 						
 						if(data=='no es usuario'){

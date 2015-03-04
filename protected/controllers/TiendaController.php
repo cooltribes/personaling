@@ -288,9 +288,10 @@ class TiendaController extends Controller
 		for($i=0;$i<4;$i++){
 			$rangos[$i]['count']=Precio::model()->countxRango($rangos[$i]['min'],$rangos[$i]['max']);
 		}
-		PC::debug('Execute Time (before colorhid):'.(microtime(true)-$time_start), 'debug,time');
+		//PC::debug('Execute Time (before colorhid):'.(microtime(true)-$time_start), 'debug,time');
 		  
     	if( isset($_POST['colorhid']) ||  (isset($_GET['page']) && isset(Yii::app()->session['bandera']) ) ){
+    		//PC::debug('Bandera: '.Yii::app()->session['bandera'], 'bandera');
     
     		    Yii::app()->session['bandera'] = true;
     		    Yii::app()->clientScript->scriptMap['jquery.js'] = false;
@@ -304,16 +305,23 @@ class TiendaController extends Controller
 				Yii::app()->clientScript->scriptMap['bootstrap.min.css'] = false;	
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
 				Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
+                Yii::app()->clientScript->scriptMap['jquery.infinitescroll.min.js'] = false;
+
 				
 				
 				if (isset($_POST['texthid']) && strlen($_POST['texthid'])>0){
 					Yii::app()->session['f_text'] = $_POST['texthid'];
 				
 				} else {
-
 					foreach ($array_post as $key => $post)
-						if (isset($_POST[$post]) && $_POST[$post]!=0) Yii::app()->session[$array_session[$key]] = $_POST[$post];
-						elseif (isset(Yii::app()->session[$array_session[$key]])) unset(Yii::app()->session[$array_session[$key]]);
+						if (isset($_POST[$post])){
+                            if ($_POST[$post]!=0){
+							    Yii::app()->session[$array_session[$key]] = $_POST[$post];
+						    }
+						    elseif (isset(Yii::app()->session[$array_session[$key]])){
+							    unset(Yii::app()->session[$array_session[$key]]);
+						    }
+                        }
 					if (isset($_POST['chic_hid']) && $_POST['chic_hid']==1) Yii::app()->session['chic'] = $_POST['chic_hid'];
 					elseif (isset(Yii::app()->session['chic'])) unset(Yii::app()->session['chic']);
 					if (isset($_POST['preciohid']) && $_POST['preciohid']<4){	
@@ -470,7 +478,7 @@ class TiendaController extends Controller
 				}
 			*/
 			}
-			PC::debug('Execute Time (before nueva2):'.(microtime(true)-$time_start), 'debug,time');
+			//PC::debug('Execute Time (before nueva2):'.(microtime(true)-$time_start), 'debug,time');
 			$criteria = $producto->nueva2($a);
 
 		/*	if (isset($_GET['page'])&&
@@ -481,11 +489,19 @@ class TiendaController extends Controller
 				$criteria->order=$orden[Yii::app()->session['order']];*/
 			$total=Producto::model()->count($criteria);
 			if($total>0){
+                PC::debug("total:".$total,"debug");
 				$pages = new CPagination($total);
 				$pages->pageSize = 12;
 				$pages->applyLimit($criteria);
 				$dataProvider = Producto::model()->findAll($criteria);
-				PC::debug('Execute Time (before if):'.(microtime(true)-$time_start), 'debug,time');
+				/*if(isset($dataProvider)){
+					PC::debug('Hay provider', 'provider');
+				}else{
+					PC::debug('NO hay provider', 'provider');
+				}*/
+				//PC::debug('NO hay provider', 'provider');
+				//PC::debug('Condition: '.$criteria->condition, 'criteria');
+				//PC::debug('Execute Time (before if):'.(microtime(true)-$time_start), 'debug,time');
 				if ((isset($_GET['page']))){
 					$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 					$colores=Color::model()->findAll();
@@ -497,6 +513,7 @@ class TiendaController extends Controller
 							'pages'=>$pages,
 							'total'=>$total,
 							'seo' => $seo,
+							'time_start' => $time_start,
 							));	
 				} else {
 					    echo CJSON::encode(array(  
@@ -562,23 +579,24 @@ class TiendaController extends Controller
 					Yii::app()->session['order']=rand(0,8);
 			
 		}
-		PC::debug('Execute Time (before nueva2 otra):'.(microtime(true)-$time_start), 'debug,time'); 
+		//PC::debug('Execute Time (before nueva2 otra):'.(microtime(true)-$time_start), 'debug,time');
 		$criteria = $producto->nueva2($a);
-		PC::debug('Execute Time (after nueva2 otra):'.(microtime(true)-$time_start), 'debug,time'); 
+		//PC::debug('Execute Time (after nueva2 otra):'.(microtime(true)-$time_start), 'debug,time');
 		//$criteria->order=$orden[Yii::app()->session['order']];
 
         $total=Producto::model()->count($criteria);
 		$pages = new CPagination($total);
 		$pages->pageSize = 12;
 		$pages->applyLimit($criteria);
-		PC::debug('Execute Time (before producto):'.(microtime(true)-$time_start), 'debug,time');
+		//PC::debug('Execute Time (before producto):'.(microtime(true)-$time_start), 'debug,time');
         $dataProvider = Producto::model()->findAll($criteria);
-		PC::debug('Execute Time (before marca color):'.(microtime(true)-$time_start), 'debug,time');
+        //PC::debug('Total criteria:'.$dataProvider->getTotalItemCount(), 'criteria');
+		//PC::debug('Execute Time (before marca color):'.(microtime(true)-$time_start), 'debug,time');
 		$marcas=Marca::model()->findAllByAttributes(array('padreId'=>0));
 		$colores=Color::model()->findAllByAttributes(array('padreID'=>'0'));
 		
 		ShoppingMetric::registro(ShoppingMetric::USER_TIENDA);
-		PC::debug('Execute Time (before render):'.(microtime(true)-$time_start), 'debug,time');
+		//PC::debug('Execute Time (before render):'.(microtime(true)-$time_start), 'debug,time');
 		 
 		$this->render('index_new',
 			array('index'=>$producto,
@@ -593,7 +611,7 @@ class TiendaController extends Controller
 				'time_start' => $time_start,
 			));
 		}
-		PC::debug('Execute Time (end action):'.(microtime(true)-$time_start), 'debug,time');
+		//PC::debug('Execute Time (end action):'.(microtime(true)-$time_start), 'debug,time');
 	}
 	 
 	

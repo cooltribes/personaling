@@ -8,6 +8,14 @@
      tipopago 7: Saldo
 -->
 <?php
+
+//Si borran los datos de navegacion.
+if(Yii::app()->getSession()->get('subtotal')=="") 
+{
+	$this->redirect('index');
+}
+
+
 Yii::app()->clientScript->registerLinkTag('stylesheet','text/css','https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700',null,null);
 
 $this->setPageTitle(Yii::app()->name . " - " . Yii::t('contentForm', 'Payment method'));
@@ -99,7 +107,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo" id="btn_deposito">
                                 <label class="radio">
-                                    <input type="radio" name="optionsRadios" id="deposito" value="option1"> 
+                                    <input class="payment" type="radio" name="optionsRadios" id="deposito" value="option1"> 
                                     <?php echo Yii::t('contentForm', 'Deposit or Transference'); ?>
                                 </label>
                             </a>
@@ -120,7 +128,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTree" id="btn_tarjeta">
                                 <label class="radio">
-                                    <input type="radio" name="optionsRadios" id="tarjeta" value="option2"> 
+                                    <input class="payment" type="radio" name="optionsRadios" id="tarjeta" value="option2"> 
                                     <?php echo Yii::t('contentForm', 'Credit Card'); ?>
 
                                 </label>
@@ -241,7 +249,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <label class="radio accordion-toggle margin_left_small" data-parent="#accordion2">
-                            <input type="radio" name="optionsRadios" id="bankCard" checked="true" value="5"> 
+                            <input type="radio" name="optionsRadios" class="payment" id="bankCard" checked="true" value="5"> 
                             <?php echo Yii::t('contentForm', 'Credit Card'); ?>
                         </label>                       
                        
@@ -258,7 +266,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     <div class="accordion-heading">
                         <label class="radio accordion-toggle margin_left_small"
                            data-parent="#accordion2">
-                            <input type="radio" name="optionsRadios" id="payPal" value="6"> 
+                            <input type="radio" name="optionsRadios" class="payment" id="payPal" value="6"> 
                             <?php echo Yii::t('contentForm', 'PayPal'); ?>
                         </label>                        
                     </div>
@@ -273,9 +281,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 ?>                
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <label class="radio accordion-toggle margin_left_small"
+                        <label class="radio accordion-toggle maprodrgin_left_small"
                            data-parent="#accordion2">
-                            <input type="radio" name="optionsRadios" id="prueba" value="8"> 
+                            <input type="radio" name="optionsRadios" class="payment" id="prueba" value="8"> 
                             <?php echo Yii::t('contentForm', 'Para probar las compras'); ?>
                         </label>                        
                     </div>
@@ -320,7 +328,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-condensed " id="tabla_resumen">
               <tr>
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Subtotal'); ?>:</th>
-                <td class="text_align_right"><?php
+                <td class="text_align_right"><?php 
                   $envio = 0;
                   $peso_total = 0;
                   $tipo_guia = 0;
@@ -377,9 +385,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 
                 /****OJO - recalcularlo para productos sin iva*****/
                 $totalDe = Yii::app()->getSession()->get('descuento');
+				
+				//el descuento que viene de los looks
+                $descuentoEachLook=Yii::app()->getSession()->get('descuentoxLook');
                 
                 //Restarle los descuentos                        
-                $total = $totalConIVA - $totalDe;  
+                $total = $totalConIVA - $totalDe-$descuentoEachLook;  
 
                 /*Calcular si hay envio o no*/
                 $shipping=true;
@@ -403,12 +414,12 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             if(!is_null($ciudad_destino->cod_zoom)&&$ciudad_destino->cod_zoom!=0)
                             {	            $declarado=$total<=50?51:$total;  
                                             $flete=Orden::model()->calcularTarifa($ciudad_destino->cod_zoom,count($bolsa->bolsahasproductos),$peso_total,$declarado);
-
+                                            
                                             if(!is_null($flete)){
-                                                   
-                                                    $envio=$flete->total-$flete->seguro;
-                                                    $seguro=str_replace(',','.',$flete->seguro);
-
+                                                if($flete->total!=0)
+                                                 {   $seguro=floatval(str_replace(',','.',$flete->seguro));
+                                                    $envio=floatval(str_replace(',','.',$flete->total));                                                  
+                                                 }
 
                                             }else{
                                                     $envio =Tarifa::model()->calcularEnvio($peso_total,$ciudad_destino->ruta_id);
@@ -440,7 +451,9 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                             $envio=0;
                             $seguro=0;
                     }			
-                        
+                     $cliente = new ZoomService;
+                     
+              
                 //Sumar el ENVIO
                 $total += $envio;
                 
@@ -487,10 +500,16 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
                 <td class="text_align_right" id="descuento"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($totalDe, ''); ?></td>
               </tr>
-              <?php } 
-        
+              <?php }
+              if($descuentoEachLook){ // si hay descuento por look
               ?>
+               <tr>
+                <th class="text_align_left"><?php echo Yii::t('contentForm','Discount look'); ?>:</th>
+                <td class="text_align_right" id="descuento"><?php echo "- ".Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($descuentoEachLook, ''); ?></td>
+              </tr>
               
+              <?php 
+			  }?>
               
               <tr>
                 <th class="text_align_left"><?php echo Yii::t('contentForm','Shipping');
@@ -586,9 +605,15 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             /*Si es admin no mostrar el boton de agregar giftcard*/
             if(!$admin){
             ?>
-             <button type="button" class="btn btn-success margin_top_medium" 
+          <!--  <button type="button" class="btn btn-success margin_top_medium" 
                      data-toggle="collapse" data-target="#collapse2">
-                 <i class = "icon-gift icon-white"></i> <?php echo Yii::t('contentForm','Redeem Gift Card'); ?></button> 
+                 <i class = "icon-gift icon-white"></i> <?php echo Yii::t('contentForm','Redeem Gift Card'); ?></button> -->
+                 
+                 
+                <a data-toggle="collapse" data-target="#collapse2" style="cursor: pointer" class="pull-right"> 
+                 	<u>Canjear Gift Card</u>
+				</a>
+              
             
            
             <!-- Aplicar Gifcard ON -->
@@ -638,7 +663,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </div>
             <!-- Aplicar Gifcard OFF -->
             <?php } ?>
-            <input type="hidden" id="tipo_pago" name="tipo_pago" value="5" />
+            <input type="hidden" id="tipo_pago" name="tipo_pago" value="<?php echo Yii::app()->params['metodosPago']['bkCard']?5:0; ?>" /> <!-- 0 por que no hay ningun pago seleccionado OJO se utiliza en funcion de js -->
             <input type="hidden" id="usar_balance_hidden" name="usar_balance_hidden" value="0" />
             <input type="hidden" id="conSeguro" name="conSeguro" value="0" />
             <div class="form-actions siguiente">
@@ -675,6 +700,27 @@ else
     header('Location: /user/login');
 }
 ?>
+
+<?php $this->beginWidget(
+    'bootstrap.widgets.TbModal',
+    array('id' => 'alertFail')
+); ?>
+
+<div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h4>Hay un problema</h4>
+</div>
+
+<div class="modal-body">
+    <p>Tu saldo no es suficiente para realizar el pago, por favor seleccionar un método de pago</p>
+</div>
+
+<div class="modal-footer">
+
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+</div>
+
+<?php $this->endWidget(); ?>
 
 <script>
 	
@@ -782,6 +828,8 @@ $('#TarjetaCredito_year').change(function(){
 		$('#TarjetaCredito_vencimiento').val($('#TarjetaCredito_month').val()+'/'+$('#TarjetaCredito_year').val());
 	
 });
+
+
 ///******** FIN RAFA **********//////
         $("#deposito").click(function() {
         	
@@ -803,7 +851,19 @@ $('#TarjetaCredito_year').change(function(){
         	disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
             
         });
-        
+        $("#radio-Saldo").click(function() {
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'nombre');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'numero');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'codigo');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ci');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'direccion');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'ciudad');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'estado');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'zip');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'month');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'year');
+            disableFieldsValidation($('#tarjeta-form'), 'TarjetaCredito', 'vencimiento');
+        })
         $("#mercadopago").click(function() {
             var añadir = "<td valign='top'><i class='icon-exclamation-sign'></i> MercadoPago.</td>";
             $("#adentro").html(añadir);
@@ -917,6 +977,24 @@ $('#TarjetaCredito_year').change(function(){
         });
 
     });
+    $("#tarjeta-form").submit(function(){
+        var total = <?php echo $total; ?>;
+        var balance = <?php echo $balance; ?>;
+        if($("#asegurado").is(':checked')){
+            total=total+parseFloat($("#asegurado").val());
+            $("#conSeguro").val('1');
+        }else{
+            $("#conSeguro").val('0');
+        }
+        if ($("#tipo_pago").val()==0)
+            if(balance < total){
+
+                $("#alertFail").modal("show");
+                return false;
+
+            }
+
+    });
 
 	$("#asegurado").change(function(e){
 		
@@ -1010,6 +1088,11 @@ $('#TarjetaCredito_year').change(function(){
 
         $("#opt-balance").click(function(e){
             $("#collapse-cupon").slideUp();
+        });
+        $(".payment").click(function(e){
+            $("input[name=optionsRadios]").prop('checked', false);
+            $("input[name=optionsRadios][value=" +$(this).val() + "]").prop('checked', true);
+           
         });
         $("#opt-codigo").click(function(e){
             $("#collapse-cupon").slideDown();

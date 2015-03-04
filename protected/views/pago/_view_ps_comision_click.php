@@ -18,7 +18,7 @@
     <?php
         echo TbHtml::link(
                 CHtml::image($data->getAvatar(), 'Avatar', array("width" => "70", "height" => "70")),
-                array("controlpanel/misventas", "id" => $data->id)
+                array("controlpanel/comisionesclic", "id" => $data->id)
             );
     ?>
     </td>
@@ -30,7 +30,7 @@
              <?php 
              echo TbHtml::link(
                     $data->profile->getNombre(),
-                    array("controlpanel/misventas", "id" => $data->id),
+                    array("controlpanel/comisionesclic", "id" => $data->id),
                      array("class" => "link-ps")
                 );
              ?>

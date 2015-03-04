@@ -12,7 +12,7 @@ if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
     var ref = document.getElementsByTagName('script')[0];
     ref.parentNode.insertBefore(fpw, ref);
     })();
-    ", CClientScript::POS_HEAD, 1);
+    ", CClientScript::POS_HEAD, array());
 }
 
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
@@ -28,10 +28,10 @@ src="<?php echo $this->createUrl("/site/conversion"); ?>?campaignID=15920&produc
 &conversionType=lead&https=0&transactionID=<?php echo Yii::app()->user->id; ?>"
 width="1" height="1" border="0" alt="" />
     <style>
-       /* .user-profile-tutipo #notificacion_validar + div {
-            display: none;
+        label {
+            line-height: 30px;
         }
-        */
+        
     </style>
     
 <!-- <div style="height: 48px"></div> -->
@@ -60,18 +60,14 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 ); 
 
 ?>
-    <?php if ( !(isset($editar) && $editar) ){ ?>
-          
-
-    <?php } ?>      
-
-    <?php $mensajeH1 = isset($ref) ? "¡Tu perfil es tu ADN Personaling!"
+    <?php $span=(!(isset($editar) && $editar))?"span5":"span7"; 
+         $mensajeH1 = isset($ref) ? "¡Tu perfil es tu ADN Personaling!"
             :"Escoge las opciones que más se parezcan a ti:"; ?>  
         
     <h1>Tu tipo<small> - <?php echo $mensajeH1; ?></small>
     <?php if (isset($ref)){
         echo TbHtml::tag("h2", array(),
-            "Al llenar los datos de tu perfil disfrutaras de un maravilloso
+            "Al llenar los datos de tu perfil disfrutarás de un maravilloso
                 mundo de looks adaptados para ti.");
     } ?>    
         
@@ -91,40 +87,45 @@ $this->widget('bootstrap.widgets.TbAlert', array(
         <fieldset>
           <div id="numero1">
 
-            <div class="control-group offset2 margin_top_small" >
+            <div class="control-group margin_top_small" >
               <div class="controls row-fluid" id="caracteristicas">
-                <?php $clase = (isset($editar) && $editar)?'span2':'span2'; ?>
-                <?php $clase2 = (isset($editar) && $editar)?'span10':'span8'; ?>
-                <div class="<?php echo $clase; ?>">
+                <?php $clase = (isset($editar) && $editar)?'span3':'span3'; ?>
+                <?php $clase2 = (isset($editar) && $editar)?'span8':'span6'; ?>
+                <div class="span2 no_margin_left">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'altura'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>'span8','labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="<?php echo $clase; ?>">
+                <div class="span10 margin_left">
+                <div class="row-fluid">
+                <div class="span3">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'contextura'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$span,'labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="<?php echo $clase; ?>">
+                
+                <div class="span3 margin_left">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'pelo'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$span,'labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="<?php echo $clase; ?>">
+                <div class="span3">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'ojos'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$span,'labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
-                <div class="<?php echo $clase; ?>">
+                <div class="span3 margin_left">
                   <?php 
                     	$field = ProfileField::model()->findByAttributes(array('varname'=>'piel'));
-  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$clase2));
+  				  	echo $form->dropDownListRow($profile,$field->varname,Profile::range($field->range), array('class'=>$span,'labelOptions'=>array('style'=>'float:left')));
                     ?>
                 </div>
+                </div>
+              </div>
               </div>
           </div>
           </div>
@@ -253,7 +254,7 @@ $script = "
 <?php if ($errorValidando): ?>
 <?php 
 Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl.'/css/joyride-2.1.css',null);
-Yii::app()->clientScript->registerScriptFile('/js/jquery.joyride-2.1.js',null,null); 
+Yii::app()->clientScript->registerScriptFile('/js/jquery.joyride-2.1.js',null,array()); 
 ?>
 <script type="text/javascript">
 function joyRidePerfil(){
@@ -292,7 +293,9 @@ function joyRidePerfil(){
 $(window).load(function() {
        
 //    $(".tu_perfil").css("margin-top", "+=58");     
-    joyRidePerfil();
+    <?php if ($errorValidando): ?>    
+        joyRidePerfil();
+    <?php endif; ?>
 //    $(".tu_perfil").before('<div style="height: 48px"></div>');     
 });
 

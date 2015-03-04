@@ -21,7 +21,16 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
              
                         <td width="50%"> 
                         			<strong>Nombre de Empresa:</strong> <?php echo Yii::app()->params['clientName'];?><br/>
-							<strong>NIF:</strong> <?php echo Yii::app()->params['clientIdentification'];?> <br/>
+							<?php if(Yii::app()->language=="es_ve")
+							{
+								?><strong>RIF:</strong>
+								 <?php 
+							}else
+							{
+								?><strong>NIF:</strong>
+								 <?php 
+							} 
+							echo Yii::app()->params['clientIdentification'];?> <br/> 
 							<strong>Dirección Fiscal:</strong> <?php echo Yii::app()->params['clientAddress'];?> <br/>
 								<?php echo Yii::app()->params['clientCity']." - ".Yii::app()->params['clientZIP']; ?><br/>
 							<strong>Teléfono:</strong> <?php echo Yii::app()->params['clientPhone'];?><br/>
@@ -97,6 +106,13 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                                     <td colspan="4"><div class="text_align_right"><strong><?php echo Yii::t('backEnd', 'Shipping'); ?></strong>:</div></td>
                                     <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->envio + $factura->orden->seguro, 2, ',', '.'); ?></td>
                                 </tr>
+                                <?php if(isset($factura->orden->descuento_look))
+                                { ?>
+                                	<tr>
+                                   		 <td colspan="4"><div class="text_align_right"><strong><?php echo Yii::t('backEnd', 'Discount look'); ?></strong>:</div></td>
+                                   		 <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->descuento_look, 2, ',', '.'); ?></td>
+                               		</tr>
+                                <?php } ?>
                                 <tr>
                                     <td colspan="4"><div class="text_align_right"><strong><?php echo Yii::t('backEnd', 'Discount'); ?></strong>:</div></td>
                                     <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->descuento, 2, ',', '.'); ?></td>

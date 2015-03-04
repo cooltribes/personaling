@@ -69,9 +69,9 @@ $this->breadcrumbs=array(
                                 //$label = "No hay foto</br>para el color</br> ".$color->valor;
                                  if(!is_null($ptc->imagen))
                                   {
-                                     $foto = CHtml::image(Yii::app()->baseUrl.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "40", "height" => "40"));
+                                     $foto = CHtml::image(Yii::app()->baseUrl.'/'.str_replace(".","_thumb.",$ptc->imagen['url']), "Imagen ", array("width" => "40", "height" => "40"));
 
-                                  }
+                                  } 
                                     else {
                                         $foto="No hay foto</br>para el color";
                                     } 

@@ -401,7 +401,7 @@ class PagoController extends Controller
             $message->subject = $subject;
             $message->setBody($params, 'text/html');
             $message->addTo($destinatario);
-            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
             Yii::app()->mail->send($message);
         }
         
@@ -468,14 +468,14 @@ class PagoController extends Controller
             
             if(Funciones::isDev()){
                 
-                $destinatario = "nramirez@upsidecorp.ch";               
+                $destinatario = "lcasanova@upsidecorp.ch";               
             }     
                      
 //            $params = array('subject'=>$subject, 'body'=>$body);
             $message->subject = $subject;
             $message->setBody($body, 'text/html');
             $message->addTo($destinatario);
-//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
             Yii::app()->mail->send($message);
         }
         
@@ -510,16 +510,16 @@ class PagoController extends Controller
                      
             $destinatario = $pago->user->email;
             
-            if(Funciones::isDev()){
+            /*if(Funciones::isDev()){
                 
                 $destinatario = "nramirez@upsidecorp.ch";               
-            }     
+            }*/     
                      
 //            $params = array('subject'=>$subject, 'body'=>$body);
             $message->subject = $subject;
             $message->setBody($body, 'text/html');
             $message->addTo($destinatario);
-//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
             Yii::app()->mail->send($message);
         }
 
@@ -563,7 +563,7 @@ class PagoController extends Controller
             $lastPayment = AffiliatePayment::findLastPayment(1);            
             $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
             // if doesn't exist any payment or if there is at least one of them
-            $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
+            $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d H:i:s")) :
                 ShoppingMetric::getAllViewsPs();                   
 
             $anterior = $this->_lastDate;
@@ -590,7 +590,7 @@ class PagoController extends Controller
                     
                     $this->_lastDate = $lastDate = $lastPayment ? $lastPayment->created_at : null;                
                     // if doesn't exist any payment or if there is at least one of them
-                    $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d")) :
+                    $totalViews = $lastDate ? ShoppingMetric::getAllViewsPsByDate($lastDate, date("Y-m-d H:i:s")) :
                         ShoppingMetric::getAllViewsPs();                   
 
                     //Asign the totalViews attribute for optimize new queries
@@ -612,8 +612,8 @@ class PagoController extends Controller
                             $total = $userPs->getLookReferredViews();
                         }
                         else{
-                            $percent = $userPs->getLookViewsPercentageByDate($totalViews, date("Y-m-d"), false);
-                            $total = $userPs->getLookReferredViewsByDate($lastDate, date("Y-m-d"));
+                            $percent = $userPs->getLookViewsPercentageByDate($totalViews, date("Y-m-d H:i:s"), false);
+                            $total = $userPs->getLookReferredViewsByDate($lastDate, date("Y-m-d H:i:s"));
                         }
 
                         $amountToPay = $_POST["monthlyEarning"] * $percent;
@@ -678,13 +678,17 @@ class PagoController extends Controller
 				$this->_first = $_GET['first'];
 				$this->_last = $_GET['second'];
             }	
+
 	            /*Enviar a la vista el listado de todos los PS*/
-	            $criteria = new CDbCriteria;
+	            /*
+                $criteria = new CDbCriteria;
 	            $criteria->compare("personal_shopper", 1);
+                //$criteria->order = "lookreferredviews DESC";
 	            
 	            $dataProvider = new CActiveDataProvider('User', array(
 	                'criteria' => $criteria,
 	                'sort' => array(
+                       // 'attributes'=> array('lookreferredviews'),
 					    'defaultOrder' => array(
 							'lookreferredviews' => "DESC", 
 						),
@@ -692,7 +696,22 @@ class PagoController extends Controller
 	                'pagination' => array(
 	                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
 	                ),
-	            ));
+	            ));*/
+            $rawData=User::model()->findAllByAttributes(array('personal_shopper'=>1));
+            $dataProvider = new CArrayDataProvider($rawData, array(
+               // 'criteria' => $criteria,
+                'sort' => array(
+                    //'attributes'=> array('lookreferredviews'),
+                    'attributes'=> array('lookreferredviewslast'),
+                    'defaultOrder' => array(
+                        'lookreferredviewslast' => "DESC",
+                    ),
+                ),
+                'pagination' => array(
+                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                ),
+            ));
+
 			            
             $this->render("comision_afiliacion", array(
                 "dataProvider" => $dataProvider,
@@ -847,7 +866,7 @@ class PagoController extends Controller
             } //if $_POST 
 
 	            /*Enviar a la vista el listado de todos los PS*/
-	            $criteria = new CDbCriteria;
+	            /*$criteria = new CDbCriteria;
 	            $criteria->compare("personal_shopper", 1);
 	            
 	            $dataProvider = new CActiveDataProvider('User', array(
@@ -855,7 +874,22 @@ class PagoController extends Controller
 	                'pagination' => array(
 	                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
 	                ),
-	            ));
+	            ));*/
+				
+				
+				 $rawData=User::model()->findAllByAttributes(array('personal_shopper'=>1));
+            $dataProvider = new CArrayDataProvider($rawData, array(
+               // 'criteria' => $criteria,
+                'sort' => array(
+                    'attributes'=> array('lookreferredviewslastClicks'),
+                    'defaultOrder' => array(
+                        'lookreferredviewslastClicks' => "DESC",
+                    ),
+                ),
+                'pagination' => array(
+                    'pageSize' => Yii::app()->getModule('user')->user_page_size,
+                ),
+            ));
 			            
             $this->render("comision_click", array(
                 "dataProvider" => $dataProvider,

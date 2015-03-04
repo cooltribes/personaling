@@ -1,18 +1,18 @@
 <?php
-
+ 
 class User extends CActiveRecord {
 
     const STATUS_NOACTIVE = 0;
-    const STATUS_ACTIVE = 1;
+    const STATUS_ACTIVE = 1; 
     const STATUS_BANNED = -1;
     const STATUS_DELETED = 2; 
 
     //TODO: Delete for next version (backward compatibility)
     //const STATUS_BANED=-1;
     const STATUS_REGISTER_NEW = 0;
-    const STATUS_REGISTER_TIPO = 1;
+    const STATUS_REGISTER_TIPO = 1; 
     const STATUS_REGISTER_ESTILO = 2;
-    const STATUS_REGISTER_DONE = 3;
+    const STATUS_REGISTER_DONE = 3;  
 
     // PRIVACIDAD
     const PRIVACIDAD_DATOS_BASICOS = 1;
@@ -20,7 +20,7 @@ class User extends CActiveRecord {
     const PRIVACIDAD_LOOKS = 4;
     const PRIVACIDAD_SHOPPERS = 8;
     
-    //Tipo de Usuario
+    //Tipo de Usuario 
     const TYPE_PSAPPLY = 2;
     
 
@@ -134,6 +134,12 @@ class User extends CActiveRecord {
 //                        'joinType'=>'INNER JOIN',
                         'condition'=>'(looks.status = '.Look::STATUS_APROBADO.')',
             );
+	$relations['looks_todos'] = array(self::HAS_MANY, 'Look', 'user_id',
+
+//                        'select'=>false,
+//                        'joinType'=>'INNER JOIN',
+                       // 'condition'=>'(looks.status = '.Look::STATUS_APROBADO.')',
+            );
         $relations['psPayments'] = array(self::HAS_MANY, 'Pago', 'user_id',
 
                         'condition'=>'(psPayments.estado = 0)',
@@ -206,7 +212,19 @@ class User extends CActiveRecord {
 
         )); 
     }
+    public function psDestacados($limit = 6) 
+    {
+        
+        $criteria=new CDbCriteria;          
+        $criteria->limit = $limit;
+        $criteria->order='ps_destacado DESC, fecha_destacado DESC';
+        $criteria->addCondition('status = 1');
 
+        
+        return $this->findAll($criteria);   
+            
+           
+    }
     public static function itemAlias($type, $code = NULL) {
         $_items = array(
             'UserStatus' => array(
@@ -658,6 +676,21 @@ class User extends CActiveRecord {
                         
                 continue;
             }
+			
+			/* Para Saber que Personal Shopper han creado Looks*/
+			if($column == 'ps_creado')
+            {
+            	
+                if(($comparator=="=" && $value==1) || ($comparator=="<>" && $value==0))
+					$criteria->addCondition('id in (select distinct user_id from tbl_look ) ');
+				else 
+					$criteria->addCondition('id not in (select distinct user_id from tbl_look ) ');
+				
+				
+                        
+                    continue;
+ 
+            }
                     
             /*Prendas compradas*/
             if($column == 'prendas')
@@ -757,7 +790,7 @@ class User extends CActiveRecord {
 	protected function beforeSave()
 	{
 	   	
-	   if($this->personal_shopper>0)
+	   if($this->personal_shopper>0  && $this->isNewRecord)
 	   		$this->banner_url='/images/banner/default.gif';
 	   //echo $this->birthday;
 	   return parent::beforeSave();
@@ -884,12 +917,85 @@ class User extends CActiveRecord {
         }
 	 
         /*Todos los productos vendidos como parte de looks de una PS*/
-        function getLooksVendidos() {
-            
-           
-            $total = 0;
-            return $total;
+        function getLooksVendidos($id) { 
+        	$total = 0;
+			 $looks= look::model()->findAllByAttributes(array('user_id'=>$id));
+			 $absoluto_todo=0;
+			 
+			 foreach($looks as $lks)
+			 {
+			 	$total_producto=LookHasProducto::model()->countByAttributes(array('look_id'=>$lks->id));	//busco todos los productos de ese look
+			 	
+			 	$ordenes=OrdenHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$lks->id));
+			 	$equal=0;
+			 	foreach($ordenes as $orders)
+				{
+					if($equal!=$orders->tbl_orden_id)
+					{
+						$equal=$orders->tbl_orden_id;	
+						$total_ordenes=OrdenHasProductotallacolor::model()->countByAttributes(array('look_id'=>$lks->id, 'tbl_orden_id'=>$orders->tbl_orden_id));
+						if($total_ordenes>=$total_producto)
+						{
+							/*$absoluto_todo+=$total_producto;	
+							$total++;*/
+							$tot=OrdenHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$lks->id, 'tbl_orden_id'=>$orders->tbl_orden_id));	
+							foreach($tot as $totalero)
+							{
+								$absoluto_todo+=$totalero->cantidad;
+							}
+							$total++;
+						}
+					}	
+				}
+			 } 
+            return $total."/".$absoluto_todo;
         }
+		
+		function getLooksParciales($id)
+		{
+			$total = 0;
+			 $looks= look::model()->findAllByAttributes(array('user_id'=>$id));
+			 $absoluto_todo=0;
+			 
+			 foreach($looks as $lks)
+			 {
+			 		
+			 	$total_producto=LookHasProducto::model()->countByAttributes(array('look_id'=>$lks->id));	//busco todos los productos de ese look
+			 	$ordenes=OrdenHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$lks->id));
+			 	$equal=0;
+			 	foreach($ordenes as $orders)
+				{
+					if($equal!=$orders->tbl_orden_id)
+					{
+						$equal=$orders->tbl_orden_id;	
+						$total_ordenes=OrdenHasProductotallacolor::model()->countByAttributes(array('look_id'=>$lks->id, 'tbl_orden_id'=>$orders->tbl_orden_id));
+						if($total_ordenes<$total_producto)
+						{
+							#$absoluto_todo+=$total_ordenes;
+							
+							$tot=OrdenHasProductotallacolor::model()->findAllByAttributes(array('look_id'=>$lks->id, 'tbl_orden_id'=>$orders->tbl_orden_id));	
+							foreach($tot as $totalero)
+							{
+								$absoluto_todo+=$totalero->cantidad;
+							}
+							$total++;
+						}
+					}	
+				}
+			 } 
+            return $total."/".$absoluto_todo;
+		}
+
+		function getAllViews($id)
+		{
+			$contador=0;
+			$looks=Look::model()->findAllByAttributes(array('user_id'=>$id));
+			foreach($looks as $lks)
+			{
+				$contador+=$lks->view_counter;
+			}	
+			return $contador;
+		}
         
         /*Obtiene la comision del PS formateada de acuerdo al tipo (% o fijo)*/
         function getComision() {
@@ -953,6 +1059,53 @@ class User extends CActiveRecord {
      * RANPACO
      *
      */
+    function getLookReferredViewsLast(){
+        $lastPayment = AffiliatePayment::findLastPayment(1);
+        $from = $lastPayment ? $lastPayment->created_at : null;
+        $to = date("Y-m-d H:i:s");
+        $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
+        $match = addcslashes($match, '%_');
+        if ($from){
+            return ShoppingMetric::model()->count(
+                'data LIKE :match and created_on between :from and :to',
+                array(
+                    ':match' => "%$match%",
+                    ':from' => $from,
+                    ':to' => $to
+                )
+            );
+        } else {
+            return ShoppingMetric::model()->count(
+                'data LIKE :match',
+                array(':match' => "%$match%")
+            );
+        }
+    }
+    
+	//para afiliacion por clicks
+	    function getLookReferredViewsLastClicks(){
+        $lastPayment = AffiliatePayment::findLastPayment(2);
+        $from = $lastPayment ? $lastPayment->created_at : null;
+        $to = date("Y-m-d H:i:s");
+        $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
+        $match = addcslashes($match, '%_');
+		$pago = Profile::model()->findByPk($this->id)->pago_click;
+        if ($from){
+            return $pago*ShoppingMetric::model()->count(
+                'data LIKE :match and created_on between :from and :to',
+                array(
+                    ':match' => "%$match%",
+                    ':from' => $from,
+                    ':to' => $to
+                )
+            );
+        } else {
+            return $pago*ShoppingMetric::model()->count(
+                'data LIKE :match',
+                array(':match' => "%$match%")
+            );
+        }
+    }
 
     function getLookReferredViewsByDate($from,$to){
         $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
@@ -1041,6 +1194,19 @@ class User extends CActiveRecord {
             //$looks = true;
             return isset($looks);
         }
+		
+		public function getUrl($url)
+		{
+			if($url=='')
+				$url="Proviene de Pagina no Localizada";
+			if(strpos($url, "plus.url.google.com"))
+			    $url="Google+";
+
+			
+						
+				
+			return $url;
+		}
 		
 		
 	

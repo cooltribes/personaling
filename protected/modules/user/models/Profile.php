@@ -304,8 +304,7 @@ class Profile extends UActiveRecord
          * tipo 5,7 y 8 que son relacionados a pagos por comisiones.
          */
 	public static function getSaldo($id , $format=true){
-			$sum = Yii::app()->db->createCommand("
-                            SELECT SUM(total) as total FROM tbl_balance WHERE user_id=".$id 
+			$sum = Yii::app()->db->createCommand("SELECT IFNULL(SUM(total),0) as total FROM tbl_balance WHERE user_id=".$id 
                                 ." and tipo not in (5, 7, 8)")->queryScalar();
 			//$sum= Yii::app()->numberFormatter->formatCurrency($sum, '');
 			return $sum;

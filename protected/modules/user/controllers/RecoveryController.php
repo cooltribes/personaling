@@ -53,7 +53,7 @@ class RecoveryController extends Controller
 						    $message->setBody($body, 'text/html');                
 						    $message->addTo($user->email);
 						    Yii::app()->mail->send($message);
-//                                                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                                                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 //						    $message->view = "mail_template";
 //						    $params              = array('subject'=>$subject, 'body'=>$body);
 							

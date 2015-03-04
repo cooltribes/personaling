@@ -17,7 +17,7 @@ $create_date = date('j M Y', $create_time);
                     <h4 class="fn"><?php echo $profile->first_name.' '.$profile->last_name; ?></h4>
                     <p class="muted">Miembro desde: <?php echo $create_date; ?></p>
                 </div>
-            </div>
+            </div> 
             <div>
                 <ul class="nav nav-tabs nav-stacked">
                     <li class="nav-header">Opciones de edición</li>
@@ -80,14 +80,30 @@ $create_date = date('j M Y', $create_time);
                     <h1>Invita tus amig@s a Personaling</h1>
                 </div>
                             
-            	<div class="span8 padding_bottom_small">
+            	<div class="span8 padding_bottom_small text_align_center">
             		<p>¡Bienvenida! Ya eres parte de Personaling.com; desde hoy tendrás a la distancia de un click las mejores marcas y asesoría de moda hecha por expertos.</p>
+            		<?php if($model->personal_shopper==0){
+            			
+            		?>
             		<p>¿Quieres invitar a tus amigas a probar nuestro servicio de Personal Shopper? Anímate, ellas te lo agradecerán.</p>
+            	<?php }?>
             	</div>
-                
+                <?php $ruta_twitter='https://twitter.com/intent/tweet?url='.Yii::app()->getBaseUrl(true).'&text=&lang=es&via=Personaling'; ?>
+                <script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
                 <div class="row-fluid margin_bottom margin_top padding_top">
                     <div class="span6 offset3">
                         <div onclick="invite_friends()" style="cursor: pointer;" id="boton_facebook" class="text_align_center"><a>Invítalos usando Facebook</a></div>
+                    	<p>
+                    	<div style="cursor: pointer;" id="boton_twitter" class="text_align_center"><a href=<?php echo $ruta_twitter;?> >Invítalos usando Twitter</a></div>
+                  <script src="https://apis.google.com/js/plusone.js" async defer>
+                   {lang: 'es'}    	
+              
+                  </script>
+                  <p>
+					<div class="g-plus" data-action="share" data-annotation="none" data-href='<?php echo Yii::app()->getBaseUrl(true);?>' data-height="24" hl="es" ... ></div>
+					
+					
+					
                     </div>
 <!--                     <div class="span2 text_align_center T_large">- o -</div>
                     <div class="span5">
@@ -129,7 +145,7 @@ $create_date = date('j M Y', $create_time);
 	                                <div class="controls">
 	                                    <?php 
 	                                   echo CHtml::textArea('invite-message',
-	                                   Yii::t('contentForm','Watch all the looks created by the best Personal Shoppers from *country*'),
+	                                   Yii::t('contentForm','I\'ve created great looks on my profile, go and take a look'),
 	                                   array('class' => 'span5', 'rows' => '4'));
 	                                   ?>
 	                                   <span class="help-block error" id="invite_mess_em_" style="display: none;"> Debes escribir un mensaje </span>
@@ -170,19 +186,25 @@ $create_date = date('j M Y', $create_time);
 				    </table>
 				    {pager}
 					';
+					
+					 $pagerParams=array(
+			        'header'=>'',
+			        'prevPageLabel' => Yii::t('contentForm','Previous'),
+			        'nextPageLabel' => Yii::t('contentForm','Next'),
+			        'firstPageLabel'=> Yii::t('contentForm','First'),
+			        'lastPageLabel'=> Yii::t('contentForm','Last'),
+			        'htmlOptions'=>array(
+			            'class'=>'pagination pagination-right'));   
 				
 						$this->widget('zii.widgets.CListView', array(
 					    'id'=>'list-invitaciones',
 					    'dataProvider'=>$dataProvider,
 					    'itemView'=>'_view_invitacion',
 					    'template'=>$template,
+					        'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
 					    'enableSorting'=>'false',
-						'pager'=>array(
-							'header'=>'',
-							'htmlOptions'=>array(
-							'class'=>'pagination pagination-right',
-							)
-						),					
+					    'emptyText'=> Yii::t('contentForm','No elements to show'),
+						'pager' =>$pagerParams, 				
 					));    
 					?>
 	            </div>
@@ -195,12 +217,24 @@ $create_date = date('j M Y', $create_time);
 </div>
 </div>
 <!-- /container -->
+<?php 
+if(Yii::app()->language=="es_es")
+{
+	
+	$appId=323808071078482; //para facebook espana	
+}
+else 
+{
+	$appId=386830111475859; //para facebook venezuela
+}
+?>
 <script>
 	$(document).ready(function(){
+		var appId=<?php echo $appId;?>;
 	    //alert('http://'+window.location.host+'<?php //echo Yii::app()->baseUrl; ?>'+'/user/registration');
 	    window.fbAsyncInit = function() {
 	        FB.init({
-	            appId      : '323808071078482', // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
+	            appId      : appId, // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
 	            channelUrl : 'http://'+window.location.host+'<?php echo Yii::app()->baseUrl; ?>'+'/user/registration', // Channel File
 	            status     : true, // check login status
 	            cookie     : true, // enable cookies to allow the server to access the session
@@ -245,7 +279,7 @@ $create_date = date('j M Y', $create_time);
 	                    
 	          	FB.ui({method: 'apprequests',
 			      title: 'Personaling',
-			      message: '¡Te invito a probar Personaling, tu personal shopper digital!',
+			      message: '¡Te invito a probar Personaling, Tu Personal Shopper Online!',
 			    }, fbCallback);
 	        } else {
 	            FB.login(function(response) {
@@ -268,7 +302,7 @@ $create_date = date('j M Y', $create_time);
 	                    
 	                    FB.ui({method: 'apprequests',
 					      title: 'Personaling',
-					      message: '¡Te invito a probar Personaling, tu personal shopper digital!',
+					      message: '¡Te invito a probar Personaling, Tu Personal Shopper Online!',
 					    }, fbCallback);
 	                } else {
 	                    //console.log('User cancelled login or did not fully authorize.');
@@ -371,5 +405,13 @@ $create_date = date('j M Y', $create_time);
             });
     });
 /*]]>*/
+</script>
+
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
 </script>
     

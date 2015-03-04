@@ -67,7 +67,7 @@ $this->breadcrumbs=array(
           
         	<div class="cajadevideo">
         		<div class="video">
-            		<iframe id="acerca" src="http://www.youtube.com/embed/oAKyeeTng1U"></iframe>
+            		<iframe id="acerca" src="http://www.youtube.com/embed/wRP91tMMcH4"></iframe>
         		</div>
     		</div>
         </div>

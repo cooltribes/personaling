@@ -10,9 +10,15 @@
 
     <!--Usuario-->
     <td>
-        <h5 class="no_margin_bottom no_margin_top"> <?php echo $data->user->profile->getNombre(); ?></h5>
+        <h5 class="no_margin_bottom no_margin_top"> 
+            <?php 
+            if($data->user)
+                echo $data->user->profile->getNombre();
+            ?>
+        </h5>
         <small>
-            <?php            
+            <?php
+            if($data->user)   
                echo $data->user->email;            
             ?>
         </small>

@@ -32,15 +32,19 @@ foreach($prods as $data):
 	}
 	if($data->tipo)	$tienda=Tienda::model()->findByPk($data->tienda_id);
 	else $tienda=null;
+	$string= $data->mymarca->nombre;
+	$string=str_replace("'","/",$string);
 	$json_detalle_producto = json_encode(array(
 							    		'id' => $data->id,
-							    		'name' => addslashes($data->nombre),
-							    		'category' => addslashes($category->nombre),
-							    		'brand' => addslashes($data->mymarca->nombre),
+							    		'name' => $data->nombre,
+							    		'category' => $category->nombre,
+							    		//'brand' => str_replace("'","\'",$data->mymarca->nombre),
+                                        'brand' => $data->mymarca->nombre,
 							    		'list' => 'Product clicks',
 							    		'position' => $cont,
 							    		'url' => $data->getUrl()
-									));	
+									), JSON_HEX_APOS);
+
 ?>
 	<div class="div_productos">
 		<div class="json_product" style="display:none;">
@@ -73,7 +77,7 @@ foreach($prods as $data):
 		}
 						
 	}
-
+		$porcentaje=0;
 		$prePub=$data->precio;
 		echo ' <input id="productos" value="'.$data->id.'" name="ids" class="ids" type="hidden" >';
                 
@@ -97,24 +101,15 @@ foreach($prods as $data):
 						$iconoDescuento = '<div class="icono-descuento">'.round($porcentaje).'%<span>Descuento</span></div>';
 					}
 				}
-
+				if(round($porcentaje)==0)
+					$iconoDescuento="";
+				
 				// si no tiene descuento reviso si está marcada como precio especial para agregar el ícono
-				if($iconoDescuento == '' && $data->precio_especial == 1)
+				if($iconoDescuento == '' && $data->precio_especial == 1 ) 
 				{
 					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 1.2em;">Precio especial</span></div>';
 				}
-				
-				$var=0;
-				foreach ($data->preciotallacolor as $talCol)
-				//foreach (Preciotallacolor::model()->findAllByAttributes(array('producto_id'=>$data->id)) as $talCol)
-				{ 	
-					if($talCol->cantidad>0)
-					{
-						$var=1;
-					}		
-				}
-				
-				if($var=="0") //si no quedan productos, no mostrar ofertas; si no decir que el producto esta agotado.
+				if($data->preciotallacolorSum<1) //si no quedan productos, no mostrar ofertas; si no decir que el producto esta agotado.
 				{
 					$iconoDescuento = '<div class="icono-descuento"><span style="font-size: 13px; line-height: 2.6em;">Agotado</span></div>';
 				}
@@ -172,7 +167,7 @@ foreach($prods as $data):
 				<?php elseif (!is_null($precio_producto->tipoDescuento) && $precio_producto->valorTipo > 0 && $precio_producto):	?>
 					<span class='preciostrike strikethrough'><small><?php echo Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto(); ?></small></span> | <?php echo Yii::t('contentForm', 'currSym')." ".$data->getPrecioDescuento(); ?>					
 				<?php else: ?>
-					<span class='precio'><?php Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto(); ?></span>
+					<span class='precio'><?php echo Yii::t('contentForm', 'currSym')." ".$data->getPrecioImpuesto(); ?></span>
 				<?php endif; ?>	
 				<?php echo "{$iconoDescuento}"; ?>
 				<?php if(!Yii::app()->user->isGuest): ?> 
@@ -293,6 +288,22 @@ foreach($prods as $data):
 $cont++;
 
 endforeach;?>
+<?php
+//echo "LORE";
+//PC::debug('Pages: '.print_r($pages), 'scroll');
+$this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
+    'contentSelector' => '#catalogo',
+    'itemSelector' => 'div.div_productos',
+    'loadingText' => 'Consultando Productos',
+    'donetext' => 'No more',
+
+    //'afterAjaxUpdate' => 'alert("hola");',
+    'pages' => $pages,
+));
+
+
+
+?>
 </div>
 <script>	
 
@@ -339,19 +350,5 @@ function detalle_producto(product){
 
 </script>
 
-<?php 
-//echo "LORE"; 
-$this->widget('ext.yiinfinite-scroll.YiinfiniteScroller', array(
-	    'contentSelector' => '#catalogo',
-	    'itemSelector' => 'div.div_productos',
-	    'loadingText' => 'Consultando Productos',
-	    'donetext' => 'No more',
 
-	    //'afterAjaxUpdate' => 'alert("hola");',
-	    'pages' => $pages,
-	)); 
-			
-
-
-?>
 

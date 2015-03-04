@@ -492,7 +492,7 @@ class InboundController extends Controller
             $message->subject = $subject;
             $message->setBody($params, 'text/html');
             $message->addTo($destinatario);
-            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
             Yii::app()->mail->send($message);
         }
         

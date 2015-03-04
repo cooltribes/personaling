@@ -22,6 +22,8 @@ return array (
      'Actions' => 'Acciones',
      'Account Number:' => 'Cuenta Corriente Nº',
      'Account holder:' => 'Titular de la cuenta:',
+     'Account Type' => 'Tipo de Cuenta',
+     'Acknowledged amount' => 'Cantidad confirmada',
      '<strong>Add your payment:</strong> through the link sent to your email or login to Your Account -> Your Orders, select the order you want to pay and Save Pay option.' => '<strong>Registra tu pago:</strong> a través del link enviado a tu correo ó ingresa a Tu Cuenta - > Tus Pedidos, selecciona el pedido que deseas Pagar y la opción Registrar Pago.',
      'Address' => 'Dirección',
      'Addresses used above' => 'Las direcciones utilizadas anteriormente',
@@ -53,7 +55,7 @@ return array (
      'Active Orders' => 'Pedidos Activos',
      'Ask for Return' => 'Solicitar Devolución',
      'Assurance' => 'Seguro',
-     
+     'Available Balance:' => "Balance Disponible:",
 
 
      'Balance' => 'Saldo',
@@ -96,6 +98,7 @@ return array (
      'Credit Card' => 'Tarjeta de Crédito',
      'Create your Look here' => 'Crea tus Looks aquí',
      'Color' => 'Color',
+     'Colors' => 'Colores',
      'Courier delivery' => 'Transportista',
      'Confirm' => 'Confirmar',
      'Confirm <br>purchase' => 'Confirmar <br/>Compra',
@@ -125,6 +128,7 @@ return array (
      'Delivery' => 'Envío',
      'Decorations' => 'Adornos',
      'Discount' => 'Descuento',
+     'Discount look' => 'Descuento por Look',
      'Document' => 'Documento',
      'Do you really want to pull this look out from your cart?'=>'Realmente deseas eliminar este look de tu carrito?',
      'Documents' => 'Documentos',
@@ -160,13 +164,15 @@ return array (
      'Help' => 'Ayuda',
      'Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>' => '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>{name}.</strong>
      <br/><br/><i>{message}</i><br/><br/>Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas. <br/> Puedes registrarte haciendo click en el enlace que aparece a continuación: <br/><br/><a href="{registration_url}">Click aquí</a>',
-	'How does Personaling.com works?'=>'¿Cómo funciona Personaling.es?',
+	'How does Personaling.com works?'=>'¿Cómo funciona Personaling?',
 
      'ID' => 'ID',
      'ID of the person to whom you send' => 'Cédula de Identidad de la persona a la que envias',
      'ID Transaction' => 'ID de Transaccion',
      'Identity card' => 'Cédula de Identidad',
+     'I\'ve created great looks on my profile, go and take a look'=>'He creado Looks geniales en mi perfil, entra y dale un vistazo',
      'If you\'ve made ​​your deposit' => 'Si ya has realizado el depósito',
+     'Inbound details' => 'Detalles del Inbound',
      'Inactive' => 'Inactivo',
      'Include a new shipping address' => 'Incluir una nueva dirección de envío',
      'Individual items' => 'Prendas individuales',
@@ -175,7 +181,7 @@ return array (
      'Instructions have been sent and email summary: {email}' => ' Se han enviado las instrucciones y el resumen al correo electrónico: {email}',
      'In 10 seconds this page will be redirected to the Shopping Bag' => 'En 10 segundos esta página será redirigida a la Bolsa de Compras',
      'In <b id="segundos">10</b> seconds this page will be redirected to the Shopping Bag' => 'En <b id="segundos">10</b> segundos serás redirigid@ al proceso de compra nuevamente',     
-     'In which occasion you think this Look could be used?' => '¿En que ocasión se puede usar este look?',
+     'In which occasion you think this Look could be used?' => '¿En qué ocasión se puede usar este look?',
      'Items' => 'Prendas',
      'It was not possible to continue with the order.' => 'No ha sido posible continuar con el pedido.',
      'I.V.A' => 'I.V.A',
@@ -210,11 +216,13 @@ return array (
      'New order' => 'Nuevo Pedido',
      'Next' => 'Siguiente',
      'Next step' => 'Siguiente paso',
+     'New products' => 'Productos Nuevos',
      'None of the items returned' => 'No se ha devuelto ningún producto de esta orden',
      'No messages have been posted' => 'No se han enviado mensajes',
      'Nro. looks' => 'No. de looks',
      'Nro. items' => 'No. de Prendas',
      'No, thanks.' => 'No, gracias.',
+     'No. of SKU' => 'Cantidad de SKU',
      'No elements to show'=>'No existen elementos para mostrar',
      'Number' => 'Número',
  
@@ -251,6 +259,7 @@ return array (
      'Parcial Returned' => 'Devolución Parcial',
      'Pay MercadoPago' => 'Pagar con MercadoPago',
      'Paypal' => 'Paypal',
+     'Pay through' => 'Pagar mediante',
      'Pay with credit card' => 'Pagar con tarjeta de crédito',
      'Pay with PayPal' => 'Pagar con Paypal',     
      'Payment confirmet' => 'Pago confirmado',
@@ -271,7 +280,7 @@ return array (
      'Personaling C.A RIF: J-40236088-6' => 'Personaling C.A RIF: J-40236088-6',
      'Phone' => 'Teléfono',
      'Phone number' => 'Número de teléfono',
-     'Perhaps you want to ask is in our <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Es posible que lo que quieras preguntar esté en nuestro apartado de <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. O LLama al  (212) 7202089. <strong>¡Gracias!</strong>',
+     'Perhaps you want to ask is in our <a href="'.Yii::app()->getBaseUrl().'/site/preguntas_frecuentes" title="Preguntas frecuentes">FAQ section</a>. If you can not find it there, fill out the form below and we will contact you as soon as possible. <strong>Thank you!</strong>' => 'Es posible que lo que quieras preguntar esté en nuestro apartado de <a href=" '.Yii::app()->getBaseUrl().'/site/preguntas_frecuentes" title="Preguntas frecuentes">Preguntas frecuentes</a>. Si no está allí lo que buscas, llena este formulario y te contactaremos lo más pronto posible. O si lo prefieres escríbenos al correo Info@personaling.com. <strong>¡Gracias!</strong>',
      'Purchasing Information' => 'Datos de la compra',
      'Publish Look' => 'Publicar Look',
      'Preset filters' => 'Filtros Preestablecidos',
@@ -289,6 +298,7 @@ return array (
      'Province' => 'Estado',
      'Products' => 'Productos',
      'Products that make the Looks' => 'Productos que componen los Looks',
+     'Products available on Personaling' => 'Productos disponibles en Personaling',
      'Progress order' => 'Progreso del pedido',
      '<strong>Process Validation:</strong> usually takes 1 to 5 business days and is to validate your transfer or deposit with our bank. You can check the status of your purchase in your profile.' => '<strong>Proceso de validación:</strong> usualmente toma de 1 y 5 días hábiles y consiste en validar tu transferencia o depósito con nuestro banco. Puedes consultar el status de tu compra en tu perfil.',
      '<strong>Process Validation:</strong> usually takes 1 to 5 business days of validating your payment.' => '<strong>Proceso de validación: </strong>usualmente toma de 1 y 5 días hábiles y consiste en validar tu pago.',
@@ -322,6 +332,7 @@ return array (
      'Shipping address' => 'Dirección de envío',
      'Shipping cost' => 'Costo de envío',
      'State' => 'Estado',
+     'Status' => 'Estado',
      'Start by dragging the panel items right up here. Just click on them and move them to this box.' => 'Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro.',
      'Style' => 'Estilo',
      'Size' => 'Talla',
@@ -334,6 +345,7 @@ return array (
      'See all looks' => 'Ver todos los looks',
      'See Shipping and Returns Policies' => 'Ver Políticas de Envíos y Devoluciones',
      'Send' => 'Enviar',
+     'Sent amount' => 'Cantidad enviada',
      'Send Comment' => 'Enviar comentario',
      'Sent by email' => 'Enviada por correo electrónico',
      'Sent to:' => 'Enviada a:',
@@ -357,34 +369,45 @@ return array (
      'Skin Color' =>'Color de Piel',
      'Sold' => 'Vendidos',
      'Sold out' => 'Agotado',
+     'Status' => 'Estado',
      'Subject' => 'Asunto',
      'Sumary' => 'Resumen',
      'Summary of the purchase' => 'Resumen de la compra',
      'Start enjoying your Gift Card in <a href="https://www.personaling.com" title="Personaling">Personaling.com</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com" title="Personaling">Personaling.com</a>',
      'Start enjoying your Gift Card in <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a>',
+     'Share Link' => 'Enlace para compartir',
+
 
      'Targeting ages' => 'Dirigido a edades',
      'Tax' => 'Impuesto',
      'The bag is empty' => 'La bolsa está vacia',
+     'The delivery is being processed'=>'El envio esta siendo procesado',
+	 'The delivery will be completed in seconds!'=>'El envio estara siendo procesado en segundos!',
+     'The payment is being processed'=>'El pago esta siendo procesado',
+     'The purchase will be completed in seconds!'=>'La compra sera completada en segundos!',
      'The order to <b>{name}</b> has successfully completed' => 'El pedido para <b>{name}</b> se ha realizado con éxito.',
+     'The shipping is being processed'=>'el envio esta siendo procesado',
+     'The shipping will be completed in seconds!'=>'El envio estara completado en segundos!',
      'This transaction will be processed securely through the platform:' => 'Esta transacción será procesada de forma segura gracias a la plataforma de:',
      'There are not any results to show'=>'No existen resultados para mostrar',
      'To' => 'Hasta',
      'To1' => 'Para',
-     'To what age girls should focus this clothes?' => '¿A chicas de que edad va dirigido este look?',
+     'To what age girls should focus this clothes?' => '¿A chicas de qué edad va dirigido este look?',
      'To complete your purchase you must:' => 'Para completar tu comprar debes:',
      'To approve' => 'Por aprobar',
      'To send' => 'Por enviar',
      'Total' => 'Total',
+     'Total sent amount' => 'Cant. Total Enviada',
+     'Total acknowledged amount' => 'Cant. Total Confirmada', 
      'Totals' => 'Totales',
      'Total Gift Cards' => 'Total de Gift Cards',
      'Total returned' => 'Total devuelto',
      'Type' => 'Tipo',
-     'Type a description for this look' => 'Escriba una descripción para este look',
+     'Type a description for this look' => 'Escribe una descripción para este look',
      'Tracking' => 'Número de seguimiento',
      'Try again' => 'Intentar nuevamente',
 
-
+     'Unavailable'=>'No disponible',
      'Underpayment' => 'Pago Insuficiente',
      'Unit price' => 'Precio unitario',
      'Until' => 'Hasta',
@@ -396,6 +419,9 @@ return array (
      'Use this as billing address' => 'Utilizar esta como dirección de facturación',
      'Update all' => 'Actualizar todo',
      'Update date' => 'Fecha de carga',
+     'Updated products' => 'Productos actualizados',
+     'Upload date' => 'Fecha de carga',
+     'To all of us has broken a heel ever, refreshes the screen tu try more later.' => 'A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
      '¡Upss! To all of us has broken a heel ever, refreshes the screen tu try more later.' => '¡Upss! A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
      'Use Balance available:' => 'Usar balance disponible',
 
@@ -406,7 +432,7 @@ return array (
 
      'Year' => 'Año',
      'Yes, I do'=>'Si, por favor',
-     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>' => 'Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.com<br/> Valida tu cuenta haciendo click en el enlace que aparece a continuación:',   
+     'You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/><br/>{{link}}<br/>' => 'Has recibido este correo porque solicitaste un nuevo enlace para validar tu cuenta en Personaling.com<br/> Valida tu cuenta haciendo click en el enlace que aparece a continuación: <br/><br/><a href="{{link}}">Haz Click aquí</a>.',
      'You can buy separate clothes that you like' => 'Puedes comprar por separado las prendas que te gustan',
      'You don\'t have any saved address' => 'No tienes ninguna dirección guardada',
      'You can track your order via the Zoom page: http://www.grupozoom.com with the following tracking number: {number}' => 'Puedes hacer seguimiento a tu pedido a través de Zoom: http://www.grupozoom.com con el siguiente número de seguimiento: {number}',
@@ -417,7 +443,9 @@ return array (
      'You should select a Billing Address.'=>'Debes seleccionar una dirección de facturación',
      'You should add six items at least.'=>'Debes incluir al menos seis prendas',
      'You should add four items at least.'=>'Debes incluir al menos cuatro prendas',
+     'Your shipping is being processed'=>'Tu envio esta siendo procesado',
      'Your bag' =>'Tu bolsa',
+     'Your shipping will be completed in seconds!'=>'tu envio se esta completando en segundos!',
      'Your Payments'=>'Tus Pagos',
      '<h2>Your payment has been accepted.</h2> Your payment did not reach the total of your order, we will wait for the next payment to send your order.<br/><br/>'=>
         '<h2>Tu pago fué aceptado.</h2> Tu pago no completó el total de tu orden, esperaremos tu próximo pago para enviar tu orden.',
@@ -425,6 +453,8 @@ return array (
      'Your Gift Card is available to be applied at any time.'=> 'Tu GiftCard está disponible para ser aplicada en cualquier momento.' ,
      'Your order has been successfully completed.' => 'Tu compra se ha realizado con éxito.',
      'Your order has been successfully received.' => 'Tu Pedido ha sido recibido con éxito.',
+     'Your delivery is being processed'=>'Tu envio esta siendo procesado',
+	 'Your delivery will be completed in seconds!'=>'Tu envio sera completado en segundos!',
      'Your payment is being processed'=> 'Tu pago esta siendo procesado',
      'Your purchase will be completed in seconds!' => '¡Tu compra será completada en instantes!',
      'Your body is rectangular or square, if your shoulders and hips are almost aligned and your waist is not as defined' => 'Tu cuerpo es rectangular o cuadrado, si tus hombros y caderas están casi alineados y tu cintura no es tan definida',
@@ -439,10 +469,10 @@ return array (
      'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',
      'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',
      'We received the data of purchase as well as your credit card payment.' => 'Hemos recibido los datos de la compra así como los de tu pago con tarjeta de crédito.',
-     'We received the order data as well as your payment transfer or bank deposit' => 'Hemos recibido los datos del pedido asi como de tu pago con transferencia o depósito bancario',
+     'We received the order data as well as your payment transfer or bank deposit' => 'Hemos recibido los datos del pedido así como de tu pago con transferencia o depósito bancario',
      'We have received the order data as well as your credit card payment or Personaling credit. <br/> Your order will be shipped in the coming hours.' => 'Hemos recibido los datos de pedido asi como los de tu pago con tarjeta de crédito o saldo Personaling.<br/> Tu pedido será enviado en las próximas horas.',
      'We will verify the transfer or deposit in the next 2-3 business days and will notify you when it has been approved' => 'Estaremos verificando la transferencia o depósito en los próximos 2 a 3 días hábiles y te notificaremos cuándo haya sido aprobado',
-     'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos via correo electronico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
+     'We will notify you via email when a new looks to create. Meanwhile we invite you to stroll through  <a href="#" title="Store">our store</a>' => 'Te notificaremos vía correo electrónico cuando haya una nueva para crear looks. Mientras tanto te invitamos a dar un paseo por <a href="#" title="tienda">nuestra tienda</a>',
      'Weigth' => 'Peso',
      'We have good news, you have a balance available for {balance}' => 'Tenemos una buena noticia, tienes disponible un saldo a favor de {balance}',     
      '<h2>Welcome to Personaling</h2>Receiving this email because you registered your address Personaling. Please validate your account by clicking on the link below:<br/><br/><a href="{url}">Click here</a>' => '<h2>Te damos la bienvenida a Personaling.</h2>Recibes este correo porque se ha registrado tu dirección en Personaling. Por favor valida tu cuenta haciendo click en el enlace que aparece a continuación:<br/><br/><a href="{url}">Haz click aquí</a>',
@@ -450,7 +480,7 @@ return array (
      'What are you waiting for? Looks amazing clothes and waiting for you' => '¿Qué esperas? Looks y prendas increíbles esperan por ti.',
      'What name would you give this Look?' => '¿Qué nombre le pondrías a este look?',
      'What style suits this Look?' => '¿Qué estilo se adapta a este Look?',
-     'What type of body you favors?' => '¿A qué tipo de cuerpo le favorece más?',
+     'What type of body you favors?' => '¿A cuál contextura favorece?',
      'What hair color would look better?' => '¿Con qué color de cabello quedaría mejor?',
      'What eye color is look better?' => '¿Con qué color de ojos queda mejor?',
      'What body type should I use?' => '¿Qué tipo de cuerpo debería usarlo?',
@@ -467,7 +497,7 @@ return array (
      // Copys de paginas estaticas
      'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?  </h3>
       <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación.  </p>
-      <iframe width="560" height="315" src="//www.youtube.com/embed/oAKyeeTng1U" frameborder="0" allowfullscreen></iframe>      
+      <iframe width="560" height="315" src="//www.youtube.com/embed/wRP91tMMcH4" frameborder="0" allowfullscreen></iframe>      
       <hr/>
       <h3>¿Debo pagar por mi envío?</h3>
       <p>Si, Personaling.com hace sus envíos a través de operadores de envios  y cada envío la cancela el cliente al momento de la cancelación de su compra. Las tarifas cambiarán dependiendo del destino final del envío.  </p>
@@ -487,25 +517,25 @@ return array (
       <p>Oh! No, lamentablemente tenemos súper buenos precios porque tenemos artículos exclusivos, así que si compras por aquí, debes hacer el cambio por aquí.    </p>
       <hr/>
       <h3>¿Si tengo una queja o sugerencia, a cuál correo electrónico puedo escribir?  </h3>
-      <p>Puedes comunicarte con nosotros por cualquiera de nuestras redes sociales o a través de  <a href="mailto:servicioalcliente@personaling.com">servicioalcliente@personaling.com</a></p>',
+      <p>Puedes comunicarte con nosotros por cualquiera de nuestras redes sociales o a través de  <a href="mailto:'.Yii::app()->params['clientService'][Yii::app()->language].'">'.Yii::app()->params['clientService'][Yii::app()->language].'</p>',
 
       'Copy Politicas de Privacidad' => '
       <div class="page-header">
         <h1>Política de privacidad o privacidad de datos</h1>
       </div>
-      <p class="lead">A continuación te indicamos los terminos y politicas de privacidad de   <a href="http://www.personaling.com">www.personaling.com</a>  las cuales rigen y son aceptadas automáticamente por nuestros usuarios, a partir de su registro y compra en nuestro portal, razón por la cual es sumamente importante te asegures de leerlas y entenderlas con antelación. En caso de algún cambio en las mismas, sea por razones legales o corporativas, cada uno de nuestros usuarios serán notificados vía correo electrónico.  </p>
+      <p>A continuación te indicamos los terminos y politicas de privacidad de   <a href="http://www.personaling.com.ve">personaling</a>  las cuales rigen y son aceptadas automáticamente por nuestros usuarios, a partir de su registro y compra en nuestro portal, razón por la cual es sumamente importante te asegures de leerlas y entenderlas con antelación. En caso de algún cambio en las mismas, sea por razones legales o corporativas, cada uno de nuestros usuarios serán notificados vía correo electrónico.  </p>
       <ol>
         <li>La información que facilites a la hora del registro será debidamente guardada en un fichero de datos destinado solamente al uso de nuestra plataforma y no será facilitada a terceros sin tu previa autorización. </li>
         <li> Si haces conexión con alguna red social, es posible que tengamos acceso a alguna información como fotografías, fecha de nacimiento, teléfono, etc. Será tratada esta información de la misma manera que en el punto uno (1), es decir, para el uso exclusivo de nuestra página web y en caso de ser compartida será sólo bajo tu previa autorización.</li>
         <li>Tus compras serán cuantificadas para uso interno de elaboración de apartados como “Más vendidos” o “Más buscados” y serán utilizadas dentro de grandes muestras para nuestra promoción, sin publicar tu identidad a no ser que así lo autorices.  </li>
-        <li><a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">Personaling.com</a> cuenta con un sistema de protección de datos y seguridad en red que protegerá tus datos bancarios y personales.   </li>
+        <li><a href="http://www.personaling.com.ve" title="Personaling, Tu Personal Shopper Online">Personaling.com.ve</a> cuenta con un sistema de protección de datos y seguridad en red que protegerá tus datos bancarios y personales.   </li>
       </ol>',
 
       'Copy Envios y Encomiendas' => '
           <div class="page-header">
           <h1>Condiciones de Envíos y Encomiendas</h1>
         </div>
-        <p>Al registrarte o realizar una compra  en nuestra tienda <a href="http://www.personaling.com" title="Personaling, tu personal shopper digital">www.personaling.com</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
+        <p>Al registrarte o realizar una compra  en nuestra tienda <a href="http://www.personaling.com.ve" title="Personaling, Tu Personal Shopper Online">www.personaling.com.ve</a>, aceptas  automáticamente cada uno de los términos y condiciones que rigen nuestros  envíos y encomiendas. Por ello es muy importante que te asegures de leerlos y entenderlos con antelación.  A continuación te los detallamos: </p>
         <ol>
           <li>Los envíos de Personaling.com.ve se harán solamente dentro del  territorio venezolano, y se entregarán en un plazo máximo de 7 días hábiles. Solo aplican restricciones indicadas en el punto 7. </li>
           <li> El comprador tiene una única opción de envío, es decir sólo puede elegir una dirección para su envío.  </li>

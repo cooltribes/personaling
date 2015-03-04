@@ -42,8 +42,20 @@ class Zoho{
 		$xml .= '<row no="1">';
 		if(isset($this->first_name)) $xml .= '<FL val="First Name">'.$this->first_name.'</FL>';
 		if(isset($this->last_name)) $xml .= '<FL val="Last Name">'.$this->last_name.'</FL>';
-		if(isset($this->email)) $xml .= '<FL val="Email">'.$this->email.'</FL>';
-		$xml .= '<FL val="Lead Source">Tienda Personaling</FL>';
+		if(isset($this->email)){
+			
+			if(strpos($this->email, "+") === false){
+				$xml .= '<FL val="Email">'.$this->email.'</FL>';
+			}
+			else{
+				$variable_cambiar = $this->email;
+				$primera = str_replace("+","%2B",$variable_cambiar);	 			
+				$email = "<![CDATA[".$primera."]]>"; 
+				
+				$xml .= '<FL val="Email">'.$email.'</FL>';
+			}				
+		}
+		$xml .= '<FL val="Lead Source">'.User::model()->getUrl(Yii::app()->session['referencia']).'</FL>';
 		if(isset($this->birthday)) $xml .= '<FL val="Fecha de Nacimiento">'.$this->birthday.'</FL>';
 		if(isset($this->sex)) $xml .= '<FL val="Sexo">'.$this->sex.'</FL>';
 		if(isset($this->bio)) $xml .= '<FL val="Description">'.$this->bio.'</FL>';

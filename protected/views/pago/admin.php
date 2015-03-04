@@ -63,6 +63,7 @@ $this->breadcrumbs=array(
             'id' => 'list-auth-items',
             'dataProvider' => $dataProvider,
             'itemView' => '_view',
+           'emptyText'=> Yii::t('contentForm','No elements to show'),
             'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',  
             'template' => $template,
             'afterAjaxUpdate' => " function(id, data) {						    	

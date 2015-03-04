@@ -234,15 +234,22 @@ class PrecioTallaColor extends CActiveRecord
 	}
     
     public function updateLooksAvailability(){
+        $return="NONE    ";    
         $lhps=LookHasProducto::model()->findAllByAttributes(array('color_id'=>$this->color_id,'producto_id'=>$this->producto_id));
-        if(isset($lhps))
+        if(!is_null($lhps))
         {
             foreach($lhps as $lhp){
                 $look=Look::model()->findByPk($lhp->look_id);
-                if(isset($look))    
-                    $look->updateAvailability();
+                if(!is_null($look))    {
+                    if($look->updateAvailability())
+                        $return.="(".$look->id.")";
+                    else
+                        $return.="(NEE)";
+                }       
+                    
             }
         }
+        return $return;
     }
     
 }

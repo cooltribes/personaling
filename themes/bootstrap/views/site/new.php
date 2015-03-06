@@ -25,48 +25,50 @@ Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST'] , null, null, ar
 Yii::app()->clientScript->registerMetaTag($_SERVER['HTTP_HOST'], null, null, array('property' => 'og:site_name'), null); 
 Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app()->request->url .'images/icono_preview.jpg', null, null, array('property' => 'og:image'), null);
 
+
+/*
+
 if(Yii::app()->language=='es_es'){
     $links=array(
         'banner'=>Yii::app()->baseUrl."/registro-personaling",
-        'slider'=>"http://www.personaling.es/nightnonstop",
-        'art1'=>"http://personaling.com/magazine/como-llevar-la-clasica-camisa-vaquera-segun-mi-tipo-de-cuerpo/",
-        'art2'=>"http://www.personaling.es/outlet",
-        'art3'=>"http://www.personaling.es/producto/detalle/5808",
-        'art4'=>"http://www.personaling.es/look/998",
+        'slider'=>"http://www.personaling.es/tienda-ropa-personalizada",
+        'art1'=>"http://personaling.com/magazine/lista-de-regalos-para-no-fallar-estas-navidades/",
+        'art2'=>"http://www.personaling.es/nightnonstop",
+        'art3'=>"http://www.personaling.es/producto/detalle/5990",
+        'art4'=>"http://www.personaling.es/outlet",
     );
     $copys=array(
         'banner'=>"",
         'slider'=>"",
-        'art1'=>"¡Dejáte llevar por la moda vaquera!",
-        'art2'=>"Compra prendas hasta con 50% de descuento en nuestro outlet ",
-        'art3'=>"Compra los productos tendencia de esta temporada en nuestra tienda",
-        'art4'=>"Compra looks especiales para ti",
+        'art1'=>"Sé una experta en moda con nuestro glosario fashion",
+        'art2'=>"¡Déjate asesorar por nuestros Personal Shoppers! ",
+        'art3'=>"Los mejores precios para Navidad",
+        'art4'=>"¡Compra Custo Barcelona en Personaling!",
     );
     
 }else{
     $links=array(
         'banner'=>Yii::app()->baseUrl."/registro-personaling",
-        'slider'=>"http://www.personaling.com.ve/looks-personalizados",
-        'art1'=>"http://www.personaling.com.ve/producto/detalle/658",
-        'art2'=>"http://www.personaling.com.ve/look/307",
-        'art3'=>"http://www.personaling.com.ve/producto/detalle/571",
-        'art4'=>"http://www.personaling.com.ve/look/264",
+        'slider'=>"http://www.personaling.com.ve/tienda-ropa-personalizada",
+        'art1'=>"http://www.personaling.com.ve/tienda-ropa-personalizada",
+        'art2'=>"http://www.personaling.com.ve/HarryLevy",
+        'art3'=>"http://www.personaling.com.ve/producto/detalle/486",
+        'art4'=>"http://www.personaling.com.ve/producto/detalle/635",
     );
     $copys=array(
         'banner'=>"",
         'slider'=>"",
-        'art1'=>"¡Únete a la fiebre de las bandoleras",
-        'art2'=>"Encuentra los mejores looks inspirados en las famosas",
-        'art3'=>"¡Suéteres para todas!",
-        'art4'=>"Compra looks especiales para ti",
+        'art1'=>"¡Tus must de Navidad!",
+        'art2'=>"¡Déjate asesorar por nuestros Personal Shoppers!",
+        'art3'=>"Consigue un vestido especial para ti",
+        'art4'=>"¿Ya tienes tu pijama para Diciembre?",
     );
 }
 
-
+*/
 ?>
-<a href="<?php echo $links['banner'];?>">     
-    <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/banner.jpg';?>" width="100%">
-</a>
+<?php echo $elements['banner'];?>    
+
 <!--<div class="onBanner row-fluid">
 
      <!--
@@ -102,11 +104,9 @@ if(Yii::app()->language=='es_es'){
         <div class="row" style="margin-top: 80px">
             <div class="span9">
                 <div>
-                    <a href="<?php echo $links['slider'];?>">
-                    
-                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/slide1.jpg';?>" />
-                    </a>    
+                    <?php echo $elements['slider'];?>        
                 </div>
+                <div class="braker_horz_top_less_space nodesktop"></div>
                 <section>
                 <div class="sectionTitle">
                     <div class="braker"></div>
@@ -162,6 +162,7 @@ if(Yii::app()->language=='es_es'){
                     </a>
                  </div>
                  </section>
+                 <div class="braker_horz_top_less_space hidden-desktop"></div>
                  <section>
                  
                     <div class="sectionTitle">
@@ -198,41 +199,31 @@ if(Yii::app()->language=='es_es'){
                  </div>
                  </section>
             </div>
+            <div class="braker_horz_top_less_space hidden-desktop"></div>
             <div class="span3">
                 <section>
-                <a href="<?php echo $links['art1'];?>">
+             
                
                     <div class="articleRight no_margin_top">
-                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art1.jpg';?>" width="100%" />
-                       <div class="articleLegend text_center_align">
-                           <?php echo $copys['art1'];?>
-                       </div> 
+                     <?php echo $elements['art1'];?>    
                     </div>
-                </a>
-                <a href="<?php echo $links['art2'];?>">
+                
+               
                     <div class="articleRight">
-                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art2.jpg';?>" width="100%" />
-                       <div class="articleLegend">
-                           <?php echo $copys['art2'];?>
-                       </div> 
+                        <?php echo $elements['art2'];?> 
                     </div>
-                </a>
-                <a href="<?php echo $links['art3'];?>">
+              
+               
                     <div class="articleRight">
-                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art3.jpg';?>" width="100%" />
-                       <div class="articleLegend">
-                           <?php echo $copys['art3'];?>
-                       </div> 
+                      <?php echo $elements['art3'];?> 
+                   
                     </div>
-                </a>
-                <a href="<?php echo $links['art4'];?>">
+               
+   
                     <div class="articleRight">
-                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/'.Yii::app()->language.'/articles/art4.jpg';?>" width="100%" />
-                       <div class="articleLegend margin_top_medium">
-                           <?php echo $copys['art4'];?>
-                       </div> 
+                     <?php echo $elements['art4'];?>    
                     </div>
-                </a>
+             
       <!--          <div style="background-color: #6F6F6F; margin-top: 80px; width:100%; height:207px; position: relative; overflow-y: hidden;">
                   
                    <div style="width:100%; height:45px; position:absolute; top:25%; font-size: 25px; line-height: 27px; text-align: center; color:#000 ">
@@ -250,6 +241,7 @@ if(Yii::app()->language=='es_es'){
                 </section>
                 
             </div>
+            <div class="braker_horz_top_less_space hidden-desktop"></div>
             <section>
              <div class="span12 no_margin_left sectionTitle">
                         <div class="braker"></div>
@@ -260,7 +252,7 @@ if(Yii::app()->language=='es_es'){
              
              
              
-             <div class="row">
+             <div class="row destacadosHome">
                 
                <?php    foreach(Producto::model()->destacados(6) as $producto): ?>
                    <article><?php
@@ -273,6 +265,7 @@ if(Yii::app()->language=='es_es'){
                                 
              </div>
              </section>
+             <div class="braker_horz_top_less_space hidden-desktop"></div>
              <section>
              <div class="span12 no_margin_left sectionTitle">
                         <div class="braker"></div>
@@ -289,20 +282,20 @@ if(Yii::app()->language=='es_es'){
                              ¡Sígue nuestras redes sociales para enterarte de lo último en moda y tendencias!
                          </h3>
                      </div>
-                     <a title="Facebook" href="https://www.facebook.com/Personaling">                                   
-                        <img alt="Facebook" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/fb.jpg';?>" class="span1"/>
+                     <a title="Facebook" href="https://www.facebook.com/Personaling" target="_blank">                                   
+                        <img alt="Facebook" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/fb.jpg';?>" class="span1 socialHome"/>
                      </a>
-                     <a title="Instagram" href="http://instagram.com/personaling"> 
-                        <img alt="Instagram" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/ig.jpg';?>" class="span1"/>
+                     <a title="Instagram" href="http://instagram.com/personaling" target="_blank"> 
+                        <img alt="Instagram" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/ig.jpg';?>" class="span1 socialHome"/>
                      </a>
-                     <a title="Twitter" href="https://twitter.com/personaling"> 
-                        <img alt="Twitter" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/tw.jpg';?>" class="span1"/>
+                     <a title="Twitter" href="https://twitter.com/personaling" target="_blank"> 
+                        <img alt="Twitter" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/tw.jpg';?>" class="span1 socialHome"/>
                      </a>
-                     <a title="Pinterest" href="https://pinterest.com/personaling/">   
-                        <img alt="Pinterest" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/pt.jpg';?>" class="span1"/>
+                     <a title="Pinterest" href="https://pinterest.com/personaling/" target="_blank">   
+                        <img alt="Pinterest" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/pt.jpg';?>" class="span1 socialHome"/>
                      </a>
-                     <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ">   
-                        <img alt="Youtube" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/yt.jpg';?>" class="span1"/>
+                     <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ" target="_blank"   
+                        <img alt="Youtube" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/yt.jpg';?>" class="span1 socialHome"/>
                      </a> 
                      <div class="span3"></div>
                 
@@ -313,7 +306,7 @@ if(Yii::app()->language=='es_es'){
                     
                      <div class="span4">
                          <h3 class="no_margin_top socialText">
-                             Se el primero en recibir noticias y promociones suscribiéndote a nuestro NewsLetter.
+                             Sé el primero en recibir noticias y promociones suscribiéndote a nuestro NewsLetter.
                          </h3>
                      </div>
                      <form method="post" id="suscribe">                                 
@@ -327,54 +320,44 @@ if(Yii::app()->language=='es_es'){
                           
              </div>
              </section>
+             <div class="braker_horz_top_less_space hidden-desktop"></div>
              <section>
              <div class="span12 no_margin_left sectionTitle">
                         <div class="braker"></div>
                         <div class="text" ><h2>Aquí hablan de tu Personal Shopper</h2></div>
                         <div class="braker"></div>
              </div>
-            <div class="row">
-                <ul class="no_list_style">     
+            <div class="row mediosHome">
+                 
                      
-                     <div class="span8 no_margin_left">
+                     <div class="span8">
                         <h4>En los medios</h4>
                         <div class="row-fluid">
                             <div class="span11">
-                                <div class="row-fluid">
-                                    <a title="Agente K" class="span2" href="http://www.agente-k.com/personaling-es-de-compras-con-tu-personal-shopper-sin-salir-de-casa/">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/agk.jpg';?>" alt="Agente K" height="70px" />
-                                    </a>
-                                    <a title="Cosmopolitan" class="span2" href="https://www.facebook.com/Cosmopolitan.es/photos/a.114689081490.110515.55254956490/10152496043136491/?type=1&permPage=1">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/cosmo.jpg';?>" alt="Cosmopolitan" height="70px" />
-                                    </a>
-                                    
-                                    <a title="Marie Claire" class="span2" href="http://www.marie-claire.es/moda/tendencias/articulo/personalizar-esta-de-moda-541415705858">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/mc.jpg';?>" alt="Marie Claire" height="70px" />
-                                    </a>
-                                    <a title="Movistar" class="span2" href="http://www.masquenegocio.com/2014/05/05/heidi-garcia-adragna-personaling-moda-personal-shopper/">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/mstar.jpg';?>" alt="Movistar" height="70px" />
-                                    </a>                                    
-                                    <a title="Woman" class="span2" href="http://www.woman.es/moda/novedades/lo-ultimo-en-venta-on-line-personaling">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/woman.jpg';?>" alt="Woman" height="70px" />
-                                    </a>
-                                    <a title="S Moda" class="span2" href="http://smoda.elpais.com/articulos/moda-e-internet-un-binomio-ganador/5121">
-                                        <img src="<?php echo Yii::app()->theme->baseUrl.'/images/home/magazines/smoda.jpg';?>" alt="S Moda" height="70px" />
-                                    </a>
+                                <div class="row-fluid magazinesHome">
+                                    <?php echo $elements['magazine1'];?> 
+                                    <?php echo $elements['magazine2'];?> 
+                                    <?php echo $elements['magazine3'];?> 
+                                    <?php echo $elements['magazine4'];?> 
+                                    <?php echo $elements['magazine5'];?> 
+                                    <?php echo $elements['magazine6'];?> 
+
                                     
                                 </div>
                             </div>
                         </div>    
                      </div>
+                     <div class="margin_top_large nodesktop"></div>
                      <div class="span4 no_margin_left">
                         <h4>Nos avalan</h4>
-                        <div class="row-fluid">
-                            <a title="Wayra" href="http://ve.wayra.org/es/startup/personaling" class="span3">
+                        <div class="row-fluid organizationsHome">
+                            <a target="_blank" title="Wayra" href="http://ve.wayra.org/es/startup/personaling" class="span3">
                                 <img alt="Wayra" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/wayra.jpg';?>" height="25px"/>
                             </a>
-                            <a title="StartUp Chile" href="http://www.startupchile.org/congrats-welcome-to-start-up-chiles-9th-gen/"  class="span5">
+                            <a target="_blank"title="StartUp Chile" href="http://www.startupchile.org/congrats-welcome-to-start-up-chiles-9th-gen/"  class="span5">
                                 <img alt="StartUp Chile" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/sc.jpg';?>" height="25px"/>
                             </a>
-                            <a title="Concurso Ideas" href="http://wiki.ideas.org.ve/index.php/Portal_e-commerce_Personaling_gana_Concurso_Ideas_2013"  class="span3">
+                            <a  target="_blank" title="Concurso Ideas" href="http://wiki.ideas.org.ve/index.php/Portal_e-commerce_Personaling_gana_Concurso_Ideas_2013"  class="span3">
                                  <img alt="Concurso Ideas" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/ideas.jpg';?>" height="25px"/>
                             </a>
                         </div>    
@@ -382,7 +365,7 @@ if(Yii::app()->language=='es_es'){
                     
                                                       
                      
-                </ul>           
+                    
              </div> 
              </section>
             
@@ -391,6 +374,7 @@ if(Yii::app()->language=='es_es'){
     </div>
     
 </div>
+<div class="braker_bottom margin_top nodesktop"></div>
 <?php if($result): ?>
 <div id="confirmLook" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
  <div class="modal-header">

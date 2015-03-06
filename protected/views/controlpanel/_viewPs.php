@@ -15,18 +15,30 @@
     
     <!--DATOS PERSONALES-->    
     <td>
-        <h5 class="no_margin_bottom"> <?php echo $data->profile->first_name . ' '
-                . $data->profile->last_name; ?></h5>
+        <h5 class="no_margin_bottom">  
+        <?php 
+        
+        
+                echo "".
+   				CHtml::link(
+   							$data->profile->first_name . ' '
+               			 . $data->profile->last_name,
+                		Yii::app()->getBaseUrl()."/user/admin/update/id/".$data->id
+   				)
+  				."";
+				?>
+        </h5>
+              
         <small><strong>ID</strong>: <?php echo $data->id; ?><br/>
             <?php
             if ($data->personal_shopper == 1) {
                 if ($data->ps_destacado == 1) {
                     ?>
-                    <span class="label label-warning">Personal Shopper Destacado</span>
+                    <span id="label<?php echo $data->id?>" class="label label-warning">Personal Shopper Destacado</span>
                     <?php
-                } else {
-                    echo 'Personal Shopper';
-                }
+                } else {?>
+                    <span id="label<?php echo $data->id?>">Personal Shopper</span>
+             <?php   }
             } else if ($data->personal_shopper == 2) {
                 echo '<span class="label label-info"> Aplicante Personal Shopper</span>';
             } else {
@@ -35,7 +47,11 @@
             ?> </small>
     </td>
     
+     <td>
+     <?php	echo $data->getAllViews($data->id); ?>
+     </td>
     <!--TELF - EMAIL - CIUDAD-->
+   <!-- 
     <td>
         <small><?php echo $data->email; ?><br/>
             <strong>Telf.</strong>: <?php echo $data->profile->tlf_celular; ?> <br/>
@@ -47,18 +63,42 @@
             <?php } ?>   
         </small>
     </td>
+     
     
     <!--LOOKS COMPLETOS-->
-    <td class="error">
+    <td>
         <?php
-            echo $data->getLooksVendidos($data->id);
+            $arrs= $data->getLooksVendidos($data->id);
+			$partir=explode("/",$arrs);
+			echo $partir[0];
+			
         ?>
     </td>
     
-    <!--PRODUCTOS VENDIDOS-->
+    <!--PRODUCTO DE LOOKS COMPLETOS-->
     <td>
         <?php 
-            echo $data->getProductosVendidos();
+           # echo $data->getProductosVendidos();
+           echo $partir[1];
+
+        ?>
+    </td>
+    
+    <!--LOOKS PARCIALES-->
+        <td>
+        <?php
+        
+            $arrs= $data->getLooksParciales($data->id);
+			$partir=explode("/",$arrs);
+			echo $partir[0];
+        ?>
+    </td>
+    
+    <!--PRODUCTOS DE LOOK PARCIALES-->
+    <td>
+        <?php 
+           # echo $data->getProductosVendidos();
+           echo $partir[1];
 
         ?>
     </td>
@@ -71,7 +111,7 @@
     </td>
 
     <!--PAGO POR CLICK-->
-    <td>
+    <!--<td>
         <?php 
             echo $data->getPagoClick();
         ?>
@@ -88,29 +128,39 @@
     <td><?php echo $data->getSaldoPorComisiones();echo " ".Yii::t('backEnd', 'currSym'); ?></td>
     
     <!--SALDO TOTAL-->
-    <td>
+   <!-- <td>
         <?php $saldo = Profile::model()->getSaldo($data->id);
         echo Yii::app()->numberFormatter->formatDecimal($saldo)." ".Yii::t('backEnd', 'currSym'); ?>
     </td>
     
     <!--FECHA DE REGISTRO-->
-    <td>
+   <!-- <td>
         <?php if ($data->getCreatetime()) echo date("d/m/Y", $data->getCreatetime());
             else echo 'N/D'; ?>
-    </td>
+   </td> -->
     
     <!--VER DETALLES-->
     <td>
         <div class="dropdown"> <a class="dropdown-toggle btn btn-block" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#" title="Acciones"> <i class="icon-cog"></i></a> 
             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
-            <li>
-                <?php echo CHtml::link('<i class="icon-eye-open"></i> Ventas PS',array("controlpanel/misventas", "id" => $data->id)); ?>            
-            </li> 
-            <li>
-                <?php echo CHtml::link('<i class="icon-edit"></i> Comisión por Afiliación',array("controlpanel/comisionAfiliacion","id"=>$data->id)); ?>
+             <li >
+                 <a id="destacar<?php echo $data->id ?>" class="pointer" onclick="destacarPs('<?php echo $data->id ?>')">
+            <?php if($data->ps_destacado==1): ?>
+                      <i class="icon-star-empty"></i> Quitar destacado 
+            <?php else: ?>
+                      <i class="icon-star"></i> Destacar            
+            <?php endif;?>   
+                </a>
             </li>
             <li>
-                <?php echo CHtml::link('<i class="icon-eye-open"></i> Comisión por Clic',array("controlpanel/comisionesClic", "id" => $data->id)); ?>
+                <?php echo CHtml::link('<i class="icon-eye-open"></i> Ventas PS',array("controlpanel/misventas", "id" => $data->id)); ?>            
+            
+            </li>
+            <li>
+                <?php echo CHtml::link('<i class="icon-check"></i> Comisión por Afiliación',array("controlpanel/comisionAfiliacion","id"=>$data->id)); ?>
+            </li>
+            <li>
+                <?php echo CHtml::link('<i class="icon-hand-up"></i> Comisión por Clic',array("controlpanel/comisionesClic", "id" => $data->id)); ?>
             <li>
                 <?php echo CHtml::link('<i class="icon-refresh"></i> Historial de pagos',array("pago/index")); ?>
             </li>

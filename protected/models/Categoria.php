@@ -141,9 +141,9 @@ class Categoria extends CActiveRecord
 	public function beforeSave()
 	{
 
-		$valor->attributes=$_POST['Categoria'];
+		//$valor->attributes=$_POST['Categoria'];
 	
-			if($this->padreId=='')
+			if($this->padreId=='') 
 			{
 				$this->padreId = 0;
 			}

@@ -218,8 +218,9 @@ function getFilterByClick(idPerfil, URL){
                             
                             //Cambiar label del boton looks para mi
                             $("#deskfilters .match").html("Looks para <b>" + data.name + "</b>");
-                            $("#deskfilters .match").addClass("btn-danger");
-                            $("#deskfilters .all").removeClass("btn-danger");
+                            $("#btnMatch").addClass("btn-danger");
+                            $("#btnTodos").removeClass("btn-danger");
+                            $("#btnTodos").addClass("lighted");
                             
                             //poner el nombre en el navbar
                             //var children = $("li#dropdownUser").children();

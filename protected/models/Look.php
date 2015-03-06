@@ -129,7 +129,7 @@ class Look extends CActiveRecord
 			array('deleted,deleted_on', 'required', 'on'=>'softdelete'),
 			array('description, created_on, sent_on, approved_on, modified_on, activo', 'safe'),
 			array('url_amigable', 'unique', 'message'=>'Url Amigable ya registrada para otro look.'),
-			//array('url_amigable', 'match', 'pattern'=>'/^\w{1}([a-zA-Z_|\-]*[a-zA-Z]+[a-zA-Z_|\-]*)$/', 'message'=>'Url Amigable presenta caracteres no válidos'),
+			//array('title', 'match', 'pattern'=>'/^\w{1}([a-zA-Z_|\-]*[a-zA-Z]+[a-zA-Z_|\-]*)$/', 'message'=>'Url Amigable presenta caracteres no válidos'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched. 
 			array('id, title, description, altura, contextura, pelo, ojos, 
@@ -1310,7 +1310,7 @@ class Look extends CActiveRecord
                 foreach($ptcs as $ptc){
                     if($ptc->cantidad>0&&$ptc->producto->estado==0&&$ptc->producto->status==1){
                         $count++;
-                        break;
+                        
                     }
                 }
             }
@@ -1326,13 +1326,13 @@ class Look extends CActiveRecord
         if($this->countAvailableProducts()<3)
         {
             if($this->available!=0){
-                 $this->saveAttributes(array('available'=>0));
+                 if($this->saveAttributes(array('available'=>0)));
                  $save=true;                
             }
         }           
         else{
             if($this->available!=1){                 
-                 $this->saveAttributes(array('available'=>1));
+                 if($this->saveAttributes(array('available'=>1)));
                  $save=true;                
             }
         } 

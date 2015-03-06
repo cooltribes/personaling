@@ -857,24 +857,21 @@ public function actionCategorias(){
 				$_POST['marcas']='Todas las Marcas';
 			}
 
-			if ($_POST['marcas']!='Todas las Marcas')	{
-
-               // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),$criteria);
+			if ($_POST['marcas']!='Todas las Marcas'){
+                // $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),$criteria);
                 $count_productos = Producto::model()->with($with)->noeliminados()->activos()->countByAttributes(array('marca_id'=>$_POST['marcas']));
-                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),array('limit'=>$limit,'offset'=>$offset));
+                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAllByAttributes(array('marca_id'=>$_POST['marcas']),array('limit'=>$limit,'offset'=>$offset,'order'=>'t.id desc'));
             }else{
                 //$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll($criteria);
                 $count_productos = Producto::model()->with($with)->noeliminados()->activos()->count();
-                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset));
+                $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset,'order'=>'t.id desc'));
             }
 		} else {
 			//$productos = Producto::model()->with($with)->noeliminados()->activos()->findAll($criteria);
             $count_productos = Producto::model()->with($with)->noeliminados()->activos()->count();
-            $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset));
+            $productos = Producto::model()->with($with)->noeliminados()->activos()->findAll(array('limit'=>$limit,'offset'=>$offset,'order'=>'t.id desc'));
 		}
 		$pages = ceil($count_productos/$limit);
-
-
 
         echo $this->renderPartial('_view_productos',array(
             'productos'=>$productos,
@@ -2382,10 +2379,16 @@ public function actionCategorias(){
         
         public function actionUpdateAvailability(){
             $looks=Look::model()->findAllByAttributes(array('activo'=>1));
+            echo "<table>";
             foreach($looks as $look){
-                $look->updateAvailability();
-                echo $look->id." - ".$look->available."<br/>";
+               //$look->updateAvailability();
+                echo "<tr/><td>{$look->id} - </td>";
+                echo "<td>{$look->title}</td>";
+                echo "<td>{$look->countAvailableProducts()} prods.</td><td>";
+                echo $look->available?"Disponible":"No Disponible";
+                echo "<td></tr>";
             }
+            echo "</table>";
         }
         
         

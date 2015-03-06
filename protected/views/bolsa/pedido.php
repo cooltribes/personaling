@@ -7,7 +7,33 @@ $user = User::model()->findByPk($user);
 //$pago = Pago::model()->findByAttributes(array('id'=>$orden->pago_id));
 $tipo_pago = $orden->getTipoPago();
 //echo $orden->pago_id;
+if(Yii::app()->language=="es_ve"):
+?>
 
+<!-- Google Code for Ventas Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 957544716;
+var google_conversion_language = "es";
+var google_conversion_format = "1";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "n2QBCKTj_VcQjPLLyAM";
+var google_conversion_value = 1.00;
+var google_conversion_currency = "VEF";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/957544716/?value=1.00&amp;currency_code=VEF&amp;label=n2QBCKTj_VcQjPLLyAM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+
+<?php
+endif;
 ?>
 <?php //echo "xPagar".$orden->getxPagar()." SumxOrden".Detalle::model()->getSumxOrden($orden->id);?>
  <style>
@@ -17,6 +43,9 @@ $tipo_pago = $orden->getTipoPago();
 			outline: solid 1px;
     	}
     </style>
+    
+    
+    
 <div class="container margin_top">
 <div class="row">
   <div class="span8 offset2">
@@ -153,7 +182,13 @@ $tipo_pago = $orden->getTipoPago();
               <th class="text_align_left"><?php echo Yii::t('contentForm','Discount'); ?>:</th>
               <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
             </tr>
-            <?php } ?>     
+            <?php } ?>
+            <?php if($orden->descuento_look != 0){ // si no hay descuento por look ?> 
+            <tr>
+              <th class="text_align_left"><?php echo Yii::t('contentForm','Discount look'); ?>:</th>
+              <td><?php echo Yii::t('contentForm', 'currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento_look, ''); ?></td>
+            </tr>
+            <?php } ?>        
             <?php if($orden->descuentoRegalo != 0){ // si no hay descuento ?> 
             <tr>
               <th class="text_align_left"><?php echo Yii::t('contentForm','Used Balance:'); ?></th>
@@ -457,6 +492,24 @@ $detPago->monto=0;
 
 <!-- // Modal Window --> 
 
+<!--Modal para el deposito -->
+<div class="wrapper_home hide">
+            
+    <div class="box_20130928 margin_bottom_small" style="position: fixed;">
+            <h1>
+                <span><?php echo Yii::t('contentForm', 'Your payment is being processed'); ?></span>
+                <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
+            </h1>
+            
+            <p>
+              <?php echo Yii::t('contentForm', 'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser'); ?>
+                <br>
+                <?php echo Yii::t('contentForm', 'Your purchase will be completed in seconds!'); ?>                
+            </p>
+            
+    </div>
+</div>
+
 <script>
 	
 	function enviar(id)
@@ -478,7 +531,9 @@ $detPago->monto=0;
 		}
 		else
 		{
-
+		
+		$('#myModal').modal('toggle');
+        $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
  		$.ajax({
 	        type: "post", 
 	        url: "<?php echo Yii::app()->createUrl('bolsa/cpago'); ?>", // action 

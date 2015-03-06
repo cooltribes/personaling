@@ -33,7 +33,7 @@ if(isset($_GET['fb']) && $_GET['fb'] == 'true'){
     var ref = document.getElementsByTagName('script')[0];
     ref.parentNode.insertBefore(fpw, ref);
     })();
-    ", CClientScript::POS_HEAD, array()); 
+    ", CClientScript::POS_HEAD, array());
 } 
 $user = User::model()->findByPk(Yii::app()->user->id);
 $status_register = -1;
@@ -265,7 +265,8 @@ $("#mobFiltrar").click(function() {
                 
                 <?php
                 // este bloque no se debe mostrar si el usuario es hombre
-                if((isset($user) && $user->profile->sex == 1) || !isset($user)){
+                if((isset($user) && $user->profile->sex == 1) || !isset($user))
+                {
                     ?>
                     <div class="margin_top_medium botones" style="width:100%">
                         <div class="btlooks">
@@ -288,7 +289,7 @@ $("#mobFiltrar").click(function() {
                             ));
                             ?>
                         </div>
-                        <div  class="btmatch" style="float:left; width:20%">
+                        <div  class="btmatch" style="float:left; width:auto">
                             <?php
                             
                             $this->widget('bootstrap.widgets.TbButton', array(
@@ -486,7 +487,7 @@ $("#mobFiltrar").click(function() {
         <input type="hidden" id="perfil_propio" name="perfil_propio" value="<?php echo $perfil_propio; ?>" />     
 
 
-        <div class="navbar-inner sub_menu hide">
+        <div class="navbar-inner sub_menu psFilter hide">
             <div id="div_ocasiones"></div>
             <div id="div_shopper">
                 <form id="form_shopper">
@@ -936,7 +937,7 @@ echo CHtml::ajax(array(
                 	"width":"auto",
                 	"right":"3%",
                 });
-                $(".btlooks #btnTodos,.btmatch #btnMatch").css({
+                $(".btlooks #btnTodos").css({
                 	"width":"165px",
                 	
                 });

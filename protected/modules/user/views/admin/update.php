@@ -59,7 +59,48 @@ function getMonthsArray()
 		$profile->setScenario('PS');
 		
 	?>
-
+<style>
+    #userPS{
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-right: 12px;
+        padding-left: 12px;
+        border: 1px solid #ddd;
+        
+        
+    }
+    #userPS a{
+        text-decoration: none;
+        
+    }
+    #userPS a:hover{
+        color:#000;
+        background-color: #DDD;
+    }
+    #userPS.open{
+        color:#888;        
+    }
+    #userPS>.dropdown-menu{
+        width:100%;
+        margin-top: 0px;
+        border-radius: 0px;
+        padding-top: 0px;
+        border-top: 0px;
+        margin-left:-1px;
+    }
+    
+    .nav-tabs .open .dropdown-toggle{
+        color:#444;
+    }
+    
+    .nav .dropdown-toggle:hover .caret{
+        border-top-color: black;
+    }
+    .nav .dropdown-toggle .caret{
+        border-top-color: black;
+    }
+ 
+</style>
 <div class="container margin_top">
   <div class="page-header">
     <h1>Editar Usuario</h1>
@@ -299,9 +340,9 @@ function getMonthsArray()
 ?>
               	              	
               </li>
-              <li>
+              
               	<?php
-                    
+                  /*  
                     if($model->personal_shopper == 1){
                         $titulo = 'Quitar Personal Shopper';
                     }else if($model->personal_shopper == 2){
@@ -353,9 +394,21 @@ function getMonthsArray()
 					    'id' => "ps_link",
 					  )
 					);
-?>
+*/?>
+            
+                 
+             	 
+              	 
+              	 
+              	 
+              	 
+              	 
+              	 
+              	 
+              	 
+              	 
               	              	
-              </li>
+           
               <?php if($model->personal_shopper == 1){ ?>
               <li>
               <?php 
@@ -459,8 +512,43 @@ function getMonthsArray()
 					  Yii::app()->createUrl( 'user/admin/todmin' ,array('id'=>$model->id)));*/
               	 ?>
               </li>
-              
-              
+              <li>
+               <div class="dropdown" id="userPS">
+                    <a class="dropdown-toggle" data-toggle="dropdown" >
+                        <div class="dropinput" >
+                               <i class='icon-user'></i><span> Status PS</span>
+                            <small> 
+                                    <b class="caret pull-right" ></b>
+                            </small>
+                                
+                            <span id="successPS" style="display:none">
+                                <i class="icon-ok"></i>
+                            </span>
+                            <span id="errorPS" style="display:none">
+                                <i class="icon-remove"></i>
+                            </span>
+                                
+                            
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" >
+                        
+                    <li id="ps0" class="pointer userPS <?php echo $model->personal_shopper==0?"active":"";?> option" >
+                        <a onclick="statusPS('<?php echo $model->id;?>','0')">Ninguno</a>
+                    </li>
+                    <li id="ps2" class="pointer userPS <?php echo $model->personal_shopper==2?"active":"";?> option" >
+                        <a onclick="statusPS('<?php echo $model->id;?>','2')">Aplicante a PS</a>
+                    </li>
+                    <li id="ps1" class="pointer userPS <?php echo $model->personal_shopper==1?"active":"";?> option">
+                        <a onclick="statusPS('<?php echo $model->id;?>','1')">Personal Shopper</a>
+                    </li>
+                           
+                    </ul>  
+                </div>
+                <div class="muted" id="messagePS" style="display:none">
+                    
+                </div>
+                </li>
             </ul>
           </div>
         </div>
@@ -492,8 +580,35 @@ function getMonthsArray()
         });
 
        });	
-       
-       
+        function statusPS(id, status) {
+            
+
+            $.ajax({
+                type: "post",
+                'url' :"../../statusPs",
+                dataType:'json',
+                data: { 
+                'id':id,'status':status}, 
+                'success': function(data){
+                     if(data.status=='success'){
+                            
+                            $('#ps'+data.personal_shopper).addClass('active');
+                            $('#ps'+data.previous).removeClass('active');
+                            $('#successPS').show();
+                            $('#successPS').fadeOut(2000);
+                            $('#messagePS').html(data.alert);
+                            $('#messagePS').show();
+                            $('#messagePS').fadeOut(6000);
+                           
+                            console.log(data);
+                     } else{
+                         $('#errorPS').show();
+                         $('#errorPS').fadeOut(2000);
+                     }                          
+                },
+                'cache' :false
+            });
+        }
        
        
 		</script> 

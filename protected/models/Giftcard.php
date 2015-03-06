@@ -34,7 +34,7 @@ class Giftcard extends CActiveRecord
         /*CAMBIAR ESTA CONSTANTE CUANDO SE REQUIERA CAMBIAR LA LONGITUD DEL CODIGO DE UNA TARJETA*/
         const DIGITOS_CODIGO = 16;
         
-        const MAX_MONTO_VE = 1000; //Para venezuela
+        const MAX_MONTO_VE = 20000; //Para venezuela
         const MAX_MONTO_ES = 100; //Para españa
     
         //Montos para españa
@@ -42,16 +42,19 @@ class Giftcard extends CActiveRecord
                                         20 => 20, 50 => 50, 100 => 100);
         //Montos para Venezuela
         public static $montosVE = array(
-                        100 => 100,
-                        200 => 200,
-                        300 => 300,
-                        400 => 400,
-                        500 => 500,
-                        600 => 600,
-                        700 => 700,
-                        800 => 800,
-                        900 => 900,
+                         500 => 500,
                         1000 => 1000,
+                        2000 => 2000,
+                        3000 => 3000,
+                        4000 => 4000,
+                        5000 => 5000,
+                        6000 => 6000,
+                        7000 => 7000,
+                        8000 => 8000,
+                        9000 => 9000,
+                        10000 => 10000,
+                        15000 => 15000,
+                        20000 => 20000,
                         );
         
         

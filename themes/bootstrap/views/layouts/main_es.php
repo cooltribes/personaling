@@ -34,9 +34,12 @@ $contadorMensaje = 0;
 //<i class="icon-shopping-cart"></i> <span class="badge badge-important">2</span>
 
 
+
+     
 if (Yii::app()->user->id?UserModule::isAdmin():false){
-$this->widget('bootstrap.widgets.TbNavbar',array(
-	'type'=> 'inverse',
+        
+    $this->widget('bootstrap.widgets.TbNavbar',array(
+    'type'=> 'inverse',
     'items'=>array(
         array(
             'class'=>'bootstrap.widgets.TbMenu',
@@ -45,42 +48,33 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
                 //array('label'=>'Personaling', 'url'=>array('/site/index')),
                 array('label'=>'Panel de Control', 'url'=>'#', 'items'=>array(
+                							 array('label'=>'Script', 'url'=>array('/Orden/ordenFinalizada')),
                                             array('label'=>'General', 'url'=>array('/controlpanel/index')),
                                             array('label'=>'Ventas', 'url'=>array('/controlpanel/ventas')),
+                                            array('label'=>'Productos', 'url'=>array('/controlpanel/productos')),
+                                            array('label'=>'Looks', 'url'=>array('/controlpanel/looks')),
                                             array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
-                                            array('label'=>'Catálogos', 'url'=>array('/controlpanel/looks')),
-                                            array('label'=>'Acciones', 'url'=>array('/adorno/index')),
-                                            array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
-                                            array('label'=>'SEO', 'url'=>array('/controlpanel/seo')),
-                                            array('label'=>'Metricas', 'url'=>array('/shoppingMetric/admin')),
-//                                        array('label'=>'Remuneraciones (PS)', 'url'=>array('/controlpanel/remuneraciones')),
-					)),
+                                            array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),                                           
+                                            array('label'=>'Acciones', 'url'=>array('#')),
+                                         
+                    )),
 
-                array('label'=>'Usuarios', 'url'=>'#', 'items'=>array(
-                                            array('label'=>'Todos los usuarios', 'url'=>array('/user/admin')),
-                                            array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
-					)),
+                array('label'=>'Usuarios', 'url'=>array('/user/admin')),
 
                 array('label'=>'Looks', 'url'=>'#', 'items'=>array(
-                                            array('label'=>'Looks', 'url'=>array('/look/admin')),
+                                            array('label'=>'Todos los Looks', 'url'=>array('/look/admin')),
+                                            array('label'=>'Campañas', 'url'=>array('/campana/index')),
                                             array('label'=>'Importar Descuentos', 'url'=>array('/look/importarDescuentos')),
                                             array('label'=>'Elementos Gráficos', 'url'=>array('/adorno/index')),
-                                            array('label'=>'Campañas', 'url'=>array('/campana/index')),
-                                        )),
+                                        )), 
 
                 array('label'=>'Productos', 'url'=>'#', 'items'=>array(
-                                            array('label'=>'Productos', 'url'=>array('/producto/admin')),
-                                            array('label'=>'Colores', 'url'=>array('/color/admin')),
-                                            array('label'=>'Marcas', 'url'=>array('/marca/admin')),
-                                            array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
-                                             array('label'=>'Tiendas', 'url'=>array('/tiendaExterna/admin')),
-                                            '---',
+                                            array('label'=>'Todos los Productos', 'url'=>array('/producto/admin')),
+                                            array('label' => 'Egresos de Mercancía','url'=>array('/movimiento/adminEgresos')),
                                             array('label'=>'Inventario','url'=>'#',
                                                 'items' => array(
                                                     array('label' => 'Reporte de Inventario',
-                                                        'url'=>array('/producto/reporte'),),
-                                                    array('label' => 'Egresos de Mercancía',
-                                                        'url'=>array('/movimiento/adminEgresos'),),
+                                                        'url'=>array('/producto/reporte'),),                                                   
                                                     array('label' => 'Reporte de Defectuosos',
                                                         'url'=>array('/movimiento/defectuosos'),),
                                                     array('label' => 'Ver MasterDatas',
@@ -91,37 +85,57 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                                             array('label'=>'Importar','url'=>'#',
                                                 'items' => array(
 
-                                                    array('label' => 'Productos Personaling',
+                                                    array('label' => 'Productos Internos',
                                                         'url'=>array('/producto/importar'),),
+                                                    array('label' => 'Productos Externos',
+                                                        'url'=>array('/producto/importarExternos'),), 
                                                     array('label' => 'Descuentos',
                                                         'url'=>array('/producto/importarPrecios'),),
-                                                    array('label' => 'Productos Externos',
-                                                        'url'=>array('/producto/importarExternos'),),
-                                                )),
-					)
-				),
-                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(
-                    array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),
-                    array('label'=>'Reporte de Ventas', 'url'=>Yii::app()->baseUrl.'/orden/reporte'),
-                    array('label'=>'Devoluciones', 'url'=>Yii::app()->baseUrl.'/orden/adminDevoluciones'),
-                    array('label'=>'Pagos a Personal Shoppers', 'url'=>Yii::app()->baseUrl.'/pago/admin'),
-                    array('label'=>'Comisiones por afiliación PS', 'url'=>array('/pago/comisionAfiliacion')),
-                    array('label'=>'Comisiones por clics', 'url'=>array('/pago/comisionClick')),                    
+                                                    
+                                                )),                                        
+                                           
+                                            
                     )
                 ),
-
+                array('label'=>'Ventas', 'url'=>'#', 'items'=>array(
+                    array('label'=>'Órdenes Registradas', 'url'=>array('/orden/admin')),
+                    array('label'=>'Devoluciones', 'url'=>array('/orden/adminDevoluciones')),
+                    array('label'=>'Reporte de Ventas', 'url'=>array('/orden/reporte')),
+                   ) 
+                ),
+                array('label'=>'PS', 'url'=>'#', 'items'=>array(
+                                        
+                    array('label'=>'Pagos a Personal Shoppers', 'url'=>array('/pago/admin')),
+                      array('label'=>'Comisiones por venta directa', 'url'=>array('/controlpanel/personalshoppers')),
+                     array('label'=>'Comisiones por afiliación PS', 'url'=>array('/pago/comisionAfiliacion')),
+                    array('label'=>'Comisiones por clics', 'url'=>array('/pago/comisionClick')),
+                    )
+                ),
+                
                 array('label'=>'Promociones', 'url'=>'#', 'items'=>array(
                     array('label'=>'Gift Cards', 'url'=>array('/giftcard/index')),
                     array('label'=>'Códigos de Descuento', 'url'=>array('/codigoDescuento/index')),
 
                                 ),
                     ),
-               	//array('label'=>'Sistema', 'url'=>array('/site/logout')),
-				array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
+                    
+                 array('label'=>'Configuración', 'url'=>'#', 'items'=>array(
+                     array('label'=>'Home', 'url'=>array('/site/homeConf')),
+                    array('label'=>'Colores', 'url'=>array('/color/admin')),
+                    array('label'=>'Marcas', 'url'=>array('/marca/admin')),
+                    array('label'=>'Categorías', 'url'=>array('/categoria/admin')),
+                    array('label'=>'Tiendas', 'url'=>array('/tiendaExterna/admin')),
+                    array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
+                    array('label'=>'SEO', 'url'=>array('/controlpanel/seo')),
+                    
+
+                                )
+                    ),   
+                //array('label'=>'Sistema', 'url'=>array('/site/logout')),
+                array('label'=>'Tu Cuenta', 'url'=>'#', 'items'=>array(
                     array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
                     array('label'=>'Perfil', 'url'=>'#'),
-
-                    '---',
+                    array('label'=>'Soporte', 'url'=>'#'),
                     array('label'=>'Salir', 'url'=>array('/site/logout')),
                 ),
                ),
@@ -299,10 +313,31 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
 
 }
 
+ 
+
+
+    if(Yii::app()->params['environment']): 
 ?>
+ 
+        <div class="navbar-fixed-top" id="entorno" style="background: #A23; top:71px; color:#FFF;z-index:999;"">
+           Estás en:
+           <b><?php echo  Yii::app()->params['environment'];?></b>
+           <?php echo Yii::app()->params['zohoActive']?'<span class="pull-right">Zoho: <b>'.Yii::app()->params['zohoToken'].'</b> '.Yii::app()->params['zohoAccount'].'</span>':"Zoho esta Desactivado"; ?>
+          </br>
+           <?php echo "Database: ".Yii::app()->db->connectionString; ?> 
+        </div>
+         <script>
+            $('#page').css('margin-top','90px'); //aumentar si se agregan mas cosas al cintillo
+        </script>
+      
+<?php endif; ?>
+
+
+
 </div>
 
 <?php
+
 //si es invitado agregar el estilo del link de vaciar bolsa
 if(Yii::app()->user->isGuest){
 ?>
@@ -314,6 +349,8 @@ if(Yii::app()->user->isGuest){
 <?php
 }
 ?>
+
+
   
   
 <!-- Mensaje Cookies ON -->
@@ -387,98 +424,116 @@ if(!Yii::app()->user->isGuest){
   <?php echo $content; ?> </div>
 <!-- page -->
 <div id="modalAjax"></div>
-<div id="wrapper_footer" style="background: #eee; border: 0px;">
-  <footer class="container">
-    <div class="row hidden-phone">
-      
-      <div class="span3">
-        <h4>Información de Interés</h4>
-        <ul>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de">Acerca de Personaling</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/formas-de-pago" title="Formas de Pago">Formas de Pago</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/envios" title="Envíos y Encomiendas">Envíos</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad">Políticas de Privacidad</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
-           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
-        </ul>
-      </div>
-      <div class="span3">
-        <h4>Lo que encontrarás</h4>
-        <ul>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/looks-personalizados" title="Looks Personalizados">Looks</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Ropa</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Zapatos</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Accesorios</a></li>
-          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/profile/listado" title="Personal Shoppers">Personal Shoppers</a></li>
-        </ul>
-      </div>
-      <div class="span3">
-        <h4>Sigue nuestras redes sociales</h4>
-            <ul>
-               <li>  <a title="Facebook" href="https://www.facebook.com/Personaling">Facebook</a></li>  
-               <li>  <a title="Instagram" href="http://instagram.com/personaling">Instagram </a></li>  
-               <li>  <a title="Twitter" href="https://twitter.com/personaling">Twitter </a></li>  
-               <li>  <a title="Pinterest" href="https://pinterest.com/personaling/">Pinterest   </a></li>  
-               <li> <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ">Youtube </a> </li>  
-          
-        </ul>
-      </div>
-      <div class="span3">
-        <h4>Métodos de Pago</h4>
-        <div class="row-fluid">
-            <a class="span3">
-                <img alt="MasterCard" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/mc.png';?>" height="25px"/>
-            </a>
-            <a class="span3">
-                <img style="margin-top:7px" alt="Visa" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/visa.png';?>" height="25px"/>
-            </a>
-            <a class="span3">
-                <img style="margin-top:12px" alt="Paypal" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/pp.png';?>" height="25px"/>
-            </a>
+
+<footer>
+    <div id="wrapper_footer">
+        <div class="main_footer">
+            <div class="container">
+                <div class="row hidden-phone">
+                    <div class="span3">
+                        <h4>Información de Interés</h4>
+                        <ul>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de">Acerca de Personaling</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/formas-de-pago" title="Formas de Pago">Formas de Pago</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/envios" title="Envíos y Encomiendas">Envíos</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad">Políticas de Privacidad</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
+                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
+                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_condiciones_ps" title="Terminos y condiciones PS">Términos y condiciones para Personal Shoppers</a></li>
+                            <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
+                        </ul> 
+                      </div>
+                      
+                      <div class="span3">
+                        <h4>Lo que encontrarás</h4>
+                        <ul>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/looks-personalizados" title="Looks Personalizados">Looks</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Ropa</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Zapatos</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Accesorios</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/profile/listado" title="Personal Shoppers">Personal Shoppers</a></li>
+                        </ul>
+                      </div>                      
+                      
+                      <div class="span3">
+                        <h4>Sigue nuestras redes sociales</h4>
+                            <ul>
+                               <li>  <a title="Facebook" href="https://www.facebook.com/Personaling">Facebook</a></li>  
+                               <li>  <a title="Instagram" href="http://instagram.com/personaling">Instagram </a></li>  
+                               <li>  <a title="Twitter" href="https://twitter.com/personaling">Twitter </a></li>  
+                               <li>  <a title="Pinterest" href="https://pinterest.com/personaling/">Pinterest   </a></li>  
+                               <li> <a title="Youtube" href="http://www.youtube.com/channel/UCe8aijeIv0WvrZS-G-YI3rQ">Youtube </a> </li>  
+                          
+                        </ul>
+                      </div>
+                      <div class="span3">
+                            <h4>Métodos de Pago</h4>
+                            <div class="row-fluid">
+                                <a class="span3">
+                                    <img alt="MasterCard" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/mc.png';?>" height="25px"/>
+                                </a>
+                                <a class="span3">
+                                    <img style="margin-top:7px" alt="Visa" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/visa.png';?>" height="25px"/>
+                                </a>
+                                <a class="span3">
+                                    <img style="margin-top:12px" alt="Paypal" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/pp.png';?>" height="25px"/>
+                                </a>
+                            </div>
+                            <h4 class="margin_top">Seguridad de Datos</h4>
+                            <div class="row-fluid">
+                               <a class="span2">
+                                                     <img alt="SSL Security" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/ssl.png';?>" height="25px"/>
+                                                </a>
+                                                <div class="span8">
+                                                    <script type="text/JavaScript">
+                                                    //<![CDATA[
+                                                    // var sealServer=document.location.protocol+"//seals.websiteprotection.com/sealws/525d3892-d158-46f3-aacd-5777cbdd56cb.gif";var certServer=document.location.protocol+"//certs.websiteprotection.com/sealws/?sealId=525d3892-d158-46f3-aacd-5777cbdd56cb";var hostName="personaling.com";document.write(unescape('<div style="text-align:center;margin:0 auto;"><a target="_blank" href="'+certServer+'&pop=true" style="display:inline-block;"><img src="'+sealServer+'" alt="Website Protection&#153; Site Scanner protects this website from security threats." title="This Website Protection site seal is issued to '+ hostName +'. Copyright &copy; 2013, all rights reserved."oncontextmenu="alert(\'Copying Prohibited by Law\'); return false;" border="0" /></a><div id="bannerLink"><a href="https://www.godaddy.com/" target="_blank">Go Daddy</a></div></div>'));
+                                                    
+                                                    //]]>
+                                                    </script>
+                                             
+                                                </div>
+                               
+                            </div>
+                        
+                      
+                      </div>
+                      
+                    
+                    
+                </div>
+                
+            </div>
+            
         </div>
         
-              
-               
-          
         
-        <h4 class="margin_top">Seguridad de Datos</h4>
-       <div class="row-fluid">
-           <a class="span2">
-                                 <img alt="SSL Security" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/ssl.png';?>" height="25px"/>
-                            </a>
-                            <div class="span8">
-                                <script type="text/JavaScript">
-                                //<![CDATA[
-                                var sealServer=document.location.protocol+"//seals.websiteprotection.com/sealws/525d3892-d158-46f3-aacd-5777cbdd56cb.gif";var certServer=document.location.protocol+"//certs.websiteprotection.com/sealws/?sealId=525d3892-d158-46f3-aacd-5777cbdd56cb";var hostName="personaling.com";document.write(unescape('<div style="text-align:center;margin:0 auto;"><a target="_blank" href="'+certServer+'&pop=true" style="display:inline-block;"><img src="'+sealServer+'" alt="Website Protection&#153; Site Scanner protects this website from security threats." title="This Website Protection site seal is issued to '+ hostName +'. Copyright &copy; 2013, all rights reserved."oncontextmenu="alert(\'Copying Prohibited by Law\'); return false;" border="0" /></a><div id="bannerLink"><a href="https://www.godaddy.com/" target="_blank">Go Daddy</a></div></div>'));
-                                //]]>
-                                </script>
-                         
-                            </div>
-           
-       </div>
-               
-          
-       
-      </div>
-    </div>
-</div>
-<div id="wrapper_footer no_margin_top no_padding_top" style="border: 0px;">
-    <div class="row-fluid margin_top_medium padding_bottom">
-      <div class="span12 text_align_center creditos"><?php echo Yii::app()->params['clientName']; ?> Nuestro RIF <?php echo Yii::app()->params['clientIdentification']; ?> | Todos los derechos reservados<br/>
-       Desarrollado por: <br/>
-       <!-- <a class="to_add" href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> -->
-        <a  href="http://cooltribes.com" title="Connecting true fans" target="_blank">
-            <img src="<?php echo Yii::app()->baseUrl ?>/images/cooltribes100.png" width="100" />
+        <div>
+            <div class="row-fluid margin_top_medium padding_bottom">
+                  <div class="span12 text_align_center creditos"><?php echo Yii::app()->params['clientName']; ?> Nuestro RIF <?php echo Yii::app()->params['clientIdentification']; ?> | Todos los derechos reservados<br/>
+                   Desarrollado por: <br/>
+                   <!-- <a class="to_add" href="http://cooltribes.com" title="Connecting true fans" target="_blank">Cooltribes.com</a> -->
+                    <a  href="http://cooltribes.com" title="Connecting true fans" target="_blank">
+                        <img src="<?php echo Yii::app()->baseUrl ?>/images/cooltribes100.png" width="100" />
+                        
+                    </a> 
+                   </div>
+                </div>        
             
-        </a> 
-       </div>
-    </div>    
-  </footer>
-</div>
-
+        </div>
+        
+    </div>
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0027/3531.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>    
+    
+</footer>
 <script >
   
   $(document).on('ready',HandlerReady);
@@ -1013,7 +1068,7 @@ if(!Yii::app()->user->isGuest){
         }
         else var expires = "";
         document.cookie = name+"="+value+expires+"; path=/";
-    }
+    
 
     function readCookie(name) {
         var nameEQ = name + "=";
@@ -1063,6 +1118,7 @@ if(!Yii::app()->user->isGuest){
 
 </script>
 
+<script type="text/javascript">var $zoho= $zoho || {salesiq:{values:{},ready:function(){}}};var d=document;s=d.createElement("script");s.type="text/javascript";s.defer=true;s.src="https://salesiq.zoho.com/personalingenterprise/float.ls?embedname=chatdepersonaling";t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t);</script>
 
 </body>
 </html>

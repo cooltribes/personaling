@@ -22,13 +22,14 @@ $(":submit").mouseup(function() {
 })',CClientScript::POS_READY);
 
 if (!Yii::app()->user->isGuest) { // que este logueado
-    $descuento = Yii::app()->getSession()->get('descuento');
+    $descuento = Yii::app()->getSession()->get('descuento'); 
+	$descuentoEachLook=Yii::app()->getSession()->get('descuentoxLook');
     $descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo');
     $total = Yii::app()->getSession()->get('total');
     $totalPagar = Yii::app()->getSession()->get('totalTarjeta');	
+    
 ?>
-
-<div class="container margin_top">
+<div class="container margin_top"> 
   <div class="progreso_compra">
     <div class="clearfix margin_bottom">
       <div class="first-past"><?php echo Yii::t('contentForm','Authentication'); ?></div>
@@ -42,7 +43,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
         <?php echo Yii::t('contentForm','Confirm <br>purchase'); ?>
       </div>
     </div>
-  </div>
+  </div>  
   <div class="row">
     <div class="span12">
       <h1><?php echo Yii::t('contentForm','Order confirmation'); ?>
@@ -60,19 +61,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
       </h1>
     </div>
   </div>
-  <input type="hidden" id="idDireccion" value="<?php echo(Yii::app()->getSession()->get('idDireccion')); ?>" />
-  <input type="hidden" id="tipoPago" value="<?php echo(Yii::app()->getSession()->get('tipoPago')); ?>" />
-  <input type="hidden" id="subtotal" value="<?php echo(Yii::app()->getSession()->get('subtotal')); ?>" />
-  <input type="hidden" id="descuento" value="<?php echo(Yii::app()->getSession()->get('descuento')); ?>" />
-  <input type="hidden" id="descuentoRegalo" value="<?php echo(Yii::app()->getSession()->get('descuentoRegalo')); ?>" />
-  <input type="hidden" id="envio" value="<?php echo(Yii::app()->getSession()->get('envio')); ?>" />
-  <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
-  <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
-  <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
-  <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
-  <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
-  <input type="hidden" id="peso" value="<?php echo(Yii::app()->getSession()->get('peso')); ?>" />
-  <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
+  
   <!-- <input type="hidden" id="idCard" value="0" /> -->
 
   <div class="row margin_top_medium">
@@ -276,14 +265,14 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                       Yii::app()->numberFormatter->formatCurrency(Yii::app()->getSession()->get('subtotal'), ''); ?></td>
             </tr>            
             
-            <?php if(Yii::app()->getSession()->get('seguro')>0){ ?>            
-            <tr>
-              <th class="text_align_left"><?php echo Yii::t('contentForm','Assurance') ?>:</th>
+            <?php //if(Yii::app()->getSession()->get('seguro')>0){ ?>            
+          <!--  <tr>
+              <th class="text_align_left"><?php // echo Yii::t('contentForm','Assurance') ?>:</th>
               <td class="text_align_right"><?php 
-              	echo Yii::t('contentForm','currSym').' '.Yii::app()->getSession()->get('seguro'); ?>
+             // 	echo Yii::t('contentForm','currSym').' '.Yii::app()->getSession()->get('seguro'); ?>
                 	 </td>              
-            </tr>
-            <?php }?>   
+            </tr>-->
+            <?php//}?>   
                 
             <!--IVA-->
             <?php /*if(!$direccion->ciudad->provincia->pais->exento){ ?>
@@ -301,12 +290,20 @@ if (!Yii::app()->user->isGuest) { // que este logueado
             </tr>
             
             
-            <!--DESCUENTOS-->
+            
             <?php if($descuento != 0){ // si hay descuento ?> 
                 <tr>
                   <th class="text_align_left"><?php echo Yii::t('contentForm','Discount') ?>:</th>
                   <td class="text_align_right"><?php echo "- ".Yii::t('contentForm','currSym').' '.
                           Yii::app()->numberFormatter->formatCurrency($descuento, ''); ?></td>
+                </tr>
+            <?php } ?>
+            <!--DESCUENTOS POR LOOK-->
+             <?php if($descuentoEachLook != 0){ // si hay descuento ?> 
+                <tr>
+                  <th class="text_align_left"><?php echo Yii::t('contentForm','Discount look') ?>:</th>
+                  <td class="text_align_right"><?php echo "- ".Yii::t('contentForm','currSym').' '.
+                          Yii::app()->numberFormatter->formatCurrency($descuentoEachLook, ''); ?></td>
                 </tr>
             <?php } ?>
                 
@@ -508,14 +505,26 @@ if (!Yii::app()->user->isGuest) { // que este logueado
 //                        $this->endWidget();
 //                  }
 		  ?>
-          
+           
         </div>
           <script></script>
         <p><i class="icon-calendar"></i><?php echo Yii::t('contentForm','Date estimated delivery') ?>: <br/><?php echo date('d/m/Y', strtotime('+1 day'));?>  - <?php echo date('d/m/Y', strtotime('+1 week'));  ?> </p>
       </div>
       <p><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Envios y Devoluciones" target="_blank"><?php echo Yii::t('contentForm', 'See Shipping and Returns Policies'); ?></a></p>
       <p class="muted"><i class="icon-comment"></i> <?php echo Yii::t('contentForm', 'Contact an advisor for assistance Personaling: Monday to Friday 8:30 am to 5:00 pm'); ?></p>
-      
+      <div class="row-fluid">
+         <div class="span6 offset1">
+            <script type="text/JavaScript">
+              //<![CDATA[
+                 var sealServer=document.location.protocol+"//seals.websiteprotection.com/sealws/525d3892-d158-46f3-aacd-5777cbdd56cb.gif";var certServer=document.location.protocol+"//certs.websiteprotection.com/sealws/?sealId=525d3892-d158-46f3-aacd-5777cbdd56cb";var hostName="personaling.com";document.write(unescape('<div style="text-align:center;margin:0 auto;"><a target="_blank" href="'+certServer+'&pop=true" style="display:inline-block;"><img src="'+sealServer+'" alt="Website Protection&#153; Site Scanner protects this website from security threats." title="This Website Protection site seal is issued to '+ hostName +'. Copyright &copy; 2013, all rights reserved."oncontextmenu="alert(\'Copying Prohibited by Law\'); return false;" border="0" /></a><div id="bannerLink"><a href="https://www.godaddy.com/" target="_blank">Go Daddy</a></div></div>'));
+                   //]]>
+               </script>
+         </div>
+        <a class="span3 offset1">
+            <img alt="SSL Security" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/ssl.png';?>" height="25px"/>
+        </a>
+       
+    </div>
       <!-- Resumen de Productos OFF --> 
       
     </section>
@@ -554,9 +563,22 @@ else
 	header('Location: /site/user/login');	
 }
 
+     Yii::app()->getSession()->add('envio',(Yii::app()->getSession()->get('envio')-Yii::app()->getSession()->get('seguro')));
 
 ?>
-
+<input type="hidden" id="idDireccion" value="<?php echo(Yii::app()->getSession()->get('idDireccion')); ?>" />
+  <input type="hidden" id="tipoPago" value="<?php echo(Yii::app()->getSession()->get('tipoPago')); ?>" />
+  <input type="hidden" id="subtotal" value="<?php echo(Yii::app()->getSession()->get('subtotal')); ?>" />
+  <input type="hidden" id="descuento" value="<?php echo(Yii::app()->getSession()->get('descuento')); ?>" />
+  <input type="hidden" id="descuentoRegalo" value="<?php echo(Yii::app()->getSession()->get('descuentoRegalo')); ?>" />
+  <input type="hidden" id="envio" value="<?php echo(Yii::app()->getSession()->get('envio')); ?>" />
+  <input type="hidden" id="iva" value="<?php echo(Yii::app()->getSession()->get('iva')); ?>" />
+  <input type="hidden" id="total" value="<?php echo(Yii::app()->getSession()->get('total')); ?>" />
+  <input type="hidden" id="usar_balance" value="<?php echo(Yii::app()->getSession()->get('usarBalance')); ?>" />
+  <input type="hidden" id="seguro" value="<?php echo(Yii::app()->getSession()->get('seguro')); ?>" />
+  <input type="hidden" id="tipo_guia" value="<?php echo(Yii::app()->getSession()->get('tipo_guia')); ?>" />
+  <input type="hidden" id="peso" value="<?php echo(Yii::app()->getSession()->get('peso')); ?>" />
+  <input type="hidden" id="tarjeta" value="<?php echo(Yii::app()->getSession()->get('idTarjeta')); ?>" />
 
 <script>
 
@@ -864,9 +886,7 @@ $(document).ready(function(){
   }
  			
 	}
-	
-        
-       
+     
         
         
 </script> 

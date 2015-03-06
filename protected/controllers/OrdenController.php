@@ -34,7 +34,7 @@ class OrdenController extends Controller
                                     'adminXLS','generarExcelOut','devolver','adminDevoluciones',
                                     'detallesDevolucion', 'AceptarDevolucion','RechazarDevolucion',
                                     'AnularDevuelto','cantidadDevuelto','activarDevuelto',
-                                    'resolverOutbound','descargarReturnXML', 'reporteDetallado','ResolverItemReturn','ordeneszoho'),
+                                    'resolverOutbound','descargarReturnXML', 'reporteDetallado','ResolverItemReturn','ordeneszoho', 'ordenFinalizada'),
 
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
@@ -1018,13 +1018,18 @@ public function actionReportexls(){
                 $factura = Factura::model()->findByPk($id);
                 $mPDF1 = Yii::app()->ePdf->mpdf('', 'Letter-L', 0, '', 15, 15, 16, 16, 9, 9, 'L');
 
-                if ($_GET['documento'] == "factura") {
-                    $mPDF1->WriteHTML($this->renderPartial('factura', array('factura' => $factura), true));
-                } else if ($documento == "recibo") {
-                    $mPDF1->WriteHTML($this->renderPartial('recibo', array('factura' => $factura), true));
+                if ($_GET['documento'] == "facturaPdf") {
+					$stylesheet = file_get_contents(Yii::app()->getBaseUrl(true).'/css/style.css');
+					$mPDF1->WriteHTML($stylesheet,1);
+                    $mPDF1->WriteHTML($this->renderPartial('facturaPdf', array('factura' => $factura), true));
+                } else if ($documento == "reciboPdf") {
+                    $stylesheet = file_get_contents(Yii::app()->getBaseUrl(true).'/css/style.css');
+					$mPDF1->WriteHTML($stylesheet,1);	
+                    $mPDF1->WriteHTML($this->renderPartial('reciboPdf', array('factura' => $factura), true));
                 }
 
                 $mPDF1->Output();
+                #$html2pdf->Output();
             }
         //$this->render('recibo', array('factura'=>$factura));
 	}
@@ -1188,7 +1193,7 @@ public function actionValidar()
             $detalle->estado = 2; // rechazado
             
             $orden = Orden::model()->findByPk($detalle->orden_id);
-            $orden->estado = 1; // regresa a "En espera de pago"
+            $orden->estado = 6; // regresa a "En espera de pago"
             
             if($detalle->save()){
                 if($orden->save()){
@@ -1216,7 +1221,7 @@ public function actionValidar()
         $message->subject    = $subject;
         $message->setBody($params, 'text/html');                
         $message->addTo($user->email);
-        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+        $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
         Yii::app()->mail->send($message);
         echo json_encode($response);
 
@@ -1377,7 +1382,7 @@ public function actionValidar()
                             break;
                         }
                 }
-                
+                $totalDevuelto = 0;
                 /*Si ha pagado, devolver dinero al saldo*/
                 if($pagoHecho){
                                                
@@ -1410,6 +1415,27 @@ public function actionValidar()
                             $response["status"] = "success";
                             $response["message"] = "Pedido cancelado con éxito. <br>
                                 Se han agregado <b>".Yii::app()->numberFormatter->format('#,##0.00',$totalDevuelto)." Bs.</b> al saldo del usuario</b>";
+                            
+                            $message = new YiiMailMessage;
+                            $message->activarPlantillaMandrill();
+                            $subject = 'Cancelación de Orden'; 
+                            $message->subject = $subject;
+
+                            
+                            $body = '<h2>Tu orden #'.$orden->id.' ha sido cancelada</h2><br/><br/>
+                                    La orden realizada el '.$orden->fecha.' ha sido cancelada';
+                                    if(isset($_GET['mensaje']) && $_GET['mensaje'] != ""){
+                                            $body.='debido a las siguientes razones:</br></br></br>"'.$_GET['mensaje'].'"<br><br><br>';
+                                    }else $body.='.<br>';
+                                    $body.='Si tienes alguna duda por favor contacta a nuestro
+                                    servicio al cliente a través de '.Yii::app()->params['clientService'][Yii::app()->language].'.';
+
+                            
+             
+                         
+                            $message->setBody($body, 'text/html');
+                            $message->addTo($orden->user->email);
+                            Yii::app()->mail->send($message);  
                     }
                 }	
             }
@@ -1472,7 +1498,7 @@ public function actionValidar()
 							$message->subject    = $subject;
 							$message->setBody($params, 'text/html');                
 							$message->addTo($user->email);
-							$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+							$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
 							Yii::app()->mail->send($message);
 							
 						/*
@@ -1491,7 +1517,7 @@ public function actionValidar()
 							$message->subject    = $subject;
 							$message->setBody($params, 'text/html');
 							$message->addTo($user->email);
-							$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+							$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
 							
 							Yii::app()->mail->send($message);					
 						
@@ -1503,7 +1529,7 @@ public function actionValidar()
 						
 				
 				}
-			else{
+			else{ 
 				
 				Yii::app()->user->setFlash('success',"No se pudo registrar la Entrega");
 			}	
@@ -1511,7 +1537,7 @@ public function actionValidar()
 		}else
 			Yii::app()->user->setFlash('success',"No esta autorizado para registrar la entrega");
 		
-		echo "ok";	
+		echo "ok";	  
 	}
 	
 
@@ -1522,8 +1548,12 @@ public function actionValidar()
 		$orden->tracking = $_POST['guia'];
 		$orden->estado=4; // enviado
 		
-		if($orden->save())
-                {
+		if($orden->save()){
+
+			// cambiar estado de la orden en Zoho a Enviada 
+			$zoho = new ZohoSales;
+			$zoho->updateStatus($orden->id);
+
                     // agregar cual fue el usuario que realizó la compra para tenerlo en la tabla estado
                     $estado = new Estado;
 
@@ -1553,7 +1583,7 @@ public function actionValidar()
 //                        $message->view = "mail_template";
 //                        Yii::t('contentForm','',array('{number}'=>$orden->tracking));
 //                        $params              = array('subject'=>$subject, 'body'=>$body);
-//                        $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+//                        $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
 
                         Yii::app()->user->setFlash('success', 'Se ha enviado la orden.');
 
@@ -1610,7 +1640,7 @@ public function actionValidar()
                 $message->setBody($body, 'text/html');
                 if(is_null($mensaje->admin))
                 	$message->addTo($usuario->email);
-                //$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                //$message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
                 Yii::app()->mail->send($message);
 			}		
 			
@@ -2211,9 +2241,14 @@ public function actionValidar()
             $objPHPExcel->getProperties()->setCreator("Personaling.com")
                                      ->setLastModifiedBy("Personaling.com")
                                      ->setTitle("Reporte de Órdenes");
-
-            // creando el encabezado
-            $objPHPExcel->setActiveSheetIndex(0)
+			
+			if(Yii::app()->language=='es_ve')
+			{
+				$currency="Monto en Bs";
+				$columnaJ="Monto TDC";
+				$columnaK="Monto Deposito";
+				            // creando el encabezado
+            	$objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A1', 'ID')
                         ->setCellValue('B1', 'Subtotal sin IVA')
                         ->setCellValue('C1', 'Total de IVA')
@@ -2221,11 +2256,42 @@ public function actionValidar()
                         ->setCellValue('E1', 'Subtotal (+Iva-Descuento)')
                         ->setCellValue('F1', 'Envio')
                         ->setCellValue('G1', 'Total')
-                        ->setCellValue('H1', 'Monto por Cupón €')
+                        ->setCellValue('H1', $currency)
                     
                         ->setCellValue('I1', 'Tipos de Pago')
-                        ->setCellValue('J1', 'Monto Sabadell')
-                        ->setCellValue('K1', 'Monto Paypal')
+                        ->setCellValue('J1', $columnaJ) // Monto Sabadell en Espana, en Venezuela Monto Tarjeta de credito
+                        ->setCellValue('K1', $columnaK) // Monto Paypal en Espana, Monto Deposito en Venezuela
+                        ->setCellValue('L1', 'Monto Balance')
+                    
+                        ->setCellValue('M1', 'Fecha')
+                        ->setCellValue('N1', 'Nombre y Apellido')
+                        ->setCellValue('O1', 'Direccion Envio')
+                        ->setCellValue('P1', 'Telefono')
+                        ->setCellValue('Q1', 'Codigo Postal')
+                        ->setCellValue('R1', 'Email')
+                        ->setCellValue('S1', 'Fecha Creación')
+						->setCellValue('T1', 'Cedula')
+                        ;
+			}	
+			else
+			{
+				$currency="Monto en €";
+				$columnaJ="Monto Sabadell";
+				$columnaK="Monto Paypal";
+				            // creando el encabezado
+           		 $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A1', 'ID')
+                        ->setCellValue('B1', 'Subtotal sin IVA')
+                        ->setCellValue('C1', 'Total de IVA')
+                        ->setCellValue('D1', 'Total de Descuentos')
+                        ->setCellValue('E1', 'Subtotal (+Iva-Descuento)')
+                        ->setCellValue('F1', 'Envio')
+                        ->setCellValue('G1', 'Total')
+                        ->setCellValue('H1', $currency)
+                    
+                        ->setCellValue('I1', 'Tipos de Pago')
+                        ->setCellValue('J1', $columnaJ) // Monto Sabadell en Espana, en Venezuela Monto Tarjeta de credito
+                        ->setCellValue('K1', $columnaK) // Monto Paypal en Espana, Monto Deposito en Venezuela
                         ->setCellValue('L1', 'Monto Balance')
                     
                         ->setCellValue('M1', 'Fecha')
@@ -2236,6 +2302,9 @@ public function actionValidar()
                         ->setCellValue('R1', 'Email')
                         ->setCellValue('S1', 'Fecha Creación')
                         ;
+			}
+				
+	
 
             $colI = 'A';
             $colF = 'S';
@@ -2275,6 +2344,10 @@ public function actionValidar()
                         $montoP = $detalle->monto;                        
                     }else if($detalle->tipo_pago == Detalle::USO_BALANCE){
                         $montoB = $detalle->monto;
+                    }else if($detalle->tipo_pago == Detalle::TDC_INSTAPAGO){
+                        $montoS = $detalle->monto;
+                    }else if($detalle->tipo_pago == Detalle::DEP_TRANSF){
+                        $montoP = $detalle->monto;
                     }
                         
                 }
@@ -2282,7 +2355,21 @@ public function actionValidar()
                 $user = $orden->user;
                 
                 //Agregar la fila al documento xls
-                $objPHPExcel->setActiveSheetIndex(0)
+                if(Yii::app()->language=='es_ve')
+                {
+                	if(isset( Detalle::model()->findByAttributes(array('orden_id'=>$orden->id))->cedula))// registros en develop NULL
+					{
+						$cedula=Detalle::model()->findByAttributes(array('orden_id'=>$orden->id))->cedula;
+					}	
+					else 
+					{
+						$cedula="No se tiene cedula para esta orden";		
+					}
+						
+					
+					
+                	///es el mismo excel solo que en Venezuela lleva una columna mas al final y no se puede validar dentro del SetCellValue
+                	$objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A'.($i), $orden->id) 
                         ->setCellValue('B'.($i), $orden->subtotal)
                         ->setCellValue('C'.($i), $orden->iva)                        
@@ -2305,7 +2392,38 @@ public function actionValidar()
                         ->setCellValue('Q'.($i), $orden->direccionEnvio->codigoPostal->codigo)
                         ->setCellValue('R'.($i), $user->email)
                         ->setCellValue('S'.($i), $user->create_at)
+						#->setCellValue('T'.($i), $orden->detalle->cedula)//ojo
+						->setCellValue('T'.($i), $cedula)
                         ;
+				}
+				else
+				{
+					    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A'.($i), $orden->id) 
+                        ->setCellValue('B'.($i), $orden->subtotal)
+                        ->setCellValue('C'.($i), $orden->iva)                        
+                        ->setCellValue('D'.($i), $orden->descuento)                        
+                        ->setCellValue('E'.($i), Yii::app()->numberFormatter->format(
+                                "#,##0.00",$orden->subtotal + $orden->iva - $orden->descuento) )  
+                        ->setCellValue('F'.($i), $orden->envio)                        
+                        ->setCellValue('G'.($i), $orden->total)
+                        ->setCellValue('H'.($i), $cuponUsado)
+                        
+                        ->setCellValue('I'.($i), $tiposPago)
+                        ->setCellValue('J'.($i), $montoS)
+                        ->setCellValue('K'.($i), $montoP)
+                        ->setCellValue('L'.($i), $montoB)
+                        
+                        ->setCellValue('M'.($i), date("d-m-Y h:i:s a", strtotime($orden->fecha)))
+                        ->setCellValue('N'.($i), $user->profile->getNombre())
+                        ->setCellValue('O'.($i), $orden->direccionEnvio->dirUno)
+                        ->setCellValue('P'.($i), $orden->direccionEnvio->telefono)
+                        ->setCellValue('Q'.($i), $orden->direccionEnvio->codigoPostal->codigo)
+                        ->setCellValue('R'.($i), $user->email)
+                        ->setCellValue('S'.($i), $user->create_at)
+                        ;	
+				}
+                
 
                 $i++;
             }
@@ -2428,9 +2546,9 @@ public function actionValidar()
                             $message->addTo($user->email);
 //                            $message->addTo("nramirez@upsidecorp.ch");
 
-//                            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+//                            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
 //                            $message->view = "mail_devolucion";
-                            //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+                            //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
                             Yii::app()->mail->send($message);
                             if($devolucion->sendXML() && UserModule::isAdmin())
                                 $lf="<br/>Devolución notificada a Logisfashion.";
@@ -2525,9 +2643,9 @@ public function actionValidar()
                             $message->addTo($user->email);
                                                         
 //                            $message->view = "mail_devolucion";
-//                            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
+//                            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
 //                            $params = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
-                            //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+                            //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
                             Yii::app()->mail->send($message);
 
 
@@ -2562,8 +2680,8 @@ public function actionValidar()
 //                $message->addTo("nramirez@upsidecorp.ch");
 //                $message->view = "mail_devolucion";
 //                $params              = array('subject'=>$subject, 'devolucion'=>$devolucion, 'comments'=>$comments);
-//                $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-                //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+//                $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
+                //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
                 Yii::app()->mail->send($message);
 
                 Yii::app()->user->setFlash('success', 'Devolución Rechazada correctamente');
@@ -2934,6 +3052,206 @@ public function actionValidar()
 				echo "fin de ciclo final";		
 			
 		}
+
+public function actionOrdenFinalizada() // ES EL SCRIPT ORDEN FINALIZADA
+{
+		$bd=explode("=",Yii::app()->db->connectionString);	
+	    $BaseDatos=$bd[2];
+		
+		$debug = false;
+		        
+		/*
+		 * *********************** IMPORTANTE *****************************  
+		 */
+		$conexion = mysqli_connect("mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com",
+		        "personaling","Perso123Naling",$BaseDatos);
+		/*
+		 * *********************** IMPORTANTE ***************************** 
+		 */
+		
+		
+		//Ordenes q pasaron a ser recibidas y estan en ese estado, o devueltas
+		//o parcialmente devueltas
+		$consulta = "
+		SELECT e.* FROM tbl_estado e, tbl_orden o
+		WHERE e.orden_id = o.id
+		AND e.estado = 8
+		AND o.estado IN (8, 9, 10)
+		";
+		
+		$ordenes = mysqli_query($conexion,$consulta);
+		
+		/*
+		 * *********************** IMPORTANTE ***************************** 
+		 */
+		$DIAS_DEVOLUCION = -1; //CONSTANTE
+		/*
+		 * *********************** IMPORTANTE ***************************** 
+		 */
+		
+		
+		
+		$hoy = new DateTime();
+		
+		$fechaDeHoy = $hoy->format("Y-m-d");
+		
+		$idOrdenes = array();
+		
+		while($row = mysqli_fetch_array($ordenes)){	
+		
+		    $recibida = new DateTime($row['fecha']);
+		    $diasTranscurridos = $recibida->diff($hoy)->days;
+		    
+		    //si ya pasaron los 3 dias
+		    if($diasTranscurridos > $DIAS_DEVOLUCION){
+		        
+		        //cambiarle el estado a la orden
+		        $consultaEstado = "SELECT estado FROM tbl_orden o
+		        WHERE o.id = {$row['orden_id']}";
+		        
+		        /*
+		         * CONSULTAR LA ORDEN ACTUAL
+		         */
+		        $resultado = mysqli_query($conexion, $consultaEstado);         
+		        
+		        $estado = mysqli_fetch_array($resultado);
+		        
+		        //cambiar el estado a finalizada
+		        $estado = $estado[0] + 3;
+		        
+		        $update = "
+		        UPDATE tbl_orden
+		        SET estado = {$estado}
+		        WHERE id = {$row['orden_id']}    
+		        ";        
+		        /*
+		         * ACTUALIZAR EL ESTADO TBL_ORDEN
+		         */
+		        $queryResult = mysqli_query($conexion, $update);
+		        
+		        if($debug){
+		            echo "<br>Actualizar estado de la orden<pre>";
+		            print_r($queryResult);
+		            echo "</pre>";            
+		        }
+		
+		
+		
+		        //insertar un nuevo cambio de estado en tbl_estado
+		        $insertar = "INSERT INTO tbl_estado (estado, user_id, fecha, orden_id)
+		            VALUES ({$estado}, 0, \"$fechaDeHoy\", {$row['orden_id']})";                     
+		        
+		        /*
+		         * INSERTAR EL NUEVO ESTADO TBL_ESTADO
+		         */
+		        $queryResult = mysqli_query($conexion, $insertar);  
+		        
+		        if($debug){            
+		            echo "<br>Insertar Estado<pre>";
+		            print_r($queryResult);
+		            echo "</pre>";            
+		        }
+				//////////////actualizar estado finalizado en zoho/////////////////////
+		        $zoho=New ZohoSales;
+				$zoho->updateStatus($row['orden_id']);
+				
+				
+		        //Guardar el id de la orden para los pagos luego
+		        $idOrdenes[] = $row['orden_id'];
+		        
+		    }
+		}
+		
+		$idOrdenes = implode(", ", $idOrdenes);
+		
+		if($debug)
+		echo "<br>Las Ordenes: ".$idOrdenes." <br>";
+		
+		// Buscar los productos pendientes por pagar al PS, que no se hayan devuelto,
+		// y que sean de las ordenes que acaban de pasar a estado FINALIZADA
+		$consultaPago = "
+		SELECT o.tbl_orden_id ordenId, o.preciotallacolor_id ptcId, o.look_id, o.comision,
+		o.tipo_comision tipoComision, o.cantidad, o.precio, l.user_id
+		FROM tbl_orden_has_productotallacolor o, tbl_look l
+		WHERE o.status_comision = 1
+		AND o.devolucion_id = 0
+		AND o.tbl_orden_id IN ({$idOrdenes})
+		AND l.id = o.look_id
+		";
+		
+		/*
+		 * CONSULTAR TODOS LOS PRODUCTOS VENDIDOS PARA PAGAR A LOS PS
+		 */
+		$resultado = mysqli_query($conexion, $consultaPago);
+		
+		if($debug){            
+		         
+		    echo "<br>Productos Vendidos OrdenHasPrecioTallaColor<pre>";
+		    print_r($resultado);
+		    echo "</pre>";
+		}
+		
+		if($resultado)
+		{
+					while($fila = mysqli_fetch_array($resultado)){
+			
+			    //Calcular el monto de ganancia a pagar por producto a cada PS
+			    if($fila["tipoComision"] == 1){
+			        $fila["comision"] /= 100;            
+			        $monto = $fila["cantidad"] * $fila["precio"] * $fila["comision"];
+			    }else{
+			        $monto = $fila["cantidad"] * $fila["comision"];                
+			    }
+			
+			    $monto = round($monto, 3);
+			
+			     //insertar un nuevo balance para el usuario PS
+			    $insertar = "INSERT INTO tbl_balance (total, orden_id, user_id, tipo)
+			    VALUES ({$monto}, {$fila["ordenId"]}, {$fila["user_id"]}, 5)";        
+			
+			    if($debug){
+			        echo "<br>Monto a pagar: ".$insertar."<br>";
+			    }
+			    
+			     /*
+			     * INSERTAR EL NUEVO BALANCE
+			     */
+			    
+			    $queryResult = mysqli_query($conexion, $insertar);
+			    if($debug){            
+			        echo "<br>Insertar Balance<pre>";
+			        print_r($queryResult);
+			        echo "</pre>";            
+			    }
+			    
+			    //Pasar el producto de la venta a estado 2 (ya pagado al PS)
+			    $update = "
+			        UPDATE tbl_orden_has_productotallacolor o
+			        SET o.status_comision = 2        
+			        WHERE o.tbl_orden_id = {$fila["ordenId"]}
+			        AND o.preciotallacolor_id = {$fila["ptcId"]}
+			        AND o.look_id = {$fila["look_id"]}
+			        ";
+			        
+			     /*
+			      * ACTUALIZAR EL PRODUCTO a ESTADO 2 - PAGADO
+			      */   
+			      $queryResult = mysqli_query($conexion, $update); 
+			        if($debug){            
+			        echo "Insertar Estado<pre>";
+			        print_r($queryResult);
+			        echo "</pre>";            
+			      }
+			
+			} 
+		}
+   
+		
+		mysqli_close($conexion);
+		
+		$this->render('/controlpanel/index');
+		
+}
 
         
 }

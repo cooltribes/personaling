@@ -162,7 +162,15 @@ class BolsaController extends Controller
 					));
 				}
 			} else {
-				$response = $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+				if($_POST['productoIndividual']!="0") // si es 0 no trae look
+				{
+					$response = $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color'], $_POST['productoIndividual']);
+				}
+				else
+				{
+					$response = $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+				}
+				
 				$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$_POST['producto'],'talla_id'=>$_POST['talla'],'color_id'=>$_POST['color']));
 				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$_POST['producto']));
                 $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
@@ -208,8 +216,17 @@ class BolsaController extends Controller
 				list($producto_id,$color_id) = explode("_",$value);
 				echo $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
 			}
-		} else {
-			echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+		} else 
+		{
+				if($_POST['productoIndividual']!="0") // si es 0 no trae look
+				{
+					
+					echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color'], $_POST['productoIndividual']);
+				}
+				else
+				{
+					echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+				}
 		}
 		 /*	 
 		$usuario = Yii::app()->user->id;
@@ -464,9 +481,10 @@ class BolsaController extends Controller
 	
         public function actionPagos()
         {   
-            if(Bolsa::isEmpty()){
-                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
-            }
+            if(Bolsa::isEmpty(Yii::app()->getSession()->get("bolsaUser")))
+               {
+                	$this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+               }
 
             if (Yii::app()->user->isGuest){
                 //Redirigir a login si no esta logueado
@@ -714,6 +732,7 @@ class BolsaController extends Controller
 							
 							$orden->subtotal = Yii::app()->getSession()->get('subtotal');
 							$orden->descuento = Yii::app()->getSession()->get('descuento');
+							$rden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
 							$orden->envio = Yii::app()->getSession()->get('envio');
 							$orden->iva = Yii::app()->getSession()->get('iva');
 							//$orden->descuentoRegalo = 0;
@@ -795,8 +814,8 @@ class BolsaController extends Controller
 						        $message->subject    = $subject;
 						        $message->setBody($params, 'text/html');
 						        $message->addTo($user->email);
-								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-						        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
+						        //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
 						        Yii::app()->mail->send($message);
 								
 							// cuando finalice entonces envia id de la orden para redireccionar
@@ -832,9 +851,10 @@ class BolsaController extends Controller
 		public function actionConfirmar()
 		{
                     
-                    if(Bolsa::isEmpty()){
-                        $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
-                    }
+               if(Bolsa::isEmpty(Yii::app()->getSession()->get("bolsaUser")))
+               {
+                	$this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+               }
                     
                     if (Yii::app()->user->isGuest){
                         //Redirigir a login
@@ -920,9 +940,10 @@ class BolsaController extends Controller
                     $totalProductos = Yii::app()->getSession()->get('subtotal');
                     $totalDescuentos = Yii::app()->getSession()->get('descuento');
                     $iva = Yii::app()->getSession()->get('iva');
+					$descuentoEachLook=Yii::app()->getSession()->get('descuentoxLook');
                     
                     //monto por productos, con sus descuentos y su iva
-                    $subtotal = $totalProductos + $iva - $totalDescuentos;                    
+                    $subtotal = $totalProductos + $iva - $totalDescuentos- $descuentoEachLook;               
                     
                     /** Si esta usando un codigo de descuento, restarselo al subtotal**/
                     $cupon = array();                    
@@ -956,7 +977,12 @@ class BolsaController extends Controller
                     //Si usa balance
                     $descuentoRegalo = 0;
                     if(Yii::app()->getSession()->get('usarBalance') == '1'){
-                            $balance = Profile::getSaldo(Yii::app()->user->id, false);
+
+						if(UserModule::isAdmin())
+							$balance = Profile::getSaldo(Yii::app()->getSession()->get("bolsaUser"), false);
+						else 
+							$balance = Profile::getSaldo(Yii::app()->user->id, false);					
+                            
                             $balance = floor($balance *100)/100; 
                             if($balance > 0){
                                 if($balance >= $total){
@@ -968,7 +994,7 @@ class BolsaController extends Controller
                                 }
                             }
                     }
-                    Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
+                   Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
 
                     //si pago toda la orden con balance
                     if($total == $descuentoRegalo){
@@ -1011,8 +1037,14 @@ class BolsaController extends Controller
                         'product_name'  => $nombreProducto,                             
                     );               
                     
+					$usu=User::model()->findByPk( Yii::app()->user->id );
                     $cData = array(
                         "src" => 1, //origen de la compra, 1-Normal, 2-GiftCard
+                        'idUsuario'=>Yii::app()->user->id,
+                        'nombreUsuario'=>$usu->profile->first_name." ".$usu->profile->last_name, 
+                        'cantProduc'=>$bolsa->getProductos()+$bolsa->getSumaCadaLook(),
+                        'idsProductos'=> $bolsa->getEachProducto(),
+   
                     );
 
                     $cData = CJSON::encode($cData);
@@ -1115,9 +1147,10 @@ class BolsaController extends Controller
 		
 		public function actionDirecciones()
 		{
-                    if(Bolsa::isEmpty()){
-                        $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
-                    }
+               if(Bolsa::isEmpty(Yii::app()->getSession()->get("bolsaUser")))
+               {
+                	$this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+               }
 		
 	        if (Yii::app()->user->isGuest){
 	            //Redirigir a login
@@ -1259,8 +1292,8 @@ class BolsaController extends Controller
 	{
              if(isset($_SESSION['idFacturacion']))
 				unset($_SESSION['idFacturacion']);	
-				
-            if(Bolsa::isEmpty()){
+			
+            if(Bolsa::isEmpty(Yii::app()->getSession()->get("bolsaUser"))){
                 $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
             }
 
@@ -1268,6 +1301,7 @@ class BolsaController extends Controller
 
                 /* Si es compra de admin para usuario */
                 $admin = Yii::app()->getSession()->contains("bolsaUser");
+				
 
                 if ($admin) {
                     $this->redirect($this->createUrl('bolsa/direcciones'));
@@ -1297,7 +1331,7 @@ class BolsaController extends Controller
                             $message->subject = $subject;
                             $message->setBody($params, 'text/html');
                             $message->addTo($user->email);
-                            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+                            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
                             Yii::app()->mail->send($message);
                             $this->refresh();
                         }
@@ -1634,6 +1668,7 @@ class BolsaController extends Controller
                                 $orden = new Orden;
                                 $orden->subtotal = Yii::app()->getSession()->get('subtotal');
                                 $orden->descuento = 0;
+                                $orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook'); //new
 								if(Yii::app()->getSession()->get('envio')>0)
                                 	$orden->envio = Yii::app()->getSession()->get('envio');
 								else
@@ -1746,6 +1781,7 @@ class BolsaController extends Controller
                                     	$orden->descuento = 0;
                                     }*/
                                     $orden->descuento = Yii::app()->getSession()->get('descuento');
+									$orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
                                     
                                     $orden->envio = Yii::app()->getSession()->get('envio');
                                     $orden->iva = Yii::app()->getSession()->get('iva');
@@ -1841,6 +1877,7 @@ class BolsaController extends Controller
                                 $orden = new Orden;
                                 $orden->subtotal = Yii::app()->getSession()->get('subtotal'); //suma de los productos sin iva ni descuentos                                
                                 $orden->descuento = Yii::app()->getSession()->get('descuento');
+								$orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
                                 $orden->envio = Yii::app()->getSession()->get('envio');
                                 $orden->iva = Yii::app()->getSession()->get('iva');                                
                                 $orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo'); //por balance usado
@@ -1937,19 +1974,35 @@ class BolsaController extends Controller
 									$zoho = new ZohoSales;
 									
 									//transformando Lead a posible cliente.
-									if($user->tipo_zoho == 0){ 
+									if($user->tipo_zoho == 0){
+
+										if($user->zoho_id == ""){
+					            			$zoho->getLostId($user->email);
+					            		}
+
 										$conv = $zoho->convertirLead($user->zoho_id, $user->email);
 										$datos = simplexml_load_string($conv);
 										
+										/*
+										var_dump($datos);
+										Yii::app()->end();
+										*/
+
 										$id = $datos->Contact;
 										$user->zoho_id = $id;
 										$user->tipo_zoho = 1;
 										
-										$user->save(); 
+										if(!$user->save())
+											Yii::trace('ZOHO:'.$user.' Error al guardar:'.print_r($user->getErrors(),true),'Compra');
+
 									}
 									
 									if($user->tipo_zoho == 1) // es ahora un contact
 									{
+										if($user->zoho_id == ""){ 
+					            			$zoho->getLostId($user->email);
+					            		}
+
 										$respuesta = $zoho->save_potential($orden);
 									
 										$datos = simplexml_load_string($respuesta);
@@ -2330,8 +2383,8 @@ class BolsaController extends Controller
 						        $message->subject    = $subject;
 						        $message->setBody($params, 'text/html');
 						        $message->addTo($user->email);
-								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-						        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+								$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
+						        //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
 						        Yii::app()->mail->send($message);
 								
 							// cuando finalice entonces envia id de la orden para redireccionar
@@ -2550,7 +2603,23 @@ class BolsaController extends Controller
 
 						Yii::app()->user->setFlash('success', 'Hemos recibido tu pago y está en espera de confirmación');
 						echo "ok";	
-					}	
+					}
+
+				 $user = User::model()->findByPk($usuario);
+				 
+				 $message = new YiiMailMessage;
+	            //Opciones de Mandrill
+	            $message->activarPlantillaMandrill();
+	            
+	            $subject = 'Tu Pago en Personaling';
+	            $message->subject    = $subject;
+	            $body = $this->renderPartial("//mail/verificar_pago", array(
+	                "orden" => $orden), true);
+	            
+	            $message->setBody($body, 'text/html');                
+	            $message->addTo($user->email);
+	            
+	            Yii::app()->mail->send($message);	
 					
 				}				
 			}
@@ -2806,12 +2875,13 @@ class BolsaController extends Controller
 						$message            = new YiiMailMessage;
 						$message->view = "mail_template";
 						$subject = 'Activa tu cuenta en Personaling';
-						$body = Yii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>').$activation_url;
+						#$body = Yii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/>').$activation_url;
+						$body = Yii::t('contentForm','You are receiving this email because you have requested a new link to validate your account. You can continue by clicking on the link below:<br/><br/>{{link}}<br/>', array('{{link}}'=>$activation_url));
 						$params              = array('subject'=>$subject, 'body'=>$body);
 						$message->subject    = $subject;
 						$message->setBody($params, 'text/html');
 						$message->addTo($user->email);
-						$message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+						$message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 						Yii::app()->mail->send($message);
 						$this->refresh();
 					}
@@ -2991,15 +3061,19 @@ class BolsaController extends Controller
             $optional = array(                        
                 'name'          => 'Personaling Enterprise S.L.',
                 'product_name'  => $nombreProducto,                             
-            );                                    
+            );   
+			$usu=User::model()->findByPk( Yii::app()->user->id );                                 
             $cData = array(
                 "src" => 2, //origen de la compra, 1-Normal, 2-GC
+                'nombreUsuario'=>$usu->profile->first_name." ".$usu->profile->last_name, 
             );
 
             $cData = CJSON::encode($cData);
             $pago = new AzPay();
-
-            $urlAztive = $pago->AztivePay($monto, $idPagoAztive, '',
+			
+			 $orderID = "G" . Yii::app()->user->id."F";   
+			
+            $urlAztive = $pago->AztivePay($monto, $idPagoAztive, $orderID,
                     $idPagoAztive==8?null:null, $optional, $cData);   
 
 
@@ -3098,8 +3172,8 @@ class BolsaController extends Controller
 //	        $message->subject    = $subject;
 //	        $message->setBody($params, 'text/html');
 //	        $message->addTo($user->email);
-//			$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');
-//	        //$message->from = 'Tu Personal Shopper Digital <operaciones@personaling.com>\r\n';   
+//			$message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');
+//	        //$message->from = 'Tu Personal Shopper Online <operaciones@personaling.com>\r\n';   
 //	        Yii::app()->mail->send($message);		
                 
                 //Ver resumen del pedido
@@ -3192,7 +3266,7 @@ class BolsaController extends Controller
                     
 //                    $message->view = "mail_giftcard";
 //                    $params = array('subject' => $subject, 'body' => $body,'envio' => $envio, 'model'=> $model);
-//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//                    $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 
 
                     $resumen.="<tr><td>Email</td><td>{$envio->email}</td><td>{$model->monto}</td><tr>";
@@ -3236,7 +3310,7 @@ class BolsaController extends Controller
 
 
 //            $message->view = "mail_giftcard_summary";
-//            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Digital');
+//            $message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
 //            $params = array('subject' => $subject, 'body' => $body,'resumen' => $resumen, 'orden'=> OrdenGC::model()->findByPk($ordenId));
 
 
@@ -3510,23 +3584,41 @@ class BolsaController extends Controller
 	            $zoho = new ZohoSales;
 
 	            //transformando Lead a posible cliente.
-	            if($usuario->tipo_zoho == 0){ 
+	            if($usuario->tipo_zoho == 0){
+	                    
+	            		if($usuario->zoho_id == ""){ 
+	            			$zoho->getLostId($usuario->email);
+	            		} 
+
 	                    $conv = $zoho->convertirLead($usuario->zoho_id, $usuario->email);
 	                    $datos = simplexml_load_string($conv);
-
-	                    $id = $datos->Contact;
+	                    
+	                    /*
+	                    var_dump($datos);
+						Yii::app()->end();		
+						*/ 
+ 
+	                    $id = $datos->Contact; 
 	                    $usuario->zoho_id = $id;
-	                    $usuario->tipo_zoho = 1;
+	                    $usuario->tipo_zoho = 1; 
 
-	                    $usuario->save(); 
+	                    if(!$usuario->save()) 
+	                    	Yii::trace('ZOHO:'.$usuario.' Error al guardar:'.print_r($usuario->getErrors(),true),'Compra'); 
 	            }
 
 	            if($usuario->tipo_zoho == 1) // es ahora un contacto
 	            {
+
+	            	if($usuario->zoho_id == ""){
+            			$zoho->getLostId($usuario->email);  
+            		} 
+ 
 	                    $respuesta = $zoho->save_potential($orden);
 
 	                    $datos = simplexml_load_string($respuesta);
 
+	                    //var_dump($datos);
+	                    //Yii::app()->end();
 	                    $id = $datos->result[0]->recorddetail->FL[0];
 	                    //echo $id;	 
 
@@ -3585,6 +3677,7 @@ class BolsaController extends Controller
             }else{
             	$orden->descuentoRegalo = 0;
             }
+			$orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
             $orden->envio = Yii::app()->getSession()->get('envio');
             $orden->iva = Yii::app()->getSession()->get('iva');
             $orden->seguro = Yii::app()->getSession()->get('seguro');
@@ -3760,7 +3853,7 @@ class BolsaController extends Controller
 //            $message->subject = $subject;
 //            $message->setBody($params, 'text/html');
 //            $message->addTo($usuario->email);
-//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+//            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
 //            Yii::app()->mail->send($message);
         }
         
@@ -3806,7 +3899,7 @@ class BolsaController extends Controller
             $message->subject = $subject;
             $message->setBody($params, 'text/html');
             $message->addTo($destinatario);
-            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Digital');            
+            $message->from = array('operaciones@personaling.com' => 'Tu Personal Shopper Online');            
             Yii::app()->mail->send($message);
         }
         

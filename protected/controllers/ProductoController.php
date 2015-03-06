@@ -851,15 +851,7 @@ public function actionReportexls(){
 
         $datos=$datos."</td></tr>";
         
-        $datos=$datos."<tr>";
-        $datos=$datos."<th scope='row'>Precio con descuento</th>";
-		
-		if($precio)
-	        $datos=$datos."<td>".Yii::t('contentForm','currSym')." ".Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); 
-		else
-        	$datos=$datos."<td>"; 
 
-        $datos=$datos."</td></tr>";
         
 		$datos=$datos."<tr>";
         $datos=$datos."<th scope='row'>Descuento </th>";
@@ -873,6 +865,8 @@ public function actionReportexls(){
         	$datos=$datos."<td>"; 
 
         $datos=$datos."</td></tr>";
+        
+		$datos=$datos."<tr>";
 		
 		$datos=$datos."<tr>";
         $datos=$datos."<th scope='row'>Total Descuento</th>";
@@ -884,6 +878,17 @@ public function actionReportexls(){
         		$datos=$datos."<td>"; 
 
         $datos=$datos."</td></tr>";
+		
+        $datos=$datos."<th scope='row'>Precio con descuento</th>";
+		
+		if($precio)
+	        $datos=$datos."<td>".Yii::t('contentForm','currSym')." ".Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); 
+		else
+        	$datos=$datos."<td>"; 
+
+        $datos=$datos."</td></tr>";
+		
+		
 		$datos=$datos."</table><hr/>";
 		
 		$datos=$datos."<h4>Estadísticas</h4>";	
@@ -1331,7 +1336,6 @@ public function actionReportexls(){
 			
 			$checks = explode(',',$_POST['check']);
 			$accion = $_POST['accion'];	
-		
 			if($accion=="Acciones")
 			{
 				//echo("2"); // no selecciono una accion
@@ -1340,9 +1344,13 @@ public function actionReportexls(){
 			else if($accion=="Activar")
 			{
 				foreach($checks as $id){
-					$model = Producto::model()->findByPk($id);
-					$model->estado=0;
-					Producto::model()->updateByPk($id, array('estado'=>'0'));
+					if($id!="todos")
+					{
+						$model = Producto::model()->findByPk($id);
+						$model->estado=0;
+						Producto::model()->updateByPk($id, array('estado'=>'0'));
+					} 
+					
 					/*if($model->save())
 						echo("guarda");
 					else {
@@ -1355,9 +1363,13 @@ public function actionReportexls(){
 			else if($accion=="Inactivar")
 			{
 				foreach($checks as $id){
-					$model = Producto::model()->findByPk($id);
-					$model->estado=1;
-					Producto::model()->updateByPk($id, array('estado'=>'1'));
+					if($id!="todos")
+					{
+						$model = Producto::model()->findByPk($id);
+						$model->estado=1;
+						Producto::model()->updateByPk($id, array('estado'=>'1'));
+					}
+					
 					/*if($model->save())
 						echo("guarda");
 					else {
@@ -1370,9 +1382,13 @@ public function actionReportexls(){
 			else if($accion=="Borrar")
 			{
 				foreach($checks as $id){
-					$model = Producto::model()->findByPk($id);
-					$model->status=0;
-					Producto::model()->updateByPk($id, array('status'=>'0'));		
+					if($id!="todos")
+					{
+						$model = Producto::model()->findByPk($id);
+						$model->status=0;
+						Producto::model()->updateByPk($id, array('status'=>'0'));
+					}
+							
 				}
 				//echo("5");
 				$result['status'] = "10";
@@ -1483,13 +1499,17 @@ public function actionReportexls(){
 					$datos=$datos."</div>";	
 				$datos .= '</form>';
 				$result['html'] = $datos;
-			}else if($accion=="Destacar") {
-				    foreach($checks as $id){
-                    $model = Producto::model()->findByPk($id);
-                    $model->destacado=1;
-                    Producto::model()->updateByPk($id, array('destacado'=>'1'));
-
-                }
+			}else if($accion=="Destacar") 
+			{
+				    foreach($checks as $id)
+				    {
+				    	if($id!="todos")
+						{
+	                   	 $model = Producto::model()->findByPk($id);
+	                   	 $model->destacado=1;
+	                   	 Producto::model()->updateByPk($id, array('destacado'=>'1'));
+	                    }
+                	}
                 $result['status'] = "9";
 			}
 		}
@@ -2341,13 +2361,13 @@ public function actionReportexls(){
                                 Yii::app()->end();
                             }
                         }
-                    }                    
+                    }                   
 
                     //Si no hubo errores
                     if(is_array($resValidacion = $this->validarArchivo($nombre . $extension))){
 
                         Yii::app()->user->updateSession();
-                        Yii::app()->user->setFlash('success', "Éxito! El archivo no tiene errores.
+                        Yii::app()->user->setFlash('success', Yii::app()->session['actualizaciones']."Éxito! El archivo no tiene errores.
                                                     Puede continuar con el siguiente paso.<br><br>
                                                     Este archivo contiene <b>{$resValidacion['nProds']}
                                                     </b> productos.");                    
@@ -2786,7 +2806,11 @@ public function actionReportexls(){
                             
                             //Agregar el modelo
                             $item->addChild('CodigoModelo', $producto->codigo);
-                            $item->addChild('DescripcionModelo', $producto->nombre);
+							
+							// corregir errores, como cuando se coloca un & y se debe validar ///
+							$nombreProduc=Producto::model()->getNombre($producto->nombre);
+
+                            $item->addChild('DescripcionModelo', $nombreProduc);
                             
                             //Agregar el color
                             $item->addChild('CodigoColor', $color->id);
@@ -3286,9 +3310,18 @@ public function actionReportexls(){
 			$erroresSkuTodaAplicacion = "";
             $erroresSkuRepetidos= "";
 			$erroresTallaColorRepetidos="";
+			$referenciasActualizadas="";
+			$skuActualizados="";
+			$referenciasNuevas="";
+			$skuNuevos="";
 			
             $linea = 1;
-            $lineaProducto = 0;            
+            $lineaProducto = 0;
+			$entro=0; $entro2=0;
+			$contadorReferenciasActualizadas=0;
+			$contadorSkuActualizados=0;
+			$contadorReferenciasNuevas=0;  
+			$contadorSkuNuevos=0;          
             
             //Revisar cada fila de la hoja de excel.
             foreach ($sheet_array as $row) {
@@ -3411,6 +3444,35 @@ public function actionReportexls(){
 						}
 						
 						array_push($combinacionesRepetidas, $row['B']."/".$row['I']."/".$row['J']);
+						
+						
+						if($entro==0 && $entro2==0) // si en esa linea no hay problemas
+						{
+							 /* Ver si una referencia es nueva o actualizada*/	
+							 if(Producto::model()->findByAttributes(array('codigo' => $referencia_revisar)))
+							 {
+							 	$referenciasActualizadas.= "<li> <b>" . $row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
+							 	$contadorReferenciasActualizadas++;
+							 }
+							 else 
+							 {
+								 $referenciasNuevas.= "<li> <b>" . $row['B'] . "</b>, en la línea <b>" . $linea."</b></li>";
+								 $contadorReferenciasNuevas++;  
+							 }
+							 
+							 /* Ver si actualiza un sku o es nuevo*/
+							 if(Preciotallacolor::model()->findByAttributes(array("sku" => $sku_revisar)))
+							 {
+							 	$skuActualizados.= "<li> <b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+								$contadorSkuActualizados++;
+							 }
+							 else 
+							 {
+								 $skuNuevos.= "<li> <b>" . $row['A'] . "</b>, en la línea <b>" . $linea."</b></li>";
+								 $contadorSkuNuevos++; 
+							 }
+							
+						}
                         //var_dump(memory_get_usage());
                         //Peso
                         if(isset($row['K']) && $row['K'] != "" && !is_numeric($row['K'])){
@@ -3474,14 +3536,27 @@ public function actionReportexls(){
                             $cantCategorias++;
                         }   
                                                 
-                        //tallas
-                        if (isset($row['I']) && $row['I'] != "" ) {
-                            $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));
-
-                            if (!isset($talla)) {
-                                $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
-                            }
-                        }
+                         if ($tipoProductos == 0) 
+						{
+							 //tallas
+	                        if (isset($row['I']) && $row['I'] != "" )
+							 {
+	                            $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));
+	
+	                            if (!isset($talla))
+								{
+	                                $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
+	                            }
+                        	 }
+						} 
+						else  //producto de terceros
+						{
+							$talla = Talla::model()->findByAttributes(array('valor' => "Varias"));
+							if (!isset($talla))
+							{
+	                                $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
+	                         }
+						} 
                         
                         //colores
                         if (isset($row['J']) && $row['J'] != "") {
@@ -3605,7 +3680,32 @@ public function actionReportexls(){
                                   </ul><br>";
             }
             
-
+            /////////////////////////////////los siguientes mensajes no son errores////////////////////////////////////////////////////
+            if($referenciasActualizadas != ""){
+               					 $referenciasActualizadas = "Seran actualizadas ".$contadorReferenciasActualizadas." Referencias :<br><ul>
+                                 {$referenciasActualizadas}
+                                  </ul><br>";
+            }
+            
+            if($referenciasNuevas != ""){
+               					 $referenciasNuevas = "Seran creadas ".$contadorReferenciasNuevas." Referencias :<br><ul>
+                                 {$referenciasNuevas}
+                                  </ul><br>";
+            }
+            if($skuActualizados!= ""){
+               					 $skuActualizados = "Seran actualizados ".$contadorSkuActualizados." Sku :<br><ul>
+                                 {$skuActualizados}
+                                  </ul><br>";
+            }
+			if($skuNuevos!= ""){
+               					 $skuNuevos = "Seran creados ".$contadorSkuNuevos." Sku :<br><ul>
+                                 {$skuNuevos}
+                                  </ul><br>";
+            }
+			
+			Yii::app()->session['actualizaciones']=$referenciasActualizadas.$referenciasNuevas.$skuActualizados.$skuNuevos; 
+			
+			//////////////////////////////////////////////////////hasta aqui////////////////////////////////////////////////////////////
                 
             $errores = $erroresTallas .$erroresColores . $erroresMarcas .
                     $erroresCatRepetidas. $erroresCategorias . $erroresCatVacias.
@@ -3618,7 +3718,7 @@ public function actionReportexls(){
                 Yii::app()->user->setFlash('error', $errores);
 
                 return false;                
-            } 
+            }
             
             return array(
                 "valid"=>true,
@@ -4411,7 +4511,7 @@ public function actionReportexls(){
                 if(!$error && is_array($resValidacion = $this->validarImportacionExternos($nombre . $extension))){
 
                     Yii::app()->user->updateSession();
-                    Yii::app()->user->setFlash('success', "<h4>
+                    Yii::app()->user->setFlash('success', "<h4>".Yii::app()->session['actualizaciones']."
                             Éxito! El archivo no tiene errores,
                             puedes continuar con el siguiente paso.</h4><br>
                                 
@@ -4478,7 +4578,7 @@ public function actionReportexls(){
                             $rCatego1 = $row['F'];
                             $rCatego2 = $row['G'];
                             $rCatego3 = $row['H'];
-                            $rTalla = $row['I'];
+                            $rTalla = "Varias";// $row['I'], pero como la talla siempre va ser Varias, se coloca estatico
                             $rColor = $row['J'];
                             $rPeso = $row['K'];
                             $rCosto = $row['L'];
@@ -5077,7 +5177,7 @@ public function actionReportexls(){
 						$posicion=0;
 						
 						//print_r($ids);
-					//	var_dump($response); 
+						//var_dump($datos); 
 						$total = sizeof($ids);
 						
 						//Yii::app()->end();
@@ -5101,22 +5201,22 @@ public function actionReportexls(){
 																						
 											echo "El row #".$data['row']." de ptc ".$precioTalla->id." corresponde al id de zoho: ".$datos->result[0]->row[$posicion]->success->details->FL[0].", ".$x."<br>";
 										}else{
-											echo "Error en posicion ".$posicion;
+											// echo "Error en posicion ".$posicion;
+											Yii::trace('ProductoController.php:5160, Error en posición '.$posición);
 										}
 										
 									}
 								}
 						}else{
-							echo "error";
+							//echo "error";
+							Yii::trace('ProductoController.php:5174, Error: variable datos->result parece fallar');
 						} 
 						
 						$posicion++;
 
 					}
 					
-					echo "fin de ciclo"; 
-					echo "<br><br>";
-						
+					echo "fin de ciclo de envío a zoho<br><br>";
 						
 					/* reiniciando todos los valores */
 					$xml = ""; 
@@ -5145,19 +5245,24 @@ public function actionReportexls(){
 						$nombre = $producto->nombre." - ".$ptc->sku;
 						
 							$xml .= '<FL val="Product Name">'.$nombre.'</FL>';
-						
-						if(strpos($producto->mymarca->nombre, "&") === false )
-							$marca = $producto->mymarca->nombre;
+						if(isset($producto->mymarca)){
+							if(strpos($producto->mymarca->nombre, "&") === false)
+								$marca = $producto->mymarca->nombre;
+							else{
+								$marca_cambiar = $producto->mymarca->nombre;
+								$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
+								
+								$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
+								
+								$marca = $marcacorregida;
+							}
+
+							$xml .= '<FL val="Marca">'.$marca.'</FL>';
+						} // si existe la relacion
 						else{
-							$marca_cambiar = $producto->mymarca->nombre;
-							$marcacorregida = str_replace("&",'%26' ,$marca_cambiar);
-							
-							$marcacorregida = "<![CDATA[".$marcacorregida."]]>";
-							
-							$marca = $marcacorregida;
-						}
+							$xml .= '<FL val="Marca"></FL>';
+						}	
 						
-						$xml .= '<FL val="Marca">'.$marca.'</FL>';
 						$xml .= '<FL val="Referencia">'.$producto->codigo.'</FL>';
 						
 						$estado="FALSE";

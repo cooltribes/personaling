@@ -3,6 +3,23 @@
 	//UserModule::t("Profile")=>array('profile'),
 	//UserModule::t("Mi cuenta"),
 //);
+
+
+  //Metas de Twitter CARD ON
+  Yii::app()->clientScript->registerMetaTag('product', 'twitter:card', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('@personaling', 'twitter:site', null, null, null);
+  Yii::app()->clientScript->registerMetaTag("Sugerir Personaling", 'twitter:title', null, null, null);
+  Yii::app()->clientScript->registerMetaTag("description", 'twitter:description', null, null, null);
+  #Yii::app()->clientScript->registerMetaTag(Yii::app()->getBaseUrl(true)."/look/getImage/".$model->id, 'twitter:image', null, null, null); //IMAGEN DE TWITTER CARD, QUITAR EN CASO DE QUE NO FUNCIONE EN PRODUCCION
+ # Yii::app()->clientScript->registerMetaTag($model->getPrecio().' '.Yii::t('contentForm', 'currSym'), 'twitter:data1', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('Subtotal', 'twitter:label1', null, null, null);
+  #Yii::app()->clientScript->registerMetaTag($model->user->profile->first_name.' '.$model->user->profile->last_name, 'twitter:data2', null, null, null);  
+  Yii::app()->clientScript->registerMetaTag('Creado por', 'twitter:label2', null, null, null);
+  Yii::app()->clientScript->registerMetaTag('personaling.com', 'twitter:domain', null, null, null);
+
+  //Metas de Twitter CARD OFF
+
+
 $look = new Look;
 $looks_encantan = LookEncantan::model()->countByAttributes(array('user_id'=>$model->id));
 $productos_encantan = UserEncantan::model()->countByAttributes(array('user_id'=>$model->id));
@@ -72,13 +89,21 @@ $looks_recomendados = $look->match($model);
         <li><?php echo $total; ?> Devoluciones</li>
       </ul>
         <hr/>
-        <h5>Invita a tus amig@s</h5>
+       <!-- <h5>Invita a tus amig@s</h5>-->
         <!-- AddThis Button BEGIN -->
         <div class="addthis_toolbox addthis_default_style addthis_32x32_style text_align_center">
-          <a class="addthis_button_preferred_1"></a>
+         <!-- <a class="addthis_button_preferred_1"></a>
           <a class="addthis_button_preferred_2"></a>
           <a class="addthis_button_preferred_3"></a>
-          <a class="addthis_counter addthis_bubble_style"></a>
+          <a class="addthis_counter addthis_bubble_style"></a>-->
+           
+           <?php $this->widget('bootstrap.widgets.TbButton', array(
+					    'label'=>'Invita a tus amig@s',
+					    'type'=>'danger',
+					    'htmlOptions'=>array('class'=>'btn-block btn-large'),
+						'url'=>array('invitaciones')	,    
+					)); ?> 
+			
         </div>
         <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};
               var addthis_config = {"data_track_addressbar":false,image_exclude: "at_exclude"};
@@ -148,7 +173,8 @@ $looks_recomendados = $look->match($model);
 	              <li><?php echo CHtml::link('Haciendo Deporte',array('profile/edittuestilo','id'=>'Sport'),array("title"=>"Edita tu estilo Haciendo Deporte")); ?></li>
 	              <li><?php echo CHtml::link('Oficina',array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Oficina")); ?></li>
             </ul>
-        
+        <?php $ruta_twitter='https://twitter.com/intent/tweet?url='.Yii::app()->getBaseUrl(true).'&text=&lang=es&via=Personaling'; ?>
+                            
         </div>
         <div class="span4">
         	<h2 class="braker_bottom">Mis Favoritos</h2>
@@ -157,10 +183,12 @@ $looks_recomendados = $look->match($model);
               <li><?php echo CHtml::link('Productos',array('profile/encantan'),array("title"=>"Productos que te encantan")); ?></a></li>
             </ul>
             <h2 class="braker_bottom">  Conecta tus Redes Sociales </h2>
+             <script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
            <ul class="nav nav-stacked nav-tabs">
-<!--                <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
-              <li><a href="#" title="Twitter">Twitter (LINK MUERTO)</a></li>
-              <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li> -->
+               <li><div onclick="invite_friends()" style="cursor: pointer;" id="boton_facebook" class="text_align_center"><a>Invítalos usando Facebook</a></div></li>
+              	<p>
+               <li><div style="cursor: pointer;" id="boton_twitter" class="text_align_center"><a href=<?php echo $ruta_twitter;?> >Invítalos usando Twitter</a></div></li>
+              
             </ul>
         
         </div>
@@ -272,3 +300,143 @@ $looks_recomendados = $look->match($model);
 </div>
 <!-- /container -->
 
+
+<?php 
+if(Yii::app()->language=="es_es")
+{
+	
+	$appId=323808071078482; //para facebook espana	
+}
+else 
+{
+	$appId=386830111475859; //para facebook venezuela
+}
+?>
+<script>
+	$(document).ready(function(){
+		var appId=<?php echo $appId;?>;
+	    //alert('http://'+window.location.host+'<?php //echo Yii::app()->baseUrl; ?>'+'/user/registration');
+	    window.fbAsyncInit = function() {
+	        FB.init({
+	            appId      : appId, // App ID secret c8987a5ca5c5a9febf1e6948a0de53e2
+	            channelUrl : 'http://'+window.location.host+'<?php echo Yii::app()->baseUrl; ?>'+'/user/registration', // Channel File
+	            status     : true, // check login status
+	            cookie     : true, // enable cookies to allow the server to access the session
+	            xfbml      : true,  // parse XFBML
+	            oauth      : true,
+	            frictionlessRequests : true
+	        });
+	
+	    };
+	    
+	    (function(d){
+	        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+	        if (d.getElementById(id)) {return;}
+	        js = d.createElement('script');js.id = id;js.async = true;
+	        js.src = "//connect.facebook.net/en_US/all.js";
+	        ref.parentNode.insertBefore(js, ref);
+	    }(document));
+	});
+
+	function invite_friends(){
+		
+		FB.getLoginStatus(function(response){
+			
+	        //console.log("response: "+response.status);
+	        if (response.status === 'connected') {
+	        	// está conectado a facebook y además ya tiene permiso de usar la aplicacion personaling
+					
+				console.log('Welcome!  Fetching your information.... ');
+	                    
+	                    FB.api('/me', function(response) {
+	                        //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+	                        $.ajax({
+								type: "get",
+								dataType: 'html',
+								url: "checkFbUser", // action 
+								data: { 'fb_id': response.id	}, 
+								success: function () {
+									//console.log('saved');
+								}//success
+							});
+	                    }, {scope: 'email,user_birthday'});
+	                    
+	          	FB.ui({method: 'apprequests',
+			      title: 'Personaling',
+			      message: '¡Te invito a probar Personaling, Tu Personal Shopper Online!',
+			    }, fbCallback);
+	        } else {
+	            FB.login(function(response) {
+	                if (response.authResponse) {
+	                	//user is already logged in and connected (using information)
+	                    console.log('Welcome!  Fetching your information.... ');
+	                    
+	                    FB.api('/me', function(response) {
+	                        //console.log('Nombre: ' + response.id + '.\nE-mail: ' + response.email);
+	                         $.ajax({
+								type: "get",
+								dataType: 'html',
+								url: "checkFbUser", // action 
+								data: { 'fb_id': response.id	}, 
+								success: function () {
+									//console.log('saved');
+								}//success
+							});
+	                    });
+	                    
+	                    FB.ui({method: 'apprequests',
+					      title: 'Personaling',
+					      message: '¡Te invito a probar Personaling, Tu Personal Shopper Online!',
+					    }, fbCallback);
+	                } else {
+	                    //console.log('User cancelled login or did not fully authorize.');
+	                }
+	            }, {scope: 'email,user_birthday'});
+	        }
+	    });
+	}
+	
+	function fbCallback(response){
+		if(response != null){
+			/*var user_ids = response.to.split(",");*/
+			for(var i = 0; i < response.to.length; i++){
+				//console.log('id: '+response.to[i]);
+				var id_actual = response.to[i];
+				var id_request = response.request;
+				//console.log('request: '+id_request);
+				FB.api('/'+id_actual, function(user) {
+					//console.log('ID: '+user.id);
+					$.ajax({
+						type: "post",
+						dataType: 'html',
+						url: "saveInvite", // action 
+						data: { 'request': id_request, 'to': user.id, 'nombre': user.name }, 
+						success: function (data) {
+							//console.log('invite saved: '+data);
+							$('#confirmacion_facebook').show('slow');
+							//location.reload();
+							//window.location="micuenta";
+						}//success
+					});
+				});
+			}
+		}
+		/*if(response != null){
+			FB.api('/'+response.to, function(user) {
+				console.log('Nombre: ' + response.name + '.\nE-mail: ' + response.email);
+				$.ajax({
+				type: "post",
+				dataType: 'html',
+				url: "saveInvite", // action 
+				data: { 'request': response.request, 'to': response.to, 'nombre': user.name }, 
+				success: function () {
+					console.log('invite saved');
+					$('#confirmacion_facebook').show('slow');
+					//location.reload();
+					//window.location="micuenta";
+				}//success
+			});
+			});
+		}*/
+	}
+</script>

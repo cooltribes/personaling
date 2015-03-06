@@ -353,7 +353,7 @@ else
 		                    }, 500);
 							$('body').removeClass('aplicacion-cargando');
 							$('#scrollNueva').removeClass('alert-success');	
-							$('#controlBill').val('0');
+							
 																	           
 				      },
 				      error:function(){

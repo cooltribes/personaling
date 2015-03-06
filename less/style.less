@@ -186,7 +186,7 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 /* SIdebar */
 #scroller{
     background:rgba(255,255,255,.8);
-    }
+  }
 
 /* Brakers */
 .braker_right{border-right:1px solid #ddd;}
@@ -265,6 +265,11 @@ background: linear-gradient(top, #ffffff 0%,#eeeeee 100%); /* W3C */
 .margin_left_large_minus{ margin-left:-4.68em;}
 .margin_right_large_minus{ margin-right:-4.68em;}
 .margin_bottom_large_minus{ margin-bottom:-4.68em;}
+
+.margin_top_xLarge_minus{ margin-top:-6.5em;}
+.margin_left_xLarge_minus{ margin-left:-6.5em;}
+.margin_right_xLarge_minus{ margin-right:-6.5em;}
+.margin_bottom_xLarge_minus{ margin-bottom:-6.5em;}
 
 .margin_left_minus{ margin-left:-1em;}
 .margin_right_minus{ margin-right:-1em;}
@@ -561,7 +566,12 @@ border:0;
   font-size: 20px;
   color: #727272;
 }
-
+#navAdmin.navbar .pull-right > li > .dropdown-menu .dropdown-menu{
+  left:100%;
+  right:auto;
+  .border_radius(@radius:0); 
+  
+} 
 .navbar .divider-vertical {
   height: 41px;
   background-color: #ffffff;
@@ -681,7 +691,7 @@ border:0;
 
 .dropdown-menu .active{color: white}
 
-.error{color: #B94A48}
+.error{color: #B94A48;}
 
 .modal{
   border-radius: 0;
@@ -988,7 +998,11 @@ src: url('../fonts/entypo.woff'),
     background-image: url("../images/glyphicons-halflings-white.png");
   }  
 }
-
+.imgSolid{
+  background:#FFF;
+  border:solid 1px #DDD;
+  padding:3px;
+}
 
 .header_notification{
     margin-top: 12px; 
@@ -1019,10 +1033,12 @@ src: url('../fonts/entypo.woff'),
 /*------------ Footer OFF --------------*/
 
 
-#wrapper_footer{
-    background-color: white;
+.main_footer{
 
-    border-top:1px solid #ddd;
+
+ 
+    background: #eee;
+    border: 0px;
     .padding_bottom;
     .padding_top;
     .margin_top_large;
@@ -1089,6 +1105,17 @@ src: url('../fonts/entypo.woff'),
     select{ height:30px;}
 
     }
+    
+ .controls-row>.label-row{
+    float: left;
+    padding: 0px 5px 0px 0px;
+    line-height: 30px;
+    vertical-align: middle;
+    
+ }
+ .controls-row>input.span1{
+   margin-right:5px;
+ }   
 /*------------ Forms OFF --------------*/
 
 /*------------ Vcard ON ---------------*/
@@ -1534,8 +1561,80 @@ src: url('../fonts/entypo.woff'),
     .no_list_style{
       list-style-type: none;
     }
-
-
+    
+    .nodesktop{ display:none}
+  
+  @media  (max-width: 767px) {
+    .braker_horz_top_less_space{
+      margin-bottom:3em !important;
+    }
+    .socialHome,.articleRight{
+      width: 50%;
+      margin: 0;
+      padding:10px;
+      float:left;
+    }
+    .magazinesHome>a{
+      width:48% !important;
+      padding:10px;
+      float:left !important;
+    }
+    .organizationsHome>a{
+      width:98% !important;
+      padding:10px;
+      float:left !important;
+      text-align:center;
+      img{
+        width:50%;
+      }
+    }
+    .mediosHome>div>h4{
+      font-weight:bold;
+    }
+    .destacadosHome>article{
+      .margin_bottom
+    }
+    .nodesktop{ display:block }
+    .articleRight{
+       width:100%;
+    }
+    h3.socialText{
+      font-size:18px;
+      font-weight:500px;
+      min-height:0px;
+    }
+    .lookHome{
+      margin-top: 3em;
+    }
+    .bio>a>h4{
+      font-size:1.7em;
+      margin-top:1em;
+      margin-bottom:2em;
+    }
+    .sectionButton{
+      margin-bottom:3em;
+    }
+    .main_footer{
+      display:none;
+    }
+    
+    .sectionTitle{
+        margin:0;
+        font-size:2em;
+        font-weight:bold;
+        .braker{
+          display: none;
+        }
+        .text{
+          width:100%;
+          h2{
+            font-size:28px;
+            font-weight:500;
+            margin-bottom:1em;
+          }
+        }
+    }
+  }
 
 
 
@@ -1668,15 +1767,21 @@ src: url('../fonts/entypo.woff'),
                       background-repeat: no-repeat;
                       background-position-x: 11px;
                       background-position-y: 9px;  
-                      text-shadow: none;                    
+                      text-shadow: none;
+                      span{
+                        margin-right:3px;
+                      }
+              
  }   
 .btn-danger_modificado{
                       background: @negro !important;
+                      border: solid 1px @negro;
                       background-image: url('../images/icon_corazon_lleno.png') !important;
                       background-repeat: no-repeat !important;
                       background-position-x: 11px !important;
                       background-position-y: 9px !important;  
                       color: #FFF !important;
+                      
 }      
 #total-likes{
                       background: #E3DEDE;
@@ -1750,23 +1855,7 @@ src: url('../fonts/entypo.woff'),
                             }
                         }
 
-                    #btn-encanta{
-                      border-radius: 0;
-                      background-color: #E3DEDE;
-                      background-image: url('../images/icon_corazon_vacio.png');
-                      background-repeat: no-repeat;
-                      background-position-x: 11px;
-                      background-position-y: 9px;  
-                      text-shadow: none;                    
-                    }   
-                    .btn-danger_modificado{
-                      background: @negro !important;
-                      background-image: url('../images/icon_corazon_lleno.png') !important;
-                      background-repeat: no-repeat !important;
-                      background-position-x: 11px !important;
-                      background-position-y: 9px !important;  
-                      color: #FFF !important;
-                    }      
+ 
                     #total-likes{
                       background: #E3DEDE;
                       color: #3C4141;              
@@ -2266,24 +2355,8 @@ src: url('../fonts/entypo.woff'),
             .padding_top;
             margin-top:1em;
             .margin_bottom; 
-            #btn-encanta{
-                border-radius: 0;
-                background-color: #E3DEDE;
-                background-image: url('../images/icon_corazon_vacio.png');
-                background-repeat: no-repeat;
-                background-position-x: 11px;
-                background-position-y: 9px;  
-                text-shadow: none;  
-              
-            }   
-            .btn-danger_modificado{
-                background: @color1 !important;
-                background-image: url('../images/icon_corazon_lleno.png') !important;
-                background-repeat: no-repeat !important;
-                background-position-x: 11px !important;
-                background-position-y: 9px !important;  
-                color: #FFF !important;
-            }      
+          
+    
             #total-likes{
                 background: #C4BCCD;
                 color: #3C4141;              
@@ -2365,10 +2438,10 @@ src: url('../fonts/entypo.woff'),
             }
         .productos_del_look{
             overflow:auto;
-            height:570px;
+            height:570px; 
             padding-top:5px;
-            .span6:nth-child(2n+1){ margin-left:0}
-            .span6{
+            .producto:nth-child(2n+1){ margin-left:0}
+            .producto{
                      margin-bottom:1.4em;
                     position:relative;
                     color:lighten(@color4, 10%);
@@ -3347,6 +3420,10 @@ ul.yiiPager .last
         }
 
 }
+.psFilter{
+    max-height:130px;
+    overflow-y:scroll;
+  }
 #ModalRegistro{
     // Cambios del modal para hacerlo mas ancho
     .legend{
@@ -4061,7 +4138,12 @@ img[alt="Loading"]{
 
 }
 
-/* ----------- Estadisticas Administrador ON --------------*/
+.thumbnail.categoria{
+  height:112px;
+  overflow-y:hidden;
+}
+
+/* ----------- Estadisticas Administrador ON --------------*/ 
 
 .graficos_controlpanel{
   margin-left: 0;
@@ -4600,7 +4682,11 @@ img[alt="Loading"]{
     font-weight: bold;
     color: #666;
 }
-
+/*
+.payment{
+  margin: 12px 0 0 -5px !important;
+}
+*/
 /*--------------- HACKS ON --------------------*/
 #profile-form{
     select#Profile_pais, select#Profile_day, #Profile_sex_0{
@@ -5166,6 +5252,7 @@ img[alt="Loading"]{
     }
   }
   
+   
   .mobilefilters{
       background-color:black; 
       padding:0 20px 0 20px;
@@ -5473,7 +5560,10 @@ div .social{
   }
   
 }
-
+.table-striped>tbody>tr.error>td{
+  color: #B94A48;
+   background:#f2dede;
+}
 
 
 

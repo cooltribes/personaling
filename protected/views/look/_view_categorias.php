@@ -28,7 +28,7 @@
 						  )
 						);
 					?>	
-	<ul class="thumbnails">
+	<ul class="thumbnails margin_top_small">
               <?php
              
               foreach($categorias as $space=>$categoria){
@@ -46,7 +46,7 @@
               		$a = $categoria->getImage($categoria->id);
               		
               		if($a!="no")// tiene img
-              			$image = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/categorias/'. $a,"Personaling - ".$categoria->nombre, array('id'=>'img-categoria','draggable'=>"false"));
+              			$image = CHtml::image(Yii::app()->baseUrl .'/images/'.Yii::app()->language.'/categorias/'. $a,$categoria->nombre, array('id'=>'img-categoria','draggable'=>"false"));
 					else
               			$image = CHtml::image("http://placehold.it/140");
 
@@ -79,8 +79,9 @@
 						  ),
 						  array( //htmlOptions
 						    'href' => Yii::app()->createUrl( 'look/categorias' ),
-						    'class' => 'thumbnail',
+						    'class' => 'thumbnail categoria',
 						    'id' => 'categoria'.uniqid(),
+						    'title'=>$categoria->nombre,
 						    'draggable'=>"false",
 						  )
 						);

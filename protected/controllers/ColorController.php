@@ -140,6 +140,8 @@ class ColorController extends Controller
 			Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;	
 			Yii::app()->clientScript->scriptMap['bootstrap.js'] = false;
 			Yii::app()->clientScript->scriptMap['bootstrap.css'] = false;
+			Yii::app()->clientScript->scriptMap['bootstrap.min.js']=false;
+			Yii::app()->clientScript->scriptMap['bootstrap.min.css']=false;
 			Yii::app()->clientScript->scriptMap['bootstrap.bootbox.min.js'] = false;	
             echo CJSON::encode(array(
                 'status'=>'failure', 
@@ -283,41 +285,15 @@ class ColorController extends Controller
 		echo CJSON::encode($data);
 	}
 	
-	public function actionPruebazoho()
-	{
-		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
-		$xml .= '<Cases>';
-		$xml .= '<row no="1">';
-		$xml .= '<FL val="Subject"> Caso numero 3 </FL>';
-		$xml .= '<FL val="Priority">Alta</FL>';
-		$xml .= '<FL val="Status">Nuevo</FL>'; 
-		$xml .= '<FL val="Case Origin">Web</FL>'; 
-		$xml .= '<FL val="Type">Problema</FL>'; 
-        $xml .= '<FL val="Email">prueba@korn.com.co</FL>';
-		$xml .= '<FL val="Phone">445566778998</FL>';
-		$xml .= '<FL val="Case Reason">Devoluciones</FL>';
-		$xml .= '<FL val="Description">Nueva Descripcion</FL>';
-		$xml .= '<FL val="Add Comment">Nuevo comentario</FL>';
-		$xml .= '<FL val="Solution">Aun sin solucion</FL>';
-		$xml .= '<FL val="Internal Comments">interno</FL>';
-		$xml .= '</row>';
-		$xml .= '</Cases>';
- 
-		$url ="https://crm.zoho.com/crm/private/xml/Cases/insertRecords";
-		$query="authtoken=".Yii::app()->params['zohoToken']."&scope=crmapi&newFormat=1&duplicateCheck=2&wfTrigger=true&xmlData=".$xml;
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);// Set the request as a POST FIELD for curl.
+	public function actionPruebazoho(){
+		$zoho = new ZohoSales;
 
-		//Execute cUrl session
-		$response = curl_exec($ch);
-		curl_close($ch); 
-		var_dump( $response ); 
-		Yii::app()->end();
+		$usuario = User::model()->findByAttributes(array('email'=>"jane@cooltribes.com"));
+
+		if($usuario->zoho_id == ""){ 
+			$respuesta = $zoho->getLostId($usuario->email);
+			var_dump($respuesta);
+		}
 	}
 	
 	public function actionPruebazohoproducto()

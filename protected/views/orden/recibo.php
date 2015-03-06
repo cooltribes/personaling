@@ -96,7 +96,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
 	                  <td><?php echo $producto->nombre; ?></td>
 	                  <td><?php echo $orden_ptc->cantidad; ?></td>
 	                  <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($precio->precioVenta, 2, ',', '.'); ?></td>
-	                  <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($orden_ptc->cantidad*$orden_ptc->precio, 2, ',', '.'); ?></td>
+	                  <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($orden_ptc->cantidad*$precio->precioVenta, 2, ',', '.'); ?></td>
 	                </tr>
 					<?php
                 }
@@ -109,6 +109,13 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                   <td colspan="4"><div class="text_align_right"><strong>Envío</strong>:</div></td>
                   <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->envio+$factura->orden->seguro, 2, ',', '.'); ?></td>
                 </tr>
+                <?php if(isset($factura->orden->descuento_look))
+				{ ?>
+					 <tr>
+                 		 <td colspan="4"><div class="text_align_right"><strong>Descuento por Look</strong>:</div></td>
+                 		 <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->descuento_look, 2, ',', '.'); ?></td>
+                	</tr>
+				<?php } ?>
                   <tr>
                   <td colspan="4"><div class="text_align_right"><strong>Descuento</strong>:</div></td>
                   <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($factura->orden->descuento, 2, ',', '.'); ?></td>
@@ -140,9 +147,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
         <hr/>
        <p>
        	<?php 
-       	if(Yii::app()->controller->action->id == 'recibo'){
-       		echo CHtml::link('<i class="icon-print"></i> Imprimir', $this->createUrl('imprimir', array('id'=>$factura->id, 'documento' => 'recibo')), array('class'=>'btn margin_top pull-right', 'target'=>'_blank'));
-		} 
+       		echo CHtml::link('<i class="icon-print"></i> Imprimir', $this->createUrl('imprimir', array('id'=>$factura->id, 'documento' => 'reciboPdf')), array('class'=>'btn margin_top pull-right', 'target'=>'_blank'));
        	?>
        </p>
       </section>

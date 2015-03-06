@@ -19,7 +19,7 @@ $this->pageTitle=Yii::app()->name . " - " . $model->title;
 
   //Metas de Twitter CARD OFF
 
-
+Yii::app()->session['look_id']=$model->id;
 ?>
 
 

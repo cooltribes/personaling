@@ -1,19 +1,18 @@
 <?php
-include(__DIR__."/../modules/user/controllers/MailChimp.php");
 class SiteController extends Controller
 {
 
 	/**
 	 * @return array action filters
 	 */
-	
+	 
 	public function filters()
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
 		);
-	}
-
+	} 
+ 
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -21,15 +20,15 @@ class SiteController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(
+		return array( 
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('productoimagen','index','top','error','contacto','login','logout',
+				'actions'=>array('productoimagen','index','top','error','contacto','login','logout', 
                                     'acerca_de','activos_graficos','publicaciones_de_prensa',
                                     'condiciones_de_envios_y_encomiendas','formas_de_pago','politicas_y_privacidad',
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',
                                     'preguntas_frecuentes', 'equipo_personaling','captcha',
-                                    'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos',
-                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve'),
+                                    'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos','formSiteImage',
+                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve','terminos_condiciones_ps','poderosas'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -37,7 +36,7 @@ class SiteController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin',"SendCasesToZoho"),
+				'actions'=>array('admin',"SendCasesToZoho",'homeConf'),
 				//'users'=>array('admin'),
 				'expression' => 'UserModule::isAdmin()',
 			),
@@ -80,7 +79,11 @@ class SiteController extends Controller
 	{
 		$this->render('terminos_de_servicio');
 	}
-
+    
+    public function actionTerminos_condiciones_ps()
+    {
+        $this->render('terminos_condiciones_ps');
+    }
 	public function actionPoliticas_de_devoluciones()
 	{
 		$this->render('politicas_de_devoluciones');
@@ -161,7 +164,7 @@ class SiteController extends Controller
 		// using the default layout 'protected/views/layouts/main.php'
 		$result=false;
 		if(isset($_POST['email'])){
-			    
+			include(__DIR__."/../modules/user/controllers/MailChimp.php");
 			$group = array(
                 array(
                     'name' => 'Personaling Newsletter',
@@ -186,8 +189,28 @@ class SiteController extends Controller
 			$this->redirect(array('/controlpanel/index'));
 		elseif (UserModule::isPersonalShopper()) 
 			$this->redirect(array('site/top'));//$this->render('personal_shopper');
-		elseif (Yii::app()->user->isGuest) 
-			$this->render('new',array('result'=>$result));
+		elseif (Yii::app()->user->isGuest) {
+    		$siteImg=new SiteImage;    
+    		$elements=array(
+            'banner'=>$siteImg->getLinkedImage('banner'),
+            'slider'=>$siteImg->getLinkedImage('slider'),
+            'art1'=>$siteImg->getLinkedImage('art'),
+            'art2'=>$siteImg->getLinkedImage($name='art',$index=2),
+            'art3'=>$siteImg->getLinkedImage($name='art',$index=3),
+            'art4'=>$siteImg->getLinkedImage($name='art',$index=4),
+            'magazine1'=>$siteImg->getLinkedImage($name='magazine',$index=1,$width="",$height='70px',$class='span2'),
+            'magazine2'=>$siteImg->getLinkedImage($name='magazine',$index=2,$width="",$height='70px',$class='span2'),
+            'magazine3'=>$siteImg->getLinkedImage($name='magazine',$index=3,$width="",$height='70px',$class='span2'),
+            'magazine4'=>$siteImg->getLinkedImage($name='magazine',$index=4,$width="",$height='70px',$class='span2'),
+            'magazine5'=>$siteImg->getLinkedImage($name='magazine',$index=5,$width="",$height='70px',$class='span2'),
+            'magazine6'=>$siteImg->getLinkedImage($name='magazine',$index=6,$width="",$height='70px',$class='span2'),
+            'organization1'=>$siteImg->getLinkedImage($name='organization',$class='span3'),
+            'organization2'=>$siteImg->getLinkedImage($name='organization',$index=2,$class='span3'),
+            'organization3'=>$siteImg->getLinkedImage($name='organization',$index=3,$class='span3'),);  
+		    $this->render('new',array('result'=>$result,'elements'=>$elements));
+            
+		}
+			
 		else 
 			//$this->redirect(array('site/personal'));//$this->render('personal_shopper');
                     /*Unificacion de la tienda de looks con tu personal shopper*/
@@ -749,10 +772,105 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 				Yii::app()->user->setFlash("success", "Se ha cargado con éxito el archivo. Puede ver los detalles de la carga a continuación.<br>"); 	
 			} // if
 			
-			$this->render('zohoCases');			 
+			$this->render('zohoCases');			  
 		}
 		
+        public function actionHomeConf(){
+            $siteIm=new SiteImage;
+            $this->render('homeConf',array('siteIm'=>$siteIm));  
+        }
+         
+         public function actionPoderosas(){
+            if(Yii::app()->language=='es_ve')
+                $this->render('poderosas');
+            else
+                throw new CHttpException(404,'Esta pagina no se encuentra disponible.');  
+        } 
         
-       
+         public function actionPoderosas(){
+            
+            $this->render('poderosas');  
+        }
+
+        public function actionFormSiteImage() 
+        { 
+                       
+           
+        
+            if(isset($_POST['SiteImage']))
+            {   $model=new SiteImage; 
+                $model->attributes=$_POST['SiteImage'];
+                $previa=SiteImage::model()->findByAttributes(array('name'=>$_POST['SiteImage']['name'],'index'=>$_POST['SiteImage']['index']));
+                    
+                    $rnd = rand(0,9999);  
+                    
+                    $images=CUploadedFile::getInstanceByName('SiteImage[path]');
+        
+                    if (isset($images) && count($images) > 0) {
+                     
+                        $model->path = "{$rnd}-{$images}";
+                        if($model->name=='banner'){
+                             $dir = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/home';
+                             $nombre = $dir.'/'.$model->name;
+                             $url=Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/home'.'/'.$model->name;
+                        }                       
+                            
+                        else {
+                            $dir = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/home/'.$model->name;
+                            $nombre = $dir.'/'.$model->name.$model->index; 
+                            $url=Yii::app()->getBaseUrl(true).'/images/'.Yii::app()->language.'/home/'.$model->name.'/'.$model->name.$model->index;  
+                        }  
+                            
+                        if(!is_dir($dir))
+                        {
+                            mkdir($dir,0777,true);
+                        }
+                                                
+                        $extension_ori = ".jpg";
+                        $extension = '.'.$images->extensionName;
+                        if(is_file($nombre.$extension)&&!is_null($previa)){
+                            rename($nombre.$extension,$nombre."OLD".$previa->id.$extension);
+                        }                       
+                        $images->saveAs($nombre . $extension);
+                        $model->path=$url. $extension;
+                        if($model->save()){
+                            if(!is_null($previa))    
+                                $previa->delete();
+                            $this->redirect('homeConf');
+                        }else{
+                            print_r($model->errors);
+                            break;
+                        }
+                   
+                
+                    }
+                    else{
+                      echo "NANE";
+                        break;
+                    }
+                    
+                
+                
+            }else{
+                $response=array();
+                $model=SiteImage::model()->findByAttributes(array('name'=>$_POST['name'],'index'=>$_POST['index']));
+                $response['confirm']=true;
+                if(is_null($model)){
+                    $model=new SiteImage;
+                    $response['confirm']=false;                    
+                }
+                //print_r($response['confirm']);                
+                $response['form']= $this->renderPartial('form', array(
+                    'model'=>$model,'name'=>$_POST['name'],'index'=>$_POST['index'],'group'=>$_POST['group'],'type'=>$_POST['type'] ),true)
+                ;                
+                 echo CJSON::encode($response); 
+            }
+            
+        }
+
+
+        
+        
+        
 		
 }

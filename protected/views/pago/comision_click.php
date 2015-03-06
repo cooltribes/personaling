@@ -27,14 +27,28 @@
 
     $total = 0;
 
-    foreach($dataProvider->getData() as $cadauno){
+    $provider2=User::model()->findAllByAttributes(array("personal_shopper" =>'1'), array('order'=>'pago_click desc'));
+	foreach($provider2 as $cadauno)
+	{
+		
+		$amount = $cadauno->getPagoClick();
+		 $arreglo = explode(" ",$amount);
+		 #echo $this->_lastDate;
+		 #echo $cadauno->getLookReferredViews()."////";
+		$dos = $this->_lastDate ? $cadauno->getLookReferredViewsByDate($this->_lastDate, date("Y-m-d")) : $cadauno->getLookReferredViews();
+#echo $this->_lastDate;
+        $total += ($arreglo[0] * $dos);
+		
+	}
+   
+    /*foreach($dataProvider->getData() as $cadauno){
         $amount = $cadauno->getPagoClick();
         $arreglo = explode(" ",$amount);
 
         $dos = $this->_lastDate ? $cadauno->getLookReferredViewsByDate($this->_lastDate, date("Y-m-d")) : $cadauno->getLookReferredViews();
 
         $total += ($arreglo[0] * $dos);
-    }
+    }*/
 
     ?> 
 
@@ -117,6 +131,14 @@ $template = '{summary}
     {items}
     </table>
     {pager}';
+	 $pagerParams=array(
+        'header'=>'',
+        'prevPageLabel' => Yii::t('contentForm','Previous'),
+        'nextPageLabel' => Yii::t('contentForm','Next'),
+        'firstPageLabel'=> Yii::t('contentForm','First'),
+        'lastPageLabel'=> Yii::t('contentForm','Last'),
+        'htmlOptions'=>array(
+            'class'=>'pagination pagination-right'));   
 
 $this->widget('zii.widgets.CListView', array(
     'id' => 'list-auth-items',
@@ -129,12 +151,7 @@ $this->widget('zii.widgets.CListView', array(
         
 
       } ",
-    'pager' => array(
-        'header' => '',
-        'htmlOptions' => array(
-            'class' => 'pagination pagination-right',
-        )
-    ),
+    'pager' =>$pagerParams, 
 ));
 
 
@@ -321,8 +338,9 @@ function formSubmit(e){
 }
 
     /*Change click rate*/
-    $("#btnClick").click(function (e){
-        
+    //$("#btnClick").click(function (e){
+    $("body").on('click','#btnClick', function(e) {
+        e.preventDefault();
         var porClick = $("#totalClick").val();     
         
         var res = confirm('¿Estás seguro de establecer '+porClick+' como comisión por click');
@@ -347,13 +365,13 @@ function accionMasiva(parametros){
                     
                     $('#modalPagoClick').modal("hide");
                     
-                    showAlert(data.status, data.message);
+                    //showAlert(data.status, data.message);
                     
                     $('html,body').animate({
                         scrollTop: $(".page-header").first().next().offset().top
                     }); 
                     
-                    $.fn.yiiListView.update('list-auth-items'); 
+                   // $.fn.yiiListView.update('list-auth-items'); 
                 },
 
                 error: function( jqXHR, textStatus, errorThrown){
@@ -362,8 +380,15 @@ function accionMasiva(parametros){
                 }
             }
         );
- $.fn.yiiListView.update('list-auth-items');
+        location.reload();
+//$.fn.yiiListView.update('list-auth-items');
+//alert('asd');
+//location.reload();
+//$.fn.yiiListView.update('list-auth-items', { data:ajaxRequest });
+// $.fn.yiiListView.update('list-auth-items', {data:ajaxRequest});
 }
+
+
 
 $(document).ready(function(){
 

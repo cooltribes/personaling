@@ -22,6 +22,12 @@
         <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento, ''); ?></td>
     </tr>
     <?php } ?>
+    <?php if($orden->descuento_look != 0){ // si no hay descuento de look ?> 
+    <tr>
+        <td style="text-align:left"><b>Descuento por Look:</b></th>
+        <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->descuento_look, ''); ?></td>
+    </tr>
+    <?php } ?>
     <tr>
         <td style="text-align:left"><b>Envío:</b></th>
         <td><?php echo Yii::t('contentForm','currSym').' '.Yii::app()->numberFormatter->formatCurrency($orden->envio+$orden->seguro, ''); ?></td>

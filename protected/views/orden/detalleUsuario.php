@@ -553,6 +553,13 @@ $usuario = User::model()->findByPk($orden->user_id);
           <td><?php echo Yii::t('contentForm','Discount');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento). " ".Yii::t('contentForm','currSym')."."; ?></td>
         </tr>
+        <?php if(isset($orden->descuento_look))
+		{?>
+			 <tr>
+         		 <td><?php echo Yii::t('contentForm','Discount look');  ?></td>
+         		 <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuento_look). " ".Yii::t('contentForm','currSym')."."; ?></td>
+       		 </tr>
+		<?php } ?>
         <tr>
           <td><?php echo Yii::t('contentForm','Used balance');  ?></td>
           <td><?php echo Yii::app()->numberFormatter->formatDecimal($orden->descuentoRegalo). " ".Yii::t('contentForm','currSym')."."; ?></td>
@@ -769,6 +776,23 @@ Para una futura iteración
  <?php $this->renderPartial('//orden/_modal_pago',array('orden_id'=>$orden->id)); ?>
 </div>
 
+<div class="wrapper_home hide">
+            
+    <div class="box_20130928 margin_bottom_small" style="position: fixed;">
+            <h1>
+                <span><?php echo Yii::t('contentForm', 'Your payment is being processed'); ?></span>
+                <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
+            </h1>
+            
+            <p>
+              <?php echo Yii::t('contentForm', 'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser'); ?>
+                <br>
+                <?php echo Yii::t('contentForm', 'Your purchase will be completed in seconds!'); ?>                
+            </p>
+            
+    </div>
+</div>
+
 
 <!-- // Modal Window -->
 
@@ -794,7 +818,8 @@ Para una futura iteración
         }
         else
         {
-        	
+        	$('#myModal').modal('toggle');
+             $(".wrapper_home").removeClass("hide").find("div").hide().fadeIn();
         	//if(monto.indexOf(',')==(monto.length-2))
 	       // 	monto+='0';
 			//if(monto.indexOf(',')==-1)

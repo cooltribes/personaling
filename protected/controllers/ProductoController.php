@@ -851,15 +851,7 @@ public function actionReportexls(){
 
         $datos=$datos."</td></tr>";
         
-        $datos=$datos."<tr>";
-        $datos=$datos."<th scope='row'>Precio con descuento</th>";
-		
-		if($precio)
-	        $datos=$datos."<td>".Yii::t('contentForm','currSym')." ".Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); 
-		else
-        	$datos=$datos."<td>"; 
 
-        $datos=$datos."</td></tr>";
         
 		$datos=$datos."<tr>";
         $datos=$datos."<th scope='row'>Descuento </th>";
@@ -873,6 +865,8 @@ public function actionReportexls(){
         	$datos=$datos."<td>"; 
 
         $datos=$datos."</td></tr>";
+        
+		$datos=$datos."<tr>";
 		
 		$datos=$datos."<tr>";
         $datos=$datos."<th scope='row'>Total Descuento</th>";
@@ -884,6 +878,17 @@ public function actionReportexls(){
         		$datos=$datos."<td>"; 
 
         $datos=$datos."</td></tr>";
+		
+        $datos=$datos."<th scope='row'>Precio con descuento</th>";
+		
+		if($precio)
+	        $datos=$datos."<td>".Yii::t('contentForm','currSym')." ".Yii::app()->numberFormatter->formatDecimal($precio->precioDescuento); 
+		else
+        	$datos=$datos."<td>"; 
+
+        $datos=$datos."</td></tr>";
+		
+		
 		$datos=$datos."</table><hr/>";
 		
 		$datos=$datos."<h4>Estadísticas</h4>";	
@@ -2801,7 +2806,11 @@ public function actionReportexls(){
                             
                             //Agregar el modelo
                             $item->addChild('CodigoModelo', $producto->codigo);
-                            $item->addChild('DescripcionModelo', $producto->nombre);
+							
+							// corregir errores, como cuando se coloca un & y se debe validar ///
+							$nombreProduc=Producto::model()->getNombre($producto->nombre);
+
+                            $item->addChild('DescripcionModelo', $nombreProduc);
                             
                             //Agregar el color
                             $item->addChild('CodigoColor', $color->id);
@@ -3527,14 +3536,27 @@ public function actionReportexls(){
                             $cantCategorias++;
                         }   
                                                 
-                        //tallas
-                        if (isset($row['I']) && $row['I'] != "" ) {
-                            $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));
-
-                            if (!isset($talla)) {
-                                $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
-                            }
-                        }
+                         if ($tipoProductos == 0) 
+						{
+							 //tallas
+	                        if (isset($row['I']) && $row['I'] != "" )
+							 {
+	                            $talla = Talla::model()->findByAttributes(array('valor' => $row['I']));
+	
+	                            if (!isset($talla))
+								{
+	                                $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
+	                            }
+                        	 }
+						} 
+						else  //producto de terceros
+						{
+							$talla = Talla::model()->findByAttributes(array('valor' => "Varias"));
+							if (!isset($talla))
+							{
+	                                $erroresTallas .= "<li> <b>" . $row['I'] . "</b>, en la línea <b>" . $linea."</b></li>";
+	                         }
+						} 
                         
                         //colores
                         if (isset($row['J']) && $row['J'] != "") {
@@ -4556,7 +4578,7 @@ public function actionReportexls(){
                             $rCatego1 = $row['F'];
                             $rCatego2 = $row['G'];
                             $rCatego3 = $row['H'];
-                            $rTalla = $row['I'];
+                            $rTalla = "Varias";// $row['I'], pero como la talla siempre va ser Varias, se coloca estatico
                             $rColor = $row['J'];
                             $rPeso = $row['K'];
                             $rCosto = $row['L'];

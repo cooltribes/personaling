@@ -732,6 +732,7 @@ class BolsaController extends Controller
 							
 							$orden->subtotal = Yii::app()->getSession()->get('subtotal');
 							$orden->descuento = Yii::app()->getSession()->get('descuento');
+							$rden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
 							$orden->envio = Yii::app()->getSession()->get('envio');
 							$orden->iva = Yii::app()->getSession()->get('iva');
 							//$orden->descuentoRegalo = 0;
@@ -939,9 +940,10 @@ class BolsaController extends Controller
                     $totalProductos = Yii::app()->getSession()->get('subtotal');
                     $totalDescuentos = Yii::app()->getSession()->get('descuento');
                     $iva = Yii::app()->getSession()->get('iva');
+					$descuentoEachLook=Yii::app()->getSession()->get('descuentoxLook');
                     
                     //monto por productos, con sus descuentos y su iva
-                    $subtotal = $totalProductos + $iva - $totalDescuentos;                    
+                    $subtotal = $totalProductos + $iva - $totalDescuentos- $descuentoEachLook;               
                     
                     /** Si esta usando un codigo de descuento, restarselo al subtotal**/
                     $cupon = array();                    
@@ -1666,6 +1668,7 @@ class BolsaController extends Controller
                                 $orden = new Orden;
                                 $orden->subtotal = Yii::app()->getSession()->get('subtotal');
                                 $orden->descuento = 0;
+                                $orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook'); //new
 								if(Yii::app()->getSession()->get('envio')>0)
                                 	$orden->envio = Yii::app()->getSession()->get('envio');
 								else
@@ -1778,6 +1781,7 @@ class BolsaController extends Controller
                                     	$orden->descuento = 0;
                                     }*/
                                     $orden->descuento = Yii::app()->getSession()->get('descuento');
+									$orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
                                     
                                     $orden->envio = Yii::app()->getSession()->get('envio');
                                     $orden->iva = Yii::app()->getSession()->get('iva');
@@ -1873,6 +1877,7 @@ class BolsaController extends Controller
                                 $orden = new Orden;
                                 $orden->subtotal = Yii::app()->getSession()->get('subtotal'); //suma de los productos sin iva ni descuentos                                
                                 $orden->descuento = Yii::app()->getSession()->get('descuento');
+								$orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
                                 $orden->envio = Yii::app()->getSession()->get('envio');
                                 $orden->iva = Yii::app()->getSession()->get('iva');                                
                                 $orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo'); //por balance usado
@@ -3672,6 +3677,7 @@ class BolsaController extends Controller
             }else{
             	$orden->descuentoRegalo = 0;
             }
+			$orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
             $orden->envio = Yii::app()->getSession()->get('envio');
             $orden->iva = Yii::app()->getSession()->get('iva');
             $orden->seguro = Yii::app()->getSession()->get('seguro');

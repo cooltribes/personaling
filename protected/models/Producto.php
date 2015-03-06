@@ -1881,5 +1881,14 @@ public function multipleColor2($idColor, $idact)
 		 }
 	  return $cant;
 	}
+	public function getNombre($nombre) // para el & en excel
+	{
+		if(strpos($nombre, "&")) 
+		{
+			$porciones = explode("&", $nombre);	
+			$nombre=$porciones[0]."&amp;".$porciones[1];				
+		}
+		return $nombre;
+	}
 		 
 }

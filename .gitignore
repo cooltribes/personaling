@@ -11,6 +11,7 @@ _svn
 svn-commit*.tmp
 .DS_store
 *.xml
+.htaccess
 
 sftp-config.json
 nbproject/private/

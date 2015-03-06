@@ -97,15 +97,18 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
                                     	<th scope="col" style="font-weight: bold;"><?php echo Yii::t('backEnd', 'Total'); ?></th>
                        				</tr>	
                        			 	<?php
-                                	foreach ($factura->orden->ohptc as $ordenhasproducto) 
+                                	foreach ($factura->orden->productos as $ptc) 
                                 	{
+						            	$orden_ptc = OrdenHasProductotallacolor::model()->findByAttributes(array('preciotallacolor_id'=>$ptc->id, 'tbl_orden_id'=>$factura->orden->id));
+										$producto = Producto::model()->findByPk($ptc->producto_id);
+										$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
                                     ?>
                                     <tr align="right">
-                                        <td style="padding: 10px; text-align:center"><?php echo $ordenhasproducto->preciotallacolor->sku; ?></td>
-                                        <td style="padding: 10px"><?php echo $ordenhasproducto->preciotallacolor->producto->nombre; ?></td>
-                                        <td style="padding: 10px; text-align:left"><?php echo $ordenhasproducto->cantidad; ?></td>
+                                        <td style="padding: 10px; text-align:center"><?php echo $ptc->sku; ?></td>
+                                        <td style="padding: 10px"><?php echo $producto->nombre; ?></td>
+                                        <td style="padding: 10px; text-align:left"><?php echo $orden_ptc->cantidad; ?></td>
                                         <td style="padding: 10px; text-align:left"><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($precio->precioVenta, 2, ',', '.'); ?></td>
-                                        <td style=" text-align:left"><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($ordenhasproducto->cantidad * $precio->precioVenta, 2, ',', '.'); ?></td>
+                                        <td style=" text-align:left"><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($orden_ptc->cantidad*$precio->precioVenta, 2, ',', '.'); ?></td>
                                     </tr>       
                                     <?php
                                    }

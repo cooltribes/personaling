@@ -193,4 +193,5 @@ class TallaController extends Controller
 			Yii::app()->end();
 		}
 	}
+  
 }

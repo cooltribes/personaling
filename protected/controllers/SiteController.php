@@ -5,14 +5,14 @@ class SiteController extends Controller
 	/**
 	 * @return array action filters
 	 */
-	
+	 
 	public function filters()
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
 		);
-	}
-
+	} 
+ 
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -772,13 +772,20 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 				Yii::app()->user->setFlash("success", "Se ha cargado con éxito el archivo. Puede ver los detalles de la carga a continuación.<br>"); 	
 			} // if
 			
-			$this->render('zohoCases');			 
+			$this->render('zohoCases');			  
 		}
 		
         public function actionHomeConf(){
             $siteIm=new SiteImage;
             $this->render('homeConf',array('siteIm'=>$siteIm));  
         }
+         
+         public function actionPoderosas(){
+            if(Yii::app()->language=='es_ve')
+                $this->render('poderosas');
+            else
+                throw new CHttpException(404,'Esta pagina no se encuentra disponible.');  
+        } 
         
          public function actionPoderosas(){
             

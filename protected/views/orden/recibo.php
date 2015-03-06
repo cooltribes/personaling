@@ -96,7 +96,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
 	                  <td><?php echo $producto->nombre; ?></td>
 	                  <td><?php echo $orden_ptc->cantidad; ?></td>
 	                  <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($precio->precioVenta, 2, ',', '.'); ?></td>
-	                  <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($orden_ptc->cantidad*$orden_ptc->precio, 2, ',', '.'); ?></td>
+	                  <td><?php echo Yii::t('contentForm', 'currSym'); ?> <?php echo number_format($orden_ptc->cantidad*$precio->precioVenta, 2, ',', '.'); ?></td>
 	                </tr>
 					<?php
                 }
@@ -147,9 +147,7 @@ $provincia_envio = Provincia::model()->findByPk($direccion_envio->provincia_id);
         <hr/>
        <p>
        	<?php 
-       	if(Yii::app()->controller->action->id == 'recibo'){
-       		echo CHtml::link('<i class="icon-print"></i> Imprimir', $this->createUrl('imprimir', array('id'=>$factura->id, 'documento' => 'recibo')), array('class'=>'btn margin_top pull-right', 'target'=>'_blank'));
-		} 
+       		echo CHtml::link('<i class="icon-print"></i> Imprimir', $this->createUrl('imprimir', array('id'=>$factura->id, 'documento' => 'reciboPdf')), array('class'=>'btn margin_top pull-right', 'target'=>'_blank'));
        	?>
        </p>
       </section>

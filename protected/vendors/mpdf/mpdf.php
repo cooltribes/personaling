@@ -1,5 +1,4 @@
 <?php
-
 // ******************************************************************************
 // Software: mPDF, Unicode-HTML Free PDF generator                              *
 // Version:  5.6     based on                                                   *

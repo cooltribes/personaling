@@ -162,7 +162,15 @@ class BolsaController extends Controller
 					));
 				}
 			} else {
-				$response = $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+				if($_POST['productoIndividual']!="0") // si es 0 no trae look
+				{
+					$response = $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color'], $_POST['productoIndividual']);
+				}
+				else
+				{
+					$response = $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+				}
+				
 				$ptcolor = Preciotallacolor::model()->findByAttributes(array('producto_id'=>$_POST['producto'],'talla_id'=>$_POST['talla'],'color_id'=>$_POST['color']));
 				$category_product = CategoriaHasProducto::model()->findByAttributes(array('tbl_producto_id'=>$_POST['producto']));
                 $category = Categoria::model()->findByPk($category_product->tbl_categoria_id);
@@ -208,8 +216,17 @@ class BolsaController extends Controller
 				list($producto_id,$color_id) = explode("_",$value);
 				echo $bolsa->addProducto($producto_id,$_POST['talla'.$value],$color_id,$_POST['look_id']);
 			}
-		} else {
-			echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+		} else 
+		{
+				if($_POST['productoIndividual']!="0") // si es 0 no trae look
+				{
+					
+					echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color'], $_POST['productoIndividual']);
+				}
+				else
+				{
+					echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+				}
 		}
 		 /*	 
 		$usuario = Yii::app()->user->id;
@@ -464,9 +481,10 @@ class BolsaController extends Controller
 	
         public function actionPagos()
         {   
-            if(Bolsa::isEmpty()){
-                $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
-            }
+            if(Bolsa::isEmpty(Yii::app()->getSession()->get("bolsaUser")))
+               {
+                	$this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+               }
 
             if (Yii::app()->user->isGuest){
                 //Redirigir a login si no esta logueado
@@ -714,6 +732,7 @@ class BolsaController extends Controller
 							
 							$orden->subtotal = Yii::app()->getSession()->get('subtotal');
 							$orden->descuento = Yii::app()->getSession()->get('descuento');
+							$rden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
 							$orden->envio = Yii::app()->getSession()->get('envio');
 							$orden->iva = Yii::app()->getSession()->get('iva');
 							//$orden->descuentoRegalo = 0;
@@ -832,9 +851,10 @@ class BolsaController extends Controller
 		public function actionConfirmar()
 		{
                     
-                    if(Bolsa::isEmpty()){
-                        $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
-                    }
+               if(Bolsa::isEmpty(Yii::app()->getSession()->get("bolsaUser")))
+               {
+                	$this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+               }
                     
                     if (Yii::app()->user->isGuest){
                         //Redirigir a login
@@ -920,9 +940,10 @@ class BolsaController extends Controller
                     $totalProductos = Yii::app()->getSession()->get('subtotal');
                     $totalDescuentos = Yii::app()->getSession()->get('descuento');
                     $iva = Yii::app()->getSession()->get('iva');
+					$descuentoEachLook=Yii::app()->getSession()->get('descuentoxLook');
                     
                     //monto por productos, con sus descuentos y su iva
-                    $subtotal = $totalProductos + $iva - $totalDescuentos;                    
+                    $subtotal = $totalProductos + $iva - $totalDescuentos- $descuentoEachLook;               
                     
                     /** Si esta usando un codigo de descuento, restarselo al subtotal**/
                     $cupon = array();                    
@@ -956,7 +977,12 @@ class BolsaController extends Controller
                     //Si usa balance
                     $descuentoRegalo = 0;
                     if(Yii::app()->getSession()->get('usarBalance') == '1'){
-                            $balance = Profile::getSaldo(Yii::app()->user->id, false);
+
+						if(UserModule::isAdmin())
+							$balance = Profile::getSaldo(Yii::app()->getSession()->get("bolsaUser"), false);
+						else 
+							$balance = Profile::getSaldo(Yii::app()->user->id, false);					
+                            
                             $balance = floor($balance *100)/100; 
                             if($balance > 0){
                                 if($balance >= $total){
@@ -968,7 +994,7 @@ class BolsaController extends Controller
                                 }
                             }
                     }
-                    Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
+                   Yii::app()->getSession()->add('descuentoRegalo',$descuentoRegalo);
 
                     //si pago toda la orden con balance
                     if($total == $descuentoRegalo){
@@ -1121,9 +1147,10 @@ class BolsaController extends Controller
 		
 		public function actionDirecciones()
 		{
-                    if(Bolsa::isEmpty()){
-                        $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
-                    }
+               if(Bolsa::isEmpty(Yii::app()->getSession()->get("bolsaUser")))
+               {
+                	$this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
+               }
 		
 	        if (Yii::app()->user->isGuest){
 	            //Redirigir a login
@@ -1265,8 +1292,8 @@ class BolsaController extends Controller
 	{
              if(isset($_SESSION['idFacturacion']))
 				unset($_SESSION['idFacturacion']);	
-				
-            if(Bolsa::isEmpty()){
+			
+            if(Bolsa::isEmpty(Yii::app()->getSession()->get("bolsaUser"))){
                 $this->redirect($this->createAbsoluteUrl('bolsa/index',array(),'http'));
             }
 
@@ -1274,6 +1301,7 @@ class BolsaController extends Controller
 
                 /* Si es compra de admin para usuario */
                 $admin = Yii::app()->getSession()->contains("bolsaUser");
+				
 
                 if ($admin) {
                     $this->redirect($this->createUrl('bolsa/direcciones'));
@@ -1640,6 +1668,7 @@ class BolsaController extends Controller
                                 $orden = new Orden;
                                 $orden->subtotal = Yii::app()->getSession()->get('subtotal');
                                 $orden->descuento = 0;
+                                $orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook'); //new
 								if(Yii::app()->getSession()->get('envio')>0)
                                 	$orden->envio = Yii::app()->getSession()->get('envio');
 								else
@@ -1752,6 +1781,7 @@ class BolsaController extends Controller
                                     	$orden->descuento = 0;
                                     }*/
                                     $orden->descuento = Yii::app()->getSession()->get('descuento');
+									$orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
                                     
                                     $orden->envio = Yii::app()->getSession()->get('envio');
                                     $orden->iva = Yii::app()->getSession()->get('iva');
@@ -1847,6 +1877,7 @@ class BolsaController extends Controller
                                 $orden = new Orden;
                                 $orden->subtotal = Yii::app()->getSession()->get('subtotal'); //suma de los productos sin iva ni descuentos                                
                                 $orden->descuento = Yii::app()->getSession()->get('descuento');
+								$orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
                                 $orden->envio = Yii::app()->getSession()->get('envio');
                                 $orden->iva = Yii::app()->getSession()->get('iva');                                
                                 $orden->descuentoRegalo = Yii::app()->getSession()->get('descuentoRegalo'); //por balance usado
@@ -3646,6 +3677,7 @@ class BolsaController extends Controller
             }else{
             	$orden->descuentoRegalo = 0;
             }
+			$orden->descuento_look=Yii::app()->getSession()->get('descuentoxLook');
             $orden->envio = Yii::app()->getSession()->get('envio');
             $orden->iva = Yii::app()->getSession()->get('iva');
             $orden->seguro = Yii::app()->getSession()->get('seguro');

@@ -627,7 +627,8 @@ class ProfileController extends Controller
 	            	$nombre = Yii::getPathOfAlias('webroot').'/images/banner/'.$id.'/'. $image;	
 	            	$extension = '.'.$pic->extensionName;
 					$model->banner_url = '/images/banner/'. $id .'/'. $image .$extension;
-				 
+
+				
 				 if (!$model->save())	
 						Yii::trace('username:'.$model->username.' Crear Banner Error:'.print_r($model->getErrors(),true), 'registro');										
 					

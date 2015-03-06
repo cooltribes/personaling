@@ -43,6 +43,7 @@ return array(
     'Subtotal' => 'Subtotal',
     'Shipping' => 'Envío',
     'Discount' => 'Descuento',
+    'Discount look' => 'Descuento por look',
     'Used balance' => 'Balance utilizado',
     'VAT on taxable' => 'IVA sobre base imponible',
     'No right to tax credit' => 'Sin derecho a crédito fiscal',

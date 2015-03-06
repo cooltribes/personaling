@@ -97,7 +97,20 @@ class ZohoSales{
 		//Yii::app()->end();
 			
 		if((double)$orden->descuento > 0) 
-			$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';
+		{
+			
+			if(isset($orden->descuento_look))	
+			{
+				$tota_descuento=$orden->descuento+$orden->descuento_look;	
+				$xml .= '<FL val="Discount">'.(double)$tota_descuento.'</FL>';
+			}	
+			else
+			{
+				$xml .= '<FL val="Discount">'.(double)$orden->descuento.'</FL>';	
+			} 
+				
+			
+		}
 		
 			$xml .= $this->Products($orden->id); 
 		
@@ -157,8 +170,8 @@ class ZohoSales{
 			$producto = $tallacolor->preciotallacolor->producto;
 			$precio = Precio::model()->findByAttributes(array('tbl_producto_id'=>$producto->id));
 			
-			$costo += $precio->costo;
-			$dcto_productos += $precio->ahorro;	
+			$costo += $precio->costo*$tallacolor->cantidad;
+			$dcto_productos += $precio->ahorro*$tallacolor->cantidad;	
 			
 			$id = $tallacolor->preciotallacolor->zoho_id;
 			$nombre = $producto->nombre." - ".$tallacolor->preciotallacolor->sku;
@@ -239,30 +252,48 @@ class ZohoSales{
 					{
 						$prc = $look->getPorcentajeDescuento();
 						$total = $look->getPrecioProductosDescuento(false) * $look->valorDescuento / 100;
-						$dcto_looks += $total;
+						#$dcto_looks += $total;
 					}
 					
 					if($look->tipoDescuento == 1){
 						$discount = $look->getPrecioProductosFull() - $look->valorDescuento; 
-						$dcto_looks += $discount; 
+						#$dcto_looks += $discount; 
 					}
 						
 				} 
 				 
 			}
 		} 
+		if(isset($orden->descuento_look))
+		{
+			$dcto_looks =$orden->descuento_look;
+		}
 		$dcto_total = $dcto_productos + $dcto_looks; 
 		$totalProductos = $orden->total - $orden->envio; 
 		$prod_iva = $orden->getProductsValue();
 		$prod_resta_descuento = (double)$prod_iva-$dcto_productos;
+		$prod_resta_look=(double)$prod_iva-$dcto_looks;
+		$prod_tota_desc_look=(double)$prod_resta_look+$prod_resta_descuento;
+		
+		$pctjeDescTotal=round($dcto_total*100/$prod_iva,2);
+		
+		$pctjeDescLook=round($dcto_looks*100/$prod_iva,2);
+		
+		$pctjeDescProduc=round($dcto_productos*100/$prod_iva,2);
 		
 		$xml2 .= '<FL val="Looks">'.$looks_orden.'</FL>';
 		$xml2 .= '<FL val="Descuento Looks">'.(double)$dcto_looks.'</FL>';
 		$xml2 .= '<FL val="Descuento Total">'.(double)$dcto_total.'</FL>';
 		$xml2 .= '<FL val="Total Productos">'.(double)$totalProductos.'</FL>'; 
-		$xml2 .= '<FL val="Productos IVA">'.(double)$orden->getProductsValue().'</FL>'; 
+		$xml2 .= '<FL val="Productos IVA">'.(double)$prod_iva.'</FL>'; 
 		$xml2 .= '<FL val="Productos IVA Descuento">'.(double)$prod_resta_descuento.'</FL>';
 		
+		$xml2 .= '<FL val="Porcentaje Descuento Total">'.(double)$pctjeDescTotal.'</FL>';
+		$xml2 .= '<FL val="Porcentaje Descuento Looks">'.(double)$pctjeDescLook.'</FL>';
+		$xml2 .= '<FL val="Porcentaje Descuento Productos">'.(double)$pctjeDescProduc.'</FL>';
+		
+		$xml2 .= '<FL val="Looks IVA Descuento">'.(double)$prod_resta_look.'</FL>';
+		#$xml2 .= '<FL val="IVA Descuento Total">'.(double)$prod_tota_desc_look.'</FL>';
 		return $xml2; 
 	}
 	//Funcion para convertir de posible cliente a cliente en Zoho....

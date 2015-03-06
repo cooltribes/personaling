@@ -56,9 +56,12 @@ $this->breadcrumbs=array(
                         <div class="control-group">
                         	<label class="control-label required"> Imagen </label>
                             <div class="controls">
+                            	
 	                            <?php
-					            	echo CHtml::activeFileField($model, 'path_image',array('name'=>'path_image'));
-									echo $form->error($model, 'path_image'); 
+					            	echo CHtml::activeFileField($model, 'path_image',array('name'=>'path_image', 'value'=>'asd'));
+									echo $form->error($model, 'path_image'); ?>
+									<span id="errorUrl" class="error margin_top_small_minus hide"><br/><small>El valor de imagen no puede ser vacio.</small></span>
+									<?php
 									if(!$model->isNewRecord){
 										$ruta=Yii::app()->request->baseUrl.'/images/'.Yii::app()->language.'/colores/'.$model->path_image;
 										echo '<div>'.CHtml::image($ruta,"image", array('width'=>50)).'</div>';
@@ -125,6 +128,7 @@ $this->breadcrumbs=array(
             <div class="padding_left"> 
             	
             	<?php $this->widget('bootstrap.widgets.TbButton', array(
+            		'id'=>'botone',
 					'buttonType'=>'submit',
 					'type'=>'danger',
 					'size' => 'large',
@@ -151,6 +155,23 @@ $this->breadcrumbs=array(
 <?php $this->endWidget(); ?>
 
 <script>
+$('#botone').attr('disabled',true);
+$('#errorUrl').show();
+
+$("#path_image").change(function(){
+	
+   if($("#path_image").val()=="")
+   {
+   		$('#botone').attr('disabled',true);
+		$('#errorUrl').show();
+   }   		
+   else
+   {
+   		$('#botone').attr('disabled',false);
+   		$('#errorUrl').hide();
+   }
+   		
+});
 	
 	$('#limpiar').on('click', function() {
 			

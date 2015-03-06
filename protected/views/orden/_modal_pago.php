@@ -77,7 +77,7 @@ $detPago = new Detalle;
                 <div style="display:none" class="help-inline"></div>
             </div>
         </div>
-        <div class="form-actions"> <a onclick="enviar(<?php echo $orden->id ?>)" class="btn btn-danger"><?php echo Yii::t('backEnd', 'Confirm Deposit'); ?></a> </div>
+        <div class="form-actions"> <a id="tag"onclick="enviar(<?php echo $orden->id ?>)" class="btn btn-danger"><?php echo Yii::t('backEnd', 'Confirm Deposit'); ?></a> </div>
         <a title='<?php echo Yii::t('backEnd', 'Payment Methods'); ?>' href='<?php echo Yii::app()->baseUrl . "/site/formas_de_pago"; ?>'><?php echo Yii::t('backEnd', 'Terms and Conditions of Depósits and Transfers payments'); ?></a><br/></p>
         </p>
     </form>

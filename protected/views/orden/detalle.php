@@ -414,9 +414,9 @@ $usuario = User::model()->findByPk($orden->user_id);
 					echo("
 					
 					</ul>
-	          		<p> <a onclick='aceptar(".$detalle->id.")' class='btn btn-info' title='Aceptar pago'>
+	          		<p> <a onclick='aceptar(".$detalle->id.")' class='btn btn-info' id='confPago' title='Aceptar pago'>
 	          		<i class='icon-check icon-white'></i> Aceptar</a>
-	          		<a onclick='rechazar(".$detalle->id.")' class='btn' title='Rechazar pago'>Rechazar</a> </p>
+	          		<a onclick='rechazar(".$detalle->id.")' class='btn' id='negPago' title='Rechazar pago'>Rechazar</a> </p>
 	        		</div>
 	        		
 					");
@@ -434,7 +434,7 @@ $usuario = User::model()->findByPk($orden->user_id);
         	<h4 class="alert-heading "> Enviar pedido:</h4>
           	<p>
             <input name="" id="tracking" type="text" placeholder="Numero de Tracking">
-            <a onclick="enviarPedido(<?php echo $orden->id; ?>)" class="btn" title="Enviar pedido">Enviar</a> </p>
+            <a onclick="enviarPedido(<?php echo $orden->id; ?>)" class="btn" id="enviarPedido" title="Enviar pedido">Enviar</a> </p>
             Tipo de guía: 
             <?php
             echo $orden->shipCarrier;
@@ -458,11 +458,11 @@ $usuario = User::model()->findByPk($orden->user_id);
         ?>
          <?php 
          if($orden->estado == 4)
-         	echo"<div><a onclick='entregado(".$orden->id.")' class='btn btn-info margin_top margin_bottom pull-left'>Registrar Entrega</a></div>"; ?>
+         	echo"<div><a id='registrarEntrega' onclick='entregado(".$orden->id.")' class='btn btn-info margin_top margin_bottom pull-left'>Registrar Entrega</a></div>"; ?>
         
         <?php if($orden->estado == 1 || $orden->estado == 6
                 || $orden->estado == 7){ ?>
-            <a href="#modalDeposito" role="button" class="btn btn-info margin_top margin_bottom pull-left" data-toggle="modal"><i class="icon-check icon-white"></i> Registrar Pago</a>
+            <a id="registrarBoton"href="#modalDeposito" role="button" class="btn btn-info margin_top margin_bottom pull-left" data-toggle="modal"><i class="icon-check icon-white"></i> Registrar Pago</a>
                 <?php } ?>
         
         
@@ -740,7 +740,14 @@ $usuario = User::model()->findByPk($orden->user_id);
           		echo Yii::app()->numberFormatter->formatDecimal($orden->envio+$orden->seguro). " ".Yii::t('contentForm','currSym')."."; 
         	else
         		echo "<b class='text-success'>GRATIS</b>";  ?></td>
-        </tr>    
+        </tr>  
+        <?php if(isset($orden->descuento_look))
+        {?>
+            <tr>
+         		 <td colspan="10" ><div class="text_align_right"><strong>Descuento por Look</strong></div></td>
+         		 <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->descuento_look, 2, ',', '.'); ?></td>
+           </tr>  	
+        <?php }?>  
         <tr>
           <td colspan="10" ><div class="text_align_right"><strong>Descuento</strong></div></td>
           <td ><?php echo Yii::t('contentForm','currSym'); ?>  <?php echo number_format($orden->descuento, 2, ',', '.'); ?></td>
@@ -910,22 +917,99 @@ Yii::app()->clientScript->registerScript(
 
 <!------------------- MODAL WINDOW O 
 <!-- Modal 1 -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Desea aceptar este pago?</h3>
-  </div>
-  <div class="modal-body">
-    <p><strong>Detalles</strong></p>
-    <ul>
-      <li><strong>Usuaria</strong>: Maria Perez</li>
-      <li><strong>Fecha de compra</strong>: 18/10/1985</li>
-      <li><strong>Monto</strong>: <?php echo Yii::t('contentForm','currSym'); ?> 6.500</li>
-    </ul>
-  </div>
-  <div class="modal-footer"><a href="" title="ver" class="btn-link" target="_blank">Cancelar </a> <a href="#" title="Confirmar" class="btn btn-success">Aceptar el pago</a> </div>
-</div>
+
 <!------------------- MODAL WINDOW OFF --------------- -->
+
+
+<!--Modal de pagos, envios  -->
+
+<div class="wrapper_home hide" id="pagoEnvio">
+            
+    <div class="box_20130928 margin_bottom_small" style="position: fixed;">
+        <?php
+           if($orden->estado == 1 || $orden->estado == 2 || $orden->estado == 6) 
+		   {?>    
+            <h1> 
+                <span><?php
+                if(!UserModule::isAdmin())
+                	echo Yii::t('contentForm', 'Your payment is being processed');
+				else
+					echo Yii::t('contentForm', 'The payment is being processed');        
+                ?></span>
+                <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
+            </h1>
+            
+            <p>
+              <?php echo Yii::t('contentForm', 'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser'); ?>
+                <br>
+                <?php
+                if(UserModule::isAdmin())
+					echo Yii::t('contentForm', 'The purchase will be completed in seconds!'); 
+				else 
+					echo Yii::t('contentForm', 'Your purchase will be completed in seconds!'); 
+				
+				
+				?>                
+            </p>
+           <?php }
+		  if($orden->estado == 4)
+		  {  ?>
+		  	<h1> 
+                <span><?php
+                if(!UserModule::isAdmin())
+                	echo Yii::t('contentForm', 'Your delivery is being processed');
+				else
+					echo Yii::t('contentForm', 'The delivery is being processed');        
+                ?></span>
+                <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
+            </h1>
+            
+            <p>
+              <?php echo Yii::t('contentForm', 'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser'); ?>
+                <br>
+                <?php
+                if(UserModule::isAdmin())
+					echo Yii::t('contentForm', 'The delivery will be completed in seconds!'); 
+				else 
+					echo Yii::t('contentForm', 'Your delivery will be completed in seconds!'); 
+				
+				
+				?>                
+            </p>
+		  	
+		  	
+		  	<?php }
+		  	if($orden->estado == 3)
+			{
+		  	?>
+		  	<h1>
+                <span><?php
+                if(!UserModule::isAdmin())
+                	echo Yii::t('contentForm', 'Your shipping is being processed');
+				else
+					echo Yii::t('contentForm', 'The shipping is being processed');        
+                ?></span>
+                <?php echo CHtml::image(Yii::app()->baseUrl."/images/ajax-loader.gif"); ?>            
+            </h1>
+            
+            <p>
+              <?php echo Yii::t('contentForm', 'Please <span>don\'t press</span> the buttons: <b>Update</b>, <b>Stop</b> or <b>Back</b> on your browser'); ?>
+                <br>
+                <?php
+                if(UserModule::isAdmin())
+					echo Yii::t('contentForm', 'The shipping will be completed in seconds!'); 
+				else 
+					echo Yii::t('contentForm', 'Your shipping will be completed in seconds!'); 
+				
+				
+				?>                
+            </p>
+		  	 
+		  	<?php
+		  	 }?>
+    </div>
+</div>
+
 
 <script>
 function enviar(id)
@@ -957,7 +1041,10 @@ function enviar(id)
 	        
 	      //  if (pattern.test(monto)) { 
 	      //  	monto = monto.replace(',','.'); 
-
+	      
+	         $('#registrarBoton').hide();
+			 $('#modalDeposito').modal('toggle');
+             $("#pagoEnvio").removeClass("hide").find("div").hide().fadeIn();
 	         $.ajax({
 	            type: "post",
 	            url: "<?php echo Yii::app()->createUrl('bolsa/cpago'); ?>",//"../../bolsa/cpago", // action de controlador de bolsa cpago
@@ -1025,7 +1112,10 @@ function enviar(id)
 	function aceptar(id){
 
 		var uno = 'aceptar';
-		
+		$('#confPago').hide();
+		$('#negPago').hide();
+		$("#pagoEnvio").removeClass("hide").find("div").hide().fadeIn();
+
  		$.ajax({
 	        type: "post", 
 	        url: "<?php echo CController::createUrl('orden/validar'); ?>",
@@ -1047,6 +1137,10 @@ function enviar(id)
 		
 		var uno = 'rechazar';
 		
+		$('#confPago').hide();
+		$('#negPago').hide();
+		$("#pagoEnvio").removeClass("hide").find("div").hide().fadeIn();
+		
  		$.ajax({
 	        type: "post", 
 	        url: "../validar", // action
@@ -1067,6 +1161,8 @@ function enviar(id)
 	function enviarPedido(id){ 
 		 
 		var guia = $('#tracking').attr('value');
+		 $('#enviarPedido').hide();
+		 $("#pagoEnvio").removeClass("hide").find("div").hide().fadeIn();
 		
 		$.ajax({ 
 	        type: "post", 
@@ -1087,6 +1183,8 @@ function enviar(id)
 	
 	function entregado(id){ 
 
+ 	$('#registrarEntrega').hide();
+ 	$("#pagoEnvio").removeClass("hide").find("div").hide().fadeIn();
 		$.ajax({
 	        type: "post", 
 	        url: "../entregar", // action 

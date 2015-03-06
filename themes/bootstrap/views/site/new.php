@@ -330,7 +330,7 @@ if(Yii::app()->language=='es_es'){
             <div class="row mediosHome">
                  
                      
-                     <div class="span8 no_margin_left">
+                     <div class="span8">
                         <h4>En los medios</h4>
                         <div class="row-fluid">
                             <div class="span11">
@@ -351,13 +351,13 @@ if(Yii::app()->language=='es_es'){
                      <div class="span4 no_margin_left">
                         <h4>Nos avalan</h4>
                         <div class="row-fluid organizationsHome">
-                            <a title="Wayra" href="http://ve.wayra.org/es/startup/personaling" class="span3">
+                            <a target="_blank" title="Wayra" href="http://ve.wayra.org/es/startup/personaling" class="span3">
                                 <img alt="Wayra" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/wayra.jpg';?>" height="25px"/>
                             </a>
-                            <a title="StartUp Chile" href="http://www.startupchile.org/congrats-welcome-to-start-up-chiles-9th-gen/"  class="span5">
+                            <a target="_blank"title="StartUp Chile" href="http://www.startupchile.org/congrats-welcome-to-start-up-chiles-9th-gen/"  class="span5">
                                 <img alt="StartUp Chile" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/sc.jpg';?>" height="25px"/>
                             </a>
-                            <a title="Concurso Ideas" href="http://wiki.ideas.org.ve/index.php/Portal_e-commerce_Personaling_gana_Concurso_Ideas_2013"  class="span3">
+                            <a  target="_blank" title="Concurso Ideas" href="http://wiki.ideas.org.ve/index.php/Portal_e-commerce_Personaling_gana_Concurso_Ideas_2013"  class="span3">
                                  <img alt="Concurso Ideas" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/ideas.jpg';?>" height="25px"/>
                             </a>
                         </div>    

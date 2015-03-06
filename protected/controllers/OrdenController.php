@@ -1018,13 +1018,18 @@ public function actionReportexls(){
                 $factura = Factura::model()->findByPk($id);
                 $mPDF1 = Yii::app()->ePdf->mpdf('', 'Letter-L', 0, '', 15, 15, 16, 16, 9, 9, 'L');
 
-                if ($_GET['documento'] == "factura") {
-                    $mPDF1->WriteHTML($this->renderPartial('factura', array('factura' => $factura), true));
-                } else if ($documento == "recibo") {
-                    $mPDF1->WriteHTML($this->renderPartial('recibo', array('factura' => $factura), true));
+                if ($_GET['documento'] == "facturaPdf") {
+					$stylesheet = file_get_contents(Yii::app()->getBaseUrl(true).'/css/style.css');
+					$mPDF1->WriteHTML($stylesheet,1);
+                    $mPDF1->WriteHTML($this->renderPartial('facturaPdf', array('factura' => $factura), true));
+                } else if ($documento == "reciboPdf") {
+                    $stylesheet = file_get_contents(Yii::app()->getBaseUrl(true).'/css/style.css');
+					$mPDF1->WriteHTML($stylesheet,1);	
+                    $mPDF1->WriteHTML($this->renderPartial('reciboPdf', array('factura' => $factura), true));
                 }
 
                 $mPDF1->Output();
+                #$html2pdf->Output();
             }
         //$this->render('recibo', array('factura'=>$factura));
 	}
@@ -2236,9 +2241,14 @@ public function actionValidar()
             $objPHPExcel->getProperties()->setCreator("Personaling.com")
                                      ->setLastModifiedBy("Personaling.com")
                                      ->setTitle("Reporte de Órdenes");
-
-            // creando el encabezado
-            $objPHPExcel->setActiveSheetIndex(0)
+			
+			if(Yii::app()->language=='es_ve')
+			{
+				$currency="Monto en Bs";
+				$columnaJ="Monto TDC";
+				$columnaK="Monto Deposito";
+				            // creando el encabezado
+            	$objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A1', 'ID')
                         ->setCellValue('B1', 'Subtotal sin IVA')
                         ->setCellValue('C1', 'Total de IVA')
@@ -2246,11 +2256,42 @@ public function actionValidar()
                         ->setCellValue('E1', 'Subtotal (+Iva-Descuento)')
                         ->setCellValue('F1', 'Envio')
                         ->setCellValue('G1', 'Total')
-                        ->setCellValue('H1', 'Monto por Cupón €')
+                        ->setCellValue('H1', $currency)
                     
                         ->setCellValue('I1', 'Tipos de Pago')
-                        ->setCellValue('J1', 'Monto Sabadell')
-                        ->setCellValue('K1', 'Monto Paypal')
+                        ->setCellValue('J1', $columnaJ) // Monto Sabadell en Espana, en Venezuela Monto Tarjeta de credito
+                        ->setCellValue('K1', $columnaK) // Monto Paypal en Espana, Monto Deposito en Venezuela
+                        ->setCellValue('L1', 'Monto Balance')
+                    
+                        ->setCellValue('M1', 'Fecha')
+                        ->setCellValue('N1', 'Nombre y Apellido')
+                        ->setCellValue('O1', 'Direccion Envio')
+                        ->setCellValue('P1', 'Telefono')
+                        ->setCellValue('Q1', 'Codigo Postal')
+                        ->setCellValue('R1', 'Email')
+                        ->setCellValue('S1', 'Fecha Creación')
+						->setCellValue('T1', 'Cedula')
+                        ;
+			}	
+			else
+			{
+				$currency="Monto en €";
+				$columnaJ="Monto Sabadell";
+				$columnaK="Monto Paypal";
+				            // creando el encabezado
+           		 $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A1', 'ID')
+                        ->setCellValue('B1', 'Subtotal sin IVA')
+                        ->setCellValue('C1', 'Total de IVA')
+                        ->setCellValue('D1', 'Total de Descuentos')
+                        ->setCellValue('E1', 'Subtotal (+Iva-Descuento)')
+                        ->setCellValue('F1', 'Envio')
+                        ->setCellValue('G1', 'Total')
+                        ->setCellValue('H1', $currency)
+                    
+                        ->setCellValue('I1', 'Tipos de Pago')
+                        ->setCellValue('J1', $columnaJ) // Monto Sabadell en Espana, en Venezuela Monto Tarjeta de credito
+                        ->setCellValue('K1', $columnaK) // Monto Paypal en Espana, Monto Deposito en Venezuela
                         ->setCellValue('L1', 'Monto Balance')
                     
                         ->setCellValue('M1', 'Fecha')
@@ -2261,6 +2302,9 @@ public function actionValidar()
                         ->setCellValue('R1', 'Email')
                         ->setCellValue('S1', 'Fecha Creación')
                         ;
+			}
+				
+	
 
             $colI = 'A';
             $colF = 'S';
@@ -2300,6 +2344,10 @@ public function actionValidar()
                         $montoP = $detalle->monto;                        
                     }else if($detalle->tipo_pago == Detalle::USO_BALANCE){
                         $montoB = $detalle->monto;
+                    }else if($detalle->tipo_pago == Detalle::TDC_INSTAPAGO){
+                        $montoS = $detalle->monto;
+                    }else if($detalle->tipo_pago == Detalle::DEP_TRANSF){
+                        $montoP = $detalle->monto;
                     }
                         
                 }
@@ -2307,7 +2355,21 @@ public function actionValidar()
                 $user = $orden->user;
                 
                 //Agregar la fila al documento xls
-                $objPHPExcel->setActiveSheetIndex(0)
+                if(Yii::app()->language=='es_ve')
+                {
+                	if(isset( Detalle::model()->findByAttributes(array('orden_id'=>$orden->id))->cedula))// registros en develop NULL
+					{
+						$cedula=Detalle::model()->findByAttributes(array('orden_id'=>$orden->id))->cedula;
+					}	
+					else 
+					{
+						$cedula="No se tiene cedula para esta orden";		
+					}
+						
+					
+					
+                	///es el mismo excel solo que en Venezuela lleva una columna mas al final y no se puede validar dentro del SetCellValue
+                	$objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A'.($i), $orden->id) 
                         ->setCellValue('B'.($i), $orden->subtotal)
                         ->setCellValue('C'.($i), $orden->iva)                        
@@ -2330,7 +2392,38 @@ public function actionValidar()
                         ->setCellValue('Q'.($i), $orden->direccionEnvio->codigoPostal->codigo)
                         ->setCellValue('R'.($i), $user->email)
                         ->setCellValue('S'.($i), $user->create_at)
+						#->setCellValue('T'.($i), $orden->detalle->cedula)//ojo
+						->setCellValue('T'.($i), $cedula)
                         ;
+				}
+				else
+				{
+					    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A'.($i), $orden->id) 
+                        ->setCellValue('B'.($i), $orden->subtotal)
+                        ->setCellValue('C'.($i), $orden->iva)                        
+                        ->setCellValue('D'.($i), $orden->descuento)                        
+                        ->setCellValue('E'.($i), Yii::app()->numberFormatter->format(
+                                "#,##0.00",$orden->subtotal + $orden->iva - $orden->descuento) )  
+                        ->setCellValue('F'.($i), $orden->envio)                        
+                        ->setCellValue('G'.($i), $orden->total)
+                        ->setCellValue('H'.($i), $cuponUsado)
+                        
+                        ->setCellValue('I'.($i), $tiposPago)
+                        ->setCellValue('J'.($i), $montoS)
+                        ->setCellValue('K'.($i), $montoP)
+                        ->setCellValue('L'.($i), $montoB)
+                        
+                        ->setCellValue('M'.($i), date("d-m-Y h:i:s a", strtotime($orden->fecha)))
+                        ->setCellValue('N'.($i), $user->profile->getNombre())
+                        ->setCellValue('O'.($i), $orden->direccionEnvio->dirUno)
+                        ->setCellValue('P'.($i), $orden->direccionEnvio->telefono)
+                        ->setCellValue('Q'.($i), $orden->direccionEnvio->codigoPostal->codigo)
+                        ->setCellValue('R'.($i), $user->email)
+                        ->setCellValue('S'.($i), $user->create_at)
+                        ;	
+				}
+                
 
                 $i++;
             }

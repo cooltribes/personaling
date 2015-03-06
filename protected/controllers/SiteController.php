@@ -5,14 +5,14 @@ class SiteController extends Controller
 	/**
 	 * @return array action filters
 	 */
-	
+	 
 	public function filters()
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
 		);
-	}
-
+	} 
+ 
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -20,7 +20,7 @@ class SiteController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(
+		return array( 
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('productoimagen','index','top','error','contacto','login','logout', 
                                     'acerca_de','activos_graficos','publicaciones_de_prensa',
@@ -28,7 +28,7 @@ class SiteController extends Controller
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',
                                     'preguntas_frecuentes', 'equipo_personaling','captcha',
                                     'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos','formSiteImage',
-                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve','terminos_condiciones_ps'),
+                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve','terminos_condiciones_ps','poderosas'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -772,14 +772,26 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 				Yii::app()->user->setFlash("success", "Se ha cargado con éxito el archivo. Puede ver los detalles de la carga a continuación.<br>"); 	
 			} // if
 			
-			$this->render('zohoCases');			 
+			$this->render('zohoCases');			  
 		}
 		
         public function actionHomeConf(){
             $siteIm=new SiteImage;
             $this->render('homeConf',array('siteIm'=>$siteIm));  
         }
+         
+         public function actionPoderosas(){
+            if(Yii::app()->language=='es_ve')
+                $this->render('poderosas');
+            else
+                throw new CHttpException(404,'Esta pagina no se encuentra disponible.');  
+        } 
         
+         public function actionPoderosas(){
+            
+            $this->render('poderosas');  
+        }
+
         public function actionFormSiteImage() 
         { 
                        

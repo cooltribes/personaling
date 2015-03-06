@@ -263,6 +263,7 @@
                             'acerca-personaling'=>'site/acerca_de',
                             'registro-personaling'=>'user/registration',
                             'inicio-personaling'=>'user/login',
+                            'me-siento-poderosa'=>'site/poderosas',
                             'reportico'=>'reportico',
                             'tt'=>'site/tienda',
                             'look/<id:\d+>/ps/<ps_id:\d+>'=>'look/view',

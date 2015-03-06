@@ -1082,5 +1082,31 @@ if(!Yii::app()->user->isGuest){
   
 ?>
 
+<!-- Google Code para etiquetas de remarketing -->
+<!--
+Es posible que las etiquetas de remarketing todavía no estén asociadas a la información de identificación personal o que estén en páginas relacionadas con las categorías delicadas. Para obtener más información e instrucciones sobre cómo configurar la etiqueta, consulte http://google.com/ads/remarketingsetup.
+-->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 957544716;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/957544716/?value=0&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<script src="//platform.twitter.com/oct.js" type="text/javascript"></script>
+<script type="text/javascript">
+twttr.conversion.trackPid('l5neu', { tw_sale_amount: 0, tw_order_quantity: 0 });</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt="" src="https://analytics.twitter.com/i/adsct?txn_id=l5neu&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" />
+<img height="1" width="1" style="display:none;" alt="" src="//t.co/i/adsct?txn_id=l5neu&p_id=Twitter&tw_sale_amount=0&tw_order_quantity=0" /></noscript>
+
 </body>
 </html>

@@ -5908,5 +5908,5 @@ public function actionReportexls(){
 			//echo "fin de ciclo"; 			
 			//echo "<br><br>";
 	}
-	    
+		
 }

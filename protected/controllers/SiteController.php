@@ -786,11 +786,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
             else
                 throw new CHttpException(404,'Esta pagina no se encuentra disponible.');  
         } 
-        
-         public function actionPoderosas(){
-            
-            $this->render('poderosas');  
-        }
+      
 
         public function actionFormSiteImage() 
         { 

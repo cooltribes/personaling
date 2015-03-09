@@ -20,7 +20,7 @@ class SiteController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(
+		return array( 
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('productoimagen','index','top','error','contacto','login','logout', 
                                     'acerca_de','activos_graficos','publicaciones_de_prensa',
@@ -787,6 +787,11 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
                 throw new CHttpException(404,'Esta pagina no se encuentra disponible.');  
         } 
         
+         public function actionPoderosas(){
+            
+            $this->render('poderosas');  
+        }
+
         public function actionFormSiteImage() 
         { 
                        

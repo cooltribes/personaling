@@ -1018,13 +1018,18 @@ public function actionReportexls(){
                 $factura = Factura::model()->findByPk($id);
                 $mPDF1 = Yii::app()->ePdf->mpdf('', 'Letter-L', 0, '', 15, 15, 16, 16, 9, 9, 'L');
 
-                if ($_GET['documento'] == "factura") {
-                    $mPDF1->WriteHTML($this->renderPartial('factura', array('factura' => $factura), true));
-                } else if ($documento == "recibo") {
-                    $mPDF1->WriteHTML($this->renderPartial('recibo', array('factura' => $factura), true));
+                if ($_GET['documento'] == "facturaPdf") {
+					$stylesheet = file_get_contents(Yii::app()->getBaseUrl(true).'/css/style.css');
+					$mPDF1->WriteHTML($stylesheet,1);
+                    $mPDF1->WriteHTML($this->renderPartial('facturaPdf', array('factura' => $factura), true));
+                } else if ($documento == "reciboPdf") {
+                    $stylesheet = file_get_contents(Yii::app()->getBaseUrl(true).'/css/style.css');
+					$mPDF1->WriteHTML($stylesheet,1);	
+                    $mPDF1->WriteHTML($this->renderPartial('reciboPdf', array('factura' => $factura), true));
                 }
 
                 $mPDF1->Output();
+                #$html2pdf->Output();
             }
         //$this->render('recibo', array('factura'=>$factura));
 	}

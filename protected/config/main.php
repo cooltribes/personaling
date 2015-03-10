@@ -191,7 +191,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost; dbname=db_personalingT1',
+			'connectionString' => 'mysql:host=localhost; dbname=db_personalingSTAGE',
            	'emulatePrepare' => true,
            	'username' => 'root',
            	'password' => '',

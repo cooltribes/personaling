@@ -45,7 +45,7 @@ class ProductoController extends Controller
                         'reporte','reportexls','reportecsv', "createExcel", 'plantillaDescuentos',
                         'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
                         'importarExternos','plantillaExternos',"sendtozoho",
-                        "productoszoho","enviarzoho","externtozoho","updatezohoqty",) ,
+                        "productoszoho","enviarzoho","externtozoho","updatezohoqty","recomendacion",) ,
                     //'users'=>array('admin'),
                     'expression' => 'UserModule::isAdmin()',
                 ),
@@ -5907,6 +5907,14 @@ public function actionReportexls(){
 			}
 			//echo "fin de ciclo"; 			
 			//echo "<br><br>";
+	
 	}
 		
+			
+		public function actionRecomendacion()
+		{
+			
+			$this->render('cargar_archivo'); 
+			
+		}
 }

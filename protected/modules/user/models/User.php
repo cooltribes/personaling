@@ -1049,7 +1049,7 @@ class User extends CActiveRecord {
             $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
             $match = addcslashes($match, '%_');
             return ShoppingMetric::model()->count(
-                'data LIKE :match',
+                'data LIKE :match and click_validez=1',
                 array(':match' => "%$match%")
             );
         }

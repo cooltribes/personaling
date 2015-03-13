@@ -291,6 +291,7 @@ $template = '{summary}
         <option>Outlet</option>
         <option>Precio Especial</option>
         <option>Destacar</option>
+        <option>Des-Destacar</option>
       </select>
     </div>
 

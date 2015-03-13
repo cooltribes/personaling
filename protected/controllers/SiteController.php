@@ -28,7 +28,7 @@ class SiteController extends Controller
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',
                                     'preguntas_frecuentes', 'equipo_personaling','captcha',
                                     'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos','formSiteImage',
-                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve','terminos_condiciones_ps','poderosas'),
+                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve','terminos_condiciones_ps','poderosas','modalVoto'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -781,13 +781,119 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
         }
          
          public function actionPoderosas(){
+            $response=array();    
+            if(isset($_POST['email']))
+            {   
+                $usuario = User::model()->findByAttributes(array('email'=>$_POST['email']));
+        
+                if(is_null($usuario)){
+                        $user=new User;
+                        $user->username=$_POST['email']; 
+                        $user->email=$_POST['email']; 
+                        $user->password=UserModule::encrypting($_POST['password']); 
+                        $user->activkey = UserModule::encrypting(microtime() . $user->password);
+                        $user->superuser = 0;
+                        $user->status = 0;
+                        if(!$user->save())
+                        {
+                            print_r($user->errors);
+                            Yii::app()->end;
+                        }
+                        
+                                   
+                        $profile=new Profile;
+                        $profile->regMode = true;
+                        $profile->first_name=$_POST['first_name'];
+                        $profile->last_name=$_POST['last_name'];
+                        $profile->user_id = $user->id;
+                        $profile->year='1960';
+                        $profile->month='10';
+                        $profile->day='20';
+                        $profile->sex=1;
+                        
+
+                        if(!$profile->save())
+                        {
+                            print_r($profile->errors);
+                    
+                            Yii::app()->end;
+                        }
+
+                        if(Yii::app()->params["zohoActive"] == TRUE) {// Zoho Activo    
+                            // save user to zoho
+                            $zoho = new Zoho();
+                            $zoho->email = $user->email;
+                            $zoho->first_name = 
+                            $zoho->last_name = $profile->last_name;
+                            
+
+                            $zoho->admin = 'No';
+                            $zoho->ps = 'No';
+                            $zoho->tipo = "Externo";
+                            $zoho->no_suscrito = true;
+
+                           
+                                $zoho->admin = 'No';
+                            
+                           
+                                $zoho->ps = 'No';
+                            
+                            //$zoho->save_potential();
+
+                            $result = $zoho->save_potential();
+
+                            $xml = simplexml_load_string($result);
+                            $id = (int)$xml->result[0]->recorddetail->FL[0];
+                            $user->saveAttributes(array('zoho_id'=>$id,'tipo_zoho'=>0));
+                            
+                        }
+
+                         $identity = new UserIdentity($user->username, '');
+                         $identity->poderosas($user->id,'');                
+                         Yii::app()->user->login($identity, 3600);
+                         $response['status']=ok;
+                         $response['html']=$this->renderPartial('modal_voto', array('voto'=>true,'new'=>true),true);
+                         
+                         
+                   
+                }else{
+                    if(Yii::app()->getModule('user')->encrypting($_POST['password'])!==$usuario->password){
+                         $identity = new UserIdentity($usuario->username, '');
+                         $identity->poderosas($usuario->id,$usuario->username);                
+                         Yii::app()->user->login($identity, 3600);
+                         $response['html']=$this->renderPartial('modal_voto', array('voto'=>true,'new'=>false),true);
+                    }
+                }
+                
+                Yii::app()->end();
+            }
+             
             if(Yii::app()->language=='es_ve')
-                $this->render('poderosas');
+                $this->render('poderosas2',array('tweets'=>Yii::app()->params['tweets']));
             else
                 throw new CHttpException(404,'Esta pagina no se encuentra disponible.');  
-        } 
-      
-
+        }
+         
+         public function votoPoderoso(){
+             $response=array();    
+             if(isset($_POST['voto'])){                 
+                 $obj=UserPromocion::model()->findByPk(Yii::app()->user->id);
+                 if(is_null($obj)){
+                     $obj->user_id=Yii::app()->user->id;
+                     $obj->voto=$_POST['voto'];
+                     $obj->promocion_id=1;
+                     if($obj->save()){
+                         $response['status']='success';
+                     }else{
+                         $response['status']='error';
+                     }                     
+                 } 
+                else{
+                    $response['status']='repeated';
+                }            
+                 
+             }
+         } 
         public function actionFormSiteImage() 
         { 
                        
@@ -863,6 +969,14 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
             }
             
         }
+
+    public function actionModalVoto(){
+        $response=array();    
+        if(isset($_POST['id']))
+            $response['form']= $this->renderPartial('modal_voto', array('id'=>isset($_POST['id']),'tweet'=>Yii::app()->params['tweets'][isset($_POST['id'])]),true);
+        
+        echo CJSON::encode($response); 
+    }
 
 
         

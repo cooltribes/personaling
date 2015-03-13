@@ -9,7 +9,7 @@
      * @author Fernando Torres | Marciano Studio
      * @version 1.0
      */
- 
+  
     class Environment {
  
         const DEVELOPMENT = 100;
@@ -475,7 +475,39 @@
                         'clientZIP'=>'6031',
                         'clientPhone'=>'0295-2676317',
                         'clientEmail'=>'info@personaling.com',
-                        '    ',
+                        '    ', 
+                        'tweets'=>array(
+                                '0'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que las venezolanas somos no solo mujeres hermosas, si no inteligentes y decididas <a href="https://twitter.com/hashtag/Empoderamiento?src=hash">#Empoderamiento</a></p>&mdash; Corina Trujillo (@kory482) <a href="https://twitter.com/kory482/status/576393171334242304">marzo 13, 2015</a></blockquote>
+                                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>   ',
+                                            'user'=>'@julianAssange', ),
+                               '1'=> array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que las venezolanas somos no solo mujeres hermosas, si no inteligentes y decididas <a href="https://twitter.com/hashtag/Empoderamiento?src=hash">#Empoderamiento</a></p>&mdash; Corina Trujillo (@kory482) <a href="https://twitter.com/kory482/status/576393171334242304">marzo 13, 2015</a></blockquote>
+                                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>   ',
+                                            'user'=>'@julianAssange', ),
+                                '2'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que las venezolanas somos no solo mujeres hermosas, si no inteligentes y decididas <a href="https://twitter.com/hashtag/Empoderamiento?src=hash">#Empoderamiento</a></p>&mdash; Corina Trujillo (@kory482) <a href="https://twitter.com/kory482/status/576393171334242304">marzo 13, 2015</a></blockquote>
+                                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>   ',
+                                            'user'=>'@julianAssange', ),
+                                '3'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que las venezolanas somos no solo mujeres hermosas, si no inteligentes y decididas <a href="https://twitter.com/hashtag/Empoderamiento?src=hash">#Empoderamiento</a></p>&mdash; Corina Trujillo (@kory482) <a href="https://twitter.com/kory482/status/576393171334242304">marzo 13, 2015</a></blockquote>
+                                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>   ',
+                                            'user'=>'@julianAssange', ),
+                                '4'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que las venezolanas somos no solo mujeres hermosas, si no inteligentes y decididas <a href="https://twitter.com/hashtag/Empoderamiento?src=hash">#Empoderamiento</a></p>&mdash; Corina Trujillo (@kory482) <a href="https://twitter.com/kory482/status/576393171334242304">marzo 13, 2015</a></blockquote>
+                                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>   ',
+                                            'user'=>'@julianAssange', ),
+                                '5'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que las venezolanas somos no solo mujeres hermosas, si no inteligentes y decididas <a href="https://twitter.com/hashtag/Empoderamiento?src=hash">#Empoderamiento</a></p>&mdash; Corina Trujillo (@kory482) <a href="https://twitter.com/kory482/status/576393171334242304">marzo 13, 2015</a></blockquote>
+                                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>   ',
+                                            'user'=>'@julianAssange', ),
+                                '6'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que las venezolanas somos no solo mujeres hermosas, si no inteligentes y decididas <a href="https://twitter.com/hashtag/Empoderamiento?src=hash">#Empoderamiento</a></p>&mdash; Corina Trujillo (@kory482) <a href="https://twitter.com/kory482/status/576393171334242304">marzo 13, 2015</a></blockquote>
+                                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>   ',
+                                            'user'=>'@julianAssange', ),
+                                '7'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que las venezolanas somos no solo mujeres hermosas, si no inteligentes y decididas <a href="https://twitter.com/hashtag/Empoderamiento?src=hash">#Empoderamiento</a></p>&mdash; Corina Trujillo (@kory482) <a href="https://twitter.com/kory482/status/576393171334242304">marzo 13, 2015</a></blockquote>
+                                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>   ',
+                                            'user'=>'@julianAssange', ),
+                                '8'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que las venezolanas somos no solo mujeres hermosas, si no inteligentes y decididas <a href="https://twitter.com/hashtag/Empoderamiento?src=hash">#Empoderamiento</a></p>&mdash; Corina Trujillo (@kory482) <a href="https://twitter.com/kory482/status/576393171334242304">marzo 13, 2015</a></blockquote>
+                                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>   ',
+                                            'user'=>'@julianAssange', ),
+                                '9'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que las venezolanas somos no solo mujeres hermosas, si no inteligentes y decididas <a href="https://twitter.com/hashtag/Empoderamiento?src=hash">#Empoderamiento</a></p>&mdash; Corina Trujillo (@kory482) <a href="https://twitter.com/kory482/status/576393171334242304">marzo 13, 2015</a></blockquote>
+                                            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>   ',
+                                            'user'=>'@julianAssange', ),
+                                ),
                         'metodosPago'=> array(
                                 'bkCard' => false,
                                 'paypal' => false, 
@@ -544,7 +576,7 @@
                         'clientZIP'=>'08003',
                         'clientPhone'=>'934 344 634',
                         'clientEmail'=>'info@personaling.com',
-                        '    ',
+                        
                         'pagoPS'=> array(           
                                 'paypal' => true,
                                 'banco' => true,

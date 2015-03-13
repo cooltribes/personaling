@@ -83,6 +83,14 @@ class UserIdentity extends CUserIdentity
 		return $this->errorCode;
 	}
 	
+    public function poderosas($id,$name){
+        $this->_id = $id;
+            $this->username = $name;
+            $this->errorCode = self::ERROR_NONE;
+        
+        return $this->errorCode;
+    }
+    
 	public function twitter()
 	{
 		$user=User::model()->notsafe()->findByAttributes(array('username'=>$this->username));

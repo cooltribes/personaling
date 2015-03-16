@@ -790,7 +790,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
             }
             
                 
-            if(isset($_POST['email']))
+            if(isset($_POST['email'])&&isset($_POST['password'])&&isset($_POST['first_name'])&&isset($_POST['last_name']))
             {
                
                                
@@ -961,27 +961,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
                     return $response;
 
         }
-         
-         public function votoPoderoso(){
-             $response=array();    
-             if(isset($_POST['voto'])){                 
-                 $obj=UserPromocion::model()->findByPk(Yii::app()->user->id);
-                 if(is_null($obj)){
-                     $obj->user_id=Yii::app()->user->id;
-                     $obj->voto=$_POST['voto'];
-                     $obj->promocion_id=1;
-                     if($obj->save()){
-                         $response['status']='success';
-                     }else{
-                         $response['status']='error';
-                     }                     
-                 } 
-                else{
-                    $response['status']='repeated';
-                }            
-                 
-             }
-         } 
+
         public function actionFormSiteImage() 
         { 
                        

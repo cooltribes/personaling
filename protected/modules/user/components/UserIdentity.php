@@ -11,7 +11,7 @@ class UserIdentity extends CUserIdentity
 	const ERROR_EMAIL_INVALID=3;
 	const ERROR_STATUS_NOTACTIV=4;
 	const ERROR_STATUS_BAN=5;
-        const ERROR_STATUS_APPLY = 6;
+    const ERROR_STATUS_APPLY = 6;
 	const ERROR_STATUS_DEL = 7;
         
 	/**
@@ -83,14 +83,6 @@ class UserIdentity extends CUserIdentity
 		return $this->errorCode;
 	}
 	
-    public function poderosas($id,$name){
-        $this->_id = $id;
-            $this->username = $name;
-            $this->errorCode = self::ERROR_NONE;
-        
-        return $this->errorCode;
-    }
-    
 	public function twitter()
 	{
 		$user=User::model()->notsafe()->findByAttributes(array('username'=>$this->username));

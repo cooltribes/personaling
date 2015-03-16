@@ -1,32 +1,83 @@
-<div class="margin_top" style="height:280px; background-color:#BBB">
-    
+<div class="margin_top">
+    <img width="100%" src="<?php echo Yii::app()->getBaseUrl();?>/images/concurso/concursoF2.jpg">
 </div>
-
+<style>
+    
+    
+</style>
 <p class="margin_top text_align_center" >
     Miles de mujeres en toda Venezuela compartieron con nosotros y con el mundo las razones que tienen para sentirse poderosas ¡Y ahora te toca a ti decidir quién es la ganadora de nuestro concurso #MeSientoPoderosa por un Día Personaling (Personaling Day) de la mano de nuestros fabulosos Personal Shoppers y Estilistas
     
 </p>
 <div class="row margin_top">
-    <div class="span10 offset1">
+    <div class="span10 offset1 ">
         <section class="row-fluid">
-           <?php foreach (User::model()->psDestacados(4) as $ps1): ?>
+
                         <article class="span3 pShopper">
-                        <a href="<?php echo $ps1->profile->getUrl(); ?>">                        
+                        <a href="http://www.personaling.com.ve/HarryLevy" title="Harry Levy">                        
                             <div>
-                                <img alt="<?php echo $ps1->profile->first_name . " " . $ps1->profile->last_name; ?>" src="<?php echo $ps1->getAvatar(); ?>" width="100%"/>                        
+                                <img alt="Harry Levy" src="<?php echo Yii::app()->getBaseUrl();?>/images/concurso/hlevy.jpg" width="100%"/>                        
                             </div>
                          </a>   
                             <div class="bio">
-                                  <a href="<?php echo $ps1->profile->getUrl(); ?>">   
+                                  <a href="http://www.personaling.com.ve/HarryLevy">   
                                       <h4 class="text_center_align">
-                                          <?php echo $ps1->profile->getNombre(); ?>
+                                          Harry Levy
                                       </h4>
                                  </a>
                                <!--  <small> <?php //echo $ps1->profile->bio ?> </small>  -->                     
                             </div>
                         </article>
                         
-                    <?php endforeach; ?>
+                        <article class="span3 pShopper">
+                        <a href="http://tubellezaparallevar.com/" title="Bárbara Rodríguez">                        
+                            <div>
+                                <img alt="Bárbara Rodríguez" src="<?php echo Yii::app()->getBaseUrl();?>/images/concurso/brodriguez.jpg" width="100%"/>                        
+                            </div>
+                         </a>   
+                            <div class="bio">
+                                  <a href="http://tubellezaparallevar.com/">   
+                                      <h4 class="text_center_align">
+                                          Bárbara Rodríguez
+                                      </h4>
+                                 </a>
+                               <!--  <small> <?php //echo $ps1->profile->bio ?> </small>  -->                     
+                            </div>
+                        </article>
+                        
+                        <article class="span3 pShopper">
+                        <a href="https://twitter.com/AgustinBozzo" title="Agustín Bozzo">                        
+                            <div>
+                                <img alt="Agustín Bozzo" src="<?php echo Yii::app()->getBaseUrl();?>/images/concurso/abozzo.jpg" width="100%"/>                        
+                            </div>
+                         </a>   
+                            <div class="bio">
+                                  <a href="https://twitter.com/AgustinBozzo">   
+                                      <h4 class="text_center_align">
+                                          Agustín Bozzo
+                                      </h4>
+                                 </a>
+                               <!--  <small> <?php //echo $ps1->profile->bio ?> </small>  -->                     
+                            </div>
+                        </article>
+                        
+                        <article class="span3 pShopper">
+                        <a href="https://twitter.com/HGKripsy" title="Kripsy Herrera">                        
+                            <div>
+                                <img alt="Kripsy Herrera" src="<?php echo Yii::app()->getBaseUrl();?>/images/concurso/kherrera.jpg" width="100%"/>                        
+                            </div>
+                         </a>   
+                            <div class="bio">
+                                  <a href="https://twitter.com/HGKripsy">   
+                                      <h4 class="text_center_align">
+                                          Kripsy Herrera
+                                      </h4>
+                                 </a>
+                               <!--  <small> <?php //echo $ps1->profile->bio ?> </small>  -->                     
+                            </div>
+                        </article>
+                        
+
            
         </section>
     </div>
@@ -45,15 +96,15 @@
 
     foreach($tweets as $key=>$tweet):
 ?>
-    <article class="span4 <?php echo $key==9?'offset4':'' ?> margin_bottom">
+    <article class="contest-box span4 <?php echo $key==9?'offset4':'' ?> margin_bottom well_outer">
         
-            <div>
+            <div class="tweet-frame">
                <?php echo $tweet['code']; ?>  
                   
               
             </div>
-            <div>
-                 <a id="t0" class="btn btn-danger width_complete no_padding_left no_padding_right pointer " onclick="votar(1)"> Vota por <?php echo $tweet['user'] ?></a>
+            <div class="button-vote">
+                 <a id="t0" class="btn btn-large btn-danger width_complete no_padding_left no_padding_right pointer " onclick="votar(<?php echo $key; ?>)"> Vota por <?php echo $tweet['user'] ?></a>
             </div>
    
     </article>
@@ -98,11 +149,6 @@
                       }
                 });
 }
-
-
-
-
-
 
     
 </script>

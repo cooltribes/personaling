@@ -781,97 +781,185 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
         }
          
          public function actionPoderosas(){
-            $response=array();    
-            if(isset($_POST['email']))
-            {   
-                $usuario = User::model()->findByAttributes(array('email'=>$_POST['email']));
-        
-                if(is_null($usuario)){
-                        $user=new User;
-                        $user->username=$_POST['email']; 
-                        $user->email=$_POST['email']; 
-                        $user->password=UserModule::encrypting($_POST['password']); 
-                        $user->activkey = UserModule::encrypting(microtime() . $user->password);
-                        $user->superuser = 0;
-                        $user->status = 0;
-                        if(!$user->save())
-                        {
-                            print_r($user->errors);
-                            Yii::app()->end;
-                        }
-                        
-                                   
-                        $profile=new Profile;
-                        $profile->regMode = true;
-                        $profile->first_name=$_POST['first_name'];
-                        $profile->last_name=$_POST['last_name'];
-                        $profile->user_id = $user->id;
-                        $profile->year='1960';
-                        $profile->month='10';
-                        $profile->day='20';
-                        $profile->sex=1;
-                        
-
-                        if(!$profile->save())
-                        {
-                            print_r($profile->errors);
-                    
-                            Yii::app()->end;
-                        }
-
-                        if(Yii::app()->params["zohoActive"] == TRUE) {// Zoho Activo    
-                            // save user to zoho
-                            $zoho = new Zoho();
-                            $zoho->email = $user->email;
-                            $zoho->first_name = 
-                            $zoho->last_name = $profile->last_name;
-                            
-
-                            $zoho->admin = 'No';
-                            $zoho->ps = 'No';
-                            $zoho->tipo = "Externo";
-                            $zoho->no_suscrito = true;
-
-                           
-                                $zoho->admin = 'No';
-                            
-                           
-                                $zoho->ps = 'No';
-                            
-                            //$zoho->save_potential();
-
-                            $result = $zoho->save_potential();
-
-                            $xml = simplexml_load_string($result);
-                            $id = (int)$xml->result[0]->recorddetail->FL[0];
-                            $user->saveAttributes(array('zoho_id'=>$id,'tipo_zoho'=>0));
-                            
-                        }
-
-                         $identity = new UserIdentity($user->username, '');
-                         $identity->poderosas($user->id,'');                
-                         Yii::app()->user->login($identity, 3600);
-                         $response['status']=ok;
-                         $response['html']=$this->renderPartial('modal_voto', array('voto'=>true,'new'=>true),true);
-                         
-                         
-                   
-                }else{
-                    if(Yii::app()->getModule('user')->encrypting($_POST['password'])!==$usuario->password){
-                         $identity = new UserIdentity($usuario->username, '');
-                         $identity->poderosas($usuario->id,$usuario->username);                
-                         Yii::app()->user->login($identity, 3600);
-                         $response['html']=$this->renderPartial('modal_voto', array('voto'=>true,'new'=>false),true);
-                    }
-                }
+            $response=array();
+            if(!Yii::app()->user->isGuest&&isset($_POST['id'])){
+                  $response=$this->loggedVote(false);
+                  echo CJSON::encode($response); 
+                  Yii::app()->end(); 
+                 
+            }
+            
                 
-                Yii::app()->end();
+            if(isset($_POST['email']))
+            {
+               
+                               
+                    $new=false;       
+                    $usuario = User::model()->findByAttributes(array('username'=>$_POST['email']));
+                    $usuario2 = User::model()->findByAttributes(array('email'=>$_POST['email']));
+                 
+                    
+            
+                    if(is_null($usuario)&&is_null($usuario2)){
+                            $user=new User;
+                            $user->username=$_POST['email']; 
+                            $user->email=$_POST['email']; 
+                            $user->password=UserModule::encrypting($_POST['password']); 
+                            $user->activkey = UserModule::encrypting(microtime() . $user->password);
+                            $user->superuser = 0;
+                            $user->status = 0;
+                            if(!$user->save())
+                            {
+                                //error user    
+                                $response['status']='ok';
+                                $response['html']=$this->renderPartial('modal_voto', array('voto'=>true,'error'=>'error user '),true);
+                                
+                                
+                            }else{
+                                
+                                $profile=new Profile;
+                                $profile->regMode = true;
+                                $profile->first_name=$_POST['first_name'];
+                                $profile->last_name=$_POST['last_name'];
+                                $profile->user_id = $user->id;
+                                $profile->year='1960';
+                                $profile->month='10';
+                                $profile->day='20';
+                                $profile->sex=1;
+                                
+        
+                                if(!$profile->save())
+                                {
+                                        
+                                    //error profile 
+                                    $response['status']='ok';
+                                    $response['html']=$this->renderPartial('modal_voto', array('voto'=>true,'error'=>'error profile'),true);
+                                    
+                                }
+                                else{
+                                    if(Yii::app()->params["zohoActive"] == TRUE) {// Zoho Activo    
+                                        // save user to zoho
+                                        $zoho = new Zoho();
+                                        $zoho->email = $user->email;
+                                        $zoho->first_name = 
+                                        $zoho->last_name = $profile->last_name;
+                                        
+            
+                                        $zoho->admin = 'No';
+                                        $zoho->ps = 'No';
+                                        $zoho->tipo = "Externo";
+                                        $zoho->no_suscrito = true;
+            
+                                       
+                                            $zoho->admin = 'No';
+                                        
+                                       
+                                            $zoho->ps = 'No';
+                                        
+                                        //$zoho->save_potential();
+            
+                                        $result = $zoho->save_potential();
+            
+                                        $xml = simplexml_load_string($result);
+                                        $id = (int)$xml->result[0]->recorddetail->FL[0];
+                                        $user->saveAttributes(array('zoho_id'=>$id,'tipo_zoho'=>0));
+                                        
+                                    }
+                                    $session = new CHttpSession;
+                                    $session->open();
+                                    $session['username'] = $user->username;
+                                    
+                                    Yii::app()->user->setState('username', $user->username);
+                                    Yii::app()->user->setState('id', $user->id);
+                                    Yii::app()->user->allowAutoLogin = true;
+                                    
+                                    $identity = new UserIdentity($user->username, '');
+                                    $identity->facebook();
+                                    
+                                    Yii::app()->user->login($identity, 3600);
+                                    $new=true;
+                                    
+                                    
+                                    
+                                }
+    
+                                
+                            }
+                                                     
+                       
+                    }else{
+                            $identity = new UserIdentity($_POST['email'], $_POST['password']);
+                            if($identity->authenticate()){
+                                $session = new CHttpSession;
+                                    $session->open();
+                                    $session['username'] = $usuario->username;
+                                    
+                                    Yii::app()->user->setState('username', $usuario->username);
+                                    Yii::app()->user->setState('id', $usuario->id);
+                                    Yii::app()->user->allowAutoLogin = true;
+                                    
+                               
+                                    $identity->facebook();
+                                    
+                                    Yii::app()->user->login($identity, 3600);
+                            }
+                            
+                                else{
+                                            
+                                        //error login   
+                                        $response['status']='ok';
+                                        $response['html']=$this->renderPartial('modal_voto', array('voto'=>true,'error'=>$usuario->password.'='.Yii::app()->getModule('user')->encrypting($_POST['password'])),true);
+                                        
+                                }
+                    }
+                    
+                    $response=$this->loggedVote($new);                       
+                         
+                    echo CJSON::encode($response); 
+                    Yii::app()->end();
+                
+
             }
              
             if(Yii::app()->language=='es_ve')
                 $this->render('poderosas2',array('tweets'=>Yii::app()->params['tweets']));
             else
                 throw new CHttpException(404,'Esta pagina no se encuentra disponible.');  
+        }
+
+        protected function loggedVote($new){
+            $response=array();    
+            if(is_null(UserPromocion::model()->findByAttributes(array('user_id'=>Yii::app()->user->id,'promocion_id'=>1)))){
+                            $userpromo=new UserPromocion;
+                            $userpromo->user_id=Yii::app()->user->id;
+                            $userpromo->promocion_id=1;
+                            $userpromo->valor=$_POST['id'];
+                            $userpromo->fecha=date('Y-m-d H:i:s');
+                            $userpromo->observacion="Tweet";
+                            $userpromo->fecha=date('Y-m-d H:i:s');
+                            if($userpromo->save()){
+                                $response['status']='ok';
+                                $response['html']=$this->renderPartial('modal_voto', array('voto'=>true,'new'=>$new),true);
+                            }
+                                  
+                            else{
+                                //error voto    
+                                $response['status']='ok';
+                                $response['html']=$this->renderPartial('modal_voto', array('voto'=>true,'error'=>'error voto'),true);
+                                
+                                
+                            }     
+                            
+                        }
+                        else{ 
+                            //error repetido   
+                                $response['status']='ok';
+                                $response['html']=$this->renderPartial('modal_voto', array('voto'=>true,'repeated'=>true),true);
+                                
+                               
+                        }
+                    return $response;
+
         }
          
          public function votoPoderoso(){
@@ -973,7 +1061,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
     public function actionModalVoto(){
         $response=array();    
         if(isset($_POST['id']))
-            $response['form']= $this->renderPartial('modal_voto', array('id'=>isset($_POST['id']),'tweet'=>Yii::app()->params['tweets'][isset($_POST['id'])]),true);
+            $response['form']= $this->renderPartial('modal_voto', array('id'=>$_POST['id'],'voto'=>false,'tweet'=>Yii::app()->params['tweets'][$_POST['id']]),true);
         
         echo CJSON::encode($response); 
     }

@@ -384,8 +384,16 @@ class LookController extends Controller
                 $look_id = $_GET['id'];
         $ps_id = 0;
         if (isset($_GET['ps_id']))
-            $ps_id = $_GET['ps_id'];
-        ShoppingMetric::registro(ShoppingMetric::USER_VIEW_LOOK,array('look_id'=>$look_id,'ps_id'=>$ps_id));
+		{
+			$ps_id = $_GET['ps_id'];
+			$checkViews=1;
+		}
+		else
+		{
+			$checkViews=0;
+		}
+            
+        ShoppingMetric::registro(ShoppingMetric::USER_VIEW_LOOK,array('look_id'=>$look_id,'ps_id'=>$ps_id), $checkViews);
 		$productoView = new ProductoView;
 		$productoView->user_id = Yii::app()->user->id;
 		

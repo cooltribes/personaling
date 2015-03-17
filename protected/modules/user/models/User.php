@@ -81,7 +81,8 @@ class User extends CActiveRecord {
                     array('username', 'length', 'max' => 128, 'min' => 8, 'message' => UserModule::t("Incorrect username (length between 8 and 128 characters).")),
                     //array('password', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
                     array('password', 'length', 'max' => 128, 'min' => 4, 'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
-                    array('email', 'email'),
+                    array('status, ', 'length', 'max' => 128, 'min' => 4, 'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
+
                     array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),
                     array('email', 'unique', 'message' => UserModule::t("This user's email address already exists.")),
                     //array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
@@ -1049,7 +1050,7 @@ class User extends CActiveRecord {
             $match = 'ps_id":"'.sprintf('%05d', $this->id).'"}';
             $match = addcslashes($match, '%_');
             return ShoppingMetric::model()->count(
-                'data LIKE :match',
+                'data LIKE :match and click_validez=1',
                 array(':match' => "%$match%")
             );
         }

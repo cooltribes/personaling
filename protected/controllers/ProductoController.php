@@ -1511,6 +1511,18 @@ public function actionReportexls(){
 	                    }
                 	}
                 $result['status'] = "9";
+			}else if($accion=="Des-Destacar") 
+			{
+				    foreach($checks as $id)
+				    {
+				    	if($id!="todos")
+						{
+	                   	 $model = Producto::model()->findByPk($id);
+	                   	 $model->destacado=0;
+	                   	 Producto::model()->updateByPk($id, array('destacado'=>'0'));
+	                    }
+                	}
+                $result['status'] = "9";
 			}
 		}
 		else {

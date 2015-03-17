@@ -841,7 +841,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
                                         // save user to zoho
                                         $zoho = new Zoho();
                                         $zoho->email = $user->email;
-                                        $zoho->first_name = 
+                                        $zoho->first_name = $profile->first_name;
                                         $zoho->last_name = $profile->last_name;
                                         
             
@@ -861,6 +861,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
                                         $result = $zoho->save_potential();
             
                                         $xml = simplexml_load_string($result);
+                                       
                                         $id = (int)$xml->result[0]->recorddetail->FL[0];
                                         $user->saveAttributes(array('zoho_id'=>$id,'tipo_zoho'=>0));
                                         

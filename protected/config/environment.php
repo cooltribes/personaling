@@ -531,9 +531,9 @@
                         ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
+                        'zohoToken' => 'c9746b8f8834c0232c682768e55b02d7',
                         'zohoAccount'=>'cruiz@upsidecorp.ch',
-                        'zohoActive' => FALSE,
+                        'zohoActive' => TRUE,
                         'fb_appId' => '386830111475859',
                         ),
                 );
@@ -772,7 +772,7 @@
                         
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken' => '1dca26577fa73a3bb4030a712c9d4a9b',
+                        'zohoToken' => '047e51a44ad91ed868192cd5a617fefd',
                         'zohoAccount'=>'dduque@upsidecorp.ch',
                         'zohoActive' => TRUE,
                         'id_look_switch' => 0,

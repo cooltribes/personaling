@@ -507,7 +507,10 @@
                                 '9'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando veo que no es necesario mostrarlo todo para llamar la atención de la gente, una buena :) y listo <a href="https://twitter.com/PersonalingVzla">@personalingVzla</a></p>&mdash; Melyda (@MelydaTimaure) <a href="https://twitter.com/MelydaTimaure/status/576039511987236864">marzo 12, 2015</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
                                             'user'=>'@MelydaTimaure', ),
-                                ),
+                                '10'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al pensar que el FUTURO pertenece a quienes creemos en la belleza de nuestros SUEÑOS *.*</p>&mdash; Reina ツ (@adre0505) <a href="https://twitter.com/adre0505/status/576540408102125568">marzo 14, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@adre0505', ),   
+                         ),
                         'metodosPago'=> array(
                                 'bkCard' => false,
                                 'paypal' => false, 
@@ -768,6 +771,9 @@
                                 '9'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando veo que no es necesario mostrarlo todo para llamar la atención de la gente, una buena :) y listo <a href="https://twitter.com/PersonalingVzla">@personalingVzla</a></p>&mdash; Melyda (@MelydaTimaure) <a href="https://twitter.com/MelydaTimaure/status/576039511987236864">marzo 12, 2015</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
                                             'user'=>'@MelydaTimaure', ),
+                                '10'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al pensar que el FUTURO pertenece a quienes creemos en la belleza de nuestros SUEÑOS *.*</p>&mdash; Reina ツ (@adre0505) <a href="https://twitter.com/adre0505/status/576540408102125568">marzo 14, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@adre0505', ),  
                                 ),
                         
                         'AzPayTerminal'=>'999',
@@ -990,6 +996,9 @@
                                 '9'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando veo que no es necesario mostrarlo todo para llamar la atención de la gente, una buena :) y listo <a href="https://twitter.com/PersonalingVzla">@personalingVzla</a></p>&mdash; Melyda (@MelydaTimaure) <a href="https://twitter.com/MelydaTimaure/status/576039511987236864">marzo 12, 2015</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
                                             'user'=>'@MelydaTimaure', ),
+                                '10'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al pensar que el FUTURO pertenece a quienes creemos en la belleza de nuestros SUEÑOS *.*</p>&mdash; Reina ツ (@adre0505) <a href="https://twitter.com/adre0505/status/576540408102125568">marzo 14, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@adre0505', ),  
                                 ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',

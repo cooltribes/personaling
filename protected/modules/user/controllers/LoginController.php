@@ -109,6 +109,8 @@ class LoginController extends Controller
 				$session = new CHttpSession;
 				$session->open();
 				$session['username'] = $usuario->username;
+				
+				
 				if(strlen($usuario->profile->ciudad)<3){
 					$profile=Profile::model()->findByPk($usuario->id);
 					$profile->profile_type=1;

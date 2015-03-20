@@ -104,4 +104,24 @@ class Recomendacion extends CActiveRecord
             'criteria'=>$criteria,
         ));
     }
+
+	public function recomendar($user_id = NULL)
+	{
+		if(is_null($user_id))
+		{
+			$user = Yii::app()->user;
+			
+		}else{
+			$user = User::model()->findByPk($user_id);
+		}
+		
+	
+		
+		
+	
+		return Producto::model()->destacados(6);
+	
+	}
+
+
 }

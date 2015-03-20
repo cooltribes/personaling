@@ -305,6 +305,7 @@ return array (
 	'Prices are subject to change. You can check the final price on the web sales.'=> 'Los precios están sujetos a cambios. Puedes revisar el precio final en la web de venta.',
 	'Product' => 'Producto',
 	'Products' => 'Productos',
+	'Products for you' => 'Productos para ti', 
 	'Province' => 'Provincia',
 	'Products that make the Looks' => 'Productos que componen los Looks',
 	'Progress order' => 'Progreso del pedido',
@@ -329,6 +330,7 @@ return array (
 	'Complete Registration' => 'Registrarme',
 	'Recommended Looks with this product' => 'Looks recomendados con este producto',
 	'Remember'=>'Recuerda',
+	'Recommended products' => 'Productos recomendados',
 
 
 	'Save' => 'Guardar',

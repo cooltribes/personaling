@@ -1,9 +1,9 @@
 <?php
 
-/* $this->breadcrumbs = array(
+$this->breadcrumbs = array(
     'Productos' => array('admin'),
     'Cargar',
-);*/
+);
 ?>
 
 <div class="page-header">
@@ -11,12 +11,19 @@
 </div> 
 	
 <div class="bg_color3 margin_bottom_small padding_small box_1">
-            <?php
+	<?php
+            $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+                    'action' => CController::createUrl('cargar'),
+                    'id' => 'form-validar',
+                    'enableAjaxValidation' => false,
+                    'type' => 'horizontal',
+                    'htmlOptions' => array('enctype' => 'multipart/form-data'),
+                ));
+            
                     $this->widget('CMultiFileUpload', array(
-                        'name' => 'url',
-                        'accept' => 'txt', // useful for verifying files
-                        'duplicate' => 'El archivo está duplicado.', // useful, i think
-                        'denied' => 'Tipo de archivo inválido.', // useful, i think
+                        'name' => 'archivo',
+                        'accept' => 'txt', // Tipo de archivo que se permite
+                        'denied' => 'Tipo de archivo inválido.', // Mensaje tipo de archivo
                     ));
             ?>
             
@@ -32,9 +39,29 @@
                             'loadingText'=>'Cargando ...',
                             'htmlOptions' => array(
                                 'name' => 'cargar',
-                                'id'=>'buttonCargaA',
+                                 'id' => 'buttonCargaA',
                             ),
                         ));
                         ?>
 	</div>
+	<?php $this->endWidget(); ?>
 </div> 
+
+<script type="text/javascript">
+
+$('#buttonCargaA').click(function(e) {
+    var btn = $(this);
+    var res = confirm("El archivo será cargado.\n¿Desea continuar?");
+    if (res == true) {
+        btn.button('loading'); // call the loading function
+        $("body").addClass("aplicacion-cargando");
+       
+    } else {
+       e.preventDefault();
+    }
+    
+});
+
+
+
+</script>

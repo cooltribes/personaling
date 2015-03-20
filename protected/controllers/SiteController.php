@@ -258,7 +258,9 @@ class SiteController extends Controller
 					'destacados' => $productos->destacados(6),
 					'dataProvider_destacados' => $looks->lookDestacados(3),
 					'user'=>$user,
-					'psDestacados' => $psDestacados,//->getPsDestacados(4),
+					'psDestacados' => $psDestacados,
+					'pRecomendados' => Recomendacion::model()->recomendar(),
+					//->getPsDestacados(4),
 				));
 	}	
 

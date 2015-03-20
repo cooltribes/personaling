@@ -62,16 +62,6 @@ function str_lreplace($search, $replace, $subject)
     <div class="row margin_bottom">
         <div class="span12" >
 
-
-		<h2 class="text_align_center"></h2> 
-		         <div style="margin:0 auto">
-                            <?php
-                          		
-                          
-                          	?>
-                            
-                          
-                  </div>
 		
   		<div class=" margin_bottom_large braker_horz_top_less_space personal_shoppers_list"> </div>
 

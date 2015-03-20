@@ -2,6 +2,12 @@
 
 /**
  * This is the model class for table "{{recomendacion}}".
+ * 
+ * 
+ * 
+ * 	El campo "estado" hace referencia a
+	0 vistos (Productos, Marcas o Categorias vistas)
+	1 compras (Productos, Marcas o Categorias compradas)
  *
  * The followings are the available columns in table '{{recomendacion}}':
  * @property integer $id
@@ -109,16 +115,14 @@ class Recomendacion extends CActiveRecord
 	{
 		if(is_null($user_id))
 		{
-			$user = Yii::app()->user;
-			
+			$user = User::model()->findByPk(Yii::app()->user->id);
 		}else{
 			$user = User::model()->findByPk($user_id);
 		}
+		//$criteria=new CDbCriteria;
+        //$criteria->compare('altura',$user->profile->altura);
+        $recomendaciones = Recomendacion::model()->findAll();
 		
-	
-		
-		
-	
 		return Producto::model()->destacados(6);
 	
 	}

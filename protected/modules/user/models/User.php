@@ -792,7 +792,7 @@ class User extends CActiveRecord {
 	{
 	   	
 	   if($this->personal_shopper>0  && $this->isNewRecord)
-	   		$this->banner_url='/images/banner/default.gif';
+	   		$this->banner_url='/images/'.Yii::app()->language.'/banner/default.gif';
 	   //echo $this->birthday;
 	   return parent::beforeSave();
 	}

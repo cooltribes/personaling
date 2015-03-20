@@ -116,7 +116,8 @@ class Recomendacion extends CActiveRecord
 		if(is_null($user_id))
 		{
 			$user = User::model()->findByPk(Yii::app()->user->id);
-		}else{
+		}else
+		{
 			$user = User::model()->findByPk($user_id);
 		}
 		//$criteria=new CDbCriteria;

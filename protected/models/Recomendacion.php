@@ -123,8 +123,126 @@ class Recomendacion extends CActiveRecord
 		//$criteria=new CDbCriteria;
         //$criteria->compare('altura',$user->profile->altura);
         $recomendaciones = Recomendacion::model()->findAll();
+		$productos = array();
 		
-		return Producto::model()->destacados(6);
+		foreach ($recomendaciones as $recomendacion) 
+		{
+			$contador=0;
+			if($recomendacion->altura == $user->profile->altura)
+			{
+				$contador++;
+				
+			}
+			if($recomendacion->contextura == $user->profile->contextura)
+			{
+				$contador++;
+				
+			}
+			if($recomendacion->pelo == $user->profile->pelo)
+			{
+				$contador++;
+				
+			}
+			if($recomendacion->ojos == $user->profile->ojos)
+			{
+				$contador++;
+				
+			}
+			if($recomendacion->piel == $user->profile->piel)
+			{
+				$contador++;
+				
+			}
+			if($recomendacion->tipo_cuerpo == $user->profile->tipo_cuerpo)
+			{
+				$contador++;
+				
+			}
+			
+			$categoria = 1;
+			
+			
+			$birthDate = explode("-", $user->profile->birthday);
+				  //get age from date or birthdate
+			$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md")
+				? ((date("Y") - $birthDate[2]) - 1)
+				: (date("Y") - $birthDate[2]));
+			
+			
+			switch($age) 
+			{
+			   case in_array($age, range(21,30)): 
+			      $categoria = 2;
+			   break;
+			   case in_array($age, range(31,35)): 
+			      $categoria = 3;
+			   break;
+			    case in_array($age, range(36,40)): 
+			      $categoria = 4;
+			   break;
+			    case in_array($age, range(41,45)): 
+			      $categoria = 5;
+			   break;
+			    case in_array($age, range(46,50)): 
+			      $categoria = 6;
+			   break;
+			    case in_array($age, range(51,55)): 
+			      $categoria = 7;
+			   break;
+			    case in_array($age, range(56,60)): 
+			      $categoria = 8;
+			   break;
+			    case in_array($age, range(61,80)): 
+			      $categoria = 9;
+			   break;
+			}
+			
+			
+			if($recomendacion->edad == $categoria)
+			{
+				$contador++;
+				
+			}
+			
+			if($contador >= 2)
+			{
+				$criteria = new CDbCriteria();
+				//$criteria->addCondition('id='.$recomendacion->producto_id);
+				$criteria->addCondition('estado=0');
+				$criteria->addCondition('status=1');
+				$producto = Producto::model()->findByPk($recomendacion->producto_id);
+				if(!in_array($producto, $productos) && $producto->estado==0 && $producto->status==1)
+				{
+					
+					$productos[]=$producto;	
+					
+				}
+				
+			}
+			
+			
+				
+			
+		}
+		
+		if(sizeof($productos)>6)
+		{
+			$keys = array_rand ( $productos , 6);
+			$productos_new = array();
+			foreach ($keys as $key)
+			{
+				$productos_new[] = $productos[$key];
+			}
+			
+			return $productos_new;
+			
+			
+		}else{
+			
+			return $productos;
+
+		}
+		
 	
 	}
 

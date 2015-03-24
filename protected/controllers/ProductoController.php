@@ -45,7 +45,7 @@ class ProductoController extends Controller
                         'reporte','reportexls','reportecsv', "createExcel", 'plantillaDescuentos',
                         'importarPrecios', 'exportarCSV', 'outlet', 'precioEspecial',
                         'importarExternos','plantillaExternos',"sendtozoho",
-                        "productoszoho","enviarzoho","externtozoho","updatezohoqty",) ,
+                        "productoszoho","enviarzoho","externtozoho","updatezohoqty","cargar") ,
                     //'users'=>array('admin'),
                     'expression' => 'UserModule::isAdmin()',
                 ),
@@ -5919,6 +5919,110 @@ public function actionReportexls(){
 			}
 			//echo "fin de ciclo"; 			
 			//echo "<br><br>";
+	
 	}
-	    
+		
+		
+		public function actionCargar() //Cargar archivo con reglas de asociación para recomendaciones de productos 
+		{
+			
+			$cont = 0;
+			if(isset($_POST["cargar"]))
+			{
+				
+				$file = CUploadedFile::getInstancesByName('archivo');
+				if(isset($file) && count($file) > 0)
+				{
+					foreach ($file as $key => $value)
+					{
+						$read = fopen($value->tempName, 'r');
+						$theData = fread($read, $value->size);
+						//print_r($theData);
+						$line = explode("\r\n", $theData); 
+						//print_r($line);
+						$state = '';
+						foreach ($line as $key2) 
+						{
+							$recomendacion = new Recomendacion;
+							if ($cont == 0) 
+							{
+								$state_array = explode("=", $key2);
+								$state = $state_array[1];
+								$cont++;
+							}else{
+							
+								$arrow = explode("==>", $key2); 
+								//print_r($arrow);
+								foreach ($arrow as $key3)
+								{
+									$space = explode(" ", $key3); 
+									//print_r($space);
+									foreach ($space as $key4)
+									{
+										$equal = explode("=", $key4);
+										switch ($equal[0]) {
+											case 'Altura':
+												$recomendacion->altura = $equal[1];
+												break;
+												
+											case 'Contextura':
+												$recomendacion->contextura = $equal[1];
+												break;
+												
+											case 'Ojos':
+												$recomendacion->ojos = $equal[1];
+												break;
+											
+											case 'Pelo':
+												$recomendacion->pelo = $equal[1];
+												break;
+												
+											case 'Tipo_cuerpo':
+												$recomendacion->tipo_cuerpo = $equal[1];
+												break;
+												
+											case 'Piel':
+												$recomendacion->piel = $equal[1];
+												break;
+												
+											case 'Edad':
+												$recomendacion->edad = $equal[1];
+												break;
+												
+											case 'Producto':
+												$recomendacion->producto_id = $equal[1];
+												break;
+											
+											case 'Marca':
+												$recomendacion->marca_id = $equal[1];
+												break;
+											
+											case 'Categoria':
+												$recomendacion->categoria_id = $equal[1];
+												break;
+											
+											default:
+												
+												break;
+										}
+										//print_r($equal);								
+									}
+									
+									$recomendacion->estado = $state;
+									$recomendacion->save();
+								
+								}
+							}
+								
+						}
+
+					}				
+					
+				}
+				 
+			}
+			
+			$this->render('cargar_archivo');
+		}
+		
 }

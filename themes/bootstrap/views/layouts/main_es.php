@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -93,10 +93,11 @@ if (Yii::app()->user->id?UserModule::isAdmin():false){
                                                         'url'=>array('/producto/importarExternos'),), 
                                                     array('label' => 'Descuentos',
                                                         'url'=>array('/producto/importarPrecios'),),
+                                                    array('label'=> 'Archivo de Reglas',
+														'url'=>array('/producto/cargar'),),
                                                     
                                                 )),                                        
-                                           
-                                            
+                                              
                     )
                 ),
                 array('label'=>'Ventas', 'url'=>'#', 'items'=>array(
@@ -130,7 +131,7 @@ if (Yii::app()->user->id?UserModule::isAdmin():false){
                     array('label'=>'Activos Graficos', 'url'=>array('/site/activos_graficos')),
                     array('label'=>'SEO', 'url'=>array('/controlpanel/seo')),
                     
-
+  
                                 )
                     ),   
                 //array('label'=>'Sistema', 'url'=>array('/site/logout')),

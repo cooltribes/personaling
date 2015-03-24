@@ -102,7 +102,16 @@ if(Yii::app()->language=='es_es'){
 <div class="container">
     <div class="content">
         <div class="row" style="margin-top: 80px">
-            <div class="span9">
+        	<div class="span9">
+        		
+        		<a href="http://www.personaling.es/test100/registro-personaling">
+        		<div class="sectionTitle">
+                    <div class="braker"></div>
+                    <div class="text" ><h2>¡Descubre lo que personas como TU han comprado!</h2></div>
+                    <div class="braker"></div>
+                </div>                
+          		</a>
+            
                 <div>
                     <?php echo $elements['slider'];?>        
                 </div>

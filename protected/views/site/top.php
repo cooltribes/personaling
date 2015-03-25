@@ -18,7 +18,7 @@ function str_lreplace($search, $replace, $subject)
 ?>
 <?php  
 	
-	if(!isset($seo))
+	if(!isset($seo)) 
 		$this->pageTitle=Yii::app()->name . ' - Lo más Top';  
 	
 	
@@ -27,44 +27,7 @@ function str_lreplace($search, $replace, $subject)
   //$cs->registerScriptFile($baseUrl.'/js/slider.js');
   //$cs->registerCssFile($baseUrl.'/css/yourcss.css');
 ?>
-<div class="container margin_top">
-	
-	
-	
-	 <div class=" margin_bottom">
-            <div class="row">
-                <div class="span12" align="center">
-                    <h2 class="margin_bottom_small text_align_center"><?php echo Yii::t('contentForm','Products for you'); ?></h2>
-                    <div class="thumbnails">
-                        <div style="margin:0 auto">
-                            <?php
-                            foreach($pRecomendados as $producto){?>
-                                 <li class="span2"> 
-                                     
-                                    <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));    ?>
-                                    <?php echo CHtml::link($image, $producto->getUrl() ); ?>  
-                                </li>
-                           <?php }
-                            
-                            
-                            ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-	
-	
-	
-	
-	
-	
-    <div class="row margin_bottom">
-        <div class="span12" >
-
-		
-  		<div class=" margin_bottom_large braker_horz_top_less_space personal_shoppers_list"> </div>
-
+<div class="container margin_top">	
 <h2 class="text_align_center"><?php echo Yii::t('contentForm','Outstanding Looks'); ?></h2>
                      <div class="margin_top" >
                         <div class="items row " id="perfil_looks">

@@ -104,17 +104,17 @@ if(Yii::app()->language=='es_es'){
         <div class="row" style="margin-top: 80px">
         	<div class="span9">
         		
-        		<a href="http://www.personaling.es/test100/registro-personaling">
-        		<div class="sectionTitle">
-                    <div class="braker"></div>
-                    <div class="text" ><h2>¡Descubre lo que personas como TU han comprado!</h2></div>
-                    <div class="braker"></div>
-                </div>                
-          		</a>
-            
+        	
+        		
+                    <a class="btn btn-danger" style="text-align: center; width: 99%; padding:4px; margin-bottom:30px" href="http://www.personaling.es/test100/inicio-personaling" >
+                    	<div style="padding:10px; border:solid 1px #FFF">¡Haz click aquí y descubre lo que personas como TU han comprado!</div>
+                    </a>
+                
+                       
+          	 
                 <div>
                     <?php echo $elements['slider'];?>        
-                </div>
+                </div> 
                 <div class="braker_horz_top_less_space nodesktop"></div>
                 <section>
                 <div class="sectionTitle">

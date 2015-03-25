@@ -28,7 +28,8 @@ class SiteController extends Controller
                                     'terminos_de_servicio','politicas_de_devoluciones','politicas_de_cookies',
                                     'preguntas_frecuentes', 'equipo_personaling','captcha',
                                     'comofunciona', 'afterApply','sitemap','landingpage','ve','plantillaExternos','formSiteImage',
-                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve','terminos_condiciones_ps','poderosas','modalVoto'),
+                                    'tienda', 'conversion','ProductoImagenpng', 'revi', 'landing', 'landingpage_ve','terminos_condiciones_ps','poderosas','modalVoto',
+									'recomendaciones'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -259,7 +260,7 @@ class SiteController extends Controller
 					'dataProvider_destacados' => $looks->lookDestacados(3),
 					'user'=>$user,
 					'psDestacados' => $psDestacados,
-					'pRecomendados' => Recomendacion::model()->recomendar(),
+					
 					//->getPsDestacados(4),
 				));
 	}	
@@ -1049,7 +1050,17 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
         echo CJSON::encode($response); 
     }
 
-
+	 public function actionRecomendaciones(){
+	 	
+			$this->render('recomendaciones',array(
+					
+					'pRecomendados' => Recomendacion::model()->recomendar(),
+					'pRecomendadosMarca' => Recomendacion::model()->recomendarMarca(),
+					'pRecomendadosCategoria' => Recomendacion::model()->recomendarCategoria(),
+					
+				));
+	 	
+	 }
         
         
         

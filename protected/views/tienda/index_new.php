@@ -63,6 +63,17 @@ if(isset($seo)){
 	  </div>   
 	<!-- MODAL TEMPORAL DE SUSPENCION DE VETNAS  OFF-->
 <?php endif; ?>
+<div class="row">
+	
+	<div class="span12 margin_bottom_small margin_top_small_minus">
+		 <a class="btn btn-alert" style="text-align: center; width: 100%; padding:4px; margin-bottom:30px" href="http://www.personaling.es/test100/site/recomendaciones">
+                    	<div style="padding:10px; border:solid 1px #FFF">
+                    		Ve los productos que le han interesado a personas con tus características
+                    	</div>
+          </a>
+	</div>
+	
+</div>
 <div class="navbar navbar-fixed-top mobilefilters" id="mobilefilters">
 
 		<div class="container">
@@ -213,7 +224,9 @@ if(isset($seo)){
 
 
 <?php 	PC::debug('Execute Time (deskfilters):'.(microtime(true)-$time_start), 'debug,time'); ?>
+
 <div id="deskfilters">
+
 <?php if(Yii::app()->params['chic']['show']): ?>	
 	<div id="banner100chic" style=" display:none; " class="margin_top ">
 		<div class="margin_bottom">
@@ -517,6 +530,8 @@ echo CHtml::hiddenField('chic_hid',isset(Yii::app()->session['100chic'])?'1':'0'
 <div class="row ">
 <?php	echo CHtml::hiddenField('texthid','');
 		echo CHtml::hiddenField('resethid',0);?>
+	
+	
 	<div class="offset10 span2 margin_bottom_small margin_top_small_minus">
 		<a href="" class="btn btn-block" id="reset"><?php echo Yii::t('contentForm','Clean Filters');?></a>
 	</div>

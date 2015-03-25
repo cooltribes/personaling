@@ -6016,8 +6016,10 @@ public function actionReportexls(){
 								
 						}
 
-					}				
-					
+					}
+
+					Yii::app()->user->setFlash('success','Archivo cargado con éxito');
+
 				}
 				 
 			}

@@ -21,7 +21,8 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
 
 <div class="page-header">
-            <h1>Cargar Archivo</h1>
+	
+            <h1>Cargar Archivos</h1>
 </div> 
 	
 <div class="bg_color3 margin_bottom_small padding_small box_1">
@@ -34,16 +35,23 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                     'htmlOptions' => array('enctype' => 'multipart/form-data'),
                 ));
             
-                    $this->widget('CMultiFileUpload', array(
-                        'name' => 'archivo',
-                        'accept' => 'txt', // Tipo de archivo que se permite
-                        'denied' => 'Tipo de archivo inválido.', // Mensaje tipo de archivo
-                    ));
-            ?>
-            
-	
+      ?>
+     
+    <fieldset>       
+   
+	<legend>Cargar archivo de reglas y/o de recomendaciones:</legend>
+	<div class="well span5">
 
-	<div class="margin_top_small">	              		    
+	<?php 
+       $this->widget('CMultiFileUpload', array(
+                        'name' => 'archivo',
+                        'accept' => 'txt|xls|xlsx', // Tipo de archivo que se permite
+                        'denied' => 'Tipo de archivo inválido.', // Mensaje tipo de archivo
+                        'id' => 'reglas',
+                    ));
+     ?>
+
+		<div class="margin_top_small">	       		    
                         <?php
                         $this->widget('bootstrap.widgets.TbButton', array(
                             'buttonType' => 'submit',
@@ -57,14 +65,18 @@ $this->widget('bootstrap.widgets.TbAlert', array(
                             ),
                         ));
                         ?>
+		</div>
 	</div>
+
+</div>
+	</fieldset>
 	<?php $this->endWidget(); ?>
-</div> 
 
 <script type="text/javascript">
 
 $('#buttonCargaA').click(function(e) {
     var btn = $(this);
+    
     var res = confirm("El archivo será cargado.\n¿Desea continuar?");
     if (res == true) {
         btn.button('loading'); // call the loading function
@@ -75,6 +87,7 @@ $('#buttonCargaA').click(function(e) {
     }
 //alert("Archivo cargado con éxito");
 });
+
 
 </script>
 

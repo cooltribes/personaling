@@ -1058,7 +1058,7 @@ ADD INDEX `index_producto` (`tbl_producto_id` ASC, `color_id` ASC);
 					'pRecomendadosMarca' => Recomendacion::model()->recomendarMarca(),
 					'pRecomendadosCategoria' => Recomendacion::model()->recomendarCategoria(),
 					
-				));
+		  	));
 	 	
 	 }
         

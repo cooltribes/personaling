@@ -213,7 +213,8 @@ class Recomendacion extends CActiveRecord
 				
 				if($recomendacion->producto_id)
 				{
-					$producto = Producto::model()->findByPk($recomendacion->producto_id);
+					$producto = Producto::model()->findByAttributes(array('id'=>$recomendacion->producto_id,'estado'=>0,'status'=>1), array('distinct'=>true));	
+					#$producto = Producto::model()->findByPk($recomendacion->producto_id);
 					if(!in_array($producto, $productos) && $producto->estado==0 && $producto->status==1)
 					{
 							
@@ -491,20 +492,24 @@ class Recomendacion extends CActiveRecord
 				$criteria->addCondition('status=1');
 				if($recomendacion->categoria_id)
 				{
-					$categoria = Categoria::model()->findByPk($recomendacion->categoria_id);
-					$producto_array = Producto::model()->findAllByAttributes(array('categoria_id'=>$categoria->id));
-					foreach ($producto_array as $producto) {
+					
+					$categoria = Categoria::model()->findByPk($recomendacion->categoria_id);					
+					#$producto_array = Producto::model()->findAllByAttributes(array('marca_id'=>$marca->id));
+					$productos_categoria = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_categoria_id'=>$categoria->id));
+					
+					foreach($productos_categoria as $proCat)
+					{
+						
+						$producto = Producto::model()->findByPk($proCat->tbl_producto_id);
 						if(!in_array($producto, $productos) && $producto->estado==0 && $producto->status==1)
 						{
+							$productos[]=$producto;
 							
-							$productos[]=$producto;	
-							
-						}
+						}	
 					}
 					
 				
-				}
-				
+				}				
 				
 				
 			}	

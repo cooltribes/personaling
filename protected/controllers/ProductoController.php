@@ -5935,91 +5935,113 @@ public function actionReportexls(){
 				{
 					foreach ($file as $key => $value)
 					{
-						$read = fopen($value->tempName, 'r');
-						$theData = fread($read, $value->size);
-						//print_r($theData);
-						$line = explode("\r\n", $theData); 
-						//print_r($line);
-						$state = '';
-						foreach ($line as $key2) 
+						$extension ='.' . $value->extensionName;
+						#print_r($extension);
+						$type_file = explode(".", $extension); 
+						#print_r($type_file);
+						if($type_file[1]=='txt')
 						{
-							$recomendacion = new Recomendacion;
-							if ($cont == 0) 
+							$read = fopen($value->tempName, 'r');
+							$theData = fread($read, $value->size);
+							//print_r($theData);
+							$line = explode("\r\n", $theData); 
+							//print_r($line);
+							$state = '';
+							foreach ($line as $key2) 
 							{
-								$state_array = explode("=", $key2);
-								$state = $state_array[1];
-								$cont++;
-							}else{
-							
-								$arrow = explode("==>", $key2); 
-								//print_r($arrow);
-								foreach ($arrow as $key3)
+								$recomendacion = new Recomendacion;
+								if ($cont == 0) 
 								{
-									$space = explode(" ", $key3); 
-									//print_r($space);
-									foreach ($space as $key4)
+									$state_array = explode("=", $key2);
+									$state = $state_array[1];
+									$cont++;
+								}else{
+								
+									$arrow = explode("==>", $key2); 
+									//print_r($arrow);
+									foreach ($arrow as $key3)
 									{
-										$equal = explode("=", $key4);
-										switch ($equal[0]) {
-											case 'Altura':
-												$recomendacion->altura = $equal[1];
-												break;
+										$space = explode(" ", $key3); 
+										//print_r($space);
+										foreach ($space as $key4)
+										{
+											$equal = explode("=", $key4);
+											switch ($equal[0]) {
+												case 'Altura':
+													$recomendacion->altura = $equal[1];
+													break;
+													
+												case 'Contextura':
+													$recomendacion->contextura = $equal[1];
+													break;
+													
+												case 'Ojos':
+													$recomendacion->ojos = $equal[1];
+													break;
 												
-											case 'Contextura':
-												$recomendacion->contextura = $equal[1];
-												break;
+												case 'Pelo':
+													$recomendacion->pelo = $equal[1];
+													break;
+													
+												case 'Cuerpo':
+													$recomendacion->tipo_cuerpo = $equal[1];
+													break;
+													
+												case 'Piel':
+													$recomendacion->piel = $equal[1];
+													break;
+													
+												case 'Edad':
+													$recomendacion->edad = $equal[1];
+													break;
+													
+												case 'Producto':
+													$recomendacion->producto_id = $equal[1];
+													break;
 												
-											case 'Ojos':
-												$recomendacion->ojos = $equal[1];
-												break;
-											
-											case 'Pelo':
-												$recomendacion->pelo = $equal[1];
-												break;
+												case 'Marca':
+													$recomendacion->marca_id = $equal[1];
+													break;
 												
-											case 'Tipo_cuerpo':
-												$recomendacion->tipo_cuerpo = $equal[1];
-												break;
+												case 'Categoria':
+													$recomendacion->categoria_id = $equal[1];
+													break;
 												
-											case 'Piel':
-												$recomendacion->piel = $equal[1];
-												break;
-												
-											case 'Edad':
-												$recomendacion->edad = $equal[1];
-												break;
-												
-											case 'Producto':
-												$recomendacion->producto_id = $equal[1];
-												break;
-											
-											case 'Marca':
-												$recomendacion->marca_id = $equal[1];
-												break;
-											
-											case 'Categoria':
-												$recomendacion->categoria_id = $equal[1];
-												break;
-											
-											default:
-												
-												break;
+												default:
+													
+													break;
+											}
+											//print_r($equal);								
 										}
-										//print_r($equal);								
-									}
+										
+										$recomendacion->estado = $state;
+										$recomendacion->save();
 									
-									$recomendacion->estado = $state;
-									$recomendacion->save();
-								
+									}
 								}
+									
 							}
-								
 						}
-
+						
+						if($type_file[1]=='xls|xlsx')
+						{
+							
+							
+							
+							
+						}
+						
 					}
-
-					Yii::app()->user->setFlash('success','Archivo cargado con éxito');
-
+					if(count($file) > 1){
+						
+						Yii::app()->user->setFlash('success','Archivos cargados con éxito');
+					}else{
+						Yii::app()->user->setFlash('success','Archivo cargado con éxito');
+					}
+					
+				}else {
+               
+                	Yii::app()->user->setFlash('error', "Error al cargar el archivo.");
 				}
 				 
 			}

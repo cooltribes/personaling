@@ -6026,9 +6026,12 @@ public function actionReportexls(){
 						if($type_file[1]=='xls|xlsx')
 						{
 							
-							$sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
-							
-							
+							 #$sheet_array = Yii::app()->yexcel->readActiveSheet($value);
+							 
+							 #Yii::import('ext.phpexcelreader.JPhpExcelReader');
+							 #$data=new JPhpExcelReader($value);
+							 #echo $data->dump(true,true);
+
 						}
 						
 					}

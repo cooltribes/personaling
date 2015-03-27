@@ -6026,7 +6026,7 @@ public function actionReportexls(){
 						if($type_file[1]=='xls|xlsx')
 						{
 							
-							
+							$sheet_array = Yii::app()->yexcel->readActiveSheet($nombre . $extension);
 							
 							
 						}

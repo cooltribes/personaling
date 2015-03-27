@@ -213,8 +213,8 @@ class Recomendacion extends CActiveRecord
 				
 				if($recomendacion->producto_id)
 				{
-					$producto = Producto::model()->findByAttributes(array('id'=>$recomendacion->producto_id,'estado'=>0,'status'=>1), array('distinct'=>true));	
-					#$producto = Producto::model()->findByPk($recomendacion->producto_id);
+					#$producto = Producto::model()->findByAttributes(array('id'=>$recomendacion->producto_id,'estado'=>0,'status'=>1), array('distinct'=>true));	
+					$producto = Producto::model()->findByPk($recomendacion->producto_id);
 					if(!in_array($producto, $productos) && $producto->estado==0 && $producto->status==1)
 					{
 							

@@ -631,6 +631,17 @@
       </div>
     </div>
   </div>
+ 
+	<?php 
+	
+		 $rand = rand (1,3);
+		 print_r($rand);
+	
+	?>
+	
+  
+  
+  
      <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogLook'.$producto->id)); ?>
      <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>

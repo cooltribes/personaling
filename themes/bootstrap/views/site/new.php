@@ -106,7 +106,7 @@ if(Yii::app()->language=='es_es'){
         		
         	
         		
-                    <a class="btn btn-danger" style="text-align: center; width: 99%; padding:4px; margin-bottom:30px" href="http://www.personaling.es/test100/inicio-personaling" >
+                    <a class="btn btn-danger" style="text-align: center; width: 99%; padding:4px; margin-bottom:30px" href="<?php echo Yii::app()->baseUrl; ?>/inicio-recomendacion" >
                     	<div style="padding:10px; border:solid 1px #FFF">¡Haz click aquí y descubre lo que personas como TU han comprado!</div>
                     </a>
                 

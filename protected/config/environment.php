@@ -263,6 +263,7 @@
                             'acerca-personaling'=>'site/acerca_de',
                             'registro-personaling'=>'user/registration',
                             'inicio-personaling'=>'user/login',
+                            'inicio-recomendacion'=>'user/login',
                             'me-siento-poderosa'=>'site/poderosas',
                             'reportico'=>'reportico',
                             'tt'=>'site/tienda',
@@ -626,12 +627,14 @@
  
                             // Database
                             'db'=>array(
-                                    'connectionString' => 'Your connection string to your local testing server',
-                                    'emulatePrepare' => false,
-                                    'username' => 'admin',
-                                    'password' => 'password',
-                                    'charset' => 'utf8',
-                            ),
+                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;
+                                                dbname=db_personalingSTAGE',
+                            'emulatePrepare' => true,
+                            'username' => 'personaling',
+                            'password' => 'Perso123Naling',
+                            'charset' => 'utf8',
+                            'tablePrefix' => 'tbl_',
+                        ),
  
  
                             // Fixture Manager for testing

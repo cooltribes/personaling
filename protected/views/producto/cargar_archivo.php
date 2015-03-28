@@ -17,9 +17,9 @@ $this->widget('bootstrap.widgets.TbAlert', array(
     ),
         )
 );
-?>	
-
-
+?>	 
+   
+ 
 <div class="page-header">
 	
             <h1>Cargar Archivos</h1>

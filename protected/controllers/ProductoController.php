@@ -6023,15 +6023,53 @@ public function actionReportexls(){
 							}
 						}
 						
-						if($type_file[1]=='xls|xlsx')
+						if($type_file[1]=='xlsx' || $type_file[1]=='xls')
 						{
 							
-							 #$sheet_array = Yii::app()->yexcel->readActiveSheet($value);
+							 $sheet_array = Yii::app()->yexcel->readActiveSheet($value->tempName);
+							 print_r($sheet_array);
 							 
-							 #Yii::import('ext.phpexcelreader.JPhpExcelReader');
-							 #$data=new JPhpExcelReader($value);
-							 #echo $data->dump(true,true);
-
+							 $type = "";
+							 foreach ($sheet_array as $line) 
+							 {
+							 	switch ($line['A']) {
+									case 'tipo':
+										$type = $line['B'];
+										break;
+									case 'Selected Item':
+									 	
+										break;
+									 
+									 default:
+										 #$recomendaciones = new Recomendaciones();
+										 switch ($type) {
+											 case 'marca':
+												 $recomendaciones->selected_item_categoria = $line['A'];
+							    				 $recomendaciones->recomendacion_categoria = $line['B'];
+												 break;
+											 
+							  				 case 'producto':
+												 $recomendaciones->selected_item_producto = $line['A'];
+							    				 $recomendaciones->recomendacion_producto = $line['B'];
+												 break;
+							  
+							  				case 'categoria':
+												 $recomendaciones->selected_item_categoria = $line['A'];
+							    				 $recomendaciones->recomendacion_categoria = $line['B'];
+												 break;
+											 
+											 default:
+												 
+												 break;
+										 }
+										 
+										 $recomendaciones->save();
+										 break;
+								 	}
+							 	
+								
+								} 
+							 
 						}
 						
 					}

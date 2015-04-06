@@ -632,16 +632,7 @@
     </div>
   </div>
  
-	<?php 
-	
-		 $rand = rand (1,3);
-		 print_r($rand);
-	
-	?>
-	
-  
-  
-  
+
      <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'dialogLook'.$producto->id)); ?>
      <div class="modal-header">
             <a class="close" data-dismiss="modal">&times;</a>
@@ -660,12 +651,105 @@
             )); ?>
         </div>
         <?php $this->endWidget(); ?>
+        
+        
+<?php 
+		$rand = rand (1,3);
+		#print_r($rand);  
+		
+		$productos = array();
+		$title = '';
+		switch ($rand) {
+			case '1':
+				
+			  	$title = 'Usuarios que han comprado este producto han comprado:';
+				$recomendaciones = Recomendaciones::model()->findAllByAttributes(array('selected_item_producto'=>$producto->id));
+				foreach ($recomendaciones as $key)
+				{
+					if(!in_array($key, $productos) && $producto->estado==0 && $producto->status==1)
+					{
+						$producto = Producto::model()->findByPk($key->recomendacion_producto);
+						$productos[]=$producto;
+						if(sizeof($productos)>6)
+						{
+							$keys = array_rand ( $productos , 6);
+							$productos_new = array();
+							foreach ($keys as $key)
+							{
+								$productos_new[] = $productos[$key];
+							}
+			
+							return $productos_new;
+			
+			
+					}else{
+			
+							return $productos;
+
+					}
+				}
+			}
+				
+				
+				break;
+				
+			case '2':
+				
+				$title = 'Usuarios que han comprado esta marca han comprado:';
+				$recomendaciones = Recomendaciones::model()->findAllByAttributes(array('selected_item_marca'=>$producto->marca_id));
+				foreach ($recomendaciones as $key)
+				{
+					$producto = Producto::model()->findByPk($key->recomendacion_marca);
+					$productos[]=$producto;
+				}
+				
+				break;
+			
+			default:
+				
+				$title = 'Usuarios que han comprado esta categoría han comprado:';
+				$categoria = Categoria::model()->findByPk($recomendaciones->selected_item_categoria);
+				$productos_categoria = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_categoria_id'=>$categoria->id));
+				
+				foreach ($productos_categoria as $key)
+				{
+					$producto = Producto::model()->findByPk($key->recomendacion_categoria);
+					$productos[]=$producto;
+				}
+				
+				break;
+		}
+		      
+        
+?>        
+
+		<div class="braker_horz_top_1 hidden-phone">
+            <div class="row">
+                     <h3> <?php echo Yii::t('contentForm',$title); ?></h3>
+                    <div class="thumbnails">
+                        <div style="margin:0 auto">
+                            <?php
+                            foreach($productos as $producto){?>
+                                 <li class="span2"> 
+                                     
+                                    <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));    ?>
+                                    <?php echo CHtml::link($image, $producto->getUrl() ); ?>  
+                                </li>
+                           <?php }
+                            
+                            
+                            ?>
+                      </div>
+                </div>
+            </div>
+		</div> 
+        
 <?php
 $looksProducto = LookHasProducto::model()->findAllByAttributes(array('producto_id'=>$producto->id));
 
 $count = count ($looksProducto);
 
-$cont=0;
+$cont=0; 
 ?>
 
 <?php if($count > 0){  ?>

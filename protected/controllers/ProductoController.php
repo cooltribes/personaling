@@ -6029,54 +6029,62 @@ public function actionReportexls(){
 							 $sheet_array = Yii::app()->yexcel->readActiveSheet($value->tempName);
 							 print_r($sheet_array);
 							 
-							 $type = "";
+							 $type = '';
 							 foreach ($sheet_array as $line) 
 							 {
-							 	switch ($line['A']) {
-									case 'tipo':
-										$type = $line['B'];
-										break;
+							 	switch ($line['A'])
+								{
 									case 'Selected Item':
-									 	
+						 	    		 	
 										break;
-									 
+										
+									case 'tipo':
+										$type = $line['B'] . ' ';
+										$campos = explode(" ", $type);
+
+										break;
+ 
 									 default:
-										 #$recomendaciones = new Recomendaciones();
-										 switch ($type) {
-											 case 'marca':
-												 $recomendaciones->selected_item_categoria = $line['A'];
-							    				 $recomendaciones->recomendacion_categoria = $line['B'];
-												 break;
-											 
-							  				 case 'producto':
-												 $recomendaciones->selected_item_producto = $line['A'];
-							    				 $recomendaciones->recomendacion_producto = $line['B'];
-												 break;
-							  
-							  				case 'categoria':
-												 $recomendaciones->selected_item_categoria = $line['A'];
-							    				 $recomendaciones->recomendacion_categoria = $line['B'];
-												 break;
-											 
-											 default:
-												 
-												 break;
-										 }
-										 
-										 $recomendaciones->save();
-										 break;
-								 	}
 							 	
-								
-								} 
-							 
+									 $recomendaciones = new Recomendaciones();
+										 
+										 foreach ($campos as $key) 
+										 {
+											 switch ($key) {
+												 case 'marca':
+													 $recomendaciones->selected_item_marca = $line['A'];
+								    				 $recomendaciones->recomendacion_marca = $line['B'];
+													 break;
+												 
+								  				 case 'producto':
+													 $recomendaciones->selected_item_producto = $line['A'];
+								    				 $recomendaciones->recomendacion_producto = $line['B'];
+													 break;
+								  
+								  				case 'categoria':
+													 $recomendaciones->selected_item_categoria = $line['A'];
+								    				 $recomendaciones->recomendacion_categoria = $line['B'];
+													 break;
+												 
+												 default:
+													 
+													 break;
+												}
+										  }
+									$recomendaciones->save();		
+									break;
+								}
+							 }
+			 	
 						}
 						
 					}
 					if(count($file) > 1){
 						
 						Yii::app()->user->setFlash('success','Archivos cargados con éxito');
+						
 					}else{
+						
 						Yii::app()->user->setFlash('success','Archivo cargado con éxito');
 					}
 					

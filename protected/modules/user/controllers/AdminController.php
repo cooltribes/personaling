@@ -34,7 +34,7 @@ class AdminController extends Controller
                             'credito','editardireccion',
                             'eliminardireccion','comprafin','mensajes','displaymsj',
                             'invitaciones','porcomprar','seguimiento','balance',
-                            'reporteCSV','usuariosZoho', 'statusPS','suscritosNl', 'historial','enviarzoho','saveUrl','editAddress'),                                         
+                            'reporteCSV','usuariosZoho', 'statusPS','suscritosNl', 'historial','enviarzoho','saveUrl','editAddress','sendRecomendations',),                                         
                          
                         'expression' => 'UserModule::isAdmin()',
 
@@ -3151,6 +3151,17 @@ class AdminController extends Controller
              }
         }
 
+        public function actionSendRecomendations(){
+        	
+		  $email = Yii::app()->mandrillwrap; 
+		  $email->html = htmlentities("Your email body"); 
+		  $email->subject = "Subject"; 
+		  $email->fromName = "Personaling"; 
+		  $email->fromEmail = "info@personaling.es"; 
+		  $email->toName = "Someone"; 
+		  $email->toEmail = "yroa@upsidecorp.ch"; 
+		  $email->sendEmail();
+  
 
-
+		}
 }

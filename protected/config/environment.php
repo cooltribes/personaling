@@ -124,6 +124,7 @@
                     'application.modules.user.components.*',
                     'application.helpers.*',
                     'application.extensions.validators.age.*',
+                    'application.extensions.mandrillwrap.*',
                     'ext.yii-mail.YiiMailMessage',
                     'ext.fancybox',
                     'ext.AzPay',

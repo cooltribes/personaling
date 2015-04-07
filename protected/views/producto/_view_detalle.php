@@ -656,19 +656,21 @@
 <?php 
 		$rand = rand (1,3);
 		#print_r($rand);  
-		
+	
 		$productos = array();
 		$title = '';
 		switch ($rand) {
 			case '1':
 				
-			  	$title = 'Usuarios que han comprado este producto han comprado:';
+			  	$title = 'Usuarios que han comprado este producto también han comprado:';
 				$recomendaciones = Recomendaciones::model()->findAllByAttributes(array('selected_item_producto'=>$producto->id));
 				foreach ($recomendaciones as $key)
 				{
+				
 					if(!in_array($key, $productos) && $producto->estado==0 && $producto->status==1)
 					{
 						$producto = Producto::model()->findByPk($key->recomendacion_producto);
+						
 						$productos[]=$producto;
 						if(sizeof($productos)>6)
 						{
@@ -682,20 +684,20 @@
 							return $productos_new;
 			
 			
-					}else{
+						}else{
 			
 							return $productos;
 
+						}
 					}
 				}
-			}
 				
 				
 				break;
 				
 			case '2':
 				
-				$title = 'Usuarios que han comprado esta marca han comprado:';
+				$title = 'Usuarios que han comprado productos de esta marca también han comprado:';
 				$recomendaciones = Recomendaciones::model()->findAllByAttributes(array('selected_item_marca'=>$producto->marca_id));
 				foreach ($recomendaciones as $key)
 				{
@@ -707,8 +709,8 @@
 			
 			default:
 				
-				$title = 'Usuarios que han comprado esta categoría han comprado:';
-				$categoria = Categoria::model()->findByPk($recomendaciones->selected_item_categoria);
+				$title = 'Usuarios que han comprado esta categoría también han comprado:';
+ 				$categoria = Categoria::model()->findByPk($recomendaciones->selected_item_categoria);
 				$productos_categoria = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_categoria_id'=>$categoria->id));
 				
 				foreach ($productos_categoria as $key)
@@ -718,7 +720,7 @@
 				}
 				
 				break;
-		}
+			}
 		      
         
 ?>        
@@ -735,7 +737,8 @@
                                     <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));    ?>
                                     <?php echo CHtml::link($image, $producto->getUrl() ); ?>  
                                 </li>
-                           <?php }
+                           <?php 
+							}
                             
                             
                             ?>

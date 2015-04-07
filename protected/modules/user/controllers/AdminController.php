@@ -3152,7 +3152,7 @@ class AdminController extends Controller
         }
 
         public function actionSendRecomendations(){
-        	
+        	/*Yii::import('application.vendors.mandrill.Mandrill');
 		  $email = Yii::app()->mandrillwrap; 
 		  $email->html = htmlentities("Your email body"); 
 		  $email->subject = "Subject"; 
@@ -3160,7 +3160,27 @@ class AdminController extends Controller
 		  $email->fromEmail = "info@personaling.es"; 
 		  $email->toName = "Someone"; 
 		  $email->toEmail = "yroa@upsidecorp.ch"; 
-		  $email->sendEmail();
+		  $email->sendEmail();*/
+		  
+		  	$recomendacion = new Recomendacion();
+		  
+		  	$message = new YiiMailMessage;
+			$message->view = 'mail_template';
+			 
+			//userModel is passed to the view
+			$message->subject= "¡Personaling trae recomendaciones para ti!";
+            $body = $this->renderPartial("_recomendacion", array(
+                "pRecomendados" => $recomendacion->recomendar(8749),"pRecomendadosMarca" => $recomendacion->recomendarMarca(8749),"pRecomendadosCategoria" => $recomendacion->recomendarCategoria(8749)), true);
+            
+            $message->setBody($body, 'text/html');                
+            $message->addTo('daniela_13_193@hotmail.com');
+			$message->from = array('info@personaling.com' => 'Tu Personal Shopper Online');
+			Yii::app()->mail->send($message);
+			
+			$this->render('_recomendacion',array(
+				"pRecomendados" => $recomendacion->recomendar(8749),"pRecomendadosMarca" => $recomendacion->recomendarMarca(8749),"pRecomendadosCategoria" => $recomendacion->recomendarCategoria(8749)
+				
+			));
   
 
 		}

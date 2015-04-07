@@ -109,8 +109,8 @@
                 'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
                 'name'=>'Personaling',
                 'timeZone' => 'America/Caracas', 
-                'language' => 'es_ve',
-                'sourceLanguage'=>'es_VE',
+                'language' => 'es_es',
+                'sourceLanguage'=>'es_ES',
                 // preloading 'log' component
                 'preload'=>array('log','bootstrap'),
                 'theme'=>'bootstrap',
@@ -124,7 +124,7 @@
                     'application.modules.user.components.*',
                     'application.helpers.*',
                     'application.extensions.validators.age.*',
-                    'application.extensions.mandrillwrap.*',
+                    //'application.extensions.mandrillwrap.*',
                     'ext.yii-mail.YiiMailMessage',
                     'ext.fancybox',
                     'ext.AzPay',
@@ -226,6 +226,10 @@
                     'yexcel' => array(
                         'class' => 'ext.yexcel.Yexcel'
                     ),
+                    
+					/*'mandrillwrap' => array(
+                        'class' => 'ext.mandrillwrap.mandrillwrap.php'
+                    ),*/
                     
                     'less'=>array(
                       'class'=>'ext.less.components.Less',

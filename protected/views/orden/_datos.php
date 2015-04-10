@@ -35,7 +35,44 @@
 	echo "<td>".$data->textestado."</td>";
 	
         
-        echo "<td>".$data->getEstadoLF()."</td>";
+		if(!isset($data->zoho_error))
+		{
+			echo "<td><i class='icon-ok'></i> Transaccion exitosa</td>";
+		}
+		else 
+		{
+			if($data->zoho_error==1)
+			{
+				     	echo "<td>".
+                             CHtml::link("<i class='icon-exclamation-sign'></i> Revisar Zoho",
+                                        'javascript:verMotivo("'.Orden::$zoho_error[1].'")') 
+     						."</td>";
+			}
+			if($data->zoho_error==2)
+			{
+						echo "<td>".
+                             CHtml::link("<i class='icon-exclamation-sign'></i> Revisar Zoho",
+                                        'javascript:verMotivo("'.Orden::$zoho_error[2].'")' ) 
+          						."</td>";
+			}
+			if($data->zoho_error==3)
+			{
+						echo "<td>".
+                             CHtml::link("<i class='icon-exclamation-sign'></i> Revisar Zoho",
+                                        'javascript:verMotivo("'.Orden::$zoho_error[3].'")') 
+     						."</td>";
+			}
+		}
+		
+		
+   		 
+    
+    	
+    
+
+        
+        
+        
         
 	//------------------ acciones
 	$canc="";

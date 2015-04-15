@@ -43,7 +43,7 @@ $this->breadcrumbs=array(
     <div class="row">
         <div class="span9">
             <div class="bg_color3 margin_bottom_small padding_small box_1">
-                <form class="form-stacked personaling_form padding_top_small" >
+                <form class="form-stacked personaling_form padding_top_small" id="formulario">
                     <fieldset>
                     <?php if(count($marca->hijos)<1){ $margin='';?>	                                  	
                     	<div class="control-group margin_top_medium">
@@ -82,6 +82,7 @@ $this->breadcrumbs=array(
 					            	echo CHtml::activeFileField($marca, 'Urlimagen',array('name'=>'url'));
 									echo $form->error($marca, 'Urlimagen'); 
 									?>
+									<span id="errorUrl" class="error margin_top_small_minus hide"><br/><small>El valor de imagen no puede ser vacio.</small></span>
                             </div>
                         </div>
                         
@@ -115,15 +116,16 @@ $this->breadcrumbs=array(
                 
           <fieldset>
             <legend> <?php echo Yii::t('contentForm','Datos Adicionales'); ?>: </legend>
-            <p class="muted Italic"><?php echo Yii::t('contentForm','To save this information you should fill every field.') ?></p>
-            <div class="control-group"> 
+            <p class="muted Italic"><?php echo Yii::t('contentForm','To save this information at least  type the name.') ?></p>
+            <div class="control-group no_margin_bottom"> 
              <div class="controls">
               	<?php 
               	
               	
-              	echo $form->textFieldRow($marca,'contacto',array('class'=>'span4','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Name of the contact person'))); 
+              	echo $form->textFieldRow($marca,'contacto',array('class'=>'span4 formu no_margin_bottom','id'=>'nombrePersona','maxlength'=>70,'placeholder'=>Yii::t('contentForm','Name of the contact person'))); 
               	// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Nombre de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
+              	<span id="errorName" class="help-block error hide no_margin_bottom"><small>Para guardar los datos adicionales debe introducir el nombre.</small></span>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
@@ -131,7 +133,7 @@ $this->breadcrumbs=array(
             <div class="control-group"> 
              
               <div class="controls">
-              	<?php echo $form->textFieldRow($marca,'cif',array('class'=>'span4','maxlength'=>20,'placeholder'=>Yii::t('contentForm','Tax information code'))); 
+              	<?php echo $form->textFieldRow($marca,'cif',array('class'=>'span4 formu','id'=>'fiscal','maxlength'=>20,'placeholder'=>Yii::t('contentForm','Tax information code'))); 
               	//  <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Cedula de Identidad de la persona a la que envias" name="RegistrationForm[email]" class="span4">
               	?>
                
@@ -141,7 +143,7 @@ $this->breadcrumbs=array(
             <div class="control-group"> 
            
               <div class="controls">
-              	<?php echo $form->textFieldRow($marca,'dirUno',array('class'=>'span4','maxlength'=>120,'placeholder'=>Yii::t('contentForm','Address Line 1: (Avenue, Street, complex, Residential, etc.).')));
+              	<?php echo $form->textFieldRow($marca,'dirUno',array('class'=>'span4 formu','id'=>'direccion','maxlength'=>120,'placeholder'=>Yii::t('contentForm','Address Line 1: (Avenue, Street, complex, Residential, etc.).')));
 				//<input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 1: (Avenida, Calle, Urbanizacion, Conjunto Residencial, etc.)" name="RegistrationForm[email]" class="span4">
 				 ?>
                 
@@ -151,7 +153,7 @@ $this->breadcrumbs=array(
             <div class="control-group"> 
             
               <div class="controls">
-              	<?php echo $form->textFieldRow($marca,'dirDos',array('class'=>'span4','maxlength'=>120,'placeholder'=>Yii::t('contentForm','Address Line 2: (Building, Floor, Number, apartment, etc.)')));
+              	<?php echo $form->textFieldRow($marca,'dirDos',array('class'=>'span4 formu','id'=>'direccion2','maxlength'=>120,'placeholder'=>Yii::t('contentForm','Address Line 2: (Building, Floor, Number, apartment, etc.)')));
 				// <input type="text" maxlength="128" id="RegistrationForm_email" placeholder="Direccion Linea 2: (Edificio, Piso, Numero, Apartamento, etc)" name="RegistrationForm[email]" class="span4">
 				 ?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
@@ -160,7 +162,7 @@ $this->breadcrumbs=array(
             <div class="control-group"> 
             	
               <div class="controls">
-              	<?php echo $form->textFieldRow($marca,'telefono',array('class'=>'span4','maxlength'=>45,'placeholder'=>Yii::t('contentForm','Phone number')));
+              	<?php echo $form->textFieldRow($marca,'telefono',array('class'=>'span4 formu','id'=>'telefono','maxlength'=>45,'placeholder'=>Yii::t('contentForm','Phone number')));
 				 ?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
@@ -176,6 +178,7 @@ $this->breadcrumbs=array(
 						 	$marca,'pais', CHtml::listData(
 						 		Pais::model()->findAll(),'id','nombre'
 							), array(
+								#'id'=>'pais',
 								'empty' => Yii::t(
 									'contentForm','Select a country')
 								)
@@ -191,7 +194,7 @@ $this->breadcrumbs=array(
               <div class="controls">
               	<?php 
               	
-                	echo $form->dropDownListRow($marca,'provincia_id', array(), array('empty' => Yii::t('contentForm','Select a province') ));?>
+                	echo $form->dropDownListRow($marca,'provincia_id', array('empty' => Yii::t('contentForm','Select a province') ));?>
                 <div style="display:none" id="RegistrationForm_email_em_" class="help-inline"></div>
               </div>
             </div>
@@ -303,6 +306,55 @@ $this->breadcrumbs=array(
 <?php $this->endWidget(); ?>
 
 <script>
+$('#errorName').hide();
+<?php 
+if($marca->isNewRecord)
+{
+?>
+	$('#botoncrear').attr('disabled',true);
+	$('#botonnuevo').attr('disabled',true);
+	$('#errorUrl').show();
+	
+	$("#url").change(function(){
+		
+	   if($("#url").val()=="")
+	   {
+	   		$('#botoncrear').attr('disabled',true);
+	   		$('#botonnuevo').attr('disabled',true);
+			$('#errorUrl').show();
+	   }   		
+	   else
+	   {
+	   		$('#botoncrear').attr('disabled',false);
+	   		$('#botonnuevo').attr('disabled',false);
+	   		$('#errorUrl').hide();
+	   }
+	   		
+	});
+<?php 
+}
+?>
+
+ $('body').on('input','.formu', function() { 
+ 	if($("#nombrePersona").val()=="" && !( $("#fiscal").val()=="" && $("#direccion").val()=="" && $("#direccion2").val()=="" && $("#telefono").val()==""))
+	{
+		$('#errorName').show();
+		$('#botoncrear').attr('disabled',true);
+	   	$('#botonnuevo').attr('disabled',true);
+	   	var iScroll = $(window).scrollTop();
+	   	iScroll = 500;
+        $('html, body').animate({
+            scrollTop: iScroll
+        }, 1000);
+
+	}
+	if(($("#fiscal").val()=="" && $("#direccion").val()=="" && $("#direccion2").val()=="" && $("#telefono").val()=="") || $("#nomprePersona").val()=="")
+	{
+		$('#errorName').hide();
+		$('#botoncrear').attr('disabled',false);
+	   	$('#botonnuevo').attr('disabled',false);
+	}
+ });
 	
 	$('#botoncrear').focusin( function () {// boton viejo
 			

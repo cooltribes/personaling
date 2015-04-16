@@ -218,6 +218,8 @@ class BolsaController extends Controller
 			}
 		} else 
 		{
+			if(isset($_POST['productoIndividual']))
+			{
 				if($_POST['productoIndividual']!="0") // si es 0 no trae look
 				{
 					
@@ -227,6 +229,12 @@ class BolsaController extends Controller
 				{
 					echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
 				}
+			}
+			else 
+			{
+				echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+			}		
+
 		}
 		 /*	 
 		$usuario = Yii::app()->user->id;
@@ -302,6 +310,8 @@ class BolsaController extends Controller
 	}
 
 }
+
+
 /*
  * action para actualizar las cantidades del producto en el carrito
  * 

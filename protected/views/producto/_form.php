@@ -4,7 +4,7 @@
 	'enableClientValidation'=>false,
 	'type'=>'horizontal',
 )); ?>
-<?php echo $form->errorSummary($model); ?>
+<?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
 
 <!-- SUBMENU OFF -->
 

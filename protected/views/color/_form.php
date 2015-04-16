@@ -5,7 +5,7 @@
 
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
 
 	<?php echo $form->textFieldRow($model,'valor',array('class'=>'span5','maxlength'=>45)); ?>
 

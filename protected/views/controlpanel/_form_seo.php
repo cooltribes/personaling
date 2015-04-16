@@ -16,7 +16,7 @@ if(!$model->isNewRecord){
 <!-- SUBMENU OFF -->
 
 <div class="span9">
-  <?php echo $form->errorSummary($model); ?>
+  <?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
   <div class="bg_color3   margin_bottom_small padding_small box_1">
     <fieldset>
       <div class="control-group">

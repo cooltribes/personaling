@@ -336,7 +336,7 @@ if($marca->isNewRecord)
 ?>
 
  $('body').on('input','.formu', function() { 
- 	if($("#nombrePersona").val()=="" && !( $("#fiscal").val()=="" && $("#direccion").val()=="" && $("#direccion2").val()=="" && $("#telefono").val()==""))
+ 	if($("#nombrePersona").val()=="" && !( $("#fiscal").val()!="" && $("#direccion").val()!="" && $("#direccion2").val()!="" && $("#telefono").val()!=""))
 	{
 		$('#errorName').show();
 		$('#botoncrear').attr('disabled',true);

@@ -20,7 +20,7 @@ $this->breadcrumbs=array(
 	'type'=>'horizontal',
 )); ?>
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
 <?php
 	echo CHtml::hiddenField('accion','def', array('id' => 'accion'));
 	echo CHtml::hiddenField('id_sig',$model->next($model->id), array('id' => 'id_sig'));

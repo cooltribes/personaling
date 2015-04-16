@@ -54,7 +54,7 @@ $this->breadcrumbs = array(
             </div>	
             <div>
                 <p class="lead">2. <?php echo Yii::t('contentForm','Select the price'); ?></p>
-                <?php echo $form->errorSummary($model); ?>
+                <?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
 
                 <div class="control-group input-prepend">
                     <label class="control-label required" for="BolsaGC_monto"><?php echo Yii::t('contentForm','Amount'); ?> <span class="required">*</span></label>

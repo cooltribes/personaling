@@ -25,12 +25,12 @@ $this->breadcrumbs=array(
 
 ?>
 
-<?php echo $form->errorSummary($model); ?>
+<?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
 
 
 <div class="container margin_top">
     <div class="page-header">
-        <h1>Actualizar Falla Tecnica</h1>
+        <h1>Actualizar Falla Técnica </h1>
     </div>
     <div class="row">
         <div class="span9">

@@ -211,6 +211,7 @@ return array (
      
      'Name' => 'Nombre',
      'Name look:' => 'Nombre del look:',
+     'Name of the contact person'=>'Nombre de la persona de contacto',
      'Name of items' => 'Nombre de productos',
      'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
      'Name look:' => 'Nombre del look:',

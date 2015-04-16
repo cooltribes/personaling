@@ -1447,17 +1447,27 @@ $('.imagen_principal').zoom({url: imgZ});
 				{
 					echo $varis[$cont-1]; 
 				}
-				else
+				else 
 				{
-					if($varis[$cont-2]=="l") 
+					if($varis[$cont-2]=="looks")
 					{
-					  echo Yii::app()->session['look_id'];
+							
+						$model=Look::model()->findByAttributes(array('url_amigable'=>$varis[$cont-1]));
+						echo $model->id;
 					}
-					else 
+					else
 					{
-						echo "0";
+						if($varis[$cont-2]=="l") 
+						{
+						  echo Yii::app()->session['look_id'];
+						}
+						else 
+						{
+							echo "0";
+						}
 					}
 				}
+
 					
 				
 			}

@@ -9,7 +9,7 @@
      * @author Fernando Torres | Marciano Studio
      * @version 1.0
      */
- 
+  
     class Environment {
  
         const DEVELOPMENT = 100;
@@ -475,7 +475,42 @@
                         'clientZIP'=>'6031',
                         'clientPhone'=>'0295-2676317',
                         'clientEmail'=>'info@personaling.com',
-                        '    ',
+                        '    ', 
+                        'tweets'=>array(
+                                '0'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando los resultados de mi trabajo son satiscatorios. Ahora quiero ese <a href="https://twitter.com/hashtag/Makeover?src=hash">#Makeover</a> de <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> para verme más bella</p>&mdash; Yudith Machado (@YudithMachado) <a href="https://twitter.com/YudithMachado/status/574581955284590592">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@YudithMachado', ),
+                               '1'=> array( 'code'=>'<blockquote class="twitter-tweet" data-conversation="none" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> porque a pesar de no tener un maquillaje dia a dia en mi rostro mi sonrisa siempre brilla ante el mundo</p>&mdash; maryuli zabala (@maryu3278) <a href="https://twitter.com/maryu3278/status/574581990260916224">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@maryu3278', ),
+                                '2'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que más mujeres confían más en su cerebro que en sus lolas</p>&mdash; Ilse Moros (@Ilsemo) <a href="https://twitter.com/Ilsemo/status/574588778494435328">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@Ilsemo', ),
+                                '3'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> porque trabajamos estudiamos cocinamos nos ejercitamos hacemos mercado <a href="https://twitter.com/hashtag/FelizDiaDeLaMujer?src=hash">#FelizDiaDeLaMujer</a></p>&mdash; mahli (@inbili) <a href="https://twitter.com/inbili/status/574591413226184704">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@inbili', ),
+                                '4'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> incluso en medio de hombres porque ellos no saben llevar vestidos pero yo si muy bien los pantalones!!👏</p>&mdash; zully E S Rocha (@zullyRocha) <a href="https://twitter.com/zullyRocha/status/574609384044650496">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@zullyRocha', ),
+                                '5'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando al ver a mis hijos grandes, sanos e inteligente se que he hecho un buen trabajo como mujer y madre <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a></p>&mdash; Jacqueline Ƹ̴Ӂ̴Ʒ (@BJackyO) <a href="https://twitter.com/BJackyO/status/574590434195996672">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@BJackyO', ),
+                                '6'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> corriendo 10K con <a href="https://twitter.com/SenosAyuda">@SenosAyuda</a> un domingo en la mañana <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a></p>&mdash; Fabianna Mazzocca (@Fabs_MB) <a href="https://twitter.com/Fabs_MB/status/574626799306588160">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@Fabs_MB', ),
+                                '7'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando mi esposo <a href="https://twitter.com/elcarlosx">@elcarlosx</a> me dice que ya quisiera <a href="https://twitter.com/SaschaFitness">@SaschaFitness</a> verse como yo <a href="https://twitter.com/hashtag/lol?src=hash">#lol</a> <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a></p>&mdash; Ana Cristina Romero (@AnaC_Romero) <a href="https://twitter.com/AnaC_Romero/status/574689206154432512">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@AnaC_Romero', ),
+                                '8'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/mesientopoderosa?src=hash">#mesientopoderosa</a> cuando me veo al espejo y me gusta lo que veo, tal cual como soy♡</p>&mdash; Isabel Carlota (@IsaRamirez16) <a href="https://twitter.com/IsaRamirez16/status/574710428137308160">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@IsaRamirez16', ),
+                                '9'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando veo que no es necesario mostrarlo todo para llamar la atención de la gente, una buena :) y listo <a href="https://twitter.com/PersonalingVzla">@personalingVzla</a></p>&mdash; Melyda (@MelydaTimaure) <a href="https://twitter.com/MelydaTimaure/status/576039511987236864">marzo 12, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@MelydaTimaure', ),
+                                '10'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al pensar que el FUTURO pertenece a quienes creemos en la belleza de nuestros SUEÑOS *.*</p>&mdash; Reina ツ (@adre0505) <a href="https://twitter.com/adre0505/status/576540408102125568">marzo 14, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@adre0505', ),   
+                         ),
                         'metodosPago'=> array(
                                 'bkCard' => false,
                                 'paypal' => false, 
@@ -499,9 +534,9 @@
                         ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken' => 'db13cb372e7f29b08de5cbd299a337ea',
+                        'zohoToken' => 'c9746b8f8834c0232c682768e55b02d7',
                         'zohoAccount'=>'cruiz@upsidecorp.ch',
-                        'zohoActive' => FALSE,
+                        'zohoActive' => TRUE,
                         'fb_appId' => '386830111475859',
                         ),
                 );
@@ -544,7 +579,7 @@
                         'clientZIP'=>'08003',
                         'clientPhone'=>'934 344 634',
                         'clientEmail'=>'info@personaling.com',
-                        '    ',
+                        
                         'pagoPS'=> array(           
                                 'paypal' => true,
                                 'banco' => true,
@@ -705,9 +740,45 @@
                             'bodyFavors' => true,
                             'skinColor' => true,
                         ),
+                        'tweets'=>array(
+                                '0'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando los resultados de mi trabajo son satiscatorios. Ahora quiero ese <a href="https://twitter.com/hashtag/Makeover?src=hash">#Makeover</a> de <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> para verme más bella</p>&mdash; Yudith Machado (@YudithMachado) <a href="https://twitter.com/YudithMachado/status/574581955284590592">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@YudithMachado', ),
+                               '1'=> array( 'code'=>'<blockquote class="twitter-tweet" data-conversation="none" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> porque a pesar de no tener un maquillaje dia a dia en mi rostro mi sonrisa siempre brilla ante el mundo</p>&mdash; maryuli zabala (@maryu3278) <a href="https://twitter.com/maryu3278/status/574581990260916224">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@maryu3278', ),
+                                '2'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que más mujeres confían más en su cerebro que en sus lolas</p>&mdash; Ilse Moros (@Ilsemo) <a href="https://twitter.com/Ilsemo/status/574588778494435328">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@Ilsemo', ),
+                                '3'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> porque trabajamos estudiamos cocinamos nos ejercitamos hacemos mercado <a href="https://twitter.com/hashtag/FelizDiaDeLaMujer?src=hash">#FelizDiaDeLaMujer</a></p>&mdash; mahli (@inbili) <a href="https://twitter.com/inbili/status/574591413226184704">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@inbili', ),
+                                '4'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> incluso en medio de hombres porque ellos no saben llevar vestidos pero yo si muy bien los pantalones!!👏</p>&mdash; zully E S Rocha (@zullyRocha) <a href="https://twitter.com/zullyRocha/status/574609384044650496">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@zullyRocha', ),
+                                '5'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando al ver a mis hijos grandes, sanos e inteligente se que he hecho un buen trabajo como mujer y madre <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a></p>&mdash; Jacqueline Ƹ̴Ӂ̴Ʒ (@BJackyO) <a href="https://twitter.com/BJackyO/status/574590434195996672">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@BJackyO', ),
+                                '6'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> corriendo 10K con <a href="https://twitter.com/SenosAyuda">@SenosAyuda</a> un domingo en la mañana <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a></p>&mdash; Fabianna Mazzocca (@Fabs_MB) <a href="https://twitter.com/Fabs_MB/status/574626799306588160">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@Fabs_MB', ),
+                                '7'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando mi esposo <a href="https://twitter.com/elcarlosx">@elcarlosx</a> me dice que ya quisiera <a href="https://twitter.com/SaschaFitness">@SaschaFitness</a> verse como yo <a href="https://twitter.com/hashtag/lol?src=hash">#lol</a> <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a></p>&mdash; Ana Cristina Romero (@AnaC_Romero) <a href="https://twitter.com/AnaC_Romero/status/574689206154432512">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@AnaC_Romero', ),
+                                '8'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/mesientopoderosa?src=hash">#mesientopoderosa</a> cuando me veo al espejo y me gusta lo que veo, tal cual como soy♡</p>&mdash; Isabel Carlota (@IsaRamirez16) <a href="https://twitter.com/IsaRamirez16/status/574710428137308160">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@IsaRamirez16', ),
+                                '9'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando veo que no es necesario mostrarlo todo para llamar la atención de la gente, una buena :) y listo <a href="https://twitter.com/PersonalingVzla">@personalingVzla</a></p>&mdash; Melyda (@MelydaTimaure) <a href="https://twitter.com/MelydaTimaure/status/576039511987236864">marzo 12, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@MelydaTimaure', ),
+                                '10'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al pensar que el FUTURO pertenece a quienes creemos en la belleza de nuestros SUEÑOS *.*</p>&mdash; Reina ツ (@adre0505) <a href="https://twitter.com/adre0505/status/576540408102125568">marzo 14, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@adre0505', ),  
+                                ),
+                        
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken' => '3ca8d750a84be5ae66794e919bbe0625',
+                        'zohoToken' => '047e51a44ad91ed868192cd5a617fefd',
                         'zohoAccount'=>'dduque@upsidecorp.ch',
                         'zohoActive' => TRUE,
                         'id_look_switch' => 0,
@@ -783,7 +854,7 @@
                         ),
                         'AzPayTerminal'=>'997',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
-                        'zohoToken'=>'db303d2e324bda57cfd72e89640dc5bb',
+                        'zohoToken'=>'8b75b742aec75310a4985ab07ca683d7',
                         'zohoAccount'=>'cmontanez@upsidecorp.ch',
                         'zohoActive' => TRUE,
                         'fb_appId' => '323808071078482',
@@ -893,6 +964,42 @@
                             'bodyFavors' => true,
                             'skinColor' => true,
                             ),
+                            
+                        'tweets'=>array(
+                                '0'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando los resultados de mi trabajo son satiscatorios. Ahora quiero ese <a href="https://twitter.com/hashtag/Makeover?src=hash">#Makeover</a> de <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> para verme más bella</p>&mdash; Yudith Machado (@YudithMachado) <a href="https://twitter.com/YudithMachado/status/574581955284590592">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@YudithMachado', ),
+                               '1'=> array( 'code'=>'<blockquote class="twitter-tweet" data-conversation="none" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> porque a pesar de no tener un maquillaje dia a dia en mi rostro mi sonrisa siempre brilla ante el mundo</p>&mdash; maryuli zabala (@maryu3278) <a href="https://twitter.com/maryu3278/status/574581990260916224">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@maryu3278', ),
+                                '2'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al ver que más mujeres confían más en su cerebro que en sus lolas</p>&mdash; Ilse Moros (@Ilsemo) <a href="https://twitter.com/Ilsemo/status/574588778494435328">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@Ilsemo', ),
+                                '3'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> porque trabajamos estudiamos cocinamos nos ejercitamos hacemos mercado <a href="https://twitter.com/hashtag/FelizDiaDeLaMujer?src=hash">#FelizDiaDeLaMujer</a></p>&mdash; mahli (@inbili) <a href="https://twitter.com/inbili/status/574591413226184704">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@inbili', ),
+                                '4'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> incluso en medio de hombres porque ellos no saben llevar vestidos pero yo si muy bien los pantalones!!👏</p>&mdash; zully E S Rocha (@zullyRocha) <a href="https://twitter.com/zullyRocha/status/574609384044650496">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@zullyRocha', ),
+                                '5'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando al ver a mis hijos grandes, sanos e inteligente se que he hecho un buen trabajo como mujer y madre <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a></p>&mdash; Jacqueline Ƹ̴Ӂ̴Ʒ (@BJackyO) <a href="https://twitter.com/BJackyO/status/574590434195996672">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@BJackyO', ),
+                                '6'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> corriendo 10K con <a href="https://twitter.com/SenosAyuda">@SenosAyuda</a> un domingo en la mañana <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a></p>&mdash; Fabianna Mazzocca (@Fabs_MB) <a href="https://twitter.com/Fabs_MB/status/574626799306588160">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@Fabs_MB', ),
+                                '7'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando mi esposo <a href="https://twitter.com/elcarlosx">@elcarlosx</a> me dice que ya quisiera <a href="https://twitter.com/SaschaFitness">@SaschaFitness</a> verse como yo <a href="https://twitter.com/hashtag/lol?src=hash">#lol</a> <a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a></p>&mdash; Ana Cristina Romero (@AnaC_Romero) <a href="https://twitter.com/AnaC_Romero/status/574689206154432512">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@AnaC_Romero', ),
+                                '8'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/mesientopoderosa?src=hash">#mesientopoderosa</a> cuando me veo al espejo y me gusta lo que veo, tal cual como soy♡</p>&mdash; Isabel Carlota (@IsaRamirez16) <a href="https://twitter.com/IsaRamirez16/status/574710428137308160">marzo 8, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@IsaRamirez16', ),
+                                '9'=>array( 'code'=>'<blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> cuando veo que no es necesario mostrarlo todo para llamar la atención de la gente, una buena :) y listo <a href="https://twitter.com/PersonalingVzla">@personalingVzla</a></p>&mdash; Melyda (@MelydaTimaure) <a href="https://twitter.com/MelydaTimaure/status/576039511987236864">marzo 12, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@MelydaTimaure', ),
+                                '10'=>array( 'code'=>' <blockquote class="twitter-tweet" lang="es"><p><a href="https://twitter.com/PersonalingVzla">@PersonalingVzla</a> <a href="https://twitter.com/hashtag/MeSientoPoderosa?src=hash">#MeSientoPoderosa</a> al pensar que el FUTURO pertenece a quienes creemos en la belleza de nuestros SUEÑOS *.*</p>&mdash; Reina ツ (@adre0505) <a href="https://twitter.com/adre0505/status/576540408102125568">marzo 14, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                                            'user'=>'@adre0505', ),  
+                                ),
                         'AzPayTerminal'=>'999',
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken' => 'f298def0f5eae649aa473c7db3092dc3',

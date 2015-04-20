@@ -1,28 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "{{bugReporte}}".
+ * This is the model class for table "{{user_promocion}}".
  *
- * The followings are the available columns in table '{{bugReporte}}':
+ * The followings are the available columns in table '{{user_promocion}}':
  * @property integer $id
  * @property integer $user_id
- * @property integer $bug_id
+ * @property integer $promocion_id
+ * @property double $valor
  * @property string $fecha
- * @property string $descripcion
- * @property integer $estado
- *
- * The followings are the available model relations:
- * @property Users $user
- * @property Bug $bug
+ * @property string $observacion
  */
-class BugReporte extends CActiveRecord
+class UserPromocion extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return BugReporte the static model class
+	 * @return UserPromocion the static model class
 	 */
-	 
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -33,7 +28,7 @@ class BugReporte extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{bugReporte}}';
+		return '{{user_promocion}}';
 	}
 
 	/**
@@ -44,11 +39,14 @@ class BugReporte extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, bug_id, fecha, descripcion, estado', 'required','message'=>'{attribute} No puede ser vacio.'),
-			array('user_id, bug_id, estado', 'numerical', 'integerOnly'=>true),
+			array('valor', 'required'),
+			array('user_id, promocion_id', 'numerical', 'integerOnly'=>true),
+			array('valor', 'numerical'),
+			array('observacion', 'length', 'max'=>200),
+			array('fecha', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, user_id, bug_id, fecha, descripcion, estado', 'safe', 'on'=>'search'),
+			array('id, user_id, promocion_id, valor, fecha, observacion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,8 +58,6 @@ class BugReporte extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
-			'bug' => array(self::BELONGS_TO, 'Bug', 'bug_id'),
 		);
 	}
 
@@ -73,10 +69,10 @@ class BugReporte extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'user_id' => 'User',
-			'bug_id' => 'Bug',
+			'promocion_id' => 'Promocion',
+			'valor' => 'Valor',
 			'fecha' => 'Fecha',
-			'descripcion' => 'Descripcion',
-			'estado' => 'Estado',
+			'observacion' => 'Observacion',
 		);
 	}
 
@@ -90,56 +86,20 @@ class BugReporte extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-		
+
 		$criteria->compare('id',$this->id);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('bug_id',$this->bug_id);
+		$criteria->compare('promocion_id',$this->promocion_id);
+		$criteria->compare('valor',$this->valor);
 		$criteria->compare('fecha',$this->fecha,true);
-		$criteria->compare('descripcion',$this->descripcion,true);
-		$criteria->compare('estado',$this->estado);
+		$criteria->compare('observacion',$this->observacion,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
-	
-	public function searchEstados()
-	{
-		return $options = array ('0' => 'No Solucionado', '1' => 'Solucionado', '2' => 'En Analisis', '3' => 'No se Pudo Reproducir', '4' => 'Por Diseño');
-	}
-	
-	public function getEstados($estado)
-	{
-		if($estado==0)
-		{
-			$estado='No Solucionado';
-		}
-		else 
-		{
-			if($estado==1)
-			{
-				$estado='Solucionado';
-			}
-			else 
-			{
-				if($estado==2)
-				{
-					$estado='En Analisis';
-				}
-				else 
-				{
-					if($estado==3)
-					{
-						$estado='No se Pudo Reproducir';
-					}
-					else 
-					{
-						$estado='Por Diseño';
-					}
-				}	
-			}
-		}	
-		return $estado;
-	}
-	
+    
+    public function countxValor($valor){
+        return count($this->findAllByAttributes(array('valor'=>$valor)));
+    }
 }

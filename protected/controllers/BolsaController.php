@@ -218,6 +218,8 @@ class BolsaController extends Controller
 			}
 		} else 
 		{
+			if(isset($_POST['productoIndividual']))
+			{
 				if($_POST['productoIndividual']!="0") // si es 0 no trae look
 				{
 					
@@ -227,6 +229,12 @@ class BolsaController extends Controller
 				{
 					echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
 				}
+			}
+			else 
+			{
+				echo $bolsa->addProducto($_POST['producto'],$_POST['talla'],$_POST['color']);
+			}		
+
 		}
 		 /*	 
 		$usuario = Yii::app()->user->id;
@@ -302,6 +310,8 @@ class BolsaController extends Controller
 	}
 
 }
+
+
 /*
  * action para actualizar las cantidades del producto en el carrito
  * 
@@ -2007,10 +2017,23 @@ class BolsaController extends Controller
 									
 										$datos = simplexml_load_string($respuesta);
 										
-										$id = $datos->result[0]->recorddetail->FL[0];
-										
-										$orden->zoho_id = $id;
-										$orden->save(); 
+										if(isset($datos->result[0]->recorddetail->FL[0])) // si hay un error, el cliente no deberia verlo
+										{
+											$id = $datos->result[0]->recorddetail->FL[0];
+											if(isset(Yii::app()->session['zoho_error'])) // si hay un error, pero no en el producto, si no en el usuario
+												$orden->zoho_error=2;
+											$orden->zoho_id = $id;
+											$orden->save();
+										}
+										else 
+										{
+											if(isset(Yii::app()->session['zoho_error']))	//hay error de usuario y producto
+												$orden->zoho_error=3;
+											else
+												$orden->zoho_error=1; // solo hay error de producto
+											$orden->save();
+										}
+ 
 									}
 								} 
 			
@@ -3619,11 +3642,22 @@ class BolsaController extends Controller
 
 	                    //var_dump($datos);
 	                    //Yii::app()->end();
-	                    $id = $datos->result[0]->recorddetail->FL[0];
-	                    //echo $id;	 
-
-	                    $orden->zoho_id = $id;
-	                    $orden->save(); 
+						if(isset($datos->result[0]->recorddetail->FL[0])) // si hay un error, el cliente no deberia verlo
+						{
+							$id = $datos->result[0]->recorddetail->FL[0];
+							if(isset(Yii::app()->session['zoho_error'])) // si hay un error, pero no en el producto, si no en el usuario
+								$orden->zoho_error=2;
+							$orden->zoho_id = $id;
+							$orden->save();
+						}
+						else 
+						{
+							if(isset(Yii::app()->session['zoho_error']))	//hay error de usuario y producto
+								$orden->zoho_error=3;
+							else
+								$orden->zoho_error=1; // solo hay error de producto
+							$orden->save();
+						}
 	            }
 	            /*===========================================*/
             }

@@ -51,7 +51,9 @@ class Profile extends UActiveRecord
 			$float = array();		
 			$decimal = array();
 			$rules = array();
-			array_push($rules,array('facebook, twitter, url, bio', 'type','type'=>'string','allowEmpty'=>true,'on'=>'notPS' ));	
+			array_push($rules,array('facebook, twitter, url, bio', 'type','type'=>'string','allowEmpty'=>true,'on'=>'notPS' ));
+	
+
 			
 		
 			$model=$this->getFields();
@@ -146,6 +148,9 @@ class Profile extends UActiveRecord
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
 			array_push($rules,array(implode(',',$float), 'type', 'type'=>'float'));
 			array_push($rules,array(implode(',',$decimal), 'match', 'pattern' => '/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/'));
+       
+            
+            
 			
 			$this->_rules = $rules;
 		}

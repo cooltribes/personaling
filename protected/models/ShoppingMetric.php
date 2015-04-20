@@ -67,9 +67,9 @@ class ShoppingMetric extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-		array('created_on','default',
+		/*array('created_on','default',
               'value'=>new CDbExpression('NOW()'),
-              'setOnEmpty'=>false,'on'=>'insert'), 
+              'setOnEmpty'=>false,'on'=>'insert'), */
 			array('user_id, step, created_on, tipo_compra, HTTP_USER_AGENT, REMOTE_ADDR, HTTP_X_FORWARDED_FOR,HTTP_REFERER,data', 'required'),
 			array('user_id, step, tipo_compra', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
@@ -128,7 +128,8 @@ class ShoppingMetric extends CActiveRecord
 	}
 	public function beforeValidate()
 	{
-		$ua = 	
+		$ua =
+		$this->created_on=date("Y-m-d H:i:s"); 	
 		$this->HTTP_USER_AGENT = $_SERVER['HTTP_USER_AGENT'];
 		//$this->platform;
 		//$this->browser;
@@ -138,9 +139,16 @@ class ShoppingMetric extends CActiveRecord
 		$this->HTTP_REFERER = (!empty($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:'AJAX';
 		return parent::beforeValidate();
 	}
-	public static function registro($step,$data=array()){
+	public static function registro($step,$data=array(), $checkViews=0){
+			$clickValido=1;	
+			if($checkViews==1)
+			{
+				$clickValido=ShoppingMetric::model()->checkViews($data); 
+			}
+				
 			$metric = new ShoppingMetric();
             $metric->user_id = Yii::app()->user->id;
+			$metric->click_validez=$clickValido;
 			
 			if (empty($data['tipo_compra']))
 				$metric->tipo_compra = ShoppingMetric::TIPO_TIENDA;
@@ -583,6 +591,28 @@ class ShoppingMetric extends CActiveRecord
                 'criteria' => $criteria,
             ));
         
+	}
+	
+	public function checkViews($data=array()) // contarle solo los clicks cada cierto tiempo en mismos looks
+	{
+				$clickValido=1;				
+				$ip=$_SERVER['REMOTE_ADDR'];
+				$comp='%"look_id":"'.$data['look_id'].'%';
+				$sql=ShoppingMetric::model()->findAll("data like '".$comp."' and REMOTE_ADDR=:ip order by id DESC", 
+				array(':ip'=>$ip));
+				foreach($sql as $modelado)
+				{
+					 if(strtotime(date("Y-m-d H:i:s"))-strtotime($modelado->created_on)>5*60) 
+					 {
+					 	break; 
+					 }
+					 else 
+					 {
+						$clickValido=0;	
+						break;
+					 }
+				}
+				return $clickValido;
 	}
 
 }

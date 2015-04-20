@@ -39,7 +39,7 @@
     <fieldset>
                   <h1>Tu Banner</h1>
 <?php echo "<p>Puedes editar o cambiar tu banner usando las opciones a continuación";
- if(is_null($user->banner_url)||$user->banner_url=="/images/banner/default.gif")
+ if(is_null($user->banner_url)||$user->banner_url=="/images/".Yii::app()->language."/banner/default.gif")
 		echo  ", con las siguientes dimensiones:</p>".CHtml::image('http://placehold.it/1170x343','Avatar',array("width"=>"1170", "height"=>"343", "id"=>"example")); //imagen 
 		else
 			 echo":</p>";?>

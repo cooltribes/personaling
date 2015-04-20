@@ -11,7 +11,7 @@ class UserIdentity extends CUserIdentity
 	const ERROR_EMAIL_INVALID=3;
 	const ERROR_STATUS_NOTACTIV=4;
 	const ERROR_STATUS_BAN=5;
-        const ERROR_STATUS_APPLY = 6;
+    const ERROR_STATUS_APPLY = 6;
 	const ERROR_STATUS_DEL = 7;
         
 	/**

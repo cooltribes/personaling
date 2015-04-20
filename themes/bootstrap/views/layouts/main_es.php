@@ -54,7 +54,9 @@ if (Yii::app()->user->id?UserModule::isAdmin():false){
                                             array('label'=>'Productos', 'url'=>array('/controlpanel/productos')),
                                             array('label'=>'Looks', 'url'=>array('/controlpanel/looks')),
                                             array('label'=>'Usuarios', 'url'=>array('/controlpanel/usuarios')),
-                                            array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),                                           
+                                            array('label'=>'Personal Shoppers', 'url'=>array('/controlpanel/personalshoppers')),
+                                            array('label'=>'Seguimiento de Bugs', 'url'=>array('/bug/admin')),
+                                            array('label'=>'Metricas', 'url'=>array('/shoppingMetric/admin')),                                             
                                             array('label'=>'Acciones', 'url'=>array('#')),
                                          
                     )),

@@ -34,6 +34,11 @@ include("class.zoom.json.services.php");
  * 5 - enviada
  * 
  * 
+ * --------------------------
+ * ZOHO ERROR
+ * 1 - Uno de los productos no esta registrado en zoho.
+ * 2 - Usuario de compra no esta registrado en zoho.
+ * 3 - El usuario y uno de los productos no esta registrado en zoho
  * */
 
 /**
@@ -81,6 +86,9 @@ class Orden extends CActiveRecord
         
 	const ESTADO_FIN_PARC_DEV = 13;        
 
+	public static $zoho_error= array('1'=>'Uno de los productos no esta registrado en zoho', '2'=>'Usuario de compra no esta registrado en zoho',
+	'3'=>'El usuario y uno de los productos no esta registrado en zoho');
+	
 	public static $estados = array('1' => 'En espera de pago',
         '2' => 'En espera de confirmación', '3' => 'Pago confirmado',
         '4' => 'Enviado', '5' => 'Cancelada', '6' => 'Pago rechazado',

@@ -453,15 +453,24 @@ class ZohoSales{
 		//print_r($datos);
 		//echo $datos->result->Leads->row->FL;
 		
-		$zoho_id = $datos->result->Leads->row->FL;
-		$usuario = User::model()->findByAttributes(array('email'=>$lead_mail));
-		$usuario->zoho_id = $zoho_id;
-		//$usuario->saveAttributes(array('zoho_id'=>$zoho_id)); // se recupera el zoho id en caso de que se perdiera.
-		
-		if($usuario->save())
-			return TRUE;
-		else
+		if(isset($datos->result->Leads->row->FL)) // si hay un error, el cliente no deberia verlo
+		{
+			$zoho_id = $datos->result->Leads->row->FL;
+			$usuario = User::model()->findByAttributes(array('email'=>$lead_mail));
+			$usuario->zoho_id = $zoho_id;
+			//$usuario->saveAttributes(array('zoho_id'=>$zoho_id)); // se recupera el zoho id en caso de que se perdiera.
+			
+			if($usuario->save())
+				return TRUE;
+			else
+				return FALSE;
+		}
+		else 
+		{
+			Yii::app()->session['zoho_error']='error';	
 			return FALSE;
+		}
+
 
 	}
 

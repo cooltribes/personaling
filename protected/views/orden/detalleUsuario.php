@@ -331,7 +331,11 @@ $usuario = User::model()->findByPk($orden->user_id);
                 echo"<td>".$orden->getTextEstado($est->estado)."</td>";
 
                 $usu = User::model()->findByPk($est->user_id);
-                echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
+				
+				if($est->user_id==0)
+					echo ("<td>Sistema</td>");
+				else	
+                	echo ("<td>".$usu->profile->first_name." ".$usu->profile->last_name."</td>");
 
                 $fecha = date("d/m/Y",strtotime($est->fecha));
                 echo("<td>".$fecha." </td>");

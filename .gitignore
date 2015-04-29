@@ -31,3 +31,5 @@ protected/runtime/*
 protected/data/*.db
 themes/classic/views/
 ftpsync.settings
+protected/config/environment.php
+

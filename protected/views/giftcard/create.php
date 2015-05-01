@@ -28,7 +28,7 @@ $this->breadcrumbs=array(
 		<fieldset>
 			<legend>Generar Gift Card</legend>
                         
-                         <?php echo $form->errorSummary($model); ?>
+                         <?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
                         
                         <div class="control-group input-prepend<?php echo $model->hasErrors("monto")?" error":""; ?>">
                             <label class="control-label required" for="Giftcard_monto">

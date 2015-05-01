@@ -124,4 +124,24 @@ return array(
 	'The value of the default field (database).' => 'Der Wert des Standard-Bereich (Datenbank).',
 	'Display order of fields.' => 'Anzeige Reihenfolge der Felder.',
 	'Not visited' => 'Nicht besucht',
+	
+	
+	
+	'Login' => 'Inicia sesión',
+	'To log on Personaling you can:' => 'Para iniciar sesión en Personaling puedes:',
+	'Login with Facebook' => 'Iniciar sesión con Facebook',
+	'Or use your credentials personaling' => 'O introducir tus datos de usuario:',
+	'Enter' => 'Entrar',
+	'If you don\'t have an account' => 'Si no tienes cuenta',
+	'Sign up here' => 'Regístrate aquí',
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 );

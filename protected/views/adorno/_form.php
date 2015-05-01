@@ -7,7 +7,7 @@
         'enctype' => 'multipart/form-data',
     ),
 )); ?>
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
 
   <!-- SUBMENU OFF -->
   <div class="row margin_top">

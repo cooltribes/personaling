@@ -277,7 +277,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <?php } ?>
                 <?php 
                 //Aztive de prueba
-                if(isset(Yii::app()->params['metodosPago']['prueba'])){ 
+                if(Yii::app()->params['metodosPago']['prueba']){ 
                 ?>                
                 <div class="accordion-group">
                     <div class="accordion-heading">

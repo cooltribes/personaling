@@ -81,7 +81,7 @@ class User extends CActiveRecord {
                     array('username', 'length', 'max' => 128, 'min' => 8, 'message' => UserModule::t("Incorrect username (length between 8 and 128 characters).")),
                     //array('password', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
                     array('password', 'length', 'max' => 128, 'min' => 4, 'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
-                    array('status, ', 'length', 'max' => 128, 'min' => 4, 'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
+                    //array('status, ', 'length', 'max' => 128, 'min' => 4, 'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
 
                     array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),
                     array('email', 'unique', 'message' => UserModule::t("This user's email address already exists.")),
@@ -792,7 +792,7 @@ class User extends CActiveRecord {
 	{
 	   	
 	   if($this->personal_shopper>0  && $this->isNewRecord)
-	   		$this->banner_url='/images/banner/default.gif';
+	   		$this->banner_url='/images/'.Yii::app()->language.'/banner/default.gif';
 	   //echo $this->birthday;
 	   return parent::beforeSave();
 	}

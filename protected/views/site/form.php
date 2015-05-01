@@ -24,7 +24,7 @@
        <h3 class="margin_left">Carga una imagen</h3>
        <div class="span12 text_align_center">
            <p class="note"><small>Los campos con <span class="required">*</span> son requeridos.</small></p>
-            <?php echo $form->errorSummary($model); ?>
+            <?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
        </div>
        <div class="span4 no_margin_left text_align_right">
              <?php echo $form->labelEx($model,'alt'); ?>         

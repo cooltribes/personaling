@@ -30,3 +30,6 @@ protected/runtime/*
 !protected/runtime/.gitignore
 protected/data/*.db
 themes/classic/views/
+ftpsync.settings
+protected/config/environment.php
+

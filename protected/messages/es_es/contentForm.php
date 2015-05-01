@@ -220,6 +220,7 @@ return array (
 
 
 	'Name' => 'Nombre',
+	'Name of the contact person'=>'Nombre de la persona de contacto',
 	'Name of items' => 'Nombre de productos',
 	'Name of the person to whom you send' => 'Nombre de la persona a la que envias',
 	'Name look:' => 'Nombre del look:',
@@ -413,7 +414,8 @@ return array (
 	'Total Gift Cards' => 'Total de Gift Cards',
 	'Total returned' => 'Total devuelto',
 	'Total sent amount' => 'Cant. Total Enviada',
-	'Total acknowledged amount' => 'Cant. Total Confirmada',   
+	'Total acknowledged amount' => 'Cant. Total Confirmada',  
+	'To save this information at least  type the name.'=>'Para Guardar esta informacion al menos escriba el nombre', 
 	'Type' => 'Tipo',
 	'Type a description for this look' => 'Escribe una descripción para este look',
 	'Type of discount' => 'Tipo de descuento',

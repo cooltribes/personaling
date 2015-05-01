@@ -615,18 +615,17 @@ class ProfileController extends Controller
 
 		if( isset($_POST['valido']) ){
 			$id = $model->id;
-
-			if(!is_dir( Yii::getPathOfAlias('webroot').'/images/banner/'.$id) ){
-				mkdir( Yii::getPathOfAlias('webroot').'/images/banner/'.$id ,0777,true );
+			if(!is_dir( Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/banner/'.$id) ){
+				mkdir( Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/banner/'.$id ,0777,true );
 			}
 
 			$images = CUploadedFile::getInstancesByName('filesToUpload');
 			if(isset($images) && count($images) > 0){
 
 				foreach ($images as $image => $pic) {
-	            	$nombre = Yii::getPathOfAlias('webroot').'/images/banner/'.$id.'/'. $image;	
+	            	$nombre = Yii::getPathOfAlias('webroot').'/images/'.Yii::app()->language.'/banner/'.$id.'/'. $image;	
 	            	$extension = '.'.$pic->extensionName;
-					$model->banner_url = '/images/banner/'. $id .'/'. $image .$extension;
+					$model->banner_url = '/images/'.Yii::app()->language.'/banner/'. $id .'/'. $image .$extension;
 
 				
 				 if (!$model->save())	

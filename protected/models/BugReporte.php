@@ -44,7 +44,7 @@ class BugReporte extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, bug_id, fecha, descripcion, estado', 'required'),
+			array('user_id, bug_id, fecha, descripcion, estado', 'required','message'=>'{attribute} No puede ser vacio.'),
 			array('user_id, bug_id, estado', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

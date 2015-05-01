@@ -179,7 +179,7 @@ $template = '{summary}
       <th scope="col">Monto ('.Yii::t('contentForm','currSym').')</th>
       <th scope="col">Pagos ('.Yii::t('contentForm','currSym').')</th>
       <th scope="col">Estado</th>
-      <th scope="col">Estado LF</th>
+      <th scope="col">Estado Zoho</th>
       <th scope="col">Acciones</th>
     </tr>
     {items}

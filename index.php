@@ -42,6 +42,8 @@
     
     if (isset($_SERVER["HTTP_APPLICATION_ENV"])&&$_SERVER["HTTP_APPLICATION_ENV"]=="production") //htaccess SetEnv HTTP_APPLICATION_ENV "production"
         $environment = new Environment(Environment::PRODUCTION,$country,'');
+    if (isset($_SERVER["HTTP_APPLICATION_ENV"])&&$_SERVER["HTTP_APPLICATION_ENV"]=="ch") //htaccess SetEnv HTTP_APPLICATION_ENV "production"
+        $environment = new Environment(Environment::TEST,$country,'/ch');
     elseif (strstr($_SERVER["REQUEST_URI"],"test62"))
     	$environment = new Environment(Environment::STAGE,$country,'/test62');
     elseif (strstr($_SERVER["REQUEST_URI"],"develop"))

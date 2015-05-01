@@ -1447,17 +1447,27 @@ $('.imagen_principal').zoom({url: imgZ});
 				{
 					echo $varis[$cont-1]; 
 				}
-				else
+				else 
 				{
-					if($varis[$cont-2]=="l") 
+					if($varis[$cont-2]=="looks")
 					{
-					  echo Yii::app()->session['look_id'];
+							
+						$model=Look::model()->findByAttributes(array('url_amigable'=>$varis[$cont-1]));
+						echo $model->id;
 					}
-					else 
+					else
 					{
-						echo "0";
+						if($varis[$cont-2]=="l") 
+						{
+						  echo Yii::app()->session['look_id'];
+						}
+						else 
+						{
+							echo "0";
+						}
 					}
 				}
+
 					
 				
 			}
@@ -1622,9 +1632,10 @@ $('.imagen_principal').zoom({url: imgZ});
 <?php } ?>
 
 var ruta= "<?php echo Yii::app()->getBaseUrl(true);?>";
+var token= "<?php echo Yii::app()->params['fb_appId']; ?>";
 window.fbAsyncInit = function(){
     FB.init({
-        appId: '323808071078482', status: true, cookie: true, xfbml: true }); 
+        appId: token, status: true, cookie: true, xfbml: true }); 
   };
   (function(d, debug){var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];if   (d.getElementById(id)) {return;}js = d.createElement('script'); js.id = id; js.async = true;js.src = "//connect.facebook.net/es_ES/all" + (debug ? "/debug" : "") + ".js";ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
   function postToFeed(title, desc, url, image){

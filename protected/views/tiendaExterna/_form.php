@@ -23,7 +23,7 @@
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 	<fieldset>
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
 
 	<div class="control-group margin_top_medium">
 		<?php echo $form->labelEx($model,'name'); ?>

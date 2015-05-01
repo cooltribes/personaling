@@ -88,16 +88,18 @@
     No fue nada fácil, lo reconocemos, pero después de leer con mucho cuidado cada uno de sus maravillosos tuits, <strong>seleccionamos los 10 mejores y creativos</strong>    
 </p>
 
-<p class="text_align_center">
+<h3 class="text_align_center  Bold">
     ¡Te invitamos a votar más abajo por el que más te guste! 
-</p>
+</h3>
 <section class="row margin_top">
 <?php
 
     foreach($tweets as $key=>$tweet):
 ?>
-    <article class="contest-box span4 <?php echo $key==9?'offset4':'' ?> margin_bottom well_outer">
-        
+    <article class="contest-box span4 <?php echo $key==9?'offset2':'' ?> margin_bottom well_outer">
+            <h4 class="text_align_right margin_right_small margin_bottom_small_minus">
+                <small>votos: <b><?php echo UserPromocion::model()->countxValor($key); ?></b></small>
+            </h4>
             <div class="tweet-frame">
                <?php echo $tweet['code']; ?>  
                   
@@ -111,9 +113,9 @@
 
 <?php endforeach; ?>
 </section>
-<p class="text_align_center">
+<h3 class="text_align_center Bold">
     Anunciaremos a la ganadora final el 23 de marzo de 2015.
-</p>
+</h3>
 <style>
     
 </style>

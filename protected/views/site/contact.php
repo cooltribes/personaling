@@ -35,7 +35,7 @@ Si tienes alguna duda, propuesta de negocio o quieres reportar alguna falla por 
 )); ?>
 
 
-	<?php echo $form->errorSummary($model);?>
+	<?php echo $form->errorSummary($model, Funciones::errorMsg());?>
 	<a href="#">hola</a>
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'Nombre'); ?>

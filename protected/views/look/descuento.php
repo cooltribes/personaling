@@ -29,7 +29,7 @@ $this->breadcrumbs=array(
 	'enableClientValidation'=>true,
 	'type'=>'horizontal',
 )); ?>
-  <?php echo $form->errorSummary($model); ?>
+  <?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
   <div class="row margin_top">
     <div class="span9">
       <div class="bg_color3   margin_bottom_small padding_small box_1">

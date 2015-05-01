@@ -21,7 +21,7 @@ $this->breadcrumbs=array(
             'type'=>'horizontal',
     )); ?>
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model, Funciones::errorMsg()); ?>
 <?php
 	
 	

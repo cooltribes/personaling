@@ -40,6 +40,11 @@ class Funciones {
 		return strpos(Yii::app()->baseUrl, "test") !== false;
 
 	}
+	
+	public static function errorMsg()  // para traducir todos los errores por parte del servidor
+	{
+		return "Por favor, corrija los siguientes errores";
+	}
 
 	
 

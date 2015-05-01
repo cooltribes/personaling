@@ -98,4 +98,8 @@ class UserPromocion extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+    
+    public function countxValor($valor){
+        return count($this->findAllByAttributes(array('valor'=>$valor)));
+    }
 }

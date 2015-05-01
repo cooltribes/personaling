@@ -469,8 +469,10 @@ class Look extends CActiveRecord
         $criteria=new CDbCriteria;          
         
         $criteria->limit=$limit;
-        $criteria->order="destacado DESC, approved_on DESC";
+        #$criteria->order="destacado DESC, approved_on DESC";
+        $criteria->order = 'RAND()';
         $criteria->addCondition('status = 2');
+		$criteria->addCondition('destacado = 1');
 
 
         

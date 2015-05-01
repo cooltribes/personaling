@@ -440,35 +440,35 @@ if(!Yii::app()->user->isGuest){
             <div class="container">
                 <div class="row hidden-phone">
                     <div class="span3">
-                        <h4>Información de Interés</h4>
+                        <h4><?php echo Yii::t('contentForm','Information of Interest'); ?></h4>
                         <ul>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de">Acerca de Personaling</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/formas-de-pago" title="Formas de Pago">Formas de Pago</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/envios" title="Envíos y Encomiendas">Envíos</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad">Políticas de Privacidad</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de"><?php echo Yii::t('contentForm','About Personaling'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/formas-de-pago" title="Formas de Pago"><?php echo Yii::t('contentForm','Payment Methods'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/envios" title="Envíos y Encomiendas"><?php echo Yii::t('contentForm','Shipping'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones"><?php echo Yii::t('contentForm','Returns Policy'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad"><?php echo Yii::t('contentForm','Privacy Policy'); ?></a></li>
                           <!-- <li><a href="<?php //echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li> -->
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
-                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
-                             <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_condiciones_ps" title="Acerca de">Términos y condiciones para Personal Shoppers</a></li>
-                             <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/preguntas_frecuentes" title="Preguntas Frecuentes"><?php echo Yii::t('contentForm','Frequently Asked Questions'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio"><?php echo Yii::t('contentForm','Terms of Service'); ?></a></li>
+                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper"><?php echo Yii::t('contentForm','Apply for Personal Shopper'); ?></a></li>
+                             <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_condiciones_ps" title="Acerca de"><?php echo Yii::t('contentForm','Terms and Conditions for Personal Shoppers'); ?></a></li>
+                             <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto"><?php echo Yii::t('contentForm','Contact'); ?> </a></li>
                         </ul>
                       </div>
                       
                       <div class="span3">
-                        <h4>Lo que encontrarás</h4>
+                        <h4><?php echo Yii::t('contentForm','What you will find'); ?></h4>
                         <ul>
                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/looks-personalizados" title="Looks Personalizados">Looks</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Ropa</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Zapatos</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Accesorios</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa"><?php echo Yii::t('contentForm','Clothes'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa"><?php echo Yii::t('contentForm','Shoes'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa"><?php echo Yii::t('contentForm','Accessories'); ?> </a></li>
                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/profile/listado" title="Personal Shoppers">Personal Shoppers</a></li>
                         </ul>
                       </div>                      
                       
                       <div class="span3">
-                        <h4>Sigue nuestras redes sociales</h4>
+                        <h4<?php echo Yii::t('contentForm','Sigue nuestras redes sociales'); ?>></h4>
                             <ul>
                                <li>  <a title="Facebook" href="https://www.facebook.com/Personaling">Facebook</a></li>  
                                <li>  <a title="Instagram" href="http://instagram.com/personaling">Instagram </a></li>  
@@ -479,7 +479,7 @@ if(!Yii::app()->user->isGuest){
                         </ul>
                       </div>
                       <div class="span3">
-                            <h4>Métodos de Pago</h4>
+                            <h4><?php echo Yii::t('contentForm','Payment Methods'); ?></h4>
                             <div class="row-fluid">
                                 <a class="span3">
                                     <img alt="MasterCard" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/mc.png';?>" height="25px"/>
@@ -491,7 +491,7 @@ if(!Yii::app()->user->isGuest){
                                     <img style="margin-top:12px" alt="Banesco" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/banesco.png';?>" height="25px"/>
                                 </a>
                             </div>
-                            <h4 class="margin_top">Seguridad de Datos</h4>
+                            <h4 class="margin_top"><?php echo Yii::t('contentForm','Safety Data'); ?></h4>
                             <div class="row-fluid">
                                <a class="span2">
                                                      <img alt="SSL Security" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/ssl.png';?>" height="25px"/>

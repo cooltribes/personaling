@@ -163,6 +163,7 @@ Yii::app()->clientScript->registerScriptFile('http://akwww.polyvorecdn.com/rsrc/
 	<?php endforeach; ?>
 	<script>
 	var ruta= "<?php echo Yii::app()->getBaseUrl(true);?>";
+	var token= "<?php echo Yii::app()->params['fb_appId']; ?>";
 	$('.imglook').on("load",function(){
 		//console.log('clicking');
 		$(this).parent().prev("img").hide();
@@ -174,7 +175,7 @@ Yii::app()->clientScript->registerScriptFile('http://akwww.polyvorecdn.com/rsrc/
 	});
   window.fbAsyncInit = function(){
     FB.init({
-        appId: '323808071078482', status: true, cookie: true, xfbml: true }); 
+        appId: token, status: true, cookie: true, xfbml: true }); 
   };
   (function(d, debug){var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];if   (d.getElementById(id)) {return;}js = d.createElement('script'); js.id = id; js.async = true;js.src = "//connect.facebook.net/es_ES/all" + (debug ? "/debug" : "") + ".js";ref.parentNode.insertBefore(js, ref);}(document, /*debug*/ false));
   function postToFeed(title, desc, url, image){

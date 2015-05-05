@@ -94,7 +94,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
     <div class="span6 offset3">
       <h1 class="text_align_center">Regístrate</h1>
       <div class="row-fluid margin_bottom margin_top text_align_center">
-            <div id="boton_facebook" class="span6 offset3 margin_bottom"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#">Regístrate con Facebook</a></div>
+            <div id="boton_facebook" class="span6 offset3 margin_bottom"><a title="<?php echo UserModule::t('Register with facebook'); ?>" class="transition_all" onclick="check_fb()" href="#"><?php echo UserModule::t('Register with facebook'); ?></a></div>
 
         	<!-- <div id="boton_twitter" class="span5 offset2 margin_bottom"> <a id="registro_twitter" title="Registrate con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Regístrate con Twitter</a>  -->
           <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
@@ -113,9 +113,9 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 	),
 )); ?>
           <fieldset>
-            <p class="text_align_center"> <a href="<?php echo Yii::app()->getBaseUrl();?>/user/login">Si ya estas registrado haz click aquí</a></p>
-            <legend class="text_align_center" >O llena los campos a continuación: </legend>
-	<?php echo $form->errorSummary(array($model,$profile),"Corrije los siguientes errores:"); ?>
+            <p class="text_align_center"> <a href="<?php echo Yii::app()->getBaseUrl();?>/user/login"><?php echo UserModule::t('If you are already registered, click here'); ?></a></p>
+            <legend class="text_align_center" ><?php echo UserModule::t('Or fill in the fields below:'); ?> </legend>
+	<?php echo $form->errorSummary(array($model,$profile),UserModule::t('Please correct the following errors:')); ?>
 	<?php
 	if(isset($_GET['request_ids'])){
 		//echo $_GET['request_ids'];
@@ -228,11 +228,11 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 	<div class="control-group">
 		<label class="checkbox">
 	  		<input type="checkbox" value="suscribir" name="Profile[suscribir]" checked>
-	  		Suscribirme a la lista de correo de Personaling
+	  		<?php echo UserModule::t('Subscribe to Personaling\'s mailing list'); ?>
 		</label>
 	</div>
             <hr/>
-             Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
+             <?php echo UserModule::t('Clicking "Next" you are indicating that you have read and accepted the'); ?> <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="<?php echo UserModule::t('Terms and conditions'); ?>" target="_blank"><?php echo UserModule::t('Terms and conditions'); ?></a> <?php echo UserModule::t('and the'); ?> <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="<?php echo UserModule::t('Privacy Policy'); ?>" target="_blank"><?php echo UserModule::t('Privacy Policy'); ?></a>. 
 	<div class="padding_top_medium "> 
 		
 			

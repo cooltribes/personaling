@@ -127,15 +127,24 @@ return array(
 	
 	
 	
-	'Login' => 'Inicia sesión',
-	'To log on Personaling you can:' => 'Para iniciar sesión en Personaling puedes:',
-	'Login with Facebook' => 'Iniciar sesión con Facebook',
-	'Or use your credentials personaling' => 'O introducir tus datos de usuario:',
-	'Enter' => 'Entrar',
-	'If you don\'t have an account' => 'Si no tienes cuenta',
-	'Sign up here' => 'Regístrate aquí',
-	
-	
+    'Login' => 'Login',
+	'To log on Personaling you can:' => 'Willkommen zurück:',
+	'Login with Facebook' => 'Login mit Facebook',
+	'Or use your credentials personaling' => 'Für die Anmeldung im Benutzerkonto bitte die Benutzerdaten eingeben:',
+	'Enter' => 'Anmelden',
+	'If you don\'t have an account' => 'Sind Sie Neukunde?',
+	'Sign up here' => 'Jetzt registrieren.',
+
+	'If you are already registered, click here' => 'Si ya estas registrado haz click aquí',
+	'Or fill in the fields below:' => 'O llena los campos a continuación:',
+	'Please correct the following errors:' => 'Corrije los siguientes errores:',
+	'Sign up' => 'Regístrate',
+	'Register with facebook' => 'Registrate con facebook',
+	'Subscribe to Personaling\'s mailing list' => 'Suscribirme a la lista de correo de Personaling',
+	'Clicking "Next" you are indicating that you have read and accepted the' => 'Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los',
+	'Terms and conditions' => 'Términos y condiciones',
+	'and the' => 'y la',
+	'Privacy Policy' => 'Políticas de Privacidad',
 	
 	
 	

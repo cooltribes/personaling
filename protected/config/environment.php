@@ -406,7 +406,8 @@
                     'IVAtext' => '12%',
                     'clientService'=>array(
                         'es_es'=>'info@personaling.com',
-                        'es_ve'=>'clientes@personaling.com.ve'
+                        'es_ve'=>'clientes@personaling.com.ve',
+                        'de_ch'=>'info@personaling.com'
                     ),
                     'registro' => true,   
                     'mostrarMarcas'=>true,
@@ -619,44 +620,80 @@
          * @var array
          */
         private function _test() {
-            return array(
- 
-                    // Application components
-                    'components' => array(
- 
-                            // Database
-                            'db'=>array(
-                                    'connectionString' => 'Your connection string to your local testing server',
-                                    'emulatePrepare' => false,
-                                    'username' => 'admin',
-                                    'password' => 'password',
-                                    'charset' => 'utf8',
-                            ),
- 
- 
-                            // Fixture Manager for testing
-                            'fixture'=>array(
-                                    'class'=>'system.test.CDbFixtureManager',
-                            ),
- 
-                            // Application Log
-                            'log'=>array(
-                                    'class'=>'CLogRouter',
-                                    'routes'=>array(
-                                            array(
-                                                    'class'=>'CFileLogRoute',
-                                                    'levels'=>'error, warning,trace, info',
-                                            ),
- 
-                                            // Show log messages on web pages
-                                            array(
-                                                    'class'=>'CWebLogRoute',
-                                                    'levels'=>'error, warning',
-                                            ),
+                return array(
+                    'language' => 'de_ch',
+                    'timeZone' => 'Europe/Madrid', 
+                    'components'=>array(
+                        'db'=>array(
+                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingCH',
+                            'emulatePrepare' => true,
+                            'username' => 'personaling',
+                            'password' => 'Perso123Naling',
+                            'charset' => 'utf8',
+                            'tablePrefix' => 'tbl_',
+                        ),
+                         'less'=>array(
+                                      'class'=>'ext.less.components.Less',
+                                      'mode'=>'client',
+                                      'files'=>array(
+                                        'less/style.less'=>'css/style.less',
+                                      ),
+                                          'options'=>array('watch'=>false),
                                     ),
-                            ),
+                      
                     ),
-            );
+                    'params'=>array(
+                    // this is used in contact page
+                        'adminEmail'=>'rpalma@upsidecorp.ch',
+                        'PRONUNCIACION' => 'EspaÃ±ola',
+                        'environment'=>'Test Suiza', 
+                        'currSym'=>'E',
+                        'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envÃ­o es GRATIS a partir de un VALOR determinado
+                        'IVA' => '0.21',
+                        'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
+                        'askId'=>false, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
+                        'IVAtext' => '21%', 
+                        'registro' => false,    
+                        'mostrarMarcas'=>true,
+                        'codigoPostal'=>true,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>false),
+                        'country'=>'EspaÃ±a',
+                        'pais'=>'espana',
+                        'clientName'=>'Personaling Enterprise S.L ',
+                        'clientIdentification'=>'B66202383',
+                        'clientAddress'=>'Sant Pere Mes Baix, NÂº 63 Principal B ',
+                        'clientCity'=>'Barcelona',
+                        'clientZIP'=>'08003',
+                        'clientPhone'=>'934 344 634',
+                        'clientEmail'=>'info@personaling.com',
+                        '    ',
+                        'pagoPS'=> array(           
+                                'paypal' => true,
+                                'banco' => true,
+                                'saldo' => true,
+                            ),
+                        'metodosPago'=> array(
+                            'bkCard' => true,
+                            'paypal' => true, 
+                            'prueba' => true,
+                        ),
+                        'multiLook'=> array(
+                            'bodyType' => false,
+                            'eyesColor' => false,
+                            'hairColor' => false,
+                            'womanMeasure' => false,
+                            'bodyFavors' => false,
+                            'skinColor' => false,
+                        ),
+                        'AzPayTerminal'=>'997',
+                        'AzPaySecret'=> 'qwerty1234567890uiop',
+                        'zohoToken'=>'8b75b742aec75310a4985ab07ca683d7',
+                        'zohoAccount'=>'cmontanez@upsidecorp.ch',
+                        'zohoActive' => TRUE,
+                        'fb_appId' => '323808071078482',
+                    ),
+                );
         }
  
         /**

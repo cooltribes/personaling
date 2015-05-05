@@ -94,7 +94,8 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
     <div class="span6 offset3">
       <h1 class="text_align_center"><?php echo Yii::t('contentForm','Register'); ?></h1>
       <div class="row-fluid margin_bottom margin_top text_align_center">
-            <div id="boton_facebook" class="span6 offset3 margin_bottom"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#"><?php echo Yii::t('contentForm','Register with Facebook'); ?></a></div>
+
+            <div id="boton_facebook" class="span6 offset3 margin_bottom"><a title="<?php echo UserModule::t('Register with facebook'); ?>" class="transition_all" onclick="check_fb()" href="#"><?php echo UserModule::t('Register with facebook'); ?></a></div>
 
         	<!-- <div id="boton_twitter" class="span5 offset2 margin_bottom"> <a id="registro_twitter" title="Registrate con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Regístrate con Twitter</a>  -->
           <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
@@ -115,7 +116,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
           <fieldset>
             <p class="text_align_center"> <a href="<?php echo Yii::app()->getBaseUrl();?>/user/login"><?php echo Yii::t('contentForm','If you are already registered, click here'); ?></a></p>
             <legend class="text_align_center" ><?php echo Yii::t('contentForm','Or fill in the fields below :'); ?> </legend>
-	<?php echo $form->errorSummary(array($model,$profile),"Corrije los siguientes errores:"); ?>
+	<?php echo $form->errorSummary(array($model,$profile),UserModule::t('Please correct the following errors:')); ?>
 	<?php
 	if(isset($_GET['request_ids'])){
 		//echo $_GET['request_ids'];

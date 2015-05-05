@@ -406,7 +406,8 @@
                     'IVAtext' => '12%',
                     'clientService'=>array(
                         'es_es'=>'info@personaling.com',
-                        'es_ve'=>'clientes@personaling.com.ve'
+                        'es_ve'=>'clientes@personaling.com.ve',
+                        'de_ch'=>'info@personaling.com'
                     ),
                     'registro' => true,   
                     'mostrarMarcas'=>true,

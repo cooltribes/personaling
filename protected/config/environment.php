@@ -268,7 +268,7 @@
                             'acerca-personaling'=>'site/acerca_de',
                             'registro-personaling'=>'user/registration',
                             'inicio-personaling'=>'user/login',
-                            'inicio-recomendacion'=>'user/login',
+                            'inicio-recomendacion'=>'user/login/login/redirect/recomendations',
                             'me-siento-poderosa'=>'site/poderosas',
                             'reportico'=>'reportico',
                             'tt'=>'site/tienda',

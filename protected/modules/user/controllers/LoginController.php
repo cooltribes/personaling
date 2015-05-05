@@ -57,28 +57,34 @@ class LoginController extends Controller
                                                 $this->redirect(Yii::app()->user->returnUrl);
                                             }
 					} else {
-						if($user->profile->sex == 2) 
-                                                    $this->redirect(array('/tienda/look'));
-						else{
-                                                    if ($user->status_register == User::STATUS_REGISTER_ESTILO || !Yii::app()->params['registro']) {
-                                                        //Yii::trace('username:'.$model->username.' Error ESTILO: '.$user->status_register, 'registro');
-                                                        $referrer = explode('/', Yii::app()->request->urlReferrer);
-                                                        if ($referrer[count($referrer) - 1] == 'login') {
-                                                            if ($user->personal_shopper != 1)
-                                                                $this->redirect(array('/tienda/look'));
-                                                            else
-                                                                $this->redirect(array('/look/create'));
-                                                        }
-                                                        if (Yii::app()->user->returnUrl == '/index.php')
-                                                            $this->redirect(Yii::app()->controller->module->returnUrl);
-                                                        else
-                                                            $this->redirect(Yii::app()->user->returnUrl);
-                                                    } elseif ($user->status_register == User::STATUS_REGISTER_TIPO) {
-                                                        $this->redirect(array("/user/profile/tuestilo"));
-                                                    } elseif ($user->status_register == User::STATUS_REGISTER_NEW) {
-                                                        //Yii::trace('username:'.$model->username.' Error NEW: '.$user->status_register, 'registro');
-                                                        $this->redirect(array("/user/profile/tutipo"));
-                                                    }
+						if(isset(Yii::app()->session['redirect'])){
+							if(Yii::app()->session['redirect'] == 'recomendations'){
+								$this->redirect(array('/site/recomendaciones'));
+							}
+						}else{
+							if($user->profile->sex == 2) 
+	                                                    $this->redirect(array('/tienda/look'));
+							else{
+	                                                    if ($user->status_register == User::STATUS_REGISTER_ESTILO || !Yii::app()->params['registro']) {
+	                                                        //Yii::trace('username:'.$model->username.' Error ESTILO: '.$user->status_register, 'registro');
+	                                                        $referrer = explode('/', Yii::app()->request->urlReferrer);
+	                                                        if ($referrer[count($referrer) - 1] == 'login') {
+	                                                            if ($user->personal_shopper != 1)
+	                                                                $this->redirect(array('/tienda/look'));
+	                                                            else
+	                                                                $this->redirect(array('/look/create'));
+	                                                        }
+	                                                        if (Yii::app()->user->returnUrl == '/index.php')
+	                                                            $this->redirect(Yii::app()->controller->module->returnUrl);
+	                                                        else
+	                                                            $this->redirect(Yii::app()->user->returnUrl);
+	                                                    } elseif ($user->status_register == User::STATUS_REGISTER_TIPO) {
+	                                                        $this->redirect(array("/user/profile/tuestilo"));
+	                                                    } elseif ($user->status_register == User::STATUS_REGISTER_NEW) {
+	                                                        //Yii::trace('username:'.$model->username.' Error NEW: '.$user->status_register, 'registro');
+	                                                        $this->redirect(array("/user/profile/tutipo"));
+	                                                    }
+							}
 						}
 					}
 				}
@@ -87,6 +93,11 @@ class LoginController extends Controller
 			}
  			
  			$seo = SeoStatic::model()->findByAttributes(array('name'=>'Inicio de sesión'));
+ 			if (isset($_GET['redirect'])) {
+ 				if($_GET['redirect'] == 'recomendations'){
+ 					Yii::app()->session['redirect'] = $_GET['redirect'];
+ 				}
+ 			}
 			// display the login form
 			$this->render('/user/login',array('model'=>$model, 'seo'=>$seo));
 		} else

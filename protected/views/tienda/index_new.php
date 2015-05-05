@@ -66,7 +66,7 @@ if(isset($seo)){
 <div class="row">
 	
 	<div class="span12 margin_bottom_small margin_top_small_minus">
-		 <a class="btn btn-alert" style="text-align: center; width: 100%; padding:4px; margin-bottom:30px" href="http://www.personaling.es/test100/site/recomendaciones">
+		 <a class="btn btn-alert" style="text-align: center; width: 100%; padding:4px; margin-bottom:30px" href="<?php if (Yii::app()->user->isGuest) { echo 'inicio-recomendacion'; } else{ echo 'site/recomendaciones'; } ?>">
                     	<div style="padding:10px; border:solid 1px #FFF">
                     		Ve los productos que le han interesado a personas con tus características
                     	</div>

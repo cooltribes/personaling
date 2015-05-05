@@ -33,21 +33,21 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
      function getMonthsArray()
     {
         
-         $months['01'] = "Enero";
-		 $months['02'] = "Febrero";
-		 $months['03'] = "Marzo";
-		 $months['04'] = "Abril";
-		 $months['05'] = "Mayo";
-		 $months['06'] = "Junio";
-		 $months['07'] = "Julio";
-		 $months['08'] = "Agosto";
-		 $months['09'] = "Septiembre";
-		 $months['10'] = "Octubre";
-		 $months['11'] = "Noviembre";
-		 $months['12'] = "Diciembre";
+         $months['01'] = Yii::t('contentForm','January');
+		 $months['02'] = Yii::t('contentForm','February');
+		 $months['03'] = Yii::t('contentForm','March');
+		 $months['04'] = Yii::t('contentForm','April');
+		 $months['05'] = Yii::t('contentForm','May');
+		 $months['06'] = Yii::t('contentForm','June');
+		 $months['07'] = Yii::t('contentForm','July');
+		 $months['08'] = Yii::t('contentForm','August');
+		 $months['09'] = Yii::t('contentForm','September');
+		 $months['10'] = Yii::t('contentForm','October');
+		 $months['11'] = Yii::t('contentForm','November');
+		 $months['12'] = Yii::t('contentForm','December');
     
 
-        return array(0 => 'Mes:') + $months;
+        return array(0 => Yii::t('contentForm','Month')) + $months;
     }
 
      function getDaysArray()
@@ -65,7 +65,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
             $days[$dayNum] = $dayNum;
         }
 
-        return array(0 => 'Dia:') + $days;
+        return array(0 => Yii::t('contentForm','Day')) + $days;
     }
 
      function getYearsArray()
@@ -76,7 +76,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
             $years[$yearNum] = $yearNum;
         }
 
-        return array(0 => 'Año:') + $years;
+        return array(0 => Yii::t('contentForm','Year')) + $years;
     }
 ?>
 
@@ -92,9 +92,9 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 <div class="container margin_top">
   <div class="row">
     <div class="span6 offset3">
-      <h1 class="text_align_center">Regístrate</h1>
+      <h1 class="text_align_center"><?php echo Yii::t('contentForm','Register'); ?></h1>
       <div class="row-fluid margin_bottom margin_top text_align_center">
-            <div id="boton_facebook" class="span6 offset3 margin_bottom"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#">Regístrate con Facebook</a></div>
+            <div id="boton_facebook" class="span6 offset3 margin_bottom"><a title="Registrate con facebook" class="transition_all" onclick="check_fb()" href="#"><?php echo Yii::t('contentForm','Register with Facebook'); ?></a></div>
 
         	<!-- <div id="boton_twitter" class="span5 offset2 margin_bottom"> <a id="registro_twitter" title="Registrate con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Regístrate con Twitter</a>  -->
           <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 
@@ -113,8 +113,8 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 	),
 )); ?>
           <fieldset>
-            <p class="text_align_center"> <a href="<?php echo Yii::app()->getBaseUrl();?>/user/login">Si ya estas registrado haz click aquí</a></p>
-            <legend class="text_align_center" >O llena los campos a continuación: </legend>
+            <p class="text_align_center"> <a href="<?php echo Yii::app()->getBaseUrl();?>/user/login"><?php echo Yii::t('contentForm','If you are already registered, click here'); ?></a></p>
+            <legend class="text_align_center" ><?php echo Yii::t('contentForm','Or fill in the fields below :'); ?> </legend>
 	<?php echo $form->errorSummary(array($model,$profile),"Corrije los siguientes errores:"); ?>
 	<?php
 	if(isset($_GET['request_ids'])){
@@ -228,17 +228,19 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
 	<div class="control-group">
 		<label class="checkbox">
 	  		<input type="checkbox" value="suscribir" name="Profile[suscribir]" checked>
-	  		Suscribirme a la lista de correo de Personaling
+	  		<?php echo Yii::t('contentForm','Subscribe to the mailing list Personaling'); ?>
 		</label>
 	</div>
             <hr/>
-             Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
+            <?php echo Yii::t('contentForm','Clicking " Next" you are indicating that you have read and accepted the Terms and Conditions and Privacy Policy'); ?>
+            <!--Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>. 
+	-->
 	<div class="padding_top_medium "> 
 		
 			
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
-		    'label'=>'Siguiente',
+		    'label'=>Yii::t('contentForm','Next'),
 		    'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 		    'size'=>'large', // null, 'large', 'small' or 'mini'
 		    'htmlOptions'=>array('class'=>'btn-block'),

@@ -178,7 +178,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
             <div class="span4 offset4 ">
               <?php $this->widget('bootstrap.widgets.TbButton', array(
                 'buttonType' => 'submit',
-                    'label'=>isset($editar)?'Guardar':'Siguiente',
+                    'label'=>isset($editar)?'Guardar':Yii::t('contentForm','Next'),
                     'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                     'size'=>'large', // null, 'large', 'small' or 'mini'
                         'htmlOptions' => array('class'=>'btn-block', 'id' => 'numero3'), 
@@ -187,7 +187,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
             </div>
             <div class="span3 offset1">
              <?php $this->widget('bootstrap.widgets.TbButton', array(            
-                'label'=>  Yii::t('contentForm', '¡Saltar este paso!'),
+                'label'=>  Yii::t('contentForm', 'Skip this step!'),
                 'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                 'url'=>$this->createUrl("/tienda/look"), // null, 'large', 'small' or 'mini'
 //                'size'=>'small', // null, 'large', 'small' or 'mini'

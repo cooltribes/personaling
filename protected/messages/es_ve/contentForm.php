@@ -92,6 +92,7 @@ return array (
      'Choose how you want to deliver it' => 'Escoge cómo quieres entregarla',
      'City' => 'Ciudad',
      'click here' => 'haz click aquí',
+     'Clicking " Next" you are indicating that you have read and accepted the Terms and Conditions and Privacy Policy'=>'Al hacer clic en "Siguiente" estas indicando que has leído y aceptado los <a href=""'.Yii::app()->getBaseUrl().'"/site/terminos_de_servicio" title="Términos y condiciones" target="_blank">Términos de Servicio</a> y la <a href=" "'.Yii::app()->getBaseUrl().'"/site/politicas_y_privacidad" title="Politicas de Privacidad" target="_blank">Políticas de Privacidad</a>.',
      'Clothes'=>'Ropa',
      'Clear Filter' => 'Borrar Filtro',
      'Clean Filters' => 'Limpiar Filtros',
@@ -124,6 +125,7 @@ return array (
 
      
      'Date' => 'Fecha',
+     'Day'=>'Dia',
      'Date estimated delivery' => 'Fecha estimada de entrega',
      'Date of Application <br> User who applied it' => 'Fecha de Aplicación<br>Usuario que la aplicó',
      'Deposit or Transference' => 'Depósito o Transferencia',
@@ -183,6 +185,7 @@ return array (
      'ID Transaction' => 'ID de Transaccion',
      'Identity card' => 'Cédula de Identidad',
      'I\'ve created great looks on my profile, go and take a look'=>'He creado Looks geniales en mi perfil, entra y dale un vistazo',
+     'If you are already registered, click here'=>'Si ya estas registrado haz click aquí',
      'If you\'ve made ​​your deposit' => 'Si ya has realizado el depósito',
      'Inbound details' => 'Detalles del Inbound',
      'Inactive' => 'Inactivo',
@@ -213,6 +216,7 @@ return array (
      'Message history' => 'Historial de Mensajes',
      'Message' => 'Mensaje',
      'Messages' => 'Mensajes',
+     'Month'=>'Mes',
      'Method ' => 'Método',
      'Month' => 'Mes',
      'Missing' => 'que faltan',
@@ -252,6 +256,7 @@ return array (
      'Like' => 'Me encanta',
 
 	 'Ocassions for this look:' => 'Ocasiones para este look',
+	 'Or fill in the fields below :'=>'O llena los campos a continuación:',
      'Order' => 'Pedido',
      'Order Cancelled' => 'Orden Cancelada',
      'Order confirmation' => 'Confirmación del pedido',
@@ -332,6 +337,8 @@ return array (
      'Recently viewed' => 'Vistos recientemente',
      'Redeem Gift Card' => 'Canjear Gift Card',
      'Reference' => 'Referencia',
+     'Register with Facebook'=>'Regístrate con Facebook',
+     'Register'=>'Regístrate',
      'Remember'=>'Recuerda',
      'Returned items' => 'Productos devueltos',
      'Returned' => 'Devuelto',
@@ -358,6 +365,7 @@ return array (
      'Size' => 'Talla',
      'Sizes' => 'Tallas',
      'Subtotal' => 'Subtotal',
+     'Subscribe to the mailing list Personaling'=>'Suscribirme a la lista de correo de Personaling ',
      'Shipping'=>'Envios',
      'Shipping <br/>and billing<br/> address' => 'Dirección<br/>de envío <br/> y facturación',
      'Shipping and Transport' =>'Envío y transporte',
@@ -398,6 +406,7 @@ return array (
      'Start enjoying your Gift Card in <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a> using it.' => 'Comienza a disfrutar de tu Gift Card usándola en <a href="https://www.personaling.com.ve" title="Personaling">Personaling.com.ve</a>',
      'Share Link' => 'Enlace para compartir',
 	 'Social networks and newsletter'=>'Redes Sociales y newsletter',
+	 'Skip this step!'=>'¡Saltar este paso!',
 
      'Targeting ages' => 'Dirigido a edades',
      'Tax' => 'Impuesto',
@@ -648,7 +657,22 @@ return array (
             Número Cta corriente: 0134-0277-98-2771093092 <br/> <br/>           
 
         </ol>
-        <p>Te mantendremos al tanto del status de tu compra a través de tu dirección de correo electrónico o través de tu perfil en <a href="http://www.personaling.com" >Personaling.com</a>.</p>'
+        <p>Te mantendremos al tanto del status de tu compra a través de tu dirección de correo electrónico o través de tu perfil en <a href="http://www.personaling.com" >Personaling.com</a>.</p>',
+
+		///////////////////////////Meses//////////////////////
+		'January'=>'Enero',
+		'February'=>'Febrero',
+		'March'=>'Marzo',
+		'April'=>'Abril',
+		'May'=>'Mayo',
+		'June'=>'Junio',
+		'July'=>'Julio',
+		'August'=>'Agosto',
+		'September'=>'Septiembre',
+		'October'=>'October',
+		'November'=>'Noviembre',
+		'December'=>'Diciembre',
+
 );
 
 ?>

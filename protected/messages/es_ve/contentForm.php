@@ -39,6 +39,7 @@ return array (
      'All Brands' => 'Todas las Marcas',
      'All colors' => 'Todos los colores',
      'All price' => 'Todos los precios',
+     'All Looks'=>'Todos los Looks',
      'All your profiles' => 'Todos tus perfiles',
      'Amount' => 'Monto',
      'Amount in' => 'Monto en',
@@ -87,6 +88,7 @@ return array (
      'Campaign progress' => 'Progreso de la campaña',
      'Campaigns don\'t have available at this time' => 'No tenemos campañas disponibles en este momento',
      'Code' => 'Código',
+     'Choose your style'=>'Elige tu Estilo',
      'Choose a shipping address and billing of your purchase from your address book or enter a new one in the bottom section' =>'Elige una dirección de envío y facturación de tu compra desde tu libreta de direcciones o ingresa una nueva en la sección inferior:',
      'Choose the payment method' => 'Elige el método de pago',
      'Choose how you want to deliver it' => 'Escoge cómo quieres entregarla',
@@ -161,6 +163,7 @@ return array (
      'From Our Magazine' => 'Desde Nuestra Magazine',
      'Finished, just press send' => 'Terminaste, solo presiona enviar',
      'Filter' => 'Filtrar',
+     'Filter by:'=>'Filtrar por:',
      'Filter by Colors' => 'Filtrar por Colores',
      'First'=>'Primera',
      'Featured Products'=>'Productos Destacados',
@@ -248,6 +251,7 @@ return array (
      'Last step' => 'Último paso',
      'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
      'Load to shopping cart' => 'Cargar a la Bolsa',
+     'Looks for you'=>'Looks para ti',
      'Look created by' => 'Look creado por',
      'Look description'  => 'Descripción del look',
      'Look style:'  => 'Estilo del look',
@@ -255,6 +259,7 @@ return array (
      "Looks in promotion" => 'Looks en promoción',
      'Like' => 'Me encanta',
 
+	 'Occasions'=>'Ocasiones',
 	 'Ocassions for this look:' => 'Ocasiones para este look',
 	 'Or fill in the fields below :'=>'O llena los campos a continuación:',
      'Order' => 'Pedido',
@@ -495,6 +500,8 @@ return array (
      'Your body is triangle if you have shoulders and tiny waist with a pronounced hips' => 'Tu cuerpo es triángulo si tienes hombros y cintura pequeñita con unas caderas pronunciadas',
      'Your body is inverted triangle if you are proportionally broad shoulders and tiny hips' => 'Tu cuerpo es triángulo invertido si eres proporcionalmente de hombros anchos y caderas pequeñitas',
      'You have subscribed to our newsletter , you will receive in your mailbox all our news and promotions'=>'Te has suscrito a nuestro newsletter, recibirás en tu correo electrónico todas nuestras noticias y promociones',
+     'Your profile is your DNA Personaling!'=>'¡Tu perfil es tu ADN Personaling!',
+     'Your body type'=>'Tu Tipo',
     '<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com' => '<h2>Has solicitado cambiar tu contraseña </h2> Para recibir una nueva contraseña haz clic en el siguiente link: <br/><br/> <a href="{url}">Click aquí</a><br/><br/> Si no has sido tu quien ha pedido el cambio, comunícate con nosotros a través de info@personaling.com',
 
      'Watch all the looks created by the best Personal Shoppers from *country*'=>
@@ -521,11 +528,16 @@ return array (
      'What body type should I use?' => '¿Qué tipo de cuerpo debería usarlo?',
      'What skin color is best suited to this Look?' => '¿Qué color de piel se adapta mejor a este look?',
      'What you will find'=>'Lo que encontrarás',
+     'Where would you prefer to go on holiday ?'=>'¿Cuales serían tus vacaciones ideales?',
      'Whom you send him' => 'A quién se la envías',
      'Write a friendly URL to this look.' => 'Escribe una url amigable para este look.',
      'Write message' => 'Escribe un mensaje',
      'Who said '.Yii::app()->params['registerGift'].'{currSym} is nothing ?'=>'¿Quién dijo qué '.Yii::app()->params['registerGift'].'Bs. es poco ?',
-
+	 'Which do you identify more style to your everyday life?'=>'¿Con cuál estilo te identificas más para tu día a día?',
+	 'Which of these looks you would go to party?'=>'¿Con cuál de estos looks te irias de fiesta? ',
+	 'Which do you identify more style for sports?'=>'¿Con cuál estilo te identificas más para hacer deporte?',
+	 'Which of these looks would go to the office?'=>'¿Con cuál de estos looks írias a la oficina?',
+	 
      'Zip code' => 'Código postal',
      
 	 'Reference' => "Referencia de pago",

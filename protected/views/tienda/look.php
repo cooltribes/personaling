@@ -273,7 +273,7 @@ $("#mobFiltrar").click(function() {
                             <?php
                             //var_dump(Yii::app()->getRequest()->getUrlReferrer());
                             $this->widget('bootstrap.widgets.TbButton', array(
-                                'label' => 'Todos los looks',
+                                'label' => Yii::t('contentForm','All Looks'),
                                 'buttonType' => 'button',
                                 //'type' => $todosLosLooks?'danger':'',
                                 //'size' => 'large',
@@ -293,7 +293,7 @@ $("#mobFiltrar").click(function() {
                             <?php
                             
                             $this->widget('bootstrap.widgets.TbButton', array(
-                                'label' => 'Looks para ti',
+                                'label' => Yii::t('contentForm','Looks for you'),
                                 'buttonType' => 'button',
                                 
                                 //'type' => $todosLosLooks?'':'danger',
@@ -324,8 +324,8 @@ $("#mobFiltrar").click(function() {
         <div class="navbar-inner" id="barraFiltros">
             <nav class="  ">
                 <ul class="nav">
-                    <li class="filtros-header">Filtrar por: <?php echo Yii::app()->session['registerStep']; ?></li>
-                    <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ocasiones <b class="caret"></b></a>
+                    <li class="filtros-header"><?php echo Yii::t('contentForm','Filter by:');  echo Yii::app()->session['registerStep']; ?></li>
+                    <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo Yii::t('contentForm','Occasions'); ?><b class="caret"></b></a>
                         <ul class="dropdown-menu ">
                             <?php //$categorias = Categoria::model()->findAllByAttributes(array('padreId' => '2')); ?>
                             <?php
@@ -403,7 +403,7 @@ $("#mobFiltrar").click(function() {
                     </style>
                     <li id="li_rangos" class="dropdown">
 
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Precios <b class="caret"></b></a> 
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo Yii::t('contentForm','Price'); ?> <b class="caret"></b></a> 
 						<?php Yii::app()->clientScript->registerScript('rangoprecios', "
 						$.get('".Yii::app()->createUrl('tienda/rangoslook')."',function(data){
 							$('#li_rangos').append(data);

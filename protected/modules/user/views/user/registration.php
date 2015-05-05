@@ -95,7 +95,7 @@ Yii::app()->clientScript->registerMetaTag(Yii::app()->request->hostInfo.Yii::app
       <h1 class="text_align_center"><?php echo Yii::t('contentForm','Register'); ?></h1>
       <div class="row-fluid margin_bottom margin_top text_align_center">
 
-            <div id="boton_facebook" class="span6 offset3 margin_bottom"><a title="<?php echo UserModule::t('Register with facebook'); ?>" class="transition_all" onclick="check_fb()" href="#"><?php echo UserModule::t('Register with facebook'); ?></a></div>
+            <div id="boton_facebook" class="span6 offset3 margin_bottom"><a title="<?php echo Yii::t('contentForm','Register with Facebook'); ?>" class="transition_all" onclick="check_fb()" href="#"><?php echo Yii::t('contentForm','Register with Facebook'); ?></a></div>
 
         	<!-- <div id="boton_twitter" class="span5 offset2 margin_bottom"> <a id="registro_twitter" title="Registrate con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Regístrate con Twitter</a>  -->
           <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 

@@ -61,10 +61,10 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
 ?>
     <?php $span=(!(isset($editar) && $editar))?"span5":"span7"; 
-         $mensajeH1 = isset($ref) ? "¡Tu perfil es tu ADN Personaling!"
+         $mensajeH1 = isset($ref) ? Yii::t('contentForm','Your profile is your DNA Personaling!')
             :"Escoge las opciones que más se parezcan a ti:"; ?>  
         
-    <h1>Tu tipo<small> - <?php echo $mensajeH1; ?></small>
+     <h1><?php echo Yii::t('contentForm','Your body type');?><small> - <?php echo $mensajeH1; ?></small>
     <?php if (isset($ref)){
         echo TbHtml::tag("h2", array(),
             "Al llenar los datos de tu perfil disfrutarás de un maravilloso

@@ -67,8 +67,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
      <h1><?php echo Yii::t('contentForm','Your body type');?><small> - <?php echo $mensajeH1; ?></small>
     <?php if (isset($ref)){
         echo TbHtml::tag("h2", array(),
-            "Al llenar los datos de tu perfil disfrutarás de un maravilloso
-                mundo de looks adaptados para ti.");
+            Yii::t('contentForm','By filling out your profile data you will enjoy a wonderful world looks tailored for you.'));
     } ?>    
         
       

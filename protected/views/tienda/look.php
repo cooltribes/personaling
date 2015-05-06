@@ -243,7 +243,7 @@ $("#mobFiltrar").click(function() {
 
 
 	$('#btn-gift').tooltip({
-    title:"Hemos abonado<br/><?php echo Yii::app()->params['registerGift']." ".Yii::t('contentForm','currSym');?><br/>a tu balance para comprar YA",
+     title: <?php echo Yii::t('contentForm','We paid')." <br/>". Yii::app()->params['registerGift']." ".Yii::t('contentForm','currSym')."<br/>".Yii::t('contentForm','Your balance to buy NOW'); ?>,
     trigger:"manual",
     placement:"bottom"
     

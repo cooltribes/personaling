@@ -81,6 +81,7 @@ return array (
      'By email' => 'Por correo electrónico',
      'By price' => 'Por precio',
      'By brand' => 'Por marca',
+     'By filling out your profile data you will enjoy a wonderful world looks tailored for you.'=>'Al llenar los datos de tu perfil disfrutarás de un maravilloso mundo de looks adaptados para ti.',
      'Billing address' => 'Dirección de facturación',
 
      'Card numbers' => 'Número de la tarjeta',
@@ -368,6 +369,7 @@ return array (
      'Status' => 'Estado',
      'Start by dragging the panel items right up here. Just click on them and move them to this box.' => 'Empieza arrastrando los elementos del panel de la derecha hasta aca. Basta con hacer clic sobre ellos y moverlos hasta este recuadro.',
      'Style' => 'Estilo',
+     'Store'=>'Tienda',
      'Size' => 'Talla',
      'Sizes' => 'Tallas',
      'Subtotal' => 'Subtotal',
@@ -484,6 +486,7 @@ return array (
      'You should add four items at least.'=>'Debes incluir al menos cuatro prendas',
      'Your shipping is being processed'=>'Tu envio esta siendo procesado',
      'Your bag' =>'Tu bolsa',
+     'Your balance to buy NOW'=>'a tu balance para comprar YA',
      'Your shipping will be completed in seconds!'=>'tu envio se esta completando en segundos!',
      'Your Payments'=>'Tus Pagos',
      '<h2>Your payment has been accepted.</h2> Your payment did not reach the total of your order, we will wait for the next payment to send your order.<br/><br/>'=>
@@ -504,11 +507,15 @@ return array (
      'Your profile is your DNA Personaling!'=>'¡Tu perfil es tu ADN Personaling!',
      'Your body type'=>'Tu Tipo',
      'Your Shopping Cart'=>'Tu carrito',
+     'Your Shopping Cart is Empty, What are you waiting for? Looks amazing clothes are waiting for you'=>'<p class="padding_small"><strong> \n\
+                Tu carrito todavía está vacío</strong>, ¿Qué esperas? Looks y prendas \n\
+                increíbles esperan por ti.</p>',
     '<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com' => '<h2>Has solicitado cambiar tu contraseña </h2> Para recibir una nueva contraseña haz clic en el siguiente link: <br/><br/> <a href="{url}">Click aquí</a><br/><br/> Si no has sido tu quien ha pedido el cambio, comunícate con nosotros a través de info@personaling.com',
 
      'Watch all the looks created by the best Personal Shoppers from *country*'=>
 		'Mira todos los looks creados por las mejores Personal Shoppers de Venezuela',
      'Weight' => 'Peso',
+     'We paid'=>'Hemos abonado',
      'We guarantee'=>'Nos avalan',
      'We have sent a summary of the purchase to email' => 'Hemos enviado un resumen de la compra al correo electrónico',
      'We have sent a summary of the purchase to your inbox' => 'Hemos enviado un resumen de la compra a tu correo electrónico',

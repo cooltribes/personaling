@@ -294,7 +294,7 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 )),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Looks', 'url'=>array('/tienda/look'),'visible'=>UserModule::isPersonalShopper()),
-                array('label'=>'Tienda', 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
+                array('label'=>Yii::t('contentForm','Store'), 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
                 array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu'), 'visible'=>Yii::app()->params['outlet']),
                 array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
                 array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('id'=>'btn-gift','class'=>'hidden-phone to-white-icon', 'data-html'=>"true"), 'visible'=>!Yii::app()->user->isGuest,),
@@ -552,8 +552,8 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
         $url="'".Yii::app()->baseUrl."/giftcard/comprar'";
         echo 'var gift = ""; ';
         
-        '<p class="padding_small"><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
-   
+        '"'.Yii::t('contentForm','Your Shopping Cart is Empty, What are you waiting for? Looks amazing clothes are waiting for you').'"';
+   		
         
         $gift="<p class='padding_left_small padding_top_xsmall'><span class='gifts-menu'>Tu Balance:<strong> ".Yii::app()->numberFormatter->format("#,##0.00",Profile::model()->getSaldo(Yii::app()->user->id,true))." ".Yii::t('contentForm','currSym').
         "</strong></span><br/><div class='padding_right_xsmall padding_left_xsmall padding_bottom_xsmall'><a href='".Yii::app()->baseUrl."/giftcard/comprar"."' class='btn btn-block btn-small btn-danger'>Comprar Giftcard</a></div>";
@@ -764,7 +764,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
         textShoppingCart = listaCarrito + textShoppingCart;
     }  
     if(<?php echo $cont_productos ?> == 0){
-      textShoppingCart = '<p class="padding_small"><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
+      textShoppingCart = '<?php echo Yii::t('contentForm','Your Shopping Cart is Empty, What are you waiting for? Looks amazing clothes are waiting for you');?>';
     }
  
     //Boton Shopping Cart

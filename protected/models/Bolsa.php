@@ -356,9 +356,7 @@ class Bolsa extends CActiveRecord
             //si no hay productos
             if($cantProductosGuest == 0){      
        
-                $textShoppingBag = '<p class="padding_small"><strong> \n\
-                Tu carrito todavía está vacío</strong>, ¿Qué esperas? Looks y prendas \n\
-                increíbles esperan por ti.</p>';
+                $textShoppingBag = Yii::t('contentForm','Your Shopping Cart is Empty, What are you waiting for? Looks amazing clothes are waiting for you');
 
             //si hay productos, construir el contenido    
             }else{

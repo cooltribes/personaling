@@ -646,7 +646,7 @@
                     // this is used in contact page
                         'adminEmail'=>'rpalma@upsidecorp.ch',
                         'PRONUNCIACION' => 'EspaÃ±ola',
-                        'environment'=>'Test Suiza', 
+                        'environment'=>false, 
                         'currSym'=>'E',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envÃ­o es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.21',

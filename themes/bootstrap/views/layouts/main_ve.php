@@ -306,9 +306,9 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>$cantProductosGuest,'icon'=>'icon-shopping-cart', 'itemOptions'=>
                     array('id'=>'btn-shoppingBag','class'=>'hidden-phone to-white-icon') ,
                     'url'=>array('/user/login') ,'visible'=>Yii::app()->user->isGuest),
-                array('label'=>'Accede', 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
+                array('label'=>Yii::t('contentForm','Access'), 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
-                array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'htmlOptions'=>array('class'=>'btn btn-rectangle'),'visible'=>Yii::app()->user->isGuest),
+                array('label'=>Yii::t('contentForm','Register'), 'url'=>array('/user/registration'), 'htmlOptions'=>array('class'=>'btn btn-rectangle'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                 //array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
                 array('label'=>$avatar."<span id='userName'>{$nombre}</span>", 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
@@ -771,7 +771,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
     $('#btn-shoppingcart').popover(
     {
       html: true,
-      title: '<strong>Tu Carrito ('+ <?php echo $cont_productos  ?>+')</strong>',
+      title: '<strong><?php echo Yii::t('contentForm','Your Shopping Cart');?> ('+ <?php echo $cont_productos  ?>+')</strong>',
       content: textShoppingCart,
       placement: 'bottom',
       trigger: 'manual',
@@ -831,7 +831,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
     $('#btn-shoppingBag').popover(
     {
       html: true,
-      title: '<strong>Tu Carrito</strong>',
+      title: '<strong><?php echo Yii::t('contentForm','Your Shopping Cart');?> </strong>',
       content: textShoppingBag,
       placement: 'bottom',
       trigger: 'manual',
@@ -1107,7 +1107,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
         {
           content: data.contenido,                      
           html: true,
-          title: '<strong>Tu Carrito</strong>',
+          title: '<strong><?php echo Yii::t('contentForm','Your Shopping Cart');?> </strong>',
           placement: 'bottom',
           trigger: 'manual',
           offset: 10

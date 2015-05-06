@@ -314,7 +314,7 @@ if(Yii::app()->language=='es_es'){
                              <input placeholder="e-mail" type="email" id="email" name='email' required="required" class="email"/>
                          </div>
                          <div class="span2">
-                            <input type="submit" class="button text_center_align" value="Enviar">
+                            <input type="submit" class="button text_center_align" value="<?php echo Yii::t('contentForm','Send');?>">
                          </div>
                      </form>                           
                           

@@ -22,6 +22,7 @@ return array (
      'Action' => 'Acción',
      'Actions' => 'Acciones',
      'Accessories'=>'Accesorios',
+     'Access'=>'Accede',
      'Account Number:' => 'Cuenta Corriente Nº',
      'Account holder:' => 'Titular de la cuenta:',
      'Account Type' => 'Tipo de Cuenta',
@@ -502,6 +503,7 @@ return array (
      'You have subscribed to our newsletter , you will receive in your mailbox all our news and promotions'=>'Te has suscrito a nuestro newsletter, recibirás en tu correo electrónico todas nuestras noticias y promociones',
      'Your profile is your DNA Personaling!'=>'¡Tu perfil es tu ADN Personaling!',
      'Your body type'=>'Tu Tipo',
+     'Your Shopping Cart'=>'Tu carrito',
     '<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com' => '<h2>Has solicitado cambiar tu contraseña </h2> Para recibir una nueva contraseña haz clic en el siguiente link: <br/><br/> <a href="{url}">Click aquí</a><br/><br/> Si no has sido tu quien ha pedido el cambio, comunícate con nosotros a través de info@personaling.com',
 
      'Watch all the looks created by the best Personal Shoppers from *country*'=>

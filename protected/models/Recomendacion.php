@@ -493,9 +493,13 @@ class Recomendacion extends CActiveRecord
 				if($recomendacion->categoria_id)
 				{
 					
-					$categoria = Categoria::model()->findByPk($recomendacion->categoria_id);					
+					$categoria = Categoria::model()->findByPk($recomendacion->categoria_id);	
+					$criteria2 = new CDbCriteria();
+					//$criteria->addCondition('id='.$recomendacion->producto_id);
+					$criteria2->addCondition('tbl_categoria_id='.$categoria->id);
+					$criteria2->limit = 50;		
 					#$producto_array = Producto::model()->findAllByAttributes(array('marca_id'=>$marca->id));
-					$productos_categoria = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_categoria_id'=>$categoria->id));
+					$productos_categoria = CategoriaHasProducto::model()->findAll($criteria2);
 					
 					foreach($productos_categoria as $proCat)
 					{

@@ -654,8 +654,9 @@
         
         
 <?php 
-		$rand = rand (1,3);
+		#$rand = rand (1,3);
 		#print_r($rand);  
+		$rand = 3;
 	
 		$productos = array();
 		$title = '';
@@ -664,15 +665,16 @@
 				
 			  	$title = 'Usuarios que han comprado este producto también han comprado:';
 				$recomendaciones = Recomendaciones::model()->findAllByAttributes(array('selected_item_producto'=>$producto->id));
+
 				foreach ($recomendaciones as $key)
 				{
-				
-					if(!in_array($key, $productos) && $producto->estado==0 && $producto->status==1)
+					$producto = Producto::model()->findByPk($key->recomendacion_producto);
+					if(!in_array($producto, $productos) && $producto->estado==0 && $producto->status==1)
 					{
-						$producto = Producto::model()->findByPk($key->recomendacion_producto);
+						
 						
 						$productos[]=$producto;
-						if(sizeof($productos)>6)
+						/*if(sizeof($productos)>6)
 						{
 							$keys = array_rand ( $productos , 6);
 							$productos_new = array();
@@ -688,7 +690,7 @@
 			
 							return $productos;
 
-						}
+						}*/
 					}
 				}
 				
@@ -701,8 +703,12 @@
 				$recomendaciones = Recomendaciones::model()->findAllByAttributes(array('selected_item_marca'=>$producto->marca_id));
 				foreach ($recomendaciones as $key)
 				{
-					$producto = Producto::model()->findByPk($key->recomendacion_marca);
-					$productos[]=$producto;
+					$productos = Producto::model()->findAllByAttributes(array('marca_id'=>$key->recomendacion_marca));
+					foreach ($productos as $producto) {
+						if(!in_array($producto, $productos) && $producto->estado==0 && $producto->status==1){
+							$productos[]=$producto;
+						}
+					}
 				}
 				
 				break;
@@ -710,16 +716,45 @@
 			default:
 				
 				$title = 'Usuarios que han comprado esta categoría también han comprado:';
- 				$categoria = Categoria::model()->findByPk($recomendaciones->selected_item_categoria);
-				$productos_categoria = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_categoria_id'=>$categoria->id));
 				
-				foreach ($productos_categoria as $key)
-				{
-					$producto = Producto::model()->findByPk($key->recomendacion_categoria);
-					$productos[]=$producto;
+				foreach ($producto->categorias as $categoria) {
+					$recomendaciones = Recomendaciones::model()->findAllByAttributes(array('selected_item_categoria'=>$categoria->id));
+					foreach ($recomendaciones as $recomendacion) {
+						//$categoria = Categoria::model()->findByPk($producto->categoria->id);
+						$productos_categoria = CategoriaHasProducto::model()->findAllByAttributes(array('tbl_categoria_id'=>$recomendacion->recomendacion_categoria));
+						
+						foreach ($productos_categoria as $key)
+						{
+							$producto = Producto::model()->findByPk($key->tbl_producto_id);
+							if(!in_array($producto, $productos) && $producto->estado==0 && $producto->status==1){
+								$productos[]=$producto;
+							}
+						}
+					}
+					
 				}
+ 				
 				
 				break;
+			}
+
+			$productos_new = array();
+			if(sizeof($productos)>6)
+			{
+				$keys = array_rand ( $productos , 6);
+				
+				foreach ($keys as $key)
+				{
+					$productos_new[] = $productos[$key];
+				}
+	
+				
+	
+	
+			}else{
+	
+				$productos_new = $productos;
+	
 			}
 		      
         
@@ -731,7 +766,7 @@
                     <div class="thumbnails">
                         <div style="margin:0 auto">
                             <?php
-                            foreach($productos as $producto){?>
+                            foreach($productos_new as $producto){?> 
                                  <li class="span2"> 
                                      
                                     <?php $image = CHtml::image($producto->getImageUrl(), "Imagen", array("width" => "180", "height" => "180"));    ?>

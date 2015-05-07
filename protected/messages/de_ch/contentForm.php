@@ -8,7 +8,7 @@
 	'Social networks and newsletter'=>'Finde uns auch bei',
 	'See all looks' => 'Alle Looks ansehen',
 	'View all Personal Shoppers'=>'Alle Personal Shoppers',	
-	'Follow our social networks to find out the latest in fashion and trends !'=>'¡Sígue nuestras redes sociales para enterarte de lo último en moda y tendencias!',
+	'Follow our social networks to find out the latest in fashion and trends !'=>'',
 	'Be the first to receive news and promotions by subscribing to our newsletter.'=>'Trends, Angebote und Gutscheine per E-Mail erhalten!',
 	'Here discuss about your Personal Shopper'=>'Personal Shoppers im Gespräch',
 	'In the media'=>'Medien',

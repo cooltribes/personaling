@@ -278,9 +278,12 @@ if(Yii::app()->language=='es_es'){
             <div class="row" style="margin-top:30px">
             
                      <div class="span4">
+                     	<?php if(Yii::app()->language!='de_ch')
+                     	{ ?>
                          <h3 class="no_margin_top socialText" >
                              <?php echo Yii::t('contentForm','Follow our social networks to find out the latest in fashion and trends !'); ?>
                          </h3>
+                      <?php } ?>
                      </div>
                      <a title="Facebook" href="https://www.facebook.com/Personaling" target="_blank">                                   
                         <img alt="Facebook" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/fb.jpg';?>" class="span1 socialHome"/>
@@ -305,7 +308,7 @@ if(Yii::app()->language=='es_es'){
             <div class="row" style="margin-top:30px">
                     
                      <div class="span4">
-                         <h3 class="no_margin_top socialText">
+                         <h3 class="margin_top_xsmall socialText" style="min-height: 80px">
                              <?php echo Yii::t('contentForm','Be the first to receive news and promotions by subscribing to our newsletter.'); ?>
                          </h3>
                      </div>

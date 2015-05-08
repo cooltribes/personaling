@@ -11,12 +11,12 @@ class RegistrationForm extends User {
 	public function rules() {
 		$rules = array(
 			//array('username, password, email', 'required'),
-			array('username', 'required', 'message'=>'¿Cuál es tu correo electrónico?'),
-			array('password', 'required', 'message'=>'Escribe una contraseña.'),
-			array('email', 'required', 'message'=>'¿Cuál es tu correo electrónico?'),
+			array('username', 'required', 'message'=>Yii::t('contentForm', 'What is your email?')),
+			array('password', 'required', 'message'=>Yii::t('contentForm', 'Enter a password.')),
+			array('email', 'required', 'message'=>Yii::t('contentForm', 'What is your email?')),
 			//array('first_name', 'required', 'message'=>'¿Cómo te llamas?'),
-			array('username', 'length', 'max'=>128, 'min' => 3,'tooShort' => 'Nombre debe tener al menos 3 caracteres.'),
-			array('password', 'length', 'max'=>128, 'min' => 4,'tooShort' => 'La contraseña debe tener mínimo 4 caracteres.'),
+			array('username', 'length', 'max'=>128, 'min' => 3,'tooShort' => Yii::t('contentForm', 'Name must be at least 3 characters')),
+			array('password', 'length', 'max'=>128, 'min' => 4,'tooShort' => Yii::t('contentForm', 'Password must be at least 4 characters')),
 			//array('password', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
 			array('email', 'email', 'message'=>'Introduzca un correo electronico valido.'),
 			array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),

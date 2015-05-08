@@ -206,16 +206,16 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     }
         if(!UserModule::isPersonalShopper())
         $itemsUser = array(
-                    array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
-                    array('label'=>'Tus Compras', 'url'=>array('/orden/listado')),
-                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
-                    array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
+                    array('label'=>Yii::t('contentForm', 'Your Looks'), 'url'=>array('/user/profile/looksencantan')),
+                    array('label'=>Yii::t('contentForm', 'Your Purchases'), 'url'=>array('/orden/listado')),
+                    array('label'=>Yii::t('contentForm', 'Invite your Friends'), 'url'=>array('/user/profile/invitaciones')),
+                    array('label'=>Yii::t('contentForm', 'Buy Gift Card'), 'url'=>array('/giftcard/comprar')),
                    
-                    array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
+                    array('label'=>Yii::t('contentForm', 'Your Account'), 'url'=>array('/user/profile/micuenta')),
                                                              
-                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),
+                    array('label'=>Yii::t('contentForm', 'Help'), 'url'=>array('/site/preguntas_frecuentes')),
                     '---',
-                    array('label'=>'¿Comprando para alguién más?'),
+                    array('label'=>Yii::t('contentForm', 'ORDER FOR SOMEONE ELSE?')),
                     //array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>',
 //                    array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise',
 //                        'url'=>array(''), 'linkOptions' => array('class' => 'sub_perfil_item'),),
@@ -266,11 +266,11 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
         }
 
 
-        array_push($itemsUser, array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',
+        array_push($itemsUser, array('label'=>Yii::t('contentForm', 'Add a new profile').'<i class="icon icon-plus"></i>',
                                     'url'=>'#modalFiltroPerfil', 'linkOptions' => array('data-toggle' => 'modal', 'id' => 'agregar-perfil'), //array('/site/preguntas_frecuentes')
                                     ),
                                 '---',
-                                array('label'=>'Salir', 'url'=>array('//site/logout')));
+                                array('label'=>Yii::t('contentForm', 'Exit'), 'url'=>array('//site/logout')));
 
 
 $this->widget('bootstrap.widgets.TbNavbar',array(
@@ -373,10 +373,10 @@ if(!Yii::app()->user->isGuest){
     if($user->status == 0){
         ?>
         <div id="notificacion_validar" class="alert-block alert-error text_align_center">
-            Tu cuenta no ha sido validada. 
+            <?php echo Yii::t('contentForm', 'Your account has not been validated.');?>
             <?php
             echo CHtml::ajaxLink(
-                'Reenviar correo de validación.', 
+                Yii::t('contentForm', 'Forward mail validation.'),
                $this->createUrl('user/registration/sendValidationEmail'), 
                 array('success'=>'function(data){
                     $("#notificacion_validar").html(data);
@@ -555,8 +555,8 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
         '"'.Yii::t('contentForm','Your Shopping Cart is Empty, What are you waiting for? Looks amazing clothes are waiting for you').'"';
    		
         
-        $gift="<p class='padding_left_small padding_top_xsmall'><span class='gifts-menu'>Tu Balance:<strong> ".Yii::app()->numberFormatter->format("#,##0.00",Profile::model()->getSaldo(Yii::app()->user->id,true))." ".Yii::t('contentForm','currSym').
-        "</strong></span><br/><div class='padding_right_xsmall padding_left_xsmall padding_bottom_xsmall'><a href='".Yii::app()->baseUrl."/giftcard/comprar"."' class='btn btn-block btn-small btn-danger'>Comprar Giftcard</a></div>";
+        $gift="<p class='padding_left_small padding_top_xsmall'><span class='gifts-menu'>".Yii::t('contentForm', 'Your Balance')."<strong> ".Yii::app()->numberFormatter->format("#,##0.00",Profile::model()->getSaldo(Yii::app()->user->id,true))." ".Yii::t('contentForm','currSym').
+        "</strong></span><br/><div class='padding_right_xsmall padding_left_xsmall padding_bottom_xsmall'><a href='".Yii::app()->baseUrl."/giftcard/comprar"."' class='btn btn-block btn-small btn-danger'>".Yii::t('contentForm', 'Buy Gift Card')." </a></div>";
          echo 'gift = "'.$gift.'";';
         $htmlMensaje = '';
          echo 'var contenidoMensajes = ""; ';
@@ -614,7 +614,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
        $('#btn-gift').popover(
     {
      
-      title:'<strong>Balance y Giftcards</strong>',
+       title:'<?php echo Yii::t('contentForm', 'Balance and Giftcards');?>',
       content: gift,
       placement: 'bottom',
       trigger: 'manual',

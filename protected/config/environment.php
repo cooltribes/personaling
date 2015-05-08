@@ -620,6 +620,7 @@
          * @var array
          */
         private function _test() {
+            if ($this->_country == 'de_ch')
                 return array(
                     'language' => 'de_ch',
                     'timeZone' => 'Europe/Madrid', 
@@ -647,6 +648,81 @@
                         'adminEmail'=>'rpalma@upsidecorp.ch',
                         'PRONUNCIACION' => 'EspaÃ±ola',
                         'environment'=>false, 
+                        'currSym'=>'E',
+                        'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envÃ­o es GRATIS a partir de un VALOR determinado
+                        'IVA' => '0.21',
+                        'registerGift'=>'5', // 0: Cuando no se obsequia saldo, VALOR: cuando por registrarse se obsequia  un VALOR determinado
+                        'askId'=>false, //Para cuando se deba solicitar y mostrar la cedula/nif/rif segun el pais
+                        'IVAtext' => '21%', 
+                        'registro' => false,    
+                        'mostrarMarcas'=>true,
+                        'codigoPostal'=>true,
+                        'chic'=>array('show'=>true,
+                                      'brands'=>false),
+                        'country'=>'EspaÃ±a',
+                        'pais'=>'espana',
+                        'clientName'=>'Personaling Enterprise S.L ',
+                        'clientIdentification'=>'B66202383',
+                        'clientAddress'=>'Sant Pere Mes Baix, NÂº 63 Principal B ',
+                        'clientCity'=>'Barcelona',
+                        'clientZIP'=>'08003',
+                        'clientPhone'=>'934 344 634',
+                        'clientEmail'=>'info@personaling.com',
+                        '    ',
+                        'pagoPS'=> array(           
+                                'paypal' => true,
+                                'banco' => true,
+                                'saldo' => true,
+                            ),
+                        'metodosPago'=> array(
+                            'bkCard' => true,
+                            'paypal' => true, 
+                            'prueba' => true,
+                        ),
+                        'multiLook'=> array(
+                            'bodyType' => false,
+                            'eyesColor' => false,
+                            'hairColor' => false,
+                            'womanMeasure' => false,
+                            'bodyFavors' => false,
+                            'skinColor' => false,
+                        ),
+                        'AzPayTerminal'=>'997',
+                        'AzPaySecret'=> 'qwerty1234567890uiop',
+                        'zohoToken'=>'8b75b742aec75310a4985ab07ca683d7',
+                        'zohoAccount'=>'cmontanez@upsidecorp.ch',
+                        'zohoActive' => TRUE,
+                        'fb_appId' => '323808071078482',
+                    ),
+                );
+            if ($this->_country == 'en_us')
+                return array(
+                    'language' => 'en_us',
+                    'timeZone' => 'Europe/Madrid', 
+                    'components'=>array(
+                        'db'=>array(
+                            'connectionString' => 'mysql:host=mysql-personaling.cu1sufeji6uk.us-west-2.rds.amazonaws.com;dbname=db_personalingUS',
+                            'emulatePrepare' => true,
+                            'username' => 'personaling',
+                            'password' => 'Perso123Naling',
+                            'charset' => 'utf8',
+                            'tablePrefix' => 'tbl_',
+                        ),
+                         'less'=>array(
+                                      'class'=>'ext.less.components.Less',
+                                      'mode'=>'client',
+                                      'files'=>array(
+                                        'less/style.less'=>'css/style.less',
+                                      ),
+                                          'options'=>array('watch'=>false),
+                                    ),
+                      
+                    ),
+                    'params'=>array(
+                    // this is used in contact page
+                        'adminEmail'=>'rpalma@upsidecorp.ch',
+                        'PRONUNCIACION' => 'EspaÃ±ola',
+                        'environment'=>'Sitio de Pruebas US', 
                         'currSym'=>'E',
                         'noShipping'=> '0', // 0: Cuando se debe cobrar envio, VALOR: cuando el envÃ­o es GRATIS a partir de un VALOR determinado
                         'IVA' => '0.21',

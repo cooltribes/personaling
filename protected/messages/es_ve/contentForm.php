@@ -262,6 +262,7 @@ return array (
      'Last name of the person to whom you send' => 'Apellido de la persona a la que envias tu compra',
      'Load to shopping cart' => 'Cargar a la Bolsa',
      'Looks for you'=>'Looks para ti',
+     'Looks you love'=>'Looks que te encantan',
      'Look created by' => 'Look creado por',
      'Look description'  => 'Descripción del look',
      'Look style:'  => 'Estilo del look',

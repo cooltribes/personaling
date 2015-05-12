@@ -1,8 +1,5 @@
-
 <?php
-
 return array (
-
      'PRONUNCIACION' => 'Venezolana',
      'currSym'=>'Bs',
      'noShipping'=> '1',
@@ -63,8 +60,6 @@ return array (
      'Assurance' => 'Seguro',
      'Available Balance:' => "Balance Disponible:",
      'Are you a woman / man?'=>'Are you a woman/man?',
-
-
      'Balance' => 'Saldo',
      'Balance and Giftcards'=>'<strong>Balance and Giftcards</strong>',
      'Bag' => 'Bolsa',
@@ -86,7 +81,6 @@ return array (
      'By brand' => 'Por marca',
      'By filling out your profile data you will enjoy a wonderful world looks tailored for you.'=>'By filling out your profile data you will enjoy a wonderful world looks tailored for you.',
      'Billing address' => 'Dirección de facturación',
-
      'Card numbers' => 'Número de la tarjeta',
      'Cancel' => 'Cancelar',
      'cannot be blank'=>'no puede quedar vacío.',
@@ -129,8 +123,6 @@ return array (
      'Complete the following fields:' => 'Completa los siguientes campos:',
      'C.I.' => 'C.I.',
      'Customize it' => 'Personalízala',
-
-
      
      'Date' => 'Fecha',
      'Day'=>'Day',
@@ -151,7 +143,6 @@ return array (
      'Do you really want to pull this look out from your cart?'=>'Realmente deseas eliminar este look de tu carrito?',
      'Documents' => 'Documentos',
      'Done' => 'Terminado',
-
      'Edit' => 'Editar',
      'Edit shipping address' => 'Editar dirección de envío',
      'Effective date' => 'Fecha de vigencia',
@@ -177,7 +168,6 @@ return array (
      'First'=>'Primera',
      'Featured Products'=>'Featured Products',
      'Frequently Asked Questions'=>'Frequently Asked Questions',
-
      'Gift Card' => 'Gift Card',
      'Go to Store' => 'Ir a la tienda',
      '<h2>Great! Your payment has been accepted.</h2> We are preparing your order for shipment, very soon you can enjoy your purchase. <br/><br/>' =>  '<h2>¡Genial! Tu pago ha sido aceptado.</h2>Estamos preparando tu pedido para el envío, muy pronto podrás disfrutar de tu compra.<br/><br/>',
@@ -191,7 +181,6 @@ return array (
      'Hello! Has anyone thought that Personaling.com is perfect for you. Have an invitation to try from <strong>{name}.</strong><br/><br/><i>{message}</i><br/><br/>Start enjoying digital experience Personal Shoppers and enjoy the online sale of your favorite brands.<br/> You can register by clicking on the link below: <br/><br/><a href="{registration_url}">Click here</a>' => '¡Hola! Alguien ha pensado que Personaling.com es perfecto para ti. Tienes una invitación para probarlo de parte de <strong>{name}.</strong>
      <br/><br/><i>{message}</i><br/><br/>Comienza a disfrutar de la experiencia de Personal Shoppers digital y a disfrutar de la venta online de tus marcas preferidas. <br/> Puedes registrarte haciendo click en el enlace que aparece a continuación: <br/><br/><a href="{registration_url}">Click aquí</a>',
 	'How does Personaling.com works?'=>'¿Cómo funciona Personaling?',
-
      'ID' => 'ID',
      'ID of the person to whom you send' => 'Cédula de Identidad de la persona a la que envias',
      'ID Transaction' => 'ID de Transaccion',
@@ -215,11 +204,8 @@ return array (
      'Items' => 'Prendas',
      'It was not possible to continue with the order.' => 'No ha sido posible continuar con el pedido.',
      'I.V.A' => 'I.V.A',
-
 	 'Last'=>'Última',
-
      'Keep buying'  => 'Seguir comprando',
-
      '<strong>Make payment:</strong> {monto} via wire transfer or bank deposit before {date} in the following bank account:' => '<strong>Realizar el pago:</strong> De {monto}  via transferencia electrónica o depósito bancario antes del {date} en la siguiente cuenta bancaria: ',
      'Manage' => 'Administrar',
      'Manage my Looks' => 'Administrar mis Looks',
@@ -236,7 +222,6 @@ return array (
      'Must select at least one item' => 'Debes seleccionar por lo menos una prenda',
      'My Gift Cards' => 'Mis Gift Cards',
      'My Payments' => 'Mis Pagos',
-
      
      'Name' => 'Nombre',
      'Name must be at least 3 characters'=>'Name must be at least 3 characters',
@@ -269,7 +254,6 @@ return array (
      'Looks best sellers' => 'Looks más vendidos',
      "Looks in promotion" => 'Looks en promoción',
      'Like' => 'Me encanta',
-
 	 'Occasions'=>'Occasions',
 	 'Ocassions for this look:' => 'Ocasiones para este look',
 	 'Or fill in the fields below :'=>'Or fill in the fields below :',
@@ -346,9 +330,6 @@ return array (
      'Promotion' => 'Promoción',
      'Purchase confirmation' => 'Confirmación de la compra',
      
-
-
-
      'Quantity' => 'Cantidad',
      
      
@@ -427,7 +408,6 @@ return array (
      'Share Link' => 'Enlace para compartir',
 	 'Social networks and newsletter'=>'Social networks and newsletter',
 	 'Skip this step!'=>'Skip this step!',
-
      'Targeting ages' => 'Dirigido a edades',
      'Tax' => 'Impuesto',
      'Terms of Service'=>'Terms of Service',
@@ -461,7 +441,6 @@ return array (
      'Type a description for this look' => 'Escribe una descripción para este look',
      'Tracking' => 'Número de seguimiento',
      'Try again' => 'Intentar nuevamente',
-
      'Unavailable'=>'No disponible',
      'Underpayment' => 'Pago Insuficiente',
      'Unit price' => 'Precio unitario',
@@ -479,12 +458,10 @@ return array (
      'To all of us has broken a heel ever, refreshes the screen tu try more later.' => 'A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
      '¡Upss! To all of us has broken a heel ever, refreshes the screen tu try more later.' => '¡Upss! A todas se nos ha roto un tacón alguna vez, refresca tu pantalla o inténtalo más tarde.',
      'Use Balance available:' => 'Usar balance disponible',
-
 	 'View all Personal Shoppers'=>'View all Personal Shoppers',	
      'Valid from <strong>{start}</strong> until <strong>{end}</strong>' => 'Válida desde <strong>{start}</strong> hasta <strong>{end}</strong>',
      'Validity' => 'Validez',
      'Value for returned shipping' => 'Monto por envío devuelto',
-
      'Year' => 'Year',
      'Yes, I do'=>'Si, por favor',
      'Your Account'=>'Your Account',
@@ -529,7 +506,6 @@ return array (
                 Your Shopping Cart is Empty</strong>, What are you waiting for? Outstanding Looks and \n\
                 amazing clothes are waiting for you</p>',
     '<h2>You have requested to change your password</h2> To receive a new password, click on the following link: <br/><br/> <a href="{url}">Click Here</a><br/><br/> If you have not been you who requested the change, please contact us via info@personaling.com' => '<h2>Has solicitado cambiar tu contraseña </h2> Para recibir una nueva contraseña haz clic en el siguiente link: <br/><br/> <a href="{url}">Click aquí</a><br/><br/> Si no has sido tu quien ha pedido el cambio, comunícate con nosotros a través de info@personaling.com',
-
      'Watch all the looks created by the best Personal Shoppers from *country*'=>
 		'Mira todos los looks creados por las mejores Personal Shoppers de Venezuela',
      'Weight' => 'Peso',
@@ -571,7 +547,6 @@ return array (
      'Zip code' => 'Código postal',
      
 	 'Reference' => "Referencia de pago",
-
      // Copys de paginas estaticas
      'copy FAQ' => '<h3>¿Cómo funciona Personaling.com?  </h3>
       <p>Como sabemos que las imágenes valen más que mil palabras, te dejamos nuestro video de presentación.  </p>
@@ -579,7 +554,7 @@ return array (
       <hr/>
       <h3>¿Debo pagar por mi envío?</h3>
       <p>Si, Personaling.com hace sus envíos a través de operadores de envios  y cada envío la cancela el cliente al momento de la cancelación de su compra. Las tarifas cambiarán dependiendo del destino final del envío.  </p>
-      <p>Quiero devolver mi compra ¿Debo hacerlo a través del mismo operador?    </p>
+      <p>Quiero devolver mi compra ¿Debo hacerlo a través del mismo operador?    </p>
       <p>Para asegurar un mejor servicio es necesario  hacer la devolución a través del mismo operador que lo recibió.  </p>
       <hr/>
       <h3>¿Debo pagar la devolución?</h3>
@@ -592,11 +567,10 @@ return array (
       <p>En Personaling.com estamos abiertos a cualquier opción y creemos que todos podemos agudizar nuestro buen gusto, así que si eres muy activo en nuestras redes sociales podemos considerarte un personal shopper honorario.  </p>
       <hr/>
       <h3>¿Si quiero cambiar algo puedo acercarme a la tienda de las marca directamente?  </h3>
-      <p>Oh! No, lamentablemente tenemos súper buenos precios porque tenemos artículos exclusivos, así que si compras por aquí, debes hacer el cambio por aquí.    </p>
+      <p>Oh! No, lamentablemente tenemos súper buenos precios porque tenemos artículos exclusivos, así que si compras por aquí, debes hacer el cambio por aquí.    </p>
       <hr/>
       <h3>¿Si tengo una queja o sugerencia, a cuál correo electrónico puedo escribir?  </h3>
       <p>Puedes comunicarte con nosotros por cualquiera de nuestras redes sociales o a través de  <a href="mailto:'.Yii::app()->params['clientService'][Yii::app()->language].'">'.Yii::app()->params['clientService'][Yii::app()->language].'</p>',
-
       'Copy Politicas de Privacidad' => '
       <div class="page-header">
         <h1>Política de privacidad o privacidad de datos</h1>
@@ -606,9 +580,8 @@ return array (
         <li>La información que facilites a la hora del registro será debidamente guardada en un fichero de datos destinado solamente al uso de nuestra plataforma y no será facilitada a terceros sin tu previa autorización. </li>
         <li> Si haces conexión con alguna red social, es posible que tengamos acceso a alguna información como fotografías, fecha de nacimiento, teléfono, etc. Será tratada esta información de la misma manera que en el punto uno (1), es decir, para el uso exclusivo de nuestra página web y en caso de ser compartida será sólo bajo tu previa autorización.</li>
         <li>Tus compras serán cuantificadas para uso interno de elaboración de apartados como “Más vendidos” o “Más buscados” y serán utilizadas dentro de grandes muestras para nuestra promoción, sin publicar tu identidad a no ser que así lo autorices.  </li>
-        <li><a href="http://www.personaling.com.ve" title="Personaling, Tu Personal Shopper Online">Personaling.com.ve</a> cuenta con un sistema de protección de datos y seguridad en red que protegerá tus datos bancarios y personales.   </li>
+        <li><a href="http://www.personaling.com.ve" title="Personaling, Tu Personal Shopper Online">Personaling.com.ve</a> cuenta con un sistema de protección de datos y seguridad en red que protegerá tus datos bancarios y personales.   </li>
       </ol>',
-
       'Copy Envios y Encomiendas' => '
           <div class="page-header">
           <h1>Condiciones de Envíos y Encomiendas</h1>
@@ -625,11 +598,10 @@ return array (
               <li >5.2 &nbsp;  Local: Si por el contrario, es una dirección de difícil acceso podrás elegir la opción recogida en la oficina del operador más cercana, donde deberás buscar tu pedido cuando te notifiquemos que ha llegado. </li>
             </ol>
           </li>
-          <li>Para recibir tu pedido en cualquiera de las modalidades debes presentar tu cédula de identidad y firmar el acuse de recibo.  </li>
+          <li>Para recibir tu pedido en cualquiera de las modalidades debes presentar tu cédula de identidad y firmar el acuse de recibo.  </li>
           <li>Personaling.com.ve se hace responsable de empaquetar correctamente tu compra y gestionar la entrega dentro de los plazos correspondientes. En caso de retraso en los plazos, el cliente recibirá un cupón con el 10% de descuento para su próxima compra.</li>
         </ol>
         <p>&nbsp;</p>',
-
         'Copy Politicas de Devoluciones' => '     
           <div class="page-header">
              <h1>Políticas de devoluciones</h1>
@@ -697,10 +669,8 @@ return array (
             RIF: J-40236088-6 <br/>
             BANESCO: <br/>
             Número Cta corriente: 0134-0277-98-2771093092 <br/> <br/>           
-
         </ol>
         <p>Te mantendremos al tanto del status de tu compra a través de tu dirección de correo electrónico o través de tu perfil en <a href="http://www.personaling.com" >Personaling.com</a>.</p>',
-
 		///////////////////////////Meses//////////////////////
 		'January'=>'January',
 		'February'=>'February',
@@ -714,7 +684,5 @@ return array (
 		'October'=>'October',
 		'November'=>'November',
 		'December'=>'December',
-
 );
-
 ?>

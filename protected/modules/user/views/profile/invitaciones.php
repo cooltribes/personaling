@@ -23,52 +23,52 @@ $create_date = date('j M Y', $create_time);
                     <li class="nav-header">Opciones de edición</li>
                     <li class="dropdown-submenu"> <a href="#" tabindex="-1">Tu perfil</a>
                         <ul class="dropdown-menu">
-                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edit">Datos Personales</a> </li>
-                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/avatar">Tu Foto</a> </li>
-                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittutipo">Tu Perfil Corporal</a> </li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edit"><?php echo Yii::t('contentForm', 'Personal data');?></a> </li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/avatar"><?php echo Yii::t('contentForm', 'Your photo');?></a> </li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittutipo"><?php echo Yii::t('contentForm', 'Your body profile');?></a> </li>
                         </ul>
                     </li>
-                    <li class="dropdown-submenu"> <a href="#" tabindex="-1">Tus Pedidos </a>
+                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"><?php echo Yii::t('contentForm', 'Your orders');?> </a>
                         <ul class="dropdown-menu">
-                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/orden/listado" title="Tus pedidos activos">Pedidos Activos</a></li>
-                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/orden/listado" title="Tus pedidos nuevos y anteriores">Historial de Pedidos</a></li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/orden/listado" title="<?php echo Yii::t('contentForm', 'Your active orders');?>"><?php echo Yii::t('contentForm', 'Your active orders');?></a></li>
+                            <li> <a href="<?php echo Yii::app()->baseUrl; ?>/orden/listado" title="<?php echo Yii::t('contentForm', 'Your old and past orders');?>"><?php echo Yii::t('contentForm', 'Order history');?></a></li>
                         </ul>
                     </li>
-                    <li class="dropdown-submenu"> <a href="#" tabindex="-1">Tu Estilo </a>
+                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"><?php echo Yii::t('contentForm', 'Your Style');?> </a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/coctel" title="Edita tu estilo Coctel">Coctel</a></li>
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/fiesta" title="Edita tu estilo Fiesta">Fiesta</a></li>
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/playa" title="Edita tu estilo Playa">Playa</a></li>
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/Sport" title="Edita tu estilo Sport">Sport</a></li>
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/trabajo" title="Edita tu estilo Trabajo">Trabajo</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/coctel" title="Edita tu estilo Coctel"><?php echo Yii::t('contentForm', 'Cocktail');?></a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/fiesta" title="Edita tu estilo Fiesta"><?php echo Yii::t('contentForm', 'Party');?></a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/playa" title="Edita tu estilo Playa"><?php echo Yii::t('contentForm', 'Beach');?></a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/Sport" title="Edita tu estilo Sport"><?php echo Yii::t('contentForm', 'Sport');?></a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edittuestilo/id/trabajo" title="Edita tu estilo Trabajo"><?php echo Yii::t('contentForm', 'Work');?></a></li>
                         </ul>
                     </li>
-                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Tus Favoritos </a>
+                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> <?php echo Yii::t('contentForm', 'Your favorites');?></a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/looksencantan" title="Looks que te encantan">Looks</a></li>
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/encantan" title="Productos que te encantan">Productos</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/looksencantan" title="Looks que te encantan"><?php echo Yii::t('contentForm', 'Looks');?></a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/encantan" title="Productos que te encantan"><?php echo Yii::t('contentForm', 'Products');?></a></li>
                         </ul>
                     </li>
-                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Correo electrónico y contraseña </a>
+                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> <?php echo Yii::t('contentForm', 'Email and Password');?> </a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/changeemail" title="Cambia tu correo electrónico">Cambiar correo electrónico</a></li>
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/changepassword" title="Cambia tu contraseña">Cambiar Contraseña</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/changeemail" title="<?php echo Yii::t('contentForm', 'Change email');?>"><?php echo Yii::t('contentForm', 'Change email');?></a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/changepassword" title="<?php echo Yii::t('contentForm', 'Change password');?>"><?php echo Yii::t('contentForm', 'Change password');?></a></li>
                         </ul>
                     </li>
-                    <li class="dropdown-submenu"> <a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones" tabindex="-1"> Notificaciones </a>
+                    <li class="dropdown-submenu"> <a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones" tabindex="-1"> <?php echo Yii::t('contentForm', 'Notifications');?> </a>
                        <!-- <ul class="dropdown-menu">
                             <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/direcciones" title="Gestiona tus direcciones">Gestionar direcciones de Envíos y Pagos.</a></li>
                        </ul> -->
                     </li>
-                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Libreta de Direcciones </a>
+                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> <?php echo Yii::t('contentForm', 'Address book');?> </a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/direcciones" title="Gestiona tus direcciones">Gestionar direcciones de Envíos y Pagos.</a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/direcciones" title="Gestiona tus direcciones"><?php echo Yii::t('contentForm', 'Manage addresses Shipping and Payments.');?></a></li>
                         </ul>
                     </li>
-                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> Privacidad </a>
+                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"> <?php echo Yii::t('contentForm', 'Privacy');?></a>
                         <ul class="dropdown-menu">
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/privacidad" title="Cambia tu Informaciósn pública">Información pública</a></li>
-                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/delete" title="Eliminar Cuenta">Eliminar Cuenta</a> </li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/privacidad" title="Cambia tu Informaciósn pública"><?php echo Yii::t('contentForm', 'Public information');?></a></li>
+                            <li><a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/delete" title="Eliminar Cuenta"><?php echo Yii::t('contentForm', 'Delete account');?></a> </li>
                         </ul>
                     </li>
                 </ul>
@@ -77,7 +77,7 @@ $create_date = date('j M Y', $create_time);
         <div class="span9 ">
             <div class=" box_1">
                 <div class="page-header">
-                    <h1>Invita tus amig@s a Personaling</h1>
+                    <h1><?php echo Yii::t('contentForm', 'Invite your friends by email');?></h1>
                 </div>
                             
             	<div class="span8 padding_bottom_small text_align_center">
@@ -92,9 +92,9 @@ $create_date = date('j M Y', $create_time);
                 <script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
                 <div class="row-fluid margin_bottom margin_top padding_top">
                     <div class="span6 offset3">
-                        <div onclick="invite_friends()" style="cursor: pointer;" id="boton_facebook" class="text_align_center"><a>Invítalos usando Facebook</a></div>
+                        <div onclick="invite_friends()" style="cursor: pointer;" id="boton_facebook" class="text_align_center"><a> <?php echo Yii::t('contentForm', 'Invite them using Facebook');?></a></div>
                     	<p>
-                    	<div style="cursor: pointer;" id="boton_twitter" class="text_align_center"><a href=<?php echo $ruta_twitter;?> >Invítalos usando Twitter</a></div>
+                    	<div style="cursor: pointer;" id="boton_twitter" class="text_align_center"><a href=<?php echo $ruta_twitter;?> ><?php echo Yii::t('contentForm', 'Invite them using Twitter');?></a></div>
                   <script src="https://apis.google.com/js/plusone.js" async defer>
                    {lang: 'es'}    	
               
@@ -119,11 +119,11 @@ $create_date = date('j M Y', $create_time);
                 ?>
 <!--                <form  class="form-stacked braker_horz_top_1 no_margin_bottom">-->
                     <fieldset>
-                        <legend >O invítal@s por correo electrónico: </legend>
+                        <legend ><?php echo Yii::t('contentForm', 'Or Invite them using email');?></legend>
                         <div class="row">
 	                        <div class="offset2 span5">                            
 	                            <div class="control-group">
-	                                <label class="control-label required">Ingresa los correos electrónicos de tus amig@s: </label>
+	                                <label class="control-label required"><?php echo Yii::t('contentForm', 'Write your email\'s friends');?> </label>
 	                                <div class="controls">
 	                                    <?php
 	                                    $this->widget('application.extensions.BulkMail.BulkMail',
@@ -137,24 +137,24 @@ $create_date = date('j M Y', $create_time);
 	                                            )
 	                                    );
 	                                    ?>
-	                                    <span class="help-block error" id="User_emails_em_" style="display: none;"> Debes ingresar al menos una dirección de correo electrónico </span>
+	                                    <span class="help-block error" id="User_emails_em_" style="display: none;"> <?php echo Yii::t('contentForm', 'You must enter at least one email address');?> </span>
 	                                </div>
 	                            </div>
 	                            <div class="control-group">
-	                                <label class="control-label required">Escribe un mensaje personal: </label>
+	                                <label class="control-label required"><?php echo Yii::t('contentForm', 'Write a personal message');?> </label>
 	                                <div class="controls">
 	                                    <?php 
 	                                   echo CHtml::textArea('invite-message',
 	                                   Yii::t('contentForm','I\'ve created great looks on my profile, go and take a look'),
 	                                   array('class' => 'span5', 'rows' => '4'));
 	                                   ?>
-	                                   <span class="help-block error" id="invite_mess_em_" style="display: none;"> Debes escribir un mensaje </span>
+	                                   <span class="help-block error" id="invite_mess_em_" style="display: none;"> <?php echo Yii::t('contentForm', 'You must to write a message');?> </span>
 	                                </div>    
 	                            </div>                            
 	                        </div>
                     	</div>
                         <div class="form-actions"> 
-                            <a id="enviarInvitaciones" class="btn-large btn btn-danger offset5">Enviar invitaciones</a> 
+                            <a id="enviarInvitaciones" class="btn-large btn btn-danger offset5"><?php echo Yii::t('contentForm', 'Send Invitations');?></a> 
                             <?php /*$this->widget('bootstrap.widgets.TbButton', array(
                                                 'buttonType'=>'submit',
                                                 'label'=>'Enviar invitaciones',
@@ -170,7 +170,7 @@ $create_date = date('j M Y', $create_time);
                 
             </div>
             <?php
-            if($dataProvider->getItemCount() > 0){
+            if($dataProvider->getItemCount() > 0){ 
 	            ?>
 	            <div class="box_1 margin_top_medium"> <h2 class=" color2 braker_bottom">Historial de invitaciones</h2><p>En la siguiente lista podrás ver el status de las invitaciones que has enviado y los puntos acumulados por cada una: </p>
 	            <?php

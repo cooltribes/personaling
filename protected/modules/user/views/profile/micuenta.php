@@ -95,11 +95,11 @@ $looks_recomendados = $look->match($model);
       
     </aside>
     <div class="span9 configuracion_perfil">
-    <h1>Panel de control</h1>
+    <h1><?php echo Yii::t('contentForm', 'Control panel');?></h1>
       <div class="well">
         <div class="row">
           <div class="span4">
-            <h2 class="braker_bottom"> Tu Perfil</h2>
+            <h2 class="braker_bottom"> <?php echo Yii::t('contentForm', 'Your profile');?></h2>
             <ul class="nav nav-stacked nav-tabs">
               <li> <?php echo CHtml::link('Tus datos personales',array('profile/edit'),array("title"=>"Edita tus datos personales")); ?></li>
               <li> <?php echo CHtml::link('Tu foto',array('profile/avatar'),array("title"=>"Edita tu foto")); ?></li>

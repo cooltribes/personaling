@@ -44,7 +44,7 @@ $this->breadcrumbs=array(
       <h1 class="text_align_center"><?php echo UserModule::t('Login'); ?></h1>
       <h4 class="text_align_center"><?php echo UserModule::t('To log on Personaling you can:'); ?></h4>
       <div  class="row-fluid  margin_top">
-              <div id="boton_facebook" class="span6  text_align_center offset3 margin_bottom "><a title="Inicia sesión con Facebook" class="transition_all" onclick="check_fb()" href="#"><?php echo UserModule::t('Login with Facebook'); ?></a></div>
+              <div id="boton_facebook" class="span6  text_align_center offset3 margin_bottom "><a title="<?php echo UserModule::t('Login with Facebook'); ?>" class="transition_all" onclick="check_fb()" href="#"><?php echo UserModule::t('Login with Facebook'); ?></a></div>
 
               <!-- <div id="boton_twitter" class="span5 offset2 margin_bottom "><a id="registro_twitter" title="Inicia sesión con Twitter" class="transition_all" href="<?php echo Yii::app()->request->baseUrl; ?>/user/registration/twitterStart">Inicia sesión con Twitter</a>  -->
               <!--                            <script type="IN/Login" data-onAuth="onLinkedInAuth"></script>--> 

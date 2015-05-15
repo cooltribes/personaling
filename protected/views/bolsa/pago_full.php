@@ -204,7 +204,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
     	
       <div class="margin_left">
         <div id="resumen" class="well well_personaling_big ">
-          <h4>Resumen de la compra</h4>
+          <h4><?php echo Yii::t('contentForm', 'Summary of the purchase')?></h4>
           <div class=" margin_bottom">
             <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table">
               <tr id="adentro">

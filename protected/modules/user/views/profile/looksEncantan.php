@@ -17,7 +17,7 @@
 <div class=" margin_top">
   <div class="row margin_bottom_large">
     <div class="span12">
-      <h1>Looks que te encantan</h1>
+       <h1><?php echo Yii::t('contentForm', 'Looks you love');?></h1>
       <!-- Carousel items -->
       <div id="carousel_looks_recomendados" class="carousel slide margin_top ">
         <div class="carousel-inner">
@@ -146,7 +146,7 @@
 	<div class=" margin_top">
   		<div class="row margin_bottom_large">
     		<div class="span12">
-      			<h1>Looks que te encantan</h1>
+      			 <h1><?php echo Yii::t('contentForm', 'Looks you love');?></h1>
       
       			<div id="carousel_looks_recomendados" class="carousel slide margin_top ">
         			<div class="row">
@@ -244,9 +244,9 @@
 			<div class=" margin_top">
 		  		<div class="row margin_bottom_large">
 		    		<div class="span12">
-		      			<h1>Looks que te encantan</h1>	
+		      			 <h1><?php echo Yii::t('contentForm', 'Looks you love');?></h1>	
 		      			<hr>	
-		          		<p class="lead margin_bottom_large margin_top_medium padding_top_medium padding_bottom_large  padding_left_medium padding_right_small " > Puedes seleccionar un look como <strong>favorito</strong> haciendo clic en el icono <strong> <span class="entypo icon_personaling_medium" style="line-height: 1.1;" >&#9825;</span></strong> que lo acompaña, y en cualquier momento puedes verlos haciendo click en Tus Looks. </p>
+		          		<p class="lead margin_bottom_large margin_top_medium padding_top_medium padding_bottom_large  padding_left_medium padding_right_small " > <?php echo Yii::t('contentForm', 'You can select a look as a favorite by clicking the icon accompanying ♡ , and anytime you can view them by clicking your looks.');?></p>
 			      	</div>
 			  	</div>
 			</div>

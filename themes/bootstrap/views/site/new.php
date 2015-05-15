@@ -110,7 +110,7 @@ if(Yii::app()->language=='es_es'){
                 <section>
                 <div class="sectionTitle">
                     <div class="braker"></div>
-                    <div class="text" ><h2>Looks Destacados</h2></div>
+                    <div class="text" ><h2><?php echo Yii::t('contentForm','Outstanding Looks'); ?></h2></div>
                     <div class="braker"></div>                
                 </div>
                 
@@ -157,7 +157,7 @@ if(Yii::app()->language=='es_es'){
                  <div class="row-fluid">
                     <a href="<?php echo Yii::app()->getBaseUrl(true); ?>/looks-personalizados">
                         <div class="span4 offset4 sectionButton text_center_align" >
-                            Ver todos los Looks
+                           <?php echo Yii::t('contentForm','See all looks'); ?>
                         </div>
                     </a>
                  </div>
@@ -167,7 +167,7 @@ if(Yii::app()->language=='es_es'){
                  
                     <div class="sectionTitle">
                         <div class="braker"></div>
-                        <div class="text" ><h2>Personal Shoppers Destacados</h2></div>
+                        <div class="text" ><h2><?php echo Yii::t('contentForm','Personal Shoppers outstanding'); ?></h2></div>
                         <div class="braker"></div>                
                     </div>
                 <div class="row-fluid">
@@ -193,7 +193,7 @@ if(Yii::app()->language=='es_es'){
                 <div class="row-fluid">
                     <a href="<?php echo Yii::app()->getBaseUrl(true); ?>/user/profile/listado">
                         <div class="span4 offset4 sectionButton text_center_align">
-                            Ver todos los Personal Shoppers
+                            <?php echo Yii::t('contentForm','View all Personal Shoppers'); ?>
                         </div>
                     </a>
                  </div>
@@ -245,7 +245,7 @@ if(Yii::app()->language=='es_es'){
             <section>
              <div class="span12 no_margin_left sectionTitle">
                         <div class="braker"></div>
-                        <div class="text" ><h2>Productos Destacados</h2></div>
+                        <div class="text" ><h2><?php echo Yii::t('contentForm','Featured Products'); ?></h2></div>
                         <div class="braker"></div>
              </div>
            
@@ -269,7 +269,7 @@ if(Yii::app()->language=='es_es'){
              <section>
              <div class="span12 no_margin_left sectionTitle">
                         <div class="braker"></div>
-                        <div class="text" ><h2>Redes sociales y newsletter</h2></div>
+                        <div class="text" ><h2><?php echo Yii::t('contentForm','Social networks and newsletter'); ?></h2></div>
                         <div class="braker"></div>
              </div>
 
@@ -278,9 +278,12 @@ if(Yii::app()->language=='es_es'){
             <div class="row" style="margin-top:30px">
             
                      <div class="span4">
+                     	<?php if(Yii::app()->language!='de_ch')
+                     	{ ?>
                          <h3 class="no_margin_top socialText" >
-                             ¡Sígue nuestras redes sociales para enterarte de lo último en moda y tendencias!
+                             <?php echo Yii::t('contentForm','Follow our social networks to find out the latest in fashion and trends !'); ?>
                          </h3>
+                      <?php } ?>
                      </div>
                      <a title="Facebook" href="https://www.facebook.com/Personaling" target="_blank">                                   
                         <img alt="Facebook" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/social/fb.jpg';?>" class="span1 socialHome"/>
@@ -305,8 +308,8 @@ if(Yii::app()->language=='es_es'){
             <div class="row" style="margin-top:30px">
                     
                      <div class="span4">
-                         <h3 class="no_margin_top socialText">
-                             Sé el primero en recibir noticias y promociones suscribiéndote a nuestro NewsLetter.
+                         <h3 class="margin_top_xsmall socialText" style="min-height: 80px">
+                             <?php echo Yii::t('contentForm','Be the first to receive news and promotions by subscribing to our newsletter.'); ?>
                          </h3>
                      </div>
                      <form method="post" id="suscribe">                                 
@@ -314,7 +317,7 @@ if(Yii::app()->language=='es_es'){
                              <input placeholder="e-mail" type="email" id="email" name='email' required="required" class="email"/>
                          </div>
                          <div class="span2">
-                            <input type="submit" class="button text_center_align" value="Enviar">
+                            <input type="submit" class="button text_center_align" value="<?php echo Yii::t('contentForm','Send');?>">
                          </div>
                      </form>                           
                           
@@ -324,14 +327,14 @@ if(Yii::app()->language=='es_es'){
              <section>
              <div class="span12 no_margin_left sectionTitle">
                         <div class="braker"></div>
-                        <div class="text" ><h2>Aquí hablan de tu Personal Shopper</h2></div>
+                        <div class="text" ><h2><?php echo Yii::t('contentForm','Here discuss about your Personal Shopper'); ?></h2></div>
                         <div class="braker"></div>
              </div>
             <div class="row mediosHome">
                  
                      
                      <div class="span8">
-                        <h4>En los medios</h4>
+                        <h4><?php echo Yii::t('contentForm','In the media'); ?></h4>
                         <div class="row-fluid">
                             <div class="span11">
                                 <div class="row-fluid magazinesHome">
@@ -349,7 +352,7 @@ if(Yii::app()->language=='es_es'){
                      </div>
                      <div class="margin_top_large nodesktop"></div>
                      <div class="span4 no_margin_left">
-                        <h4>Nos avalan</h4>
+                        <h4><?php echo Yii::t('contentForm','We guarantee'); ?></h4>
                         <div class="row-fluid organizationsHome">
                             <a target="_blank" title="Wayra" href="http://ve.wayra.org/es/startup/personaling" class="span3">
                                 <img alt="Wayra" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/wayra.jpg';?>" height="25px"/>
@@ -379,11 +382,11 @@ if(Yii::app()->language=='es_es'){
 <div id="confirmLook" class="modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" >
  <div class="modal-header">
     <button type="button" class="close closeModal" data-dismiss="modal" aria-hidden="true" onclick="$('#confirmLook').hide();">×</button>
-     <h3 >¡Felicidades!</h3>
+     <h3 ><?php echo Yii::t('contentForm','Congratulations'); ?></h3>
  
   </div>
   <div class="modal-body">
-         <h4>Te has suscrito a nuestro newsletter, recibirás en tu correo electrónico todas nuestras noticias y promociones</h4>
+         <h4><?php echo Yii::t('contentForm','You have subscribed to our newsletter , you will receive in your mailbox all our news and promotions'); ?></h4>
          
   </div>  
 </div>

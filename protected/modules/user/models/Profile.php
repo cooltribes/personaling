@@ -71,17 +71,17 @@ class Profile extends UActiveRecord
 					 {
                                        if ($field->varname=="first_name")
 									   {
-									   	array_push($rules,array($field->varname, 'required','message'=>' ¿Cómo te llamas? '));
-										array_push($rules,array($field->varname, 'length', 'min' => 4,'tooShort'=>'El Nombre debe tener al menos 4 Caracteres'));
+									   	array_push($rules,array($field->varname, 'required','message'=>Yii::t('contentForm', 'What is your name?')));
+										array_push($rules,array($field->varname, 'length', 'min' => 4,'tooShort'=> Yii::t('contentForm', 'The name must be at least 4 characters')));
 									   }
                                                
 									   else	if ($field->varname=="last_name")
 									   {
-									   	array_push($rules,array($field->varname, 'required','message'=>' ¿Cuál es tu apellido? '));
-										array_push($rules,array($field->varname, 'length', 'min' => 4,'tooShort'=>'El Apellido debe tener al menos 4 Caracteres'));
+									   	array_push($rules,array($field->varname, 'required','message'=>Yii::t('contentForm', 'What is your lastname?')));
+										array_push($rules,array($field->varname, 'length', 'min' => 4,'tooShort'=>Yii::t('contentForm', 'The lastname must be at least 4 characters')));
 									   }							         
 									   else if ($field->varname=="sex")
-                                               array_push($rules,array($field->varname, 'required','message'=>' ¿Eres mujer/hombre? '));
+                                               array_push($rules,array($field->varname, 'required','message'=>Yii::t('contentForm', 'Are you a woman / man?')));
                                                
                                              else if ($field->varname=="url" || $field->varname=="bio" || $field->varname=="facebook" || $field->varname=="twitter")
                                                { 

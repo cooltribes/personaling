@@ -206,16 +206,16 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
     }
         if(!UserModule::isPersonalShopper())
         $itemsUser = array(
-                    array('label'=>'Tus Looks', 'url'=>array('/user/profile/looksencantan')),
-                    array('label'=>'Tus Compras', 'url'=>array('/orden/listado')),
-                    array('label'=>'Invita a tus Amig@s', 'url'=>array('/user/profile/invitaciones')),
-                    array('label'=>'Comprar GiftCard', 'url'=>array('/giftcard/comprar')),
+                    array('label'=>Yii::t('contentForm', 'Your Looks'), 'url'=>array('/user/profile/looksencantan')),
+                    array('label'=>Yii::t('contentForm', 'Your Purchases'), 'url'=>array('/orden/listado')),
+                    array('label'=>Yii::t('contentForm', 'Invite your Friends'), 'url'=>array('/user/profile/invitaciones')),
+                    array('label'=>Yii::t('contentForm', 'Buy Gift Card'), 'url'=>array('/giftcard/comprar')),
                    
-                    array('label'=>'Tu Cuenta', 'url'=>array('/user/profile/micuenta')),
+                    array('label'=>Yii::t('contentForm', 'Your Account'), 'url'=>array('/user/profile/micuenta')),
                                                              
-                    array('label'=>'Ayuda', 'url'=>array('/site/preguntas_frecuentes')),
+                    array('label'=>Yii::t('contentForm', 'Help'), 'url'=>array('/site/preguntas_frecuentes')),
                     '---',
-                    array('label'=>'¿Comprando para alguién más?'),
+                    array('label'=>Yii::t('contentForm', 'ORDER FOR SOMEONE ELSE?')),
                     //array('label'=>'<a href="#" class="sub_perfil_item"><img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise</a>',
 //                    array('label'=>'<img width="30" height="30" class="img-circle avatar_menu" src="/develop/images/avatar_provisional_2_x30.jpg">Elise',
 //                        'url'=>array(''), 'linkOptions' => array('class' => 'sub_perfil_item'),),
@@ -266,11 +266,11 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
         }
 
 
-        array_push($itemsUser, array('label'=>'Añadir un nuevo perfil <i class="icon icon-plus"></i>',
+        array_push($itemsUser, array('label'=>Yii::t('contentForm', 'Add a new profile').'<i class="icon icon-plus"></i>',
                                     'url'=>'#modalFiltroPerfil', 'linkOptions' => array('data-toggle' => 'modal', 'id' => 'agregar-perfil'), //array('/site/preguntas_frecuentes')
                                     ),
                                 '---',
-                                array('label'=>'Salir', 'url'=>array('//site/logout')));
+                                array('label'=>Yii::t('contentForm', 'Exit'), 'url'=>array('//site/logout')));
 
 
 $this->widget('bootstrap.widgets.TbNavbar',array(
@@ -294,9 +294,9 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 )),
                 array('label'=>'Crear Look', 'url'=>array('/look/create'), 'visible'=>Yii::app()->user->isGuest?false:UserModule::isPersonalShopper()),
                 array('label'=>'Looks', 'url'=>array('/tienda/look'),'visible'=>UserModule::isPersonalShopper()),
-                array('label'=>'Tienda', 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
-                array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu'), 'visible'=>Yii::app()->params['outlet']),
-                array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
+                array('label'=>Yii::t('contentForm','Store'), 'url'=>array('/tienda/index'), 'itemOptions'=>array('id'=>'tienda_menu')),
+                //array('label'=>'Outlet', 'url'=>array('/outlet'), 'itemOptions'=>array('id'=>'outlet_menu'), 'visible'=>Yii::app()->params['outlet']),
+                //array('label'=>'Magazine', 'url'=>'http://personaling.com/magazine','itemOptions'=>array('id'=>'magazine'),'linkOptions'=>array('target'=>'_blank')),
                 array('label'=>'','icon'=>'icon-gift', 'url'=>array('/giftcard/comprar'), 'itemOptions'=>array('id'=>'btn-gift','class'=>'hidden-phone to-white-icon', 'data-html'=>"true"), 'visible'=>!Yii::app()->user->isGuest,),
                 array('label'=>$contadorMensaje,'icon'=>'icon-exclamation-sign', 'url'=>array('/site/notificaciones'), 'itemOptions'=>array('id'=>'btn-notifications','class'=>'hidden-phone to-white-icon'), 'visible'=>!Yii::app()->user->isGuest&&$total>0),
                 //array('label'=>$cont_productos,'icon'=>'icon-exclamation-sign', 'url'=>array('/orden/listado'), 'visible'=>!Yii::app()->user->isGuest),
@@ -306,9 +306,9 @@ $this->widget('bootstrap.widgets.TbNavbar',array(
                 array('label'=>$cantProductosGuest,'icon'=>'icon-shopping-cart', 'itemOptions'=>
                     array('id'=>'btn-shoppingBag','class'=>'hidden-phone to-white-icon') ,
                     'url'=>array('/user/login') ,'visible'=>Yii::app()->user->isGuest),
-                array('label'=>'Accede', 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
+                array('label'=>Yii::t('contentForm','Access'), 'url'=>array('/user/login'), 'itemOptions'=>array('id'=>'ingresa'),'visible'=>Yii::app()->user->isGuest),
                 //******* MODIFICACION EN TbBaseMenu.php PARA PODERLE COLOCAR CLASE AL BOTON *******//
-                array('label'=>"Regístrate", 'url'=>array('/user/registration'), 'htmlOptions'=>array('class'=>'btn btn-rectangle'),'visible'=>Yii::app()->user->isGuest),
+                array('label'=>Yii::t('contentForm','Register'), 'url'=>array('/user/registration'), 'htmlOptions'=>array('class'=>'btn btn-rectangle'),'visible'=>Yii::app()->user->isGuest),
                 //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
                 //array('label'=>$avatar.$nombre, 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
                 array('label'=>$avatar."<span id='userName'>{$nombre}</span>", 'url'=>'#','itemOptions'=>array('id'=>'dropdownUser'), 'items'=> $itemsUser,
@@ -373,10 +373,10 @@ if(!Yii::app()->user->isGuest){
     if($user->status == 0){
         ?>
         <div id="notificacion_validar" class="alert-block alert-error text_align_center">
-            Tu cuenta no ha sido validada. 
+            <?php echo Yii::t('contentForm', 'Your account has not been validated.');?>
             <?php
             echo CHtml::ajaxLink(
-                'Reenviar correo de validación.', 
+                Yii::t('contentForm', 'Forward mail validation.'),
                $this->createUrl('user/registration/sendValidationEmail'), 
                 array('success'=>'function(data){
                     $("#notificacion_validar").html(data);
@@ -440,35 +440,35 @@ if(!Yii::app()->user->isGuest){
             <div class="container">
                 <div class="row hidden-phone">
                     <div class="span3">
-                        <h4>Información de Interés</h4>
+                        <h4><?php echo Yii::t('contentForm','Information of Interest'); ?></h4>
                         <ul>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de">Acerca de Personaling</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/formas-de-pago" title="Formas de Pago">Formas de Pago</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/envios" title="Envíos y Encomiendas">Envíos</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones">Políticas de Devoluciones</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad">Políticas de Privacidad</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/acerca-personaling" title="Acerca de"><?php echo Yii::t('contentForm','About Personaling'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/formas-de-pago" title="Formas de Pago"><?php echo Yii::t('contentForm','Payment Methods'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/envios" title="Envíos y Encomiendas"><?php echo Yii::t('contentForm','Shipping'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_devoluciones" title="Políticas de Devoluciones"><?php echo Yii::t('contentForm','Returns Policy'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/politicas_y_privacidad" title="Políticas de Privacidad"><?php echo Yii::t('contentForm','Privacy Policy'); ?></a></li>
                           <!-- <li><a href="<?php //echo Yii::app()->getBaseUrl(); ?>/site/politicas_de_cookies" title="Políticas de Cookies">Políticas de Cookies</a></li> -->
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/preguntas_frecuentes" title="Preguntas Frecuentes">Preguntas Frecuentes</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio">Términos de Servicio</a></li>
-                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper">Aplicar para Personal Shopper</a></li>
-                             <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_condiciones_ps" title="Acerca de">Términos y condiciones para Personal Shoppers</a></li>
-                             <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto">Contáctanos</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/preguntas_frecuentes" title="Preguntas Frecuentes"><?php echo Yii::t('contentForm','Frequently Asked Questions'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_de_servicio" title="Términos de Servicio"><?php echo Yii::t('contentForm','Terms of Service'); ?></a></li>
+                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/registration/aplicarPS" title="Aplicar para Personal Shopper"><?php echo Yii::t('contentForm','Apply for Personal Shopper'); ?></a></li>
+                             <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/terminos_condiciones_ps" title="Acerca de"><?php echo Yii::t('contentForm','Terms and Conditions for Personal Shoppers'); ?></a></li>
+                             <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/site/contacto" title="Contacto"><?php echo Yii::t('contentForm','Contact'); ?> </a></li>
                         </ul>
                       </div>
                       
                       <div class="span3">
-                        <h4>Lo que encontrarás</h4>
+                        <h4><?php echo Yii::t('contentForm','What you will find'); ?></h4>
                         <ul>
                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/looks-personalizados" title="Looks Personalizados">Looks</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Ropa</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Zapatos</a></li>
-                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa">Accesorios</a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa"><?php echo Yii::t('contentForm','Clothes'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa"><?php echo Yii::t('contentForm','Shoes'); ?></a></li>
+                          <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/tienda-ropa-personalizada" title="Ropa"><?php echo Yii::t('contentForm','Accessories'); ?> </a></li>
                           <li><a href="<?php echo Yii::app()->getBaseUrl(); ?>/user/profile/listado" title="Personal Shoppers">Personal Shoppers</a></li>
                         </ul>
                       </div>                      
                       
                       <div class="span3">
-                        <h4>Sigue nuestras redes sociales</h4>
+                        <h4<?php echo Yii::t('contentForm','Sigue nuestras redes sociales'); ?>></h4>
                             <ul>
                                <li>  <a title="Facebook" href="https://www.facebook.com/Personaling">Facebook</a></li>  
                                <li>  <a title="Instagram" href="http://instagram.com/personaling">Instagram </a></li>  
@@ -479,7 +479,7 @@ if(!Yii::app()->user->isGuest){
                         </ul>
                       </div>
                       <div class="span3">
-                            <h4>Métodos de Pago</h4>
+                            <h4><?php echo Yii::t('contentForm','Payment Methods'); ?></h4>
                             <div class="row-fluid">
                                 <a class="span3">
                                     <img alt="MasterCard" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/mc.png';?>" height="25px"/>
@@ -491,7 +491,7 @@ if(!Yii::app()->user->isGuest){
                                     <img style="margin-top:12px" alt="Banesco" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/banesco.png';?>" height="25px"/>
                                 </a>
                             </div>
-                            <h4 class="margin_top">Seguridad de Datos</h4>
+                            <h4 class="margin_top"><?php echo Yii::t('contentForm','Safety Data'); ?></h4>
                             <div class="row-fluid">
                                <a class="span2">
                                                      <img alt="SSL Security" src="<?php echo Yii::app()->theme->baseUrl.'/images/home/logos/ssl.png';?>" height="25px"/>
@@ -552,11 +552,11 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
         $url="'".Yii::app()->baseUrl."/giftcard/comprar'";
         echo 'var gift = ""; ';
         
-        '<p class="padding_small"><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
-   
+        '"'.Yii::t('contentForm','Your Shopping Cart is Empty, What are you waiting for? Looks amazing clothes are waiting for you').'"';
+   		
         
-        $gift="<p class='padding_left_small padding_top_xsmall'><span class='gifts-menu'>Tu Balance:<strong> ".Yii::app()->numberFormatter->format("#,##0.00",Profile::model()->getSaldo(Yii::app()->user->id,true))." ".Yii::t('contentForm','currSym').
-        "</strong></span><br/><div class='padding_right_xsmall padding_left_xsmall padding_bottom_xsmall'><a href='".Yii::app()->baseUrl."/giftcard/comprar"."' class='btn btn-block btn-small btn-danger'>Comprar Giftcard</a></div>";
+        $gift="<p class='padding_left_small padding_top_xsmall'><span class='gifts-menu'>".Yii::t('contentForm', 'Your Balance')."<strong> ".Yii::app()->numberFormatter->format("#,##0.00",Profile::model()->getSaldo(Yii::app()->user->id,true))." ".Yii::t('contentForm','currSym').
+        "</strong></span><br/><div class='padding_right_xsmall padding_left_xsmall padding_bottom_xsmall'><a href='".Yii::app()->baseUrl."/giftcard/comprar"."' class='btn btn-block btn-small btn-danger'>".Yii::t('contentForm', 'Buy Gift Card')." </a></div>";
          echo 'gift = "'.$gift.'";';
         $htmlMensaje = '';
          echo 'var contenidoMensajes = ""; ';
@@ -586,12 +586,12 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 
   function HandlerReady () {
     // //Boton Notificaciones
-
-    contenidoMensajes = contenidoMensajes + '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones"  class="btn btn-block btn-small btn-danger">Ver notificaciones</a></div>';
+	notificacion='<?php echo Yii::t('contentForm', 'Notifications');?>';
+    contenidoMensajes = contenidoMensajes + '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones"  class="btn btn-block btn-small btn-danger">'+notificacion+' </a></div>';
     
     $('#btn-notifications').popover(
     {
-      title: '<strong>Notificaciones ('+ <?php echo $contadorMensaje ?>+')</strong>',
+      title: '<strong> '+notificacion+ '('+<?php echo $contadorMensaje ?>+')</strong>',
       content: contenidoMensajes,
       placement: 'bottom',
       trigger: 'manual',
@@ -614,7 +614,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
        $('#btn-gift').popover(
     {
      
-      title:'<strong>Balance y Giftcards</strong>',
+       title:'<?php echo Yii::t('contentForm', 'Balance and Giftcards');?>',
       content: gift,
       placement: 'bottom',
       trigger: 'manual',
@@ -758,20 +758,20 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
     //------------Generar html para poner en Popover OFF---------------//
 
     textShoppingCart = '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php
-    echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-danger">Ver carrito</a></div>';
+    echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-danger"><?php echo  Yii::t('contentForm', 'View cart');  ?></a></div>';
 
     if( listaCarrito != "" ){
         textShoppingCart = listaCarrito + textShoppingCart;
     }  
     if(<?php echo $cont_productos ?> == 0){
-      textShoppingCart = '<p class="padding_small"><strong>Tu carrito todavía esta vacío</strong>, ¿Qué esperas? Looks y prendas increíbles esperan por ti.</p>';
+      textShoppingCart = '<?php echo Yii::t('contentForm','Your Shopping Cart is Empty, What are you waiting for? Looks amazing clothes are waiting for you');?>';
     }
  
     //Boton Shopping Cart
     $('#btn-shoppingcart').popover(
     {
       html: true,
-      title: '<strong>Tu Carrito ('+ <?php echo $cont_productos  ?>+')</strong>',
+      title: '<strong><?php echo Yii::t('contentForm','Your Shopping Cart');?> ('+ <?php echo $cont_productos  ?>+')</strong>',
       content: textShoppingCart,
       placement: 'bottom',
       trigger: 'manual',
@@ -831,7 +831,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
     $('#btn-shoppingBag').popover(
     {
       html: true,
-      title: '<strong>Tu Carrito</strong>',
+      title: '<strong><?php echo Yii::t('contentForm','Your Shopping Cart');?> </strong>',
       content: textShoppingBag,
       placement: 'bottom',
       trigger: 'manual',
@@ -1107,7 +1107,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
         {
           content: data.contenido,                      
           html: true,
-          title: '<strong>Tu Carrito</strong>',
+          title: '<strong><?php echo Yii::t('contentForm','Your Shopping Cart');?> </strong>',
           placement: 'bottom',
           trigger: 'manual',
           offset: 10

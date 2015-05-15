@@ -1,12 +1,12 @@
 <div class="container margin_top">
   <div class="page-header">
-    <h1>Tus Notificaciones</h1>
+    <h1><?php echo Yii::t('contentForm', 'Your notifications');?></h1>
     
     <div class="">
   <div class=" margin_bottom margin_top_medium">
     <ul class="nav  nav-tabs">
-      <li class="active"><a href="#" title="Tus pedidos activos">Mensajes</a></li>
-      <li><a href="#" title="tu avatar">Historial de pedidos</a></li>
+      <li class="active"><a href="#" title="Tus pedidos activos"><?php echo Yii::t('contentForm', 'Messages');?></a></li>
+      <li><a href="#" title="tu avatar"><?php echo Yii::t('contentForm', 'Order history');?></a></li>
     </ul>
   </div>
   <?php if(Yii::app()->user->hasFlash('success')){?>
@@ -67,7 +67,7 @@
   		<div>
 		  	<div class="padding_medium bg_color3 ">
 		  	
-		  	<p> <strong> Haz click en uno de tus mensajes para visualizar su contenido. </strong> </p>
+		  	<p> <strong> <?php echo Yii::t('contentForm', 'Click on one of your posts to display its contents.');?> </strong> </p>
 		  	
 		  	
 		  	</div>

@@ -8,15 +8,15 @@
 			   	if (isset($profile->$nombre_tmp)) $valor = $profile->$nombre_tmp; else $valor = 0;  		
             $return = '<fieldset>';
             if($field->title == 'Diario')
-                $return .='<legend>¿Con cuál estilo te identificas más para tu día a día? </legend>';
+				$return .='<legend>'.Yii::t('contentForm','Which do you identify more style to your everyday life?').'</legend>';    
             if($field->title == 'Fiesta')
-                $return .='<legend>¿Con cuál de estos looks te irias de fiesta? </legend>';
+				$return .='<legend>'.Yii::t('contentForm','Which of these looks you would go to party?').'</legend>';  
             if($field->title == 'Vacaciones')
-                $return .='<legend>¿Cuales serían tus vacaciones ideales?</legend>';                            		
+                $return .='<legend>'.Yii::t('contentForm','Where would you prefer to go on holiday ?').'</legend>';                            		
             if($field->title == 'Haciendo Deporte')
-                $return .='<legend>¿Con cuál estilo te identificas más para hacer deporte? </legend>';            
+                $return .='<legend>'.Yii::t('contentForm','Which do you identify more style for sports?').'</legend>';          
             if($field->title == 'Oficina')
-                $return .='<legend>¿Con cuál de estos looks írias a la oficina? </legend>';             
+				$return .='<legend>'.Yii::t('contentForm','Which of these looks would go to the office?').'</legend>';           
              $return .='<ul class="thumbnails">';
 			//<img alt="'.$value.'" style="width: 270px; height: 400px;" src="http://placehold.it/270x400">
             foreach (Profile::range($field->range) as $key => $value){
@@ -62,7 +62,7 @@
 ); ?>	
 <!-- FLASH OFF --> 
     <div class="page-header">
-      <h1>Elige tu Estilo</h1>
+      <h1><?php echo Yii::t('contentForm','Choose your style')?></h1>
   </div>
       
       

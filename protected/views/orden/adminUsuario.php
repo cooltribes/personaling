@@ -1,12 +1,12 @@
 <?php
 $this->breadcrumbs=array(
-  'Tus Pedidos',
+   Yii::t('contentForm', 'Your orders'),
 );
 ?>
 
 <div class="container margin_top">
   <div class="page-header">
-    <h1>Tus Pedidos</h1>
+    <h1><?php echo Yii::t('contentForm', 'Your orders');?></h1>
       <hr/>
     <!-- Menu ON -->
    <form id="formu" class="no_margin_bottom form-search form-horizontal">
@@ -14,8 +14,8 @@ $this->breadcrumbs=array(
   <div class="navbar-inner margin_bottom margin_top_medium">
     <ul class="nav ">
 
-      <li class="active" id="hist"><a href="#" title="Tus pedidos activos" id="listado">Pedidos activos</a></li>
-      <li id="list"><a href="#" title="tu avatar" id="historial">Historial de pedidos</a></li>
+      <li class="active" id="hist"><a href="#" title="<?php echo Yii::t('contentForm', 'Your active orders');?>" id="listado"><?php echo Yii::t('contentForm', 'Your active orders');?></a></li>
+      <li id="list"><a href="#" title="tu avatar" id="historial"><?php echo Yii::t('contentForm', 'Order history');?></a></li>
     </ul>
   </div>
   <?php if(Yii::app()->user->hasFlash('success')){?>
@@ -40,11 +40,11 @@ $this->breadcrumbs=array(
 $template = '{summary}
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped">
     <tr>
-      <th scope="col">Número de Orden</th>
-      <th scope="col">Fecha</th>
-      <th scope="col">Monto (En '.Yii::t('contentForm', 'currSym').')</th>      
-      <th scope="col">Estado</th>
-      <th scope="col">Acciones</th>
+      <th scope="col">'.Yii::t('contentForm', 'Order number').'</th>
+      <th scope="col">'.Yii::t('contentForm', 'Date').'</th>
+      <th scope="col">'.Yii::t('contentForm', 'Amount').' (En '.Yii::t('contentForm', 'currSym').')</th>      
+      <th scope="col">'.Yii::t('contentForm', 'Status').'</th>
+      <th scope="col">'.Yii::t('contentForm', 'Actions').'</th>
     </tr>
     {items}
     </table>

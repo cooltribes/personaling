@@ -21,8 +21,8 @@ class UserLogin extends CFormModel
 		return array(
 			// username and password are required
 			//array('username, password', 'required'),
-			array('username', 'required', 'message'=>'¿Cuál es tu correo electrónico?'),
-			array('password', 'required', 'message'=>'Escribe una contraseña.'),
+			array('username', 'required', 'message'=>Yii::t('contentForm', 'What is your email?')),
+			array('password', 'required', 'message'=>Yii::t('contentForm', 'Enter a password.')),
 			// rememberMe needs to be a boolean
 			array('rememberMe', 'boolean'),
 			// password needs to be authenticated

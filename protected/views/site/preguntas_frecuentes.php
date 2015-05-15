@@ -61,7 +61,7 @@ $this->breadcrumbs=array(
   <div class="span8">
     <div class="box_1">
       <div class="page-header">
-        <h1>Preguntas Frecuentes</h1>
+        <h1<?php echo Yii::t('contentForm','Frequently Asked Questions'); ?>/h1>
       </div>
       <?php echo Yii::t('contentForm','copy FAQ'); ?>
     </div>

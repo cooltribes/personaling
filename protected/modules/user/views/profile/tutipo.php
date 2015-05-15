@@ -61,14 +61,13 @@ $this->widget('bootstrap.widgets.TbAlert', array(
 
 ?>
     <?php $span=(!(isset($editar) && $editar))?"span5":"span7"; 
-         $mensajeH1 = isset($ref) ? "¡Tu perfil es tu ADN Personaling!"
+         $mensajeH1 = isset($ref) ? Yii::t('contentForm','Your profile is your DNA Personaling!')
             :"Escoge las opciones que más se parezcan a ti:"; ?>  
         
-    <h1>Tu tipo<small> - <?php echo $mensajeH1; ?></small>
+     <h1><?php echo Yii::t('contentForm','Your body type');?><small> - <?php echo $mensajeH1; ?></small>
     <?php if (isset($ref)){
         echo TbHtml::tag("h2", array(),
-            "Al llenar los datos de tu perfil disfrutarás de un maravilloso
-                mundo de looks adaptados para ti.");
+            Yii::t('contentForm','By filling out your profile data you will enjoy a wonderful world looks tailored for you.'));
     } ?>    
         
       
@@ -178,7 +177,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
             <div class="span4 offset4 ">
               <?php $this->widget('bootstrap.widgets.TbButton', array(
                 'buttonType' => 'submit',
-                    'label'=>isset($editar)?'Guardar':'Siguiente',
+                    'label'=>isset($editar)?'Guardar':Yii::t('contentForm','Next'),
                     'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                     'size'=>'large', // null, 'large', 'small' or 'mini'
                         'htmlOptions' => array('class'=>'btn-block', 'id' => 'numero3'), 
@@ -187,7 +186,7 @@ $this->widget('bootstrap.widgets.TbAlert', array(
             </div>
             <div class="span3 offset1">
              <?php $this->widget('bootstrap.widgets.TbButton', array(            
-                'label'=>  Yii::t('contentForm', '¡Saltar este paso!'),
+                'label'=>  Yii::t('contentForm', 'Skip this step!'),
                 'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                 'url'=>$this->createUrl("/tienda/look"), // null, 'large', 'small' or 'mini'
 //                'size'=>'small', // null, 'large', 'small' or 'mini'

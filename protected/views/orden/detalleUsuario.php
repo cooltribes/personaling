@@ -68,13 +68,13 @@ $usuario = User::model()->findByPk($orden->user_id);
 //----------------------Estado
 
     if($orden->estado == 1 || ($orden->estado == 7 && isset($balance)))
-        echo Yii::t('contentForm', 'currSym').' '."Pendientes por pagar";
+        echo Yii::t('contentForm', 'currSym').' '.Yii::t('contentForm', 'Pending payable');
 
     if($orden->estado == 2)
-        echo Yii::t('contentForm', 'currSym').' '."Pendientes por confirmar";
+        echo Yii::t('contentForm', 'currSym').' '.Yii::t('contentForm', 'TBC pending');
 
     if($orden->estado == 3 || $orden->estado == 8 || $orden->estado == 4)
-        echo Yii::t('contentForm', 'currSym').' '."ya pagados";
+        echo Yii::t('contentForm', 'currSym').' '.Yii::t('contentForm', 'Already paid');
 
     if($orden->estado == 5)
         echo Yii::t('contentForm','currSym').'. '.Yii::t('contentForm','Order Cancelled');
@@ -243,7 +243,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
       <div class="row-fluid">
      <div class="span12">
-          <h3 class="braker_bottom margin_top_small">Dirección de envío</h3>
+          <h3 class="braker_bottom margin_top_small"><?php echo Yii::t('contentForm', 'Shipping address'); ?></h3>
           <div class="vcard">
             <div class="adr">
             	<?php
@@ -257,7 +257,7 @@ $usuario = User::model()->findByPk($orden->user_id);
               <span class="locality"><?php echo $ciudad_envio->nombre ?>, <?php echo $provincia_envio->nombre; ?>.</span>
               <div class="country-name"><?php echo $direccionEnvio->pais; ?></div>
              <?php    if(isset($direccionEnvio->codigoPostal)){?>
-              <div><strong>Código Postal: </strong><?php echo $direccionEnvio->codigoPostal->codigo; ?></div>
+              <div><strong><?php echo Yii::t('contentForm', 'Zip code'); ?> </strong><?php echo $direccionEnvio->codigoPostal->codigo; ?></div>
            <?php }?> 
 
             </div>
@@ -273,7 +273,7 @@ $usuario = User::model()->findByPk($orden->user_id);
             	if(isset($orden->direccionFacturacion)){
             		
             	?>
-           <h3 class="braker_bottom margin_top_small">Dirección de facturación</h3>
+           <h3 class="braker_bottom margin_top_small"><?php echo Yii::t('contentForm', 'Shipping address'); ?></h3>
           <div class="vcard">
             <div class="adr">
             	
@@ -285,8 +285,8 @@ $usuario = User::model()->findByPk($orden->user_id);
             </div>
            <div class="row-fluid tel pull_left">
             <div class="span3"> <span class="type"><strong>Cédula</strong>:</span><?php echo $orden->direccionFacturacion->cedula; ?></div>
-            <div class="span4"><strong>Telefono</strong>: <span class="email"><?php echo $orden->direccionFacturacion->telefono; ?></span> </div>
-            <div class="span4"><strong>Correo electrónico</strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
+            <div class="span4"><strong><?php echo Yii::t('contentForm', 'Phone'); ?></strong>: <span class="email"><?php echo $orden->direccionFacturacion->telefono; ?></span> </div>
+            <div class="span4"><strong><?php echo Yii::t('contentForm', 'Email'); ?></strong>: <span class="email"><?php echo $usuario->email; ?></span> </div>
           </div>
           </div>
           <?php } ?>
@@ -385,7 +385,7 @@ $usuario = User::model()->findByPk($orden->user_id);
               </td>
               <td>
                   <?php
-                  echo CHtml::link('Recibo de Pago', $this->createUrl('recibo', array('id'=>$factura->id)), array('target'=>'_blank'));
+                  echo CHtml::link(Yii::t('contentForm', 'Receipt of payment'), $this->createUrl('recibo', array('id'=>$factura->id)), array('target'=>'_blank'));
                   ?>
                
                
@@ -410,7 +410,7 @@ $usuario = User::model()->findByPk($orden->user_id);
 
  <div class="row">
     <div class="span7">
-   <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top">Productos</h3>
+   <div class="well well-small margin_top well_personaling_small">   <h3 class="braker_bottom margin_top"><?php echo Yii::t('contentForm', 'Products')?></h3>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-hover table-striped" align="center">
         <tr>
           <th scope="col"><?php echo Yii::t('contentForm','Name of items');  ?></th>
@@ -663,7 +663,7 @@ Para una futura iteración
             <input type="checkbox" value="" id="visible" > Hacer visible en el Frontend</label>
         </div>-->
           <label class="checkbox">
-        <div class="form-actions "><a onclick="mensaje(<?php echo $orden->user_id.",".$orden->id; ?>)" title="Enviar" class="btn btn-info"><i class="icon-envelope icon-white"></i>  Enviar comentario</a> </div>
+        <div class="form-actions "><a onclick="mensaje(<?php echo $orden->user_id.",".$orden->id; ?>)" title="Enviar" class="btn btn-info"><i class="icon-envelope icon-white"></i>  <?php echo Yii::t('contentForm', 'Send Comment') ?> </a> </div>
       </label>
       </form>
     </div>

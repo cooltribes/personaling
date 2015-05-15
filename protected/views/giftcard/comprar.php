@@ -94,7 +94,7 @@ $this->breadcrumbs = array(
                         $checkE = 'checked="checked"';
                     }
                     ?>
-                    <p class="lead">4. <?php echo Yii::t('contentForm','¿A quién la envías?'); ?></p>
+                    <p class="lead">4. <?php echo Yii::t('contentForm','Who do you send?'); ?></p>
 
 
 
@@ -102,7 +102,7 @@ $this->breadcrumbs = array(
 
                         <?php
                         echo $form->textFieldRow($envio, 'email', array(
-                            'placeholder' => 'Correo electrónico del destinatario'
+                            'placeholder' => Yii::t('contentForm','Recipient email')
                         ));
                         ?>  
 

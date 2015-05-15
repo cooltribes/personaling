@@ -206,13 +206,13 @@ $usuario = User::model()->findByPk($orden->user_id);
         </div>
       </div>      
       <div id='pago' class='well well-small margin_top well_personaling_small'>
-        <h3 class='braker_bottom '> Método de Pago</h3>
+        <h3 class='braker_bottom '> <?php echo Yii::t('contentForm', 'Payment method');?></h3>
             <table width='100%' border='0' cellspacing='0' cellpadding='0' class='table table-bordered table-hover table-striped'>
             <tr>
-            <th scope='col'>Fecha</th>
-            <th scope='col'>Método de pago</th>
-            <th scope='col'>ID de Transaccion </th>
-            <th scope='col'>Monto</th>
+            <th scope='col'> <?php echo Yii::t('contentForm', 'Date');?></th>
+            <th scope='col'> <?php echo Yii::t('contentForm', 'Payment method');?></th>
+            <th scope='col'><?php echo Yii::t('contentForm', 'Transaction ID');?> </th>
+            <th scope='col'><?php echo Yii::t('contentForm', 'Amount');?></th>
             <th scope='col'></th>
             </tr> 
             

@@ -81,11 +81,11 @@ $create_date = date('j M Y', $create_time);
                 </div>
                             
             	<div class="span8 padding_bottom_small text_align_center">
-            		<p>¡Bienvenida! Ya eres parte de Personaling.com; desde hoy tendrás a la distancia de un click las mejores marcas y asesoría de moda hecha por expertos.</p>
+            		<p> <?php echo Yii::t("contentForm","Welcome! Already part of Personaling.com; from now within the distance of a click the best brands and fashion consulting by experts.");?></p>
             		<?php if($model->personal_shopper==0){
             			
             		?>
-            		<p>¿Quieres invitar a tus amigas a probar nuestro servicio de Personal Shopper? Anímate, ellas te lo agradecerán.</p>
+            		<p><?php echo Yii::t('contentForm', 'Privacy');?></p>
             	<?php }?>
             	</div>
                 <?php $ruta_twitter='https://twitter.com/intent/tweet?url='.Yii::app()->getBaseUrl(true).'&text=&lang=es&via=Personaling'; ?>

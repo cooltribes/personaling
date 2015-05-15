@@ -586,12 +586,12 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 
   function HandlerReady () {
     // //Boton Notificaciones
-
-    contenidoMensajes = contenidoMensajes + '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones"  class="btn btn-block btn-small btn-danger">Ver notificaciones</a></div>';
+	notificacion='<?php echo Yii::t('contentForm', 'Notifications');?>';
+    contenidoMensajes = contenidoMensajes + '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php echo Yii::app()->baseUrl; ?>/site/notificaciones"  class="btn btn-block btn-small btn-danger">'+notificacion+' </a></div>';
     
     $('#btn-notifications').popover(
     {
-      title: '<strong>Notificaciones ('+ <?php echo $contadorMensaje ?>+')</strong>',
+      title: '<strong> '+notificacion+ '('+<?php echo $contadorMensaje ?>+')</strong>',
       content: contenidoMensajes,
       placement: 'bottom',
       trigger: 'manual',
@@ -758,7 +758,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
     //------------Generar html para poner en Popover OFF---------------//
 
     textShoppingCart = '<div class="padding_right_xsmall padding_left_xsmall padding_bottom_xsmall"><a href="<?php
-    echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-danger">Ver carrito</a></div>';
+    echo Yii::app()->baseUrl; ?>/bolsa/index" class="btn btn-block btn-small btn-danger"><?php echo  Yii::t('contentForm', 'View cart');  ?></a></div>';
 
     if( listaCarrito != "" ){
         textShoppingCart = listaCarrito + textShoppingCart;

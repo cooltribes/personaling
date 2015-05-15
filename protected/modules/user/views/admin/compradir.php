@@ -123,7 +123,7 @@ if ((!Yii::app()->user->isGuest)&&isset(Yii::app()->session['usercompra'])) { //
 			            'buttonType'=>'submit',
 			            'type'=>'danger',
 			            'size'=>'normal',
-			            'label'=>'Usar esta dirección',
+			            'label'=>Yii::t('contentForm', 'Use this address'), 
 			        )); 
 					
 					echo"
@@ -261,7 +261,7 @@ if ((!Yii::app()->user->isGuest)&&isset(Yii::app()->session['usercompra'])) { //
             'buttonType'=>'submit',
             'type'=>'danger',
             'size'=>'large',
-            'label'=>'Usar esta dirección',
+            'label'=>Yii::t('contentForm', 'Use this address'),
         )); 
         //  <a href="Proceso_de_Compra_3.php" class="btn-large btn btn-danger">Usar esta dirección</a> 
         ?>

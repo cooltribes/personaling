@@ -239,7 +239,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                     'buttonType'=>'submit',
                     'type'=>'danger',
                     'size'=>'large',
-                    'label'=>'Guardar en mis direcciones',
+                    'label'=>Yii::t('contentForm', 'Save my address'),
                     'id'=>'agregar',
                     'htmlOptions'=>array('class'=>'controls'),
                  

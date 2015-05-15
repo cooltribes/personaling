@@ -1330,7 +1330,7 @@ class BolsaController extends Controller
                             Yii::app()->session['login'] = 1;
                             $this->redirect(array('bolsa/direcciones'));
                         } else {
-                            Yii::app()->user->setFlash('error', "Debes validar tu cuenta para continuar. Te hemos enviado un nuevo enlace de validación a <strong>" . $user->email . "</strong>");
+                            Yii::app()->user->setFlash('error', Yii::t('contentForm', 'You must validate your account before continuing. We\'ve sent a new validation link')." <strong>" . $user->email . "</strong>");
                             $activation_url = $this->createAbsoluteUrl('/user/activation/activation', array("activkey" => $user->activkey, "email" => $user->email));
 
                             $message = new YiiMailMessage;
@@ -2892,7 +2892,7 @@ class BolsaController extends Controller
 					if($user->status == 1){
 						$this->redirect(array('bolsa/pagoGC'));
 					}else{
-						Yii::app()->user->setFlash('error',"Debes validar tu cuenta para continuar. Te hemos enviado un nuevo enlace de validación a <strong>".$user->email."</strong>"); 
+						Yii::app()->user->setFlash('error',Yii::t('contentForm', 'You must validate your account before continuing. We\'ve sent a new validation link')."<strong>".$user->email."</strong>"); 
 						$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $user->activkey, "email" => $user->email));
 		
 						$message            = new YiiMailMessage;

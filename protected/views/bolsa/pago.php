@@ -574,7 +574,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                 <label class="radio" id="opt-codigo">
                   <input type="radio" name="opcionSaldo" id="radio-Cupon" value="2" onclick="usarCupon()">
                     <?php
-                        echo Yii::t('contentForm', 'Tengo un código de descuento!'); 
+                        echo Yii::t('contentForm', 'I have a discount code!'); 
                     ?>
                 </label>
                 <div class="padding_left_small margin_top_medium row-fluid" style="display:none" id="collapse-cupon">
@@ -611,7 +611,7 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                  
                  
                 <a data-toggle="collapse" data-target="#collapse2" style="cursor: pointer" class="pull-right"> 
-                 	<u>Canjear Gift Card</u>
+                 	<u><?php Yii::t('contentForm', 'Reedem Gift Card');?></u>
 				</a>
               
             

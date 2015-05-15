@@ -25,7 +25,7 @@
     if ($data->estado == 1 || $data->estado == 6 || $data->estado == 7) {
         echo "<li>";
 
-        echo CHtml::link("<i class='icon-edit'></i> ".Yii::t('backEnd', 'Register Payment')." ", $this->createUrl('orden/modals', array('id' => $data->id)), array(// for htmlOptions
+        echo CHtml::link("<i class='icon-edit'></i> ".Yii::t('contentForm', 'Register Payment')." ", $this->createUrl('orden/modals', array('id' => $data->id)), array(// for htmlOptions
             'onclick' => ' {' . CHtml::ajax(array(
                 'url' => CController::createUrl('orden/modals', array('id' => $data->id)),
                 'success' => "js:function(data){ $('#myModal').html(data);
@@ -37,7 +37,7 @@
 
         echo "</li>";
     }
-    echo "<li><a tabindex='-1' href='detallepedido/" . $data->id . "'><i class='icon-eye-open'></i> ".Yii::t('backEnd', 'View Details')."</a></li>
+    echo "<li><a tabindex='-1' href='detallepedido/" . $data->id . "'><i class='icon-eye-open'></i> ".Yii::t('contentForm', 'View Details')."</a></li>
 
                     ";
 

@@ -89,13 +89,15 @@ class Orden extends CActiveRecord
 	public static $zoho_error= array('1'=>'Uno de los productos no esta registrado en zoho', '2'=>'Usuario de compra no esta registrado en zoho',
 	'3'=>'El usuario y uno de los productos no esta registrado en zoho');
 	
-	public static $estados = array('1' => 'En espera de pago',
+	public static  $estados;
+	
+	/*public static $estados = array('1' => 'En espera de pago',
         '2' => 'En espera de confirmación', '3' => 'Pago confirmado',
         '4' => 'Enviado', '5' => 'Cancelada', '6' => 'Pago rechazado',
         '7' => 'Pago insuficiente', '8' => 'Entregada', '9' => 'Devuelta', 
         '10' => 'Parcialmente devuelta', '11' => "Finalizada",
         
-         );
+         );*/
 	 /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -117,6 +119,16 @@ class Orden extends CActiveRecord
 	/**
 	 * @return array validation rules for model attributes.
 	 */
+	
+	public function __construct() {
+   		self::$estados = array('1' => Yii::t('contentForm', 'Awaiting Payment'),
+        '2' => Yii::t('contentForm', 'Awaiting Confirmation'), '3' => Yii::t('contentForm', 'Confirmed payment'),
+        '4' => Yii::t('contentForm', 'Envoy'), '5' => Yii::t('contentForm', 'Canceled'), '6' => Yii::t('contentForm', 'Payment declined'),
+        '7' => Yii::t('contentForm', 'Underpayment'), '8' => Yii::t('contentForm', 'Delivered'), '9' => Yii::t('contentForm', 'Back'), 
+        '10' => Yii::t('contentForm', 'Partially restored'), '11' => Yii::t('contentForm', 'Finalized'),
+        
+         );
+  }
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that

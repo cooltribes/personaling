@@ -26,7 +26,7 @@ $looks_recomendados = $look->match($model);
     ?> 
     
   <div class="row">
-  	<div id="confirmacion_facebook" class="alert alert-success text_center_align" style="display: none;">Amigos invitados</div>
+  	<div id="confirmacion_facebook" class="alert alert-success text_center_align" style="display: none;"><?php echo Yii::t('contentForm', 'Invited friends');?></div>
     <aside class="span3">
       <div class="card">
       	
@@ -34,20 +34,20 @@ $looks_recomendados = $look->match($model);
         <?php echo CHtml::image($model->getAvatar(),'Foto',array("width"=>"270", "height"=>"270")); ?>
         <div class="card_content vcard">
           <h4 class="fn"><?php echo $profile->first_name." ".$profile->last_name; ?></h4>
-          <p class="muted">Miembro desde: <?php echo Yii::app()->dateFormatter->format("d MMM y",strtotime($model->create_at)); ?></p>
+          <p class="muted"><?php echo Yii::t('contentForm', 'Member since:');?> <?php echo Yii::app()->dateFormatter->format("d MMM y",strtotime($model->create_at)); ?></p>
         </div>
       </div>
       <hr/>
-      <h5>Tu actividad</h5>
+      <h5><?php echo Yii::t('contentForm', 'YOUR ACTIVITY');?></h5> 
       <div class="card">
         <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looks_encantan; ?></span>
-          <p>Looks que te Encantan</p>
+          <p><?php echo Yii::t('contentForm', 'Looks you love');?></p>
         </div>
         <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $productos_encantan; ?></span>
-          <p>Productos que te Encantan</p>
+          <p><?php echo Yii::t('contentForm', 'Products you love');?></p>
         </div>
         <div class="card_numbers clearfix"> <span class="T_xlarge margin_top_xsmall"><?php echo $looks_recomendados->totalItemCount; ?></span>
-          <p>Looks recomendados para ti</p>
+          <p><?php echo Yii::t('contentForm', 'Looks for you');?></p>
         </div>
       </div>
       <hr/>
@@ -101,11 +101,11 @@ $looks_recomendados = $look->match($model);
           <div class="span4">
             <h2 class="braker_bottom"> <?php echo Yii::t('contentForm', 'Your profile');?></h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li> <?php echo CHtml::link('Tus datos personales',array('profile/edit'),array("title"=>"Edita tus datos personales")); ?></li>
-              <li> <?php echo CHtml::link('Tu foto',array('profile/avatar'),array("title"=>"Edita tu foto")); ?></li>
+              <li> <?php echo CHtml::link(Yii::t('contentForm', 'Your personal data'),array('profile/edit'),array("title"=>"Edita tus datos personales")); ?></li>
+              <li> <?php echo CHtml::link(Yii::t('contentForm', 'Your photo'),array('profile/avatar'),array("title"=>"Edita tu foto")); ?></li>
               <li> <?php echo CHtml::link('Tu perfil corporal',array('profile/edittutipo'),array("title"=>"Edita tu perfil corporal")); ?></li>
-              <li><?php echo CHtml::link('Tu perfil público',array('profile/perfil'),array("title"=>"Ve tu perfil público")); ?> </li>
-              <li><?php echo CHtml::link('Otros perfiles',array('profile/tusPerfiles'),array("title"=>"Ve los perfiles que has creado")); ?> </li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Your body profile'),array('profile/perfil'),array("title"=>"Ve tu perfil público")); ?> </li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Other profiles'),array('profile/tusPerfiles'),array("title"=>"Ve los perfiles que has creado")); ?> </li>
             </ul>
           </div>
           <div class="span4">
@@ -116,34 +116,34 @@ $looks_recomendados = $look->match($model);
             </ul>
             <h2 class="braker_bottom"> Gift Cards </h2>    
             <ul class="nav nav-stacked nav-tabs">
-              <li> <?php echo CHtml::link('Aplicar GiftCard',array('/giftcard/aplicar'),array("title"=>"Aplica una Gift Card")); ?></li>
-              <li> <?php echo CHtml::link('Mis GiftCards',array('/giftcard/adminUser'),array("title"=>"Tus GiftCards")); ?></li>
+              <li> <?php echo CHtml::link(Yii::t('contentForm', 'Apply Gift Card'),array('/giftcard/aplicar'),array("title"=>"Aplica una Gift Card")); ?></li>
+              <li> <?php echo CHtml::link(Yii::t('contentForm', 'My Gift Cards'),array('/giftcard/adminUser'),array("title"=>"Tus GiftCards")); ?></li>
             </ul>                    
           </div>
         </div>
         <div class="row">
           <div class="span4">
-            <h2 class="braker_bottom"> Tu Estilo </h2>
+            <h2 class="braker_bottom"> <?php echo Yii::t('contentForm', 'Your style');?></h2>
             <ul class="nav nav-stacked nav-tabs">
               <li><?php echo CHtml::link('Diario',array('profile/edittuestilo','id'=>'coctel'),array("title"=>"Edita tu estilo Diario")); ?></li>
-              <li><?php echo CHtml::link('Fiesta',array('profile/edittuestilo','id'=>'fiesta'),array("title"=>"Edita tu estilo Fiesta")); ?></li>
-              <li><?php echo CHtml::link('Vacaciones',array('profile/edittuestilo','id'=>'playa'),array("title"=>"Edita tu estilo Vacaciones")); ?></li>
-              <li><?php echo CHtml::link('Haciendo Deporte',array('profile/edittuestilo','id'=>'sport'),array("title"=>"Edita tu estilo Haciendo Deporte")); ?></li>
-              <li><?php echo CHtml::link('Oficina',array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Oficina")); ?></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Party'),array('profile/edittuestilo','id'=>'fiesta'),array("title"=>"Edita tu estilo Fiesta")); ?></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Vacations'),array('profile/edittuestilo','id'=>'playa'),array("title"=>"Edita tu estilo Vacaciones")); ?></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Sports'),array('profile/edittuestilo','id'=>'sport'),array("title"=>"Edita tu estilo Haciendo Deporte")); ?></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Office'),array('profile/edittuestilo','id'=>'trabajo'),array("title"=>"Edita tu estilo Oficina")); ?></li>
             </ul>
           </div>
           <div class="span4">
-            <h2 class="braker_bottom"> Tus Favoritos </h2>
+            <h2 class="braker_bottom"> <?php echo Yii::t('contentForm', 'Your favorites');?></h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><?php echo CHtml::link('Looks',array('profile/looksencantan'),array("title"=>"Looks que te encantan")); ?></a></li>
-              <li><?php echo CHtml::link('Productos',array('profile/encantan'),array("title"=>"Productos que te encantan")); ?></a></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Looks'),array('profile/looksencantan'),array("title"=>"Looks que te encantan")); ?></a></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Products'),array('profile/encantan'),array("title"=>"Productos que te encantan")); ?></a></li>
             </ul>
-            <h2 class="braker_bottom"> Conecta tus Redes Sociales </h2>
-            <ul class="nav nav-stacked nav-tabs">
+            <h2 class="braker_bottom"> <?php echo Yii::t('contentForm', 'Connect your social networks')?></h2>
+            <ul class="nav nav-stacked nav-tabs"> 
 <!--               <li><a href="#" title="facebook">Facebook (LINK MUERTO)</a></li>
               <li><a href="#" title="Twitter">Twitter (LINK MUERTO)</a></li>
               <li><a href="#" title="Pinterest">Pinterest (LINK MUERTO)</a></li> -->
-           	  <li><?php echo CHtml::link('Invita a tus amig@s',array('invitaciones'),array("title"=>"Invita a tus amig@s")); ?></li>
+           	  <li><?php echo CHtml::link(Yii::t('contentForm', 'Invite your friends'),array('invitaciones'),array("title"=>Yii::t('contentForm', 'Invite your friends'))); ?></li>
             </ul>
           </div>
         </div>
@@ -198,28 +198,28 @@ $looks_recomendados = $look->match($model);
       <div class="well">
         <div class="row">
           <div class="span4">
-            <h2 class="braker_bottom"> Correo electrónico y contraseña </h2>
+            <h2 class="braker_bottom"><?php echo Yii::t('contentForm', 'Email and Password');?> </h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><?php echo CHtml::link('Cambiar correo electrónico',array('changeemail'),array("title"=>"Cambia tu correo electrónico")); ?></li>
-              <li><?php echo CHtml::link('Cambiar Contraseña',array('changepassword'),array("title"=>"Cambia tu contraseña")); ?></a></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Change email'),array('changeemail'),array("title"=>Yii::t('contentForm', 'Change email'))); ?></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Change password'),array('changepassword'),array("title"=>Yii::t('contentForm', 'Change password'))); ?></a></li>
             </ul>
-            <h2 class="braker_bottom"> Libreta de Direcciones </h2>
+            <h2 class="braker_bottom"> <?php echo Yii::t('contentForm', 'Address book');?></h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><?php echo CHtml::link('Gestionar direcciones de Envíos y Pagos.',array('direcciones'),array("title"=>"Gestiona tus direcciones")); ?></li>
-              <li><a href="<?php echo Yii::app()->request->baseUrl ?>/user/profile/crearDireccion" title="Agregar una nueva dirección">Añadir nueva dirección</a></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Manage addresses Shipping and Payments.'),array('direcciones'),array("title"=>Yii::t('contentForm', 'Manage addresses Shipping and Payments.'))); ?></li>
+              <li><a href="<?php echo Yii::app()->request->baseUrl ?>/user/profile/crearDireccion" title="Agregar una nueva dirección"> <?php echo Yii::t('contentForm', 'Add a new address');?> </a></li>
             </ul>
           </div>
           <div class="span4">
-            <h2 class="braker_bottom"> Notificaciones </h2>
+            <h2 class="braker_bottom"> <?php echo Yii::t('contentForm', 'Notifications'); ?></h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><?php echo CHtml::link('Darme de baja en la lista correos',array('unsuscribeMail'),array("title"=>"Darme de baja en la lista correos")); ?></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Unsubscribe Mail'),array('unsuscribeMail'),array("title"=>Yii::t('contentForm', 'Unsubscribe Mail'))); ?></li>
               <!--<li><?php // echo CHtml::link('Gestionar correos de Personaling',array('notificaciones'),array("title"=>"Gestionar correos de Personaling")); ?></li>-->
               <!-- <li><a href="#" title="Desuscribirse de la lista de correos">Darte de baja de la lista correos (LINK MUERTO)</a></li> -->
             </ul>
-            <h2 class="braker_bottom"> Privacidad </h2>
+            <h2 class="braker_bottom"> <?php echo Yii::t('contentForm', 'Privacy'); ?></h2>
             <ul class="nav nav-stacked nav-tabs">
-              <li><?php echo CHtml::link('Información Pública',array('privacidad'),array("title"=>"Cambia tu información pública")); ?></li>
-              <li><?php echo CHtml::link('Eliminar Cuenta',array('delete'),array("title"=>"Eliminar Cuenta")); ?> </li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Public Information'),array('privacidad'),array("title"=>"Cambia tu información pública")); ?></li>
+              <li><?php echo CHtml::link(Yii::t('contentForm', 'Delete acount'),array('delete'),array("title"=>Yii::t('contentForm', 'Delete acount'))); ?> </li>
             </ul>
           </div>
         </div>

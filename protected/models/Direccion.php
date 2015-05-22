@@ -88,8 +88,8 @@ class Direccion extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'nombre' => 'Nombre',
-			'apellido' => 'Apellido',
+			'nombre' => Yii::t('contentForm', 'Name'),
+			'apellido' => Yii::t('contentForm', 'Lastname'),
 			'cedula' => Yii::t('contentForm','Identity card'),
 			'dirUno' => 'Dirección Línea 1',
 			'dirDos' => 'Dirección Línea 2',

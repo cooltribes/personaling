@@ -15,13 +15,13 @@ $create_date = date('j M Y', $create_time);
             <div class="card margin_bottom_medium"> <img width="270" height="270" alt="Avatar" src="<?php echo $model->getAvatar(); ?>">
                 <div class="card_content vcard">
                     <h4 class="fn"><?php echo $profile->first_name.' '.$profile->last_name; ?></h4>
-                    <p class="muted">Miembro desde: <?php echo $create_date; ?></p>
+                    <p class="muted"><?php echo Yii::t('contentForm', 'Member since:');?> <?php echo $create_date; ?></p>
                 </div>
             </div> 
             <div>
                 <ul class="nav nav-tabs nav-stacked">
-                    <li class="nav-header">Opciones de edición</li>
-                    <li class="dropdown-submenu"> <a href="#" tabindex="-1">Tu perfil</a>
+                    <li class="nav-header"><?php echo Yii::t('contentForm', 'EDITING OPTIONS');?></li>
+                    <li class="dropdown-submenu"> <a href="#" tabindex="-1"><?php echo Yii::t('contentForm', 'Your profile');?></a>
                         <ul class="dropdown-menu">
                             <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/edit"><?php echo Yii::t('contentForm', 'Personal data');?></a> </li>
                             <li> <a href="<?php echo Yii::app()->baseUrl; ?>/user/profile/avatar"><?php echo Yii::t('contentForm', 'Your photo');?></a> </li>

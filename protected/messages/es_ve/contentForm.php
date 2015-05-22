@@ -826,7 +826,23 @@ return array (
 	'Who do you send?'=>'¿A quién la envías?',
 	'Welcome! Already part of Personaling.com; from now within the distance of a click the best brands and fashion consulting by experts.'=>'¡Bienvenida! Ya eres parte de Personaling.com; desde hoy tendrás a la distancia de un click las mejores marcas y asesoría de moda hecha por expertos.',
 	'Do you want to invite your friends to use our Personal Shopper service? Cheer up, they\'ll thank you.'=>'¿Quieres invitar a tus amigas a probar nuestro servicio de Personal Shopper? Anímate, ellas te lo agradecerán.',
-	
+	'You have no orders'=>'No tienes pedidos',
+	'EDITING OPTIONS'=>'OPCIONES DE EDICIÓN',
+	'Member since:'=>'Miembro desde:',
+	'Your personal data'=>'Tus datos personales',
+	'Other profiles'=>'Otros perfiles',
+	'Vacations'=>'Vacaciones',
+	'Sports'=>'Deportes',
+	'Office'=>'Oficina',
+	'Connect your social networks'=>'Conecta tus redes sociales',
+	'Add a new address'=>'Añadir nueva dirección',
+	'Unsubscribe Mail'=>'Darse de baja en la lista de correos',
+	'Public Information'=>'Información Pública',
+	'Delete account'=>'Eliminar Cuenta',
+	'Products you love'=>'Productos que te Encantan',
+	'YOUR ACTIVITY'=>'TU ACTIVIDAD',
+	'invited friends'=>'Amigos invitados',
+	'Lastname'=>'Apellido',
 
 );
 

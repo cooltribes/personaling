@@ -113,8 +113,8 @@ if (!Yii::app()->user->isGuest) { // que este logueado
                       echo "
                         <td>"
                         .$producto->nombre." ".$producto->id."<br/>
-                        <strong>Color</strong>: ".$color->valor."<br/>
-                        <strong>Talla</strong>: ".$talla->valor."</td>
+                        <strong>".Yii::t('contentForm', 'Color')."</strong>: ".$color->valor."<br/>
+                        <strong>".Yii::t('contentForm', 'Size')."</strong>: ".$talla->valor."</td>
                       ";	
 
                       $pre="";

@@ -56,7 +56,7 @@ $template = '{summary}
         'dataProvider'=>$dataProvider,
         'itemView'=>'_datosUsuario',
         'template'=>$template,
-        'emptyText'=> '<p class="lead">No tienes pedidos</p>',
+        'emptyText'=> '<p class="lead">'.Yii::t('contentForm', 'You have no orders').'</p>',
         'summaryText' => 'Mostrando {start} - {end} de {count} Resultados',            
         'enableSorting'=>'true',
         'afterAjaxUpdate'=>" function(id, data) {

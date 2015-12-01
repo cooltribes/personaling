@@ -1070,7 +1070,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
         }
         else var expires = "";
         document.cookie = name+"="+value+expires+"; path=/";
-    
+    }
 
     function readCookie(name) {
         var nameEQ = name + "=";

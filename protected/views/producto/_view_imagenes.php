@@ -3,6 +3,7 @@
 var uno=0;
 
         $("#ul_imagenes span").live('click',function(){
+        $(document).on("click","#ul_imagenes span",function(){
 
             var span = $(this);
 			

@@ -180,15 +180,15 @@
 
                 // application components
                 'components'=>array(
-                    'clientScript' => array(
-                           'class' => 'application.vendors.yii-EClientScript.EClientScript',
-                           'combineScriptFiles' => ! $this->_debug, // By default this is set to true, set this to true if you'd like to combine the script files
-                           'combineCssFiles' => ! $this->_debug, // By default this is set to true, set this to true if you'd like to combine the css files
-                           'optimizeScriptFiles' => ! $this->_debug, // @since: 1.1
-                           'optimizeCssFiles' => ! $this->_debug, // @since: 1.1
-                           'optimizeInlineScript' => false, // @since: 1.6, This may case response slower
-                           'optimizeInlineCss' => false, // @since: 1.6, This may case response slower
-                         ),
+                    //'clientScript' => array(
+                    //       'class' => 'application.vendors.yii-EClientScript.EClientScript',
+                    //       'combineScriptFiles' => ! $this->_debug, // By default this is set to true, set this to true if you'd like to combine the script files
+                    //       'combineCssFiles' => ! $this->_debug, // By default this is set to true, set this to true if you'd like to combine the css files
+                    //       'optimizeScriptFiles' => ! $this->_debug, // @since: 1.1
+                    //       'optimizeCssFiles' => ! $this->_debug, // @since: 1.1
+                    //       'optimizeInlineScript' => false, // @since: 1.6, This may case response slower
+                    //      'optimizeInlineCss' => false, // @since: 1.6, This may case response slower
+                    //     ),
                     'assetManager' => array(
                         //'linkAssets' => true,
                        // 'forceCopy'=> false,
@@ -252,6 +252,7 @@
                                 'class' => 'application.components.ShortenerUrlRule',
                                 'connectionID' => 'db',
                             ),
+/*
                             '<language:(de|tr|en)>/' => 'site/index',
                             '<language:(de|tr|en)>/productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
                             '<language:(de|tr|en)>/looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',
@@ -272,6 +273,28 @@
                             '<language:(de|tr|en)>/<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
                             '<language:(de|tr|en)>/<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
                             '<language:(de|tr|en)>/<alias:[a-zA-Z0-9_-]+>'=>'user/profile/perfil'
+*/
+                            //'/' => 'site/index',
+                            '/productos/<alias:[a-zA-Z0-9_-]+>'=>'producto/detalle',
+                            '/looks/<alias:[a-zA-Z0-9_-]+>'=>'look/view',
+                            '/looks-personalizados'=>'tienda/look',
+                            '/tienda-ropa-personalizada'=>'tienda/index',
+                            '/outlet'=>'tienda/index/outlet/true',
+                            '/formas-de-pago'=>'site/formas_de_pago',
+                            '/envios'=>'site/condiciones_de_envios_y_encomiendas',
+                            '/preguntas_frecuentes'=>'site/preguntas_frecuentes',
+                            '/acerca-personaling'=>'site/acerca_de',
+                            '/registro-personaling'=>'user/registration',
+                            '/inicio-personaling'=>'user/login',
+                            '/me-siento-poderosa'=>'site/poderosas',
+                            '/reportico'=>'reportico',
+                            '/tt'=>'site/tienda',
+                            '/look/<id:\d+>/ps/<ps_id:\d+>'=>'look/view',
+                            '/<controller:\w+>/<id:\d+>'=>'<controller>/view',
+                            '/<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+                            '/<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+                            '/<alias:[a-zA-Z0-9_-]+>'=>'user/profile/perfil'
+
                         ),
                     ),
 
@@ -1139,6 +1162,16 @@
                             'tablePrefix' => 'tbl_',
                         ),
 
+                    
+                        'log'=>array(
+                            'class'=>'CLogRouter',
+                            'routes'=>array(
+                                array(
+                                    'class'=>'CWebLogRoute',
+                                    'levels'=>'trace,error,warning',
+                                ),
+                            ),
+                        ),
                     ),
                     'params'=>array(
                         // this is used in contact page

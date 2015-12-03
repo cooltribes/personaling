@@ -21,6 +21,7 @@ test48/
 images/es_es/*
 images/es_ve/*
 images/es_ve
+docs/*
 
 ### Yii ###
 assets/*

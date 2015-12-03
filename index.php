@@ -63,4 +63,8 @@ defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
     defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', $environment->getTraceLevel());
 
     Yii::createWebApplication($environment->getConfig())->run();
+<<<<<<< HEAD
     echo $_GET['language']."rafa";
+=======
+    //echo $_GET['language']."rafa";
+>>>>>>> b73c82f59d492f97e16e9eb31a3c106dcbb040bf

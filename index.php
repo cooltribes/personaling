@@ -22,8 +22,8 @@
 
 //RAFA
 // Change the following paths if necessary
-//defined('YII_DEBUG') or define('YII_DEBUG',true);
-//defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
+defined('YII_DEBUG') or define('YII_DEBUG',true);
+defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
 
 	if (strstr($_SERVER['HTTP_HOST'],"personaling.es"))
 		$country='es_es';
@@ -35,13 +35,13 @@
     if (isset($_SERVER['HTTP_APPLICATION_LANG']))
 	   $country = $_SERVER['HTTP_APPLICATION_LANG']; //htaccess SetEnv HTTP_APPLICATION_LANG "es_ve"
     
-    $yii = dirname(__FILE__).'/../../yii-1.1.13.e9e4a0/framework/yiilite.php';
+    $yii = dirname(__FILE__).'/../yii/framework/yiilite.php';
     require_once($yii);
     require_once(dirname(__FILE__).'/protected/config/environment.php');
     Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/protected/extensions/bootstrap');
     
     if (isset($_SERVER["HTTP_APPLICATION_ENV"])&&$_SERVER["HTTP_APPLICATION_ENV"]=="production") //htaccess SetEnv HTTP_APPLICATION_ENV "production"
-        $environment = new Environment(Environment::PRODUCTION,$country,'');
+        $environment = new Environment(Environment::PRODUCTION,$country,'/personaling');
     if (isset($_SERVER["HTTP_APPLICATION_ENV"])&&$_SERVER["HTTP_APPLICATION_ENV"]=="ch") //htaccess SetEnv HTTP_APPLICATION_ENV "production"
         $environment = new Environment(Environment::TEST,$country,'/ch');
     if (isset($_SERVER["HTTP_APPLICATION_ENV"])&&$_SERVER["HTTP_APPLICATION_ENV"]=="us") //htaccess SetEnv HTTP_APPLICATION_ENV "production"
@@ -63,3 +63,4 @@
     defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', $environment->getTraceLevel());
 
     Yii::createWebApplication($environment->getConfig())->run();
+    echo $_GET['language']."rafa";

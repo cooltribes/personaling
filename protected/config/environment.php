@@ -994,7 +994,7 @@
                         'AzPaySecret'=> 'qwerty1234567890uiop',
                         'zohoToken'=>'8b75b742aec75310a4985ab07ca683d7',
                         'zohoAccount'=>'cmontanez@upsidecorp.ch',
-                        'zohoActive' => TRUE,
+                        'zohoActive' => false,
                         'fb_appId' => '323808071078482',
                     ),
                 );

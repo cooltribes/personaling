@@ -1,3 +1,4 @@
+
 <?php
 class Zoho{
 	public $email;
@@ -37,6 +38,7 @@ class Zoho{
 
 	// Save user to potential clients list
 	function save_potential(){
+		ini_set('open_basedir','');
 		$xml  = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= '<Leads>';
 		$xml .= '<row no="1">';

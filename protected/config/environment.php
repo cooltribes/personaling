@@ -441,7 +441,7 @@
                     //'zohoToken'=>'1569fa0c328f9ec6fec9a148939b74fa', 
                     
                     'outlet'=>TRUE,
-                    'zohoActive' => FALSE,
+                    'zohoActive' => false,
                     'id_look_switch' => 638,
                     'instapago_key' => array(
                         "KeyId"=> "EDC20F86-9C7E-4D2A-9603-6EF5612F5536",
@@ -1211,7 +1211,7 @@
                             'bodyFavors' => true,
                             'skinColor' => true,
                         ),
-
+                        'zohoActive' => false,
                         'AzPayTerminal'=>'001',
                         'AzPaySecret'=> 'CA4AE93932ADF12EF0D2',
                         'fb_appId' => '323808071078482',
